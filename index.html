@@ -741,7 +741,10 @@ Ex: 'Le locataire ne pourra avoir aucun animal de compagnie sous peine de résil
   <div>Cet outil ne remplace pas un avocat. Pour les cas complexes, consultez un professionnel.</div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
 // ===== STATE =====
 let uploadedFileContent = null;
 
@@ -762,22 +765,41 @@ fileInput.addEventListener('change', e => {
   if (e.target.files[0]) handleFile(e.target.files[0]);
 });
 
-function handleFile(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    uploadedFileContent = e.target.result;
-    document.getElementById('fileLoaded').classList.add('visible');
-    document.getElementById('fileName').textContent = `📎 ${file.name}`;
-  };
-  // For text files, read as text; for images/pdf, we'll use base64
+async function handleFile(file) {
+  const fileLoadedEl = document.getElementById('fileLoaded');
+  const fileNameEl = document.getElementById('fileName');
+  
+  fileNameEl.textContent = `⏳ Lecture de ${file.name}...`;
+  fileLoadedEl.classList.add('visible');
+
   if (file.type === 'text/plain') {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      uploadedFileContent = e.target.result;
+      fileNameEl.textContent = `📎 ${file.name}`;
+    };
     reader.readAsText(file);
+
+  } else if (file.type === 'application/pdf') {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = '';
+      for (let i = 1; i <= Math.min(pdf.numPages, 20); i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        fullText += textContent.items.map(item => item.str).join(' ') + '
+';
+      }
+      uploadedFileContent = fullText.trim();
+      fileNameEl.textContent = `📎 ${file.name} (${pdf.numPages} pages extraites)`;
+    } catch(err) {
+      fileNameEl.textContent = `❌ Erreur lecture PDF — colle le texte manuellement`;
+      uploadedFileContent = null;
+    }
   } else {
-    reader.readAsDataURL(file);
-    // For demo: tell user we'll use the text area for PDF
-    uploadedFileContent = `[Fichier uploadé: ${file.name}]`;
-    document.getElementById('fileLoaded').classList.add('visible');
-    document.getElementById('fileName').textContent = `📎 ${file.name} — colle aussi le texte ci-dessous pour une meilleure analyse`;
+    uploadedFileContent = `[Fichier: ${file.name}]`;
+    fileNameEl.textContent = `📎 ${file.name}`;
   }
 }
 
