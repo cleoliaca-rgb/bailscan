@@ -9,7 +9,6 @@
   :root {
     --noir: #0d0d0d;
     --creme: #f5f0e8;
-    --creme2: #ede7d9;
     --accent: #c84b2f;
     --accent2: #e8a87c;
     --vert: #2d6a4f;
@@ -19,576 +18,95 @@
     --gris: #6b6b6b;
     --border: #d8d0c4;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--creme);
-    color: var(--texte);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* NOISE TEXTURE */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* HEADER */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 18px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-    background: rgba(245, 240, 232, 0.92);
-    backdrop-filter: blur(12px);
-  }
-
-  .logo {
-    font-family: 'Instrument Serif', serif;
-    font-size: 1.6rem;
-    color: var(--noir);
-    letter-spacing: -0.02em;
-  }
-
+  body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); }
+  .logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); }
   .logo span { color: var(--accent); }
-
-  .badge-beta {
-    background: var(--accent);
-    color: white;
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 7px;
-    border-radius: 4px;
-    vertical-align: super;
-    margin-left: 4px;
-  }
-
+  .badge-beta { background: var(--accent); color: white; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; vertical-align: super; margin-left: 4px; }
   nav { display: flex; gap: 32px; align-items: center; }
   nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
   nav a:hover { color: var(--noir); }
-
-  .btn-nav {
-    background: var(--noir);
-    color: var(--creme) !important;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.88rem !important;
-    transition: background 0.2s !important;
-  }
+  .btn-nav { background: var(--noir); color: var(--creme) !important; padding: 10px 22px; border-radius: 8px; font-weight: 500; }
   .btn-nav:hover { background: var(--accent) !important; }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 120px 48px 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    top: -100px; right: -80px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(200,75,47,0.12) 0%, transparent 65%);
-    pointer-events: none;
-  }
-
-  .hero-bg2 {
-    position: absolute;
-    bottom: -80px; left: -60px;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(45,106,79,0.1) 0%, transparent 65%);
-    pointer-events: none;
-  }
-
-  .hero-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-    width: 100%;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--vert-light);
-    color: var(--vert);
-    font-size: 0.8rem;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 20px;
-    margin-bottom: 24px;
-    border: 1px solid rgba(45,106,79,0.2);
-  }
-
-  .hero-tag::before {
-    content: '';
-    width: 7px; height: 7px;
-    background: var(--vert);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-
-  h1 {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(2.8rem, 5vw, 4.2rem);
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    color: var(--noir);
-    margin-bottom: 24px;
-  }
-
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .hero-desc {
-    font-size: 1.1rem;
-    color: var(--gris);
-    line-height: 1.7;
-    margin-bottom: 40px;
-    font-weight: 300;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 32px;
-    margin-top: 40px;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-  }
-
-  .stat { }
-  .stat-num {
-    font-family: 'Instrument Serif', serif;
-    font-size: 2rem;
-    color: var(--noir);
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: 0.78rem;
-    color: var(--gris);
-    margin-top: 4px;
-  }
-
-  /* APP CARD */
-  .app-card {
-    background: white;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    padding: 36px;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
-    position: relative;
-  }
-
-  .app-card::before {
-    content: '';
-    position: absolute;
-    top: -1px; left: 24px; right: 24px;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 0 0 3px 3px;
-  }
-
-  .app-title {
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gris);
-    margin-bottom: 20px;
-  }
-
-  /* UPLOAD ZONE */
-  .upload-zone {
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    padding: 32px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s;
-    background: var(--creme);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .upload-zone:hover, .upload-zone.drag-over {
-    border-color: var(--accent);
-    background: var(--rouge-light);
-    transform: translateY(-1px);
-  }
-
-  .upload-icon {
-    font-size: 2.2rem;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .upload-title {
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--noir);
-    margin-bottom: 6px;
-  }
-
-  .upload-sub {
-    font-size: 0.8rem;
-    color: var(--gris);
-  }
-
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 48px 80px; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; top: -100px; right: -80px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(200,75,47,0.12) 0%, transparent 65%); pointer-events: none; }
+  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; width: 100%; position: relative; z-index: 1; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--vert-light); color: var(--vert); font-size: 0.8rem; font-weight: 500; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; border: 1px solid rgba(45,106,79,0.2); }
+  .hero-tag::before { content: ''; width: 7px; height: 7px; background: var(--vert); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); line-height: 1.08; letter-spacing: -0.03em; color: var(--noir); margin-bottom: 24px; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-desc { font-size: 1.1rem; color: var(--gris); line-height: 1.7; margin-bottom: 40px; font-weight: 300; }
+  .stats-row { display: flex; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+  .stat-num { font-family: 'Instrument Serif', serif; font-size: 2rem; color: var(--noir); line-height: 1; }
+  .stat-label { font-size: 0.78rem; color: var(--gris); margin-top: 4px; }
+  .app-card { background: white; border-radius: 20px; border: 1px solid var(--border); padding: 36px; box-shadow: 0 24px 80px rgba(0,0,0,0.08); position: relative; }
+  .app-card::before { content: ''; position: absolute; top: -1px; left: 24px; right: 24px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 0 0 3px 3px; }
+  .app-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); margin-bottom: 20px; }
+  .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 28px 24px; text-align: center; cursor: pointer; transition: all 0.25s; background: var(--creme); }
+  .upload-zone:hover { border-color: var(--accent); background: var(--rouge-light); }
+  .upload-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+  .upload-title { font-weight: 600; font-size: 0.95rem; color: var(--noir); margin-bottom: 4px; }
+  .upload-sub { font-size: 0.8rem; color: var(--gris); }
   #fileInput { display: none; }
-
-  /* TEXTAREA */
-  .separator {
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-    color: var(--gris);
-    font-size: 0.8rem;
-  }
-  .separator::before, .separator::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 42%;
-    height: 1px;
-    background: var(--border);
-  }
+  .separator { text-align: center; margin: 16px 0; position: relative; color: var(--gris); font-size: 0.8rem; }
+  .separator::before, .separator::after { content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: var(--border); }
   .separator::before { left: 0; }
   .separator::after { right: 0; }
-
-  textarea {
-    width: 100%;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    line-height: 1.6;
-    color: var(--texte);
-    background: var(--creme);
-    resize: vertical;
-    min-height: 120px;
-    transition: border-color 0.2s;
-    outline: none;
-  }
-
+  textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; line-height: 1.6; color: var(--texte); background: var(--creme); resize: vertical; min-height: 100px; transition: border-color 0.2s; outline: none; }
   textarea:focus { border-color: var(--accent); }
   textarea::placeholder { color: var(--gris); }
-
-  /* BOUTON ANALYSER */
-  .btn-analyze {
-    width: 100%;
-    margin-top: 20px;
-    padding: 16px;
-    background: var(--noir);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn-analyze:hover:not(:disabled) {
-    background: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(200,75,47,0.3);
-  }
-
-  .btn-analyze:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  /* LOADING */
-  .loading-state {
-    display: none;
-    text-align: center;
-    padding: 40px 20px;
-  }
-
+  .btn-analyze { width: 100%; margin-top: 16px; padding: 16px; background: var(--noir); color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.25s; }
+  .btn-analyze:hover { background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,75,47,0.3); }
+  .loading-state { display: none; text-align: center; padding: 40px 20px; }
   .loading-state.active { display: block; }
-
-  .spinner {
-    width: 44px; height: 44px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 16px;
-  }
-
+  .spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading-text {
-    font-size: 0.9rem;
-    color: var(--gris);
-  }
-
-  .loading-steps {
-    margin-top: 12px;
-    font-size: 0.8rem;
-    color: var(--accent);
-    min-height: 20px;
-  }
-
-  /* RÉSULTATS */
+  .loading-text { font-size: 0.9rem; color: var(--gris); }
+  .loading-steps { margin-top: 12px; font-size: 0.8rem; color: var(--accent); min-height: 20px; }
+  .progress-bar-wrap { width: 100%; height: 4px; background: var(--border); border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; width: 0%; transition: width 0.4s ease; }
   #results { display: none; }
   #results.visible { display: block; }
-
-  .score-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 28px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-  }
-
+  .score-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
   .score-label { font-size: 0.8rem; color: var(--gris); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-
-  .score-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 1rem;
-  }
-
-  .score-badge.equitable { background: var(--vert-light); color: var(--vert); border: 1.5px solid rgba(45,106,79,0.25); }
-  .score-badge.risque { background: #fff8e1; color: #b07d00; border: 1.5px solid rgba(176,125,0,0.25); }
-  .score-badge.abusif { background: var(--rouge-light); color: var(--accent); border: 1.5px solid rgba(200,75,47,0.25); }
-
-  .score-number {
-    font-family: 'Instrument Serif', serif;
-    font-size: 3rem;
-    line-height: 1;
-  }
-
+  .score-number { font-family: 'Instrument Serif', serif; font-size: 3rem; line-height: 1; }
   .score-number.good { color: var(--vert); }
   .score-number.medium { color: #b07d00; }
   .score-number.bad { color: var(--accent); }
-
-  /* SECTIONS DE RÉSULTATS */
-  .result-section {
-    margin-bottom: 20px;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    animation: fadeIn 0.4s ease forwards;
-    opacity: 0;
-  }
-
-  @keyframes fadeIn {
-    to { opacity: 1; transform: translateY(0); }
-    from { opacity: 0; transform: translateY(8px); }
-  }
-
-  .result-section:nth-child(2) { animation-delay: 0.1s; }
-  .result-section:nth-child(3) { animation-delay: 0.2s; }
-  .result-section:nth-child(4) { animation-delay: 0.3s; }
-  .result-section:nth-child(5) { animation-delay: 0.4s; }
-
-  .result-section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
-    background: var(--creme);
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .result-section-icon { font-size: 1.1rem; }
+  .score-badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 1rem; }
+  .score-badge.equitable { background: var(--vert-light); color: var(--vert); border: 1.5px solid rgba(45,106,79,0.25); }
+  .score-badge.risque { background: #fff8e1; color: #b07d00; border: 1.5px solid rgba(176,125,0,0.25); }
+  .score-badge.abusif { background: var(--rouge-light); color: var(--accent); border: 1.5px solid rgba(200,75,47,0.25); }
+  .result-section { margin-bottom: 12px; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .result-section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; background: var(--creme); border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
   .result-section-title { font-weight: 600; font-size: 0.92rem; flex: 1; }
   .result-section-toggle { color: var(--gris); font-size: 0.8rem; transition: transform 0.2s; }
   .result-section.open .result-section-toggle { transform: rotate(180deg); }
-
-  .result-section-body {
-    padding: 20px;
-    display: none;
-    font-size: 0.88rem;
-    line-height: 1.75;
-    color: var(--texte);
-    background: white;
-  }
-
+  .result-section-body { padding: 20px; display: none; font-size: 0.88rem; line-height: 1.75; background: white; }
   .result-section.open .result-section-body { display: block; }
-
-  .clause-item {
-    display: flex;
-    gap: 12px;
-    padding: 12px 14px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 0.85rem;
-  }
-
+  .clause-item { display: flex; gap: 12px; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem; }
   .clause-item.danger { background: var(--rouge-light); border-left: 3px solid var(--accent); }
   .clause-item.warning { background: #fff8e1; border-left: 3px solid #f59e0b; }
   .clause-item.ok { background: var(--vert-light); border-left: 3px solid var(--vert); }
-
-  .clause-icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
-
-  /* BOUTON RESET */
-  .btn-reset {
-    width: 100%;
-    margin-top: 20px;
-    padding: 12px;
-    background: transparent;
-    color: var(--gris);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-reset:hover { border-color: var(--noir); color: var(--noir); }
-
-  /* FILE LOADED */
-  .file-loaded {
-    display: none;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    background: var(--vert-light);
-    border: 1.5px solid rgba(45,106,79,0.3);
-    border-radius: 10px;
-    font-size: 0.85rem;
-    color: var(--vert);
-    font-weight: 500;
-  }
+  .clause-icon { flex-shrink: 0; }
+  .file-loaded { display: none; align-items: center; gap: 10px; padding: 10px 16px; background: var(--vert-light); border: 1.5px solid rgba(45,106,79,0.3); border-radius: 10px; font-size: 0.85rem; color: var(--vert); font-weight: 500; margin-top: 10px; }
   .file-loaded.visible { display: flex; }
-
-  /* ERROR */
-  .error-msg {
-    display: none;
-    padding: 12px 16px;
-    background: var(--rouge-light);
-    border: 1.5px solid rgba(200,75,47,0.3);
-    border-radius: 10px;
-    font-size: 0.85rem;
-    color: var(--accent);
-    margin-top: 12px;
-  }
+  .error-msg { display: none; padding: 12px 16px; background: var(--rouge-light); border: 1.5px solid rgba(200,75,47,0.3); border-radius: 10px; font-size: 0.85rem; color: var(--accent); margin-top: 12px; }
   .error-msg.visible { display: block; }
-
-  /* FEATURES SECTION */
-  .features {
-    padding: 100px 48px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 16px;
-  }
-
-  .section-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    color: var(--noir);
-    letter-spacing: -0.03em;
-    margin-bottom: 60px;
-    max-width: 520px;
-    line-height: 1.15;
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  .feature-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .feature-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.07);
-  }
-
+  .btn-reset { width: 100%; margin-top: 16px; padding: 12px; background: transparent; color: var(--gris); border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; cursor: pointer; transition: all 0.2s; }
+  .btn-reset:hover { border-color: var(--noir); color: var(--noir); }
+  .features { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .section-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--noir); letter-spacing: -0.03em; margin-bottom: 60px; max-width: 520px; line-height: 1.15; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .feature-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 28px; transition: transform 0.2s, box-shadow 0.2s; }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.07); }
   .feature-emoji { font-size: 2rem; margin-bottom: 16px; display: block; }
   .feature-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; }
   .feature-desc { font-size: 0.85rem; color: var(--gris); line-height: 1.65; }
-
-  /* FOOTER */
-  footer {
-    padding: 40px 48px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--gris);
-    font-size: 0.82rem;
-  }
-
-  /* PROGRESS BAR */
-  .progress-bar-wrap {
-    width: 100%;
-    height: 4px;
-    background: var(--border);
-    border-radius: 4px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    display: none;
-  }
-  .progress-bar-wrap.active { display: block; }
-  .progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 4px;
-    width: 0%;
-    transition: width 0.4s ease;
-  }
-
+  footer { padding: 40px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--gris); font-size: 0.82rem; }
   @media (max-width: 768px) {
     header { padding: 16px 20px; }
     nav a:not(.btn-nav) { display: none; }
@@ -605,425 +123,342 @@
 <header>
   <div class="logo">Bail<span>Scan</span><span class="badge-beta">Beta</span></div>
   <nav>
-    <a href="#comment">Comment ça marche</a>
-    <a href="#app" class="btn-nav">Analyser mon bail →</a>
+    <a href="#comment">Comment ca marche</a>
+    <a href="#app" class="btn-nav">Analyser mon bail</a>
   </nav>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-bg2"></div>
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-tag">Nouveau en France 🇫🇷</div>
+      <div class="hero-tag">Nouveau en France</div>
       <h1>Ton bail cache-t-il des <em>clauses abusives ?</em></h1>
-      <p class="hero-desc">
-        L'IA qui analyse ton contrat de location en 2 minutes. Clauses illégales, loyer encadré, pièges cachés — on te dit tout ce que ton propriétaire préfère que tu ignores.
-      </p>
+      <p class="hero-desc">L'IA qui analyse ton contrat de location en 2 minutes. Clauses illegales, loyer encadre, pieges caches — on te dit tout ce que ton proprietaire prefere que tu ignores.</p>
       <div class="stats-row">
         <div class="stat">
           <div class="stat-num">40%</div>
-          <div class="stat-label">des ménages<br>sont locataires</div>
+          <div class="stat-label">des menages sont locataires</div>
         </div>
         <div class="stat">
           <div class="stat-num">1/3</div>
-          <div class="stat-label">des baux contient<br>une clause illégale</div>
+          <div class="stat-label">des baux contient une clause illegale</div>
         </div>
         <div class="stat">
           <div class="stat-num">2 min</div>
-          <div class="stat-label">pour tout<br>analyser</div>
+          <div class="stat-label">pour tout analyser</div>
         </div>
       </div>
     </div>
 
-    <!-- APP -->
     <div class="app-card" id="app">
       <div class="app-title">Analyse ton bail</div>
 
-      <!-- FORM STATE -->
       <div id="formState">
         <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
           <span class="upload-icon">📄</span>
-          <div class="upload-title">Glisse ton bail ici</div>
-          <div class="upload-sub">PDF ou image · Jusqu'à 10 Mo</div>
-          <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.txt">
+          <div class="upload-title">Clique pour uploader ton bail</div>
+          <div class="upload-sub">PDF accepte</div>
+          <input type="file" id="fileInput" accept=".pdf,.txt">
         </div>
 
         <div class="file-loaded" id="fileLoaded">
           <span>✅</span>
-          <span id="fileName">fichier chargé</span>
+          <span id="fileName">fichier charge</span>
         </div>
 
         <div class="separator">ou colle ton texte</div>
 
-        <textarea id="bailText" placeholder="Colle ici le contenu de ton bail, ou les clauses qui t'inquiètent...
-Ex: 'Le locataire ne pourra avoir aucun animal de compagnie sous peine de résiliation immédiate...'"></textarea>
+        <textarea id="bailText" placeholder="Colle ici le contenu de ton bail ou les clauses qui t'inquietent..."></textarea>
 
         <div class="error-msg" id="errorMsg"></div>
 
         <button class="btn-analyze" id="analyzeBtn" onclick="analyzeBail()">
-          🔍 Analyser mon bail gratuitement
+          Analyser mon bail gratuitement
         </button>
       </div>
 
-      <!-- LOADING STATE -->
       <div class="loading-state" id="loadingState">
-        <div class="progress-bar-wrap active" id="progressWrap">
+        <div class="progress-bar-wrap">
           <div class="progress-bar" id="progressBar"></div>
         </div>
         <div class="spinner"></div>
-        <div class="loading-text">Analyse en cours…</div>
-        <div class="loading-steps" id="loadingSteps">Lecture du bail…</div>
+        <div class="loading-text">Analyse en cours...</div>
+        <div class="loading-steps" id="loadingSteps">Lecture du bail...</div>
       </div>
 
-      <!-- RESULTS -->
       <div id="results">
         <div class="score-header">
           <div>
             <div class="score-label">Score global</div>
-            <div id="scoreNumber" class="score-number">—</div>
+            <div id="scoreNumber" class="score-number">--</div>
           </div>
           <div>
             <div class="score-label">Verdict</div>
-            <div id="scoreBadge" class="score-badge">—</div>
+            <div id="scoreBadge" class="score-badge">--</div>
           </div>
         </div>
-
         <div id="resultSections"></div>
-
-        <button class="btn-reset" onclick="resetApp()">← Analyser un autre bail</button>
+        <button class="btn-reset" onclick="resetApp()">Analyser un autre bail</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
 <section class="features" id="comment">
-  <div class="section-label">Comment ça marche</div>
+  <div class="section-label">Comment ca marche</div>
   <div class="section-title">Tout ce qu'on analyse pour toi</div>
   <div class="features-grid">
     <div class="feature-card">
       <span class="feature-emoji">⚖️</span>
-      <div class="feature-title">Clauses illégales</div>
-      <div class="feature-desc">On vérifie chaque clause par rapport à la loi du 6 juillet 1989 et signale toute violation de tes droits.</div>
+      <div class="feature-title">Clauses illegales</div>
+      <div class="feature-desc">On verifie chaque clause par rapport a la loi du 6 juillet 1989 et signale toute violation de tes droits.</div>
     </div>
     <div class="feature-card">
       <span class="feature-emoji">💶</span>
       <div class="feature-title">Encadrement des loyers</div>
-      <div class="feature-desc">Ton loyer est-il trop élevé ? On vérifie la conformité avec les zones tendues : Paris, Lyon, Bordeaux…</div>
+      <div class="feature-desc">Ton loyer est-il trop eleve ? On verifie la conformite avec les zones tendues : Paris, Lyon, Bordeaux...</div>
     </div>
     <div class="feature-card">
       <span class="feature-emoji">🔍</span>
-      <div class="feature-title">Pièges cachés</div>
-      <div class="feature-desc">Préavis abusif, charges non justifiées, travaux à ta charge — on lit ce que tu aurais pu rater.</div>
+      <div class="feature-title">Pieges caches</div>
+      <div class="feature-desc">Preavis abusif, charges non justifiees, travaux a ta charge — on lit ce que tu aurais pu rater.</div>
     </div>
     <div class="feature-card">
       <span class="feature-emoji">📊</span>
       <div class="feature-title">Score de bail</div>
-      <div class="feature-desc">Un score clair de 0 à 100 pour savoir si ton bail est équitable, risqué ou carrément abusif.</div>
+      <div class="feature-desc">Un score clair de 0 a 100 pour savoir si ton bail est equitable, risque ou carrément abusif.</div>
     </div>
     <div class="feature-card">
       <span class="feature-emoji">✉️</span>
       <div class="feature-title">Lettres types</div>
-      <div class="feature-desc">Pour chaque problème détecté, on génère une lettre de mise en demeure prête à envoyer. (bientôt)</div>
+      <div class="feature-desc">Pour chaque probleme detecte, on generera une lettre de mise en demeure. (bientot)</div>
     </div>
     <div class="feature-card">
       <span class="feature-emoji">🔒</span>
-      <div class="feature-title">100% privé</div>
-      <div class="feature-desc">Ton bail n'est jamais stocké. L'analyse se fait en temps réel et rien n'est conservé.</div>
+      <div class="feature-title">100% prive</div>
+      <div class="feature-desc">Ton bail n'est jamais stocke. L'analyse se fait en temps reel et rien n'est conserve.</div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div>© 2025 BailScan — Fait avec ❤️ pour les locataires français</div>
-  <div>Cet outil ne remplace pas un avocat. Pour les cas complexes, consultez un professionnel.</div>
+  <div>2025 BailScan — Fait pour les locataires francais</div>
+  <div>Cet outil ne remplace pas un avocat.</div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+var uploadedFileContent = null;
 
-// ===== STATE =====
-let uploadedFileContent = null;
+var uploadZone = document.getElementById('uploadZone');
+var fileInput = document.getElementById('fileInput');
 
-// ===== FILE UPLOAD =====
-const uploadZone = document.getElementById('uploadZone');
-const fileInput = document.getElementById('fileInput');
-
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop', e => {
+uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); uploadZone.style.borderColor = '#c84b2f'; });
+uploadZone.addEventListener('dragleave', function() { uploadZone.style.borderColor = ''; });
+uploadZone.addEventListener('drop', function(e) {
   e.preventDefault();
-  uploadZone.classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
+  uploadZone.style.borderColor = '';
+  var file = e.dataTransfer.files[0];
   if (file) handleFile(file);
 });
 
-fileInput.addEventListener('change', e => {
+fileInput.addEventListener('change', function(e) {
   if (e.target.files[0]) handleFile(e.target.files[0]);
 });
 
-async function handleFile(file) {
-  const fileLoadedEl = document.getElementById('fileLoaded');
-  const fileNameEl = document.getElementById('fileName');
-  
-  fileNameEl.textContent = `⏳ Lecture de ${file.name}...`;
-  fileLoadedEl.classList.add('visible');
+function handleFile(file) {
+  var fileLoadedEl = document.getElementById('fileLoaded');
+  var fileNameEl = document.getElementById('fileName');
 
-  if (file.type === 'text/plain') {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      uploadedFileContent = e.target.result;
-      fileNameEl.textContent = `📎 ${file.name}`;
+  if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var base64 = e.target.result.split(',')[1];
+      uploadedFileContent = { type: 'pdf', base64: base64, name: file.name };
+      fileNameEl.textContent = file.name + ' - pret a analyser';
+      fileLoadedEl.classList.add('visible');
     };
-    reader.readAsText(file);
-
-  } else if (file.type === 'application/pdf') {
-    try {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      let fullText = '';
-      for (let i = 1; i <= Math.min(pdf.numPages, 20); i++) {
-        const page = await pdf.getPage(i);
-        const textContent = await page.getTextContent();
-        fullText += textContent.items.map(item => item.str).join(' ') + '
-';
-      }
-      uploadedFileContent = fullText.trim();
-      fileNameEl.textContent = `📎 ${file.name} (${pdf.numPages} pages extraites)`;
-    } catch(err) {
-      fileNameEl.textContent = `❌ Erreur lecture PDF — colle le texte manuellement`;
-      uploadedFileContent = null;
-    }
+    reader.readAsDataURL(file);
+  } else if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+    var reader2 = new FileReader();
+    reader2.onload = function(e) {
+      uploadedFileContent = { type: 'text', content: e.target.result };
+      fileNameEl.textContent = file.name;
+      fileLoadedEl.classList.add('visible');
+    };
+    reader2.readAsText(file);
   } else {
-    uploadedFileContent = `[Fichier: ${file.name}]`;
-    fileNameEl.textContent = `📎 ${file.name}`;
+    alert('Format non supporte. Utilise un fichier PDF ou TXT.');
   }
 }
 
-// ===== LOADING ANIMATION =====
-const loadingMessages = [
-  "Lecture du bail…",
-  "Identification des clauses…",
-  "Vérification de la loi du 6 juillet 1989…",
-  "Analyse des droits du locataire…",
-  "Calcul du score…",
-  "Rédaction du rapport…"
+var loadingMessages = [
+  "Lecture du bail...",
+  "Identification des clauses...",
+  "Verification de la loi du 6 juillet 1989...",
+  "Analyse des droits du locataire...",
+  "Calcul du score...",
+  "Redaction du rapport..."
 ];
 
 function animateLoading() {
-  let i = 0;
-  let progress = 0;
-  const stepsEl = document.getElementById('loadingSteps');
-  const progressBar = document.getElementById('progressBar');
-
-  const interval = setInterval(() => {
+  var i = 0;
+  var progress = 0;
+  var stepsEl = document.getElementById('loadingSteps');
+  var progressBar = document.getElementById('progressBar');
+  var interval = setInterval(function() {
     if (i < loadingMessages.length) {
       stepsEl.textContent = loadingMessages[i];
       i++;
     }
-    progress = Math.min(progress + (100 / loadingMessages.length), 90);
+    progress = Math.min(progress + 15, 90);
     progressBar.style.width = progress + '%';
   }, 1200);
-
   return interval;
 }
 
-// ===== ANALYZE =====
-async function analyzeBail() {
-  const text = document.getElementById('bailText').value.trim();
-  const errorEl = document.getElementById('errorMsg');
+function analyzeBail() {
+  var text = document.getElementById('bailText').value.trim();
+  var errorEl = document.getElementById('errorMsg');
 
   if (!text && !uploadedFileContent) {
-    errorEl.textContent = '⚠️ Colle le texte de ton bail ou uploade un fichier pour commencer.';
+    errorEl.textContent = 'Colle le texte de ton bail ou uploade un fichier PDF pour commencer.';
     errorEl.classList.add('visible');
     return;
   }
   errorEl.classList.remove('visible');
 
-  const bailContent = text || uploadedFileContent;
-
-  // Switch to loading
   document.getElementById('formState').style.display = 'none';
   document.getElementById('loadingState').classList.add('active');
 
-  const loadingInterval = animateLoading();
+  var loadingInterval = animateLoading();
 
-  const systemPrompt = `Tu es un expert juridique spécialisé dans le droit immobilier français et la protection des locataires.
-Tu analyses des baux d'habitation selon la loi française (loi du 6 juillet 1989, loi ALUR, loi ELAN).
+  var systemPrompt = 'Tu es un expert juridique specialise dans le droit immobilier francais et la protection des locataires. Tu analyses des baux selon la loi francaise (loi du 6 juillet 1989, loi ALUR, loi ELAN). Reponds UNIQUEMENT en JSON valide avec cette structure: {"score": <0-100>, "verdict": "<Equitable|Risque|Abusif>", "resume": "<2-3 phrases>", "clauses_abusives": [{"type": "danger|warning|ok", "titre": "...", "description": "..."}], "loyer": {"statut": "ok|warning|danger", "analyse": "..."}, "conseils": ["..."], "droits_cles": ["..."]}';
 
-Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
-{
-  "score": <nombre de 0 à 100, 100 = bail parfait>,
-  "verdict": "<Équitable|Risqué|Abusif>",
-  "resume": "<2-3 phrases résumant l'analyse>",
-  "clauses_abusives": [
-    {"type": "danger|warning|ok", "titre": "...", "description": "..."}
-  ],
-  "loyer": {
-    "statut": "ok|warning|danger",
-    "analyse": "..."
-  },
-  "points_positifs": ["...", "..."],
-  "conseils": ["...", "..."],
-  "droits_cles": ["...", "..."]
-}
+  var messages;
+  if (uploadedFileContent && uploadedFileContent.type === 'pdf') {
+    messages = [{
+      role: 'user',
+      content: [
+        { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: uploadedFileContent.base64 } },
+        { type: 'text', text: 'Analyse ce bail PDF francais et retourne le JSON.' }
+      ]
+    }];
+  } else {
+    var bailContent = text || (uploadedFileContent && uploadedFileContent.type === 'text' ? uploadedFileContent.content : '');
+    messages = [{
+      role: 'user',
+      content: 'Analyse ce bail et retourne le JSON:\n\n' + bailContent
+    }];
+  }
 
-Sois précis, concret et bienveillant envers le locataire. Cite la loi quand c'est pertinent.
-Si le texte est incomplet ou pas un bail, analyse ce qui est disponible et signale-le.`;
-
-  const userPrompt = `Analyse ce bail / texte de bail français et retourne le JSON d'analyse :\n\n${bailContent}`;
-
-  try {
-    const response = await fetch("/api/analyze", {
-      method: "POST",
-      headers: {
-    "Content-Type": "application/json",
-    
-    
-    
-  },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role: "user", content: userPrompt }]
-      })
-    });
-
-    const data = await response.json();
+  fetch('/api/analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: systemPrompt,
+      messages: messages
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
     clearInterval(loadingInterval);
     document.getElementById('progressBar').style.width = '100%';
 
-    await new Promise(r => setTimeout(r, 400));
-
     if (data.error) throw new Error(JSON.stringify(data.error));
-    if (!data.content) throw new Error('Pas de contenu: ' + JSON.stringify(data));
+    if (!data.content) throw new Error('Reponse invalide');
 
-    const rawText = data.content.map(i => i.text || '').join('');
-    const clean = rawText.replace(/```json|```/g, '').trim();
-    
-    let result;
+    var rawText = data.content.map(function(i) { return i.text || ''; }).join('');
+    var clean = rawText.replace(/```json|```/g, '').trim();
+
+    var result;
     try {
       result = JSON.parse(clean);
     } catch(e) {
       result = {
-        score: 50, verdict: "Risque",
+        score: 50,
+        verdict: 'Risque',
         resume: rawText.substring(0, 300),
         clauses_abusives: [],
-        loyer: { statut: "warning", analyse: "Analyse partielle" },
-        conseils: ["Consultez un professionnel"],
+        loyer: { statut: 'warning', analyse: 'Analyse partielle disponible' },
+        conseils: ['Consultez un professionnel pour une analyse complete'],
         droits_cles: []
       };
     }
 
+    document.getElementById('loadingState').classList.remove('active');
     displayResults(result);
-
-  } catch (err) {
+  })
+  .catch(function(err) {
     clearInterval(loadingInterval);
     document.getElementById('loadingState').classList.remove('active');
     document.getElementById('formState').style.display = 'block';
     errorEl.textContent = 'Erreur: ' + err.message;
     errorEl.classList.add('visible');
-    console.error('Erreur:', err);
-  }
+  });
 }
 
-// ===== DISPLAY RESULTS =====
 function displayResults(result) {
-  document.getElementById('loadingState').classList.remove('active');
-  const resultsEl = document.getElementById('results');
+  var resultsEl = document.getElementById('results');
   resultsEl.classList.add('visible');
 
-  // Score
-  const scoreEl = document.getElementById('scoreNumber');
+  var scoreEl = document.getElementById('scoreNumber');
   scoreEl.textContent = result.score + '/100';
   scoreEl.className = 'score-number ' + (result.score >= 70 ? 'good' : result.score >= 40 ? 'medium' : 'bad');
 
-  // Badge
-  const badgeEl = document.getElementById('scoreBadge');
-  const verdictEmoji = { 'Équitable': '✅', 'Risqué': '⚠️', 'Abusif': '❌' };
-  badgeEl.textContent = (verdictEmoji[result.verdict] || '📋') + ' ' + result.verdict;
-  badgeEl.className = 'score-badge ' + (result.verdict === 'Équitable' ? 'equitable' : result.verdict === 'Risqué' ? 'risque' : 'abusif');
+  var badgeEl = document.getElementById('scoreBadge');
+  var emoji = result.verdict === 'Equitable' ? '✅' : result.verdict === 'Risque' ? '⚠️' : '❌';
+  badgeEl.textContent = emoji + ' ' + result.verdict;
+  badgeEl.className = 'score-badge ' + (result.verdict === 'Equitable' ? 'equitable' : result.verdict === 'Risque' ? 'risque' : 'abusif');
 
-  const sectionsEl = document.getElementById('resultSections');
+  var sectionsEl = document.getElementById('resultSections');
   sectionsEl.innerHTML = '';
 
-  // Résumé
-  addSection(sectionsEl, '📋', 'Résumé de l\'analyse', `<p>${result.resume}</p>`, true);
+  addSection(sectionsEl, '📋', 'Resume de l\'analyse', '<p>' + result.resume + '</p>', true);
 
-  // Clauses abusives
   if (result.clauses_abusives && result.clauses_abusives.length > 0) {
-    const clausesHtml = result.clauses_abusives.map(c => `
-      <div class="clause-item ${c.type}">
-        <span class="clause-icon">${c.type === 'danger' ? '🚨' : c.type === 'warning' ? '⚠️' : '✅'}</span>
-        <div><strong>${c.titre}</strong><br>${c.description}</div>
-      </div>
-    `).join('');
-    addSection(sectionsEl, '⚖️', `Clauses analysées (${result.clauses_abusives.length})`, clausesHtml, true);
+    var clausesHtml = result.clauses_abusives.map(function(c) {
+      return '<div class="clause-item ' + c.type + '"><span class="clause-icon">' + (c.type === 'danger' ? '🚨' : c.type === 'warning' ? '⚠️' : '✅') + '</span><div><strong>' + c.titre + '</strong><br>' + c.description + '</div></div>';
+    }).join('');
+    addSection(sectionsEl, '⚖️', 'Clauses analysees (' + result.clauses_abusives.length + ')', clausesHtml, true);
   }
 
-  // Loyer
   if (result.loyer) {
-    const loyerIcon = result.loyer.statut === 'ok' ? '✅' : result.loyer.statut === 'warning' ? '⚠️' : '🚨';
-    addSection(sectionsEl, '💶', 'Analyse du loyer', `
-      <div class="clause-item ${result.loyer.statut === 'ok' ? 'ok' : result.loyer.statut === 'warning' ? 'warning' : 'danger'}">
-        <span class="clause-icon">${loyerIcon}</span>
-        <div>${result.loyer.analyse}</div>
-      </div>
-    `);
+    var icon = result.loyer.statut === 'ok' ? '✅' : result.loyer.statut === 'warning' ? '⚠️' : '🚨';
+    addSection(sectionsEl, '💶', 'Analyse du loyer', '<div class="clause-item ' + result.loyer.statut + '"><span class="clause-icon">' + icon + '</span><div>' + result.loyer.analyse + '</div></div>');
   }
 
-  // Conseils
   if (result.conseils && result.conseils.length > 0) {
-    const conseilsHtml = result.conseils.map(c => `
-      <div class="clause-item warning">
-        <span class="clause-icon">💡</span>
-        <div>${c}</div>
-      </div>
-    `).join('');
+    var conseilsHtml = result.conseils.map(function(c) {
+      return '<div class="clause-item warning"><span class="clause-icon">💡</span><div>' + c + '</div></div>';
+    }).join('');
     addSection(sectionsEl, '💡', 'Nos conseils', conseilsHtml);
   }
 
-  // Droits clés
   if (result.droits_cles && result.droits_cles.length > 0) {
-    const droitsHtml = result.droits_cles.map(d => `
-      <div class="clause-item ok">
-        <span class="clause-icon">📌</span>
-        <div>${d}</div>
-      </div>
-    `).join('');
+    var droitsHtml = result.droits_cles.map(function(d) {
+      return '<div class="clause-item ok"><span class="clause-icon">📌</span><div>' + d + '</div></div>';
+    }).join('');
     addSection(sectionsEl, '📜', 'Tes droits essentiels', droitsHtml);
   }
 }
 
-function addSection(container, icon, title, bodyHtml, open = false) {
-  const section = document.createElement('div');
+function addSection(container, icon, title, bodyHtml, open) {
+  var section = document.createElement('div');
   section.className = 'result-section' + (open ? ' open' : '');
-  section.innerHTML = `
-    <div class="result-section-header" onclick="toggleSection(this.parentElement)">
-      <span class="result-section-icon">${icon}</span>
-      <span class="result-section-title">${title}</span>
-      <span class="result-section-toggle">▼</span>
-    </div>
-    <div class="result-section-body">${bodyHtml}</div>
-  `;
+  section.innerHTML = '<div class="result-section-header" onclick="this.parentElement.classList.toggle(\'open\')"><span>' + icon + '</span><span class="result-section-title">' + title + '</span><span class="result-section-toggle">▼</span></div><div class="result-section-body">' + bodyHtml + '</div>';
   container.appendChild(section);
 }
 
-function toggleSection(el) {
-  el.classList.toggle('open');
-}
-
-// ===== RESET =====
 function resetApp() {
   document.getElementById('results').classList.remove('visible');
   document.getElementById('formState').style.display = 'block';
   document.getElementById('bailText').value = '';
   document.getElementById('fileLoaded').classList.remove('visible');
   document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('fileInput').value = '';
   uploadedFileContent = null;
   document.getElementById('resultSections').innerHTML = '';
 }
