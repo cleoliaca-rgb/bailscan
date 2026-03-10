@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travaux dans votre logement : qui paye quoi ? — BailScan</title>
+<meta name="description" content="Réfrigérateur en panne, chaudière cassée, peinture écaillée — ce qui est à la charge du propriétaire et du locataire.">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --noir: #0d0d0d; --creme: #f5f0e8; --accent: #c84b2f; --accent2: #e8a87c; --vert: #2d6a4f; --vert-light: #e8f5ee; --rouge-light: #fdf0ed; --texte: #1a1a1a; --gris: #6b6b6b; --border: #d8d0c4; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); }
+  .logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  nav { display: flex; gap: 24px; align-items: center; }
+  nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; }
+  .btn-nav { background: var(--noir); color: var(--creme) !important; padding: 10px 22px; border-radius: 8px; font-weight: 500; }
+  .article-wrap { max-width: 720px; margin: 0 auto; padding: 120px 48px 80px; }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--gris); text-decoration: none; font-size: 0.85rem; margin-bottom: 40px; transition: color 0.2s; }
+  .back-link:hover { color: var(--accent); }
+  .article-tag { display: inline-block; background: var(--rouge-light); color: var(--accent); font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; letter-spacing: 0.05em; }
+  h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.15; letter-spacing: -0.03em; color: var(--noir); margin-bottom: 20px; }
+  .article-meta { font-size: 0.82rem; color: var(--gris); margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); display: flex; gap: 16px; }
+  h2 { font-family: 'Instrument Serif', serif; font-size: 1.5rem; color: var(--noir); margin: 40px 0 16px; }
+  h3 { font-size: 1rem; font-weight: 700; color: var(--noir); margin: 28px 0 10px; }
+  p { font-size: 0.95rem; line-height: 1.85; color: var(--texte); margin-bottom: 18px; }
+  ul, ol { padding-left: 24px; margin-bottom: 18px; }
+  ul li, ol li { font-size: 0.95rem; line-height: 1.85; margin-bottom: 8px; }
+  .highlight-box { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 24px 28px; margin: 28px 0; }
+  .highlight-box.danger { background: var(--rouge-light); border-color: rgba(200,75,47,0.3); }
+  .highlight-box.success { background: var(--vert-light); border-color: rgba(45,106,79,0.3); }
+  .highlight-box.warning { background: #fff8e1; border-color: rgba(245,158,11,0.3); }
+  .highlight-box strong { display: block; margin-bottom: 8px; font-size: 0.9rem; }
+  .highlight-box p { margin-bottom: 0; font-size: 0.9rem; }
+  .law-ref { font-size: 0.82rem; color: var(--accent); font-weight: 600; background: var(--rouge-light); padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+  .cta-box { background: var(--noir); border-radius: 16px; padding: 36px; text-align: center; margin: 48px 0; }
+  .cta-box h3 { color: white; margin-bottom: 10px; font-family: 'Instrument Serif', serif; font-size: 1.4rem; }
+  .cta-box p { color: rgba(255,255,255,0.6); margin-bottom: 20px; font-size: 0.88rem; }
+  .cta-btn { display: inline-block; background: var(--accent); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; }
+  .cta-btn:hover { background: #a83a20; }
+  .related { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); }
+  .related h3 { font-family: 'Instrument Serif', serif; font-size: 1.3rem; color: var(--noir); margin-bottom: 24px; }
+  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .related-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; transition: all 0.2s; }
+  .related-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .related-card h4 { font-size: 0.92rem; font-weight: 600; color: var(--noir); margin-bottom: 6px; line-height: 1.4; }
+  .related-card span { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
+  footer { padding: 40px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--gris); font-size: 0.82rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+  @media (max-width: 768px) { header { padding: 16px 20px; } nav a:not(.btn-nav) { display: none; } .article-wrap { padding: 100px 20px 60px; } .related-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 12px; text-align: center; } }
+</style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">Bail<span>Scan</span></a>
+  <nav>
+    <a href="/blog.html">Blog</a>
+    <a href="/" class="btn-nav">Analyser mon bail →</a>
+  </nav>
+</header>
+<div class="article-wrap">
+  <a href="/blog.html" class="back-link">← Retour au blog</a>
+  <span class="article-tag">Travaux</span>
+  <h1>Travaux dans votre logement : qui paye quoi ?</h1>
+  <div class="article-meta"><span>📅 Mars 2025</span><span>⏱ 6 min de lecture</span></div>
+  
+    <p>La question des travaux est l'une des sources de conflit les plus fréquentes entre locataires et propriétaires. La loi est pourtant claire : la répartition est précisément définie.</p>
+
+    <h2>La règle générale</h2>
+    <p>Le propriétaire est responsable des <strong>grosses réparations</strong> et des éléments qui rendent le logement décent et habitable. Le locataire est responsable de l'<strong>entretien courant</strong> et des petites réparations liées à l'usage normal. <span class="law-ref">Art. 6 et 7 loi 1989</span></p>
+
+    <h2>Ce qui est à la charge du propriétaire</h2>
+    <ul>
+      <li>Chaudière, radiateurs, système de chauffage central</li>
+      <li>Toiture, murs porteurs, planchers, fondations</li>
+      <li>Canalisations et installation électrique principale</li>
+      <li>Fenêtres et volets si dégradation structurelle</li>
+      <li>Ascenseur (maintenance et réparations importantes)</li>
+      <li>Tout ce qui touche à la décence du logement</li>
+    </ul>
+    <div class="highlight-box success"><strong>✅ Le logement doit être décent</strong><p>Votre propriétaire a l'obligation légale de vous fournir un logement décent et de le maintenir en état. Si la chaudière tombe en panne en hiver, il doit la réparer rapidement.</p></div>
+
+    <h2>Ce qui est à la charge du locataire</h2>
+    <p>Le décret du 26 août 1987 liste précisément les réparations locatives : <span class="law-ref">Décret 87-712 du 26/08/1987</span></p>
+    <ul>
+      <li>Entretien des robinets et remplacement des joints</li>
+      <li>Remplacement des ampoules et fusibles</li>
+      <li>Entretien de la chaudière individuelle (vidange annuelle)</li>
+      <li>Débouchage des canalisations</li>
+      <li>Entretien des sols et revêtements muraux (nettoyage)</li>
+      <li>Trous dans les murs (chevilles, clous)</li>
+      <li>Serrures et poignées de portes</li>
+    </ul>
+
+    <h2>Les cas ambigus</h2>
+    <h3>Le réfrigérateur tombe en panne</h3>
+    <p>Si l'électroménager était fourni par le propriétaire (logement meublé), la réparation ou le remplacement est à sa charge si la panne n'est pas due à un usage anormal.</p>
+    <h3>La peinture se dégrade</h3>
+    <p>L'usure normale de la peinture (jaunissement, petites écailles après plusieurs années) est à la charge du propriétaire. Seules les dégradations causées par le locataire (trous multiples, traces, salissures) peuvent être facturées.</p>
+    <div class="highlight-box warning"><strong>⚠️ Vétusté</strong><p>La grille de vétusté permet de calculer la dépréciation normale des éléments du logement avec le temps. Un parquet posé il y a 20 ans ne peut pas vous être facturé à neuf.</p></div>
+
+    <h2>Travaux urgents : que faire ?</h2>
+    <ol>
+      <li>Signalez le problème par écrit (email ou lettre recommandée) avec photos</li>
+      <li>Donnez un délai raisonnable (48h à 72h pour l'urgence)</li>
+      <li>Si absence de réaction, envoyez une mise en demeure</li>
+      <li>En cas d'urgence absolue (absence de chauffage en hiver), vous pouvez faire intervenir un professionnel et demander le remboursement</li>
+    </ol>
+    
+  <div class="cta-box">
+    <h3>Votre bail contient peut-être ces clauses</h3>
+    <p>Analysez-le gratuitement en 2 minutes avec BailScan</p>
+    <a href="/" class="cta-btn">Analyser mon bail gratuitement →</a>
+  </div>
+  <div class="related"><h3>Articles liés</h3><div class="related-grid">
+      <a href="/blog/logement-indecent.html" class="related-card"><h4>Logement indécent : vos droits face au propriétaire</h4><span>8 min →</span></a>
+      <a href="/blog/charges-locatives.html" class="related-card"><h4>Charges locatives : ce que le propriétaire peut facturer</h4><span>5 min →</span></a>
+    </div></div>
+</div>
+<footer>
+  <div>© 2025 BailScan</div>
+  <div style="display:flex;gap:20px;"><a href="/blog.html">Blog</a><a href="/legal.html">Mentions légales</a></div>
+</footer>
+</body>
+</html>
