@@ -64,42 +64,14 @@ function buildBailPrompt(context) {
     extra += `\nDépôt de garantie déclaré : ${depot}€. Maximum légal pour un logement ${bienType} : ${depotMax} mois de loyer hors charges. Vérifie.`;
   }
 
-  return `Analyse ce bail locatif français de manière exhaustive.${extra}
+  return `Analyse ce bail locatif français.${extra}
 
-Retourne UNIQUEMENT ce JSON :
+Réponds UNIQUEMENT avec un objet JSON valide, sans aucun texte avant ou après, sans balises markdown.
 
-{
-  "score": <0-100, 100=bail parfait>,
-  "verdict": "<Equitable|Risque|Abusif>",
-  "verdict_titre": "<titre court ex: '3 clauses illégales détectées'>",
-  "resume": "<2-3 phrases résumant les problèmes principaux ou confirmant la conformité>",
-  "loyer": {
-    "statut": "<ok|warning|danger>",
-    "analyse": "<explication sur l'encadrement des loyers pour cette ville : encadrée ou non, et analyse>",
-    "plafond": "<montant plafond légal estimé si zone encadrée, sinon null>",
-    "trop_percu": "<ex: '~45€/mois soit ~1 620€ sur 3 ans' si trop élevé, sinon null>"
-  },
-  "clauses_abusives": [
-    {
-      "type": "<danger|warning|ok>",
-      "titre": "<nom court de la clause>",
-      "description": "<problème ou conformité en 1-2 phrases simples>",
-      "explication_juridique": "<pour danger/warning : explication détaillée 5-8 phrases avec contexte légal. Pour ok : 1-2 phrases>",
-      "base_legale": ["<ex: Art. 22 loi du 6 juillet 1989>"],
-      "action": "<action concrète en 1 phrase>"
-    }
-  ],
-  "plan_action": [
-    "<étape 1 prioritaire avec délai recommandé>",
-    "<étape 2>",
-    "<étape 3>",
-    "<étape 4>",
-    "<étape 5>"
-  ]
-}
+Exemple de format attendu :
+{"score":75,"verdict":"Risque","verdict_titre":"2 clauses à corriger","resume":"Résumé court.","loyer":{"statut":"ok","analyse":"Non concerné par l'encadrement.","plafond":null,"trop_percu":null},"clauses_abusives":[{"type":"danger","titre":"Titre clause","description":"Description.","explication_juridique":"Explication légale.","base_legale":["Art. X loi 1989"],"action":"Action recommandée."}],"plan_action":["Étape 1","Étape 2","Étape 3"]}
 
-Inclus TOUTES les clauses analysées (conformes et illégales). Analyse minimum 6 clauses différentes.`;
-}
+Analyse 3 à 5 clauses réelles du document. JSON strict uniquement.`;
 
 function buildEtatDesLieuxPrompt(context) {
   const depot = context?.depot || 0;
@@ -255,14 +227,26 @@ export default async function handler(req, res) {
     const rawText = data.content?.[0]?.text || '';
     let parsed;
     try {
-      const clean = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      // Nettoyage agressif : extraire uniquement le JSON
+      let clean = rawText;
+      // Enlever les blocs markdown
+      clean = clean.replace(/```json
+?/g, '').replace(/```
+?/g, '');
+      // Extraire entre le premier { et le dernier }
+      const firstBrace = clean.indexOf('{');
+      const lastBrace = clean.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1) {
+        clean = clean.slice(firstBrace, lastBrace + 1);
+      }
+      clean = clean.trim();
       parsed = JSON.parse(clean);
     } catch (e) {
       console.error('JSON parse error:', rawText.slice(0, 500));
       return res.status(200).json({
         score: 50, verdict: 'Risque',
         verdict_titre: 'Analyse partielle — réessayez en collant le texte',
-        resume: "L'analyse a rencontré un problème. Essayez de coller le texte de votre bail manuellement.",
+        resume: "L'analyse a rencontré un problème de formatage. Essayez de coller le texte de votre bail manuellement dans l'onglet "Coller le texte".",
         loyer: null, clauses_abusives: [],
         plan_action: ['Réessayer en collant le texte du bail dans le champ texte']
       });
