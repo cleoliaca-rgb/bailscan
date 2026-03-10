@@ -1,1 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — BailScan, le guide du locataire français</title>
+<meta name="description" content="Conseils, droits et astuces pour les locataires français. Clauses abusives, encadrement des loyers, dépôt de garantie — tout ce que votre propriétaire préfère que vous ignoriez.">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #0d0d0d; --creme: #f5f0e8; --accent: #c84b2f; --accent2: #e8a87c;
+    --vert: #2d6a4f; --vert-light: #e8f5ee; --rouge-light: #fdf0ed;
+    --texte: #1a1a1a; --gris: #6b6b6b; --border: #d8d0c4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); }
+  .logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  nav { display: flex; gap: 32px; align-items: center; }
+  nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  nav a:hover { color: var(--noir); }
+  nav a.active { color: var(--noir); font-weight: 600; }
+  .btn-nav { background: var(--noir); color: var(--creme) !important; padding: 10px 22px; border-radius: 8px; font-weight: 500; }
+  .btn-nav:hover { background: var(--accent) !important; }
+
+  /* HERO BLOG */
+  .blog-hero { padding: 140px 48px 80px; max-width: 1100px; margin: 0 auto; }
+  .blog-hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--rouge-light); color: var(--accent); font-size: 0.8rem; font-weight: 600; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; border: 1px solid rgba(200,75,47,0.2); letter-spacing: 0.05em; text-transform: uppercase; }
+  .blog-hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--noir); margin-bottom: 20px; max-width: 700px; }
+  .blog-hero h1 em { font-style: italic; color: var(--accent); }
+  .blog-hero p { font-size: 1.05rem; color: var(--gris); max-width: 560px; line-height: 1.7; font-weight: 300; }
+
+  /* FEATURED ARTICLE */
+  .featured-wrap { max-width: 1100px; margin: 0 auto; padding: 0 48px 60px; }
+  .featured-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+
+  .featured-card {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    background: white; border-radius: 20px; border: 1px solid var(--border);
+    overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .featured-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
+  .featured-img { background: linear-gradient(135deg, #c84b2f 0%, #e8a87c 50%, #2d6a4f 100%); min-height: 320px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .featured-img-emoji { font-size: 6rem; opacity: 0.9; }
+  .featured-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,75,47,0.3), transparent); }
+  .featured-body { padding: 48px; display: flex; flex-direction: column; justify-content: center; }
+  .article-tag { display: inline-block; background: var(--rouge-light); color: var(--accent); font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.05em; }
+  .featured-body h2 { font-family: 'Instrument Serif', serif; font-size: 1.9rem; line-height: 1.2; letter-spacing: -0.02em; color: var(--noir); margin-bottom: 16px; }
+  .featured-body p { font-size: 0.92rem; color: var(--gris); line-height: 1.7; margin-bottom: 24px; }
+  .article-meta { font-size: 0.78rem; color: var(--gris); display: flex; align-items: center; gap: 12px; }
+  .article-meta::before { content: ''; width: 24px; height: 1px; background: var(--border); }
+  .read-more { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 600; font-size: 0.88rem; margin-top: 20px; }
+
+  /* ARTICLES GRID */
+  .articles-wrap { max-width: 1100px; margin: 0 auto; padding: 0 48px 80px; }
+  .articles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+  .article-card { background: white; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+  .article-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.08); }
+  .card-img { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; overflow: hidden; }
+  .card-img.red { background: linear-gradient(135deg, #fdf0ed, #f5e0d8); }
+  .card-img.green { background: linear-gradient(135deg, #e8f5ee, #d4edd9); }
+  .card-img.yellow { background: linear-gradient(135deg, #fff8e1, #fef0c0); }
+  .card-img.blue { background: linear-gradient(135deg, #e8f0fe, #d4e3fc); }
+  .card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+  .card-body h3 { font-family: 'Instrument Serif', serif; font-size: 1.15rem; line-height: 1.3; letter-spacing: -0.01em; color: var(--noir); margin-bottom: 10px; }
+  .card-body p { font-size: 0.84rem; color: var(--gris); line-height: 1.65; flex: 1; }
+  .card-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .card-date { font-size: 0.75rem; color: var(--gris); }
+  .card-read { font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+
+  /* NEWSLETTER */
+  .newsletter-wrap { max-width: 1100px; margin: 0 auto; padding: 0 48px 80px; }
+  .newsletter-box { background: var(--noir); border-radius: 20px; padding: 60px; display: flex; justify-content: space-between; align-items: center; gap: 48px; }
+  .newsletter-text h2 { font-family: 'Instrument Serif', serif; font-size: 2rem; color: white; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .newsletter-text p { color: rgba(255,255,255,0.6); font-size: 0.92rem; }
+  .newsletter-form { display: flex; gap: 12px; flex-shrink: 0; }
+  .newsletter-input { padding: 14px 20px; border: 1.5px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(255,255,255,0.08); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; width: 260px; outline: none; }
+  .newsletter-input::placeholder { color: rgba(255,255,255,0.4); }
+  .newsletter-input:focus { border-color: var(--accent2); }
+  .newsletter-btn { padding: 14px 24px; background: var(--accent); color: white; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+  .newsletter-btn:hover { background: #a83a20; }
+
+  footer { padding: 40px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--gris); font-size: 0.82rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    header { padding: 16px 20px; }
+    nav a:not(.btn-nav) { display: none; }
+    .blog-hero, .featured-wrap, .articles-wrap, .newsletter-wrap { padding-left: 20px; padding-right: 20px; }
+    .featured-card { grid-template-columns: 1fr; }
+    .featured-img { min-height: 200px; }
+    .featured-body { padding: 28px; }
+    .articles-grid { grid-template-columns: 1fr; }
+    .newsletter-box { flex-direction: column; padding: 36px 24px; }
+    .newsletter-form { flex-direction: column; width: 100%; }
+    .newsletter-input { width: 100%; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">Bail<span>Scan</span></a>
+  <nav>
+    <a href="/blog.html" class="active">Blog</a>
+    <a href="/legal.html">Mentions légales</a>
+    <a href="/" class="btn-nav">Analyser mon bail →</a>
+  </nav>
+</header>
+
+<div class="blog-hero">
+  <div class="blog-hero-tag">Le guide du locataire</div>
+  <h1>Tout ce que votre propriétaire préfère que vous <em>ignoriez</em></h1>
+  <p>Droits, clauses abusives, dépôt de garantie, encadrement des loyers — des articles concrets pour défendre vos intérêts.</p>
+</div>
+
+<!-- ARTICLE À LA UNE -->
+<div class="featured-wrap">
+  <div class="featured-label">À la une</div>
+  <a href="/blog/clauses-abusives-bail.html" class="featured-card">
+    <div class="featured-img"><span class="featured-img-emoji">⚖️</span></div>
+    <div class="featured-body">
+      <span class="article-tag">Clauses abusives</span>
+      <h2>Les 10 clauses illégales les plus courantes dans les baux français</h2>
+      <p>Interdiction d'animaux, caution solidaire abusive, travaux à la charge du locataire... Ces clauses sont dans des milliers de baux mais elles n'ont aucune valeur légale. Découvrez lesquelles et comment les contester.</p>
+      <div class="article-meta">8 min de lecture · Mars 2025</div>
+      <div class="read-more">Lire l'article →</div>
+    </div>
+  </a>
+</div>
+
+<!-- GRILLE D'ARTICLES -->
+<div class="articles-wrap">
+  <div class="articles-grid">
+
+    <a href="/blog/depot-garantie.html" class="article-card">
+      <div class="card-img green">💰</div>
+      <div class="card-body">
+        <span class="article-tag">Dépôt de garantie</span>
+        <h3>Dépôt de garantie : tout savoir pour récupérer votre argent</h3>
+        <p>Délais légaux, retenues abusives, intérêts de retard... Le propriétaire a des obligations précises. Voici comment les faire respecter.</p>
+      </div>
+      <div class="card-footer"><span class="card-date">Mars 2025</span><span class="card-read">6 min →</span></div>
+    </a>
+
+    <a href="/blog/encadrement-loyers.html" class="article-card">
+      <div class="card-img yellow">🏙️</div>
+      <div class="card-body">
+        <span class="article-tag">Loyer</span>
+        <h3>Encadrement des loyers : votre loyer est-il légal ?</h3>
+        <p>Paris, Lyon, Bordeaux, Montpellier... Dans les zones tendues, le loyer ne peut pas dépasser un plafond. Comment vérifier et demander une baisse.</p>
+      </div>
+      <div class="card-footer"><span class="card-date">Mars 2025</span><span class="card-read">7 min →</span></div>
+    </a>
+
+    <a href="/blog/preavis-locataire.html" class="article-card">
+      <div class="card-img red">📬</div>
+      <div class="card-body">
+        <span class="article-tag">Préavis</span>
+        <h3>Préavis de départ : quand peut-on partir en 1 mois ?</h3>
+        <p>Zone tendue, mutation professionnelle, perte d'emploi, problèmes de santé... Les cas où le préavis réduit à 1 mois s'applique et comment le justifier.</p>
+      </div>
+      <div class="card-footer"><span class="card-date">Mars 2025</span><span class="card-read">5 min →</span></div>
+    </a>
+
+    <a href="/blog/travaux-logement.html" class="article-card">
+      <div class="card-img blue">🔧</div>
+      <div class="card-body">
+        <span class="article-tag">Travaux</span>
+        <h3>Travaux dans votre logement : qui paye quoi ?</h3>
+        <p>Réfrigérateur en panne, chaudière cassée, peinture écaillée... La loi fixe précisément ce qui est à la charge du propriétaire et du locataire.</p>
+      </div>
+      <div class="card-footer"><span class="card-date">Mars 2025</span><span class="card-read">6 min →</span></div>
+    </a>
+
+    <a href="/blog/etat-des-lieux.html" class="article-card">
+      <div class="card-img green">📋</div>
+      <div class="card-body">
+        <span class="article-tag">État des lieux</span>
+        <h3>État des lieux : les erreurs qui coûtent cher à l'entrée et à la sortie</h3>
+        <p>Un état des lieux bâclé peut vous coûter des centaines d'euros. Ce qu'il faut absolument vérifier, noter et photographier pour vous protéger.</p>
+      </div>
+      <div class="card-footer"><span class="card-date">Mars 2025</span><span class="card-read">7 min →</span></div>
+    </a>
+
+    <a href="/blog/charges-locatives.html" class="article-card">
+      <div class="card-img yellow">🧾</div>
+      <div class="card-body">
+        <span class="article-tag">Charges</span>
+        <h3>Charges locatives : ce que le propriétaire peut (vraiment) vous facturer</h3>
+        <p>Eau froide, ascenseur, gardien, espaces verts... La liste des charges récupérables est strictement limitée par la loi. Ce que beaucoup de bailleurs ignorent.</p>
+      </div>
+      <div class="card-footer"><span class="card-date">Mars 2025</span><span class="card-read">5 min →</span></div>
+    </a>
+
+    <a href="/blog/logement-indecent.html" class="article-card">
+      <div class="card-img red">🏚️</div>
+      <div class="card-body">
+        <span class="article-tag">Logement décent</span>
+        <h3>Logement indécent : vos droits face à un propriétaire qui n'entretient pas</h3>
+        <p>Humidité, absence de chauffage, surface trop petite... Un logement indécent, c'est illégal. Les recours disponibles et comment les utiliser.</p>
+      </div>
+      <div class="card-footer"><span class="card-date">Mars 2025</span><span class="card-read">8 min →</span></div>
+    </a>
+
+    <a href="/blog/conge-proprietaire.html" class="article-card">
+      <div class="card-img blue">🔑</div>
+      <div class="card-body">
+        <span class="article-tag">Expulsion</span>
+        <h3>Congé donné par le propriétaire : quand peut-il vous mettre dehors ?</h3>
+        <p>Vente, reprise pour habiter, motif légitime et sérieux... Les conditions très strictes que doit respecter un propriétaire pour mettre fin à votre bail.</p>
+      </div>
+      <div class="card-footer"><span class="card-date">Mars 2025</span><span class="card-read">6 min →</span></div>
+    </a>
+
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter-wrap">
+  <div class="newsletter-box">
+    <div class="newsletter-text">
+      <h2>Restez informé de vos droits</h2>
+      <p>Un article par semaine sur la protection des locataires. Gratuit, sans spam.</p>
+    </div>
+    <div class="newsletter-form">
+      <input type="email" class="newsletter-input" placeholder="votre@email.fr">
+      <button class="newsletter-btn" onclick="subscribeNewsletter()">S'abonner</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>© 2025 BailScan — Le guide du locataire français</div>
+  <div style="display:flex;gap:20px;">
+    <a href="/">Analyser mon bail</a>
+    <a href="/legal.html">Mentions légales & CGV</a>
+  </div>
+</footer>
+
+<script>
+function subscribeNewsletter() {
+  var input = document.querySelector('.newsletter-input');
+  if (input.value && input.value.includes('@')) {
+    input.value = '';
+    input.placeholder = 'Merci ! Vous êtes inscrit.';
+    document.querySelector('.newsletter-btn').textContent = '✓ Inscrit';
+    document.querySelector('.newsletter-btn').style.background = '#2d6a4f';
+  } else {
+    input.style.borderColor = '#c84b2f';
+    input.placeholder = 'Entrez un email valide';
+  }
+}
+</script>
+</body>
+</html>
