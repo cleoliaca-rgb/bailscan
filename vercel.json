@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/analyze.js": {
-      "maxDuration": 30
+      "maxDuration": 60
     },
     "api/checkout.js": {
       "maxDuration": 10
@@ -9,13 +9,5 @@
     "api/webhook.js": {
       "maxDuration": 10
     }
-  },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "headers": {
-        "Access-Control-Allow-Origin": "*"
-      }
-    }
-  ]
+  }
 }
