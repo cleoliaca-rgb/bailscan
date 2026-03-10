@@ -151,7 +151,11 @@ module.exports = async function handler(req, res) {
 
     // LETTRES
     if (body.letter_mode) {
-      var sysPromptL = buildSystemPrompt(context);
+      var sysPromptL = "Tu es BailScan, expert juridique en droit locatif francais. "
+        + "Tu rediges des lettres officielles completes, professionnelles et prete a envoyer. "
+        + "IMPORTANT : reponds UNIQUEMENT avec le texte brut de la lettre. "
+        + "JAMAIS de JSON, JAMAIS d'accolades {}, JAMAIS de backticks, JAMAIS de cle 'lettre_lrar'. "
+        + "Commence directement par les coordonnees de l'expediteur (ex: [Prenom Nom]\\n[Adresse]...).";
       var promptL = buildLetterPrompt(body.letter_type, body.analysis_data, context);
       var dataL = await callAnthropic(
         [{ role: "user", content: promptL }],
