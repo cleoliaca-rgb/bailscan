@@ -41,11 +41,10 @@ Contexte du logement :
 - Loyer de base déclaré : ${loyerBase}
 - Dépôt de garantie déclaré : ${depot}
 
-RÈGLES ABSOLUES :
-1. Cite TOUJOURS les références légales exactes
-2. Pour chaque clause illégale, explique POURQUOI de façon claire et pédagogique
-3. Réponds UNIQUEMENT en JSON valide, sans markdown, sans texte autour
-4. Ne fais jamais de suppositions non fondées sur le document`;
+RÈGLES :
+1. Références légales exactes obligatoires
+2. JSON valide uniquement, sans markdown
+3. Sois concis`;
 }
 
 function buildBailPrompt(context) {
@@ -166,7 +165,7 @@ Exigences :
 Retourne la lettre en texte brut, prête à être copiée.`;
 }
 
-async function callAnthropic(messages, systemPrompt, maxTokens = 2500) {
+async function callAnthropic(messages, systemPrompt, maxTokens = 1500) {
   const response = await fetch(ANTHROPIC_API, {
     method: "POST",
     headers: {
@@ -249,7 +248,7 @@ export default async function handler(req, res) {
 
     const data = await callAnthropic(
       [{ role: "user", content: userContent }],
-      systemPrompt, 3000
+      systemPrompt, 1800
     );
 
     // Parse JSON
