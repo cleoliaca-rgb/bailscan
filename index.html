@@ -10,6 +10,10 @@
 <meta property="og:description" content="1 bail sur 3 contient une clause illégale. BailScan les détecte gratuitement par IA.">
 <meta property="og:image" content="https://bailscan.app/og-image.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BailScan","url":"https://bailscan.app","applicationCategory":"LegalService","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}</script>
+<!-- jsPDF pour export PDF côté client -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- docx.js pour export .docx côté client -->
+<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -298,6 +302,22 @@ select.form-input { cursor:pointer; }
 .modal-secure { font-size:0.75rem; color:var(--gris); text-align:center; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px; }
 
 /* RESET BTN */
+.encadrement-links { background:var(--vert-light); border:1.5px solid rgba(45,106,79,0.25); border-radius:12px; padding:16px 20px; margin:16px 0 0; }
+.encadrement-links-title { font-size:0.78rem; font-weight:700; color:var(--vert); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+.encadrement-links-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.encadrement-link { display:inline-flex; align-items:center; gap:5px; background:white; border:1px solid rgba(45,106,79,0.2); color:var(--vert); font-size:0.78rem; font-weight:600; padding:5px 12px; border-radius:6px; text-decoration:none; transition:all .2s; }
+.encadrement-link:hover { background:var(--vert); color:white; }
+.export-bar { display:flex; gap:10px; flex-wrap:wrap; margin:28px 0 0; padding:20px 24px; background:var(--creme); border-radius:14px; border:1px solid var(--border); align-items:center; }
+.export-bar-label { font-size:0.82rem; font-weight:700; color:var(--gris); margin-right:4px; }
+.btn-export { display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:8px; font-size:0.85rem; font-weight:700; cursor:pointer; border:none; transition:all .2s; }
+.btn-export-pdf { background:var(--accent); color:white; }
+.btn-export-pdf:hover { background:#a83a20; }
+.btn-export-docx { background:var(--noir); color:white; }
+.btn-export-docx:hover { background:#333; }
+.btn-export-docx:disabled, .btn-export-pdf:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-letter-dl { background:transparent; border:none; color:var(--vert); font-size:0.75rem; font-weight:600; cursor:pointer; padding:4px 8px; display:inline-flex; align-items:center; gap:4px; border-radius:4px; transition:all .2s; }
+.btn-letter-dl:hover { background:var(--vert-light); }
+.btn-letter-dl:disabled { opacity:0.4; cursor:not-allowed; }
 .btn-reset { background:transparent; border:1.5px solid var(--border); color:var(--gris); padding:10px 20px; border-radius:8px; font-size:0.85rem; font-weight:600; cursor:pointer; transition:all .2s; margin-top:40px; }
 .btn-reset:hover { border-color:var(--accent); color:var(--accent); }
 
@@ -392,6 +412,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   <a href="/" class="logo">Bail<span>Scan</span></a>
   <nav>
     <a href="/blog.html">Guide locataire</a>
+    <a href="/pro.html" style="color:var(--pro-accent,#3b6fd4);font-weight:600">Pour les agences ↗</a>
     <a href="#app" class="btn-nav">Analyser mon bail →</a>
   </nav>
 </header>
@@ -671,6 +692,15 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
 
     <!-- PAID CONTENT -->
     <div class="paid-section" id="paidSection">
+
+      <!-- BARRE EXPORT RAPPORT -->
+      <div class="export-bar">
+        <span class="export-bar-label">📥 Télécharger le rapport :</span>
+        <button class="btn-export btn-export-pdf" onclick="exportReportPDF(this)">
+          📄 Rapport PDF
+        </button>
+      </div>
+
       <div class="clauses-section" id="allClausesSection">
         <div class="clauses-title">Toutes les clauses <span id="clausesAllCount"></span></div>
         <div id="allClausesList"></div>
@@ -689,7 +719,10 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Lettre au propriétaire</div>
               <div class="letter-card-desc">Demande de modification / suppression des clauses illégales</div>
             </div>
-            <button class="btn-letter" onclick="generateLetter('proprio', this)">Générer →</button>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn-letter" onclick="generateLetter('proprio', this)">Générer →</button>
+              <button class="btn-letter-dl" id="dl-proprio" onclick="downloadLetterDocx('proprio')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
+            </div>
           </div>
           <div id="letter-proprio-content" class="letter-content"></div>
           <div class="letter-card">
@@ -697,7 +730,10 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Lettre à l'agence immobilière</div>
               <div class="letter-card-desc">Si l'agence gère le bien et refuse d'intervenir</div>
             </div>
-            <button class="btn-letter" onclick="generateLetter('agence', this)">Générer →</button>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn-letter" onclick="generateLetter('agence', this)">Générer →</button>
+              <button class="btn-letter-dl" id="dl-agence" onclick="downloadLetterDocx('agence')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
+            </div>
           </div>
           <div id="letter-agence-content" class="letter-content"></div>
           <div class="letter-card">
@@ -705,7 +741,10 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Mise en demeure</div>
               <div class="letter-card-desc">Courrier formel avant saisine de la conciliation</div>
             </div>
-            <button class="btn-letter" onclick="generateLetter('miseendemeure', this)">Générer →</button>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn-letter" onclick="generateLetter('miseendemeure', this)">Générer →</button>
+              <button class="btn-letter-dl" id="dl-miseendemeure" onclick="downloadLetterDocx('miseendemeure')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
+            </div>
           </div>
           <div id="letter-miseendemeure-content" class="letter-content"></div>
           <div class="letter-card">
@@ -713,7 +752,10 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Demande de remboursement (loyer)</div>
               <div class="letter-card-desc">Si l'encadrement des loyers n'est pas respecté</div>
             </div>
-            <button class="btn-letter" onclick="generateLetter('remboursement', this)">Générer →</button>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn-letter" onclick="generateLetter('remboursement', this)">Générer →</button>
+              <button class="btn-letter-dl" id="dl-remboursement" onclick="downloadLetterDocx('remboursement')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
+            </div>
           </div>
           <div id="letter-remboursement-content" class="letter-content"></div>
           <div class="letter-card">
@@ -721,7 +763,10 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Saisine Commission de Conciliation</div>
               <div class="letter-card-desc">Si le dialogue avec le propriétaire échoue</div>
             </div>
-            <button class="btn-letter" onclick="generateLetter('conciliation', this)">Générer →</button>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn-letter" onclick="generateLetter('conciliation', this)">Générer →</button>
+              <button class="btn-letter-dl" id="dl-conciliation" onclick="downloadLetterDocx('conciliation')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
+            </div>
           </div>
           <div id="letter-conciliation-content" class="letter-content"></div>
         </div>
@@ -789,11 +834,11 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   <div class="footer-links">
     <a href="/blog.html">Guide locataire</a>
     <a href="/legal.html">Mentions légales & CGV</a>
-    <a href="mailto:contact@bailscan.app">Contact</a>
+    <a href="/cdn-cgi/l/email-protection#187b77766c797b6c587a7971746b7b797636796868">Contact</a>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
@@ -1019,28 +1064,59 @@ function launchAnalysis() {
     depot: parseFloat(document.getElementById('depot').value) || 0,
   };
 
-  var payload;
+  // Si PDF : vérifier la taille AVANT d'envoyer (évite l'erreur Vercel 413)
   if (appState.uploadMode === 'upload') {
-    payload = JSON.stringify({ pdf: appState.pdfBase64, context: contextInfo });
+    var sizeKB = (appState.pdfBase64.length * 0.75) / 1024;
+    if (sizeKB > 3500) {
+      hideLoading();
+      alert('Votre PDF est trop volumineux (' + Math.round(sizeKB/1024*10)/10 + ' Mo).\n\nAstuce : ouvrez votre bail, sélectionnez tout le texte (Ctrl+A), copiez (Ctrl+C), puis collez-le dans l\'onglet "Coller le texte" pour contourner cette limite.');
+      return;
+    }
+    sendAnalysis({ pdf: appState.pdfBase64, context: contextInfo });
   } else {
-    payload = JSON.stringify({ text: textContent, context: contextInfo });
+    sendAnalysis({ text: textContent, context: contextInfo });
   }
+}
 
+function sendAnalysis(payload) {
   fetch('/api/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: payload
+    body: JSON.stringify(payload)
   })
-  .then(function(r) { return r.json(); })
+  .then(function(r) {
+    // Intercepter les erreurs HTTP avant de parser le JSON
+    if (!r.ok) {
+      if (r.status === 413) {
+        throw new Error('PDF trop volumineux. Utilisez l\'onglet "Coller le texte" à la place.');
+      }
+      throw new Error('Erreur serveur (' + r.status + '). Réessayez ou collez le texte manuellement.');
+    }
+    return r.text(); // text() d'abord pour éviter l'erreur JSON
+  })
+  .then(function(text) {
+    try {
+      return JSON.parse(text);
+    } catch(e) {
+      // Si Vercel retourne du HTML d'erreur
+      if (text.includes('Request Entity') || text.includes('413')) {
+        throw new Error('PDF trop volumineux. Utilisez l\'onglet "Coller le texte" à la place.');
+      }
+      throw new Error('Réponse invalide du serveur. Réessayez ou collez le texte manuellement.');
+    }
+  })
   .then(function(data) {
     hideLoading();
-    if (data.error) { alert('Erreur: ' + data.error); return; }
+    if (data.error) {
+      alert('Erreur : ' + data.error);
+      return;
+    }
     analysisResult = data;
     displayResults(data);
   })
   .catch(function(err) {
     hideLoading();
-    alert('Erreur lors de l\'analyse : ' + err.message);
+    alert(err.message);
   });
 }
 
@@ -1115,10 +1191,46 @@ function displayResults(data) {
   document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
 }
 
+// Liens simulateurs officiels encadrement des loyers par ville
+var SIMULATEURS = {
+  'paris': { label: 'Paris — Simulateur DRIHL', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'lyon': { label: 'Lyon — Simulateur officiel', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'villeurbanne': { label: 'Villeurbanne — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'bordeaux': { label: 'Bordeaux — Simulateur officiel', url: 'https://www.bordeaux.fr/p202052/encadrement-des-loyers' },
+  'montpellier': { label: 'Montpellier — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'grenoble': { label: 'Grenoble — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'lille': { label: 'Lille — Simulateur DDTM', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'roubaix': { label: 'Roubaix — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'tourcoing': { label: 'Tourcoing — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'nanterre': { label: 'Nanterre — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'montreuil': { label: 'Montreuil — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'saint-denis': { label: 'Saint-Denis — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'bobigny': { label: 'Bobigny — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'creteil': { label: 'Créteil — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'aubervilliers': { label: 'Aubervilliers — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+};
+
+function getSimulateurLinks(ville) {
+  if (!ville) return [];
+  var v = ville.toLowerCase();
+  var links = [];
+  // Toujours proposer le simulateur national
+  links.push({ label: '🔍 Vérifier mon loyer — Simulateur national', url: 'https://www.encadrementdesloyers.gouv.fr/', primary: true });
+  // Lien spécifique si dispo
+  for (var key in SIMULATEURS) {
+    if (v.includes(key) && key !== '') {
+      links.push({ label: SIMULATEURS[key].label, url: SIMULATEURS[key].url });
+    }
+  }
+  // Lien ADIL toujours utile
+  links.push({ label: '📞 Contacter l'ADIL de mon département', url: 'https://www.anil.org/lanil-et-les-adil/votre-adil/' });
+  return links;
+}
+
 function renderLoyerCheck(data) {
   var el = document.getElementById('loyerCheckResult');
-  if (!data.loyer || !appState.loyerBase) { el.innerHTML = ''; return; }
-  var loy = data.loyer;
+  if (!data.loyer && !appState.loyerBase) { el.innerHTML = ''; return; }
+  var loy = data.loyer || { statut: 'ok', analyse: 'Aucune information de loyer fournie.' };
   var cls = loy.statut === 'danger' ? 'danger' : loy.statut === 'warning' ? 'warning' : 'ok';
   var icons = { danger: '🚨', warning: '⚠️', ok: '✅' };
   var html = '<div class="loyer-check ' + cls + '">';
@@ -1127,9 +1239,20 @@ function renderLoyerCheck(data) {
   if (appState.loyerBase) {
     html += '<div class="loyer-check-amounts">';
     html += '<div class="amount-pill"><div class="amount-pill-label">Loyer déclaré</div><div class="amount-pill-val">' + appState.loyerBase + ' €/mois</div></div>';
-    if (loy.plafond) html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal</div><div class="amount-pill-val">' + loy.plafond + ' €/mois</div></div>';
+    if (loy.plafond) html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal estimé</div><div class="amount-pill-val">' + loy.plafond + ' €/mois</div></div>';
     if (loy.trop_percu) html += '<div class="amount-pill"><div class="amount-pill-label">Trop-perçu estimé</div><div class="amount-pill-val" style="color:var(--accent)">' + loy.trop_percu + '</div></div>';
     html += '</div>';
+  }
+  // Liens simulateurs officiels
+  var simLinks = getSimulateurLinks(appState.ville || document.getElementById('ville').value);
+  if (simLinks.length > 0) {
+    html += '<div class="encadrement-links">';
+    html += '<div class="encadrement-links-title">🔗 Vérifiez sur les simulateurs officiels</div>';
+    html += '<div class="encadrement-links-grid">';
+    simLinks.forEach(function(l) {
+      html += '<a href="' + l.url + '" target="_blank" rel="noopener" class="encadrement-link' + (l.primary ? '" style="background:var(--vert);color:white' : '') + '">' + l.label + ' ↗</a>';
+    });
+    html += '</div></div>';
   }
   html += '</div>';
   el.innerHTML = html;
@@ -1266,6 +1389,9 @@ function generateLetter(type, btn) {
     btn.textContent = '↑ Masquer'; btn.classList.remove('loading'); btn.disabled = false;
     contentEl.textContent = data.letter || 'Erreur de génération';
     contentEl.style.display = 'block';
+    // Activer le bouton .docx
+    var dlBtn = document.getElementById('dl-' + type);
+    if (dlBtn) { dlBtn.disabled = false; dlBtn.title = 'Télécharger en .docx'; }
     var copyId = 'copy-' + type;
     if (!document.getElementById(copyId)) {
       var copyBtn = document.createElement('button');
@@ -1298,11 +1424,4 @@ function resetApp() {
   document.getElementById('typeSelectorBlock').style.display = 'grid';
   document.getElementById('paidSection').style.display = 'none';
   document.getElementById('paywallSection').style.display = 'block';
-  goStep(1);
-  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-}
-
-// Blog carousel (si section blog en bas)
-</script>
-</body>
-</html>
+  goSt
