@@ -191,7 +191,7 @@ select.form-input { cursor:pointer; }
 .results-subtitle { font-size:0.88rem; color:var(--gris); margin-top:4px; }
 
 /* SCORE */
-.score-card { background:var(--noir); border-radius:20px; padding:32px; display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center; margin-bottom:28px; position:relative; overflow:hidden; }
+.score-card { background:var(--noir); border-radius:20px; padding:28px; display:grid; grid-template-columns:auto 1fr; gap:28px; align-items:center; margin-bottom:16px; position:relative; overflow:hidden; }
 .score-card::before { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; background:radial-gradient(circle, rgba(200,75,47,0.15) 0%, transparent 65%); }
 .score-circle { width:100px; height:100px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; border:4px solid rgba(255,255,255,0.1); position:relative; flex-shrink:0; }
 .score-num { font-family:'Instrument Serif',serif; font-size:2.8rem; font-weight:400; line-height:1; }
@@ -205,7 +205,7 @@ select.form-input { cursor:pointer; }
 .verdict-danger { background:rgba(200,75,47,0.15); color:#e8806b; border:1px solid rgba(200,75,47,0.25); }
 
 /* LOYER CHECK CARD */
-.loyer-check { background:white; border:1.5px solid var(--border); border-radius:16px; padding:24px 28px; margin-bottom:20px; }
+.loyer-check { background:white; border:1.5px solid var(--border); border-radius:16px; padding:20px 24px; margin-bottom:12px; }
 .loyer-check.danger { border-color:rgba(200,75,47,0.3); background:var(--rouge-light); }
 .loyer-check.warning { border-color:rgba(245,158,11,0.3); background:var(--warning-light); }
 .loyer-check.ok { border-color:rgba(45,106,79,0.3); background:var(--vert-light); }
@@ -250,8 +250,8 @@ select.form-input { cursor:pointer; }
 .clause-action::before { content:'→'; }
 
 /* PAYWALL */
-.paywall-section { background:white; border:1.5px dashed var(--border); border-radius:20px; padding:40px; text-align:center; margin:32px 0; position:relative; overflow:hidden; }
-.paywall-blur { filter:blur(5px); pointer-events:none; margin-bottom:24px; opacity:0.5; }
+.paywall-section { background:white; border:1.5px dashed var(--border); border-radius:20px; padding:28px 24px; text-align:center; margin:16px 0; position:relative; overflow:hidden; }
+.paywall-blur { display:none; }
 .paywall-overlay { }
 .paywall-icon { font-size:2.4rem; margin-bottom:16px; }
 .paywall-title { font-family:'Instrument Serif',serif; font-size:1.8rem; color:var(--noir); margin-bottom:10px; }
@@ -534,17 +534,17 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
       <div class="panel-sub">Nous vérifierons si votre loyer respecte l’encadrement légal</div>
       <div class="form-grid cols3">
         <div class="form-group">
-          <label for="loyer_base">Loyer de base (€/mois)</label>
-          <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 800" min="0" oninput="calcLoyerTotal()">
+          <label for="loyer_base">Loyer hors charges (€/mois) <span style="font-size:0.75rem;color:var(--gris);font-weight:400">— montant sur votre quittance</span></label>
+          <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1007" min="0" oninput="calcLoyerTotal()">
         </div>
         <div class="form-group">
-          <label for="loyer_majore">Loyer majoré (€/mois)</label>
-          <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 50" min="0" oninput="calcLoyerTotal()">
+          <label for="loyer_majore">Loyer de référence majoré (€/mois) <span style="font-size:0.75rem;color:var(--gris);font-weight:400">— indiqué dans le bail si zone encadrée</span></label>
+          <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal()">
           <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Complément pour caractéristiques exceptionnelles</small>
         </div>
         <div class="form-group">
-          <label for="complement_loyer">Complément de loyer (€)</label>
-          <input type="number" id="complement_loyer" class="form-input" placeholder="Ex : 0" min="0" oninput="calcLoyerTotal()">
+          <label for="complement_loyer">Complément de loyer (€) <span style="font-size:0.75rem;color:var(--gris);font-weight:400">— si mentionné dans le bail</span></label>
+          <input type="number" id="complement_loyer" class="form-input" placeholder="Ex : 462" min="0" oninput="calcLoyerTotal()">
           <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Si zone encadrée uniquement</small>
         </div>
       </div>
@@ -634,7 +634,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
 </section>
 
 <!-- RESULTS -->
-<section class="results-section" id="resultsSection">
+<section class="results-section" id="resultsSection" style="padding-top:24px">
   <div class="results-inner">
     <div class="results-header">
       <div>
@@ -1117,6 +1117,9 @@ function sendAnalysis(payload) {
       if (r.status === 413) {
         throw new Error('PDF trop volumineux. Utilisez l\'onglet "Coller le texte" à la place.');
       }
+      if (r.status === 504 || r.status === 503) {
+        throw new Error('L\'analyse a pris trop de temps (timeout serveur).\n\nAstuce : collez le texte de votre bail dans l\'onglet "Coller le texte" — c\'est plus rapide que le PDF.');
+      }
       throw new Error('Erreur serveur (' + r.status + '). Réessayez ou collez le texte manuellement.');
     }
     return r.text(); // text() d'abord pour éviter l'erreur JSON
@@ -1220,21 +1223,21 @@ function displayResults(data) {
 
 // Liens simulateurs officiels encadrement des loyers par ville
 var SIMULATEURS = {
-  'paris': { label: 'Paris — Simulateur DRIHL', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'lyon': { label: 'Lyon — Simulateur officiel', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'villeurbanne': { label: 'Villeurbanne — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'bordeaux': { label: 'Bordeaux — Simulateur officiel', url: 'https://www.bordeaux.fr/p202052/encadrement-des-loyers' },
-  'montpellier': { label: 'Montpellier — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'grenoble': { label: 'Grenoble — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'lille': { label: 'Lille — Simulateur DDTM', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'roubaix': { label: 'Roubaix — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'tourcoing': { label: 'Tourcoing — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'nanterre': { label: 'Nanterre — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'montreuil': { label: 'Montreuil — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'saint-denis': { label: 'Saint-Denis — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'bobigny': { label: 'Bobigny — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'creteil': { label: 'Créteil — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
-  'aubervilliers': { label: 'Aubervilliers — Simulateur', url: 'https://www.encadrementdesloyers.gouv.fr/' },
+  'paris': { label: 'Paris — Simulateur DRIHL', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'lyon': { label: 'Lyon — Simulateur officiel', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'villeurbanne': { label: 'Villeurbanne — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'bordeaux': { label: 'Bordeaux — Simulateur officiel', url: 'https://www.bordeaux-metropole.fr/Nos-projets/Habitat-Logement/Encadrement-des-loyers' },
+  'montpellier': { label: 'Montpellier — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'grenoble': { label: 'Grenoble — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'lille': { label: 'Lille — Simulateur DDTM', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'roubaix': { label: 'Roubaix — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'tourcoing': { label: 'Tourcoing — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'nanterre': { label: 'Nanterre — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'montreuil': { label: 'Montreuil — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'saint-denis': { label: 'Saint-Denis — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'bobigny': { label: 'Bobigny — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'creteil': { label: 'Créteil — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'aubervilliers': { label: 'Aubervilliers — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
 };
 
 function getSimulateurLinks(ville) {
@@ -1242,7 +1245,7 @@ function getSimulateurLinks(ville) {
   var v = ville.toLowerCase();
   var links = [];
   // Toujours proposer le simulateur national
-  links.push({ label: '🔍 Vérifier mon loyer — Simulateur national', url: 'https://www.encadrementdesloyers.gouv.fr/', primary: true });
+  links.push({ label: '🔍 Simulateur officiel service-public.fr', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers', primary: true });
   // Lien spécifique si dispo
   for (var key in SIMULATEURS) {
     if (v.includes(key) && key !== '') {
@@ -1260,12 +1263,16 @@ function renderLoyerCheck(data) {
   var loy = data.loyer || { statut: 'ok', analyse: 'Aucune information de loyer fournie.' };
   var cls = loy.statut === 'danger' ? 'danger' : loy.statut === 'warning' ? 'warning' : 'ok';
   var icons = { danger: '🚨', warning: '⚠️', ok: '✅' };
+  var icon = icons[loy.statut] || '🔍';
   var html = '<div class="loyer-check ' + cls + '">';
-  html += '<div class="loyer-check-header"><div class="loyer-check-icon">' + icons[loy.statut] + '</div><div class="loyer-check-title">Vérification encadrement des loyers</div></div>';
+  html += '<div class="loyer-check-header"><div class="loyer-check-icon">' + icon + '</div><div class="loyer-check-title">Vérification encadrement des loyers</div></div>';
   html += '<div class="loyer-check-text">' + (loy.analyse || '') + '</div>';
-  if (appState.loyerBase) {
+  var totalLoyer = (appState.loyerBase || 0) + (appState.loyerMajore || 0) + (appState.complementLoyer || 0);
+  if (totalLoyer > 0 || loy.plafond) {
     html += '<div class="loyer-check-amounts">';
-    html += '<div class="amount-pill"><div class="amount-pill-label">Loyer déclaré</div><div class="amount-pill-val">' + appState.loyerBase + ' €/mois</div></div>';
+    if (appState.loyerBase > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer hors charges</div><div class="amount-pill-val">' + appState.loyerBase + ' €/mois</div></div>';
+    if (appState.loyerMajore > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer ref. majoré</div><div class="amount-pill-val">' + appState.loyerMajore + ' €/mois</div></div>';
+    if (appState.complementLoyer > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Complément de loyer</div><div class="amount-pill-val">' + appState.complementLoyer + ' €</div></div>';
     if (loy.plafond) html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal estimé</div><div class="amount-pill-val">' + loy.plafond + ' €/mois</div></div>';
     if (loy.trop_percu) html += '<div class="amount-pill"><div class="amount-pill-label">Trop-perçu estimé</div><div class="amount-pill-val" style="color:var(--accent)">' + loy.trop_percu + '</div></div>';
     html += '</div>';
