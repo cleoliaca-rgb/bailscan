@@ -32,9 +32,11 @@ nav a { color:var(--gris); text-decoration:none; font-size:0.9rem; transition:co
 nav a:hover { color:var(--accent); }
 .btn-nav { background:var(--noir); color:var(--creme) !important; padding:10px 22px; border-radius:8px; font-weight:600; }
 .btn-nav:hover { background:var(--accent) !important; }
+.nav-agences { font-size:0.85rem !important; color:var(--gris) !important; }
+.nav-agences:hover { color:var(--accent) !important; }
 
 /* ── HERO ── */
-.hero { min-height:100vh; display:flex; align-items:center; padding:120px 48px 80px; position:relative; overflow:hidden; }
+.hero { display:flex; align-items:center; padding:110px 48px 60px; position:relative; overflow:hidden; }
 .hero-bg { position:absolute; top:-100px; right:-80px; width:700px; height:700px; background:radial-gradient(circle, rgba(200,75,47,0.1) 0%, transparent 65%); pointer-events:none; }
 .hero-bg2 { position:absolute; bottom:-80px; left:-60px; width:500px; height:500px; background:radial-gradient(circle, rgba(45,106,79,0.08) 0%, transparent 65%); pointer-events:none; }
 .hero-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; width:100%; position:relative; z-index:1; }
@@ -49,7 +51,7 @@ h1 em { font-style:italic; color:var(--accent); }
 .btn-primary:hover { background:#a83a20; transform:translateY(-1px); }
 .btn-secondary { background:transparent; color:var(--noir); padding:14px 24px; border-radius:10px; font-weight:600; font-size:1rem; text-decoration:none; border:1.5px solid var(--border); transition:all .2s; cursor:pointer; }
 .btn-secondary:hover { border-color:var(--noir); }
-.hero-stats { display:flex; gap:32px; margin-top:48px; padding-top:40px; border-top:1px solid var(--border); }
+.hero-stats { display:flex; gap:32px; margin-top:32px; padding-top:28px; border-top:1px solid var(--border); }
 .stat { }
 .stat-n { font-family:'Instrument Serif',serif; font-size:2.2rem; color:var(--noir); }
 .stat-l { font-size:0.78rem; color:var(--gris); margin-top:2px; line-height:1.4; }
@@ -65,10 +67,10 @@ h1 em { font-style:italic; color:var(--accent); }
 .feature-badge { margin-left:auto; background:var(--accent); color:white; font-size:0.62rem; font-weight:700; padding:3px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; }
 
 /* ── WIZARD SECTION ── */
-#app { padding:80px 48px; background:white; }
+#app { padding:56px 48px 72px; background:white; }
 .app-inner { max-width:820px; margin:0 auto; }
 .app-title { font-family:'Instrument Serif',serif; font-size:2.4rem; letter-spacing:-0.03em; color:var(--noir); margin-bottom:8px; }
-.app-sub { font-size:0.95rem; color:var(--gris); margin-bottom:48px; }
+.app-sub { font-size:0.95rem; color:var(--gris); margin-bottom:32px; }
 
 /* TYPE SELECTOR */
 .type-selector { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:40px; }
@@ -460,7 +462,7 @@ select.form-input { cursor:pointer; }
   <a href="/" class="logo">Bail<span>Scan</span></a>
   <nav>
     <a href="/blog.html">Guide locataire</a>
-    <a href="/pro.html">Espace pro</a>
+    <a href="/pro.html" class="nav-agences">Pour les agences →</a>
     <a href="#app" class="btn-nav">Analyser mon bail →</a>
   </nav>
 </header>
