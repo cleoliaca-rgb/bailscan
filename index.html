@@ -324,17 +324,18 @@ select.form-input { cursor:pointer; }
 .faq-item.open .faq-toggle { transform:rotate(45deg); }
 
 /* FOOTER */
-footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--creme); }
+/* footer style remplacé par .footer-seo */
 .footer-logo { font-family:'Instrument Serif',serif; font-size:1.3rem; color:var(--noir); }
-.footer-logo span { color:var(--accent); }
-.footer-links { display:flex; gap:24px; }
+/* footer-logo span remplacé */
+/* footer-links remplacé */
 .footer-links a { color:var(--gris); text-decoration:none; font-size:0.82rem; transition:color .2s; }
-.footer-links a:hover { color:var(--accent); }
+/* footer-links a hover remplacé */
 
 /* RESPONSIVE */
 @media(max-width:768px) {
   header { padding:16px 20px; }
-  nav a:not(.btn-nav) { display:none; }
+  nav a:not(.btn-nav):not([href="/pro.html"]) { display:none; }
+  nav a[href="/pro.html"] { font-size:0.78rem; padding:6px 12px; border:1px solid var(--border); border-radius:6px; }
   .hero { padding:100px 20px 60px; }
   .hero-inner { grid-template-columns:1fr; gap:40px; }
   .hero-card { display:none; }
@@ -394,6 +395,28 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   .pro-home { padding:40px 20px; }
   .pro-home-inner { flex-direction:column; }
 }
+
+/* Footer SEO */
+.footer-seo { background:var(--noir); color:rgba(255,255,255,0.7); border-top:none; padding:0; flex-direction:column; align-items:stretch; }
+.footer-inner { max-width:1100px; margin:0 auto; padding:52px 48px 28px; width:100%; box-sizing:border-box; }
+.footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+.footer-brand .footer-logo { font-family:'Instrument Serif',serif; font-size:1.6rem; color:white; margin-bottom:8px; }
+.footer-brand /* footer-logo span remplacé */
+.footer-tagline { font-size:0.85rem; color:rgba(255,255,255,0.55); margin-bottom:6px; }
+.footer-copy { font-size:0.78rem; color:rgba(255,255,255,0.35); margin-top:20px; }
+.footer-col { display:flex; flex-direction:column; gap:10px; }
+.footer-col-title { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.4); margin-bottom:4px; }
+.footer-col a { color:rgba(255,255,255,0.65); text-decoration:none; font-size:0.84rem; transition:color .2s; }
+.footer-col a:hover { color:white; }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.1); padding-top:20px; font-size:0.75rem; color:rgba(255,255,255,0.3); text-align:center; }
+
+@media(max-width:768px){
+  .footer-top { grid-template-columns:1fr 1fr; gap:28px; }
+  .footer-inner { padding:40px 20px 24px; }
+}
+@media(max-width:480px){
+  .footer-top { grid-template-columns:1fr; }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -437,6 +460,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   <a href="/" class="logo">Bail<span>Scan</span></a>
   <nav>
     <a href="/blog.html">Guide locataire</a>
+    <a href="/pro.html">Espace pro</a>
     <a href="#app" class="btn-nav">Analyser mon bail →</a>
   </nav>
 </header>
@@ -804,55 +828,10 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
 </section>
 
 <!-- SOCIAL PROOF -->
-<section class="social-proof">
-  <div class="sp-inner">
-    <h2 class="sp-title">Ils ont récupéré leur argent grâce à BailScan</h2>
-    <div class="sp-grid">
-      <div class="sp-card">
-        <div class="sp-stars">★★★★★</div>
-        <div class="sp-text">Mon bail interdisait les animaux ET demandait 2 mois de dépôt. BailScan a tout détecté en 2 minutes avec les références légales exactes. J'ai envoyé la lettre générée et mon propriétaire a cédé.</div>
-        <div class="sp-author">Marie L., locataire à Lyon · <span class="sp-amount">860€ récupérés</span></div>
-      </div>
-      <div class="sp-card">
-        <div class="sp-stars">★★★★★</div>
-        <div class="sp-text">L'outil a détecté que mon loyer dépassait le plafond d'encadrement parisien. Avec le calcul de trop-perçu et la lettre, j'ai obtenu 1 200€ de remboursement sur 3 ans.</div>
-        <div class="sp-author">Thomas B., locataire à Paris · <span class="sp-amount">1 200€ récupérés</span></div>
-      </div>
-      <div class="sp-card">
-        <div class="sp-stars">★★★★★</div>
-        <div class="sp-text">Je savais pas que les explications juridiques étaient aussi claires. Mon propriétaire m'avait retenu 400€ sur mon dépôt pour de l'usure normale. J'ai tout récupéré grâce à la mise en demeure.</div>
-        <div class="sp-author">Sophie M., locataire à Bordeaux · <span class="sp-amount">400€ récupérés</span></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- FAQ -->
-<section class="faq">
-  <div class="faq-inner">
-    <h2 class="faq-title">Questions fréquentes</h2>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">BailScan est-il vraiment gratuit ? <span class="faq-toggle">+</span></div>
-      <div class="faq-answer">L'analyse de base est 100% gratuite : score de bail, verdict, résumé et détection des 2 premières clauses abusives. L'analyse complète (toutes les clauses avec explications juridiques, plan d'action, 5 lettres) est à 9€ en paiement unique.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">Mes données sont-elles sécurisées ? <span class="faq-toggle">+</span></div>
-      <div class="faq-answer">Votre bail n'est jamais stocké sur nos serveurs. L'analyse est réalisée en temps réel et les données sont immédiatement supprimées après traitement. BailScan ne conserve aucune donnée personnelle sans votre consentement explicite.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">Quelle est la fiabilité de l'analyse ? <span class="faq-toggle">+</span></div>
-      <div class="faq-answer">BailScan applique la loi du 6 juillet 1989, la loi ALUR (2014) et la loi ELAN (2018). Chaque clause détectée est accompagnée de sa référence légale exacte. BailScan est un outil d'aide — pour les litiges complexes, consultez un juriste ou l'ADIL de votre département.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">L'encadrement des loyers est-il vérifié automatiquement ? <span class="faq-toggle">+</span></div>
-      <div class="faq-answer">Oui. Dès que vous renseignez votre ville et votre loyer, BailScan vérifie si vous êtes dans une zone d'encadrement (Paris, Lyon, Bordeaux, Montpellier, Grenoble, etc.) et compare votre loyer au loyer de référence majoré. Le calcul du trop-perçu éventuel est inclus dans l'analyse complète.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">Que faire si mon propriétaire refuse de corriger les clauses illégales ? <span class="faq-toggle">+</span></div>
-      <div class="faq-answer">BailScan génère une lettre de mise en demeure puis un dossier de saisine pour la Commission Départementale de Conciliation (CDC). Cette procédure est gratuite et sans avocat. En cas d'échec, le tribunal judiciaire peut condamner le propriétaire au remboursement + dommages et intérêts.</div>
-    </div>
-  </div>
-</section>
+
+
+
 
 <!-- BLOG HOME -->
 <section class="blog-home">
@@ -916,17 +895,93 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   </div>
 </section>
 
+<section class="social-proof">
+  <div class="sp-inner">
+    <h2 class="sp-title">Ils ont récupéré leur argent grâce à BailScan</h2>
+    <div class="sp-grid">
+      <div class="sp-card">
+        <div class="sp-stars">★★★★★</div>
+        <div class="sp-text">Mon bail interdisait les animaux ET demandait 2 mois de dépôt. BailScan a tout détecté en 2 minutes avec les références légales exactes. J'ai envoyé la lettre générée et mon propriétaire a cédé.</div>
+        <div class="sp-author">Marie L., locataire à Lyon · <span class="sp-amount">860€ récupérés</span></div>
+      </div>
+      <div class="sp-card">
+        <div class="sp-stars">★★★★★</div>
+        <div class="sp-text">L'outil a détecté que mon loyer dépassait le plafond d'encadrement parisien. Avec le calcul de trop-perçu et la lettre, j'ai obtenu 1 200€ de remboursement sur 3 ans.</div>
+        <div class="sp-author">Thomas B., locataire à Paris · <span class="sp-amount">1 200€ récupérés</span></div>
+      </div>
+      <div class="sp-card">
+        <div class="sp-stars">★★★★★</div>
+        <div class="sp-text">Je savais pas que les explications juridiques étaient aussi claires. Mon propriétaire m'avait retenu 400€ sur mon dépôt pour de l'usure normale. J'ai tout récupéré grâce à la mise en demeure.</div>
+        <div class="sp-author">Sophie M., locataire à Bordeaux · <span class="sp-amount">400€ récupérés</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <h2 class="faq-title">Questions fréquentes</h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">BailScan est-il vraiment gratuit ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">L'analyse de base est 100% gratuite : score de bail, verdict, résumé et détection des 2 premières clauses abusives. L'analyse complète (toutes les clauses avec explications juridiques, plan d'action, 5 lettres) est à 9€ en paiement unique.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Mes données sont-elles sécurisées ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">Votre bail n'est jamais stocké sur nos serveurs. L'analyse est réalisée en temps réel et les données sont immédiatement supprimées après traitement. BailScan ne conserve aucune donnée personnelle sans votre consentement explicite.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Quelle est la fiabilité de l'analyse ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">BailScan applique la loi du 6 juillet 1989, la loi ALUR (2014) et la loi ELAN (2018). Chaque clause détectée est accompagnée de sa référence légale exacte. BailScan est un outil d'aide — pour les litiges complexes, consultez un juriste ou l'ADIL de votre département.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">L'encadrement des loyers est-il vérifié automatiquement ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">Oui. Dès que vous renseignez votre ville et votre loyer, BailScan vérifie si vous êtes dans une zone d'encadrement (Paris, Lyon, Bordeaux, Montpellier, Grenoble, etc.) et compare votre loyer au loyer de référence majoré. Le calcul du trop-perçu éventuel est inclus dans l'analyse complète.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Que faire si mon propriétaire refuse de corriger les clauses illégales ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">BailScan génère une lettre de mise en demeure puis un dossier de saisine pour la Commission Départementale de Conciliation (CDC). Cette procédure est gratuite et sans avocat. En cas d'échec, le tribunal judiciaire peut condamner le propriétaire au remboursement + dommages et intérêts.</div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
-<footer>
-  <div class="footer-logo">Bail<span>Scan</span></div>
-  <div class="footer-links">
-    <a href="/blog.html">Guide locataire</a>
-    <a href="/legal.html">Mentions légales & CGV</a>
-    <a href="/cdn-cgi/l/email-protection#bad9d5d4cedbd9cefad8dbd3d6c9d9dbd494dbcaca">Contact</a>
+<footer class="footer-seo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Bail<span>Scan</span></div>
+        <div class="footer-tagline">Fait pour les locataires et les agences ❤️</div>
+        <div class="footer-copy">© 2026 BailScan — Tous droits réservés</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Outil</div>
+        <a href="/#app">Analyser mon bail</a>
+        <a href="/#app">Vérifier mon loyer</a>
+        <a href="/pro.html">Espace professionnel</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Guides</div>
+        <a href="/blog/clauses-abusives-bail.html">Clauses illégales</a>
+        <a href="/blog/depot-garantie.html">Dépôt de garantie</a>
+        <a href="/blog/encadrement-loyers.html">Encadrement des loyers</a>
+        <a href="/blog.html">Tous les guides →</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Informations</div>
+        <a href="/legal.html">Mentions légales</a>
+        <a href="/legal.html">CGV</a>
+        <a href="/legal.html">Politique de confidentialité</a>
+        <a href="/cdn-cgi/l/email-protection#44272b2a302527300426252d283727252a6a253434">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>BailScan n'est pas un cabinet juridique. Les analyses sont fournies à titre informatif.</span>
+    </div>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
@@ -1624,11 +1679,4 @@ function resetApp() {
   document.getElementById('typeSelectorBlock').style.display = 'grid';
   document.getElementById('paidSection').style.display = 'none';
   document.getElementById('paywallSection').style.display = 'block';
-  goStep(1);
-  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-}
-
-// Blog carousel (si section blog en bas)
-</script>
-</body>
-</html>
+  goSt
