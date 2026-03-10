@@ -189,11 +189,29 @@ async function callAnthropic(messages, systemPrompt, maxTokens = 2500) {
   return response.json();
 }
 
+// Config Vercel : augmenter la limite du body à 10MB pour les PDFs
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  // Augmenter la limite body pour Vercel (doit aussi être dans vercel.json)
+  res.setHeader('Content-Type', 'application/json');
+
   try {
     const body = req.body;
+
+    // Vérifier que le body est bien parsé (protection contre les erreurs 413)
+    if (!body || typeof body !== 'object') {
+      return res.status(400).json({ error: 'Corps de requête invalide. Si vous avez uploadé un PDF, essayez de coller le texte directement.' });
+    }
+
     const context = body.context || {};
 
     // ── LETTRES ─────────────────────────────────────────────────
