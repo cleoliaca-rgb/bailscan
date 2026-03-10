@@ -3,765 +3,1306 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BailScan — Analyse ton bail en 2 minutes</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>BailScan — Analysez votre bail locatif en 2 minutes | Clauses illégales détectées par IA</title>
+<meta name="description" content="BailScan analyse votre bail locatif par IA : clauses abusives, encadrement des loyers, état des lieux. Gratuit. Conforme loi du 6 juillet 1989.">
+<link rel="canonical" href="https://bailscan.app/">
+<meta property="og:title" content="BailScan — Analysez votre bail locatif en 2 minutes">
+<meta property="og:description" content="1 bail sur 3 contient une clause illégale. BailScan les détecte gratuitement par IA.">
+<meta property="og:image" content="https://bailscan.app/og-image.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BailScan","url":"https://bailscan.app","applicationCategory":"LegalService","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --noir: #0d0d0d; --creme: #f5f0e8; --accent: #c84b2f; --accent2: #e8a87c;
-    --vert: #2d6a4f; --vert-light: #e8f5ee; --rouge-light: #fdf0ed;
-    --texte: #1a1a1a; --gris: #6b6b6b; --border: #d8d0c4;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
-  header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); }
-  .logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); }
-  .logo span { color: var(--accent); }
-  .badge-beta { background: var(--accent); color: white; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; vertical-align: super; margin-left: 4px; }
-  nav { display: flex; gap: 32px; align-items: center; }
-  nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; }
-  .btn-nav { background: var(--noir); color: var(--creme) !important; padding: 10px 22px; border-radius: 8px; font-weight: 500; }
-  .btn-nav:hover { background: var(--accent) !important; }
-  .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 48px 80px; position: relative; overflow: hidden; }
-  .hero-bg { position: absolute; top: -100px; right: -80px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(200,75,47,0.12) 0%, transparent 65%); pointer-events: none; }
-  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; width: 100%; position: relative; z-index: 1; }
-  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--vert-light); color: var(--vert); font-size: 0.8rem; font-weight: 500; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; border: 1px solid rgba(45,106,79,0.2); }
-  .hero-tag::before { content: ''; width: 7px; height: 7px; background: var(--vert); border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.5} }
-  h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.8rem,5vw,4.2rem); line-height: 1.08; letter-spacing: -0.03em; color: var(--noir); margin-bottom: 24px; }
-  h1 em { font-style: italic; color: var(--accent); }
-  .hero-desc { font-size: 1.1rem; color: var(--gris); line-height: 1.7; margin-bottom: 40px; font-weight: 300; }
-  .stats-row { display: flex; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
-  .stat-num { font-family: 'Instrument Serif', serif; font-size: 2rem; color: var(--noir); line-height: 1; }
-  .stat-label { font-size: 0.78rem; color: var(--gris); margin-top: 4px; }
-  .app-card { background: white; border-radius: 20px; border: 1px solid var(--border); padding: 36px; box-shadow: 0 24px 80px rgba(0,0,0,0.08); position: relative; }
-  .app-card::before { content: ''; position: absolute; top: -1px; left: 24px; right: 24px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 0 0 3px 3px; }
-  .app-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); margin-bottom: 20px; }
-  .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 28px 24px; text-align: center; cursor: pointer; transition: all 0.25s; background: var(--creme); }
-  .upload-zone:hover { border-color: var(--accent); background: var(--rouge-light); }
-  .upload-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
-  .upload-title { font-weight: 600; font-size: 0.95rem; color: var(--noir); margin-bottom: 4px; }
-  .upload-sub { font-size: 0.8rem; color: var(--gris); }
-  #fileInput { display: none; }
-  .separator { text-align: center; margin: 16px 0; position: relative; color: var(--gris); font-size: 0.8rem; }
-  .separator::before,.separator::after { content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: var(--border); }
-  .separator::before { left: 0; } .separator::after { right: 0; }
-  textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; font-family: 'DM Sans',sans-serif; font-size: 0.88rem; line-height: 1.6; color: var(--texte); background: var(--creme); resize: vertical; min-height: 100px; transition: border-color 0.2s; outline: none; }
-  textarea:focus { border-color: var(--accent); }
-  .btn-analyze { width: 100%; margin-top: 16px; padding: 16px; background: var(--noir); color: white; border: none; border-radius: 12px; font-family: 'DM Sans',sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.25s; }
-  .btn-analyze:hover { background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,75,47,0.3); }
-  .loading-state { display: none; text-align: center; padding: 40px 20px; }
-  .loading-state.active { display: block; }
-  .spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .loading-text { font-size: 0.9rem; color: var(--gris); }
-  .loading-steps { margin-top: 12px; font-size: 0.8rem; color: var(--accent); min-height: 20px; }
-  .progress-bar-wrap { width: 100%; height: 4px; background: var(--border); border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
-  .progress-bar { height: 100%; background: linear-gradient(90deg,var(--accent),var(--accent2)); border-radius: 4px; width: 0%; transition: width 0.4s ease; }
-  #results { display: none; }
-  #results.visible { display: block; }
-  .score-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-  .score-label { font-size: 0.8rem; color: var(--gris); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-  .score-number { font-family: 'Instrument Serif',serif; font-size: 3rem; line-height: 1; }
-  .score-number.good{color:var(--vert)} .score-number.medium{color:#b07d00} .score-number.bad{color:var(--accent)}
-  .score-badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 1rem; }
-  .score-badge.equitable{background:var(--vert-light);color:var(--vert);border:1.5px solid rgba(45,106,79,0.25)}
-  .score-badge.risque{background:#fff8e1;color:#b07d00;border:1.5px solid rgba(176,125,0,0.25)}
-  .score-badge.abusif{background:var(--rouge-light);color:var(--accent);border:1.5px solid rgba(200,75,47,0.25)}
-  .result-section { margin-bottom: 10px; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .result-section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; background: var(--creme); border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
-  .result-section-title { font-weight: 600; font-size: 0.92rem; flex: 1; }
-  .result-section-toggle { color: var(--gris); font-size: 0.8rem; transition: transform 0.2s; }
-  .result-section.open .result-section-toggle { transform: rotate(180deg); }
-  .result-section-body { padding: 20px; display: none; font-size: 0.88rem; line-height: 1.75; background: white; }
-  .result-section.open .result-section-body { display: block; }
-  .clause-item { display: flex; gap: 12px; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem; }
-  .clause-item.danger{background:var(--rouge-light);border-left:3px solid var(--accent)}
-  .clause-item.warning{background:#fff8e1;border-left:3px solid #f59e0b}
-  .clause-item.ok{background:var(--vert-light);border-left:3px solid var(--vert)}
-  .clause-icon { flex-shrink: 0; }
-  .file-loaded { display: none; align-items: center; gap: 10px; padding: 10px 16px; background: var(--vert-light); border: 1.5px solid rgba(45,106,79,0.3); border-radius: 10px; font-size: 0.85rem; color: var(--vert); font-weight: 500; margin-top: 10px; }
-  .file-loaded.visible { display: flex; }
-  .error-msg { display: none; padding: 12px 16px; background: var(--rouge-light); border: 1.5px solid rgba(200,75,47,0.3); border-radius: 10px; font-size: 0.85rem; color: var(--accent); margin-top: 12px; }
-  .error-msg.visible { display: block; }
-  .btn-reset { width: 100%; margin-top: 16px; padding: 12px; background: transparent; color: var(--gris); border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans',sans-serif; font-size: 0.88rem; cursor: pointer; transition: all 0.2s; }
-  .btn-reset:hover { border-color: var(--noir); color: var(--noir); }
+:root {
+  --noir: #0d0d0d; --creme: #f5f0e8; --accent: #c84b2f; --accent2: #e8a87c;
+  --vert: #2d6a4f; --vert-light: #e8f5ee; --rouge-light: #fdf0ed;
+  --texte: #1a1a1a; --gris: #6b6b6b; --border: #d8d0c4;
+  --warning: #f59e0b; --warning-light: #fffbeb;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--creme); color:var(--texte); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
 
-  /* PAYWALL */
-  .paywall-blur { position: relative; }
-  .paywall-blur .blur-content { filter: blur(5px); pointer-events: none; user-select: none; }
-  .paywall-overlay {
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.85) 30%, white 60%);
-    display: flex; align-items: flex-end; justify-content: center;
-    padding-bottom: 24px; border-radius: 12px;
-  }
-  .paywall-box {
-    background: white; border: 2px solid var(--accent); border-radius: 16px;
-    padding: 24px 28px; text-align: center; max-width: 340px; width: 100%;
-    box-shadow: 0 8px 40px rgba(200,75,47,0.15);
-  }
-  .paywall-icon { font-size: 2rem; margin-bottom: 8px; }
-  .paywall-title { font-family: 'Instrument Serif',serif; font-size: 1.3rem; color: var(--noir); margin-bottom: 6px; }
-  .paywall-desc { font-size: 0.85rem; color: var(--gris); line-height: 1.5; margin-bottom: 16px; }
-  .paywall-features { text-align: left; margin-bottom: 20px; }
-  .paywall-feature { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--texte); margin-bottom: 8px; }
-  .paywall-feature::before { content: '✅'; flex-shrink: 0; }
-  .btn-pay {
-    width: 100%; padding: 14px; background: var(--accent); color: white;
-    border: none; border-radius: 10px; font-family: 'DM Sans',sans-serif;
-    font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
-  }
-  .btn-pay:hover { background: #a83a20; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,75,47,0.3); }
-  .paywall-price { font-size: 1.4rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
-  .paywall-price span { font-size: 0.8rem; color: var(--gris); font-weight: 400; }
+/* ── HEADER ── */
+header { position:fixed; top:0; left:0; right:0; z-index:100; padding:18px 48px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); background:rgba(245,240,232,0.92); backdrop-filter:blur(12px); }
+.logo { font-family:'Instrument Serif',serif; font-size:1.6rem; color:var(--noir); text-decoration:none; }
+.logo span { color:var(--accent); }
+nav { display:flex; gap:28px; align-items:center; }
+nav a { color:var(--gris); text-decoration:none; font-size:0.9rem; transition:color .2s; }
+nav a:hover { color:var(--accent); }
+.btn-nav { background:var(--noir); color:var(--creme) !important; padding:10px 22px; border-radius:8px; font-weight:600; }
+.btn-nav:hover { background:var(--accent) !important; }
 
-  /* LETTRES */
-  .lettres-section { margin-top: 20px; }
-  .lettres-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); margin-bottom: 12px; }
-  .lettre-card { border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
-  .lettre-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: var(--creme); cursor: pointer; }
-  .lettre-header-left { display: flex; align-items: center; gap: 10px; }
-  .lettre-emoji { font-size: 1.1rem; }
-  .lettre-name { font-weight: 600; font-size: 0.9rem; }
-  .lettre-body { padding: 20px; display: none; background: white; }
-  .lettre-card.open .lettre-body { display: block; }
-  .lettre-text { font-size: 0.85rem; line-height: 1.8; color: var(--texte); white-space: pre-wrap; border: 1px solid var(--border); border-radius: 8px; padding: 16px; background: #fafaf8; font-family: Georgia, serif; }
-  .lettre-loading { text-align: center; padding: 24px; color: var(--gris); font-size: 0.88rem; }
-  .lettre-loading .mini-spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 8px; }
-  .btn-copy { margin-top: 12px; padding: 8px 16px; background: var(--noir); color: white; border: none; border-radius: 8px; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
-  .btn-copy:hover { background: var(--vert); }
-  .btn-generate { padding: 8px 14px; background: var(--creme); color: var(--accent); border: 1.5px solid var(--accent); border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-  .btn-generate:hover { background: var(--rouge-light); }
+/* ── HERO ── */
+.hero { min-height:100vh; display:flex; align-items:center; padding:120px 48px 80px; position:relative; overflow:hidden; }
+.hero-bg { position:absolute; top:-100px; right:-80px; width:700px; height:700px; background:radial-gradient(circle, rgba(200,75,47,0.1) 0%, transparent 65%); pointer-events:none; }
+.hero-bg2 { position:absolute; bottom:-80px; left:-60px; width:500px; height:500px; background:radial-gradient(circle, rgba(45,106,79,0.08) 0%, transparent 65%); pointer-events:none; }
+.hero-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; width:100%; position:relative; z-index:1; }
+.hero-tag { display:inline-flex; align-items:center; gap:8px; background:var(--vert-light); color:var(--vert); font-size:0.8rem; font-weight:600; padding:6px 14px; border-radius:20px; margin-bottom:24px; border:1px solid rgba(45,106,79,0.2); }
+.hero-tag::before { content:''; width:7px; height:7px; background:var(--vert); border-radius:50%; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+h1 { font-family:'Instrument Serif',serif; font-size:clamp(2.6rem,4.5vw,4rem); line-height:1.08; letter-spacing:-0.03em; color:var(--noir); margin-bottom:20px; }
+h1 em { font-style:italic; color:var(--accent); }
+.hero-sub { font-size:1.05rem; color:var(--gris); line-height:1.7; margin-bottom:36px; max-width:480px; }
+.hero-ctas { display:flex; gap:14px; flex-wrap:wrap; }
+.btn-primary { background:var(--accent); color:white; padding:14px 28px; border-radius:10px; font-weight:700; font-size:1rem; text-decoration:none; transition:all .2s; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
+.btn-primary:hover { background:#a83a20; transform:translateY(-1px); }
+.btn-secondary { background:transparent; color:var(--noir); padding:14px 24px; border-radius:10px; font-weight:600; font-size:1rem; text-decoration:none; border:1.5px solid var(--border); transition:all .2s; cursor:pointer; }
+.btn-secondary:hover { border-color:var(--noir); }
+.hero-stats { display:flex; gap:32px; margin-top:48px; padding-top:40px; border-top:1px solid var(--border); }
+.stat { }
+.stat-n { font-family:'Instrument Serif',serif; font-size:2.2rem; color:var(--noir); }
+.stat-l { font-size:0.78rem; color:var(--gris); margin-top:2px; line-height:1.4; }
+.hero-card { background:var(--noir); border-radius:24px; padding:36px; position:relative; overflow:hidden; }
+.hero-card::before { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; background:radial-gradient(circle, rgba(200,75,47,0.2) 0%, transparent 65%); }
+.hero-card-title { font-family:'Instrument Serif',serif; font-size:1.3rem; color:var(--creme); margin-bottom:20px; }
+.hero-card-features { display:flex; flex-direction:column; gap:12px; position:relative; z-index:1; }
+.feature-row { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:10px; background:rgba(255,255,255,0.05); }
+.feature-row.new { background:rgba(200,75,47,0.12); border:1px solid rgba(200,75,47,0.2); }
+.feature-icon { font-size:1.1rem; flex-shrink:0; }
+.feature-text { font-size:0.88rem; color:rgba(245,240,232,0.75); }
+.feature-text strong { color:var(--creme); }
+.feature-badge { margin-left:auto; background:var(--accent); color:white; font-size:0.62rem; font-weight:700; padding:3px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; }
 
-  /* MODAL PAIEMENT */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
-  .modal-overlay.active { display: flex; }
-  .modal { background: white; border-radius: 20px; padding: 40px; max-width: 440px; width: 90%; position: relative; box-shadow: 0 32px 80px rgba(0,0,0,0.2); }
-  .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--gris); }
-  .modal-title { font-family: 'Instrument Serif',serif; font-size: 1.8rem; color: var(--noir); margin-bottom: 8px; }
-  .modal-desc { font-size: 0.9rem; color: var(--gris); margin-bottom: 24px; line-height: 1.6; }
-  .modal-features { margin-bottom: 28px; }
-  .modal-feature { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; margin-bottom: 10px; }
-  .modal-feature::before { content: '✅'; }
-  .modal-price-box { background: var(--rouge-light); border: 2px solid var(--accent); border-radius: 12px; padding: 16px 20px; text-align: center; margin-bottom: 20px; }
-  .modal-price { font-family: 'Instrument Serif',serif; font-size: 2.5rem; color: var(--accent); font-weight: 700; }
-  .modal-price-sub { font-size: 0.8rem; color: var(--gris); margin-top: 2px; }
-  .btn-pay-confirm { width: 100%; padding: 16px; background: var(--accent); color: white; border: none; border-radius: 12px; font-family: 'DM Sans',sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; }
-  .btn-pay-confirm:hover { background: #a83a20; }
-  .modal-secure { text-align: center; font-size: 0.75rem; color: var(--gris); }
+/* ── WIZARD SECTION ── */
+#app { padding:80px 48px; background:white; }
+.app-inner { max-width:820px; margin:0 auto; }
+.app-title { font-family:'Instrument Serif',serif; font-size:2.4rem; letter-spacing:-0.03em; color:var(--noir); margin-bottom:8px; }
+.app-sub { font-size:0.95rem; color:var(--gris); margin-bottom:48px; }
 
-  /* DEMO PAID */
-  .demo-notice { background: var(--vert-light); border: 1.5px solid rgba(45,106,79,0.3); border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; color: var(--vert); margin-bottom: 16px; text-align: center; }
+/* TYPE SELECTOR */
+.type-selector { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:40px; }
+.type-card { border:2px solid var(--border); border-radius:14px; padding:20px; cursor:pointer; transition:all .2s; background:white; text-align:left; }
+.type-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 20px rgba(0,0,0,0.06); }
+.type-card.active { border-color:var(--accent); background:var(--rouge-light); }
+.type-card-icon { font-size:1.6rem; margin-bottom:10px; }
+.type-card-title { font-weight:700; font-size:0.95rem; color:var(--noir); margin-bottom:4px; }
+.type-card-desc { font-size:0.78rem; color:var(--gris); line-height:1.5; }
 
-  .features { padding: 64px 48px; max-width: 1100px; margin: 0 auto; }
-  .section-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
-  .section-title { font-family: 'Instrument Serif',serif; font-size: clamp(2rem,4vw,3rem); color: var(--noir); letter-spacing: -0.03em; margin-bottom: 60px; max-width: 520px; line-height: 1.15; }
-  .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-  .feature-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 28px; transition: transform 0.2s,box-shadow 0.2s; }
-  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.07); }
-  .feature-emoji { font-size: 2rem; margin-bottom: 16px; display: block; }
-  .feature-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; }
-  .feature-desc { font-size: 0.85rem; color: var(--gris); line-height: 1.65; }
-  footer { padding: 40px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--gris); font-size: 0.82rem; }
+/* WIZARD STEPS */
+.wizard-progress { display:flex; align-items:center; gap:0; margin-bottom:40px; }
+.wizard-step-indicator { display:flex; align-items:center; gap:8px; flex:1; }
+.wizard-step-indicator:last-child { flex:0; }
+.step-dot { width:32px; height:32px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:700; color:var(--gris); background:white; flex-shrink:0; transition:all .3s; }
+.step-dot.active { border-color:var(--accent); background:var(--accent); color:white; }
+.step-dot.done { border-color:var(--vert); background:var(--vert); color:white; }
+.step-label { font-size:0.75rem; font-weight:600; color:var(--gris); }
+.step-label.active { color:var(--accent); }
+.step-line { flex:1; height:2px; background:var(--border); margin:0 8px; transition:background .3s; }
+.step-line.done { background:var(--vert); }
 
-  /* CARROUSEL BLOG */
-  .blog-preview { background: var(--noir); padding: 64px 48px; }
-  .blog-preview-inner { max-width: 1100px; margin: 0 auto; }
-  .blog-preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-  .blog-preview-title { font-family: 'Instrument Serif', serif; font-size: 1.8rem; color: white; letter-spacing: -0.02em; }
-  .blog-preview-link { color: var(--accent2); text-decoration: none; font-size: 0.88rem; font-weight: 600; white-space: nowrap; }
-  .carousel-wrap { position: relative; overflow: hidden; }
-  .carousel-track { display: flex; gap: 20px; transition: transform 0.4s ease; }
-  .carousel-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; min-width: 280px; flex-shrink: 0; text-decoration: none; color: inherit; transition: background 0.2s; cursor: pointer; }
-  .carousel-card:hover { background: rgba(255,255,255,0.1); }
-  .carousel-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); margin-bottom: 12px; }
-  .carousel-card h3 { font-family: 'Instrument Serif', serif; font-size: 1.05rem; color: white; line-height: 1.35; margin-bottom: 12px; }
-  .carousel-card p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
-  .carousel-nav { display: flex; gap: 10px; margin-top: 24px; justify-content: flex-end; }
-  .carousel-btn { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.2); background: none; color: white; cursor: pointer; font-size: 1rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
-  .carousel-btn:hover { background: var(--accent); border-color: var(--accent); }
+/* WIZARD PANELS */
+.wizard-panel { display:none; animation:fadeIn .3s ease; }
+.wizard-panel.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)} }
 
-  @media (max-width: 768px) {
-    header { padding: 16px 20px; }
-    nav a:not(.btn-nav) { display: none; }
-    .hero { padding: 80px 20px 40px; min-height: auto; }
-    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
-    h1 { font-size: 2.2rem; }
-    .stats-row { gap: 20px; }
-    .app-card { padding: 24px; }
-    .features { padding: 48px 20px; }
-    .features-grid { grid-template-columns: 1fr; gap: 16px; }
-    .blog-preview { padding: 48px 20px; }
-    .blog-preview-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-    .carousel-card { min-width: 240px; }
-    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
-    .modal { padding: 28px 20px; }
-    .score-header { flex-direction: column; gap: 16px; align-items: flex-start; }
-  }
+.panel-title { font-family:'Instrument Serif',serif; font-size:1.6rem; color:var(--noir); margin-bottom:6px; }
+.panel-sub { font-size:0.88rem; color:var(--gris); margin-bottom:28px; }
+
+/* FORM ELEMENTS */
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+.form-grid.cols3 { grid-template-columns:1fr 1fr 1fr; }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group.full { grid-column:1/-1; }
+label { font-size:0.82rem; font-weight:600; color:var(--texte); }
+label .req { color:var(--accent); }
+.form-input { padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:0.92rem; color:var(--texte); background:white; font-family:'DM Sans',sans-serif; transition:border-color .2s; }
+.form-input:focus { outline:none; border-color:var(--accent); }
+.form-input::placeholder { color:#bbb; }
+select.form-input { cursor:pointer; }
+.radio-group { display:flex; gap:10px; }
+.radio-pill { display:flex; align-items:center; gap:8px; padding:10px 16px; border:1.5px solid var(--border); border-radius:8px; cursor:pointer; transition:all .2s; font-size:0.88rem; background:white; }
+.radio-pill:hover { border-color:var(--accent); }
+.radio-pill.active { border-color:var(--accent); background:var(--rouge-light); color:var(--accent); font-weight:600; }
+.radio-pill input { display:none; }
+
+/* LOYER BREAKDOWN */
+.loyer-breakdown { background:var(--creme); border-radius:12px; padding:20px 24px; margin-top:4px; border:1px solid var(--border); }
+.loyer-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border); }
+.loyer-row:last-child { border-bottom:none; font-weight:700; color:var(--noir); }
+.loyer-row-label { font-size:0.85rem; color:var(--gris); }
+.loyer-row-val { font-size:0.9rem; font-weight:600; }
+.loyer-total { color:var(--accent); }
+
+/* UPLOAD ZONE */
+.upload-tabs { display:flex; gap:0; margin-bottom:20px; border:1.5px solid var(--border); border-radius:10px; overflow:hidden; }
+.upload-tab { flex:1; padding:10px; text-align:center; font-size:0.85rem; font-weight:600; cursor:pointer; color:var(--gris); background:white; border:none; transition:all .2s; }
+.upload-tab.active { background:var(--noir); color:var(--creme); }
+.upload-zone { border:2px dashed var(--border); border-radius:14px; padding:48px 32px; text-align:center; cursor:pointer; transition:all .2s; background:white; position:relative; }
+.upload-zone:hover, .upload-zone.dragover { border-color:var(--accent); background:var(--rouge-light); }
+.upload-zone-icon { font-size:2.4rem; margin-bottom:12px; }
+.upload-zone-title { font-weight:700; font-size:0.95rem; color:var(--noir); margin-bottom:6px; }
+.upload-zone-sub { font-size:0.82rem; color:var(--gris); }
+.upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.upload-success { background:var(--vert-light); border:1.5px solid rgba(45,106,79,0.3); border-radius:14px; padding:20px 24px; display:flex; align-items:center; gap:14px; }
+.upload-success-icon { font-size:1.6rem; }
+.upload-success-name { font-weight:700; font-size:0.9rem; color:var(--vert); }
+.upload-success-size { font-size:0.78rem; color:var(--gris); }
+.textarea-bail { width:100%; min-height:220px; padding:16px; border:1.5px solid var(--border); border-radius:14px; font-size:0.88rem; color:var(--texte); font-family:'DM Sans',sans-serif; resize:vertical; line-height:1.7; background:white; transition:border-color .2s; }
+.textarea-bail:focus { outline:none; border-color:var(--accent); }
+.char-count { font-size:0.75rem; color:var(--gris); text-align:right; margin-top:6px; }
+
+/* WIZARD NAV */
+.wizard-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:28px; border-top:1px solid var(--border); }
+.btn-wizard-back { background:transparent; border:1.5px solid var(--border); color:var(--gris); padding:12px 24px; border-radius:10px; font-weight:600; font-size:0.9rem; cursor:pointer; transition:all .2s; }
+.btn-wizard-back:hover { border-color:var(--noir); color:var(--noir); }
+.btn-wizard-next { background:var(--noir); color:white; padding:12px 28px; border-radius:10px; font-weight:700; font-size:0.9rem; cursor:pointer; transition:all .2s; border:none; display:flex; align-items:center; gap:8px; }
+.btn-wizard-next:hover { background:var(--accent); }
+.btn-wizard-next:disabled { opacity:0.4; cursor:not-allowed; }
+.btn-analyze { background:var(--accent); color:white; padding:14px 32px; border-radius:10px; font-weight:700; font-size:1rem; cursor:pointer; border:none; display:flex; align-items:center; gap:10px; transition:all .2s; }
+.btn-analyze:hover { background:#a83a20; transform:translateY(-1px); }
+.btn-analyze:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+
+/* ANALYSE MODE SELECTOR */
+.analyse-modes { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:28px; }
+.analyse-mode { border:2px solid var(--border); border-radius:14px; padding:20px; cursor:pointer; transition:all .2s; background:white; text-align:left; position:relative; }
+.analyse-mode:hover { border-color:var(--accent); }
+.analyse-mode.active { border-color:var(--accent); background:var(--rouge-light); }
+.analyse-mode-icon { font-size:1.5rem; margin-bottom:10px; }
+.analyse-mode-title { font-weight:700; font-size:0.95rem; color:var(--noir); margin-bottom:4px; }
+.analyse-mode-desc { font-size:0.78rem; color:var(--gris); line-height:1.5; }
+.analyse-mode-badge { position:absolute; top:12px; right:12px; background:var(--vert); color:white; font-size:0.6rem; font-weight:700; padding:3px 8px; border-radius:4px; text-transform:uppercase; }
+
+/* LOADING */
+.loading-overlay { display:none; position:fixed; inset:0; background:rgba(245,240,232,0.95); backdrop-filter:blur(8px); z-index:200; flex-direction:column; align-items:center; justify-content:center; gap:24px; }
+.loading-overlay.active { display:flex; }
+.loading-logo { font-family:'Instrument Serif',serif; font-size:2rem; color:var(--noir); }
+.loading-logo span { color:var(--accent); }
+.loading-bar { width:280px; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.loading-bar-inner { height:100%; background:var(--accent); border-radius:2px; animation:loadingAnim 2.5s ease-in-out infinite; }
+@keyframes loadingAnim { 0%{width:0%;margin-left:0}50%{width:70%;margin-left:0}100%{width:0%;margin-left:100%} }
+.loading-steps { display:flex; flex-direction:column; gap:8px; }
+.loading-step { font-size:0.85rem; color:var(--gris); display:flex; align-items:center; gap:8px; opacity:0.4; transition:opacity .5s; }
+.loading-step.active { opacity:1; color:var(--texte); }
+.loading-step.done { color:var(--vert); opacity:1; }
+.loading-step::before { content:'○'; }
+.loading-step.active::before { content:'◉'; color:var(--accent); }
+.loading-step.done::before { content:'●'; color:var(--vert); }
+
+/* RESULTS */
+.results-section { display:none; padding:60px 48px; }
+.results-inner { max-width:820px; margin:0 auto; }
+.results-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:40px; flex-wrap:wrap; gap:20px; }
+.results-title { font-family:'Instrument Serif',serif; font-size:2rem; color:var(--noir); }
+.results-subtitle { font-size:0.88rem; color:var(--gris); margin-top:4px; }
+
+/* SCORE */
+.score-card { background:var(--noir); border-radius:20px; padding:32px; display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center; margin-bottom:28px; position:relative; overflow:hidden; }
+.score-card::before { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; background:radial-gradient(circle, rgba(200,75,47,0.15) 0%, transparent 65%); }
+.score-circle { width:100px; height:100px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; border:4px solid rgba(255,255,255,0.1); position:relative; flex-shrink:0; }
+.score-num { font-family:'Instrument Serif',serif; font-size:2.8rem; font-weight:400; line-height:1; }
+.score-label { font-size:0.62rem; color:rgba(255,255,255,0.5); letter-spacing:0.1em; text-transform:uppercase; }
+.score-info { position:relative; z-index:1; }
+.score-verdict { font-family:'Instrument Serif',serif; font-size:1.6rem; color:var(--creme); margin-bottom:8px; }
+.score-resume { font-size:0.9rem; color:rgba(245,240,232,0.6); line-height:1.65; }
+.verdict-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:20px; font-size:0.78rem; font-weight:700; margin-bottom:12px; }
+.verdict-ok { background:rgba(45,106,79,0.2); color:#7ec8a0; border:1px solid rgba(45,106,79,0.3); }
+.verdict-warning { background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.25); }
+.verdict-danger { background:rgba(200,75,47,0.15); color:#e8806b; border:1px solid rgba(200,75,47,0.25); }
+
+/* LOYER CHECK CARD */
+.loyer-check { background:white; border:1.5px solid var(--border); border-radius:16px; padding:24px 28px; margin-bottom:20px; }
+.loyer-check.danger { border-color:rgba(200,75,47,0.3); background:var(--rouge-light); }
+.loyer-check.warning { border-color:rgba(245,158,11,0.3); background:var(--warning-light); }
+.loyer-check.ok { border-color:rgba(45,106,79,0.3); background:var(--vert-light); }
+.loyer-check-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.loyer-check-icon { font-size:1.3rem; }
+.loyer-check-title { font-weight:700; font-size:0.95rem; color:var(--noir); }
+.loyer-check-text { font-size:0.88rem; color:var(--gris); line-height:1.65; }
+.loyer-check-amounts { display:flex; gap:16px; margin-top:14px; flex-wrap:wrap; }
+.amount-pill { background:rgba(0,0,0,0.06); border-radius:8px; padding:8px 14px; }
+.amount-pill-label { font-size:0.7rem; color:var(--gris); }
+.amount-pill-val { font-weight:700; font-size:0.95rem; color:var(--noir); }
+
+/* CLAUSES */
+.clauses-section { margin-bottom:28px; }
+.clauses-title { font-family:'Instrument Serif',serif; font-size:1.4rem; color:var(--noir); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.clauses-title span { font-size:0.78rem; background:var(--accent); color:white; padding:3px 10px; border-radius:20px; font-family:'DM Sans',sans-serif; }
+.clause-card { background:white; border:1.5px solid var(--border); border-radius:16px; padding:24px; margin-bottom:14px; transition:all .2s; }
+.clause-card:hover { border-color:var(--accent); box-shadow:0 2px 12px rgba(0,0,0,0.05); }
+.clause-card.danger { border-left:4px solid var(--accent); }
+.clause-card.warning { border-left:4px solid var(--warning); }
+.clause-card.ok { border-left:4px solid var(--vert); }
+.clause-header { display:flex; align-items:flex-start; gap:14px; margin-bottom:10px; }
+.clause-badge { padding:4px 10px; border-radius:6px; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; margin-top:2px; }
+.badge-danger { background:var(--rouge-light); color:var(--accent); }
+.badge-warning { background:var(--warning-light); color:var(--warning); }
+.badge-ok { background:var(--vert-light); color:var(--vert); }
+.clause-title { font-weight:700; font-size:0.95rem; color:var(--noir); line-height:1.3; }
+.clause-desc { font-size:0.88rem; color:var(--gris); line-height:1.65; margin-bottom:12px; }
+
+/* EXPLICATION JURIDIQUE */
+.juridique-block { background:var(--creme); border-radius:10px; padding:16px 20px; margin-bottom:12px; border:1px solid var(--border); }
+.juridique-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; cursor:pointer; }
+.juridique-icon { font-size:0.9rem; }
+.juridique-label { font-size:0.75rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.08em; }
+.juridique-toggle { margin-left:auto; font-size:0.8rem; color:var(--gris); transition:transform .2s; }
+.juridique-toggle.open { transform:rotate(180deg); }
+.juridique-content { display:none; font-size:0.85rem; color:var(--texte); line-height:1.7; }
+.juridique-content.open { display:block; }
+.juridique-content .law-pill { display:inline-block; background:var(--rouge-light); color:var(--accent); font-size:0.75rem; font-weight:600; padding:2px 8px; border-radius:4px; margin:2px 2px 2px 0; }
+
+.clause-action { font-size:0.82rem; color:var(--vert); font-weight:600; display:flex; align-items:center; gap:6px; }
+.clause-action::before { content:'→'; }
+
+/* PAYWALL */
+.paywall-section { background:white; border:1.5px dashed var(--border); border-radius:20px; padding:40px; text-align:center; margin:32px 0; position:relative; overflow:hidden; }
+.paywall-blur { filter:blur(5px); pointer-events:none; margin-bottom:24px; opacity:0.5; }
+.paywall-overlay { }
+.paywall-icon { font-size:2.4rem; margin-bottom:16px; }
+.paywall-title { font-family:'Instrument Serif',serif; font-size:1.8rem; color:var(--noir); margin-bottom:10px; }
+.paywall-desc { font-size:0.92rem; color:var(--gris); margin-bottom:28px; line-height:1.6; max-width:460px; margin-left:auto; margin-right:auto; }
+.paywall-features { display:flex; flex-direction:column; gap:8px; max-width:360px; margin:0 auto 28px; }
+.paywall-feature { display:flex; align-items:center; gap:10px; font-size:0.88rem; color:var(--texte); }
+.paywall-feature::before { content:'✓'; color:var(--vert); font-weight:700; flex-shrink:0; }
+.paywall-price { font-family:'Instrument Serif',serif; font-size:2.8rem; color:var(--accent); margin-bottom:6px; }
+.paywall-price-sub { font-size:0.8rem; color:var(--gris); margin-bottom:24px; }
+
+/* PAID SECTION */
+.paid-section { display:none; }
+.plan-action { background:var(--noir); border-radius:16px; padding:28px; margin-bottom:28px; }
+.plan-action-title { font-family:'Instrument Serif',serif; font-size:1.3rem; color:var(--creme); margin-bottom:16px; }
+.plan-steps { display:flex; flex-direction:column; gap:10px; }
+.plan-step { display:flex; gap:14px; align-items:flex-start; padding:14px 16px; background:rgba(255,255,255,0.05); border-radius:10px; }
+.plan-step-num { width:24px; height:24px; background:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; flex-shrink:0; }
+.plan-step-text { font-size:0.88rem; color:rgba(245,240,232,0.75); line-height:1.5; }
+.plan-step-text strong { color:var(--creme); }
+.letters-section { margin-top:28px; }
+.letters-title { font-family:'Instrument Serif',serif; font-size:1.4rem; color:var(--noir); margin-bottom:16px; }
+.letter-card { background:white; border:1.5px solid var(--border); border-radius:14px; padding:20px 24px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
+.letter-card-info { }
+.letter-card-title { font-weight:700; font-size:0.92rem; color:var(--noir); margin-bottom:4px; }
+.letter-card-desc { font-size:0.78rem; color:var(--gris); }
+.btn-letter { background:var(--creme); border:1.5px solid var(--border); color:var(--noir); padding:9px 18px; border-radius:8px; font-size:0.82rem; font-weight:600; cursor:pointer; transition:all .2s; }
+.btn-letter:hover { border-color:var(--accent); color:var(--accent); }
+.btn-letter.loading { opacity:0.6; cursor:not-allowed; }
+.letter-content { display:none; background:var(--creme); border-radius:10px; padding:20px; margin-top:14px; font-size:0.85rem; line-height:1.8; color:var(--texte); white-space:pre-wrap; }
+
+/* MODAL */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:300; align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.active { display:flex; }
+.modal { background:white; border-radius:20px; padding:40px; max-width:480px; width:100%; }
+.modal-title { font-family:'Instrument Serif',serif; font-size:1.8rem; color:var(--noir); margin-bottom:8px; }
+.modal-sub { font-size:0.88rem; color:var(--gris); margin-bottom:28px; }
+.modal-features { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.modal-feature { display:flex; align-items:center; gap:10px; font-size:0.88rem; }
+.modal-feature::before { content:'✓'; color:var(--vert); font-weight:700; }
+.modal-price { display:flex; align-items:baseline; gap:8px; margin-bottom:8px; }
+.modal-price-n { font-family:'Instrument Serif',serif; font-size:3rem; color:var(--accent); }
+.modal-price-sub { font-size:0.85rem; color:var(--gris); }
+.modal-price-once { font-size:0.78rem; color:var(--gris); margin-bottom:24px; }
+.btn-pay { width:100%; background:var(--accent); color:white; padding:16px; border-radius:12px; font-weight:700; font-size:1rem; border:none; cursor:pointer; transition:all .2s; }
+.btn-pay:hover { background:#a83a20; }
+.btn-pay:disabled { opacity:0.6; cursor:not-allowed; }
+.modal-close { background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--gris); float:right; margin-top:-10px; margin-right:-10px; }
+.modal-secure { font-size:0.75rem; color:var(--gris); text-align:center; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px; }
+
+/* RESET BTN */
+.btn-reset { background:transparent; border:1.5px solid var(--border); color:var(--gris); padding:10px 20px; border-radius:8px; font-size:0.85rem; font-weight:600; cursor:pointer; transition:all .2s; margin-top:40px; }
+.btn-reset:hover { border-color:var(--accent); color:var(--accent); }
+
+/* SOCIAL PROOF */
+.social-proof { background:var(--creme); padding:60px 48px; border-top:1px solid var(--border); }
+.sp-inner { max-width:1000px; margin:0 auto; text-align:center; }
+.sp-title { font-family:'Instrument Serif',serif; font-size:2rem; color:var(--noir); margin-bottom:40px; }
+.sp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.sp-card { background:white; border:1px solid var(--border); border-radius:16px; padding:24px; text-align:left; }
+.sp-stars { color:#f59e0b; font-size:0.9rem; margin-bottom:10px; }
+.sp-text { font-size:0.88rem; line-height:1.7; color:var(--texte); margin-bottom:14px; font-style:italic; }
+.sp-author { font-size:0.8rem; font-weight:600; color:var(--gris); }
+.sp-amount { color:var(--vert); font-weight:700; }
+
+/* FAQ */
+.faq { padding:60px 48px; background:white; border-top:1px solid var(--border); }
+.faq-inner { max-width:720px; margin:0 auto; }
+.faq-title { font-family:'Instrument Serif',serif; font-size:2rem; color:var(--noir); margin-bottom:40px; }
+.faq-item { border-bottom:1px solid var(--border); padding:20px 0; cursor:pointer; }
+.faq-question { font-weight:600; font-size:0.95rem; color:var(--noir); display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.faq-toggle { font-size:1.2rem; color:var(--gris); transition:transform .2s; flex-shrink:0; }
+.faq-answer { font-size:0.88rem; color:var(--gris); line-height:1.75; margin-top:12px; display:none; }
+.faq-item.open .faq-answer { display:block; }
+.faq-item.open .faq-toggle { transform:rotate(45deg); }
+
+/* FOOTER */
+footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--creme); }
+.footer-logo { font-family:'Instrument Serif',serif; font-size:1.3rem; color:var(--noir); }
+.footer-logo span { color:var(--accent); }
+.footer-links { display:flex; gap:24px; }
+.footer-links a { color:var(--gris); text-decoration:none; font-size:0.82rem; transition:color .2s; }
+.footer-links a:hover { color:var(--accent); }
+
+/* RESPONSIVE */
+@media(max-width:768px) {
+  header { padding:16px 20px; }
+  nav a:not(.btn-nav) { display:none; }
+  .hero { padding:100px 20px 60px; }
+  .hero-inner { grid-template-columns:1fr; gap:40px; }
+  .hero-card { display:none; }
+  .hero-stats { gap:24px; }
+  #app { padding:48px 20px; }
+  .type-selector { grid-template-columns:1fr; }
+  .form-grid { grid-template-columns:1fr; }
+  .form-grid.cols3 { grid-template-columns:1fr 1fr; }
+  .analyse-modes { grid-template-columns:1fr; }
+  .results-section { padding:40px 20px; }
+  .score-card { grid-template-columns:1fr; text-align:center; }
+  .sp-grid { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:20px; text-align:center; }
+  .footer-links { flex-wrap:wrap; justify-content:center; }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Bail<span>Scan</span><span class="badge-beta">Beta</span></div>
-  <nav>
-    <a href="#comment">Comment ca marche</a>
-    <a href="/blog.html">Blog</a>
-    <a href="#app" class="btn-nav">Analyser mon bail</a>
-  </nav>
-</header>
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-logo">Bail<span>Scan</span></div>
+  <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+  <div class="loading-steps" id="loadingSteps">
+    <div class="loading-step" id="ls1">Lecture du document…</div>
+    <div class="loading-step" id="ls2">Vérification des clauses légales…</div>
+    <div class="loading-step" id="ls3">Analyse de l'encadrement des loyers…</div>
+    <div class="loading-step" id="ls4">Calcul du score de bail…</div>
+    <div class="loading-step" id="ls5">Rédaction des recommandations…</div>
+  </div>
+</div>
 
 <!-- MODAL PAIEMENT -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <div class="modal-title">Debloquer l'analyse complete</div>
-    <div class="modal-desc">Obtenez toutes les clauses analysees + 5 lettres officielles personnalisees pour agir immediatement.</div>
+    <div class="modal-title">Analyse complète</div>
+    <div class="modal-sub">Débloquez l'intégralité de votre rapport BailScan</div>
     <div class="modal-features">
-      <div class="modal-feature">Toutes les clauses de ton bail analysees</div>
-      <div class="modal-feature">Lettre de mise en demeure au proprietaire</div>
-      <div class="modal-feature">Lettre a l'agence immobiliere</div>
-      <div class="modal-feature">Lettre a la CAF / APL</div>
-      <div class="modal-feature">Lettre a la commission de conciliation</div>
-      <div class="modal-feature">Telechargeable et pret a envoyer</div>
+      <div class="modal-feature">Toutes les clauses analysées avec explications juridiques</div>
+      <div class="modal-feature">Vérification encadrement des loyers + calcul trop-perçu</div>
+      <div class="modal-feature">Plan d'action priorisé étape par étape</div>
+      <div class="modal-feature">5 lettres officielles générées par IA</div>
+      <div class="modal-feature">Références légales complètes (loi 1989, ALUR, ELAN)</div>
     </div>
-    <div class="modal-price-box">
-      <div class="modal-price">9 €</div>
-      <div class="modal-price-sub">Paiement unique · Acces definitif a cette analyse</div>
-    </div>
-    <button class="btn-pay-confirm" onclick="payWithStripe()" id="btnPayConfirm">Payer 9 € et debloquer maintenant</button>
-    <div class="modal-secure">Paiement securise · Remboursement sous 48h si insatisfait</div>
+    <div class="modal-price"><div class="modal-price-n">9€</div><div class="modal-price-sub">paiement unique</div></div>
+    <div class="modal-price-once">Accès à vie à votre rapport</div>
+    <button class="btn-pay" id="btnPayConfirm" onclick="payWithStripe()">Débloquer mon rapport complet →</button>
+    <div class="modal-secure">🔒 Paiement sécurisé par Stripe · Satisfait ou remboursé</div>
   </div>
 </div>
 
+<!-- HEADER -->
+<header>
+  <a href="/" class="logo">Bail<span>Scan</span></a>
+  <nav>
+    <a href="/blog.html">Guide locataire</a>
+    <a href="#app" class="btn-nav">Analyser mon bail →</a>
+  </nav>
+</header>
+
+<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
+  <div class="hero-bg2"></div>
   <div class="hero-inner">
-    <div class="hero-text">
-      <div class="hero-tag">Nouveau en France</div>
-      <h1>Ton bail cache-t-il des <em>clauses abusives ?</em></h1>
-      <p class="hero-desc">L'IA qui analyse ton contrat de location en 2 minutes. Clauses illegales, loyer encadre, pieges caches — on te dit tout ce que ton proprietaire prefere que tu ignores.</p>
-      <div class="stats-row">
-        <div class="stat"><div class="stat-num">40%</div><div class="stat-label">des menages sont locataires</div></div>
-        <div class="stat"><div class="stat-num">1/3</div><div class="stat-label">des baux contient une clause illegale</div></div>
-        <div class="stat"><div class="stat-num">2 min</div><div class="stat-label">pour tout analyser</div></div>
+    <div>
+      <div class="hero-tag">IA juridique · Loi du 6 juillet 1989</div>
+      <h1>Votre bail vous coûte peut-être <em>trop cher.</em></h1>
+      <p class="hero-sub">BailScan analyse votre bail, vérifie l'encadrement des loyers et détecte les clauses illégales — avec les explications juridiques complètes pour agir.</p>
+      <div class="hero-ctas">
+        <a href="#app" class="btn-primary">Analyser mon bail gratuitement →</a>
+        <a href="#app" class="btn-secondary">Analyser un état des lieux</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-n">1/3</div><div class="stat-l">des baux contient<br>une clause illégale</div></div>
+        <div class="stat"><div class="stat-n">9€</div><div class="stat-l">analyse complète<br>paiement unique</div></div>
+        <div class="stat"><div class="stat-n">2 min</div><div class="stat-l">pour analyser<br>votre bail</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-title">Ce que BailScan analyse</div>
+      <div class="hero-card-features">
+        <div class="feature-row"><div class="feature-icon">📄</div><div class="feature-text"><strong>Bail</strong> — clauses abusives, dépôt, préavis</div></div>
+        <div class="feature-row new"><div class="feature-icon">🏠</div><div class="feature-text"><strong>État des lieux</strong> — retenues abusives détectées</div><div class="feature-badge">Nouveau</div></div>
+        <div class="feature-row new"><div class="feature-icon">💶</div><div class="feature-text"><strong>Encadrement loyers</strong> — vérification automatique</div><div class="feature-badge">Nouveau</div></div>
+        <div class="feature-row"><div class="feature-icon">⚖️</div><div class="feature-text"><strong>Explications juridiques</strong> — références légales complètes</div></div>
+        <div class="feature-row"><div class="feature-icon">✉️</div><div class="feature-text"><strong>5 lettres officielles</strong> — générées par IA</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP WIZARD -->
+<section id="app">
+  <div class="app-inner">
+    <h2 class="app-title">Analysez votre document</h2>
+    <p class="app-sub">Suivez les 4 étapes — l'analyse prend moins de 2 minutes</p>
+
+    <!-- TYPE SELECTOR -->
+    <div class="type-selector" id="typeSelectorBlock">
+      <div class="type-card active" onclick="selectType('bail')" id="type-bail">
+        <div class="type-card-icon">📄</div>
+        <div class="type-card-title">Bail locatif</div>
+        <div class="type-card-desc">Analysez les clauses de votre contrat de location</div>
+      </div>
+      <div class="type-card" onclick="selectType('etat')" id="type-etat">
+        <div class="type-card-icon">🏠</div>
+        <div class="type-card-title">État des lieux</div>
+        <div class="type-card-desc">Détectez les retenues abusives sur votre dépôt</div>
       </div>
     </div>
 
-    <div class="app-card" id="app">
-      <div class="app-title">Analyse ton bail</div>
+    <!-- PROGRESS -->
+    <div class="wizard-progress" id="wizardProgress">
+      <div class="wizard-step-indicator">
+        <div class="step-dot active" id="dot1">1</div>
+        <div class="step-label active" id="lbl1">Contexte</div>
+      </div>
+      <div class="step-line" id="line1"></div>
+      <div class="wizard-step-indicator">
+        <div class="step-dot" id="dot2">2</div>
+        <div class="step-label" id="lbl2">Logement</div>
+      </div>
+      <div class="step-line" id="line2"></div>
+      <div class="wizard-step-indicator">
+        <div class="step-dot" id="dot3">3</div>
+        <div class="step-label" id="lbl3">Document</div>
+      </div>
+      <div class="step-line" id="line3"></div>
+      <div class="wizard-step-indicator">
+        <div class="step-dot" id="dot4">4</div>
+        <div class="step-label" id="lbl4">Analyser</div>
+      </div>
+    </div>
 
-      <div id="formState">
+    <!-- STEP 1 : CONTEXTE -->
+    <div class="wizard-panel active" id="step1">
+      <div class="panel-title">Contexte du logement</div>
+      <div class="panel-sub">Ces informations permettent une analyse plus précise et personnalisée</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Type de location <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-pill active" id="pill-loc" onclick="setRadio('location_type','location',this)"><input type="radio" name="location_type" value="location" checked> Location</label>
+            <label class="radio-pill" id="pill-col" onclick="setRadio('location_type','colocation',this)"><input type="radio" name="location_type" value="colocation"> Colocation</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Type de bien <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-pill active" id="pill-vide" onclick="setRadio('bien_type','vide',this)"><input type="radio" name="bien_type" value="vide" checked> Vide</label>
+            <label class="radio-pill" id="pill-meuble" onclick="setRadio('bien_type','meuble',this)"><input type="radio" name="bien_type" value="meuble"> Meublé</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="ville">Ville <span class="req">*</span></label>
+          <input type="text" id="ville" class="form-input" placeholder="Ex : Paris, Lyon, Bordeaux…" oninput="updateLoyerCheck()">
+        </div>
+        <div class="form-group">
+          <label for="surface">Surface (m²) <span class="req">*</span></label>
+          <input type="number" id="surface" class="form-input" placeholder="Ex : 35" min="1" oninput="updateLoyerCheck()">
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <div></div>
+        <button class="btn-wizard-next" onclick="goStep(2)">Continuer → Loyer <span>→</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 2 : LOYER -->
+    <div class="wizard-panel" id="step2">
+      <div class="panel-title">Informations sur le loyer</div>
+      <div class="panel-sub">Nous vérifierons si votre loyer respecte l'encadrement légal</div>
+      <div class="form-grid cols3">
+        <div class="form-group">
+          <label for="loyer_base">Loyer de base (€/mois)</label>
+          <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 800" min="0" oninput="calcLoyerTotal()">
+        </div>
+        <div class="form-group">
+          <label for="loyer_majore">Loyer majoré (€/mois)</label>
+          <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 50" min="0" oninput="calcLoyerTotal()">
+          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Complément pour caractéristiques exceptionnelles</small>
+        </div>
+        <div class="form-group">
+          <label for="complement_loyer">Complément de loyer (€)</label>
+          <input type="number" id="complement_loyer" class="form-input" placeholder="Ex : 0" min="0" oninput="calcLoyerTotal()">
+          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Si zone encadrée uniquement</small>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="charges">Charges mensuelles (€)</label>
+          <input type="number" id="charges" class="form-input" placeholder="Ex : 80" min="0" oninput="calcLoyerTotal()">
+        </div>
+        <div class="form-group">
+          <label for="depot">Dépôt de garantie versé (€)</label>
+          <input type="number" id="depot" class="form-input" placeholder="Ex : 800" min="0">
+        </div>
+      </div>
+      <div class="loyer-breakdown" id="loyerBreakdown" style="display:none">
+        <div class="loyer-row"><span class="loyer-row-label">Loyer de base</span><span class="loyer-row-val" id="lb1">—</span></div>
+        <div class="loyer-row"><span class="loyer-row-label">Loyer majoré</span><span class="loyer-row-val" id="lb2">—</span></div>
+        <div class="loyer-row"><span class="loyer-row-label">Complément de loyer</span><span class="loyer-row-val" id="lb3">—</span></div>
+        <div class="loyer-row"><span class="loyer-row-label">Charges</span><span class="loyer-row-val" id="lb4">—</span></div>
+        <div class="loyer-row"><span class="loyer-row-label" style="font-weight:700">Total mensuel</span><span class="loyer-row-val loyer-total" id="lb_total">—</span></div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-wizard-back" onclick="goStep(1)">← Retour</button>
+        <button class="btn-wizard-next" onclick="goStep(3)">Continuer → Document <span>→</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 3 : DOCUMENT -->
+    <div class="wizard-panel" id="step3">
+      <div class="panel-title" id="step3title">Votre bail</div>
+      <div class="panel-sub" id="step3sub">Uploadez le PDF ou collez le texte de votre bail</div>
+      <div class="upload-tabs">
+        <button class="upload-tab active" id="tab-upload" onclick="switchTab('upload')">📎 Upload PDF</button>
+        <button class="upload-tab" id="tab-text" onclick="switchTab('text')">✍️ Coller le texte</button>
+      </div>
+      <div id="upload-panel">
         <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-          <span class="upload-icon">📄</span>
-          <div class="upload-title">Clique pour uploader ton bail</div>
-          <div class="upload-sub">PDF accepte</div>
-          <input type="file" id="fileInput" accept=".pdf,.txt">
+          <div class="upload-zone-icon">📄</div>
+          <div class="upload-zone-title">Glissez votre PDF ici ou cliquez pour parcourir</div>
+          <div class="upload-zone-sub">PDF uniquement · Max 10 Mo</div>
+          <input type="file" id="fileInput" accept=".pdf" style="position:absolute;inset:0;opacity:0;cursor:pointer" onchange="handleFile(this.files[0])">
         </div>
-        <div class="file-loaded" id="fileLoaded"><span>✅</span><span id="fileName">fichier charge</span></div>
-        <div class="separator">ou colle ton texte</div>
-        <textarea id="bailText" placeholder="Colle ici le contenu de ton bail ou les clauses qui t'inquietent..."></textarea>
-        <div class="error-msg" id="errorMsg"></div>
-        <button class="btn-analyze" onclick="analyzeBail()">Analyser mon bail gratuitement</button>
+        <div class="upload-success" id="uploadSuccess" style="display:none">
+          <div class="upload-success-icon">✅</div>
+          <div><div class="upload-success-name" id="uploadFileName"></div><div class="upload-success-size" id="uploadFileSize"></div></div>
+          <button style="margin-left:auto;background:none;border:none;color:var(--gris);cursor:pointer;font-size:1.2rem" onclick="clearFile()">×</button>
+        </div>
+      </div>
+      <div id="text-panel" style="display:none">
+        <textarea class="textarea-bail" id="bailText" placeholder="Collez ici le texte de votre bail (toutes les clauses, conditions générales…)" oninput="updateCharCount()"></textarea>
+        <div class="char-count" id="charCount">0 caractères · Minimum recommandé : 500</div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-wizard-back" onclick="goStep(2)">← Retour</button>
+        <button class="btn-wizard-next" onclick="goStep(4)" id="btnStep3Next">Continuer → Analyser <span>→</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 4 : RÉCAP + LANCER -->
+    <div class="wizard-panel" id="step4">
+      <div class="panel-title">Prêt à analyser</div>
+      <div class="panel-sub">Vérifiez les informations puis lancez l'analyse</div>
+      <div id="recapBlock" style="background:var(--creme);border-radius:14px;padding:20px 24px;margin-bottom:24px;border:1px solid var(--border);">
+        <!-- Rempli dynamiquement -->
+      </div>
+      <div class="analyse-modes" id="analyseModes">
+        <div class="analyse-mode active" id="mode-bail" onclick="selectMode('bail')">
+          <div class="analyse-mode-badge">Inclus</div>
+          <div class="analyse-mode-icon">📄</div>
+          <div class="analyse-mode-title">Analyse du bail</div>
+          <div class="analyse-mode-desc">Clauses abusives, légalité du dépôt, conditions de résiliation, explications juridiques détaillées</div>
+        </div>
+        <div class="analyse-mode active" id="mode-loyer" onclick="selectMode('loyer')">
+          <div class="analyse-mode-badge" style="background:var(--vert)">Auto</div>
+          <div class="analyse-mode-icon">💶</div>
+          <div class="analyse-mode-title">Encadrement des loyers</div>
+          <div class="analyse-mode-desc">Vérification automatique si votre ville est concernée et calcul du trop-perçu éventuel</div>
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-wizard-back" onclick="goStep(3)">← Retour</button>
+        <button class="btn-analyze" onclick="launchAnalysis()" id="btnAnalyze">
+          <span>🔍</span> Lancer l'analyse gratuite
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-section" id="resultsSection">
+  <div class="results-inner">
+    <div class="results-header">
+      <div>
+        <div class="results-title">Votre rapport BailScan</div>
+        <div class="results-subtitle" id="resultsSubtitle">Analyse effectuée le <span id="analysisDate"></span></div>
+      </div>
+    </div>
+
+    <!-- SCORE -->
+    <div class="score-card" id="scoreCard">
+      <div class="score-circle" id="scoreCircle">
+        <span class="score-num" id="scoreNum">—</span>
+        <span class="score-label">/100</span>
+      </div>
+      <div class="score-info">
+        <div class="verdict-badge" id="verdictBadge"></div>
+        <div class="score-verdict" id="scoreVerdict"></div>
+        <div class="score-resume" id="scoreResume"></div>
+      </div>
+    </div>
+
+    <!-- LOYER CHECK -->
+    <div id="loyerCheckResult"></div>
+
+    <!-- CLAUSES GRATUITES -->
+    <div class="clauses-section" id="freeClausesSection">
+      <div class="clauses-title">Clauses analysées <span id="clausesFreeCount"></span></div>
+      <div id="freeClausesList"></div>
+    </div>
+
+    <!-- PAYWALL -->
+    <div class="paywall-section" id="paywallSection">
+      <div class="paywall-blur" id="paywallBlur">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="height:80px;background:var(--border);border-radius:12px;opacity:0.5"></div>
+          <div style="height:80px;background:var(--border);border-radius:12px;opacity:0.3"></div>
+          <div style="height:80px;background:var(--border);border-radius:12px;opacity:0.15"></div>
+        </div>
+      </div>
+      <div class="paywall-overlay">
+        <div class="paywall-icon">🔒</div>
+        <div class="paywall-title">Rapport complet disponible</div>
+        <div class="paywall-desc">Débloquez l'analyse intégrale avec les explications juridiques, le plan d'action et les lettres officielles</div>
+        <div class="paywall-features">
+          <div class="paywall-feature">Toutes les clauses analysées avec références légales</div>
+          <div class="paywall-feature">Vérification encadrement loyers + trop-perçu</div>
+          <div class="paywall-feature">Plan d'action priorisé</div>
+          <div class="paywall-feature">5 lettres officielles personnalisées</div>
+        </div>
+        <div class="paywall-price">9€</div>
+        <div class="paywall-price-sub">Paiement unique · Accès à vie</div>
+        <button class="btn-primary" onclick="openModal()">Débloquer l'analyse complète →</button>
+      </div>
+    </div>
+
+    <!-- PAID CONTENT -->
+    <div class="paid-section" id="paidSection">
+      <div class="clauses-section" id="allClausesSection">
+        <div class="clauses-title">Toutes les clauses <span id="clausesAllCount"></span></div>
+        <div id="allClausesList"></div>
       </div>
 
-      <div class="loading-state" id="loadingState">
-        <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="spinner"></div>
-        <div class="loading-text">Analyse en cours...</div>
-        <div class="loading-steps" id="loadingSteps">Lecture du bail...</div>
+      <div class="plan-action" id="planActionBlock">
+        <div class="plan-action-title">Plan d'action recommandé</div>
+        <div class="plan-steps" id="planStepsList"></div>
       </div>
 
-      <div id="results">
-        <div class="score-header">
-          <div>
-            <div class="score-label">Score global</div>
-            <div id="scoreNumber" class="score-number">--</div>
-          </div>
-          <div>
-            <div class="score-label">Verdict</div>
-            <div id="scoreBadge" class="score-badge">--</div>
-          </div>
-        </div>
-
-        <!-- GRATUIT : résumé + 2-3 clauses -->
-        <div id="freeSection"></div>
-
-        <!-- PAYWALL -->
-        <div id="paywallSection" class="paywall-blur" style="margin-top:12px;">
-          <div class="blur-content" id="blurContent"></div>
-          <div class="paywall-overlay">
-            <div class="paywall-box">
-              <div class="paywall-icon">🔒</div>
-              <div class="paywall-title">Voir l'analyse complete</div>
-              <div class="paywall-desc">+ toutes les clauses analysees, les etapes d'action et 5 lettres officielles personnalisees</div>
-              <div class="paywall-features">
-                <div class="paywall-feature">Toutes les clauses detaillees</div>
-                <div class="paywall-feature">Plan d'action etape par etape</div>
-                <div class="paywall-feature">5 lettres officielles generees par IA</div>
-                <div class="paywall-feature">Pret a envoyer immediatement</div>
-              </div>
-              <div class="paywall-price">9 € <span>paiement unique</span></div>
-              <button class="btn-pay" onclick="openModal()">Debloquer maintenant</button>
+      <div class="letters-section">
+        <div class="letters-title">Lettres officielles</div>
+        <div id="lettersList">
+          <div class="letter-card">
+            <div class="letter-card-info">
+              <div class="letter-card-title">Lettre au propriétaire</div>
+              <div class="letter-card-desc">Demande de modification / suppression des clauses illégales</div>
             </div>
+            <button class="btn-letter" onclick="generateLetter('proprio', this)">Générer →</button>
           </div>
-        </div>
-
-        <!-- SECTION PAYANTE (cachée jusqu'au paiement) -->
-        <div id="paidSection" style="display:none;">
-          <div class="demo-notice">✅ Acces complet debloque — Analyse complete et lettres disponibles</div>
-          <div id="fullClausesSection"></div>
-          <div class="lettres-section">
-            <div class="lettres-title">Tes lettres officielles</div>
-            <div id="lettresContainer"></div>
+          <div id="letter-proprio-content" class="letter-content"></div>
+          <div class="letter-card">
+            <div class="letter-card-info">
+              <div class="letter-card-title">Lettre à l'agence immobilière</div>
+              <div class="letter-card-desc">Si l'agence gère le bien et refuse d'intervenir</div>
+            </div>
+            <button class="btn-letter" onclick="generateLetter('agence', this)">Générer →</button>
           </div>
+          <div id="letter-agence-content" class="letter-content"></div>
+          <div class="letter-card">
+            <div class="letter-card-info">
+              <div class="letter-card-title">Mise en demeure</div>
+              <div class="letter-card-desc">Courrier formel avant saisine de la conciliation</div>
+            </div>
+            <button class="btn-letter" onclick="generateLetter('miseendemeure', this)">Générer →</button>
+          </div>
+          <div id="letter-miseendemeure-content" class="letter-content"></div>
+          <div class="letter-card">
+            <div class="letter-card-info">
+              <div class="letter-card-title">Demande de remboursement (loyer)</div>
+              <div class="letter-card-desc">Si l'encadrement des loyers n'est pas respecté</div>
+            </div>
+            <button class="btn-letter" onclick="generateLetter('remboursement', this)">Générer →</button>
+          </div>
+          <div id="letter-remboursement-content" class="letter-content"></div>
+          <div class="letter-card">
+            <div class="letter-card-info">
+              <div class="letter-card-title">Saisine Commission de Conciliation</div>
+              <div class="letter-card-desc">Si le dialogue avec le propriétaire échoue</div>
+            </div>
+            <button class="btn-letter" onclick="generateLetter('conciliation', this)">Générer →</button>
+          </div>
+          <div id="letter-conciliation-content" class="letter-content"></div>
         </div>
+      </div>
+    </div>
 
+    <button class="btn-reset" onclick="resetApp()">↩ Analyser un autre document</button>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="social-proof">
+  <div class="sp-inner">
+    <h2 class="sp-title">Ils ont récupéré leur argent grâce à BailScan</h2>
+    <div class="sp-grid">
+      <div class="sp-card">
+        <div class="sp-stars">★★★★★</div>
+        <div class="sp-text">Mon bail interdisait les animaux ET demandait 2 mois de dépôt. BailScan a tout détecté en 2 minutes avec les références légales exactes. J'ai envoyé la lettre générée et mon propriétaire a cédé.</div>
+        <div class="sp-author">Marie L., locataire à Lyon · <span class="sp-amount">860€ récupérés</span></div>
+      </div>
+      <div class="sp-card">
+        <div class="sp-stars">★★★★★</div>
+        <div class="sp-text">L'outil a détecté que mon loyer dépassait le plafond d'encadrement parisien. Avec le calcul de trop-perçu et la lettre, j'ai obtenu 1 200€ de remboursement sur 3 ans.</div>
+        <div class="sp-author">Thomas B., locataire à Paris · <span class="sp-amount">1 200€ récupérés</span></div>
+      </div>
+      <div class="sp-card">
+        <div class="sp-stars">★★★★★</div>
+        <div class="sp-text">Je savais pas que les explications juridiques étaient aussi claires. Mon propriétaire m'avait retenu 400€ sur mon dépôt pour de l'usure normale. J'ai tout récupéré grâce à la mise en demeure.</div>
+        <div class="sp-author">Sophie M., locataire à Bordeaux · <span class="sp-amount">400€ récupérés</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="features" id="comment">
-  <div class="section-label">Comment ca marche</div>
-  <div class="section-title">Tout ce qu'on analyse pour toi</div>
-  <div class="features-grid">
-    <div class="feature-card"><span class="feature-emoji">⚖️</span><div class="feature-title">Clauses illegales</div><div class="feature-desc">On verifie chaque clause par rapport a la loi du 6 juillet 1989 et signale toute violation de tes droits.</div></div>
-    <div class="feature-card"><span class="feature-emoji">💶</span><div class="feature-title">Encadrement des loyers</div><div class="feature-desc">Ton loyer est-il trop eleve ? On verifie la conformite avec les zones tendues : Paris, Lyon, Bordeaux...</div></div>
-    <div class="feature-card"><span class="feature-emoji">🔍</span><div class="feature-title">Pieges caches</div><div class="feature-desc">Preavis abusif, charges non justifiees, travaux a ta charge — on lit ce que tu aurais pu rater.</div></div>
-    <div class="feature-card"><span class="feature-emoji">📊</span><div class="feature-title">Score de bail</div><div class="feature-desc">Un score clair de 0 a 100 pour savoir si ton bail est equitable, risque ou abusif.</div></div>
-    <div class="feature-card"><span class="feature-emoji">✉️</span><div class="feature-title">5 lettres officielles</div><div class="feature-desc">Mise en demeure, lettre a l'agence, CAF, commission de conciliation — toutes generees et personnalisees.</div></div>
-    <div class="feature-card"><span class="feature-emoji">🔒</span><div class="feature-title">100% prive</div><div class="feature-desc">Ton bail n'est jamais stocke. L'analyse se fait en temps reel et rien n'est conserve.</div></div>
-  </div>
-</section>
-
-<section class="blog-preview">
-  <div class="blog-preview-inner">
-    <div class="blog-preview-header">
-      <div class="blog-preview-title">Le guide du locataire</div>
-      <a href="/blog.html" class="blog-preview-link">Voir tous les articles →</a>
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <h2 class="faq-title">Questions fréquentes</h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">BailScan est-il vraiment gratuit ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">L'analyse de base est 100% gratuite : score de bail, verdict, résumé et détection des 2 premières clauses abusives. L'analyse complète (toutes les clauses avec explications juridiques, plan d'action, 5 lettres) est à 9€ en paiement unique.</div>
     </div>
-    <div class="carousel-wrap">
-      <div class="carousel-track" id="carouselTrack">
-        <a href="/blog/clauses-abusives-bail.html" class="carousel-card">
-          <div class="carousel-tag">Clauses abusives</div>
-          <h3>Les 10 clauses illegales les plus courantes dans les baux</h3>
-          <p>Ces clauses sont dans des milliers de baux mais elles n'ont aucune valeur legale.</p>
-        </a>
-        <a href="/blog/depot-garantie.html" class="carousel-card">
-          <div class="carousel-tag">Depot de garantie</div>
-          <h3>Comment recuperer votre depot de garantie</h3>
-          <p>Delais legaux, retenues abusives, interets de retard — vos droits expliques.</p>
-        </a>
-        <a href="/blog/encadrement-loyers.html" class="carousel-card">
-          <div class="carousel-tag">Loyer</div>
-          <h3>Votre loyer respecte-t-il l'encadrement ?</h3>
-          <p>Paris, Lyon, Bordeaux... verifiez si votre loyer est legal.</p>
-        </a>
-        <a href="/blog/preavis-locataire.html" class="carousel-card">
-          <div class="carousel-tag">Preavis</div>
-          <h3>Partir en 1 mois de preavis : les cas possibles</h3>
-          <p>Zone tendue, mutation, perte d'emploi — les conditions du preavis reduit.</p>
-        </a>
-        <a href="/blog/travaux-logement.html" class="carousel-card">
-          <div class="carousel-tag">Travaux</div>
-          <h3>Travaux : qui paye quoi entre locataire et proprietaire ?</h3>
-          <p>Chaudiere en panne, peinture, electromenager — la repartition legale.</p>
-        </a>
-        <a href="/blog/etat-des-lieux.html" class="carousel-card">
-          <div class="carousel-tag">Etat des lieux</div>
-          <h3>Etat des lieux : les erreurs qui coutent cher</h3>
-          <p>Ce qu'il faut absolument verifier pour eviter les mauvaises surprises.</p>
-        </a>
-        <a href="/blog/charges-locatives.html" class="carousel-card">
-          <div class="carousel-tag">Charges</div>
-          <h3>Charges locatives : ce que le proprietaire peut facturer</h3>
-          <p>La liste des charges recuperables est strictement limitee par la loi.</p>
-        </a>
-        <a href="/blog/logement-indecent.html" class="carousel-card">
-          <div class="carousel-tag">Logement decent</div>
-          <h3>Logement indecent : vos recours face au proprietaire</h3>
-          <p>Humidite, absence de chauffage — les demarches pour vous proteger.</p>
-        </a>
-        <a href="/blog/conge-proprietaire.html" class="carousel-card">
-          <div class="carousel-tag">Expulsion</div>
-          <h3>Conge du proprietaire : quand peut-il vous mettre dehors ?</h3>
-          <p>Les conditions tres strictes que doit respecter un proprietaire.</p>
-        </a>
-      </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Mes données sont-elles sécurisées ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">Votre bail n'est jamais stocké sur nos serveurs. L'analyse est réalisée en temps réel et les données sont immédiatement supprimées après traitement. BailScan ne conserve aucune donnée personnelle sans votre consentement explicite.</div>
     </div>
-    <div class="carousel-nav">
-      <button class="carousel-btn" onclick="moveCarousel(-1)">←</button>
-      <button class="carousel-btn" onclick="moveCarousel(1)">→</button>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Quelle est la fiabilité de l'analyse ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">BailScan applique la loi du 6 juillet 1989, la loi ALUR (2014) et la loi ELAN (2018). Chaque clause détectée est accompagnée de sa référence légale exacte. BailScan est un outil d'aide — pour les litiges complexes, consultez un juriste ou l'ADIL de votre département.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">L'encadrement des loyers est-il vérifié automatiquement ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">Oui. Dès que vous renseignez votre ville et votre loyer, BailScan vérifie si vous êtes dans une zone d'encadrement (Paris, Lyon, Bordeaux, Montpellier, Grenoble, etc.) et compare votre loyer au loyer de référence majoré. Le calcul du trop-perçu éventuel est inclus dans l'analyse complète.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Que faire si mon propriétaire refuse de corriger les clauses illégales ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">BailScan génère une lettre de mise en demeure puis un dossier de saisine pour la Commission Départementale de Conciliation (CDC). Cette procédure est gratuite et sans avocat. En cas d'échec, le tribunal judiciaire peut condamner le propriétaire au remboursement + dommages et intérêts.</div>
     </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <div>© 2025 BailScan — Fait pour les locataires francais</div>
-  <div style="display:flex;gap:20px;align-items:center;">
-    <span>Cet outil ne remplace pas un avocat.</span>
-    <a href="/legal.html" style="color:var(--accent);text-decoration:none;font-size:0.82rem;">Mentions légales & CGV</a>
+  <div class="footer-logo">Bail<span>Scan</span></div>
+  <div class="footer-links">
+    <a href="/blog.html">Guide locataire</a>
+    <a href="/legal.html">Mentions légales & CGV</a>
+    <a href="mailto:contact@bailscan.app">Contact</a>
   </div>
 </footer>
 
 <script>
-var uploadedFileContent = null;
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+var appState = {
+  analysisType: 'bail',       // 'bail' | 'etat'
+  locationtype: 'location',
+  bienType: 'vide',
+  ville: '',
+  surface: '',
+  loyerBase: 0,
+  loyerMajore: 0,
+  complementLoyer: 0,
+  charges: 0,
+  depot: 0,
+  currentStep: 1,
+  uploadMode: 'upload',
+  pdfBase64: null,
+  pdfName: '',
+  textContent: '',
+  analysisMode: 'bail',
+};
 var analysisResult = null;
 var isPaid = false;
 
-// FILE UPLOAD
-var uploadZone = document.getElementById('uploadZone');
-var fileInput = document.getElementById('fileInput');
+// ═══════════════════════════════════════
+// TYPE SELECTOR
+// ═══════════════════════════════════════
+function selectType(type) {
+  appState.analysisType = type;
+  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('type-' + type).classList.add('active');
+  // Update step 3 labels
+  if (type === 'etat') {
+    document.getElementById('step3title').textContent = 'Votre état des lieux';
+    document.getElementById('step3sub').textContent = 'Uploadez le PDF ou collez le texte de votre état des lieux d\'entrée et de sortie';
+    document.querySelector('#tab-upload').textContent = '📎 Upload PDF';
+    document.getElementById('bailText').placeholder = 'Collez ici le texte de votre état des lieux (entrée et sortie)…';
+  } else {
+    document.getElementById('step3title').textContent = 'Votre bail';
+    document.getElementById('step3sub').textContent = 'Uploadez le PDF ou collez le texte de votre bail';
+    document.getElementById('bailText').placeholder = 'Collez ici le texte de votre bail (toutes les clauses, conditions générales…)';
+  }
+}
 
-uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); uploadZone.style.borderColor = '#c84b2f'; });
-uploadZone.addEventListener('dragleave', function() { uploadZone.style.borderColor = ''; });
-uploadZone.addEventListener('drop', function(e) {
-  e.preventDefault(); uploadZone.style.borderColor = '';
-  var file = e.dataTransfer.files[0];
-  if (file) handleFile(file);
-});
-fileInput.addEventListener('change', function(e) { if (e.target.files[0]) handleFile(e.target.files[0]); });
+// ═══════════════════════════════════════
+// RADIO PILLS
+// ═══════════════════════════════════════
+function setRadio(name, value, el) {
+  document.querySelectorAll('[onclick*="' + name + '"]').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  if (name === 'location_type') appState.locationtype = value;
+  if (name === 'bien_type') appState.bienType = value;
+}
+
+// ═══════════════════════════════════════
+// LOYER TOTAL
+// ═══════════════════════════════════════
+function calcLoyerTotal() {
+  var b = parseFloat(document.getElementById('loyer_base').value) || 0;
+  var m = parseFloat(document.getElementById('loyer_majore').value) || 0;
+  var c = parseFloat(document.getElementById('complement_loyer').value) || 0;
+  var ch = parseFloat(document.getElementById('charges').value) || 0;
+  appState.loyerBase = b; appState.loyerMajore = m; appState.complementLoyer = c; appState.charges = ch;
+  var total = b + m + c + ch;
+  if (b > 0) {
+    document.getElementById('loyerBreakdown').style.display = 'block';
+    document.getElementById('lb1').textContent = b ? b + ' €' : '—';
+    document.getElementById('lb2').textContent = m ? '+' + m + ' €' : '—';
+    document.getElementById('lb3').textContent = c ? '+' + c + ' €' : '—';
+    document.getElementById('lb4').textContent = ch ? '+' + ch + ' € (charges)' : '—';
+    document.getElementById('lb_total').textContent = total + ' €/mois';
+  }
+}
+
+function updateLoyerCheck() {
+  appState.ville = document.getElementById('ville').value;
+  appState.surface = document.getElementById('surface').value;
+}
+
+// ═══════════════════════════════════════
+// WIZARD NAVIGATION
+// ═══════════════════════════════════════
+function goStep(n) {
+  // Validation step 1
+  if (n === 2 && !document.getElementById('ville').value.trim()) {
+    document.getElementById('ville').focus();
+    document.getElementById('ville').style.borderColor = 'var(--accent)';
+    return;
+  }
+  document.getElementById('ville').style.borderColor = '';
+
+  // Validation step 3
+  if (n === 4) {
+    var hasContent = appState.uploadMode === 'upload' ? appState.pdfBase64 : document.getElementById('bailText').value.trim().length > 100;
+    if (!hasContent) {
+      alert('Veuillez fournir votre document avant de continuer.');
+      return;
+    }
+  }
+
+  appState.currentStep = n;
+  document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  updateProgress(n);
+
+  if (n === 4) buildRecap();
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+}
+
+function updateProgress(n) {
+  for (var i = 1; i <= 4; i++) {
+    var dot = document.getElementById('dot' + i);
+    var lbl = document.getElementById('lbl' + i);
+    dot.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+    dot.textContent = i < n ? '✓' : i;
+    if (lbl) {
+      lbl.className = 'step-label' + (i === n ? ' active' : '');
+    }
+    if (i < 4) {
+      var line = document.getElementById('line' + i);
+      if (line) line.className = 'step-line' + (i < n ? ' done' : '');
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// UPLOAD
+// ═══════════════════════════════════════
+function switchTab(tab) {
+  appState.uploadMode = tab;
+  document.getElementById('tab-upload').className = 'upload-tab' + (tab === 'upload' ? ' active' : '');
+  document.getElementById('tab-text').className = 'upload-tab' + (tab === 'text' ? ' active' : '');
+  document.getElementById('upload-panel').style.display = tab === 'upload' ? 'block' : 'none';
+  document.getElementById('text-panel').style.display = tab === 'text' ? 'block' : 'none';
+}
 
 function handleFile(file) {
-  var fileLoadedEl = document.getElementById('fileLoaded');
-  var fileNameEl = document.getElementById('fileName');
-  if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var base64 = e.target.result.split(',')[1];
-      uploadedFileContent = { type: 'pdf', base64: base64, name: file.name };
-      fileNameEl.textContent = file.name + ' - pret a analyser';
-      fileLoadedEl.classList.add('visible');
-    };
-    reader.readAsDataURL(file);
-  } else if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
-    var reader2 = new FileReader();
-    reader2.onload = function(e) {
-      uploadedFileContent = { type: 'text', content: e.target.result };
-      fileNameEl.textContent = file.name;
-      fileLoadedEl.classList.add('visible');
-    };
-    reader2.readAsText(file);
-  } else {
-    alert('Format non supporte. Utilise PDF ou TXT.');
-  }
+  if (!file) return;
+  if (file.type !== 'application/pdf') { alert('Veuillez sélectionner un fichier PDF.'); return; }
+  if (file.size > 10 * 1024 * 1024) { alert('Fichier trop volumineux (max 10 Mo).'); return; }
+  appState.pdfName = file.name;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    appState.pdfBase64 = e.target.result.split(',')[1];
+    document.getElementById('uploadZone').style.display = 'none';
+    document.getElementById('uploadSuccess').style.display = 'flex';
+    document.getElementById('uploadFileName').textContent = file.name;
+    document.getElementById('uploadFileSize').textContent = (file.size / 1024).toFixed(0) + ' Ko';
+  };
+  reader.readAsDataURL(file);
 }
 
-// LOADING
-var loadingMessages = ["Lecture du bail...","Identification des clauses...","Verification de la loi du 6 juillet 1989...","Analyse des droits du locataire...","Calcul du score...","Redaction du rapport..."];
-
-function animateLoading() {
-  var i = 0, progress = 0;
-  var stepsEl = document.getElementById('loadingSteps');
-  var progressBar = document.getElementById('progressBar');
-  var interval = setInterval(function() {
-    if (i < loadingMessages.length) { stepsEl.textContent = loadingMessages[i]; i++; }
-    progress = Math.min(progress + 15, 90);
-    progressBar.style.width = progress + '%';
-  }, 1200);
-  return interval;
+function clearFile() {
+  appState.pdfBase64 = null; appState.pdfName = '';
+  document.getElementById('uploadZone').style.display = 'block';
+  document.getElementById('uploadSuccess').style.display = 'none';
+  document.getElementById('fileInput').value = '';
 }
 
-// ANALYZE
-function analyzeBail() {
-  var text = document.getElementById('bailText').value.trim();
-  var errorEl = document.getElementById('errorMsg');
-  if (!text && !uploadedFileContent) {
-    errorEl.textContent = 'Colle le texte de ton bail ou uploade un fichier PDF.';
-    errorEl.classList.add('visible'); return;
-  }
-  errorEl.classList.remove('visible');
-  document.getElementById('formState').style.display = 'none';
-  document.getElementById('loadingState').classList.add('active');
-  var loadingInterval = animateLoading();
+document.addEventListener('DOMContentLoaded', function() {
+  var zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
+  zone.addEventListener('drop', function(e) { e.preventDefault(); zone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
+});
 
-  var systemPrompt = 'Tu es un expert juridique specialise dans le droit immobilier francais. Tu analyses des baux selon la loi francaise (loi du 6 juillet 1989, loi ALUR, loi ELAN). Reponds UNIQUEMENT en JSON valide: {"score":<0-100>,"verdict":"<Equitable|Risque|Abusif>","resume":"<2-3 phrases>","clauses_abusives":[{"type":"danger|warning|ok","titre":"...","description":"...","action":"etape concrete a faire"}],"loyer":{"statut":"ok|warning|danger","analyse":"..."},"plan_action":["etape 1...","etape 2...","etape 3..."],"conseils":["..."],"droits_cles":["..."]}';
+function updateCharCount() {
+  var len = document.getElementById('bailText').value.length;
+  var el = document.getElementById('charCount');
+  el.textContent = len + ' caractères · ' + (len >= 500 ? '✓ Longueur suffisante' : 'Minimum recommandé : 500');
+  el.style.color = len >= 500 ? 'var(--vert)' : 'var(--gris)';
+}
 
-  var messages;
-  if (uploadedFileContent && uploadedFileContent.type === 'pdf') {
-    messages = [{ role: 'user', content: [
-      { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: uploadedFileContent.base64 } },
-      { type: 'text', text: 'Analyse ce bail PDF francais et retourne le JSON.' }
-    ]}];
+// ═══════════════════════════════════════
+// RECAP
+// ═══════════════════════════════════════
+function buildRecap() {
+  var ville = document.getElementById('ville').value || '—';
+  var surface = document.getElementById('surface').value || '—';
+  var loyer = appState.loyerBase || '—';
+  var total = (appState.loyerBase + appState.loyerMajore + appState.complementLoyer + appState.charges) || '—';
+  var typeLabel = appState.analysisType === 'etat' ? 'État des lieux' : 'Bail locatif';
+  var docLabel = appState.uploadMode === 'upload' && appState.pdfBase64 ? '📎 ' + appState.pdfName : (document.getElementById('bailText').value.length + ' caractères de texte');
+  document.getElementById('recapBlock').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+    recap('Type', appState.locationtype === 'colocation' ? 'Colocation' : 'Location') +
+    recap('Bien', appState.bienType === 'meuble' ? 'Meublé' : 'Vide') +
+    recap('Ville', ville) +
+    recap('Surface', surface + (surface !== '—' ? ' m²' : '')) +
+    recap('Loyer de base', loyer !== '—' ? loyer + ' €/mois' : '—') +
+    recap('Total mensuel', total !== '—' ? total + ' €/mois' : '—') +
+    '<div style="grid-column:1/-1">' + recap('Document', typeLabel + ' · ' + docLabel) + '</div>' +
+    '</div>';
+}
+function recap(label, val) {
+  return '<div style="background:white;border-radius:8px;padding:10px 14px;border:1px solid var(--border)"><div style="font-size:0.72rem;color:var(--gris);margin-bottom:2px">' + label + '</div><div style="font-weight:700;font-size:0.88rem;color:var(--noir)">' + val + '</div></div>';
+}
+
+function selectMode(m) {
+  // Les deux modes sont toujours actifs — cosmétique seulement
+}
+
+// ═══════════════════════════════════════
+// ANALYSE
+// ═══════════════════════════════════════
+function launchAnalysis() {
+  var textContent = appState.uploadMode === 'text' ? document.getElementById('bailText').value.trim() : '';
+  if (appState.uploadMode === 'upload' && !appState.pdfBase64) { alert('Veuillez fournir votre document.'); return; }
+  if (appState.uploadMode === 'text' && textContent.length < 100) { alert('Le texte est trop court pour être analysé.'); return; }
+
+  showLoading();
+
+  var contextInfo = {
+    type_analyse: appState.analysisType,
+    type_location: appState.locationtype,
+    type_bien: appState.bienType,
+    ville: document.getElementById('ville').value,
+    surface: document.getElementById('surface').value,
+    loyer_base: appState.loyerBase,
+    loyer_majore: appState.loyerMajore,
+    complement_loyer: appState.complementLoyer,
+    charges: appState.charges,
+    depot: parseFloat(document.getElementById('depot').value) || 0,
+  };
+
+  var payload;
+  if (appState.uploadMode === 'upload') {
+    payload = JSON.stringify({ pdf: appState.pdfBase64, context: contextInfo });
   } else {
-    var bailContent = text || (uploadedFileContent && uploadedFileContent.type === 'text' ? uploadedFileContent.content : '');
-    messages = [{ role: 'user', content: 'Analyse ce bail et retourne le JSON:\n\n' + bailContent }];
+    payload = JSON.stringify({ text: textContent, context: contextInfo });
   }
 
   fetch('/api/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1500, system: systemPrompt, messages: messages })
+    body: payload
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    clearInterval(loadingInterval);
-    document.getElementById('progressBar').style.width = '100%';
-    if (data.error) throw new Error(JSON.stringify(data.error));
-    if (!data.content) throw new Error('Reponse invalide');
-    var rawText = data.content.map(function(i) { return i.text || ''; }).join('');
-    var clean = rawText.replace(/```json|```/g, '').trim();
-    var result;
-    try { result = JSON.parse(clean); }
-    catch(e) {
-      result = { score: 50, verdict: 'Risque', resume: rawText.substring(0, 300), clauses_abusives: [], loyer: { statut: 'warning', analyse: 'Analyse partielle' }, plan_action: [], conseils: [], droits_cles: [] };
-    }
-    analysisResult = result;
-    document.getElementById('loadingState').classList.remove('active');
-    displayResults(result);
+    hideLoading();
+    if (data.error) { alert('Erreur: ' + data.error); return; }
+    analysisResult = data;
+    displayResults(data);
   })
   .catch(function(err) {
-    clearInterval(loadingInterval);
-    document.getElementById('loadingState').classList.remove('active');
-    document.getElementById('formState').style.display = 'block';
-    var errorEl = document.getElementById('errorMsg');
-    errorEl.textContent = 'Erreur: ' + err.message;
-    errorEl.classList.add('visible');
+    hideLoading();
+    alert('Erreur lors de l\'analyse : ' + err.message);
   });
 }
 
-function displayResults(result) {
-  document.getElementById('results').classList.add('visible');
+// ═══════════════════════════════════════
+// LOADING ANIMATION
+// ═══════════════════════════════════════
+var loadingTimer;
+function showLoading() {
+  document.getElementById('loadingOverlay').classList.add('active');
+  var steps = [1, 2, 3, 4, 5];
+  var delays = [0, 800, 1600, 2800, 4000];
+  steps.forEach(function(s, i) {
+    setTimeout(function() {
+      if (i > 0) document.getElementById('ls' + steps[i-1]).className = 'loading-step done';
+      document.getElementById('ls' + s).className = 'loading-step active';
+    }, delays[i]);
+  });
+  // Update loading steps for type
+  if (appState.analysisType === 'etat') {
+    document.getElementById('ls2').textContent = 'Analyse des dégradations signalées…';
+    document.getElementById('ls3').textContent = 'Vérification des retenues légales…';
+  } else {
+    document.getElementById('ls2').textContent = 'Vérification des clauses légales…';
+    document.getElementById('ls3').textContent = 'Analyse de l\'encadrement des loyers…';
+  }
+}
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('active');
+  for (var i = 1; i <= 5; i++) document.getElementById('ls' + i).className = 'loading-step';
+}
+
+// ═══════════════════════════════════════
+// DISPLAY RESULTS
+// ═══════════════════════════════════════
+function displayResults(data) {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('typeSelectorBlock').style.display = 'none';
+  var rs = document.getElementById('resultsSection');
+  rs.style.display = 'block';
+
+  // Date
+  document.getElementById('analysisDate').textContent = new Date().toLocaleDateString('fr-FR');
 
   // Score
-  var scoreEl = document.getElementById('scoreNumber');
-  scoreEl.textContent = result.score + '/100';
-  scoreEl.className = 'score-number ' + (result.score >= 70 ? 'good' : result.score >= 40 ? 'medium' : 'bad');
+  var score = data.score || 0;
+  var scoreEl = document.getElementById('scoreNum');
+  scoreEl.textContent = score;
+  var circle = document.getElementById('scoreCircle');
+  if (score >= 70) { circle.style.borderColor = 'rgba(45,106,79,0.5)'; scoreEl.style.color = '#7ec8a0'; }
+  else if (score >= 40) { circle.style.borderColor = 'rgba(245,158,11,0.5)'; scoreEl.style.color = '#f59e0b'; }
+  else { circle.style.borderColor = 'rgba(200,75,47,0.5)'; scoreEl.style.color = '#e8806b'; }
 
-  // Badge
-  var badgeEl = document.getElementById('scoreBadge');
-  var emoji = result.verdict === 'Equitable' ? '✅' : result.verdict === 'Risque' ? '⚠️' : '❌';
-  badgeEl.textContent = emoji + ' ' + result.verdict;
-  badgeEl.className = 'score-badge ' + (result.verdict === 'Equitable' ? 'equitable' : result.verdict === 'Risque' ? 'risque' : 'abusif');
+  // Verdict badge
+  var verdict = data.verdict || 'Inconnu';
+  var vb = document.getElementById('verdictBadge');
+  if (verdict === 'Equitable') { vb.className = 'verdict-badge verdict-ok'; vb.textContent = '✓ Bail équitable'; }
+  else if (verdict === 'Risque') { vb.className = 'verdict-badge verdict-warning'; vb.textContent = '⚠ Risques détectés'; }
+  else { vb.className = 'verdict-badge verdict-danger'; vb.textContent = '✕ Clauses abusives'; }
 
-  // GRATUIT : résumé + 2-3 premières clauses
-  var freeSection = document.getElementById('freeSection');
-  freeSection.innerHTML = '';
-  addSection(freeSection, '📋', 'Resume de l\'analyse', '<p style="font-size:0.88rem;line-height:1.7;">' + result.resume + '</p>', true);
+  document.getElementById('scoreVerdict').textContent = data.verdict_titre || verdict;
+  document.getElementById('scoreResume').textContent = data.resume || '';
 
-  var firstClauses = (result.clauses_abusives || []).slice(0, 2);
-  if (firstClauses.length > 0) {
-    var clausesHtml = firstClauses.map(function(c) {
-      return '<div class="clause-item ' + c.type + '"><span class="clause-icon">' + (c.type === 'danger' ? '🚨' : c.type === 'warning' ? '⚠️' : '✅') + '</span><div><strong>' + c.titre + '</strong><br>' + c.description + '</div></div>';
-    }).join('');
-    addSection(freeSection, '⚖️', 'Premieres clauses detectees (' + result.clauses_abusives.length + ' au total)', clausesHtml, true);
-  }
+  // Loyer check
+  renderLoyerCheck(data);
 
-  // PAYWALL : clauses restantes en flou
-  var blurContent = document.getElementById('blurContent');
-  var remaining = (result.clauses_abusives || []).slice(2);
-  var blurHtml = '';
-  if (remaining.length > 0) {
-    blurHtml += '<div style="border:1.5px solid #d8d0c4;border-radius:12px;overflow:hidden;margin-bottom:10px;">';
-    blurHtml += '<div style="padding:14px 20px;background:#f5f0e8;font-weight:600;font-size:0.92rem;">⚖️ Clauses restantes (' + remaining.length + ')</div>';
-    blurHtml += '<div style="padding:16px;">';
-    remaining.forEach(function(c) {
-      blurHtml += '<div class="clause-item ' + c.type + '"><span class="clause-icon">🚨</span><div><strong>' + c.titre + '</strong><br>' + c.description + '</div></div>';
-    });
-    blurHtml += '</div></div>';
-  }
-  if (result.plan_action && result.plan_action.length > 0) {
-    blurHtml += '<div style="border:1.5px solid #d8d0c4;border-radius:12px;overflow:hidden;margin-bottom:10px;">';
-    blurHtml += '<div style="padding:14px 20px;background:#f5f0e8;font-weight:600;font-size:0.92rem;">📋 Plan d\'action etape par etape</div>';
-    blurHtml += '<div style="padding:16px;">';
-    result.plan_action.forEach(function(step, i) {
-      blurHtml += '<div style="display:flex;gap:12px;margin-bottom:10px;"><span style="background:#c84b2f;color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0;">' + (i+1) + '</span><span style="font-size:0.85rem;">' + step + '</span></div>';
-    });
-    blurHtml += '</div></div>';
-  }
-  blurHtml += '<div style="border:1.5px solid #d8d0c4;border-radius:12px;padding:16px;margin-bottom:10px;"><strong style="font-size:0.9rem;">✉️ 5 lettres officielles personnalisees</strong><div style="font-size:0.82rem;color:#6b6b6b;margin-top:8px;">Lettre au proprietaire · Lettre agence · CAF/APL · Mise en demeure · Commission conciliation</div></div>';
-  blurContent.innerHTML = blurHtml;
+  // Free clauses (2 first)
+  var clauses = data.clauses_abusives || [];
+  var freeClauses = clauses.slice(0, 2);
+  document.getElementById('clausesFreeCount').textContent = freeClauses.length + ' sur ' + clauses.length;
+  document.getElementById('freeClausesList').innerHTML = freeClauses.map(renderClause).join('');
 
-  document.getElementById('paywallSection').style.display = 'block';
+  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
 }
 
-// MODAL
-function openModal() {
-  document.getElementById('modalOverlay').classList.add('active');
-}
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('active');
+function renderLoyerCheck(data) {
+  var el = document.getElementById('loyerCheckResult');
+  if (!data.loyer || !appState.loyerBase) { el.innerHTML = ''; return; }
+  var loy = data.loyer;
+  var cls = loy.statut === 'danger' ? 'danger' : loy.statut === 'warning' ? 'warning' : 'ok';
+  var icons = { danger: '🚨', warning: '⚠️', ok: '✅' };
+  var html = '<div class="loyer-check ' + cls + '">';
+  html += '<div class="loyer-check-header"><div class="loyer-check-icon">' + icons[loy.statut] + '</div><div class="loyer-check-title">Vérification encadrement des loyers</div></div>';
+  html += '<div class="loyer-check-text">' + (loy.analyse || '') + '</div>';
+  if (appState.loyerBase) {
+    html += '<div class="loyer-check-amounts">';
+    html += '<div class="amount-pill"><div class="amount-pill-label">Loyer déclaré</div><div class="amount-pill-val">' + appState.loyerBase + ' €/mois</div></div>';
+    if (loy.plafond) html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal</div><div class="amount-pill-val">' + loy.plafond + ' €/mois</div></div>';
+    if (loy.trop_percu) html += '<div class="amount-pill"><div class="amount-pill-label">Trop-perçu estimé</div><div class="amount-pill-val" style="color:var(--accent)">' + loy.trop_percu + '</div></div>';
+    html += '</div>';
+  }
+  html += '</div>';
+  el.innerHTML = html;
 }
 
-// VRAI PAIEMENT STRIPE
+function renderClause(c, idx) {
+  var typeClass = c.type === 'danger' ? 'danger' : c.type === 'warning' ? 'warning' : 'ok';
+  var badgeClass = 'badge-' + typeClass;
+  var badgeLabels = { danger: '⛔ Illégal', warning: '⚠ À vérifier', ok: '✓ Conforme' };
+  var html = '<div class="clause-card ' + typeClass + '">';
+  html += '<div class="clause-header">';
+  html += '<div class="clause-badge ' + badgeClass + '">' + (badgeLabels[c.type] || c.type) + '</div>';
+  html += '<div class="clause-title">' + (c.titre || '') + '</div>';
+  html += '</div>';
+  html += '<div class="clause-desc">' + (c.description || '') + '</div>';
+  // Explication juridique
+  if (c.base_legale || c.explication_juridique) {
+    html += '<div class="juridique-block">';
+    html += '<div class="juridique-header" onclick="toggleJuridique(this)">';
+    html += '<span class="juridique-icon">⚖️</span>';
+    html += '<span class="juridique-label">Explication juridique</span>';
+    html += '<span class="juridique-toggle">▼</span>';
+    html += '</div>';
+    html += '<div class="juridique-content">';
+    if (c.explication_juridique) html += '<p style="margin-bottom:10px">' + c.explication_juridique + '</p>';
+    if (c.base_legale) html += '<div>' + (Array.isArray(c.base_legale) ? c.base_legale : [c.base_legale]).map(function(l) { return '<span class="law-pill">' + l + '</span>'; }).join('') + '</div>';
+    html += '</div></div>';
+  }
+  if (c.action) html += '<div class="clause-action">' + c.action + '</div>';
+  html += '</div>';
+  return html;
+}
+
+function toggleJuridique(header) {
+  var content = header.nextElementSibling;
+  var toggle = header.querySelector('.juridique-toggle');
+  content.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+function showPaidContent() {
+  var data = analysisResult;
+  if (!data) return;
+  var clauses = data.clauses_abusives || [];
+  document.getElementById('clausesAllCount').textContent = clauses.length + ' clause(s)';
+  document.getElementById('allClausesList').innerHTML = clauses.map(renderClause).join('');
+
+  // Plan action
+  var steps = data.plan_action || [];
+  document.getElementById('planStepsList').innerHTML = steps.map(function(s, i) {
+    return '<div class="plan-step"><div class="plan-step-num">' + (i+1) + '</div><div class="plan-step-text">' + s + '</div></div>';
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// PAYWALL & STRIPE
+// ═══════════════════════════════════════
+function openModal() { document.getElementById('modalOverlay').classList.add('active'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+
 function payWithStripe() {
   var btn = document.getElementById('btnPayConfirm');
-  btn.textContent = 'Redirection vers le paiement...';
-  btn.disabled = true;
-
-  // Sauvegarder l'analyse dans sessionStorage pour la retrouver apres paiement
-  if (analysisResult) {
-    sessionStorage.setItem('bailscan_analysis', JSON.stringify(analysisResult));
-  }
-
-  fetch('/api/checkout', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount: 900 })
-  })
+  btn.textContent = 'Redirection…'; btn.disabled = true;
+  if (analysisResult) sessionStorage.setItem('bailscan_analysis', JSON.stringify(analysisResult));
+  sessionStorage.setItem('bailscan_context', JSON.stringify({
+    ville: appState.ville, surface: appState.surface,
+    loyerBase: appState.loyerBase, bienType: appState.bienType
+  }));
+  fetch('/api/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({amount:900}) })
   .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      throw new Error(data.error || 'Erreur de paiement');
-    }
-  })
-  .catch(function(err) {
-    btn.textContent = 'Payer 9 € et debloquer maintenant';
-    btn.disabled = false;
-    alert('Erreur: ' + err.message);
-  });
+  .then(function(d) { if (d.url) { window.location.href = d.url; } else { throw new Error(d.error); } })
+  .catch(function(e) { btn.textContent = 'Débloquer mon rapport complet →'; btn.disabled = false; alert('Erreur: ' + e.message); });
 }
 
-// VERIFIER SI RETOUR APRES PAIEMENT
 function checkPaymentReturn() {
   var params = new URLSearchParams(window.location.search);
-  var paid = params.get('paid');
-  var sessionId = params.get('session_id');
-
-  if (paid === 'true' && sessionId) {
-    // Nettoyer l'URL
+  if (params.get('paid') === 'true' && params.get('session_id')) {
     window.history.replaceState({}, '', '/');
-    // Recuperer l'analyse sauvegardee
     var saved = sessionStorage.getItem('bailscan_analysis');
+    var savedCtx = sessionStorage.getItem('bailscan_context');
+    if (savedCtx) { try { var ctx = JSON.parse(savedCtx); Object.assign(appState, ctx); } catch(e){} }
     if (saved) {
       try {
         analysisResult = JSON.parse(saved);
         sessionStorage.removeItem('bailscan_analysis');
+        sessionStorage.removeItem('bailscan_context');
         isPaid = true;
-        // Afficher directement les resultats payes
         displayResults(analysisResult);
         setTimeout(function() {
           document.getElementById('paywallSection').style.display = 'none';
           document.getElementById('paidSection').style.display = 'block';
           showPaidContent();
-        }, 100);
-        // Scroll vers les resultats
-        document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-      } catch(e) {
-        console.error('Erreur restauration analyse', e);
-      }
+        }, 200);
+      } catch(e) { console.error(e); }
     } else {
-      // Pas d'analyse sauvegardee — afficher message de succes
-      alert('Paiement confirme ! Relance une analyse de ton bail pour acceder aux fonctionnalites completes.');
+      alert('Paiement confirmé ! Relancez une analyse pour accéder au rapport complet.');
     }
-  } else if (paid === 'false') {
+  } else if (params.get('paid') === 'false') {
     window.history.replaceState({}, '', '/');
-    // Paiement annule, rien a faire
   }
 }
-
-// Lancer la verification au chargement de la page
 window.addEventListener('load', checkPaymentReturn);
 
-function showPaidContent() {
-  var result = analysisResult;
-  var fullClausesSection = document.getElementById('fullClausesSection');
-  fullClausesSection.innerHTML = '';
-
-  // Toutes les clauses
-  if (result.clauses_abusives && result.clauses_abusives.length > 0) {
-    var allClausesHtml = result.clauses_abusives.map(function(c) {
-      return '<div class="clause-item ' + c.type + '"><span class="clause-icon">' + (c.type === 'danger' ? '🚨' : c.type === 'warning' ? '⚠️' : '✅') + '</span><div><strong>' + c.titre + '</strong><br>' + c.description + (c.action ? '<br><em style="color:#2d6a4f;">→ ' + c.action + '</em>' : '') + '</div></div>';
-    }).join('');
-    addSection(fullClausesSection, '⚖️', 'Toutes les clauses analysees (' + result.clauses_abusives.length + ')', allClausesHtml, true);
+// ═══════════════════════════════════════
+// LETTRES
+// ═══════════════════════════════════════
+function generateLetter(type, btn) {
+  if (!analysisResult) return;
+  var contentEl = document.getElementById('letter-' + type + '-content');
+  if (contentEl.style.display === 'block' && contentEl.textContent) {
+    contentEl.style.display = 'none';
+    btn.textContent = 'Générer →';
+    return;
   }
-
-  // Plan d'action
-  if (result.plan_action && result.plan_action.length > 0) {
-    var planHtml = result.plan_action.map(function(step, i) {
-      return '<div style="display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;"><span style="background:#c84b2f;color:white;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;flex-shrink:0;margin-top:1px;">' + (i+1) + '</span><span style="font-size:0.88rem;line-height:1.6;">' + step + '</span></div>';
-    }).join('');
-    addSection(fullClausesSection, '📋', 'Ton plan d\'action', planHtml, true);
-  }
-
-  // Lettres
-  var lettres = [
-    { id: 'proprietaire', emoji: '🏠', name: 'Lettre au proprietaire', prompt: 'Redige une lettre formelle et professionnelle de la part du locataire a son proprietaire concernant les clauses abusives detectees dans son bail. La lettre doit : mentionner les clauses illegales specifiques avec les references de loi, demander leur suppression ou modification, fixer un delai de 15 jours pour repondre, et rester courtoise mais ferme. Utilise le contexte de l\'analyse.' },
-    { id: 'agence', emoji: '🏢', name: 'Lettre a l\'agence immobiliere', prompt: 'Redige une lettre formelle au gestionnaire de l\'agence immobiliere signalant les clauses abusives dans le bail. Mentionne les obligations legales de l\'agence, les references de loi, et demande une correction du contrat. Ton professionnel et factuel.' },
-    { id: 'caf', emoji: '💶', name: 'Lettre a la CAF / APL', prompt: 'Redige une lettre a la CAF pour signaler une situation de bail abusif et demander conseil ou protection. Explique la situation du locataire, les problemes detectes, et demande les droits et aides disponibles. Ton informatif et factuel.' },
-    { id: 'miseendemeure', emoji: '⚖️', name: 'Mise en demeure officielle', prompt: 'Redige une mise en demeure officielle et juridiquement solide pour forcer le proprietaire a corriger les clauses illegales sous 8 jours sous peine de poursuites. Utilise le vocabulaire juridique approprie, cite les articles de loi precis (loi du 6 juillet 1989, etc.), et indique les recours disponibles en cas de non-reponse.' },
-    { id: 'conciliation', emoji: '🤝', name: 'Lettre commission de conciliation', prompt: 'Redige une lettre de saisine de la Commission Departementale de Conciliation (CDC) pour un litige locatif concernant des clauses abusives dans le bail. Explique le litige, les tentatives de resolution amiable, et demande une mediation officielle. Inclus les elements necessaires a la recevabilite du dossier.' }
-  ];
-
-  var container = document.getElementById('lettresContainer');
-  container.innerHTML = '';
-  lettres.forEach(function(lettre) {
-    var card = document.createElement('div');
-    card.className = 'lettre-card';
-    card.id = 'lettre-' + lettre.id;
-    card.innerHTML = '<div class="lettre-header" onclick="toggleLettre(\'' + lettre.id + '\')">' +
-      '<div class="lettre-header-left"><span class="lettre-emoji">' + lettre.emoji + '</span><span class="lettre-name">' + lettre.name + '</span></div>' +
-      '<button class="btn-generate" onclick="event.stopPropagation();generateLettre(\'' + lettre.id + '\')">Generer</button>' +
-      '</div>' +
-      '<div class="lettre-body"><div id="lettre-content-' + lettre.id + '"><p style="font-size:0.85rem;color:#6b6b6b;">Clique sur "Generer" pour creer cette lettre personnalisee.</p></div></div>';
-    card.setAttribute('data-prompt', lettre.prompt);
-    container.appendChild(card);
-  });
-}
-
-function toggleLettre(id) {
-  var card = document.getElementById('lettre-' + id);
-  card.classList.toggle('open');
-}
-
-function generateLettre(id) {
-  var card = document.getElementById('lettre-' + id);
-  var contentDiv = document.getElementById('lettre-content-' + id);
-  var prompt = card.getAttribute('data-prompt');
-
-  card.classList.add('open');
-  contentDiv.innerHTML = '<div class="lettre-loading"><div class="mini-spinner"></div>Generation de la lettre en cours...</div>';
-
-  var context = analysisResult ? 'Contexte du bail analyse: ' + JSON.stringify({ verdict: analysisResult.verdict, score: analysisResult.score, clauses: analysisResult.clauses_abusives }) : '';
-
+  btn.textContent = 'Génération…'; btn.classList.add('loading'); btn.disabled = true;
   fetch('/api/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: context + '\n\n' + prompt + '\n\nRedige uniquement la lettre, sans introduction ni explication. Commence directement par "Objet:" ou par les coordonnees.' }]
+      letter_mode: true,
+      letter_type: type,
+      analysis_data: analysisResult,
+      context: {
+        type_analyse: appState.analysisType,
+        ville: appState.ville || document.getElementById('ville').value,
+        surface: appState.surface || document.getElementById('surface').value,
+        loyer_base: appState.loyerBase,
+        type_bien: appState.bienType
+      }
     })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    var text = data.content ? data.content.map(function(i) { return i.text || ''; }).join('') : 'Erreur de generation.';
-    contentDiv.innerHTML = '<div class="lettre-text">' + text + '</div><button class="btn-copy" onclick="copyLettre(\'' + id + '\')">Copier la lettre</button>';
+    btn.textContent = '↑ Masquer'; btn.classList.remove('loading'); btn.disabled = false;
+    contentEl.textContent = data.letter || 'Erreur de génération';
+    contentEl.style.display = 'block';
+    var copyId = 'copy-' + type;
+    if (!document.getElementById(copyId)) {
+      var copyBtn = document.createElement('button');
+      copyBtn.id = copyId;
+      copyBtn.textContent = '📋 Copier la lettre';
+      copyBtn.style.cssText = 'margin-top:12px;background:var(--noir);color:white;border:none;padding:10px 20px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;display:block;';
+      copyBtn.onclick = function() {
+        navigator.clipboard.writeText(contentEl.textContent).then(function() {
+          copyBtn.textContent = '✓ Copiée !';
+          setTimeout(function() { copyBtn.textContent = '📋 Copier la lettre'; }, 2000);
+        });
+      };
+      contentEl.parentNode.insertBefore(copyBtn, contentEl.nextSibling);
+    }
   })
-  .catch(function() {
-    contentDiv.innerHTML = '<p style="color:#c84b2f;">Erreur lors de la generation. Reessaie.</p>';
+  .catch(function(e) {
+    btn.textContent = 'Réessayer'; btn.classList.remove('loading'); btn.disabled = false;
   });
 }
 
-function copyLettre(id) {
-  var textEl = document.querySelector('#lettre-content-' + id + ' .lettre-text');
-  if (textEl) {
-    navigator.clipboard.writeText(textEl.textContent).then(function() {
-      alert('Lettre copiee !');
-    });
-  }
+// ═══════════════════════════════════════
+// MISC
+// ═══════════════════════════════════════
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+function resetApp() {
+  analysisResult = null; isPaid = false;
+  document.getElementById('resultsSection').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('typeSelectorBlock').style.display = 'grid';
+  document.getElementById('paidSection').style.display = 'none';
+  document.getElementById('paywallSection').style.display = 'block';
+  goStep(1);
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
 }
 
-function addSection(container, icon, title, bodyHtml, open) {
-  var section = document.createElement('div');
-  section.className = 'result-section' + (open ? ' open' : '');
-  section.innerHTML = '<div class="result-section-header" onclick="this.parentElement.classList.toggle(\'open\')"><span>' + icon + '</span><span class="result-section-title">' + title + '</span><span class="result-section-toggle">▼</span></div><div class="result-section-body">' + bodyHtml + '</div>';
-  container.appendChild(section);
-}
-
-// CARROUSEL
-var carouselPos = 0;
-function moveCarousel(dir) {
-  var track = document.getElementById('carouselTrack');
-  var cards = track.querySelectorAll('.carousel-card');
-  var cardW = cards[0].offsetWidth + 20;
-  var maxPos = Math.max(0, cards.length - Math.floor(track.parentElement.offsetWidth / cardW));
-  carouselPos = Math.max(0, Math.min(carouselPos + dir, maxPos));
-  track.style.transform = 'translateX(-' + (carouselPos * cardW) + 'px)';
-}
+// Blog carousel (si section blog en bas)
 </script>
 </body>
 </html>
