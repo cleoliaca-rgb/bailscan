@@ -199,7 +199,7 @@
       <div class="modal-price">9 €</div>
       <div class="modal-price-sub">Paiement unique · Acces definitif a cette analyse</div>
     </div>
-    <button class="btn-pay-confirm" onclick="simulatePay()">Payer 9 € et debloquer maintenant</button>
+    <button class="btn-pay-confirm" onclick="payWithStripe()" id="btnPayConfirm">Payer 9 € et debloquer maintenant</button>
     <div class="modal-secure">Paiement securise · Remboursement sous 48h si insatisfait</div>
   </div>
 </div>
@@ -490,14 +490,77 @@ function closeModal() {
   document.getElementById('modalOverlay').classList.remove('active');
 }
 
-// SIMULATION PAIEMENT (a remplacer par Stripe)
-function simulatePay() {
-  closeModal();
-  isPaid = true;
-  document.getElementById('paywallSection').style.display = 'none';
-  document.getElementById('paidSection').style.display = 'block';
-  showPaidContent();
+// VRAI PAIEMENT STRIPE
+function payWithStripe() {
+  var btn = document.getElementById('btnPayConfirm');
+  btn.textContent = 'Redirection vers le paiement...';
+  btn.disabled = true;
+
+  // Sauvegarder l'analyse dans sessionStorage pour la retrouver apres paiement
+  if (analysisResult) {
+    sessionStorage.setItem('bailscan_analysis', JSON.stringify(analysisResult));
+  }
+
+  fetch('/api/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount: 900 })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error(data.error || 'Erreur de paiement');
+    }
+  })
+  .catch(function(err) {
+    btn.textContent = 'Payer 9 € et debloquer maintenant';
+    btn.disabled = false;
+    alert('Erreur: ' + err.message);
+  });
 }
+
+// VERIFIER SI RETOUR APRES PAIEMENT
+function checkPaymentReturn() {
+  var params = new URLSearchParams(window.location.search);
+  var paid = params.get('paid');
+  var sessionId = params.get('session_id');
+
+  if (paid === 'true' && sessionId) {
+    // Nettoyer l'URL
+    window.history.replaceState({}, '', '/');
+    // Recuperer l'analyse sauvegardee
+    var saved = sessionStorage.getItem('bailscan_analysis');
+    if (saved) {
+      try {
+        analysisResult = JSON.parse(saved);
+        sessionStorage.removeItem('bailscan_analysis');
+        isPaid = true;
+        // Afficher directement les resultats payes
+        displayResults(analysisResult);
+        setTimeout(function() {
+          document.getElementById('paywallSection').style.display = 'none';
+          document.getElementById('paidSection').style.display = 'block';
+          showPaidContent();
+        }, 100);
+        // Scroll vers les resultats
+        document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+      } catch(e) {
+        console.error('Erreur restauration analyse', e);
+      }
+    } else {
+      // Pas d'analyse sauvegardee — afficher message de succes
+      alert('Paiement confirme ! Relance une analyse de ton bail pour acceder aux fonctionnalites completes.');
+    }
+  } else if (paid === 'false') {
+    window.history.replaceState({}, '', '/');
+    // Paiement annule, rien a faire
+  }
+}
+
+// Lancer la verification au chargement de la page
+window.addEventListener('load', checkPaymentReturn);
 
 function showPaidContent() {
   var result = analysisResult;
