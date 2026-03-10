@@ -227,16 +227,12 @@ export default async function handler(req, res) {
     const rawText = data.content?.[0]?.text || '';
     let parsed;
     try {
-      // Nettoyage agressif : extraire uniquement le JSON
+      // Nettoyage : extraire uniquement le JSON entre { et }
       let clean = rawText;
-      // Enlever les blocs markdown
-      clean = clean.replace(/```json
-?/g, '').replace(/```
-?/g, '');
-      // Extraire entre le premier { et le dernier }
+      clean = clean.replace(/```json/g, '').replace(/```/g, '');
       const firstBrace = clean.indexOf('{');
       const lastBrace = clean.lastIndexOf('}');
-      if (firstBrace !== -1 && lastBrace !== -1) {
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
         clean = clean.slice(firstBrace, lastBrace + 1);
       }
       clean = clean.trim();
