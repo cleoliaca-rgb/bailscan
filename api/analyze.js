@@ -57,6 +57,13 @@ function buildBailPrompt(context) {
     extra += "\nDepot de garantie declare : " + depot + " euros. Maximum legal pour un logement " + bienType + " : " + depotMax + " mois de loyer hors charges. Verifie.";
   }
 
+  var justif = (context && context.complement_justif) || '';
+  if (justif) {
+    extra += "\nJustification du complement de loyer mentionnee dans le bail : \"" + justif + "\". Evalue si cette justification est legalement valable (caracteristiques exceptionnelles de localisation ou confort selon Art. 17-2 loi 1989).";
+  } else if (context && context.complement_loyer > 0) {
+    extra += "\nComplément de loyer de " + context.complement_loyer + " euros present dans le bail SANS justification fournie. Verifie si c'est un probleme.";
+  }
+
   return "Analyse ce bail locatif francais." + extra + "\n\n"
     + "Reponds UNIQUEMENT avec un JSON valide, sans texte avant ni apres, sans backticks, sans markdown.\n"
     + "Format exact attendu :\n"
