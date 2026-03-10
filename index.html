@@ -10,10 +10,6 @@
 <meta property="og:description" content="1 bail sur 3 contient une clause illégale. BailScan les détecte gratuitement par IA.">
 <meta property="og:image" content="https://bailscan.app/og-image.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BailScan","url":"https://bailscan.app","applicationCategory":"LegalService","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}</script>
-<!-- jsPDF pour export PDF côté client -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- docx.js pour export .docx côté client -->
-<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -191,7 +187,7 @@ select.form-input { cursor:pointer; }
 .results-subtitle { font-size:0.88rem; color:var(--gris); margin-top:4px; }
 
 /* SCORE */
-.score-card { background:var(--noir); border-radius:20px; padding:28px; display:grid; grid-template-columns:auto 1fr; gap:28px; align-items:center; margin-bottom:16px; position:relative; overflow:hidden; }
+.score-card { background:var(--noir); border-radius:20px; padding:32px; display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center; margin-bottom:28px; position:relative; overflow:hidden; }
 .score-card::before { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; background:radial-gradient(circle, rgba(200,75,47,0.15) 0%, transparent 65%); }
 .score-circle { width:100px; height:100px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; border:4px solid rgba(255,255,255,0.1); position:relative; flex-shrink:0; }
 .score-num { font-family:'Instrument Serif',serif; font-size:2.8rem; font-weight:400; line-height:1; }
@@ -205,7 +201,7 @@ select.form-input { cursor:pointer; }
 .verdict-danger { background:rgba(200,75,47,0.15); color:#e8806b; border:1px solid rgba(200,75,47,0.25); }
 
 /* LOYER CHECK CARD */
-.loyer-check { background:white; border:1.5px solid var(--border); border-radius:16px; padding:20px 24px; margin-bottom:12px; }
+.loyer-check { background:white; border:1.5px solid var(--border); border-radius:16px; padding:24px 28px; margin-bottom:20px; }
 .loyer-check.danger { border-color:rgba(200,75,47,0.3); background:var(--rouge-light); }
 .loyer-check.warning { border-color:rgba(245,158,11,0.3); background:var(--warning-light); }
 .loyer-check.ok { border-color:rgba(45,106,79,0.3); background:var(--vert-light); }
@@ -302,22 +298,6 @@ select.form-input { cursor:pointer; }
 .modal-secure { font-size:0.75rem; color:var(--gris); text-align:center; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px; }
 
 /* RESET BTN */
-.encadrement-links { background:var(--vert-light); border:1.5px solid rgba(45,106,79,0.25); border-radius:12px; padding:16px 20px; margin:16px 0 0; }
-.encadrement-links-title { font-size:0.78rem; font-weight:700; color:var(--vert); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
-.encadrement-links-grid { display:flex; flex-wrap:wrap; gap:8px; }
-.encadrement-link { display:inline-flex; align-items:center; gap:5px; background:white; border:1px solid rgba(45,106,79,0.2); color:var(--vert); font-size:0.78rem; font-weight:600; padding:5px 12px; border-radius:6px; text-decoration:none; transition:all .2s; }
-.encadrement-link:hover { background:var(--vert); color:white; }
-.export-bar { display:flex; gap:10px; flex-wrap:wrap; margin:28px 0 0; padding:20px 24px; background:var(--creme); border-radius:14px; border:1px solid var(--border); align-items:center; }
-.export-bar-label { font-size:0.82rem; font-weight:700; color:var(--gris); margin-right:4px; }
-.btn-export { display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:8px; font-size:0.85rem; font-weight:700; cursor:pointer; border:none; transition:all .2s; }
-.btn-export-pdf { background:var(--accent); color:white; }
-.btn-export-pdf:hover { background:#a83a20; }
-.btn-export-docx { background:var(--noir); color:white; }
-.btn-export-docx:hover { background:#333; }
-.btn-export-docx:disabled, .btn-export-pdf:disabled { opacity:0.5; cursor:not-allowed; }
-.btn-letter-dl { background:transparent; border:none; color:var(--vert); font-size:0.75rem; font-weight:600; cursor:pointer; padding:4px 8px; display:inline-flex; align-items:center; gap:4px; border-radius:4px; transition:all .2s; }
-.btn-letter-dl:hover { background:var(--vert-light); }
-.btn-letter-dl:disabled { opacity:0.4; cursor:not-allowed; }
 .btn-reset { background:transparent; border:1.5px solid var(--border); color:var(--gris); padding:10px 20px; border-radius:8px; font-size:0.85rem; font-weight:600; cursor:pointer; transition:all .2s; margin-top:40px; }
 .btn-reset:hover { border-color:var(--accent); color:var(--accent); }
 
@@ -381,7 +361,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   <div class="loading-steps" id="loadingSteps">
     <div class="loading-step" id="ls1">Lecture du document…</div>
     <div class="loading-step" id="ls2">Vérification des clauses légales…</div>
-    <div class="loading-step" id="ls3">Analyse de l’encadrement des loyers…</div>
+    <div class="loading-step" id="ls3">Analyse de l'encadrement des loyers…</div>
     <div class="loading-step" id="ls4">Calcul du score de bail…</div>
     <div class="loading-step" id="ls5">Rédaction des recommandations…</div>
   </div>
@@ -412,7 +392,6 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   <a href="/" class="logo">Bail<span>Scan</span></a>
   <nav>
     <a href="/blog.html">Guide locataire</a>
-    <a href="/pro.html" style="color:var(--pro-accent,#3b6fd4);font-weight:600">Pour les agences ↗</a>
     <a href="#app" class="btn-nav">Analyser mon bail →</a>
   </nav>
 </header>
@@ -439,11 +418,11 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
     <div class="hero-card">
       <div class="hero-card-title">Ce que BailScan analyse</div>
       <div class="hero-card-features">
-        <div class="feature-row"><div class="feature-icon">📄</div><div class="feature-text"><strong>Bail</strong> : clauses abusives, dépôt, préavis</div></div>
-        <div class="feature-row new"><div class="feature-icon">🏠</div><div class="feature-text"><strong>État des lieux</strong> : retenues abusives détectées</div><div class="feature-badge">Nouveau</div></div>
-        <div class="feature-row new"><div class="feature-icon">💶</div><div class="feature-text"><strong>Encadrement des loyers</strong> : vérification automatique</div><div class="feature-badge">Nouveau</div></div>
-        <div class="feature-row"><div class="feature-icon">⚖️</div><div class="feature-text"><strong>Explications juridiques</strong> : références légales complètes</div></div>
-        <div class="feature-row"><div class="feature-icon">✉️</div><div class="feature-text"><strong>5 lettres officielles</strong> générées par IA</div></div>
+        <div class="feature-row"><div class="feature-icon">📄</div><div class="feature-text"><strong>Bail</strong> — clauses abusives, dépôt, préavis</div></div>
+        <div class="feature-row new"><div class="feature-icon">🏠</div><div class="feature-text"><strong>État des lieux</strong> — retenues abusives détectées</div><div class="feature-badge">Nouveau</div></div>
+        <div class="feature-row new"><div class="feature-icon">💶</div><div class="feature-text"><strong>Encadrement loyers</strong> — vérification automatique</div><div class="feature-badge">Nouveau</div></div>
+        <div class="feature-row"><div class="feature-icon">⚖️</div><div class="feature-text"><strong>Explications juridiques</strong> — références légales complètes</div></div>
+        <div class="feature-row"><div class="feature-icon">✉️</div><div class="feature-text"><strong>5 lettres officielles</strong> — générées par IA</div></div>
       </div>
     </div>
   </div>
@@ -453,7 +432,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
 <section id="app">
   <div class="app-inner">
     <h2 class="app-title">Analysez votre document</h2>
-    <p class="app-sub">Suivez les 4 étapes — l’analyse prend moins de 2 minutes</p>
+    <p class="app-sub">Suivez les 4 étapes — l'analyse prend moins de 2 minutes</p>
 
     <!-- TYPE SELECTOR -->
     <div class="type-selector" id="typeSelectorBlock">
@@ -531,26 +510,40 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
     <!-- STEP 2 : LOYER -->
     <div class="wizard-panel" id="step2">
       <div class="panel-title">Informations sur le loyer</div>
-      <div class="panel-sub">Nous vérifierons si votre loyer respecte l’encadrement légal</div>
+      <div class="panel-sub">Nous vérifierons si votre loyer respecte l'encadrement légal</div>
       <div class="form-grid cols3">
         <div class="form-group">
-          <label for="loyer_base">Loyer hors charges (€/mois) <span style="font-size:0.75rem;color:var(--gris);font-weight:400">— montant sur votre quittance</span></label>
+          <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="color:var(--accent);font-size:0.8rem">*</span></label>
           <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1007" min="0" oninput="calcLoyerTotal()">
+          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Montant du loyer hors charges indiqué dans le bail</small>
         </div>
         <div class="form-group">
-          <label for="loyer_majore">Loyer de référence majoré (€/mois) <span style="font-size:0.75rem;color:var(--gris);font-weight:400">— indiqué dans le bail si zone encadrée</span></label>
+          <label for="loyer_majore">Loyer de référence majoré (&#8364;/mois) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— zone encadrée uniquement</span></label>
           <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal()">
+          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Plafond légal indiqué dans le bail (facultatif)</small>
           <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Complément pour caractéristiques exceptionnelles</small>
         </div>
         <div class="form-group">
-          <label for="complement_loyer">Complément de loyer (€) <span style="font-size:0.75rem;color:var(--gris);font-weight:400">— si mentionné dans le bail</span></label>
-          <input type="number" id="complement_loyer" class="form-input" placeholder="Ex : 462" min="0" oninput="calcLoyerTotal()">
-          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Si zone encadrée uniquement</small>
+          <label for="complement_loyer">Complément de loyer (&#8364;) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— facultatif</span></label>
+          <input type="number" id="complement_loyer" class="form-input" placeholder="Ex : 0" min="0" oninput="calcLoyerTotal()">
+          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Si mentionné dans le bail (facultatif)</small>
         </div>
       </div>
+      <div class="form-group" id="complement_justif_group" style="margin:0 0 16px;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem;font-weight:600">
+          <input type="checkbox" id="has_complement_justif" onchange="toggleComplementJustif()" style="width:16px;height:16px;accent-color:var(--accent)">
+          Une justification du complément de loyer est mentionnée dans le bail
+        </label>
+        <div id="complement_justif_box" style="display:none;margin-top:10px">
+          <label for="complement_justif" style="font-size:0.8rem;color:var(--gris);font-weight:500">Copie la justification exacte indiquée dans le bail :</label>
+          <textarea id="complement_justif" class="form-input" rows="3" placeholder="Ex : Jardin privatif de 40m², vue dégagée sur parc, double exposition..." style="resize:vertical;font-size:0.85rem;margin-top:6px"></textarea>
+          <small style="font-size:0.72rem;color:var(--gris)">Cette information permettra à BailScan d’évaluer si la justification est valable selon la loi.</small>
+        </div>
+      </div>
+
       <div class="form-grid">
         <div class="form-group">
-          <label for="charges">Charges mensuelles (€)</label>
+          <label for="charges">Charges mensuelles (&#8364;)</label>
           <input type="number" id="charges" class="form-input" placeholder="Ex : 80" min="0" oninput="calcLoyerTotal()">
         </div>
         <div class="form-group">
@@ -605,7 +598,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
     <!-- STEP 4 : RÉCAP + LANCER -->
     <div class="wizard-panel" id="step4">
       <div class="panel-title">Prêt à analyser</div>
-      <div class="panel-sub">Vérifiez les informations puis lancez l’analyse</div>
+      <div class="panel-sub">Vérifiez les informations puis lancez l'analyse</div>
       <div id="recapBlock" style="background:var(--creme);border-radius:14px;padding:20px 24px;margin-bottom:24px;border:1px solid var(--border);">
         <!-- Rempli dynamiquement -->
       </div>
@@ -626,7 +619,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
       <div class="wizard-nav">
         <button class="btn-wizard-back" onclick="goStep(3)">← Retour</button>
         <button class="btn-analyze" onclick="launchAnalysis()" id="btnAnalyze">
-          <span>🔍</span> Lancer l’analyse gratuite
+          <span>🔍</span> Lancer l'analyse gratuite
         </button>
       </div>
     </div>
@@ -634,7 +627,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
 </section>
 
 <!-- RESULTS -->
-<section class="results-section" id="resultsSection" style="padding-top:24px">
+<section class="results-section" id="resultsSection">
   <div class="results-inner">
     <div class="results-header">
       <div>
@@ -677,7 +670,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
       <div class="paywall-overlay">
         <div class="paywall-icon">🔒</div>
         <div class="paywall-title">Rapport complet disponible</div>
-        <div class="paywall-desc">Débloquez l’analyse intégrale avec les explications juridiques, le plan d'action et les lettres officielles</div>
+        <div class="paywall-desc">Débloquez l'analyse intégrale avec les explications juridiques, le plan d'action et les lettres officielles</div>
         <div class="paywall-features">
           <div class="paywall-feature">Toutes les clauses analysées avec références légales</div>
           <div class="paywall-feature">Vérification encadrement loyers + trop-perçu</div>
@@ -686,21 +679,12 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
         </div>
         <div class="paywall-price">9€</div>
         <div class="paywall-price-sub">Paiement unique · Accès à vie</div>
-        <button class="btn-primary" onclick="openModal()">Débloquer l’analyse complète →</button>
+        <button class="btn-primary" onclick="openModal()">Débloquer l'analyse complète →</button>
       </div>
     </div>
 
     <!-- PAID CONTENT -->
     <div class="paid-section" id="paidSection">
-
-      <!-- BARRE EXPORT RAPPORT -->
-      <div class="export-bar">
-        <span class="export-bar-label">📥 Télécharger le rapport :</span>
-        <button class="btn-export btn-export-pdf" onclick="exportReportPDF(this)">
-          📄 Rapport PDF
-        </button>
-      </div>
-
       <div class="clauses-section" id="allClausesSection">
         <div class="clauses-title">Toutes les clauses <span id="clausesAllCount"></span></div>
         <div id="allClausesList"></div>
@@ -719,10 +703,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Lettre au propriétaire</div>
               <div class="letter-card-desc">Demande de modification / suppression des clauses illégales</div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <button class="btn-letter" onclick="generateLetter('proprio', this)">Générer →</button>
-              <button class="btn-letter-dl" id="dl-proprio" onclick="downloadLetterDocx('proprio')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
-            </div>
+            <button class="btn-letter" onclick="generateLetter('proprio', this)">Générer →</button>
           </div>
           <div id="letter-proprio-content" class="letter-content"></div>
           <div class="letter-card">
@@ -730,10 +711,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Lettre à l'agence immobilière</div>
               <div class="letter-card-desc">Si l'agence gère le bien et refuse d'intervenir</div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <button class="btn-letter" onclick="generateLetter('agence', this)">Générer →</button>
-              <button class="btn-letter-dl" id="dl-agence" onclick="downloadLetterDocx('agence')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
-            </div>
+            <button class="btn-letter" onclick="generateLetter('agence', this)">Générer →</button>
           </div>
           <div id="letter-agence-content" class="letter-content"></div>
           <div class="letter-card">
@@ -741,10 +719,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Mise en demeure</div>
               <div class="letter-card-desc">Courrier formel avant saisine de la conciliation</div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <button class="btn-letter" onclick="generateLetter('miseendemeure', this)">Générer →</button>
-              <button class="btn-letter-dl" id="dl-miseendemeure" onclick="downloadLetterDocx('miseendemeure')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
-            </div>
+            <button class="btn-letter" onclick="generateLetter('miseendemeure', this)">Générer →</button>
           </div>
           <div id="letter-miseendemeure-content" class="letter-content"></div>
           <div class="letter-card">
@@ -752,10 +727,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Demande de remboursement (loyer)</div>
               <div class="letter-card-desc">Si l'encadrement des loyers n'est pas respecté</div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <button class="btn-letter" onclick="generateLetter('remboursement', this)">Générer →</button>
-              <button class="btn-letter-dl" id="dl-remboursement" onclick="downloadLetterDocx('remboursement')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
-            </div>
+            <button class="btn-letter" onclick="generateLetter('remboursement', this)">Générer →</button>
           </div>
           <div id="letter-remboursement-content" class="letter-content"></div>
           <div class="letter-card">
@@ -763,10 +735,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
               <div class="letter-card-title">Saisine Commission de Conciliation</div>
               <div class="letter-card-desc">Si le dialogue avec le propriétaire échoue</div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <button class="btn-letter" onclick="generateLetter('conciliation', this)">Générer →</button>
-              <button class="btn-letter-dl" id="dl-conciliation" onclick="downloadLetterDocx('conciliation')" disabled title="Générez d'abord la lettre">⬇ .docx</button>
-            </div>
+            <button class="btn-letter" onclick="generateLetter('conciliation', this)">Générer →</button>
           </div>
           <div id="letter-conciliation-content" class="letter-content"></div>
         </div>
@@ -801,33 +770,6 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   </div>
 </section>
 
-<!-- GUIDE LOCATAIRE - ENCADRÉ ARTICLES -->
-<section style="padding:60px 48px; background:var(--creme); border-top:1px solid var(--border);">
-  <div style="max-width:820px;margin:0 auto;">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:32px;flex-wrap:wrap;gap:12px;">
-      <div>
-        <div style="display:inline-block;background:var(--rouge-light);color:var(--accent);font-size:0.75rem;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:12px;letter-spacing:0.05em;">Guide du locataire</div>
-        <h2 style="font-family:'Instrument Serif',serif;font-size:2rem;color:var(--noir);letter-spacing:-0.03em;">Ce que votre propriétaire<br>espère que vous ignorez</h2>
-      </div>
-      <a href="/blog.html" style="color:var(--accent);font-weight:600;font-size:0.88rem;text-decoration:none;white-space:nowrap;">Voir tous les articles →</a>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-      <a href="/blog/clauses-abusives-bail.html" style="text-decoration:none;background:white;border:1.5px solid var(--border);border-radius:16px;padding:28px;transition:all .2s;display:block;" onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='translateY(0)'">
-        <div style="font-size:1.6rem;margin-bottom:12px;">⚠️</div>
-        <div style="font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:8px;line-height:1.3;">Les 8 clauses abusives les plus fréquentes dans les baux</div>
-        <div style="font-size:0.82rem;color:var(--gris);line-height:1.6;margin-bottom:14px;">Interdiction d’animaux, dépôt trop élevé, préavis rallongé… Ces clauses sont illégales et vous pouvez les contester.</div>
-        <div style="display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-size:0.82rem;font-weight:700;">Lire l’article <span>→</span></div>
-      </a>
-      <a href="/blog/encadrement-loyers.html" style="text-decoration:none;background:white;border:1.5px solid var(--border);border-radius:16px;padding:28px;transition:all .2s;display:block;" onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='translateY(0)'">
-        <div style="font-size:1.6rem;margin-bottom:12px;">💶</div>
-        <div style="font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:8px;line-height:1.3;">Encadrement des loyers : êtes-vous concerné ?</div>
-        <div style="font-size:0.82rem;color:var(--gris);line-height:1.6;margin-bottom:14px;">Paris, Lyon, Bordeaux, Montpellier… Plus de 20 villes sont concernées. Voici comment vérifier si votre loyer est légal.</div>
-        <div style="display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-size:0.82rem;font-weight:700;">Lire l’article <span>→</span></div>
-      </a>
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <section class="faq">
   <div class="faq-inner">
@@ -841,12 +783,12 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
       <div class="faq-answer">Votre bail n'est jamais stocké sur nos serveurs. L'analyse est réalisée en temps réel et les données sont immédiatement supprimées après traitement. BailScan ne conserve aucune donnée personnelle sans votre consentement explicite.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">Quelle est la fiabilité de l’analyse ? <span class="faq-toggle">+</span></div>
+      <div class="faq-question">Quelle est la fiabilité de l'analyse ? <span class="faq-toggle">+</span></div>
       <div class="faq-answer">BailScan applique la loi du 6 juillet 1989, la loi ALUR (2014) et la loi ELAN (2018). Chaque clause détectée est accompagnée de sa référence légale exacte. BailScan est un outil d'aide — pour les litiges complexes, consultez un juriste ou l'ADIL de votre département.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">L'encadrement des loyers est-il vérifié automatiquement ? <span class="faq-toggle">+</span></div>
-      <div class="faq-answer">Oui. Dès que vous renseignez votre ville et votre loyer, BailScan vérifie si vous êtes dans une zone d'encadrement (Paris, Lyon, Bordeaux, Montpellier, Grenoble, etc.) et compare votre loyer au loyer de référence majoré. Le calcul du trop-perçu éventuel est inclus dans l’analyse complète.</div>
+      <div class="faq-answer">Oui. Dès que vous renseignez votre ville et votre loyer, BailScan vérifie si vous êtes dans une zone d'encadrement (Paris, Lyon, Bordeaux, Montpellier, Grenoble, etc.) et compare votre loyer au loyer de référence majoré. Le calcul du trop-perçu éventuel est inclus dans l'analyse complète.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">Que faire si mon propriétaire refuse de corriger les clauses illégales ? <span class="faq-toggle">+</span></div>
@@ -861,7 +803,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   <div class="footer-links">
     <a href="/blog.html">Guide locataire</a>
     <a href="/legal.html">Mentions légales & CGV</a>
-    <a href="/cdn-cgi/l/email-protection#187b77766c797b6c587a7971746b7b797636796868">Contact</a>
+    <a href="/cdn-cgi/l/email-protection#bad9d5d4cedbd9cefad8dbd3d6c9d9dbd494dbcaca">Contact</a>
   </div>
 </footer>
 
@@ -923,12 +865,20 @@ function setRadio(name, value, el) {
 // ═══════════════════════════════════════
 // LOYER TOTAL
 // ═══════════════════════════════════════
+function toggleComplementJustif() {
+  var cb = document.getElementById('has_complement_justif');
+  var box = document.getElementById('complement_justif_box');
+  if (cb && box) box.style.display = cb.checked ? 'block' : 'none';
+}
+
 function calcLoyerTotal() {
   var b = parseFloat(document.getElementById('loyer_base').value) || 0;
   var m = parseFloat(document.getElementById('loyer_majore').value) || 0;
   var c = parseFloat(document.getElementById('complement_loyer').value) || 0;
   var ch = parseFloat(document.getElementById('charges').value) || 0;
   appState.loyerBase = b; appState.loyerMajore = m; appState.complementLoyer = c; appState.charges = ch;
+  var justifEl = document.getElementById('complement_justif');
+  appState.complementJustif = (document.getElementById('has_complement_justif') && document.getElementById('has_complement_justif').checked && justifEl) ? justifEl.value : '';
   var total = b + m + c + ch;
   if (b > 0) {
     document.getElementById('loyerBreakdown').style.display = 'block';
@@ -1087,66 +1037,33 @@ function launchAnalysis() {
     loyer_base: appState.loyerBase,
     loyer_majore: appState.loyerMajore,
     complement_loyer: appState.complementLoyer,
+    complement_justif: appState.complementJustif || '',
     charges: appState.charges,
     depot: parseFloat(document.getElementById('depot').value) || 0,
   };
 
-  // Si PDF : vérifier la taille AVANT d'envoyer (évite l'erreur Vercel 413)
+  var payload;
   if (appState.uploadMode === 'upload') {
-    var sizeKB = (appState.pdfBase64.length * 0.75) / 1024;
-    if (sizeKB > 3500) {
-      hideLoading();
-      alert('Votre PDF est trop volumineux (' + Math.round(sizeKB/1024*10)/10 + ' Mo).\n\nAstuce : ouvrez votre bail, sélectionnez tout le texte (Ctrl+A), copiez (Ctrl+C), puis collez-le dans l\'onglet "Coller le texte" pour contourner cette limite.');
-      return;
-    }
-    sendAnalysis({ pdf: appState.pdfBase64, context: contextInfo });
+    payload = JSON.stringify({ pdf: appState.pdfBase64, context: contextInfo });
   } else {
-    sendAnalysis({ text: textContent, context: contextInfo });
+    payload = JSON.stringify({ text: textContent, context: contextInfo });
   }
-}
 
-function sendAnalysis(payload) {
   fetch('/api/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    body: payload
   })
-  .then(function(r) {
-    // Intercepter les erreurs HTTP avant de parser le JSON
-    if (!r.ok) {
-      if (r.status === 413) {
-        throw new Error('PDF trop volumineux. Utilisez l\'onglet "Coller le texte" à la place.');
-      }
-      if (r.status === 504 || r.status === 503) {
-        throw new Error('L\'analyse a pris trop de temps (timeout serveur).\n\nAstuce : collez le texte de votre bail dans l\'onglet "Coller le texte" — c\'est plus rapide que le PDF.');
-      }
-      throw new Error('Erreur serveur (' + r.status + '). Réessayez ou collez le texte manuellement.');
-    }
-    return r.text(); // text() d'abord pour éviter l'erreur JSON
-  })
-  .then(function(text) {
-    try {
-      return JSON.parse(text);
-    } catch(e) {
-      // Si Vercel retourne du HTML d'erreur
-      if (text.includes('Request Entity') || text.includes('413')) {
-        throw new Error('PDF trop volumineux. Utilisez l\'onglet "Coller le texte" à la place.');
-      }
-      throw new Error('Réponse invalide du serveur. Réessayez ou collez le texte manuellement.');
-    }
-  })
+  .then(function(r) { return r.json(); })
   .then(function(data) {
     hideLoading();
-    if (data.error) {
-      alert('Erreur : ' + data.error);
-      return;
-    }
+    if (data.error) { alert('Erreur: ' + data.error); return; }
     analysisResult = data;
     displayResults(data);
   })
   .catch(function(err) {
     hideLoading();
-    alert(err.message);
+    alert('Erreur lors de l\'analyse : ' + err.message);
   });
 }
 
@@ -1221,46 +1138,33 @@ function displayResults(data) {
   document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Liens simulateurs officiels encadrement des loyers par ville
+// Simulateurs officiels par ville
 var SIMULATEURS = {
-  'paris': { label: 'Paris — Simulateur DRIHL', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'lyon': { label: 'Lyon — Simulateur officiel', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'villeurbanne': { label: 'Villeurbanne — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'bordeaux': { label: 'Bordeaux — Simulateur officiel', url: 'https://www.bordeaux-metropole.fr/Nos-projets/Habitat-Logement/Encadrement-des-loyers' },
+  'bordeaux': { label: 'Bordeaux — Vérifier mon loyer', url: 'https://simulateur-loyer.bordeaux-metropole.fr/' },
+  'paris': { label: 'Paris — Simulateur DRIHL', url: 'https://www.service-public.gouv.fr/particuliers/vosdroits/R46641' },
+  'lyon': { label: 'Lyon — Simulateur Toodego', url: 'https://toodego.com/sve/verifier-loyer-conforme/' },
+  'villeurbanne': { label: 'Villeurbanne — Simulateur', url: 'https://toodego.com/sve/verifier-loyer-conforme/' },
   'montpellier': { label: 'Montpellier — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
   'grenoble': { label: 'Grenoble — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'lille': { label: 'Lille — Simulateur DDTM', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'roubaix': { label: 'Roubaix — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'tourcoing': { label: 'Tourcoing — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'nanterre': { label: 'Nanterre — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'montreuil': { label: 'Montreuil — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'saint-denis': { label: 'Saint-Denis — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'bobigny': { label: 'Bobigny — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'creteil': { label: 'Créteil — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
-  'aubervilliers': { label: 'Aubervilliers — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' },
+  'lille': { label: 'Lille — Simulateur', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers' }
 };
 
 function getSimulateurLinks(ville) {
   if (!ville) return [];
   var v = ville.toLowerCase();
   var links = [];
-  // Toujours proposer le simulateur national
-  links.push({ label: '🔍 Simulateur officiel service-public.fr', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers', primary: true });
-  // Lien spécifique si dispo
+  links.push({ label: 'Simulateur officiel service-public.fr', url: 'https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers', primary: true });
   for (var key in SIMULATEURS) {
-    if (v.includes(key) && key !== '') {
-      links.push({ label: SIMULATEURS[key].label, url: SIMULATEURS[key].url });
-    }
+    if (v.includes(key)) links.push({ label: SIMULATEURS[key].label, url: SIMULATEURS[key].url });
   }
-  // Lien ADIL toujours utile
-  links.push({ label: '📞 Contacter l\'ADIL de mon département', url: 'https://www.anil.org/lanil-et-les-adil/votre-adil/' });
+  links.push({ label: 'Contacter l’ADIL de mon département', url: 'https://www.anil.org/lanil-et-les-adil/votre-adil/' });
   return links;
 }
 
 function renderLoyerCheck(data) {
   var el = document.getElementById('loyerCheckResult');
   if (!data.loyer && !appState.loyerBase) { el.innerHTML = ''; return; }
-  var loy = data.loyer || { statut: 'ok', analyse: 'Aucune information de loyer fournie.' };
+  var loy = data.loyer || { statut: 'ok', analyse: '' };
   var cls = loy.statut === 'danger' ? 'danger' : loy.statut === 'warning' ? 'warning' : 'ok';
   var icons = { danger: '🚨', warning: '⚠️', ok: '✅' };
   var icon = icons[loy.statut] || '🔍';
@@ -1270,21 +1174,21 @@ function renderLoyerCheck(data) {
   var totalLoyer = (appState.loyerBase || 0) + (appState.loyerMajore || 0) + (appState.complementLoyer || 0);
   if (totalLoyer > 0 || loy.plafond) {
     html += '<div class="loyer-check-amounts">';
-    if (appState.loyerBase > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer hors charges</div><div class="amount-pill-val">' + appState.loyerBase + ' €/mois</div></div>';
-    if (appState.loyerMajore > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer ref. majoré</div><div class="amount-pill-val">' + appState.loyerMajore + ' €/mois</div></div>';
+    if (appState.loyerMajore > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer réf. majoré</div><div class="amount-pill-val">' + appState.loyerMajore + ' €/mois</div></div>';
     if (appState.complementLoyer > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Complément de loyer</div><div class="amount-pill-val">' + appState.complementLoyer + ' €</div></div>';
     if (loy.plafond) html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal estimé</div><div class="amount-pill-val">' + loy.plafond + ' €/mois</div></div>';
     if (loy.trop_percu) html += '<div class="amount-pill"><div class="amount-pill-label">Trop-perçu estimé</div><div class="amount-pill-val" style="color:var(--accent)">' + loy.trop_percu + '</div></div>';
     html += '</div>';
   }
-  // Liens simulateurs officiels
-  var simLinks = getSimulateurLinks(appState.ville || document.getElementById('ville').value);
+  // Liens simulateurs
+  var simLinks = getSimulateurLinks(appState.ville || '');
   if (simLinks.length > 0) {
     html += '<div class="encadrement-links">';
     html += '<div class="encadrement-links-title">🔗 Vérifiez sur les simulateurs officiels</div>';
     html += '<div class="encadrement-links-grid">';
     simLinks.forEach(function(l) {
-      html += '<a href="' + l.url + '" target="_blank" rel="noopener" class="encadrement-link' + (l.primary ? '" style="background:var(--vert);color:white' : '') + '">' + l.label + ' ↗</a>';
+      var style = l.primary ? ' style="background:var(--vert);color:white"' : '';
+      html += '<a href="' + l.url + '" target="_blank" rel="noopener" class="encadrement-link"' + style + '>' + l.label + ' ↗</a>';
     });
     html += '</div></div>';
   }
@@ -1423,9 +1327,6 @@ function generateLetter(type, btn) {
     btn.textContent = '↑ Masquer'; btn.classList.remove('loading'); btn.disabled = false;
     contentEl.textContent = data.letter || 'Erreur de génération';
     contentEl.style.display = 'block';
-    // Activer le bouton .docx
-    var dlBtn = document.getElementById('dl-' + type);
-    if (dlBtn) { dlBtn.disabled = false; dlBtn.title = 'Télécharger en .docx'; }
     var copyId = 'copy-' + type;
     if (!document.getElementById(copyId)) {
       var copyBtn = document.createElement('button');
@@ -1458,10 +1359,4 @@ function resetApp() {
   document.getElementById('typeSelectorBlock').style.display = 'grid';
   document.getElementById('paidSection').style.display = 'none';
   document.getElementById('paywallSection').style.display = 'block';
-  goStep(1);
-  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-}
-
-</script>
-</body>
-</html>
+  goSt
