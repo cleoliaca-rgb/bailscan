@@ -252,9 +252,9 @@ select.form-input { cursor:pointer; }
 .paywall-icon { font-size:2.4rem; margin-bottom:16px; }
 .paywall-title { font-family:'Instrument Serif',serif; font-size:1.8rem; color:var(--noir); margin-bottom:10px; }
 .paywall-desc { font-size:0.92rem; color:var(--gris); margin-bottom:28px; line-height:1.6; max-width:460px; margin-left:auto; margin-right:auto; }
-.paywall-features { display:flex; flex-direction:column; gap:8px; max-width:360px; margin:0 auto 28px; }
-.paywall-feature { display:flex; align-items:center; gap:10px; font-size:0.88rem; color:var(--texte); }
-.paywall-feature::before { content:'✓'; color:var(--vert); font-weight:700; flex-shrink:0; }
+.paywall-features { display:flex; flex-direction:column; gap:10px; max-width:400px; margin:0 auto 28px; text-align:left; }
+.paywall-feature { display:grid; grid-template-columns:20px 1fr; align-items:start; gap:8px; font-size:0.88rem; color:var(--texte); }
+.paywall-feature::before { content:'✓'; color:var(--vert); font-weight:800; font-size:1rem; line-height:1.3; }
 .paywall-price { font-family:'Instrument Serif',serif; font-size:2.8rem; color:var(--accent); margin-bottom:6px; }
 .paywall-price-sub { font-size:0.8rem; color:var(--gris); margin-bottom:24px; }
 
@@ -276,7 +276,7 @@ select.form-input { cursor:pointer; }
 .btn-letter { background:var(--creme); border:1.5px solid var(--border); color:var(--noir); padding:9px 18px; border-radius:8px; font-size:0.82rem; font-weight:600; cursor:pointer; transition:all .2s; }
 .btn-letter:hover { border-color:var(--accent); color:var(--accent); }
 .btn-letter.loading { opacity:0.6; cursor:not-allowed; }
-.letter-content { display:none; background:var(--creme); border-radius:10px; padding:20px; margin-top:14px; font-size:0.85rem; line-height:1.8; color:var(--texte); white-space:pre-wrap; }
+.letter-content { display:none; background:#fafaf8; border:1.5px solid var(--border); border-radius:12px; padding:28px 32px; margin-top:14px; }
 
 /* MODAL */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:300; align-items:center; justify-content:center; padding:20px; }
@@ -351,6 +351,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   .footer-links { flex-wrap:wrap; justify-content:center; }
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -685,6 +686,18 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
 
     <!-- PAID CONTENT -->
     <div class="paid-section" id="paidSection">
+
+      <!-- EXPORT PDF RAPPORT -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir)">Votre rapport BailScan</div>
+          <div id="reportDate" style="font-size:0.8rem;color:var(--gris)"></div>
+        </div>
+        <button onclick="exportReportPDF(this)" style="display:flex;align-items:center;gap:8px;background:var(--accent);color:white;border:none;padding:11px 22px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all .2s">
+          📄 Télécharger mon rapport PDF
+        </button>
+      </div>
+
       <div class="clauses-section" id="allClausesSection">
         <div class="clauses-title">Toutes les clauses <span id="clausesAllCount"></span></div>
         <div id="allClausesList"></div>
@@ -1136,6 +1149,9 @@ function displayResults(data) {
   document.getElementById('freeClausesList').innerHTML = freeClauses.map(renderClause).join('');
 
   document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+  // Date rapport
+  var dateEl = document.getElementById('reportDate');
+  if (dateEl) dateEl.textContent = 'Analyse effectuée le ' + new Date().toLocaleDateString('fr-FR');
 }
 
 // Simulateurs officiels par ville
@@ -1297,6 +1313,116 @@ window.addEventListener('load', checkPaymentReturn);
 // ═══════════════════════════════════════
 // LETTRES
 // ═══════════════════════════════════════
+function exportReportPDF(btn) {
+  if (!analysisResult) return;
+  btn.textContent = '⏳ Génération…'; btn.disabled = true;
+
+  try {
+    var jsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!jsPDF) { alert("Le générateur PDF n'est pas chargé. Réessayez dans quelques secondes."); btn.textContent = '📄 Télécharger mon rapport PDF'; btn.disabled = false; return; }
+    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    var pageW = 210, margin = 18, y = 20, lineH = 6;
+
+    function addLine(text, opts) {
+      opts = opts || {};
+      if (y > 270) { doc.addPage(); y = 20; }
+      if (opts.size) doc.setFontSize(opts.size);
+      if (opts.bold) doc.setFont('helvetica','bold'); else doc.setFont('helvetica','normal');
+      if (opts.color) doc.setTextColor(opts.color[0],opts.color[1],opts.color[2]); else doc.setTextColor(30,30,30);
+      var maxW = opts.maxW || (pageW - margin*2);
+      var lines = doc.splitTextToSize(text || '', maxW);
+      lines.forEach(function(l) {
+        if (y > 272) { doc.addPage(); y = 20; }
+        doc.text(l, margin, y);
+        y += lineH;
+      });
+      y += (opts.after || 0);
+    }
+
+    // En-tête
+    doc.setFillColor(20,20,20); doc.rect(0,0,210,28,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255,255,255);
+    doc.text('BailScan', margin, 14);
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(200,200,200);
+    doc.text('Rapport d\'analyse locative', margin, 21);
+    doc.setFontSize(9); doc.text('bailscan.app', 210 - margin, 21, {align:'right'});
+    y = 36;
+
+    // Date
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(120,120,120);
+    doc.text('Analyse effectuée le ' + new Date().toLocaleDateString('fr-FR'), margin, y); y += 10;
+
+    // Score
+    var score = analysisResult.score || 0;
+    var scoreColor = score >= 70 ? [34,139,34] : score >= 45 ? [200,100,0] : [180,30,30];
+    doc.setFillColor(scoreColor[0],scoreColor[1],scoreColor[2]);
+    doc.circle(margin+8, y+2, 8, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
+    doc.text(String(score), margin+8, y+4, {align:'center'});
+    doc.setTextColor(30,30,30); doc.setFontSize(14);
+    doc.text(analysisResult.verdict_titre || '', margin+22, y+4);
+    y += 18;
+
+    addLine(analysisResult.resume || '', {size:9, color:[60,60,60], after:8});
+
+    // Encadrement loyers
+    if (appState.loyerMajore > 0 || analysisResult.loyer) {
+      doc.setFillColor(240,247,240); doc.rect(margin-2, y-2, pageW-margin*2+4, 8,'F');
+      addLine('Vérification encadrement des loyers', {size:10, bold:true, color:[34,100,34], after:2});
+      if (analysisResult.loyer && analysisResult.loyer.analyse) addLine(analysisResult.loyer.analyse, {size:8.5, color:[50,50,50], after:6});
+    }
+
+    // Clauses
+    addLine('Clauses analysées', {size:12, bold:true, after:4});
+    var clauses = analysisResult.clauses_abusives || [];
+    clauses.forEach(function(c, i) {
+      if (y > 260) { doc.addPage(); y = 20; }
+      var clr = c.type === 'danger' ? [180,30,30] : c.type === 'warning' ? [180,90,0] : [34,100,34];
+      var badge = c.type === 'danger' ? 'ILLÉGAL' : c.type === 'warning' ? 'ATTENTION' : 'OK';
+      doc.setFillColor(clr[0],clr[1],clr[2]); doc.roundedRect(margin,y,18,5,1,1,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(255,255,255);
+      doc.text(badge, margin+9, y+3.5, {align:'center'});
+      doc.setTextColor(30,30,30); doc.setFontSize(10);
+      doc.text((c.titre||''), margin+22, y+3.5);
+      y += 8;
+      addLine(c.description || '', {size:8.5, color:[60,60,60]});
+      if (c.explication_juridique) addLine(c.explication_juridique, {size:8, color:[80,80,80]});
+      if (c.base_legale && c.base_legale.length) {
+        doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(180,30,30);
+        doc.text((c.base_legale||[]).join(' · '), margin, y); y += lineH;
+      }
+      if (c.action) addLine('→ ' + c.action, {size:8, bold:true, color:[30,100,30]});
+      y += 4;
+    });
+
+    // Plan d'action
+    if (analysisResult.plan_action && analysisResult.plan_action.length) {
+      if (y > 230) { doc.addPage(); y = 20; }
+      addLine('Plan d\'action recommandé', {size:12, bold:true, after:4});
+      analysisResult.plan_action.forEach(function(step, i) {
+        addLine((i+1) + '. ' + step, {size:9, after:2});
+      });
+    }
+
+    // Pied de page
+    var pageCount = doc.internal.getNumberOfPages();
+    for (var i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
+      doc.text('BailScan — bailscan.app — Page ' + i + '/' + pageCount, 105, 290, {align:'center'});
+    }
+
+    doc.save('rapport-bailscan-' + new Date().toISOString().slice(0,10) + '.pdf');
+    btn.textContent = '✓ PDF téléchargé !';
+    setTimeout(function(){ btn.textContent = '📄 Télécharger mon rapport PDF'; btn.disabled = false; }, 3000);
+
+  } catch(err) {
+    console.error('PDF error:', err);
+    btn.textContent = '📄 Télécharger mon rapport PDF'; btn.disabled = false;
+    alert('Erreur lors de la génération du PDF : ' + err.message);
+  }
+}
+
 function generateLetter(type, btn) {
   if (!analysisResult) return;
   var contentEl = document.getElementById('letter-' + type + '-content');
@@ -1325,21 +1451,54 @@ function generateLetter(type, btn) {
   .then(function(r) { return r.json(); })
   .then(function(data) {
     btn.textContent = '↑ Masquer'; btn.classList.remove('loading'); btn.disabled = false;
-    contentEl.textContent = data.letter || 'Erreur de génération';
+    var letterText = data.letter || 'Erreur de génération';
+    // Si Claude répond en JSON au lieu de texte brut, extraire le premier champ texte long
+    if (letterText.trim().startsWith('{')) {
+      try {
+        var parsed = JSON.parse(letterText);
+        var found = '';
+        for (var k in parsed) {
+          if (typeof parsed[k] === 'string' && parsed[k].length > found.length) found = parsed[k];
+        }
+        if (found) letterText = found;
+      } catch(e) {}
+    }
+    // Nettoyer les \n littéraux éventuels
+    letterText = letterText.replace(/\\n/g, '\n');
+    // Afficher avec <pre> pour respecter les sauts de ligne
+    var safeText = letterText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    contentEl.innerHTML = '<pre style="white-space:pre-wrap;font-family:Georgia,serif;font-size:0.88rem;line-height:1.9;color:var(--texte);margin:0;text-align:left;padding:0">' + safeText + '</pre>';
     contentEl.style.display = 'block';
     var copyId = 'copy-' + type;
     if (!document.getElementById(copyId)) {
+      var btnRow = document.createElement('div');
+      btnRow.id = copyId;
+      btnRow.style.cssText = 'display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;';
       var copyBtn = document.createElement('button');
-      copyBtn.id = copyId;
       copyBtn.textContent = '📋 Copier la lettre';
-      copyBtn.style.cssText = 'margin-top:12px;background:var(--noir);color:white;border:none;padding:10px 20px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;display:block;';
+      copyBtn.style.cssText = 'background:var(--noir);color:white;border:none;padding:10px 20px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;';
       copyBtn.onclick = function() {
-        navigator.clipboard.writeText(contentEl.textContent).then(function() {
+        var preEl = contentEl.querySelector('pre');
+        var txt = preEl ? preEl.textContent : contentEl.textContent;
+        navigator.clipboard.writeText(txt).then(function() {
           copyBtn.textContent = '✓ Copiée !';
           setTimeout(function() { copyBtn.textContent = '📋 Copier la lettre'; }, 2000);
         });
       };
-      contentEl.parentNode.insertBefore(copyBtn, contentEl.nextSibling);
+      var dlBtn = document.createElement('button');
+      dlBtn.textContent = '⬇ Télécharger (.txt)';
+      dlBtn.style.cssText = 'background:white;color:var(--noir);border:1.5px solid var(--border);padding:10px 20px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;';
+      dlBtn.onclick = function() {
+        var preEl = contentEl.querySelector('pre');
+        var txt = preEl ? preEl.textContent : contentEl.textContent;
+        var a = document.createElement('a');
+        a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(txt);
+        a.download = 'lettre-bailscan-' + type + '.txt';
+        a.click();
+      };
+      btnRow.appendChild(copyBtn);
+      btnRow.appendChild(dlBtn);
+      contentEl.parentNode.insertBefore(btnRow, contentEl.nextSibling);
     }
   })
   .catch(function(e) {
