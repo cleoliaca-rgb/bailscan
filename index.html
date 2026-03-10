@@ -350,6 +350,50 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
   footer { flex-direction:column; gap:20px; text-align:center; }
   .footer-links { flex-wrap:wrap; justify-content:center; }
 }
+
+/* Simulateurs officiels */
+.encadrement-links { margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+.encadrement-links-title { font-size:0.78rem; font-weight:700; color:var(--gris); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; }
+.encadrement-links-grid { display:flex; flex-direction:column; gap:8px; }
+.encadrement-link { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-radius:9px; border:1.5px solid var(--border); background:white; color:var(--noir); font-size:0.83rem; font-weight:600; text-decoration:none; transition:all .2s; }
+.encadrement-link:hover { border-color:var(--accent); color:var(--accent); background:var(--creme); }
+.encadrement-link.primary { background:var(--vert); color:white; border-color:var(--vert); }
+.encadrement-link.primary:hover { opacity:0.9; }
+
+/* Section Blog accueil */
+.blog-home { padding:60px 48px; background:var(--creme); border-top:1px solid var(--border); }
+.blog-home-inner { max-width:1000px; margin:0 auto; }
+.blog-home-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:32px; flex-wrap:wrap; gap:12px; }
+.blog-home-title { font-family:'Instrument Serif',serif; font-size:2rem; color:var(--noir); }
+.blog-home-sub { font-size:0.85rem; color:var(--gris); margin-top:4px; }
+.blog-grid-home { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+.blog-card-home { background:white; border:1.5px solid var(--border); border-radius:14px; padding:20px 22px; text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:8px; transition:all .2s; }
+.blog-card-home:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.07); }
+.blog-card-tag { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); }
+.blog-card-title-home { font-weight:700; font-size:0.92rem; color:var(--noir); line-height:1.4; }
+.blog-card-desc-home { font-size:0.8rem; color:var(--gris); line-height:1.6; }
+.btn-blog-all { display:inline-flex; align-items:center; gap:8px; margin-top:24px; padding:12px 24px; background:var(--noir); color:white; border-radius:10px; font-size:0.88rem; font-weight:700; text-decoration:none; transition:all .2s; }
+.btn-blog-all:hover { background:var(--accent); }
+
+/* Section Pro accueil */
+.pro-home { padding:60px 48px; background:var(--noir); border-top:1px solid #333; }
+.pro-home-inner { max-width:1000px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap; }
+.pro-home-text { flex:1; min-width:280px; }
+.pro-home-badge { display:inline-block; background:var(--accent); color:white; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; padding:4px 10px; border-radius:5px; margin-bottom:16px; }
+.pro-home-title { font-family:'Instrument Serif',serif; font-size:2rem; color:white; margin-bottom:12px; line-height:1.2; }
+.pro-home-desc { font-size:0.9rem; color:rgba(255,255,255,0.65); line-height:1.75; margin-bottom:24px; }
+.pro-home-features { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; }
+.pro-home-feature { display:flex; align-items:center; gap:10px; font-size:0.85rem; color:rgba(255,255,255,0.8); }
+.pro-home-feature::before { content:"✓"; color:#4ade80; font-weight:700; flex-shrink:0; }
+.btn-pro { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; background:white; color:var(--noir); border-radius:10px; font-size:0.9rem; font-weight:700; text-decoration:none; transition:all .2s; }
+.btn-pro:hover { background:var(--creme); }
+
+@media(max-width:640px){
+  .blog-grid-home { grid-template-columns:1fr; }
+  .blog-home { padding:40px 20px; }
+  .pro-home { padding:40px 20px; }
+  .pro-home-inner { flex-direction:column; }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -514,7 +558,7 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
       <div class="panel-sub">Nous vérifierons si votre loyer respecte l'encadrement légal</div>
       <div class="form-grid cols3">
         <div class="form-group">
-          <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="color:var(--accent);font-size:0.8rem">*</span></label>
+          <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— facultatif si absent du bail</span></label>
           <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1007" min="0" oninput="calcLoyerTotal()">
           <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Montant du loyer hors charges indiqué dans le bail</small>
         </div>
@@ -806,6 +850,68 @@ footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; ju
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">Que faire si mon propriétaire refuse de corriger les clauses illégales ? <span class="faq-toggle">+</span></div>
       <div class="faq-answer">BailScan génère une lettre de mise en demeure puis un dossier de saisine pour la Commission Départementale de Conciliation (CDC). Cette procédure est gratuite et sans avocat. En cas d'échec, le tribunal judiciaire peut condamner le propriétaire au remboursement + dommages et intérêts.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG HOME -->
+<section class="blog-home">
+  <div class="blog-home-inner">
+    <div class="blog-home-header">
+      <div>
+        <h2 class="blog-home-title">Guide du locataire</h2>
+        <div class="blog-home-sub">Tout ce que vous devez savoir sur vos droits — rédigé par des experts</div>
+      </div>
+    </div>
+    <div class="blog-grid-home">
+      <a href="/blog/clauses-abusives-bail.html" class="blog-card-home">
+        <div class="blog-card-tag">Droits & bail</div>
+        <div class="blog-card-title-home">Les 10 clauses illégales les plus courantes dans les baux français</div>
+        <div class="blog-card-desc-home">Interdiction des animaux, clause de solidarité abusive, entretien... découvrez les pièges les plus fréquents.</div>
+      </a>
+      <a href="/blog/comment-recuperer-depot-garantie.html" class="blog-card-home">
+        <div class="blog-card-tag">Dépôt de garantie</div>
+        <div class="blog-card-title-home">Comment récupérer son dépôt de garantie quand le propriétaire refuse</div>
+        <div class="blog-card-desc-home">Délais légaux, retenues abusives, recours possibles — tout ce qu'il faut savoir.</div>
+      </a>
+      <a href="/blog/encadrement-loyers.html" class="blog-card-home">
+        <div class="blog-card-tag">Loyer</div>
+        <div class="blog-card-title-home">Encadrement des loyers : votre loyer est-il légal ?</div>
+        <div class="blog-card-desc-home">Paris, Lyon, Bordeaux... Vérifiez si votre loyer respecte le plafond légal et calculez le trop-perçu.</div>
+      </a>
+      <a href="/blog/interdiction-animaux-bail.html" class="blog-card-home">
+        <div class="blog-card-tag">Droits & bail</div>
+        <div class="blog-card-title-home">Mon propriétaire peut-il m'interdire d'avoir un animal ?</div>
+        <div class="blog-card-desc-home">La clause d'interdiction des animaux est illégale dans la plupart des cas. Vos droits expliqués.</div>
+      </a>
+      <a href="/blog/depot-garantie-2-mois-illegal.html" class="blog-card-home">
+        <div class="blog-card-tag">Dépôt de garantie</div>
+        <div class="blog-card-title-home">Dépôt de garantie de 2 mois : illégal pour une location vide</div>
+        <div class="blog-card-desc-home">Pour un bail de location vide, le dépôt est limité à 1 mois de loyer hors charges.</div>
+      </a>
+      <a href="/blog/lettre-mise-en-demeure-proprietaire.html" class="blog-card-home">
+        <div class="blog-card-tag">Modèles de lettres</div>
+        <div class="blog-card-title-home">Lettre de mise en demeure à son propriétaire : modèle gratuit</div>
+        <div class="blog-card-desc-home">Modèle complet, références légales incluses, à envoyer en recommandé avec accusé de réception.</div>
+      </a>
+    </div>
+    <a href="/blog.html" class="btn-blog-all">Voir tous les guides →</a>
+  </div>
+</section>
+
+<!-- PRO HOME -->
+<section class="pro-home">
+  <div class="pro-home-inner">
+    <div class="pro-home-text">
+      <div class="pro-home-badge">Professionnels</div>
+      <h2 class="pro-home-title">Vous êtes agence ou gestionnaire ?</h2>
+      <div class="pro-home-desc">Intégrez BailScan à votre processus de rédaction. Détectez les clauses problématiques avant la signature, protégez vos clients et réduisez vos litiges.</div>
+      <div class="pro-home-features">
+        <div class="pro-home-feature">Analyse illimitée de baux en volume</div>
+        <div class="pro-home-feature">Rapport PDF professionnel à votre logo</div>
+        <div class="pro-home-feature">Intégration API sur devis</div>
+      </div>
+      <a href="/pro.html" class="btn-pro">Découvrir l'offre pro →</a>
     </div>
   </div>
 </section>
@@ -1203,8 +1309,8 @@ function renderLoyerCheck(data) {
     html += '<div class="encadrement-links-title">🔗 Vérifiez sur les simulateurs officiels</div>';
     html += '<div class="encadrement-links-grid">';
     simLinks.forEach(function(l) {
-      var style = l.primary ? ' style="background:var(--vert);color:white"' : '';
-      html += '<a href="' + l.url + '" target="_blank" rel="noopener" class="encadrement-link"' + style + '>' + l.label + ' ↗</a>';
+      var extraClass = l.primary ? ' primary' : '';
+      html += '<a href="' + l.url + '" target="_blank" rel="noopener" class="encadrement-link' + extraClass + '">' + l.label + '<span style="opacity:0.6;font-size:0.9em">↗</span></a>';
     });
     html += '</div></div>';
   }
