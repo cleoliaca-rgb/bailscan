@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentions légales & CGV — BailScan</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #0d0d0d; --creme: #f5f0e8; --accent: #c84b2f; --accent2: #e8a87c;
+    --vert: #2d6a4f; --vert-light: #e8f5ee; --rouge-light: #fdf0ed;
+    --texte: #1a1a1a; --gris: #6b6b6b; --border: #d8d0c4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); }
+  .logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; }
+  .btn-nav { background: var(--noir); color: var(--creme) !important; padding: 10px 22px; border-radius: 8px; font-weight: 500; }
+
+  .page-wrap { max-width: 780px; margin: 0 auto; padding: 120px 48px 80px; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 4px; background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 5px; margin-bottom: 48px; }
+  .tab { flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: var(--gris); transition: all 0.2s; border: none; background: none; font-family: 'DM Sans', sans-serif; }
+  .tab.active { background: var(--noir); color: white; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* TYPOGRAPHY */
+  .page-title { font-family: 'Instrument Serif', serif; font-size: 2.4rem; color: var(--noir); letter-spacing: -0.03em; margin-bottom: 8px; }
+  .page-subtitle { color: var(--gris); font-size: 0.9rem; margin-bottom: 48px; }
+  .page-subtitle strong { color: var(--accent); }
+
+  h2 { font-family: 'Instrument Serif', serif; font-size: 1.4rem; color: var(--noir); margin: 40px 0 16px; padding-top: 32px; border-top: 1px solid var(--border); }
+  h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  h3 { font-size: 1rem; font-weight: 600; color: var(--noir); margin: 24px 0 10px; }
+  p { font-size: 0.92rem; line-height: 1.8; color: var(--texte); margin-bottom: 14px; }
+  ul { padding-left: 20px; margin-bottom: 14px; }
+  ul li { font-size: 0.92rem; line-height: 1.8; color: var(--texte); margin-bottom: 6px; }
+
+  .info-box { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; }
+  .info-box p { margin-bottom: 6px; }
+  .info-box p:last-child { margin-bottom: 0; }
+  .info-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); margin-bottom: 12px; }
+
+  .warning-box { background: #fff8e1; border: 1.5px solid #f59e0b; border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
+  .warning-box p { color: #92400e; margin-bottom: 0; font-size: 0.88rem; }
+
+  .article { margin-bottom: 32px; }
+  .article-num { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+
+  .last-update { font-size: 0.8rem; color: var(--gris); margin-bottom: 40px; }
+
+  footer { padding: 32px 48px; border-top: 1px solid var(--border); text-align: center; color: var(--gris); font-size: 0.82rem; }
+
+  @media (max-width: 768px) {
+    header { padding: 16px 20px; }
+    .page-wrap { padding: 100px 20px 60px; }
+    footer { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">Bail<span>Scan</span></a>
+  <nav>
+    <a href="/" class="btn-nav">Analyser mon bail</a>
+  </nav>
+</header>
+
+<div class="page-wrap">
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('mentions')">Mentions légales</button>
+    <button class="tab" onclick="showTab('cgv')">Conditions générales de vente</button>
+    <button class="tab" onclick="showTab('confidentialite')">Confidentialité</button>
+  </div>
+
+  <!-- MENTIONS LÉGALES -->
+  <div class="tab-content active" id="tab-mentions">
+    <div class="page-title">Mentions légales</div>
+    <div class="last-update">Dernière mise à jour : mars 2025</div>
+
+    <h2>Éditeur du site</h2>
+    <div class="info-box">
+      <div class="info-label">Responsable de publication</div>
+      <p><strong>Nom :</strong> [TON PRENOM NOM]</p>
+      <p><strong>Adresse :</strong> [TON ADRESSE POSTALE]</p>
+      <p><strong>Email :</strong> contact@bailscan.fr</p>
+      <p><strong>Statut :</strong> Particulier — personne physique</p>
+    </div>
+
+    <div class="warning-box">
+      <p>⚠️ BailScan est édité par un particulier à titre personnel. Ce site ne constitue pas une activité commerciale régulière au sens du Code de commerce. L'analyse fournie est un outil d'aide à la décision et ne remplace pas les conseils d'un professionnel du droit.</p>
+    </div>
+
+    <h2>Hébergement</h2>
+    <div class="info-box">
+      <div class="info-label">Hébergeur</div>
+      <p><strong>Société :</strong> Vercel Inc.</p>
+      <p><strong>Adresse :</strong> 340 Pine Street, Suite 701, San Francisco, CA 94104, États-Unis</p>
+      <p><strong>Site :</strong> vercel.com</p>
+    </div>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>L'ensemble du contenu présent sur le site BailScan (textes, visuels, interface, code) est la propriété exclusive de l'éditeur. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite.</p>
+    <p>Les analyses générées par l'intelligence artificielle sont produites dynamiquement et ne constituent pas une œuvre originale au sens du droit d'auteur.</p>
+
+    <h2>Responsabilité</h2>
+    <p>BailScan est un outil d'aide à la lecture des baux d'habitation. Les analyses fournies sont générées par intelligence artificielle (Claude d'Anthropic) et ont une valeur indicative uniquement.</p>
+    <p>L'éditeur ne peut être tenu responsable :</p>
+    <ul>
+      <li>Des erreurs ou omissions dans les analyses générées</li>
+      <li>Des décisions prises par l'utilisateur sur la base des résultats</li>
+      <li>De l'exactitude des informations légales fournies, la législation pouvant évoluer</li>
+      <li>Des dommages directs ou indirects résultant de l'utilisation du service</li>
+    </ul>
+    <p>Pour toute situation litigieuse sérieuse, il est fortement recommandé de consulter un avocat spécialisé en droit immobilier ou de contacter une association de défense des locataires (CLCV, UNPI, etc.).</p>
+
+    <h2>Cookies</h2>
+    <p>BailScan n'utilise pas de cookies de tracking ou publicitaires. Seuls des données techniques nécessaires au fonctionnement du service (sessionStorage navigateur) sont utilisées temporairement et ne sont jamais transmises à des tiers.</p>
+
+    <h2>Paiement</h2>
+    <p>Les paiements sont traités exclusivement par Stripe Inc. BailScan n'a jamais accès aux données bancaires des utilisateurs. Stripe est certifié PCI DSS niveau 1.</p>
+
+    <h2>Droit applicable</h2>
+    <p>Le présent site est soumis au droit français. Tout litige relatif à son utilisation sera soumis à la compétence des tribunaux français.</p>
+
+    <h2>Contact</h2>
+    <p>Pour toute question relative aux mentions légales : <strong>contact@bailscan.fr</strong></p>
+  </div>
+
+  <!-- CGV -->
+  <div class="tab-content" id="tab-cgv">
+    <div class="page-title">Conditions générales de vente</div>
+    <div class="last-update">Dernière mise à jour : mars 2025</div>
+
+    <div class="warning-box">
+      <p>⚠️ En procédant au paiement sur BailScan, vous acceptez sans réserve les présentes conditions générales de vente.</p>
+    </div>
+
+    <div class="article">
+      <div class="article-num">Article 1</div>
+      <h2>Objet et champ d'application</h2>
+      <p>Les présentes CGV régissent les relations contractuelles entre BailScan (ci-après "le Vendeur") et tout utilisateur procédant à l'achat d'une analyse complète de bail (ci-après "l'Acheteur").</p>
+      <p>BailScan est édité par [TON PRENOM NOM], particulier domicilié à [TON ADRESSE].</p>
+    </div>
+
+    <div class="article">
+      <div class="article-num">Article 2</div>
+      <h2>Description du service</h2>
+      <p>BailScan propose un service d'analyse de baux d'habitation par intelligence artificielle. Le service comprend deux niveaux :</p>
+      <h3>Offre gratuite</h3>
+      <ul>
+        <li>Score global et verdict du bail</li>
+        <li>Résumé de l'analyse</li>
+        <li>Aperçu des 2 premières clauses détectées</li>
+      </ul>
+      <h3>Offre payante — 9 € (paiement unique)</h3>
+      <ul>
+        <li>Analyse complète de toutes les clauses du bail</li>
+        <li>Plan d'action détaillé étape par étape</li>
+        <li>5 lettres officielles personnalisées générées par IA :</li>
+        <li style="list-style:none; padding-left:16px;">— Lettre au propriétaire</li>
+        <li style="list-style:none; padding-left:16px;">— Lettre à l'agence immobilière</li>
+        <li style="list-style:none; padding-left:16px;">— Lettre à la CAF / APL</li>
+        <li style="list-style:none; padding-left:16px;">— Mise en demeure officielle</li>
+        <li style="list-style:none; padding-left:16px;">— Lettre à la commission de conciliation</li>
+        <li>Accès valable pour l'analyse en cours uniquement</li>
+      </ul>
+    </div>
+
+    <div class="article">
+      <div class="article-num">Article 3</div>
+      <h2>Prix et modalités de paiement</h2>
+      <p>Le prix de l'offre payante est de <strong>9,00 euros TTC</strong> (TVA non applicable — article 293 B du CGI, régime de la franchise en base).</p>
+      <p>Le paiement est effectué en une seule fois, de manière sécurisée, via la plateforme Stripe. Les moyens de paiement acceptés sont : cartes bancaires Visa, Mastercard, American Express.</p>
+      <p>BailScan ne stocke aucune donnée bancaire. Le traitement est entièrement délégué à Stripe (certifié PCI DSS).</p>
+    </div>
+
+    <div class="article">
+      <div class="article-num">Article 4</div>
+      <h2>Accès au service après paiement</h2>
+      <p>L'accès à l'analyse complète et aux lettres est fourni immédiatement après confirmation du paiement par Stripe. Le service est accessible directement dans le navigateur, sans création de compte.</p>
+      <p><strong>Important :</strong> l'accès est lié à la session de navigation en cours. L'Acheteur est invité à copier ou sauvegarder les lettres générées avant de fermer son navigateur.</p>
+    </div>
+
+    <div class="article">
+      <div class="article-num">Article 5</div>
+      <h2>Droit de rétractation</h2>
+      <p>Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne peut être exercé pour les contenus numériques dont l'exécution a commencé avec l'accord préalable du consommateur.</p>
+      <p>En cliquant sur "Payer", l'Acheteur reconnaît expressément que l'exécution du service commence immédiatement et renonce à son droit de rétractation.</p>
+      <p>Toutefois, par engagement commercial, BailScan propose un <strong>remboursement intégral sous 48h</strong> en cas d'insatisfaction, sur simple demande à contact@bailscan.fr.</p>
+    </div>
+
+    <div class="article">
+      <div class="article-num">Article 6</div>
+      <h2>Limites du service et responsabilité</h2>
+      <p>BailScan est un outil d'aide à la décision basé sur l'intelligence artificielle. Les analyses et lettres générées :</p>
+      <ul>
+        <li>Ont une valeur informative et ne constituent pas un conseil juridique</li>
+        <li>Ne peuvent pas se substituer à l'avis d'un avocat ou d'un juriste</li>
+        <li>Peuvent contenir des inexactitudes ou omissions</li>
+        <li>Doivent être relues et adaptées par l'utilisateur avant envoi</li>
+      </ul>
+      <p>Le Vendeur ne saurait être tenu responsable des conséquences de l'utilisation des lettres générées sans vérification préalable par l'Acheteur.</p>
+    </div>
+
+    <div class="article">
+      <div class="article-num">Article 7</div>
+      <h2>Réclamations et médiation</h2>
+      <p>Pour toute réclamation : <strong>contact@bailscan.fr</strong>. Le Vendeur s'engage à répondre dans un délai de 5 jours ouvrés.</p>
+      <p>En cas de litige non résolu, l'Acheteur peut recourir gratuitement à un médiateur de la consommation. Conformément à l'article L612-1 du Code de la consommation, le Vendeur propose le recours au médiateur suivant : <strong>Médiation de la consommation — CM2C</strong> (cm2c.net).</p>
+    </div>
+
+    <div class="article">
+      <div class="article-num">Article 8</div>
+      <h2>Droit applicable et juridiction</h2>
+      <p>Les présentes CGV sont soumises au droit français. En cas de litige, et après tentative de résolution amiable, les tribunaux français seront compétents.</p>
+    </div>
+  </div>
+
+  <!-- CONFIDENTIALITÉ -->
+  <div class="tab-content" id="tab-confidentialite">
+    <div class="page-title">Politique de confidentialité</div>
+    <div class="last-update">Dernière mise à jour : mars 2025</div>
+
+    <h2>Notre engagement</h2>
+    <p>BailScan a été conçu avec la confidentialité comme principe fondateur. <strong>Nous ne stockons jamais le contenu de vos baux.</strong></p>
+
+    <h2>Données collectées</h2>
+    <h3>Ce que nous ne collectons PAS</h3>
+    <ul>
+      <li>Le contenu de votre bail (traité en temps réel, jamais sauvegardé)</li>
+      <li>Vos données bancaires (gérées exclusivement par Stripe)</li>
+      <li>Votre adresse IP ou données de navigation</li>
+      <li>Des cookies de tracking ou publicitaires</li>
+    </ul>
+    <h3>Ce que nous collectons</h3>
+    <ul>
+      <li><strong>Email :</strong> uniquement lors du paiement, collecté par Stripe pour l'envoi du reçu</li>
+      <li><strong>Données de paiement :</strong> gérées exclusivement par Stripe Inc. — BailScan n'y a pas accès</li>
+    </ul>
+
+    <h2>Traitement de l'analyse par IA</h2>
+    <p>Le contenu de votre bail est envoyé à l'API Claude d'Anthropic pour analyse. Cette transmission est :</p>
+    <ul>
+      <li>Chiffrée (HTTPS)</li>
+      <li>Non conservée par BailScan après la réponse</li>
+      <li>Soumise à la politique de confidentialité d'Anthropic (anthropic.com/privacy)</li>
+    </ul>
+    <p>Nous vous recommandons de ne pas inclure vos coordonnées personnelles dans le texte analysé.</p>
+
+    <h2>Vos droits (RGPD)</h2>
+    <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants :</p>
+    <ul>
+      <li><strong>Droit d'accès :</strong> obtenir une copie de vos données</li>
+      <li><strong>Droit de rectification :</strong> corriger vos données</li>
+      <li><strong>Droit à l'effacement :</strong> supprimer vos données</li>
+      <li><strong>Droit d'opposition :</strong> vous opposer au traitement</li>
+    </ul>
+    <p>Pour exercer ces droits : <strong>contact@bailscan.fr</strong></p>
+
+    <h2>Sous-traitants</h2>
+    <div class="info-box">
+      <p><strong>Vercel Inc.</strong> — Hébergement (USA, Privacy Shield)</p>
+      <p><strong>Anthropic PBC</strong> — Traitement IA (USA)</p>
+      <p><strong>Stripe Inc.</strong> — Paiement (USA, certifié PCI DSS)</p>
+      <p><strong>Google Fonts</strong> — Polices d'écriture</p>
+    </div>
+
+    <h2>Contact DPO</h2>
+    <p>Pour toute question relative à la protection de vos données : <strong>contact@bailscan.fr</strong></p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 BailScan — <a href="/" style="color:var(--accent);text-decoration:none;">Retour au site</a></p>
+</footer>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
