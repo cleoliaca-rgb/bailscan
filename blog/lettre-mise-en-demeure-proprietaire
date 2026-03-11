@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lettre de mise en demeure à son propriétaire : modèle et guide complet | BailScan</title>
+<meta name="description" content="Quand et comment envoyer une mise en demeure à votre propriétaire. Modèle de lettre, références légales, et suites possibles en cas de refus.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://bailscan.app/blog/lettre-mise-en-demeure-proprietaire.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://bailscan.app/blog/lettre-mise-en-demeure-proprietaire.html">
+<meta property="og:title" content="Lettre de mise en demeure à son propriétaire : modèle et guide complet | BailScan">
+<meta property="og:description" content="Quand et comment envoyer une mise en demeure à votre propriétaire. Modèle de lettre, références légales, et suites possibles en cas de refus.">
+<meta property="og:image" content="https://bailscan.app/og-image.jpg">
+<meta property="og:site_name" content="BailScan">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Lettre de mise en demeure à son propriétaire : modèle et guide complet","description":"Quand et comment envoyer une mise en demeure à votre propriétaire. Modèle de lettre, références légales, et suites possibles en cas de refus.","url":"https://bailscan.app/blog/lettre-mise-en-demeure-proprietaire.html","publisher":{"@type":"Organization","name":"BailScan","url":"https://bailscan.app"},"datePublished":"2025-03-10","dateModified":"2025-03-10","inLanguage":"fr","mainEntityOfPage":"https://bailscan.app/blog/lettre-mise-en-demeure-proprietaire.html"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --noir:#0d0d0d; --creme:#f5f0e8; --accent:#c84b2f; --vert:#2d6a4f; --vert-light:#e8f5ee; --rouge-light:#fdf0ed; --texte:#1a1a1a; --gris:#6b6b6b; --border:#d8d0c4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--creme); color:var(--texte); font-family:'DM Sans',sans-serif; min-height:100vh; }
+  header { position:fixed; top:0; left:0; right:0; z-index:100; padding:18px 48px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); background:rgba(245,240,232,0.92); backdrop-filter:blur(12px); }
+  .logo { font-family:'Instrument Serif',serif; font-size:1.6rem; color:var(--noir); text-decoration:none; }
+  .logo span { color:var(--accent); }
+  nav { display:flex; gap:24px; align-items:center; }
+  nav a { color:var(--gris); text-decoration:none; font-size:0.9rem; }
+  .btn-nav { background:var(--noir); color:var(--creme) !important; padding:10px 22px; border-radius:8px; font-weight:500; }
+  .article-wrap { max-width:720px; margin:0 auto; padding:120px 48px 80px; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; color:var(--gris); text-decoration:none; font-size:0.85rem; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+  .article-tag { display:inline-block; background:var(--rouge-light); color:var(--accent); font-size:0.75rem; font-weight:600; padding:4px 12px; border-radius:20px; margin-bottom:20px; letter-spacing:0.05em; }
+  h1 { font-family:'Instrument Serif',serif; font-size:clamp(2rem,4vw,2.8rem); line-height:1.15; letter-spacing:-0.03em; color:var(--noir); margin-bottom:20px; }
+  .article-meta { font-size:0.82rem; color:var(--gris); margin-bottom:48px; padding-bottom:32px; border-bottom:1px solid var(--border); display:flex; gap:16px; }
+  h2 { font-family:'Instrument Serif',serif; font-size:1.5rem; color:var(--noir); margin:40px 0 16px; }
+  h3 { font-size:1rem; font-weight:700; color:var(--noir); margin:28px 0 10px; }
+  p { font-size:0.95rem; line-height:1.85; color:var(--texte); margin-bottom:18px; }
+  ul, ol { padding-left:24px; margin-bottom:18px; }
+  ul li, ol li { font-size:0.95rem; line-height:1.85; margin-bottom:8px; }
+  .highlight-box { background:white; border:1.5px solid var(--border); border-radius:12px; padding:24px 28px; margin:28px 0; }
+  .highlight-box.danger { background:var(--rouge-light); border-color:rgba(200,75,47,0.3); }
+  .highlight-box.success { background:var(--vert-light); border-color:rgba(45,106,79,0.3); }
+  .highlight-box.warning { background:#fff8e1; border-color:rgba(245,158,11,0.3); }
+  .highlight-box strong { display:block; margin-bottom:8px; font-size:0.9rem; }
+  .highlight-box p { margin-bottom:0; font-size:0.9rem; }
+  .law-ref { font-size:0.82rem; color:var(--accent); font-weight:600; background:var(--rouge-light); padding:2px 8px; border-radius:4px; white-space:nowrap; }
+  .cta-box { background:var(--noir); border-radius:16px; padding:36px; text-align:center; margin:48px 0; }
+  .cta-box h3 { color:white; margin-bottom:10px; font-family:'Instrument Serif',serif; font-size:1.4rem; }
+  .cta-box p { color:rgba(255,255,255,0.6); margin-bottom:20px; font-size:0.88rem; }
+  .cta-btn { display:inline-block; background:var(--accent); color:white; padding:14px 28px; border-radius:10px; text-decoration:none; font-weight:600; font-size:0.95rem; transition:background .2s; }
+  .cta-btn:hover { background:#a83a20; }
+  .related { margin-top:60px; padding-top:40px; border-top:1px solid var(--border); }
+  .related h3 { font-family:'Instrument Serif',serif; font-size:1.3rem; color:var(--noir); margin-bottom:24px; }
+  .related-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .related-card { background:white; border:1px solid var(--border); border-radius:12px; padding:20px; text-decoration:none; color:inherit; transition:all .2s; }
+  .related-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .related-card h4 { font-size:0.92rem; font-weight:600; color:var(--noir); margin-bottom:6px; line-height:1.4; }
+  .related-card span { font-size:0.78rem; color:var(--accent); font-weight:600; }
+  footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; color:var(--gris); font-size:0.82rem; }
+  footer a { color:var(--accent); text-decoration:none; }
+  @media(max-width:768px) { header { padding:16px 20px; } nav a:not(.btn-nav) { display:none; } .article-wrap { padding:100px 20px 60px; } .related-grid { grid-template-columns:1fr; } footer { flex-direction:column; gap:12px; text-align:center; } }
+</style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">Bail<span>Scan</span></a>
+  <nav>
+    <a href="/blog.html">Blog</a>
+    <a href="/" class="btn-nav">Analyser mon bail →</a>
+  </nav>
+</header>
+<div class="article-wrap">
+  <a href="/blog.html" class="back-link">← Retour au blog</a>
+  <span class="article-tag">Modèles de lettres</span>
+  <h1>Lettre de mise en demeure à son propriétaire : modèle et guide complet</h1>
+  <div class="article-meta"><span>📅 Mars 2025</span><span>⏱ 6 min de lecture</span></div>
+  
+<p>La mise en demeure est l'étape incontournable avant toute action juridique contre votre propriétaire. C'est une lettre formelle qui lui demande de régulariser une situation illégale dans un délai précis, sous peine de poursuites. Voici comment la rédiger et l'utiliser efficacement.</p>
+
+<h2>Quand envoyer une mise en demeure ?</h2>
+<p>La mise en demeure s'impose dans plusieurs situations :</p>
+<ul>
+<li>Dépôt de garantie non restitué dans les délais légaux</li>
+<li>Refus de corriger des clauses illégales dans le bail</li>
+<li>Absence de réponse à des demandes de travaux urgents</li>
+<li>Charges locatives non justifiées réclamées indûment</li>
+<li>Loyer dépassant le plafond légal en zone encadrée</li>
+</ul>
+
+<h2>La forme : toujours en recommandé avec AR</h2>
+<div class="highlight-box danger">
+<strong>🚨 Indispensable</strong>
+<p>Une mise en demeure doit impérativement être envoyée en lettre recommandée avec accusé de réception (LRAR). Sans cela, vous n'aurez aucune preuve de l'envoi ni de la réception.</p>
+</div>
+
+<h2>Le contenu obligatoire d'une mise en demeure</h2>
+<ol>
+<li><strong>Vos coordonnées complètes</strong> (nom, adresse, téléphone)</li>
+<li><strong>Les coordonnées du propriétaire</strong></li>
+<li><strong>L'objet précis</strong> : la violation constatée</li>
+<li><strong>La référence légale</strong> violée (article de loi)</li>
+<li><strong>Votre demande</strong> : ce que vous attendez exactement</li>
+<li><strong>Le délai accordé</strong> : généralement 8 à 15 jours</li>
+<li><strong>La menace de recours</strong> : CDC, tribunal judiciaire</li>
+</ol>
+
+<h2>Modèle de lettre — Dépôt de garantie non restitué</h2>
+<div class="highlight-box">
+<strong>📝 Exemple de structure</strong>
+<p>[Votre Prénom Nom]<br>[Votre adresse]<br><br>
+[Nom du propriétaire]<br>[Son adresse]<br><br>
+Objet : Mise en demeure — Restitution du dépôt de garantie<br>
+Lettre recommandée avec accusé de réception<br><br>
+[Ville], le [Date]<br><br>
+Monsieur / Madame,<br><br>
+Je vous ai remis les clés du logement sis [adresse] le [date], ainsi qu'il résulte de l'état des lieux de sortie signé contradictoirement. Or, à ce jour, vous ne m'avez pas restitué le dépôt de garantie d'un montant de [X]€, dont le délai légal de [1 ou 2] mois est expiré depuis le [date]. Conformément à l'article 22 de la loi du 6 juillet 1989, je vous mets en demeure de me restituer cette somme dans un délai de 8 jours [...] À défaut, je me verrai contraint de saisir la Commission Départementale de Conciliation puis le Tribunal judiciaire.</p>
+</div>
+
+<h2>BailScan génère cette lettre automatiquement</h2>
+<p>Après analyse de votre bail, BailScan identifie les violations et génère la lettre de mise en demeure adaptée à votre situation, avec les références légales exactes et le montant du trop-perçu calculé.</p>
+
+<h2>Que faire si le propriétaire ne répond pas ?</h2>
+<ol>
+<li><strong>Commission Départementale de Conciliation</strong> — gratuit, sans avocat, délai 2 mois</li>
+<li><strong>Tribunal judiciaire</strong> — si la CDC échoue ou si urgence</li>
+<li><strong>ADIL</strong> — pour un conseil juridique gratuit avant d'agir</li>
+</ol>
+
+  <div class="cta-box">
+    <h3>Votre bail contient peut-être ce problème</h3>
+    <p>BailScan le détecte gratuitement en 2 minutes, avec les références légales exactes</p>
+    <a href="/" class="cta-btn">Analyser mon bail gratuitement →</a>
+  </div>
+  <div class="related"><h3>Articles liés</h3><div class="related-grid">
+<a href="/blog/comment-recuperer-depot-garantie.html" class="related-card"><h4>Récupérer son dépôt quand le proprio refuse</h4><span>7 min →</span></a>
+<a href="/blog/clauses-abusives-bail.html" class="related-card"><h4>Les 10 clauses illégales les plus courantes</h4><span>8 min →</span></a>
+</div></div>
+</div>
+<footer>
+  <div>© 2026 BailScan</div>
+  <div style="display:flex;gap:20px"><a href="/blog.html">Blog</a><a href="/legal.html">Mentions légales</a></div>
+</footer>
+</body>
+</html>
