@@ -1676,4 +1676,12 @@ function resetApp() {
   document.getElementById('typeSelectorBlock').style.display = 'grid';
   document.getElementById('paidSection').style.display = 'none';
   document.getElementById('paywallSection').style.display = 'block';
-  goSt
+  goStep(1);
+}
+
+function scrollToApp() {
+  document.getElementById('app').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
