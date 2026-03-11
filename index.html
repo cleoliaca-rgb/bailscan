@@ -208,6 +208,38 @@ select.form-input { cursor:pointer; }
 .loyer-check.danger { border-color:rgba(200,75,47,0.3); background:var(--rouge-light); }
 .loyer-check.warning { border-color:rgba(245,158,11,0.3); background:var(--warning-light); }
 .loyer-check.ok { border-color:rgba(45,106,79,0.3); background:var(--vert-light); }
+/* Banner trop-perçu */
+.trop-percu-banner { background:linear-gradient(135deg,#c84b2f 0%,#e55c3e 100%); color:white; border-radius:16px; padding:24px 28px; margin-bottom:16px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; box-shadow:0 8px 28px rgba(200,75,47,0.28); }
+.trop-percu-banner-icon { font-size:2.6rem; flex-shrink:0; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+.trop-percu-banner-body { flex:1; min-width:150px; }
+.trop-percu-banner-label { font-size:0.7rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; opacity:0.75; margin-bottom:3px; }
+.trop-percu-banner-amount { font-family:'Instrument Serif',serif; font-size:2.8rem; font-weight:400; line-height:1.1; }
+.trop-percu-banner-detail { font-size:0.8rem; opacity:0.85; margin-top:5px; line-height:1.55; }
+.trop-percu-banner-cta { background:rgba(255,255,255,0.95); color:var(--accent); font-weight:700; font-size:0.83rem; padding:11px 20px; border-radius:10px; border:none; cursor:pointer; white-space:nowrap; transition:all .2s; flex-shrink:0; font-family:inherit; }
+.trop-percu-banner-cta:hover { background:white; transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.12); }
+/* Alertes complément de loyer */
+.complement-alerte { border-radius:12px; padding:16px 20px; margin-top:14px; border:1.5px solid; }
+.complement-alerte.urgent { background:#fff8e1; border-color:rgba(245,158,11,0.45); }
+.complement-alerte.normal { background:#f0faf4; border-color:rgba(45,106,79,0.28); }
+.complement-alerte-title { font-weight:700; font-size:0.88rem; margin-bottom:7px; display:flex; align-items:center; gap:7px; }
+.complement-alerte.urgent .complement-alerte-title { color:#b07d00; }
+.complement-alerte.normal .complement-alerte-title { color:var(--vert); }
+.complement-alerte-text { font-size:0.81rem; color:var(--gris); line-height:1.7; }
+.trop-percu-banner { background:linear-gradient(135deg,#c84b2f 0%,#e06040 100%); color:white; border-radius:16px; padding:22px 28px; margin-bottom:16px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; box-shadow:0 8px 32px rgba(200,75,47,0.25); }
+.trop-percu-banner-icon { font-size:2.4rem; flex-shrink:0; }
+.trop-percu-banner-body { flex:1; min-width:160px; }
+.trop-percu-banner-label { font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; opacity:0.75; margin-bottom:4px; }
+.trop-percu-banner-amount { font-family:'Instrument Serif',serif; font-size:2.6rem; font-weight:400; line-height:1.1; }
+.trop-percu-banner-detail { font-size:0.79rem; opacity:0.82; margin-top:5px; line-height:1.5; }
+.trop-percu-banner-cta { background:white; color:var(--accent); font-weight:700; font-size:0.83rem; padding:10px 18px; border-radius:9px; border:none; cursor:pointer; white-space:nowrap; transition:opacity .2s; flex-shrink:0; font-family:inherit; }
+.trop-percu-banner-cta:hover { opacity:0.88; }
+.complement-alerte { border-radius:12px; padding:16px 20px; margin-top:14px; border:1.5px solid; }
+.complement-alerte.urgent { background:#fff8e1; border-color:rgba(245,158,11,0.5); }
+.complement-alerte.normal { background:#f0faf4; border-color:rgba(45,106,79,0.3); }
+.complement-alerte-title { font-weight:700; font-size:0.88rem; margin-bottom:6px; display:flex; align-items:center; gap:7px; }
+.complement-alerte.urgent .complement-alerte-title { color:#b07d00; }
+.complement-alerte.normal .complement-alerte-title { color:var(--vert); }
+.complement-alerte-text { font-size:0.81rem; color:var(--gris); line-height:1.68; }
 .loyer-check-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
 .loyer-check-icon { font-size:1.3rem; }
 .loyer-check-title { font-weight:700; font-size:0.95rem; color:var(--noir); }
@@ -583,6 +615,19 @@ select.form-input { cursor:pointer; }
     <div class="wizard-panel" id="step2">
       <div class="panel-title">Informations sur le loyer</div>
       <div class="panel-sub">Nous vérifierons si votre loyer respecte l'encadrement légal</div>
+
+      <!-- DATE DÉBUT BAIL -->
+      <div class="form-group" style="margin-bottom:20px;padding:18px 20px;background:var(--creme);border-radius:12px;border:1.5px solid var(--border)">
+        <label for="date_debut_bail" style="font-weight:700;font-size:0.88rem;margin-bottom:10px;display:block">📅 Date de début du bail <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— permet de calculer le remboursement total estimé</span></label>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <input type="date" id="date_debut_bail" class="form-input" style="max-width:210px" oninput="calcLoyerTotal()">
+          <div id="bail_duree_display" style="display:none;font-size:0.84rem;color:var(--gris);line-height:1.5">
+            ⏱ Bail en cours depuis <strong><span id="bail_nb_mois">—</span> mois</strong><br>
+            <span style="font-size:0.77rem">Depuis le <span id="bail_date_fmt">—</span></span>
+          </div>
+        </div>
+      </div>
+
       <div class="form-grid cols3">
         <div class="form-group">
           <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— facultatif si absent du bail</span></label>
@@ -1056,6 +1101,31 @@ function calcLoyerTotal() {
   appState.loyerBase = b; appState.loyerMajore = m; appState.complementLoyer = c; appState.charges = ch;
   var justifEl = document.getElementById('complement_justif');
   appState.complementJustif = (document.getElementById('has_complement_justif') && document.getElementById('has_complement_justif').checked && justifEl) ? justifEl.value : '';
+
+  // Date de début de bail
+  var dateInput = document.getElementById('date_debut_bail').value;
+  appState.dateDebutBail = dateInput || null;
+  var nbMois = 0;
+  if (dateInput) {
+    var debut = new Date(dateInput);
+    var now = new Date();
+    nbMois = Math.floor((now - debut) / (1000 * 60 * 60 * 24 * 30.44));
+    if (nbMois < 0) nbMois = 0;
+    appState.nbMoisBail = nbMois;
+    var dureeEl = document.getElementById('bail_duree_display');
+    var nbMoisEl = document.getElementById('bail_nb_mois');
+    var dateFmtEl = document.getElementById('bail_date_fmt');
+    if (dureeEl && nbMoisEl && dateFmtEl) {
+      dureeEl.style.display = 'block';
+      nbMoisEl.textContent = nbMois;
+      dateFmtEl.textContent = debut.toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+    }
+  } else {
+    appState.nbMoisBail = 0;
+    var dureeEl2 = document.getElementById('bail_duree_display');
+    if (dureeEl2) dureeEl2.style.display = 'none';
+  }
+
   var total = b + m + c + ch;
   if (b > 0) {
     document.getElementById('loyerBreakdown').style.display = 'block';
@@ -1342,19 +1412,102 @@ function renderLoyerCheck(data) {
   var cls = loy.statut === 'danger' ? 'danger' : loy.statut === 'warning' ? 'warning' : 'ok';
   var icons = { danger: '🚨', warning: '⚠️', ok: '✅' };
   var icon = icons[loy.statut] || '🔍';
-  var html = '<div class="loyer-check ' + cls + '">';
+  var html = '';
+
+  // ── CALCUL TROP-PERÇU TOTAL ──────────────────────────────────
+  // On calcule l'excédent mensuel = loyer_base - loyer_majore (si loyer_base > loyer_majore)
+  var exedentMensuel = 0;
+  var loyerBase = appState.loyerBase || 0;
+  var loyerMajore = appState.loyerMajore || 0;
+  var complementLoyer = appState.complementLoyer || 0;
+  var nbMois = appState.nbMoisBail || 0;
+
+  // Si loyer de base dépasse le loyer majoré → trop-perçu sur le loyer
+  if (loyerBase > 0 && loyerMajore > 0 && loyerBase > loyerMajore) {
+    exedentMensuel = loyerBase - loyerMajore;
+  }
+  // Si l'IA a fourni un excédent mensuel, on le prend
+  if (loy.exedent_mensuel) {
+    exedentMensuel = parseFloat(loy.exedent_mensuel) || exedentMensuel;
+  }
+
+  var tropPercuTotal = exedentMensuel * nbMois;
+  var tropPercuTotalAvecComplement = tropPercuTotal + (complementLoyer * nbMois);
+
+  // ── BANNER TROP-PERÇU (affiché si dépassement ET date connue) ──
+  if ((loy.statut === 'danger' || loy.statut === 'warning') && nbMois > 0 && (tropPercuTotal > 0 || (complementLoyer > 0 && loy.statut === 'danger'))) {
+    var montantAffiche = tropPercuTotalAvecComplement > 0 ? tropPercuTotalAvecComplement : tropPercuTotal;
+    var detailParts = [];
+    if (exedentMensuel > 0) detailParts.push(exedentMensuel.toFixed(2) + ' €/mois × ' + nbMois + ' mois (loyer)');
+    if (complementLoyer > 0 && loy.statut === 'danger') detailParts.push(complementLoyer.toFixed(2) + ' €/mois × ' + nbMois + ' mois (complément)');
+    html += '<div class="trop-percu-banner">';
+    html += '<div class="trop-percu-banner-icon">💰</div>';
+    html += '<div class="trop-percu-banner-body">';
+    html += '<div class="trop-percu-banner-label">Remboursement total estimé</div>';
+    html += '<div class="trop-percu-banner-amount">' + montantAffiche.toFixed(0) + ' €</div>';
+    html += '<div class="trop-percu-banner-detail">';
+    if (detailParts.length > 0) html += detailParts.join(' + ') + '<br>';
+    html += 'Sur les <strong>' + nbMois + ' mois</strong> de bail écoulés';
+    html += '</div></div>';
+    html += '<button class="trop-percu-banner-cta" onclick="document.getElementById(\'paidSection\') && document.getElementById(\'paidSection\').scrollIntoView({behavior:\'smooth\'})">Générer la lettre →</button>';
+    html += '</div>';
+  } else if ((loy.statut === 'danger' || loy.statut === 'warning') && nbMois === 0 && (exedentMensuel > 0 || complementLoyer > 0)) {
+    // Date non renseignée mais excédent détecté → inciter à renseigner la date
+    html += '<div style="background:var(--rouge-light);border:1.5px solid rgba(200,75,47,0.3);border-radius:14px;padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;gap:14px">';
+    html += '<span style="font-size:1.6rem">📅</span>';
+    html += '<div><div style="font-weight:700;font-size:0.88rem;color:var(--accent)">Indiquez la date de début du bail</div>';
+    if (exedentMensuel > 0) {
+      html += '<div style="font-size:0.82rem;color:var(--gris);margin-top:3px">Excédent détecté : <strong>' + exedentMensuel.toFixed(2) + ' €/mois</strong> — renseignez la date de début pour calculer le remboursement total.</div>';
+    }
+    html += '</div></div>';
+  }
+
+  // ── BLOC PRINCIPAL LOYER ──────────────────────────────────────
+  html += '<div class="loyer-check ' + cls + '">';
   html += '<div class="loyer-check-header"><div class="loyer-check-icon">' + icon + '</div><div class="loyer-check-title">Vérification encadrement des loyers</div></div>';
   html += '<div class="loyer-check-text">' + (loy.analyse || '') + '</div>';
-  var totalLoyer = (appState.loyerBase || 0) + (appState.loyerMajore || 0) + (appState.complementLoyer || 0);
+  var totalLoyer = loyerBase + loyerMajore + complementLoyer;
   if (totalLoyer > 0 || loy.plafond) {
     html += '<div class="loyer-check-amounts">';
-    if (appState.loyerMajore > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer réf. majoré</div><div class="amount-pill-val">' + appState.loyerMajore + ' €/mois</div></div>';
-    if (appState.complementLoyer > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Complément de loyer</div><div class="amount-pill-val">' + appState.complementLoyer + ' €</div></div>';
+    if (loyerBase > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer de base</div><div class="amount-pill-val">' + loyerBase + ' €/mois</div></div>';
+    if (loyerMajore > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer réf. majoré</div><div class="amount-pill-val">' + loyerMajore + ' €/mois</div></div>';
+    if (complementLoyer > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Complément de loyer</div><div class="amount-pill-val">' + complementLoyer + ' €</div></div>';
     if (loy.plafond) html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal estimé</div><div class="amount-pill-val">' + loy.plafond + ' €/mois</div></div>';
-    if (loy.trop_percu) html += '<div class="amount-pill"><div class="amount-pill-label">Trop-perçu estimé</div><div class="amount-pill-val" style="color:var(--accent)">' + loy.trop_percu + '</div></div>';
+    if (exedentMensuel > 0) html += '<div class="amount-pill" style="border-color:var(--accent)"><div class="amount-pill-label">Excédent mensuel</div><div class="amount-pill-val" style="color:var(--accent)">−' + exedentMensuel.toFixed(2) + ' €/mois</div></div>';
     html += '</div>';
   }
-  // Liens simulateurs
+
+  // ── ALERTES COMPLÉMENT DE LOYER ──────────────────────────────
+  if (complementLoyer > 0) {
+    var dateDebutBail = appState.dateDebutBail ? new Date(appState.dateDebutBail) : null;
+    var now = new Date();
+    var moisDepuisDebut = dateDebutBail ? Math.floor((now - dateDebutBail) / (1000 * 60 * 60 * 24 * 30.44)) : null;
+    var dans3Mois = dateDebutBail ? new Date(dateDebutBail.getTime() + 3 * 30.44 * 24 * 60 * 60 * 1000) : null;
+    var delai3MoisDepasse = moisDepuisDebut !== null ? moisDepuisDebut > 3 : null;
+
+    if (delai3MoisDepasse === false) {
+      // Moins de 3 mois → action en nullité (délai urgent !)
+      var joursRestants = Math.max(0, Math.ceil((dans3Mois - now) / (1000 * 60 * 60 * 24)));
+      html += '<div class="complement-alerte urgent">';
+      html += '<div class="complement-alerte-title">⚡ Délai urgent — il vous reste ' + joursRestants + ' jours</div>';
+      html += '<div class="complement-alerte-text"><strong>Votre bail a moins de 3 mois</strong> : vous pouvez encore saisir la <strong>Commission Départementale de Conciliation (CDC)</strong> pour demander la <strong>nullité du complément de loyer</strong> (art. 17 loi du 6 juillet 1989). Si le complément n\'est pas justifié par des caractéristiques de localisation ou de confort exceptionnelles par rapport aux logements similaires du voisinage, il peut être annulé et remboursé intégralement.<br><br>👉 <strong>À faire maintenant :</strong> envoyez une lettre recommandée au propriétaire, puis saisissez la CDC si pas de réponse sous 2 mois.</div>';
+      html += '</div>';
+    } else if (delai3MoisDepasse === true) {
+      // Plus de 3 mois → action en restitution des sommes indûment perçues
+      html += '<div class="complement-alerte normal">';
+      html += '<div class="complement-alerte-title">⚖️ Délai de 3 mois dépassé — action en restitution possible</div>';
+      html += '<div class="complement-alerte-text">Le délai pour contester la <strong>validité</strong> du complément de loyer est écoulé. Cependant, si le complément est manifestement abusif ou non justifié, vous pouvez engager une <strong>action en restitution des sommes indûment perçues</strong> devant le Tribunal Judiciaire (art. 1302 Code civil — paiement de l\'indu). La prescription est de <strong>3 ans à compter de chaque versement</strong>.<br><br>👉 Consultez l\'ADIL de votre département ou un avocat spécialisé pour évaluer vos chances de succès.</div>';
+      html += '</div>';
+    } else {
+      // Date non renseignée → afficher les deux options
+      html += '<div class="complement-alerte urgent">';
+      html += '<div class="complement-alerte-title">⚡ Complément de loyer — délai critique de 3 mois</div>';
+      html += '<div class="complement-alerte-text"><strong>Si votre bail date de moins de 3 mois :</strong> vous pouvez saisir la CDC pour demander la <strong>nullité du complément</strong> — c\'est la voie la plus efficace (art. 17 loi 1989). Renseignez la date de début de bail pour savoir exactement où vous en êtes.<br><br><strong>Si votre bail a plus de 3 mois :</strong> le délai de contestation directe est passé, mais une <strong>action en restitution</strong> reste possible devant le Tribunal Judiciaire sur 3 ans de prescription (art. 1302 Code civil).</div>';
+      html += '</div>';
+    }
+  }
+
+  // ── LIENS SIMULATEURS ────────────────────────────────────────
   var simLinks = getSimulateurLinks(appState.ville || '');
   if (simLinks.length > 0) {
     html += '<div class="encadrement-links">';
