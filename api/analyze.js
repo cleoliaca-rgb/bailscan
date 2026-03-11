@@ -95,20 +95,57 @@ function buildLetterPrompt(letterType, analysisData, context) {
     .map(function(c) { return '- ' + c.titre + ' (' + (c.base_legale || []).join(', ') + ')'; })
     .join('\n') || 'Voir rapport complet';
 
+  // Identité — utiliser les vraies valeurs, jamais de crochets si fourni
+  var nomLocataire = (context && context.locataire_nom && context.locataire_nom.trim()) ? context.locataire_nom.trim() : null;
+  var adresseLogement = (context && context.locataire_adresse && context.locataire_adresse.trim()) ? context.locataire_adresse.trim() : null;
+  var nomProprio = (context && context.proprio_nom && context.proprio_nom.trim()) ? context.proprio_nom.trim() : null;
+  var dateBail = (context && context.date_bail && context.date_bail.trim()) ? context.date_bail.trim() : null;
+
+  // Montants
+  var tropPercuTotal = (context && context.trop_percu_total) || '';
+  var tropPercuMensuel = (context && context.trop_percu_mensuel) || '';
+  var tropPercuDetail = (context && context.trop_percu_detail) || '';
+  var nbMois = (context && context.nb_mois_bail) || '';
+
+  // Bloc identité avec instructions strictes
+  var identiteBlock = "=== INFORMATIONS A UTILISER TELLES QUELLES (NE PAS METTRE DE CROCHETS) ===\n"
+    + "Nom du locataire (expediteur) : " + (nomLocataire || "A REMPLIR PAR LE LOCATAIRE") + "\n"
+    + "Adresse du logement loue : " + (adresseLogement || "A REMPLIR PAR LE LOCATAIRE") + "\n"
+    + "Nom du proprietaire/bailleur : " + (nomProprio || "A REMPLIR PAR LE LOCATAIRE") + "\n"
+    + "Date de signature du bail : " + (dateBail || "A REMPLIR PAR LE LOCATAIRE") + "\n"
+    + "=== FIN INFORMATIONS ===\n";
+
+  var montantBlock = '';
+  if (tropPercuTotal) {
+    montantBlock = "\n=== MONTANTS A INCLURE OBLIGATOIREMENT DANS LA LETTRE ===\n"
+      + "Trop-percu mensuel : " + tropPercuMensuel + "\n"
+      + "Duree : " + nbMois + " mois\n"
+      + "TOTAL RECLAME : " + tropPercuTotal + (tropPercuDetail ? " (" + tropPercuDetail + ")" : "") + "\n"
+      + "=> Exige explicitement le remboursement de " + tropPercuTotal + " dans le corps de la lettre.\n"
+      + "=== FIN MONTANTS ===\n";
+  }
+
+  var instructionsBlock = "\nREGLES ABSOLUES DE REDACTION :\n"
+    + "1. INTERDICTION TOTALE d'utiliser des [crochets] pour les informations fournies ci-dessus\n"
+    + "2. Utilise exactement les noms, adresses et dates fournis dans les informations\n"
+    + "3. Si une information est marquee 'A REMPLIR', alors seulement tu peux mettre [a completer]\n"
+    + "4. La lettre doit etre prete a imprimer et envoyer immediatement\n"
+    + "5. Format : coordonnees expediteur en haut a gauche, coordonnees destinataire en haut a droite, date, objet, corps, formule de politesse, signature\n"
+    + "6. Lettre LRAR, references legales exactes (loi 6 juillet 1989, ALUR, ELAN), ton ferme mais courtois\n"
+    + "7. Mentionner les recours si non-reponse sous 15 jours\n"
+    + (tropPercuTotal ? "8. Exiger le remboursement de " + tropPercuTotal + " de maniere explicite\n" : "");
+
   return "Redige une lettre officielle " + (labels[letterType] || letterType) + ".\n\n"
-    + "Contexte :\n"
+    + identiteBlock + "\n"
+    + "Contexte du bail :\n"
     + "- Score du bail : " + ((analysisData && analysisData.score) || '?') + "/100\n"
     + "- Ville : " + ((context && context.ville) || 'non precisee') + "\n"
     + "- Loyer : " + ((context && context.loyer_base) || 'non precise') + " euros/mois\n"
-    + "- Surface : " + ((context && context.surface) || 'non precisee') + " m2\n\n"
-    + "Clauses illegales detectees :\n" + illegalClauses + "\n\n"
-    + "Exigences :\n"
-    + "- Lettre LRAR complete et professionnelle\n"
-    + "- References legales exactes (loi 6 juillet 1989, ALUR, ELAN)\n"
-    + "- Ton ferme mais courtois\n"
-    + "- Mentionner les recours si non-reponse sous 15 jours\n"
-    + "- Champs a personnaliser entre [crochets]\n\n"
-    + "Retourne la lettre en texte brut, prete a etre copiee.";
+    + "- Surface : " + ((context && context.surface) || 'non precisee') + " m2\n"
+    + montantBlock + "\n"
+    + "Clauses illegales detectees :\n" + illegalClauses + "\n"
+    + instructionsBlock + "\n"
+    + "Retourne UNIQUEMENT le texte brut de la lettre, sans introduction ni commentaire.";
 }
 
 async function callAnthropic(messages, systemPrompt, maxTokens) {
