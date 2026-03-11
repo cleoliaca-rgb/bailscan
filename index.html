@@ -21,6 +21,7 @@
   --warning: #f59e0b; --warning-light: #fffbeb;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:80px; }
 body { background:var(--creme); color:var(--texte); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
 
 /* ── HEADER ── */
@@ -32,7 +33,7 @@ nav a { color:var(--gris); text-decoration:none; font-size:0.9rem; transition:co
 nav a:hover { color:var(--accent); }
 .btn-nav { background:var(--noir); color:var(--creme) !important; padding:10px 22px; border-radius:8px; font-weight:600; }
 .btn-nav:hover { background:var(--accent) !important; }
-.nav-agences { font-size:0.85rem !important; color:var(--gris) !important; }
+.nav-agences { color:var(--gris) !important; font-size:0.88rem !important; }
 .nav-agences:hover { color:var(--accent) !important; }
 
 /* ── HERO ── */
@@ -564,11 +565,11 @@ select.form-input { cursor:pointer; }
       </div>
       <div class="form-grid">
         <div class="form-group">
-          <label for="ville">Ville <span class="req">*</span></label>
+          <label for="ville">Ville <span style="font-weight:400;color:var(--gris);font-size:0.8rem">— recommandé pour vérifier le loyer</span></label>
           <input type="text" id="ville" class="form-input" placeholder="Ex : Paris, Lyon, Bordeaux…" oninput="updateLoyerCheck()">
         </div>
         <div class="form-group">
-          <label for="surface">Surface (m²) <span class="req">*</span></label>
+          <label for="surface">Surface (m²) <span style="font-weight:400;color:var(--gris);font-size:0.8rem">— recommandé</span></label>
           <input type="number" id="surface" class="form-input" placeholder="Ex : 35" min="1" oninput="updateLoyerCheck()">
         </div>
       </div>
@@ -1075,13 +1076,7 @@ function updateLoyerCheck() {
 // WIZARD NAVIGATION
 // ═══════════════════════════════════════
 function goStep(n) {
-  // Validation step 1
-  if (n === 2 && !document.getElementById('ville').value.trim()) {
-    document.getElementById('ville').focus();
-    document.getElementById('ville').style.borderColor = 'var(--accent)';
-    return;
-  }
-  document.getElementById('ville').style.borderColor = '';
+  // Pas de validation bloquante - tout est facultatif sauf le document
 
   // Validation step 3
   if (n === 4) {
