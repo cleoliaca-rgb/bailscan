@@ -81,6 +81,7 @@ nav a:hover { color:white; }
 
 /* ── FONCTIONNALITÉS ── */
 .features { padding:80px 48px; background:white; }
+.particulier-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start; }
 .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:52px; }
 .feat-card { background:var(--creme); border:1.5px solid var(--border); border-radius:16px; padding:28px; transition:all .25s; }
 .feat-card:hover { border-color:var(--pro-accent); transform:translateY(-3px); box-shadow:0 8px 32px rgba(59,111,212,0.1); }
@@ -283,6 +284,8 @@ nav a:hover { color:white; }
   .steps { grid-template-columns:1fr 1fr; gap:24px; }
   .steps::before { display:none; }
   .features, .how, .pricing { padding:52px 20px; }
+  section[style*="padding:80px 48px"] { padding:52px 20px !important; }
+  .particulier-grid { grid-template-columns:1fr !important; }
   .dash-layout { grid-template-columns:1fr; }
   .dash-sidebar { display:none; }
   .dash-main { padding:24px 16px; }
@@ -517,6 +520,56 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
     </div>
 
     <p style="text-align:center;font-size:0.78rem;color:var(--gris);margin-top:20px">Paiement sécurisé par Stripe · Facture mensuelle · Résiliable à tout moment après la période d'engagement</p>
+  </div>
+</section>
+
+<!-- SECTION PARTICULIER -->
+<section style="padding:80px 48px;background:var(--creme);border-top:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:48px">
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:12px">Pour les propriétaires particuliers</div>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,2.5vw,2.2rem);color:var(--noir);margin-bottom:14px">Vous louez à un locataire ?<br><em style="font-style:italic;color:var(--accent)">Sécurisez votre bail en une fois.</em></h2>
+      <p style="font-size:1rem;color:var(--gris);line-height:1.7;max-width:520px;margin:0 auto">Pas d'abonnement. Payez une seule fois et obtenez la vérification complète de votre bail + la rédaction d'un bail 100% conforme avant signature.</p>
+    </div>
+
+    <div class="particulier-grid">
+
+      <!-- Analyse bail -->
+      <div style="background:white;border:1.5px solid var(--border);border-radius:18px;padding:32px;position:relative">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);margin-bottom:8px">Analyse de bail</div>
+        <div style="font-family:'Instrument Serif',serif;font-size:2.8rem;color:var(--noir);line-height:1"><sup style="font-size:1.1rem;font-family:'DM Sans',sans-serif;font-weight:600">€</sup>9</div>
+        <div style="font-size:0.8rem;color:var(--gris);margin:6px 0 24px">Paiement unique · Accès à vie</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte)"><span style="color:var(--vert);font-weight:700;flex-shrink:0">✓</span>Analyse complète de toutes les clauses</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte)"><span style="color:var(--vert);font-weight:700;flex-shrink:0">✓</span>Détection des clauses illégales avant signature</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte)"><span style="color:var(--vert);font-weight:700;flex-shrink:0">✓</span>Vérification encadrement des loyers</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte)"><span style="color:var(--vert);font-weight:700;flex-shrink:0">✓</span>Vérification dépôt de garantie</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte)"><span style="color:var(--vert);font-weight:700;flex-shrink:0">✓</span>Rapport PDF avec corrections légales</div>
+        </div>
+        <a href="/" style="display:block;width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;text-align:center;background:white;color:var(--noir);border:1.5px solid var(--border);text-decoration:none;transition:all .2s;box-sizing:border-box" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--noir)'">Analyser mon bail →</a>
+      </div>
+
+      <!-- Analyse + Rédaction bail -->
+      <div style="background:var(--noir);border:1.5px solid var(--noir);border-radius:18px;padding:32px;position:relative">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;font-size:0.65rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap">Recommandé</div>
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:8px">Analyse + Bail conforme</div>
+        <div style="font-family:'Instrument Serif',serif;font-size:2.8rem;color:white;line-height:1"><sup style="font-size:1.1rem;font-family:'DM Sans',sans-serif;font-weight:600">€</sup>29</div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin:6px 0 24px">Paiement unique · Accès à vie</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Tout ce qui est inclus dans Analyse</div>
+          <div style="height:1px;background:rgba(255,255,255,0.1);margin:4px 0"></div>
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Bail conforme rédigé par IA en 30 sec</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Adapté à votre bien — meublé, vide, saisonnier</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Zéro risque de litige avec votre locataire</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Économisez 300–500€ de notaire ou juriste</div>
+        </div>
+        <button onclick="window.location.href='/'" style="display:block;width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;text-align:center;background:var(--pro-accent);color:white;border:none;cursor:pointer;transition:all .2s" onmouseover="this.style.background='#2a5bbf'" onmouseout="this.style.background='var(--pro-accent)'">Obtenir mon bail conforme →</button>
+        <p style="text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.3);margin-top:14px">Résultat en moins de 2 minutes</p>
+      </div>
+
+    </div>
+
+    <p style="text-align:center;font-size:0.78rem;color:var(--gris);margin-top:24px">Paiement sécurisé par Stripe · Sans abonnement · Sans engagement</p>
   </div>
 </section>
 
@@ -1257,7 +1310,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ════════════════════════════════
 // STATE PRO
 // ════════════════════════════════
