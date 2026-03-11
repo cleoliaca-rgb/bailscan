@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BailScan Pro — Dashboard pour agences immobilières</title>
-<meta name="description" content="BailScan Pro : analysez tous vos baux, détectez les clauses illégales avant signature. Dashboard dédié agences. Essai 7 jours gratuit.">
+<meta name="description" content="BailScan Pro : analysez tous vos baux, détectez les clauses illégales avant signature. Dashboard dédié agences. Essai 3 jours gratuit.">
 <link rel="canonical" href="https://bailscan.app/pro.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -269,6 +269,10 @@ nav a:hover { color:white; }
 /* Responsive */
 @media(max-width:900px) {
   header { padding:8px 20px; min-height:50px; }
+  nav a { display:none; }
+  nav a:first-child { display:flex; }
+  .btn-header-login { display:none; }
+  .btn-header-cta { font-size:0.78rem !important; padding:7px 12px; }
   .hero { padding:0 0 60px; min-height:auto; align-items:flex-start; margin-top:0; }
   .hero-inner { padding:0 20px; grid-template-columns:1fr; gap:32px; }
   .hero-inner > div:first-child { padding-top:110px; }
@@ -319,7 +323,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
     <a href="#fonctionnalites">Fonctionnalités</a>
     <a href="#tarifs">Tarifs</a>
     <button class="btn-header-login" onclick="openModal('login')">Connexion</button>
-    <button class="btn-header-cta" onclick="openModal('signup')">Essai gratuit 7 jours →</button>
+    <button class="btn-header-cta" onclick="openModal('signup')">Essai gratuit 3 jours →</button>
   </nav>
 </header>
 
@@ -338,7 +342,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
         <button class="btn-secondary-pro" onclick="scrollToSection('fonctionnalites')">Voir les fonctionnalités</button>
       </div>
       <div class="hero-stats">
-        <div><div class="stat-n">7j</div><div class="stat-l">d'essai gratuit<br>sans CB requise</div></div>
+        <div><div class="stat-n">3j</div><div class="stat-l">d'essai gratuit<br>sans CB requise</div></div>
         <div><div class="stat-n">2min</div><div class="stat-l">par bail<br>analysé</div></div>
         <div><div class="stat-n">100%</div><div class="stat-l">conforme loi<br>1989 + ALUR</div></div>
       </div>
@@ -446,7 +450,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
   <div class="section-inner">
     <div class="section-tag">Tarifs</div>
     <h2 class="section-title">Choisissez votre engagement</h2>
-    <p class="section-sub" style="margin-bottom:0">Essai gratuit 7 jours · Sans CB · Résiliable à tout moment</p>
+    <p class="section-sub" style="margin-bottom:0">Essai gratuit 3 jours · Sans CB · Résiliable à tout moment</p>
 
     <!-- Toggle mensuel / annuel -->
     <div class="pricing-toggle-wrap">
@@ -475,7 +479,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
           <div class="pricing-feature">2 utilisateurs</div>
           <div class="pricing-feature">Support email</div>
         </div>
-        <button class="btn-pricing btn-pricing-outline" onclick="openModal('signup')">Essayer 7 jours gratuit</button>
+        <button class="btn-pricing btn-pricing-outline" onclick="openModal('signup')">Essayer 3 jours gratuit</button>
       </div>
       <!-- PRO -->
       <div class="pricing-card featured">
@@ -525,7 +529,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
     <div class="dash-sidebar">
       <div class="dash-sidebar-logo">
         <span>Bail<em>Scan</em> Pro</span>
-        <div class="dash-trial-pill" id="trialPill">⏱ Essai · <span id="trialDaysLeft">7</span>j restants</div>
+        <div class="dash-trial-pill" id="trialPill">⏱ Essai · <span id="trialDaysLeft">3</span>j restants</div>
       </div>
       <div class="dash-nav">
         <div class="dash-nav-section">Principal</div>
@@ -580,7 +584,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
         </div>
         <div class="trial-banner" id="trialBanner">
           <div class="trial-banner-text">
-            <div class="trial-banner-title">🎁 Essai gratuit en cours — <span id="trialDaysLeftBanner">7</span> jours restants</div>
+            <div class="trial-banner-title">🎁 Essai gratuit en cours — <span id="trialDaysLeftBanner">3</span> jours restants</div>
             <div class="trial-banner-sub">Accès complet à toutes les fonctionnalités Pro. Sans engagement.</div>
           </div>
           <button class="btn-trial-upgrade" onclick="showDashTab('abonnement')">Passer en Pro →</button>
@@ -1176,7 +1180,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
 <div class="modal-overlay" id="modalSignup">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('signup')">×</button>
-    <div class="trial-badge">🎁 Essai gratuit 7 jours · Sans CB</div>
+    <div class="trial-badge">🎁 Essai gratuit 3 jours · Sans CB</div>
     <div class="modal-title">Créer mon compte Pro</div>
     <div class="modal-sub">Accès immédiat à toutes les fonctionnalités. Aucune carte bancaire requise.</div>
     <div id="signupForm">
@@ -1193,7 +1197,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
     <div class="success-box" id="signupSuccess">
       <div class="success-icon">🎉</div>
       <div class="success-title">Bienvenue dans BailScan Pro !</div>
-      <div class="success-text">Votre essai gratuit de 7 jours commence maintenant. Accès complet à toutes les fonctionnalités.</div>
+      <div class="success-text">Votre essai gratuit de 3 jours commence maintenant. Accès complet à toutes les fonctionnalités.</div>
     </div>
     <div class="modal-switch">Déjà un compte ? <a onclick="closeModal('signup');openModal('login')">Se connecter</a></div>
   </div>
@@ -1349,8 +1353,6 @@ function injectStyles() {
 // ════════════════════════════════
 // MODALES
 // ════════════════════════════════
-function openModal(t){ document.getElementById('modal'+(t==='signup'?'Signup':'Login')).classList.add('active'); }
-function closeModal(t){ document.getElementById('modal'+(t==='signup'?'Signup':'Login')).classList.remove('active'); }
 document.addEventListener('keydown',function(e){ if(e.key==='Escape'){closeModal('signup');closeModal('login');} });
 document.querySelectorAll('.modal-overlay').forEach(function(el){
   el.addEventListener('click',function(e){ if(e.target===el){closeModal('signup');closeModal('login');} });
