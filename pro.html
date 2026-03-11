@@ -2086,4 +2086,8 @@ var _origShowDashTab=showDashTab;
 showDashTab=function(tab){_origShowDashTab(tab);if(tab==='equipe')refreshTeam();};
 
 // Wrap refreshHisto pour ajouter data attrs
-var _origRefreshHisto=re
+var _origRefreshHisto=refreshHisto;
+refreshHisto=function(){_origRefreshHisto();var rows=document.querySelectorAll('#histoTbody tr');proState.analyses.forEach(function(a,i){if(rows[i]){rows[i].setAttribute('data-score',a.score||0);rows[i].setAttribute('data-type',a.type||'vide');}});};
+</script>
+</body>
+</html>
