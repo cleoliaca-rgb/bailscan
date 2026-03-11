@@ -1788,12 +1788,12 @@ function saveIdentite() {
 }
 
 function getIdentite() {
-  return appState.identite || {
-    nom: (document.getElementById('id_nom') || {}).value || '',
-    adresse: (document.getElementById('id_adresse') || {}).value || '',
-    proprio: (document.getElementById('id_proprio') || {}).value || '',
-    date_bail: (document.getElementById('id_date_bail') || {}).value || ''
-  };
+  // Toujours lire les champs DOM en direct (pas de cache appState qui peut être vide)
+  var nom = (document.getElementById('id_nom') && document.getElementById('id_nom').value.trim()) || '';
+  var adresse = (document.getElementById('id_adresse') && document.getElementById('id_adresse').value.trim()) || '';
+  var proprio = (document.getElementById('id_proprio') && document.getElementById('id_proprio').value.trim()) || '';
+  var date_bail = (document.getElementById('id_date_bail') && document.getElementById('id_date_bail').value.trim()) || '';
+  return { nom: nom, adresse: adresse, proprio: proprio, date_bail: date_bail };
 }
 
 function getTropPercuMontant() {
@@ -1826,7 +1826,14 @@ function payWithStripe() {
   if (analysisResult) sessionStorage.setItem('bailscan_analysis', JSON.stringify(analysisResult));
   sessionStorage.setItem('bailscan_context', JSON.stringify({
     ville: appState.ville, surface: appState.surface,
-    loyerBase: appState.loyerBase, bienType: appState.bienType
+    loyerBase: appState.loyerBase, bienType: appState.bienType,
+    loyerMajore: appState.loyerMajore,
+    complementLoyer: appState.complementLoyer,
+    complementJustif: appState.complementJustif || '',
+    nbMoisBail: appState.nbMoisBail || 0,
+    dateDebutBail: appState.dateDebutBail || '',
+    analysisType: appState.analysisType,
+    locationtype: appState.locationtype
   }));
   fetch('/api/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({amount:900}) })
   .then(function(r) { return r.json(); })
