@@ -22,7 +22,7 @@ html { scroll-behavior:smooth; scroll-padding-top:80px; }
 body { background:var(--creme); color:var(--texte); font-family:'DM Sans',sans-serif; overflow-x:hidden; }
 
 /* ── HEADER ── */
-header { position:fixed; top:0; left:0; right:0; z-index:200; padding:12px 48px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); background:rgba(17,24,39,0.95); backdrop-filter:blur(12px); }
+header { position:fixed; top:0; left:0; right:0; z-index:200; padding:7px 48px; min-height:50px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); background:rgba(17,24,39,0.97); backdrop-filter:blur(12px); }
 .logo { font-family:'Instrument Serif',serif; font-size:1.5rem; color:white; text-decoration:none; }
 .logo span { color:var(--accent); }
 .logo-badge { font-size:0.6rem; font-weight:700; background:var(--pro-accent); color:white; padding:2px 7px; border-radius:4px; margin-left:7px; letter-spacing:0.06em; vertical-align:middle; font-family:'DM Sans',sans-serif; }
@@ -35,7 +35,7 @@ nav a:hover { color:white; }
 .btn-header-cta:hover { background:#2a5bbf !important; }
 
 /* ── HERO ── */
-.hero { min-height:100vh; background:var(--pro); display:flex; align-items:center; padding:120px 48px 80px; position:relative; overflow:hidden; }
+.hero { background:var(--pro); display:flex; align-items:center; padding:110px 48px 80px; position:relative; overflow:hidden; }
 .hero::before { content:''; position:absolute; top:-200px; right:-200px; width:900px; height:900px; background:radial-gradient(circle, rgba(59,111,212,0.12) 0%, transparent 60%); }
 .hero::after { content:''; position:absolute; bottom:-100px; left:-100px; width:600px; height:600px; background:radial-gradient(circle, rgba(200,75,47,0.08) 0%, transparent 60%); }
 .hero-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; width:100%; position:relative; z-index:1; }
@@ -268,9 +268,12 @@ nav a:hover { color:white; }
 
 /* Responsive */
 @media(max-width:900px) {
-  header { padding:14px 20px; }
-  .hero { padding:100px 20px 60px; }
-  .hero-inner { grid-template-columns:1fr; gap:40px; }
+  header { padding:8px 20px; min-height:50px; }
+  .hero { padding:0 0 60px; min-height:auto; align-items:flex-start; margin-top:0; }
+  .hero-inner { padding:0 20px; grid-template-columns:1fr; gap:32px; }
+  .hero-inner > div:first-child { padding-top:110px; }
+  .hero-tag { font-size:0.7rem; padding:4px 10px; }
+  .dash-preview { display:none; }
   .features-grid { grid-template-columns:1fr; }
   .pricing-grid { grid-template-columns:1fr; }
   .steps { grid-template-columns:1fr 1fr; gap:24px; }
@@ -297,7 +300,14 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
 @media(max-width:900px){.footer-top-pro{grid-template-columns:1fr 1fr;gap:28px;}}
 @media(max-width:600px){.footer-top-pro{grid-template-columns:1fr;}}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+  s.onerror=function(){console.warn('jsPDF non chargé — export PDF indisponible');};
+  document.head.appendChild(s);
+})();
+</script>
 </head>
 <body>
 
@@ -370,37 +380,32 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
       <div class="feat-card">
         <div class="feat-icon">📊</div>
         <div class="feat-title">Dashboard centralisé</div>
-        <div class="feat-desc">Toutes vos analyses au même endroit. Historique complet, filtres par statut, recherche par bien ou locataire.</div>
+        <div class="feat-desc">Toutes vos analyses au même endroit. Historique complet, filtres par statut, recherche par bien ou locataire. Vue d'ensemble en temps réel.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">⚡</div>
-        <div class="feat-title">Analyse en 2 minutes</div>
-        <div class="feat-desc">Upload le bail en PDF, l'IA analyse automatiquement toutes les clauses selon la loi du 6 juillet 1989 et ALUR.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">🔍</div>
-        <div class="feat-title">Détection complète</div>
-        <div class="feat-desc">Clauses abusives, dépôt illégal, encadrement des loyers, clauses manuscrites — rien n'échappe à l'analyse.</div>
+        <div class="feat-title">Analyse complète en 2 min</div>
+        <div class="feat-desc">Upload le bail en PDF, l'IA détecte toutes les clauses illégales, vérifie l'encadrement des loyers et calcule le trop-perçu automatiquement.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">📄</div>
-        <div class="feat-title">Rapports PDF pro</div>
-        <div class="feat-desc">Export PDF à votre logo avec références légales complètes. Partageable avec vos clients en 1 clic.</div>
+        <div class="feat-title">Rapports PDF à votre logo</div>
+        <div class="feat-desc">Export PDF professionnel avec votre charte graphique, références légales complètes. Partageable avec vos clients en 1 clic.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">✏️</div>
-        <div class="feat-title">Corrections de bail</div>
-        <div class="feat-desc">Chaque clause illégale détectée est accompagnée de sa reformulation légale exacte — prête à intégrer avant signature.</div>
+        <div class="feat-title">Corrections + Bail conforme IA</div>
+        <div class="feat-desc">Chaque clause illégale est reformulée légalement. Générez aussi un bail complet conforme loi 1989 + ALUR en 30 secondes — économisez 300–500€ de juriste.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">⚖️</div>
-        <div class="feat-title">Bail conforme par IA</div>
-        <div class="feat-desc">Générez un bail complet conforme à la loi 1989 + ALUR en 30 secondes selon les caractéristiques du logement.</div>
+        <div class="feat-icon">📐</div>
+        <div class="feat-title">Encadrement des loyers auto</div>
+        <div class="feat-desc">Validez automatiquement si le loyer est légal avant mise en location — Paris, Lyon, Bordeaux, Montpellier et plus. Évitez les amendes jusqu'à 5 000€.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">👥</div>
-        <div class="feat-title">Multi-utilisateurs</div>
-        <div class="feat-desc">Admin, Manager, Agent — chaque rôle voit ce dont il a besoin. Invitez votre équipe en 1 clic, gérez les permissions.</div>
+        <div class="feat-title">Multi-utilisateurs & API</div>
+        <div class="feat-desc">Admin, Manager, Agent — chaque rôle voit ce dont il a besoin. API REST pour intégrer BailScan dans vos outils (Rentila, Immoware, Apimmo…).</div>
       </div>
     </div>
   </div>
@@ -460,7 +465,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
       <!-- STARTER -->
       <div class="pricing-card">
         <div class="pricing-plan">Starter</div>
-        <div class="pricing-price"><sup>€</sup><span id="priceStarter">29</span></div>
+        <div class="pricing-price"><sup>€</sup><span id="priceStarter">79</span></div>
         <div class="pricing-period">/ mois · par agence</div>
         <div class="pricing-note" id="noteStarter" style="font-size:0.75rem;color:var(--gris);margin-bottom:12px;min-height:20px"></div>
         <div class="pricing-features">
@@ -476,7 +481,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
       <div class="pricing-card featured">
         <div class="pricing-badge">Le plus populaire</div>
         <div class="pricing-plan">Pro</div>
-        <div class="pricing-price"><sup>€</sup><span id="pricePro">79</span></div>
+        <div class="pricing-price"><sup>€</sup><span id="pricePro">199</span></div>
         <div class="pricing-period">/ mois · par agence</div>
         <div class="pricing-note" id="notePro" style="font-size:0.75rem;color:rgba(255,255,255,0.45);margin-bottom:12px;min-height:20px"></div>
         <div class="pricing-features">
@@ -988,7 +993,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
             </div>
           </div>
           <div style="background:var(--pro-light);border-radius:10px;padding:20px;margin-bottom:20px">
-            <div style="font-weight:700;font-size:0.95rem;color:var(--pro-accent);margin-bottom:12px">Passer en Pro après l'essai — 79€/mois</div>
+            <div style="font-weight:700;font-size:0.95rem;color:var(--pro-accent);margin-bottom:12px">Passer en Pro après l'essai — 199€/mois</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;font-size:0.84rem;color:var(--texte)">
               <div>✓ Analyses illimitées</div>
               <div>✓ 5 utilisateurs</div>
@@ -998,7 +1003,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
               <div>✓ Encadrement loyers auto</div>
               <div>✓ Support prioritaire</div>
             </div>
-            <div style="font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--noir);margin-bottom:14px"><sup style="font-size:1rem;font-family:'DM Sans'">€</sup>79<span style="font-size:0.9rem;font-family:'DM Sans';font-weight:400;color:var(--gris)"> / mois · sans engagement</span></div>
+            <div style="font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--noir);margin-bottom:14px"><sup style="font-size:1rem;font-family:'DM Sans'">€</sup>199<span style="font-size:0.9rem;font-family:'DM Sans';font-weight:400;color:var(--gris)"> / mois · sans engagement</span></div>
             <!-- Stripe Checkout link — à remplacer par votre lien Stripe -->
             <a href="https://buy.stripe.com/VOTRE_LIEN_STRIPE" target="_blank" class="btn-primary-pro" style="display:inline-flex;text-decoration:none;padding:13px 28px" id="btnPasserPro">💳 Passer en Pro →</a>
             <div style="font-size:0.75rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe · Annulable à tout moment · Facture disponible</div>
@@ -1076,7 +1081,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
             <code style="color:#7fa8e8">Authorization: Bearer <span style="color:#ffd700">bs_live_votre_cle_api</span></code><br>
             <code style="color:#7fa8e8">Content-Type: application/json</code>
           </div>
-          <div style="margin-top:12px;font-size:.82rem;color:var(--gris)">Documentation complète disponible sur <a href="mailto:contact@bailscan.app" style="color:var(--pro-accent)">contact@bailscan.app</a> · Offre Entreprise uniquement.</div>
+          <div style="margin-top:12px;font-size:.82rem;color:var(--gris)">Documentation complète disponible sur <a href="/cdn-cgi/l/email-protection#93f0fcfde7f2f0e7d3f1f2faffe0f0f2fdbdf2e3e3" style="color:var(--pro-accent)"><span class="__cf_email__" data-cfemail="fc9f9392889d9f88bc9e9d95908f9f9d92d29d8c8c">[email&#160;protected]</span></a> · Offre Entreprise uniquement.</div>
         </div>
       </div>
 
@@ -1158,7 +1163,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
         <a href="/legal.html">Mentions légales</a>
         <a href="/legal.html">CGV</a>
         <a href="/legal.html">Politique de confidentialité</a>
-        <a href="mailto:contact@bailscan.app">Contact</a>
+        <a href="/cdn-cgi/l/email-protection#16757978627775625674777f7a6575777838776666">Contact</a>
       </div>
     </div>
     <div class="footer-bottom-pro">
@@ -1248,7 +1253,7 @@ footer.footer-seo-pro { background:var(--pro); color:rgba(255,255,255,0.7); flex
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ════════════════════════════════
 // STATE PRO
 // ════════════════════════════════
@@ -1739,6 +1744,7 @@ function downloadBailTxt(){
 function exportBailPDF(){
   if(!proState.currentBail){alert('Generez un bail avant.');return;}
   try{
+    if(!window.jspdf){alert('Export PDF indisponible — rechargez la page.');return;}
     var jsPDF=window.jspdf.jsPDF;
     var doc=new jsPDF();
     doc.setFillColor(17,24,39);doc.rect(0,0,210,36,'F');
@@ -1791,6 +1797,7 @@ function verifierEncadrement(){
 function exportResultPDF(){
   if(!proState.currentResult){alert('Aucun résultat à exporter.');return;}
   try{
+    if(!window.jspdf){alert('Export PDF indisponible — rechargez la page.');return;}
     var jsPDF=window.jspdf.jsPDF;
     var doc=new jsPDF();
     var r=proState.currentResult;
@@ -1860,7 +1867,7 @@ function scrollToSection(id){var el=document.getElementById(id);if(el)el.scrollI
 // TARIFS — TOGGLE
 // ════════════════════════════════
 var pricingMode='mensuel', pricingEngagement=6;
-var BASE_PRICES={starter:29,pro:79};
+var BASE_PRICES={starter:79,pro:199};
 function setPricing(mode){pricingMode=mode;document.getElementById('ptBtn1').className='ptoggle'+(mode==='mensuel'?' active':'');document.getElementById('ptBtn2').className='ptoggle'+(mode==='annuel'?' active':'');updatePrices();}
 function setEngagement(m){pricingEngagement=m;document.getElementById('engBtn6').className='engage-btn'+(m===6?' active':'');document.getElementById('engBtn12').className='engage-btn'+(m===12?' active':'');updatePrices();}
 function updatePrices(){
@@ -2024,8 +2031,4 @@ var _origShowDashTab=showDashTab;
 showDashTab=function(tab){_origShowDashTab(tab);if(tab==='equipe')refreshTeam();};
 
 // Wrap refreshHisto pour ajouter data attrs
-var _origRefreshHisto=refreshHisto;
-refreshHisto=function(){_origRefreshHisto();var rows=document.querySelectorAll('#histoTbody tr');proState.analyses.forEach(function(a,i){if(rows[i]){rows[i].setAttribute('data-score',a.score||0);rows[i].setAttribute('data-type',a.type||'vide');}});};
-</script>
-</body>
-</html>
+var _origRefreshHisto=re
