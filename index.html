@@ -210,6 +210,18 @@ select.form-input { cursor:pointer; }
 .loyer-check.ok { border-color:rgba(45,106,79,0.3); background:var(--vert-light); }
 /* Banner trop-perçu */
 .trop-percu-banner { background:linear-gradient(135deg,#c84b2f 0%,#e55c3e 100%); color:white; border-radius:16px; padding:24px 28px; margin-bottom:16px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; box-shadow:0 8px 28px rgba(200,75,47,0.28); }
+/* Identité locataire */
+.identite-bloc { background:var(--creme); border:1.5px solid var(--border); border-radius:16px; padding:24px 28px; margin-bottom:28px; }
+.identite-bloc-title { font-weight:700; font-size:0.95rem; color:var(--noir); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+.identite-bloc-sub { font-size:0.82rem; color:var(--gris); margin-bottom:18px; }
+.identite-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:600px){ .identite-grid { grid-template-columns:1fr; } }
+.identite-field label { font-size:0.78rem; font-weight:700; color:var(--gris); text-transform:uppercase; letter-spacing:0.06em; display:block; margin-bottom:5px; }
+.identite-field input, .identite-field textarea { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:9px; font-family:inherit; font-size:0.88rem; color:var(--noir); background:white; outline:none; transition:border-color .2s; box-sizing:border-box; }
+.identite-field input:focus, .identite-field textarea:focus { border-color:var(--accent); }
+.identite-field textarea { resize:vertical; min-height:70px; }
+.identite-saved { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; color:var(--vert); font-weight:600; margin-top:10px; opacity:0; transition:opacity .4s; }
+.identite-saved.visible { opacity:1; }
 .trop-percu-banner-icon { font-size:2.6rem; flex-shrink:0; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
 .trop-percu-banner-body { flex:1; min-width:150px; }
 .trop-percu-banner-label { font-size:0.7rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; opacity:0.75; margin-bottom:3px; }
@@ -645,15 +657,14 @@ select.form-input { cursor:pointer; }
 
       <div class="form-grid cols3">
         <div class="form-group">
-          <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— facultatif si absent du bail</span></label>
-          <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1007" min="0" oninput="calcLoyerTotal()">
-          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Montant du loyer hors charges indiqué dans le bail</small>
+          <label for="loyer_base">Loyer de base hors charges (&#8364;/mois)</label>
+          <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal()">
+          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">💡 Montant que vous payez chaque mois, hors charges</small>
         </div>
         <div class="form-group">
-          <label for="loyer_majore">Loyer de référence majoré (&#8364;/mois) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— zone encadrée uniquement</span></label>
-          <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal()">
-          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Plafond légal indiqué dans le bail (facultatif)</small>
-          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Complément pour caractéristiques exceptionnelles</small>
+          <label for="loyer_majore">Plafond légal majoré (&#8364;/mois) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— si indiqué dans le bail</span></label>
+          <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 950" min="0" oninput="calcLoyerTotal()">
+          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">💡 Loyer de référence majoré mentionné dans le bail (zone encadrée)</small>
         </div>
         <div class="form-group">
           <label for="complement_loyer">Complément de loyer (&#8364;) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— facultatif</span></label>
@@ -822,6 +833,9 @@ select.form-input { cursor:pointer; }
     <!-- PAID CONTENT -->
     <div class="paid-section" id="paidSection">
 
+      <!-- BANNER TROP-PERÇU (réaffiché après paiement) -->
+      <div id="paidAmountBanner" style="margin-bottom:24px"></div>
+
       <!-- EXPORT PDF RAPPORT -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">
         <div>
@@ -845,6 +859,32 @@ select.form-input { cursor:pointer; }
 
       <div class="letters-section">
         <div class="letters-title">Lettres officielles</div>
+
+        <!-- IDENTITÉ LOCATAIRE -->
+        <div class="identite-bloc">
+          <div class="identite-bloc-title">✍️ Vos coordonnées pour les lettres</div>
+          <div class="identite-bloc-sub">Renseignez ces informations une seule fois — elles seront intégrées automatiquement dans toutes les lettres générées.</div>
+          <div class="identite-grid">
+            <div class="identite-field">
+              <label>Prénom et Nom</label>
+              <input type="text" id="id_nom" placeholder="Ex : Marie Dupont" oninput="saveIdentite()">
+            </div>
+            <div class="identite-field">
+              <label>Adresse du logement loué</label>
+              <input type="text" id="id_adresse" placeholder="Ex : 12 rue des Acacias, 33000 Bordeaux" oninput="saveIdentite()">
+            </div>
+            <div class="identite-field">
+              <label>Nom du propriétaire / bailleur</label>
+              <input type="text" id="id_proprio" placeholder="Ex : M. Jean Martin" oninput="saveIdentite()">
+            </div>
+            <div class="identite-field">
+              <label>Date de signature du bail</label>
+              <input type="text" id="id_date_bail" placeholder="Ex : 15 janvier 2024" oninput="saveIdentite()">
+            </div>
+          </div>
+          <span class="identite-saved" id="identiteSavedMsg">✓ Informations enregistrées</span>
+        </div>
+
         <div id="lettersList">
           <div class="letter-card">
             <div class="letter-card-info">
@@ -1441,31 +1481,52 @@ function buildPaywallAmountBanner(data) {
   var nbMois = appState.nbMoisBail || 0;
   var clauses = data ? (data.clauses_abusives || []) : [];
   var nbDanger = clauses.filter(function(c){ return c.type === 'danger'; }).length;
+  var isLoyerProbleme = loy && (loy.statut === 'danger' || loy.statut === 'warning');
 
-  // Calcul excédent mensuel
-  var exedentMensuel = 0;
-  if (loyerBase > 0 && loyerMajore > 0 && loyerBase > loyerMajore) {
-    exedentMensuel = loyerBase - loyerMajore;
+  // ── 1. EXCÉDENT LOYER (loyer payé - plafond légal) ─────────
+  // Priorité à la valeur retournée par l'IA
+  var exedentLoyer = 0;
+  if (loy && loy.exedent_mensuel) {
+    exedentLoyer = parseFloat(loy.exedent_mensuel) || 0;
+  } else if (loyerBase > 0 && loyerMajore > 0 && loyerBase > loyerMajore) {
+    exedentLoyer = Math.round((loyerBase - loyerMajore) * 100) / 100;
   }
-  if (loy && loy.exedent_mensuel) exedentMensuel = parseFloat(loy.exedent_mensuel) || exedentMensuel;
 
-  var isLouerDanger = loy && (loy.statut === 'danger' || loy.statut === 'warning');
-  var tropPercuMensuel = exedentMensuel + (isLouerDanger && complementLoyer > 0 ? complementLoyer : 0);
-  var tropPercuTotal = tropPercuMensuel * nbMois;
+  // ── 2. COMPLÉMENT DE LOYER ILLÉGAL ──────────────────────────
+  // Inclus si : l'IA signale un problème ET un complément existe,
+  // OU si le complément est sans justification saisie
+  var complementIllegal = 0;
+  if (loy && loy.complement_illegal) {
+    complementIllegal = parseFloat(loy.complement_illegal) || 0;
+  } else if (complementLoyer > 0 && isLoyerProbleme) {
+    complementIllegal = complementLoyer;
+  } else if (complementLoyer > 0 && !appState.complementJustif) {
+    complementIllegal = complementLoyer;
+  }
+
+  // ── 3. TOTAL ────────────────────────────────────────────────
+  var tropPercuMensuel = exedentLoyer + complementIllegal;
+  var tropPercuTotal = Math.round(tropPercuMensuel * nbMois * 100) / 100;
+
+  // Détail pour affichage
+  var lignesDetail = [];
+  if (exedentLoyer > 0) lignesDetail.push('Loyer : +' + exedentLoyer.toFixed(2) + ' €/mois');
+  if (complementIllegal > 0) lignesDetail.push('Complément illégal : +' + complementIllegal.toFixed(2) + ' €/mois');
 
   var html = '';
 
   if (tropPercuTotal > 0 && nbMois > 0) {
     // CAS 1 : montant calculable — banner noir premium avec le gros chiffre
     html += '<div class="paywall-amount-banner">';
-    html += '<div class="paywall-amount-banner-eyebrow">💰 Votre trop-perçu estimé</div>';
+    html += '<div class="paywall-amount-banner-eyebrow">💰 Remboursement total estimé</div>';
     html += '<div class="paywall-amount-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' <span>€</span></div>';
     html += '<div class="paywall-amount-banner-sub">';
-    html += tropPercuMensuel.toFixed(2) + ' €/mois × ' + nbMois + ' mois de bail';
-    if (nbDanger > 0) html += ' · <strong style="color:rgba(255,255,255,0.75)">' + nbDanger + ' clause(s) illégale(s)</strong> détectée(s)';
-    html += '<br>Réclamez ce montant avec les lettres officielles incluses dans le rapport.</div>';
+    html += '<strong style="color:rgba(255,255,255,0.9)">' + tropPercuMensuel.toFixed(2) + ' €/mois</strong> × ' + nbMois + ' mois';
+    if (lignesDetail.length > 0) html += '<br><span style="opacity:0.7; font-size:0.77rem">' + lignesDetail.join(' · ') + '</span>';
+    if (nbDanger > 0) html += '<br><span style="opacity:0.65; font-size:0.77rem">+ ' + nbDanger + ' clause(s) illégale(s) détectée(s)</span>';
+    html += '<br><br>🎯 Réclamez ce montant grâce aux lettres officielles incluses.</div>';
     html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">🔓 Débloquer le rapport complet — 9€</button>';
-    html += '<div class="paywall-amount-banner-roi">Rapport à <strong>9€</strong> · Retour sur investissement potentiel : <strong>×' + Math.round(tropPercuTotal / 9) + '</strong></div>';
+    html += '<div class="paywall-amount-banner-roi">9€ investis · <strong>×' + Math.round(tropPercuTotal / 9) + ' de retour potentiel</strong></div>';
     html += '</div>';
   } else if (isLouerDanger || nbDanger > 0) {
     // CAS 2 : problème détecté mais pas de montant (date manquante ou pas de chiffres)
@@ -1500,52 +1561,61 @@ function renderLoyerCheck(data) {
   var icon = icons[loy.statut] || '🔍';
   var html = '';
 
-  // ── CALCUL TROP-PERÇU TOTAL ──────────────────────────────────
-  // On calcule l'excédent mensuel = loyer_base - loyer_majore (si loyer_base > loyer_majore)
-  var exedentMensuel = 0;
+  // ── CALCUL TROP-PERÇU TOTAL ─────────────────────────────────
   var loyerBase = appState.loyerBase || 0;
   var loyerMajore = appState.loyerMajore || 0;
   var complementLoyer = appState.complementLoyer || 0;
   var nbMois = appState.nbMoisBail || 0;
+  var isLoyerProbleme = (loy.statut === 'danger' || loy.statut === 'warning');
 
-  // Si loyer de base dépasse le loyer majoré → trop-perçu sur le loyer
-  if (loyerBase > 0 && loyerMajore > 0 && loyerBase > loyerMajore) {
-    exedentMensuel = loyerBase - loyerMajore;
-  }
-  // Si l'IA a fourni un excédent mensuel, on le prend
+  // 1. Excédent loyer — priorité à l'IA, sinon calcul formulaire
+  var exedentLoyer = 0;
   if (loy.exedent_mensuel) {
-    exedentMensuel = parseFloat(loy.exedent_mensuel) || exedentMensuel;
+    exedentLoyer = parseFloat(loy.exedent_mensuel) || 0;
+  } else if (loyerBase > 0 && loyerMajore > 0 && loyerBase > loyerMajore) {
+    exedentLoyer = Math.round((loyerBase - loyerMajore) * 100) / 100;
   }
 
-  var tropPercuTotal = exedentMensuel * nbMois;
-  var tropPercuTotalAvecComplement = tropPercuTotal + (complementLoyer * nbMois);
+  // 2. Complément illégal — inclus si l'IA signale un problème OU si pas de justification
+  var complementIllegal = 0;
+  if (loy.complement_illegal) {
+    complementIllegal = parseFloat(loy.complement_illegal) || 0;
+  } else if (complementLoyer > 0 && isLoyerProbleme) {
+    complementIllegal = complementLoyer;
+  } else if (complementLoyer > 0 && !appState.complementJustif) {
+    complementIllegal = complementLoyer;
+  }
 
-  // ── BANNER TROP-PERÇU (affiché si dépassement ET date connue) ──
-  if ((loy.statut === 'danger' || loy.statut === 'warning') && nbMois > 0 && (tropPercuTotal > 0 || (complementLoyer > 0 && loy.statut === 'danger'))) {
-    var montantAffiche = tropPercuTotalAvecComplement > 0 ? tropPercuTotalAvecComplement : tropPercuTotal;
+  // 3. Total
+  var tropPercuMensuel = exedentLoyer + complementIllegal;
+  var tropPercuTotal = Math.round(tropPercuMensuel * nbMois * 100) / 100;
+
+  // ── BANNER TROP-PERÇU ────────────────────────────────────────
+  if (isLoyerProbleme && nbMois > 0 && tropPercuTotal > 0) {
     var detailParts = [];
-    if (exedentMensuel > 0) detailParts.push(exedentMensuel.toFixed(2) + ' €/mois × ' + nbMois + ' mois (loyer)');
-    if (complementLoyer > 0 && loy.statut === 'danger') detailParts.push(complementLoyer.toFixed(2) + ' €/mois × ' + nbMois + ' mois (complément)');
+    if (exedentLoyer > 0) detailParts.push(exedentLoyer.toFixed(2) + ' €/mois (loyer)');
+    if (complementIllegal > 0) detailParts.push(complementIllegal.toFixed(2) + ' €/mois (complément)');
     html += '<div class="trop-percu-banner">';
     html += '<div class="trop-percu-banner-icon">💰</div>';
     html += '<div class="trop-percu-banner-body">';
     html += '<div class="trop-percu-banner-label">Remboursement total estimé</div>';
-    html += '<div class="trop-percu-banner-amount">' + montantAffiche.toFixed(0) + ' €</div>';
+    html += '<div class="trop-percu-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' €</div>';
     html += '<div class="trop-percu-banner-detail">';
-    if (detailParts.length > 0) html += detailParts.join(' + ') + '<br>';
-    html += 'Sur les <strong>' + nbMois + ' mois</strong> de bail écoulés';
+    html += '<strong>' + tropPercuMensuel.toFixed(2) + ' €/mois</strong> × ' + nbMois + ' mois';
+    if (detailParts.length > 0) html += '<br>' + detailParts.join(' + ');
     html += '</div></div>';
     html += '<button class="trop-percu-banner-cta" onclick="document.getElementById(\'paidSection\') && document.getElementById(\'paidSection\').scrollIntoView({behavior:\'smooth\'})">Générer la lettre →</button>';
     html += '</div>';
-  } else if ((loy.statut === 'danger' || loy.statut === 'warning') && nbMois === 0 && (exedentMensuel > 0 || complementLoyer > 0)) {
-    // Date non renseignée mais excédent détecté → inciter à renseigner la date
+  } else if (isLoyerProbleme && nbMois === 0 && (exedentLoyer > 0 || complementIllegal > 0)) {
+    // Date non renseignée — inciter à la saisir
+    var mensuelManquant = (exedentLoyer + complementIllegal).toFixed(2);
     html += '<div style="background:var(--rouge-light);border:1.5px solid rgba(200,75,47,0.3);border-radius:14px;padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;gap:14px">';
     html += '<span style="font-size:1.6rem">📅</span>';
-    html += '<div><div style="font-weight:700;font-size:0.88rem;color:var(--accent)">Indiquez la date de début du bail</div>';
-    if (exedentMensuel > 0) {
-      html += '<div style="font-size:0.82rem;color:var(--gris);margin-top:3px">Excédent détecté : <strong>' + exedentMensuel.toFixed(2) + ' €/mois</strong> — renseignez la date de début pour calculer le remboursement total.</div>';
-    }
-    html += '</div></div>';
+    html += '<div><div style="font-weight:700;font-size:0.88rem;color:var(--accent)">Ajoutez la date de début de bail pour voir le total réclamable</div>';
+    html += '<div style="font-size:0.82rem;color:var(--gris);margin-top:3px">Trop-perçu détecté : <strong>' + mensuelManquant + ' €/mois</strong>';
+    if (exedentLoyer > 0) html += ' (loyer : ' + exedentLoyer.toFixed(2) + ' €)';
+    if (complementIllegal > 0) html += ' (complément : ' + complementIllegal.toFixed(2) + ' €)';
+    html += '</div></div></div>';
   }
 
   // ── BLOC PRINCIPAL LOYER ──────────────────────────────────────
@@ -1656,6 +1726,92 @@ function showPaidContent() {
   document.getElementById('planStepsList').innerHTML = steps.map(function(s, i) {
     return '<div class="plan-step"><div class="plan-step-num">' + (i+1) + '</div><div class="plan-step-text">' + s + '</div></div>';
   }).join('');
+
+  // Banner trop-perçu réaffiché dans le rapport payant
+  buildPaidAmountBanner(data);
+}
+
+// ═══════════════════════════════════════
+// BANNER TROP-PERÇU RAPPORT PAYANT
+// ═══════════════════════════════════════
+function buildPaidAmountBanner(data) {
+  var el = document.getElementById('paidAmountBanner');
+  if (!el) return;
+  var loy = data && data.loyer ? data.loyer : null;
+  var loyerBase = appState.loyerBase || 0;
+  var loyerMajore = appState.loyerMajore || 0;
+  var complementLoyer = appState.complementLoyer || 0;
+  var nbMois = appState.nbMoisBail || 0;
+  var isLoyerProbleme = loy && (loy.statut === 'danger' || loy.statut === 'warning');
+
+  var exedentLoyer = 0;
+  if (loy && loy.exedent_mensuel) { exedentLoyer = parseFloat(loy.exedent_mensuel) || 0; }
+  else if (loyerBase > 0 && loyerMajore > 0 && loyerBase > loyerMajore) { exedentLoyer = Math.round((loyerBase - loyerMajore) * 100) / 100; }
+
+  var complementIllegal = 0;
+  if (loy && loy.complement_illegal) { complementIllegal = parseFloat(loy.complement_illegal) || 0; }
+  else if (complementLoyer > 0 && isLoyerProbleme) { complementIllegal = complementLoyer; }
+  else if (complementLoyer > 0 && !appState.complementJustif) { complementIllegal = complementLoyer; }
+
+  var tropPercuMensuel = exedentLoyer + complementIllegal;
+  var tropPercuTotal = Math.round(tropPercuMensuel * nbMois * 100) / 100;
+  if (tropPercuTotal <= 0 || nbMois <= 0) { el.innerHTML = ''; return; }
+
+  var lignes = [];
+  if (exedentLoyer > 0) lignes.push('Loyer : ' + exedentLoyer.toFixed(2) + ' €/mois');
+  if (complementIllegal > 0) lignes.push('Complément illégal : ' + complementIllegal.toFixed(2) + ' €/mois');
+
+  el.innerHTML = '<div class="trop-percu-banner">' +
+    '<div class="trop-percu-banner-icon">💰</div>' +
+    '<div class="trop-percu-banner-body">' +
+    '<div class="trop-percu-banner-label">Remboursement total estimé</div>' +
+    '<div class="trop-percu-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' €</div>' +
+    '<div class="trop-percu-banner-detail"><strong>' + tropPercuMensuel.toFixed(2) + ' €/mois</strong> × ' + nbMois + ' mois' +
+    (lignes.length > 0 ? '<br>' + lignes.join(' · ') : '') +
+    '</div></div>' +
+    '<div style="color:white;font-size:0.82rem;opacity:0.85;text-align:center;flex-shrink:0">Utilisez les lettres<br>ci-dessous pour<br><strong>réclamer ce montant</strong></div>' +
+    '</div>';
+}
+
+// ═══════════════════════════════════════
+// IDENTITÉ LOCATAIRE
+// ═══════════════════════════════════════
+function saveIdentite() {
+  appState.identite = {
+    nom: (document.getElementById('id_nom') || {}).value || '',
+    adresse: (document.getElementById('id_adresse') || {}).value || '',
+    proprio: (document.getElementById('id_proprio') || {}).value || '',
+    date_bail: (document.getElementById('id_date_bail') || {}).value || ''
+  };
+  var msg = document.getElementById('identiteSavedMsg');
+  if (msg) { msg.classList.add('visible'); clearTimeout(msg._t); msg._t = setTimeout(function(){ msg.classList.remove('visible'); }, 2000); }
+}
+
+function getIdentite() {
+  return appState.identite || {
+    nom: (document.getElementById('id_nom') || {}).value || '',
+    adresse: (document.getElementById('id_adresse') || {}).value || '',
+    proprio: (document.getElementById('id_proprio') || {}).value || '',
+    date_bail: (document.getElementById('id_date_bail') || {}).value || ''
+  };
+}
+
+function getTropPercuMontant() {
+  var loy = analysisResult && analysisResult.loyer ? analysisResult.loyer : null;
+  var loyerBase = appState.loyerBase || 0;
+  var loyerMajore = appState.loyerMajore || 0;
+  var complementLoyer = appState.complementLoyer || 0;
+  var nbMois = appState.nbMoisBail || 0;
+  var isLoyerProbleme = loy && (loy.statut === 'danger' || loy.statut === 'warning');
+  var exedentLoyer = 0;
+  if (loy && loy.exedent_mensuel) { exedentLoyer = parseFloat(loy.exedent_mensuel) || 0; }
+  else if (loyerBase > 0 && loyerMajore > 0 && loyerBase > loyerMajore) { exedentLoyer = Math.round((loyerBase - loyerMajore)*100)/100; }
+  var complementIllegal = 0;
+  if (loy && loy.complement_illegal) { complementIllegal = parseFloat(loy.complement_illegal) || 0; }
+  else if (complementLoyer > 0 && (isLoyerProbleme || !appState.complementJustif)) { complementIllegal = complementLoyer; }
+  var mensuel = exedentLoyer + complementIllegal;
+  var total = Math.round(mensuel * nbMois * 100) / 100;
+  return { exedentLoyer: exedentLoyer, complementIllegal: complementIllegal, mensuel: mensuel, total: total, nbMois: nbMois };
 }
 
 // ═══════════════════════════════════════
@@ -1829,6 +1985,10 @@ function generateLetter(type, btn) {
     return;
   }
   btn.textContent = 'Génération…'; btn.classList.add('loading'); btn.disabled = true;
+
+  var identite = getIdentite();
+  var montant = getTropPercuMontant();
+
   fetch('/api/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1841,7 +2001,19 @@ function generateLetter(type, btn) {
         ville: appState.ville || document.getElementById('ville').value,
         surface: appState.surface || document.getElementById('surface').value,
         loyer_base: appState.loyerBase,
-        type_bien: appState.bienType
+        type_bien: appState.bienType,
+        // Identité locataire
+        locataire_nom: identite.nom,
+        locataire_adresse: identite.adresse,
+        proprio_nom: identite.proprio,
+        date_bail: identite.date_bail || appState.dateDebutBail || '',
+        // Montants réclamés
+        trop_percu_mensuel: montant.mensuel > 0 ? montant.mensuel.toFixed(2) + ' €/mois' : '',
+        trop_percu_total: montant.total > 0 ? montant.total.toFixed(2) + ' €' : '',
+        trop_percu_detail: (montant.exedentLoyer > 0 ? 'excédent loyer ' + montant.exedentLoyer.toFixed(2) + ' €/mois' : '') +
+                           (montant.exedentLoyer > 0 && montant.complementIllegal > 0 ? ' + ' : '') +
+                           (montant.complementIllegal > 0 ? 'complément illégal ' + montant.complementIllegal.toFixed(2) + ' €/mois' : ''),
+        nb_mois_bail: montant.nbMois > 0 ? montant.nbMois : ''
       }
     })
   })
