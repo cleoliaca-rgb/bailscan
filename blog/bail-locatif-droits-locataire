@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Droits du locataire en France : le guide complet 2026 | BailScan</title>
+<meta name="description" content="Loyer, dépôt de garantie, clauses abusives, expulsion, préavis... Tous vos droits en tant que locataire expliqués simplement avec les références légales.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://bailscan.app/blog/bail-locatif-droits-locataire.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://bailscan.app/blog/bail-locatif-droits-locataire.html">
+<meta property="og:title" content="Droits du locataire en France : le guide complet 2026 | BailScan">
+<meta property="og:description" content="Loyer, dépôt de garantie, clauses abusives, expulsion, préavis... Tous vos droits en tant que locataire expliqués simplement avec les références légales.">
+<meta property="og:image" content="https://bailscan.app/og-image.jpg">
+<meta property="og:site_name" content="BailScan">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Droits du locataire en France : le guide complet 2026","description":"Loyer, dépôt de garantie, clauses abusives, expulsion, préavis... Tous vos droits en tant que locataire expliqués simplement avec les références légales.","url":"https://bailscan.app/blog/bail-locatif-droits-locataire.html","publisher":{"@type":"Organization","name":"BailScan","url":"https://bailscan.app"},"datePublished":"2025-03-10","dateModified":"2025-03-10","inLanguage":"fr","mainEntityOfPage":"https://bailscan.app/blog/bail-locatif-droits-locataire.html"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --noir:#0d0d0d; --creme:#f5f0e8; --accent:#c84b2f; --vert:#2d6a4f; --vert-light:#e8f5ee; --rouge-light:#fdf0ed; --texte:#1a1a1a; --gris:#6b6b6b; --border:#d8d0c4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--creme); color:var(--texte); font-family:'DM Sans',sans-serif; min-height:100vh; }
+  header { position:fixed; top:0; left:0; right:0; z-index:100; padding:18px 48px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); background:rgba(245,240,232,0.92); backdrop-filter:blur(12px); }
+  .logo { font-family:'Instrument Serif',serif; font-size:1.6rem; color:var(--noir); text-decoration:none; }
+  .logo span { color:var(--accent); }
+  nav { display:flex; gap:24px; align-items:center; }
+  nav a { color:var(--gris); text-decoration:none; font-size:0.9rem; }
+  .btn-nav { background:var(--noir); color:var(--creme) !important; padding:10px 22px; border-radius:8px; font-weight:500; }
+  .article-wrap { max-width:720px; margin:0 auto; padding:120px 48px 80px; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; color:var(--gris); text-decoration:none; font-size:0.85rem; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+  .article-tag { display:inline-block; background:var(--rouge-light); color:var(--accent); font-size:0.75rem; font-weight:600; padding:4px 12px; border-radius:20px; margin-bottom:20px; letter-spacing:0.05em; }
+  h1 { font-family:'Instrument Serif',serif; font-size:clamp(2rem,4vw,2.8rem); line-height:1.15; letter-spacing:-0.03em; color:var(--noir); margin-bottom:20px; }
+  .article-meta { font-size:0.82rem; color:var(--gris); margin-bottom:48px; padding-bottom:32px; border-bottom:1px solid var(--border); display:flex; gap:16px; }
+  h2 { font-family:'Instrument Serif',serif; font-size:1.5rem; color:var(--noir); margin:40px 0 16px; }
+  h3 { font-size:1rem; font-weight:700; color:var(--noir); margin:28px 0 10px; }
+  p { font-size:0.95rem; line-height:1.85; color:var(--texte); margin-bottom:18px; }
+  ul, ol { padding-left:24px; margin-bottom:18px; }
+  ul li, ol li { font-size:0.95rem; line-height:1.85; margin-bottom:8px; }
+  .highlight-box { background:white; border:1.5px solid var(--border); border-radius:12px; padding:24px 28px; margin:28px 0; }
+  .highlight-box.danger { background:var(--rouge-light); border-color:rgba(200,75,47,0.3); }
+  .highlight-box.success { background:var(--vert-light); border-color:rgba(45,106,79,0.3); }
+  .highlight-box.warning { background:#fff8e1; border-color:rgba(245,158,11,0.3); }
+  .highlight-box strong { display:block; margin-bottom:8px; font-size:0.9rem; }
+  .highlight-box p { margin-bottom:0; font-size:0.9rem; }
+  .law-ref { font-size:0.82rem; color:var(--accent); font-weight:600; background:var(--rouge-light); padding:2px 8px; border-radius:4px; white-space:nowrap; }
+  .cta-box { background:var(--noir); border-radius:16px; padding:36px; text-align:center; margin:48px 0; }
+  .cta-box h3 { color:white; margin-bottom:10px; font-family:'Instrument Serif',serif; font-size:1.4rem; }
+  .cta-box p { color:rgba(255,255,255,0.6); margin-bottom:20px; font-size:0.88rem; }
+  .cta-btn { display:inline-block; background:var(--accent); color:white; padding:14px 28px; border-radius:10px; text-decoration:none; font-weight:600; font-size:0.95rem; transition:background .2s; }
+  .cta-btn:hover { background:#a83a20; }
+  .related { margin-top:60px; padding-top:40px; border-top:1px solid var(--border); }
+  .related h3 { font-family:'Instrument Serif',serif; font-size:1.3rem; color:var(--noir); margin-bottom:24px; }
+  .related-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .related-card { background:white; border:1px solid var(--border); border-radius:12px; padding:20px; text-decoration:none; color:inherit; transition:all .2s; }
+  .related-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .related-card h4 { font-size:0.92rem; font-weight:600; color:var(--noir); margin-bottom:6px; line-height:1.4; }
+  .related-card span { font-size:0.78rem; color:var(--accent); font-weight:600; }
+  footer { padding:40px 48px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; color:var(--gris); font-size:0.82rem; }
+  footer a { color:var(--accent); text-decoration:none; }
+  @media(max-width:768px) { header { padding:16px 20px; } nav a:not(.btn-nav) { display:none; } .article-wrap { padding:100px 20px 60px; } .related-grid { grid-template-columns:1fr; } footer { flex-direction:column; gap:12px; text-align:center; } }
+</style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">Bail<span>Scan</span></a>
+  <nav>
+    <a href="/blog.html">Blog</a>
+    <a href="/" class="btn-nav">Analyser mon bail →</a>
+  </nav>
+</header>
+<div class="article-wrap">
+  <a href="/blog.html" class="back-link">← Retour au blog</a>
+  <span class="article-tag">Droits & bail</span>
+  <h1>Droits du locataire en France : le guide complet 2026</h1>
+  <div class="article-meta"><span>📅 Mars 2025</span><span>⏱ 10 min de lecture</span></div>
+  
+<p>Locataire en France, vous bénéficiez de protections importantes encadrées par la loi du 6 juillet 1989 et la loi ALUR. Pourtant, 1 bail sur 3 contient au moins une clause illégale. Voici vos droits fondamentaux que tout locataire doit connaître.</p>
+
+<h2>1. Le droit à un logement décent</h2>
+<p>Votre propriétaire est légalement tenu de vous fournir un logement décent, c'est-à-dire qui ne présente pas de risques pour votre sécurité ou santé. <span class="law-ref">Art. 6 loi 1989</span></p>
+<p>Un logement décent doit notamment avoir une surface habitable d'au moins 9 m², une hauteur sous plafond de 2,20 m minimum, un chauffage, une alimentation en eau potable, et une installation électrique conforme.</p>
+
+<h2>2. Le droit à un bail écrit et conforme</h2>
+<p>Depuis la loi ALUR, le bail doit obligatoirement être rédigé selon un contrat-type. <span class="law-ref">Décret n°2015-587 du 29 mai 2015</span></p>
+<p>Ce contrat doit mentionner : le loyer, les charges, la durée, le dépôt de garantie, la surface habitable, le DPE et les diagnostics obligatoires.</p>
+
+<h2>3. Le droit de contestation des clauses abusives</h2>
+<p>Toute clause contraire aux dispositions de la loi du 6 juillet 1989 est réputée non écrite. Cela signifie qu'elle n'a aucun effet, même si vous l'avez signée. <span class="law-ref">Art. 4 loi 1989</span></p>
+<div class="highlight-box success">
+<strong>✅ Vous pouvez contester à tout moment</strong>
+<p>Il n'y a pas de délai pour invoquer la nullité d'une clause abusive. Vous pouvez le faire pendant toute la durée du bail.</p>
+</div>
+
+<h2>4. Le droit à la tranquillité et à la vie privée</h2>
+<p>Votre propriétaire ne peut pas entrer dans votre logement sans votre accord. Les visites, même pour travaux ou pour faire visiter le bien en cas de vente, doivent être convenues à l'avance et dans des horaires raisonnables. <span class="law-ref">Art. 4 loi 1989</span></p>
+
+<h2>5. Le droit à un préavis protecteur</h2>
+<p>En zone tendue, votre préavis de départ est réduit à 1 mois (au lieu de 3). Et votre propriétaire doit respecter des délais stricts pour reprendre son logement. <span class="law-ref">Art. 15 loi 1989</span></p>
+
+<h2>6. Le droit à la restitution du dépôt de garantie</h2>
+<p>Le dépôt doit être restitué dans 1 mois (état des lieux conforme) ou 2 mois (dégradations constatées). Tout retard génère une pénalité de 10% par mois. <span class="law-ref">Art. 22 loi 1989</span></p>
+
+<h2>7. Le droit à l'encadrement du loyer</h2>
+<p>Dans les zones tendues couvertes par l'encadrement des loyers (Paris, Lyon, Bordeaux, Lille, Montpellier, Grenoble…), votre loyer ne peut pas dépasser le loyer de référence majoré fixé par arrêté préfectoral. <span class="law-ref">Art. 17 loi 1989 + loi ELAN</span></p>
+
+<h2>Comment faire valoir vos droits ?</h2>
+<ul>
+<li><strong>BailScan</strong> : analyse votre bail et détecte toutes les violations en 2 minutes</li>
+<li><strong>ADIL</strong> (Agence Départementale d'Information sur le Logement) : conseil juridique gratuit</li>
+<li><strong>CDC</strong> (Commission Départementale de Conciliation) : médiation gratuite</li>
+<li><strong>Tribunal judiciaire</strong> : recours en dernière instance</li>
+</ul>
+
+  <div class="cta-box">
+    <h3>Votre bail contient peut-être ce problème</h3>
+    <p>BailScan le détecte gratuitement en 2 minutes, avec les références légales exactes</p>
+    <a href="/" class="cta-btn">Analyser mon bail gratuitement →</a>
+  </div>
+  <div class="related"><h3>Articles liés</h3><div class="related-grid">
+<a href="/blog/clauses-abusives-bail.html" class="related-card"><h4>Les 10 clauses illégales les plus courantes</h4><span>8 min →</span></a>
+<a href="/blog/encadrement-loyers.html" class="related-card"><h4>Encadrement des loyers : votre loyer est-il légal ?</h4><span>7 min →</span></a>
+</div></div>
+</div>
+<footer>
+  <div>© 2026 BailScan</div>
+  <div style="display:flex;gap:20px"><a href="/blog.html">Blog</a><a href="/legal.html">Mentions légales</a></div>
+</footer>
+</body>
+</html>
