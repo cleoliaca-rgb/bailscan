@@ -1528,9 +1528,9 @@ function buildPaywallAmountBanner(data) {
     html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">🔓 Débloquer le rapport complet — 9€</button>';
     html += '<div class="paywall-amount-banner-roi">9€ investis · <strong>×' + Math.round(tropPercuTotal / 9) + ' de retour potentiel</strong></div>';
     html += '</div>';
-  } else if (isLouerDanger || nbDanger > 0) {
+  } else if (isLoyerProbleme || nbDanger > 0) {
     // CAS 2 : problème détecté mais pas de montant (date manquante ou pas de chiffres)
-    var nbProblemes = nbDanger + (isLouerDanger ? 1 : 0);
+    var nbProblemes = nbDanger + (isLoyerProbleme ? 1 : 0);
     html += '<div class="paywall-amount-banner no-amount">';
     html += '<div class="paywall-amount-banner-eyebrow">⚠️ Irrégularités détectées dans votre bail</div>';
     html += '<div class="paywall-amount-banner-amount" style="font-size:2.4rem">' + nbProblemes + ' problème' + (nbProblemes > 1 ? 's' : '') + '<span style="font-size:1.6rem"> juridique' + (nbProblemes > 1 ? 's' : '') + '</span></div>';
