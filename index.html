@@ -1629,7 +1629,7 @@ function renderLoyerCheck(data) {
     if (loyerMajore > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer réf. majoré</div><div class="amount-pill-val">' + loyerMajore + ' €/mois</div></div>';
     if (complementLoyer > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Complément de loyer</div><div class="amount-pill-val">' + complementLoyer + ' €</div></div>';
     if (loy.plafond) html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal estimé</div><div class="amount-pill-val">' + loy.plafond + ' €/mois</div></div>';
-    if (exedentMensuel > 0) html += '<div class="amount-pill" style="border-color:var(--accent)"><div class="amount-pill-label">Excédent mensuel</div><div class="amount-pill-val" style="color:var(--accent)">−' + exedentMensuel.toFixed(2) + ' €/mois</div></div>';
+    if (exedentLoyer > 0) html += '<div class="amount-pill" style="border-color:var(--accent)"><div class="amount-pill-label">Excédent mensuel</div><div class="amount-pill-val" style="color:var(--accent)">−' + exedentLoyer.toFixed(2) + ' €/mois</div></div>';
     html += '</div>';
   }
 
