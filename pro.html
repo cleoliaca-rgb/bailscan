@@ -16,6 +16,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>:root{--noir:#0d0d0d;--creme:#f5f0e8;--accent:#c84b2f;--vert:#2d6a4f;--vert-light:#e8f5ee;--texte:#1a1a1a;--gris:#6b6b6b;--border:#d8d0c4;--pro:#111827;--pro-mid:#1f2f4a;--pro-accent:#3b6fd4;--pro-light:#eef2fb;}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;scroll-padding-top:80px;}body{background:var(--creme);color:var(--texte);font-family:'DM Sans',sans-serif;overflow-x:hidden;}header{position:fixed;top:0;left:0;right:0;z-index:200;padding:7px 48px;min-height:50px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);background:rgba(17,24,39,0.97);backdrop-filter:blur(12px);}.logo{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;text-decoration:none;}.logo span{color:var(--accent);}.logo-badge{font-size:0.6rem;font-weight:700;background:var(--pro-accent);color:white;padding:2px 7px;border-radius:4px;margin-left:7px;letter-spacing:0.06em;vertical-align:middle;font-family:'DM Sans',sans-serif;}nav{display:flex;gap:20px;align-items:center;}nav a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;transition:color .2s;}nav a:hover{color:white;}.btn-header-login{background:transparent;border:1.5px solid rgba(255,255,255,0.2);color:white !important;padding:8px 18px;border-radius:8px;font-weight:600;font-size:0.85rem !important;transition:all .2s !important;}.btn-header-login:hover{border-color:rgba(255,255,255,0.5) !important;}.btn-header-cta{background:var(--pro-accent);color:white !important;padding:9px 20px;border-radius:8px;font-weight:700;font-size:0.88rem !important;transition:all .2s !important;}.btn-header-cta:hover{background:#2a5bbf !important;}.hero{background:var(--pro);display:flex;align-items:center;padding:110px 48px 80px;position:relative;overflow:hidden;}.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:900px;height:900px;background:radial-gradient(circle,rgba(59,111,212,0.12) 0%,transparent 60%);}.hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(200,75,47,0.08) 0%,transparent 60%);}.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;position:relative;z-index:1;}.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(59,111,212,0.15);color:#7fa8e8;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:22px;border:1px solid rgba(59,111,212,0.25);}.hero-tag::before{content:'';width:6px;height:6px;background:#7fa8e8;border-radius:50%;animation:pulse 2s infinite;}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2rem,3.2vw,3rem);line-height:1.1;letter-spacing:-0.03em;color:white;margin-bottom:20px;}.hero h1 em{font-style:italic;color:#7fa8e8;}.hero-sub{font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.75;margin-bottom:36px;max-width:460px;}.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}.btn-primary-pro{background:var(--pro-accent);color:white;padding:13px 26px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;}.btn-primary-pro:hover{background:#2a5bbf;transform:translateY(-1px);}.btn-secondary-pro{background:transparent;color:rgba(255,255,255,0.75);padding:13px 22px;border-radius:10px;font-weight:600;font-size:0.95rem;text-decoration:none;border:1.5px solid rgba(255,255,255,0.18);transition:all .2s;display:inline-flex;align-items:center;gap:8px;cursor:pointer;}.btn-secondary-pro:hover{border-color:rgba(255,255,255,0.45);color:white;}.hero-stats{display:flex;gap:28px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}.stat-n{font-family:'Instrument Serif',serif;font-size:2rem;color:white;}.stat-l{font-size:0.75rem;color:rgba(255,255,255,0.38);margin-top:2px;line-height:1.4;}.dash-preview{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;overflow:hidden;}.dash-topbar{background:rgba(255,255,255,0.05);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.07);}.dash-dots{display:flex;gap:5px;}.dash-dot{width:9px;height:9px;border-radius:50%;}.dash-url{font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:10px;}.dash-body{padding:16px;}.dash-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}.dash-kpi{background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;}.dash-kpi-n{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;}.dash-kpi-l{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}.dash-table{width:100%;border-collapse:collapse;}.dash-table th{font-size:0.64rem;color:rgba(255,255,255,0.3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;padding:6px 8px;text-align:left;}.dash-table td{font-size:0.72rem;color:rgba(255,255,255,0.65);padding:7px 8px;border-top:1px solid rgba(255,255,255,0.05);}.dash-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.62rem;font-weight:700;}.badge-ok{background:rgba(45,106,79,0.25);color:#7ec8a0;}.badge-warn{background:rgba(200,75,47,0.25);color:#e8806b;}.badge-check{background:rgba(59,111,212,0.25);color:#7fa8e8;}.section-inner{max-width:1100px;margin:0 auto;}.section-tag{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pro-accent);margin-bottom:12px;}.section-title{font-family:'Instrument Serif',serif;font-size:2.4rem;color:var(--noir);line-height:1.15;margin-bottom:16px;}.section-sub{font-size:0.95rem;color:var(--gris);line-height:1.75;max-width:520px;}.features{padding:80px 48px;background:white;}.particulier-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;}@media(max-width:900px){.footer-top-pro{grid-template-columns:1fr 1fr;gap:28px;}}@media(max-width:560px){.features-grid{grid-template-columns:1fr;}}.feat-card{background:var(--creme);border:1.5px solid var(--border);border-radius:16px;padding:28px;transition:all .25s;}.feat-card:hover{border-color:var(--pro-accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(59,111,212,0.1);}.feat-icon{font-size:1.8rem;margin-bottom:16px;}.feat-title{font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:8px;}.feat-desc{font-size:0.85rem;color:var(--gris);line-height:1.65;}.how{padding:80px 48px;background:var(--creme);border-top:1px solid var(--border);}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;position:relative;}.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--border);z-index:0;}.step{text-align:center;position:relative;z-index:1;padding:0 16px;}.step-num{width:56px;height:56px;border-radius:50%;background:white;border:2px solid var(--pro-accent);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:1.4rem;color:var(--pro-accent);margin:0 auto 20px;}.step-title{font-weight:700;font-size:0.92rem;color:var(--noir);margin-bottom:8px;}.step-desc{font-size:0.8rem;color:var(--gris);line-height:1.6;}.pricing{padding:80px 48px;background:white;border-top:1px solid var(--border);}.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px;align-items:start;}.pricing-toggle-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin:32px 0 8px;}.pricing-toggle{display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;}.ptoggle{padding:7px 22px;border:none;border-radius:7px;font-weight:600;font-size:0.85rem;cursor:pointer;background:transparent;color:var(--gris);transition:all .2s;}.ptoggle.active{background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,0.1);}.ptoggle-save{background:var(--vert);color:white;font-size:0.65rem;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px;}.pricing-engage-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}.engage-label{font-size:0.82rem;color:var(--gris);font-weight:600;}.engage-btn{padding:5px 16px;border:1.5px solid var(--border);border-radius:7px;font-size:0.82rem;font-weight:600;cursor:pointer;background:white;color:var(--gris);transition:all .2s;}.engage-btn.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.pricing-card{background:var(--creme);border:1.5px solid var(--border);border-radius:18px;padding:32px;position:relative;}.pricing-card.featured{background:var(--pro);border-color:var(--pro-accent);}.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;font-size:0.65rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;}.pricing-plan{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);margin-bottom:8px;}.pricing-card.featured .pricing-plan{color:rgba(255,255,255,0.45);}.pricing-price{font-family:'Instrument Serif',serif;font-size:3rem;color:var(--noir);line-height:1;}.pricing-card.featured .pricing-price{color:white;}.pricing-price sup{font-size:1.2rem;vertical-align:super;font-family:'DM Sans',sans-serif;font-weight:600;}.pricing-period{font-size:0.8rem;color:var(--gris);margin:6px 0 24px;}.pricing-card.featured .pricing-period{color:rgba(255,255,255,0.4);}.pricing-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}.pricing-feature{display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte);}.pricing-card.featured .pricing-feature{color:rgba(255,255,255,0.75);}.pricing-feature::before{content:'✓';color:var(--pro-accent);font-weight:700;flex-shrink:0;}.pricing-divider{height:1px;background:var(--border);margin:16px 0;}.pricing-card.featured .pricing-divider{background:rgba(255,255,255,0.1);}.btn-pricing{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;border:none;cursor:pointer;transition:all .2s;}.btn-pricing-outline{background:white;color:var(--noir);border:1.5px solid var(--border) !important;}.btn-pricing-outline:hover{border-color:var(--pro-accent) !important;color:var(--pro-accent);}.btn-pricing-pro{background:var(--pro-accent);color:white;}.btn-pricing-pro:hover{background:#2a5bbf;}.btn-pricing-contact{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2) !important;}.btn-pricing-contact:hover{border-color:rgba(255,255,255,0.5) !important;color:white;}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:500;align-items:center;justify-content:center;padding:20px;}.modal-overlay.active{display:flex;}.modal{background:white;border-radius:20px;padding:40px;width:100%;max-width:480px;position:relative;animation:slideUp .3s ease;}@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.4rem;color:var(--gris);cursor:pointer;line-height:1;}.modal-title{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--noir);margin-bottom:6px;}.modal-sub{font-size:0.85rem;color:var(--gris);margin-bottom:28px;line-height:1.6;}.trial-badge{display:inline-flex;align-items:center;gap:6px;background:var(--vert-light);color:var(--vert);font-size:0.78rem;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(45,106,79,0.2);}.form-group{margin-bottom:16px;}.form-label{font-size:0.82rem;font-weight:600;color:var(--texte);margin-bottom:6px;display:block;}.form-input-pro{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:'DM Sans',sans-serif;color:var(--texte);background:white;transition:border-color .2s;}.form-input-pro:focus{outline:none;border-color:var(--pro-accent);}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}.btn-submit{width:100%;padding:13px;background:var(--pro-accent);color:white;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all .2s;margin-top:8px;}.btn-submit:hover{background:#2a5bbf;}.btn-submit.loading{opacity:0.7;cursor:not-allowed;}.modal-switch{text-align:center;margin-top:18px;font-size:0.83rem;color:var(--gris);}.modal-switch a{color:var(--pro-accent);cursor:pointer;font-weight:600;text-decoration:none;}.modal-switch a:hover{text-decoration:underline;}.form-legal{font-size:0.74rem;color:var(--gris);margin-top:12px;line-height:1.5;}.success-box{display:none;background:var(--vert-light);border:1.5px solid rgba(45,106,79,0.25);border-radius:12px;padding:24px;text-align:center;}.success-box.active{display:block;}.success-icon{font-size:2.5rem;margin-bottom:12px;}.success-title{font-weight:700;font-size:1.1rem;color:var(--vert);margin-bottom:6px;}.success-text{font-size:0.85rem;color:var(--gris);line-height:1.65;}#dashboardSection{display:none;padding:0;}.dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 65px);margin-top:65px;}.dash-sidebar{background:var(--pro);padding:28px 0;position:sticky;top:65px;height:calc(100vh - 65px);overflow-y:auto;}.dash-sidebar-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;}.dash-sidebar-logo span{font-family:'Instrument Serif',serif;font-size:1.3rem;color:white;}.dash-sidebar-logo span em{color:var(--accent);font-style:normal;}.dash-trial-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(59,111,212,0.2);color:#7fa8e8;font-size:0.65rem;font-weight:700;padding:3px 8px;border-radius:5px;margin-top:6px;}.dash-nav{padding:0 12px;}.dash-nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;font-size:0.85rem;color:rgba(255,255,255,0.55);cursor:pointer;transition:all .2s;margin-bottom:2px;}.dash-nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);}.dash-nav-item.active{background:rgba(59,111,212,0.2);color:#7fa8e8;font-weight:600;}.dash-nav-icon{font-size:1rem;flex-shrink:0;}.dash-nav-section{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.2);padding:14px 14px 6px;}.dash-user{padding:16px 24px;margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);}.dash-user-name{font-size:0.84rem;font-weight:600;color:rgba(255,255,255,0.75);}.dash-user-role{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;}.dash-btn-logout{font-size:0.75rem;color:rgba(255,255,255,0.3);background:none;border:none;cursor:pointer;margin-top:10px;display:block;transition:color .2s;}.dash-btn-logout:hover{color:rgba(255,255,255,0.6);}.dash-main{background:#f8f7f4;padding:36px 40px;overflow-y:auto;}.dash-main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:16px;}.dash-page-title{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--noir);}.dash-page-sub{font-size:0.84rem;color:var(--gris);margin-top:4px;}.dash-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}.kpi-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px 22px;}.kpi-val{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--noir);}.kpi-label{font-size:0.78rem;color:var(--gris);margin-top:4px;}.kpi-trend{font-size:0.72rem;font-weight:600;margin-top:6px;}.kpi-trend.up{color:var(--vert);}.kpi-trend.warn{color:var(--accent);}.dash-section-title{font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}.dash-card{background:white;border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;}.dash-table-full{width:100%;border-collapse:collapse;}.dash-table-full th{font-size:0.72rem;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:0.06em;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);}.dash-table-full td{font-size:0.85rem;color:var(--texte);padding:12px 14px;border-bottom:1px solid var(--border);}.dash-table-full tr:last-child td{border-bottom:none;}.dash-table-full tr:hover td{background:#fafaf8;}.score-pill{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:0.85rem;}.score-high{background:rgba(45,106,79,0.1);color:var(--vert);}.score-mid{background:rgba(245,158,11,0.1);color:#d97706;}.score-low{background:rgba(200,75,47,0.1);color:var(--accent);}.status-badge{display:inline-block;padding:3px 10px;border-radius:5px;font-size:0.72rem;font-weight:700;}.status-ok{background:var(--vert-light);color:var(--vert);}.status-warn{background:#fff3cd;color:#856404;}.status-danger{background:#fdf0ed;color:var(--accent);}.btn-sm{padding:5px 12px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--texte);transition:all .2s;}.btn-sm:hover{border-color:var(--pro-accent);color:var(--pro-accent);}.upload-zone-pro{border:2px dashed var(--border);border-radius:14px;padding:40px 24px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;}.upload-zone-pro:hover{border-color:var(--pro-accent);background:var(--pro-light);}.upload-zone-pro input{position:absolute;inset:0;opacity:0;cursor:pointer;}.upload-icon{font-size:2.5rem;margin-bottom:12px;}.upload-title{font-weight:700;font-size:0.95rem;color:var(--noir);margin-bottom:6px;}.upload-sub{font-size:0.82rem;color:var(--gris);}.upload-progress{display:none;margin-top:20px;}.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}.progress-fill{height:100%;background:var(--pro-accent);border-radius:3px;width:0;transition:width .4s ease;}.analysis-live{display:none;background:var(--pro);border-radius:14px;padding:24px;margin-top:16px;}.analysis-live-title{font-weight:600;color:white;font-size:0.9rem;margin-bottom:16px;display:flex;align-items:center;gap:8px;}.analysis-live-title::before{content:'';width:8px;height:8px;border-radius:50%;background:#7fa8e8;animation:pulse 1.5s infinite;flex-shrink:0;}.analysis-step-pro{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:0.82rem;color:rgba(255,255,255,0.4);transition:color .3s;}.analysis-step-pro.active{color:rgba(255,255,255,0.9);}.analysis-step-pro.done{color:rgba(255,255,255,0.5);}.step-check{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}.analysis-step-pro.done .step-check{background:var(--vert);border-color:var(--vert);color:white;}.analysis-step-pro.active .step-check{border-color:#7fa8e8;animation:spin 1s linear infinite;}@keyframes spin{to{transform:rotate(360deg);}}.result-pro{display:none;background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:16px;}.result-pro-header{background:var(--pro);padding:20px 24px;display:flex;align-items:center;gap:20px;}.result-score-circle{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}.result-score-num{font-family:'Instrument Serif',serif;font-size:1.4rem;color:white;line-height:1;}.result-score-label{font-size:0.55rem;color:rgba(255,255,255,0.45);text-transform:uppercase;}.result-verdict{color:white;}.result-verdict-title{font-weight:700;font-size:1rem;margin-bottom:4px;}.result-verdict-sub{font-size:0.8rem;color:rgba(255,255,255,0.55);}.result-pro-body{padding:20px 24px;}.result-clause{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}.result-clause:last-child{border-bottom:none;}.result-clause-badge{padding:3px 9px;border-radius:5px;font-size:0.68rem;font-weight:700;text-transform:uppercase;flex-shrink:0;margin-top:2px;}.rc-danger{background:#fdf0ed;color:var(--accent);}.rc-warn{background:#fff3cd;color:#856404;}.rc-ok{background:var(--vert-light);color:var(--vert);}.result-clause-title{font-weight:700;font-size:0.88rem;color:var(--noir);margin-bottom:4px;}.result-clause-desc{font-size:0.8rem;color:var(--gris);line-height:1.6;}.result-actions{display:flex;gap:10px;padding:16px 24px;border-top:1px solid var(--border);background:#fafaf8;flex-wrap:wrap;}.btn-result-action{padding:8px 18px;border-radius:8px;font-size:0.82rem;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;transition:all .2s;color:var(--texte);}.btn-result-action.primary{background:var(--pro-accent);color:white;border-color:var(--pro-accent);}.btn-result-action:hover{border-color:var(--pro-accent);color:var(--pro-accent);}.btn-result-action.primary:hover{background:#2a5bbf;color:white;}.trial-banner{background:linear-gradient(135deg,var(--pro-accent),#1d4ed8);border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;}.trial-banner-text{color:white;}.trial-banner-title{font-weight:700;font-size:0.92rem;}.trial-banner-sub{font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:3px;}.btn-trial-upgrade{background:white;color:var(--pro-accent);padding:8px 18px;border-radius:8px;font-size:0.82rem;font-weight:700;border:none;cursor:pointer;flex-shrink:0;}@media(max-width:900px){header{padding:8px 20px;min-height:50px;}nav a{display:none;}nav a:first-child{display:flex;}.btn-header-login{display:none;}.btn-header-cta{font-size:0.78rem !important;padding:7px 12px;}.hero{padding:0 0 60px;min-height:auto;align-items:flex-start;margin-top:0;}.hero-inner{padding:0 20px;grid-template-columns:1fr;gap:32px;}.hero-inner > div:first-child{padding-top:110px;}.hero-tag{font-size:0.7rem;padding:4px 10px;}.dash-preview{display:none;}.features-grid{grid-template-columns:1fr;}.pricing-grid{grid-template-columns:1fr;}.steps{grid-template-columns:1fr 1fr;gap:24px;}.steps::before{display:none;}.features,.how,.pricing{padding:52px 20px;}section[style*="padding:80px 48px"]{padding:52px 20px !important;}.particulier-grid{grid-template-columns:1fr !important;}.dash-layout{grid-template-columns:1fr;}.dash-sidebar{display:none;}.dash-main{padding:24px 16px;}.dash-kpi-row{grid-template-columns:1fr 1fr;}}footer.footer-seo-pro{background:var(--pro);color:rgba(255,255,255,0.7);flex-direction:column;align-items:stretch;padding:0;}.footer-inner-pro{max-width:1100px;margin:0 auto;padding:52px 48px 28px;width:100%;box-sizing:border-box;}.footer-top-pro{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}.footer-brand-pro .footer-logo-pro{font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;margin-bottom:8px;}.footer-tagline-pro{font-size:0.85rem;color:rgba(255,255,255,0.55);margin-bottom:6px;}.footer-copy-pro{font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:20px;}.footer-col-pro{display:flex;flex-direction:column;gap:10px;}.footer-col-title-pro{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:4px;}.footer-col-pro a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.84rem;transition:color .2s;}.footer-col-pro a:hover{color:white;}.footer-bottom-pro{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;font-size:0.75rem;color:rgba(255,255,255,0.3);text-align:center;}@media(max-width:600px){.footer-top-pro{grid-template-columns:1fr;}}.annex-check{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:500;transition:all .2s;background:white;}.annex-check:hover{border-color:var(--pro-accent);background:var(--pro-light);}.annex-check input[type=checkbox]{accent-color:var(--pro-accent);width:14px;height:14px;}.annex-check:has(input:checked){border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.wizard-progress{display:flex;align-items:center;gap:0;margin-bottom:32px}.wizard-step-indicator{display:flex;align-items:center;gap:8px;flex:1}.wizard-step-indicator:last-child{flex:0}.step-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--gris);background:white;flex-shrink:0;transition:all .3s}.step-dot.active{border-color:var(--pro-accent);background:var(--pro-accent);color:white}.step-dot.done{border-color:var(--vert);background:var(--vert);color:white}.step-label{font-size:.75rem;font-weight:600;color:var(--gris)}.step-label.active{color:var(--pro-accent)}.step-line{flex:1;height:2px;background:var(--border);margin:0 8px;transition:background .3s}.step-line.done{background:var(--vert)}.pro-wizard-panel{display:none;animation:fadeIn .3s ease}.pro-wizard-panel.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.panel-title{font-family:"Instrument Serif",serif;font-size:1.5rem;color:var(--noir);margin-bottom:6px}.panel-sub{font-size:.88rem;color:var(--gris);margin-bottom:24px;line-height:1.6}.form-grid-pro{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.form-grid-pro.cols3{grid-template-columns:1fr 1fr 1fr}.form-group-pro{display:flex;flex-direction:column;gap:5px;margin-bottom:0}.radio-group-pro{display:flex;gap:8px;flex-wrap:wrap}.radio-pill-pro{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;color:var(--texte);transition:all .2s;background:white}.radio-pill-pro input{display:none}.radio-pill-pro.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);font-weight:700}.wizard-nav-pro{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:24px;border-top:1px solid var(--border)}.btn-wizard-back-pro{background:transparent;border:1.5px solid var(--border);color:var(--gris);padding:10px 20px;border-radius:8px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .2s}.btn-wizard-back-pro:hover{border-color:var(--noir);color:var(--noir)}.btn-wizard-next-pro{background:var(--pro);color:white;padding:10px 24px;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;border:none}.btn-wizard-next-pro:hover{background:var(--pro-accent)}.loyer-breakdown-pro{background:#f8f7f4;border-radius:10px;padding:14px 16px;margin-top:12px}.loyer-row-pro{display:flex;justify-content:space-between;padding:4px 0;font-size:.84rem;color:var(--texte)}.upload-tab-pro{padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;background:white;font-size:.84rem;font-weight:600;cursor:pointer;color:var(--gris);transition:all .2s}.upload-tab-pro.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent)}.recap-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:.85rem}.recap-row:last-child{border-bottom:none}.recap-label{color:var(--gris)}.recap-val{font-weight:600;color:var(--noir)}.corr-item{background:white;border:1.5px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.corr-item.danger{border-color:rgba(200,75,47,.3);background:#fdf8f7}.corr-item.warning{border-color:rgba(245,158,11,.3);background:#fffbf0}.corr-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}.corr-badge{padding:2px 9px;border-radius:5px;font-size:.68rem;font-weight:700;text-transform:uppercase}.cb-danger{background:#fdf0ed;color:var(--accent)}.cb-warning{background:#fff3cd;color:#856404}.corr-title{font-weight:700;font-size:.92rem}.corr-section{margin-bottom:8px}.corr-section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);margin-bottom:4px}.corr-section-text{font-size:.84rem;color:var(--texte);line-height:1.65}.corr-law{font-size:.78rem;color:var(--accent);font-weight:600;background:var(--rouge-light);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px}@media(max-width:768px){.form-grid-pro,.form-grid-pro.cols3{grid-template-columns:1fr}}.dash-filters-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}.filter-search-wrap{position:relative;display:flex;align-items:center;flex:1;min-width:200px;}.filter-search-icon{position:absolute;left:12px;font-size:.9rem;pointer-events:none;z-index:1;}.filter-search{width:100%;padding:8px 32px 8px 34px;border:1.5px solid var(--border);border-radius:9px;font-size:.84rem;background:white;color:var(--noir);outline:none;transition:border-color .2s;}.filter-search:focus{border-color:var(--pro-accent);}.filter-search-clear{position:absolute;right:8px;background:none;border:none;cursor:pointer;color:var(--gris);font-size:1rem;line-height:1;padding:2px 4px;border-radius:4px;display:flex;align-items:center;justify-content:center;}.filter-search-clear:hover{color:var(--noir);background:var(--pro-light);}.filter-search:focus{border-color:var(--pro-accent)}.filter-select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.84rem;font-family:inherit;background:white;cursor:pointer;outline:none}.filter-select:focus{border-color:var(--pro-accent)}.courrier-type-card{padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s;background:white;line-height:1.4;}.courrier-type-card span{font-weight:400;color:var(--gris);font-size:.73rem;display:block;margin-top:2px;}.courrier-type-card:hover{border-color:var(--pro-accent);background:var(--pro-light);}.courrier-type-card.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.loc-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px;transition:all .2s;cursor:pointer;}.loc-card:hover{border-color:var(--pro-accent);box-shadow:0 4px 16px rgba(59,111,212,.1);}.loc-score-vert{background:#f0fdf4;color:#166534;border:1px solid #86efac;}.loc-score-orange{background:#fffbeb;color:#92400e;border:1px solid #fcd34d;}.loc-score-rouge{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;}.alerte-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}.alerte-urgent{border-left:3px solid var(--accent);padding-left:12px;}.alerte-warning{border-left:3px solid #f59e0b;padding-left:12px;}.alerte-ok{border-left:3px solid var(--vert);padding-left:12px;}@keyframes spin{to{transform:rotate(360deg)}}
+.ville-encad-card{display:block;background:var(--pro-light);border:1.5px solid transparent;border-radius:10px;padding:12px 14px;text-decoration:none;transition:all .18s;}
+.ville-encad-card:hover{border-color:var(--pro-accent);background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,111,212,.1);}
+.ville-encad-nom{font-weight:700;font-size:.84rem;color:var(--noir);margin-bottom:2px;}
+.ville-encad-info{font-size:.74rem;color:var(--gris);}
 .score-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:.03em}
 .score-ok{background:#dcfce7;color:#166534}
 .score-warn{background:#fef9c3;color:#854d0e}
@@ -210,13 +214,14 @@
             <div class="pricing-card">
         <div class="pricing-plan">Starter</div>
         <div class="pricing-price"><sup>€</sup><span id="priceStarter">79</span></div>
-        <div class="pricing-period">/ mois · par agence</div>
+        <div class="pricing-period">/ mois · 1 agent</div>
         <div class="pricing-note" id="noteStarter" style="font-size:0.75rem;color:var(--gris);margin-bottom:12px;min-height:20px"></div>
         <div class="pricing-features">
-          <div class="pricing-feature">20 analyses / mois</div>
+          <div class="pricing-feature">10 analyses / mois</div>
+          <div class="pricing-feature">1 agent</div>
           <div class="pricing-feature">Rapport PDF export</div>
-          <div class="pricing-feature">Corrections de bail</div>
-          <div class="pricing-feature">2 utilisateurs</div>
+          <div class="pricing-feature">Corrections de bail IA</div>
+          <div class="pricing-feature">Encadrement des loyers</div>
           <div class="pricing-feature">Support email</div>
         </div>
         <button class="btn-pricing btn-pricing-outline" onclick="openModal('signup')">Essayer 3 jours gratuit</button>
@@ -229,11 +234,12 @@
         <div class="pricing-note" id="notePro" style="font-size:0.75rem;color:rgba(255,255,255,0.45);margin-bottom:12px;min-height:20px"></div>
         <div class="pricing-features">
           <div class="pricing-feature">Analyses illimitées</div>
-          <div class="pricing-feature">Rapport PDF à votre logo</div>
-          <div class="pricing-feature">Corrections + Bail conforme IA</div>
-          <div class="pricing-feature">5 utilisateurs</div>
-          <div class="pricing-feature">Encadrement loyers auto</div>
-          <div class="pricing-feature">Filtres locataire / statut / bien</div>
+          <div class="pricing-feature">3 agents inclus</div>
+          <div class="pricing-feature">Rapport PDF a votre logo</div>
+          <div class="pricing-feature">Bail conforme IA (13 articles)</div>
+          <div class="pricing-feature">Fiches locataires + scoring</div>
+          <div class="pricing-feature">Quittances + Courriers IA</div>
+          <div class="pricing-feature">Alertes & echeances auto</div>
           <div class="pricing-feature">Support prioritaire</div>
         </div>
         <button class="btn-pricing btn-pricing-pro" onclick="openModal('signup')">Démarrer l'essai gratuit →</button>
@@ -814,12 +820,38 @@
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1.5px solid var(--pro-light)">💶 Conditions financières</div>
             <div class="form-grid-pro" style="margin-bottom:0">
               <div class="form-group-pro">
-                <label class="form-label">Loyer mensuel HC (€)</label>
+                <label class="form-label">Loyer mensuel HC (€) <span style="color:#e53e3e">*</span></label>
                 <input type="number" class="form-input-pro" id="genLoyer" placeholder="Ex : 800" min="0">
               </div>
               <div class="form-group-pro">
                 <label class="form-label">Charges (€/mois)</label>
                 <input type="number" class="form-input-pro" id="genCharges" placeholder="Ex : 80" min="0">
+              </div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px">
+              <div style="font-size:.8rem;font-weight:700;color:var(--gris);letter-spacing:.04em;margin-bottom:10px;display:flex;align-items:center;gap:6px">
+                📊 ENCADREMENT DES LOYERS
+                <span style="font-size:.72rem;font-weight:400;color:var(--gris)">— Au moins 1 champ requis si zone encadrée</span>
+              </div>
+              <div class="form-grid-pro" style="margin-bottom:8px">
+                <div class="form-group-pro" style="margin-bottom:0">
+                  <label class="form-label" style="font-size:.78rem">Loyer de référence (€/m²/mois) <span style="color:var(--gris)">facultatif</span></label>
+                  <input type="number" class="form-input-pro" id="genLoyerRef" placeholder="Ex : 14.50" min="0" step="0.01" style="font-size:.88rem">
+                </div>
+                <div class="form-group-pro" style="margin-bottom:0">
+                  <label class="form-label" style="font-size:.78rem">Loyer de référence majoré (€/m²/mois) <span style="color:var(--gris)">facultatif</span></label>
+                  <input type="number" class="form-input-pro" id="genLoyerMajore" placeholder="Ex : 18.10" min="0" step="0.01" style="font-size:.88rem">
+                </div>
+              </div>
+              <div class="form-grid-pro">
+                <div class="form-group-pro" style="margin-bottom:0">
+                  <label class="form-label" style="font-size:.78rem">Loyer de référence minoré (€/m²/mois) <span style="color:var(--gris)">facultatif</span></label>
+                  <input type="number" class="form-input-pro" id="genLoyerMinore" placeholder="Ex : 11.50" min="0" step="0.01" style="font-size:.88rem">
+                </div>
+                <div class="form-group-pro" style="margin-bottom:0">
+                  <label class="form-label" style="font-size:.78rem">Indice IRL de référence <span style="color:var(--gris)">facultatif</span></label>
+                  <input type="text" class="form-input-pro" id="genIrl" placeholder="Ex : T3-2025 — 143.00" style="font-size:.88rem">
+                </div>
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
@@ -1027,19 +1059,27 @@
 
           <!-- Villes encadrées -->
           <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border)">
-            <div style="font-weight:700;font-size:0.92rem;margin-bottom:12px">Villes actuellement soumises à l'encadrement</div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px">
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Paris</span>
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Lyon</span>
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Villeurbanne</span>
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Bordeaux</span>
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Montpellier</span>
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Grenoble</span>
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Lille</span>
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Montpellier</span>
-              <span style="background:var(--pro-light);color:var(--pro-accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600">Paris Banlieue (92,93,94)</span>
+            <div style="font-weight:700;font-size:0.92rem;margin-bottom:4px">Zones actuellement soumises à l'encadrement</div>
+            <div style="font-size:.78rem;color:var(--gris);margin-bottom:14px">Cliquez sur une ville pour accéder au simulateur officiel — données 2024/2025</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+              <a href="https://www.encadrementdesloyers.fr/paris" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Paris (75)</div><div class="ville-encad-info">26,40€/m² réf. · 34,30€ maj.</div></a>
+              <a href="https://www.encadrementdesloyers.fr/seine-saint-denis" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Seine-Saint-Denis (93)</div><div class="ville-encad-info">env. 18,20€/m² réf. (Montreuil)</div></a>
+              <a href="https://www.encadrementdesloyers.fr/val-de-marne" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Val-de-Marne (94)</div><div class="ville-encad-info">env. 21,50€/m² réf. (Vincennes)</div></a>
+              <a href="https://www.encadrementdesloyers.fr/hauts-de-seine" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Hauts-de-Seine (92)</div><div class="ville-encad-info">env. 24,10€/m² réf. (Neuilly)</div></a>
+              <a href="https://www.grandlyon.com/encadrement-loyers" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Lyon / Villeurbanne</div><div class="ville-encad-info">13,90€/m² réf. · 18,10€ maj.</div></a>
+              <a href="https://www.bordeaux-metropole.fr/encadrement-loyers" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Bordeaux Métropole</div><div class="ville-encad-info">13,20€/m² réf. · 17,20€ maj.</div></a>
+              <a href="https://www.montpellier3m.fr/encadrement-loyers" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Montpellier</div><div class="ville-encad-info">13,50€/m² réf. · 17,60€ maj.</div></a>
+              <a href="https://www.grenoblealpesmetropole.fr" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Grenoble</div><div class="ville-encad-info">11,80€/m² réf. · 15,30€ maj.</div></a>
+              <a href="https://www.metropole-europeenne-de-lille.fr" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Lille / Roubaix / Tourcoing</div><div class="ville-encad-info">12,80€/m² réf. · 16,60€ maj.</div></a>
+              <a href="https://www.agglo-paysbasque.fr" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Pays Basque (Bayonne…)</div><div class="ville-encad-info">14,10€/m² réf. · 18,30€ maj.</div></a>
+              <a href="https://www.brest-metropole.fr" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Brest Métropole</div><div class="ville-encad-info">9,80€/m² réf. · 12,70€ maj.</div></a>
+              <a href="https://www.carene-saintnazaire.fr" target="_blank" class="ville-encad-card"><div class="ville-encad-nom">Saint-Nazaire</div><div class="ville-encad-info">10,20€/m² réf. · 13,30€ maj.</div></a>
             </div>
-            <div style="margin-top:12px;font-size:0.8rem;color:var(--gris)">Simulateurs officiels : <a href="https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers" target="_blank" style="color:var(--pro-accent)">service-public.fr →</a></div>
+            <div style="margin-top:12px;font-size:0.78rem;color:var(--gris)">
+              Source : observatoires locaux ADIL · 
+              <a href="https://observatoire-loyers.adil.org" target="_blank" style="color:var(--pro-accent)">observatoire-loyers.adil.org</a> · 
+              <a href="https://www.service-public.fr/particuliers/vosdroits/F3174" target="_blank" style="color:var(--pro-accent)">service-public.fr →</a>
+            </div>
           </div>
         </div>
       </div>
@@ -1434,8 +1474,10 @@
             <div class="form-grid-pro">
               <div class="form-group-pro"><label class="form-label">Prénom Nom locataire</label><input type="text" class="form-input-pro" id="qLocNom" placeholder="Marie Martin"></div>
               <div class="form-group-pro"><label class="form-label">Adresse du bien</label><input type="text" class="form-input-pro" id="qAdresse" placeholder="12 rue des Lilas, 75020 Paris"></div>
+              <div class="form-group-pro"><label class="form-label">Ville</label><input type="text" class="form-input-pro" id="qVille" placeholder="Ex : Paris, Lyon…"></div>
             </div>
             <div class="form-grid-pro">
+              <div class="form-group-pro"><label class="form-label">IBAN bailleur <span style="font-weight:400;color:var(--gris);font-size:.78rem">facultatif — pour virement</span></label><input type="text" class="form-input-pro" id="qIban" placeholder="Ex : FR76 3000 6000 0112 3456 7890 189" style="font-family:monospace;font-size:.84rem"></div>
               <div class="form-group-pro"><label class="form-label">Loyer HC (€)</label><input type="number" class="form-input-pro" id="qLoyer" placeholder="800"></div>
               <div class="form-group-pro"><label class="form-label">Charges (€)</label><input type="number" class="form-input-pro" id="qCharges" placeholder="80"></div>
             </div>
@@ -1515,6 +1557,7 @@
               <div class="dash-section-title">Informations</div>
               <div class="form-grid-pro">
                 <div class="form-group-pro"><label class="form-label">Bailleur / Agence</label><input type="text" class="form-input-pro" id="coBailleur" placeholder="Jean Dupont / Agence XYZ"></div>
+              <div class="form-group-pro"><label class="form-label">Adresse bailleur</label><input type="text" class="form-input-pro" id="coBailleurAdresse" placeholder="Ex : 12 rue de la Paix, 75001 Paris"></div>
                 <div class="form-group-pro"><label class="form-label">Locataire</label><input type="text" class="form-input-pro" id="coLocataire" placeholder="Marie Martin"></div>
               </div>
               <div class="form-group-pro"><label class="form-label">Adresse du bien</label><input type="text" class="form-input-pro" id="coAdresse" placeholder="12 rue des Lilas, 75020 Paris"></div>
@@ -2008,7 +2051,8 @@ function displayProResult(data){
     ville:proWizardData.ville||'—',
     surface:proWizardData.surface||'—',
     type:proWizardData.bien_type||'vide',
-    clauses:(data.clauses_abusives||[]).filter(function(c){return c.type!=='ok';}).length
+    clauses:(data.clauses_abusives||[]).filter(function(c){return c.type!=='ok';}).length,
+    result:data
   };
   proState.analyses.unshift(entry);
   localStorage.setItem('bailscan_pro_analyses',JSON.stringify(proState.analyses));
@@ -2099,6 +2143,9 @@ function refreshHisto(){
     tr.setAttribute('data-search',(
       (a.adresse||'')+' '+(a.ville||'')+' '+(a.filename||'')
     ).toLowerCase());
+    tr.style.cursor='pointer';
+    tr.title='Cliquer pour voir les recommandations';
+    tr.onclick=function(e){if(e.target.tagName==='BUTTON')return; viewAnalysisDetail(a.id);};
     tr.innerHTML='<td>'
         +'<div style="font-weight:600;font-size:.86rem;color:var(--noir)">'+(a.adresse||a.filename||'—')+'</div>'
         +(a.filename&&a.adresse?'<div style="font-size:.75rem;color:var(--gris);margin-top:2px">'+a.filename+'</div>':'')
@@ -2110,7 +2157,7 @@ function refreshHisto(){
       +'<td><span class="score-badge '+sc+'">'+a.score+'/100</span></td>'
       +'<td><span class="status-badge '+stc+'">'+stl+'</span></td>'
       +'<td style="font-size:.82rem;color:var(--accent)">'+(a.clauses>0?a.clauses+' pt'+(a.clauses>1?'s':''):'✓')+'</td>'
-      +'<td><button class="btn-sm" onclick="exportHistoPDF('+a.id+')">PDF</button></td>';
+      +'<td style="white-space:nowrap"><button class="btn-sm" onclick="viewAnalysisDetail('+a.id+')">👁 Voir</button> <button class="btn-sm" onclick="exportHistoPDF('+a.id+')">PDF</button></td>';
     tbody.appendChild(tr);
   });
   applyFilters();
@@ -2126,24 +2173,89 @@ function verifierEncadrement(){
   var ville=document.getElementById('elVille').value.trim().toLowerCase();
   var loyer=parseFloat(document.getElementById('elLoyer').value)||0;
   var surface=parseFloat(document.getElementById('elSurface').value)||0;
+  var typeB=document.querySelector('input[name="el_type"]:checked');
+  var btype=typeB?typeB.value:'vide';
   if(!ville||!loyer||!surface){alert('Veuillez remplir tous les champs.');return;}
-  var encadrees=['paris','lyon','villeurbanne','bordeaux','montpellier','grenoble','lille','roubaix','tourcoing','bayonne','anglet','biarritz','saint-nazaire','lorient','brest'];
-  var est=encadrees.some(function(v){return ville.includes(v);});
-  var m2=(loyer/surface).toFixed(2);
+
+  // Données encadrement 2024/2025 — loyers de référence médians indicatifs (€/m²)
+  // Source : observatoires locaux ADIL/DRIHL. A mettre à jour chaque année.
+  var zones={
+    'paris':       {nom:'Paris (75)', vide:{ref:26.4,min:19.8,maj:34.3}, meuble:{ref:31.8,min:23.9,maj:41.3}, url:'https://www.encadrementdesloyers.fr/paris'},
+    '75':          {nom:'Paris (75)', vide:{ref:26.4,min:19.8,maj:34.3}, meuble:{ref:31.8,min:23.9,maj:41.3}, url:'https://www.encadrementdesloyers.fr/paris'},
+    'lyon':        {nom:'Lyon', vide:{ref:13.9,min:10.4,maj:18.1}, meuble:{ref:16.7,min:12.5,maj:21.7}, url:'https://www.grandlyon.com/encadrement-loyers'},
+    'villeurbanne':{nom:'Villeurbanne', vide:{ref:12.1,min:9.1,maj:15.7}, meuble:{ref:14.5,min:10.9,maj:18.9}, url:'https://www.grandlyon.com/encadrement-loyers'},
+    'bordeaux':    {nom:'Bordeaux', vide:{ref:13.2,min:9.9,maj:17.2}, meuble:{ref:15.8,min:11.9,maj:20.5}, url:'https://www.bordeaux-metropole.fr/encadrement-loyers'},
+    'montpellier': {nom:'Montpellier', vide:{ref:13.5,min:10.1,maj:17.6}, meuble:{ref:16.2,min:12.2,maj:21.1}, url:'https://www.montpellier3m.fr/encadrement-loyers'},
+    'grenoble':    {nom:'Grenoble', vide:{ref:11.8,min:8.9,maj:15.3}, meuble:{ref:14.2,min:10.7,maj:18.5}, url:'https://www.grenoblealpesmetropole.fr'},
+    'lille':       {nom:'Lille', vide:{ref:12.8,min:9.6,maj:16.6}, meuble:{ref:15.4,min:11.6,maj:20.0}, url:'https://www.metropole-europeenne-de-lille.fr'},
+    'roubaix':     {nom:'Roubaix', vide:{ref:9.2,min:6.9,maj:12.0}, meuble:{ref:11.0,min:8.3,maj:14.3}, url:'https://www.metropole-europeenne-de-lille.fr'},
+    'tourcoing':   {nom:'Tourcoing', vide:{ref:9.5,min:7.1,maj:12.4}, meuble:{ref:11.4,min:8.6,maj:14.8}, url:'https://www.metropole-europeenne-de-lille.fr'},
+    'bayonne':     {nom:'Bayonne / Pays Basque', vide:{ref:14.1,min:10.6,maj:18.3}, meuble:{ref:16.9,min:12.7,maj:22.0}, url:'https://www.agglo-paysbasque.fr'},
+    'anglet':      {nom:'Anglet / Pays Basque', vide:{ref:14.1,min:10.6,maj:18.3}, meuble:{ref:16.9,min:12.7,maj:22.0}, url:'https://www.agglo-paysbasque.fr'},
+    'biarritz':    {nom:'Biarritz / Pays Basque', vide:{ref:14.1,min:10.6,maj:18.3}, meuble:{ref:16.9,min:12.7,maj:22.0}, url:'https://www.agglo-paysbasque.fr'},
+    'brest':       {nom:'Brest', vide:{ref:9.8,min:7.4,maj:12.7}, meuble:{ref:11.8,min:8.9,maj:15.3}, url:'https://www.brest-metropole.fr'},
+    'saint-nazaire':{nom:'Saint-Nazaire', vide:{ref:10.2,min:7.7,maj:13.3}, meuble:{ref:12.2,min:9.2,maj:15.9}, url:'https://www.carene-saintnazaire.fr'},
+    'lorient':     {nom:'Lorient', vide:{ref:9.5,min:7.1,maj:12.4}, meuble:{ref:11.4,min:8.6,maj:14.8}, url:'https://www.lorient-agglo.fr'},
+    'montreuil':   {nom:'Montreuil (93)', vide:{ref:18.2,min:13.7,maj:23.7}, meuble:{ref:21.8,min:16.4,maj:28.3}, url:'https://www.encadrementdesloyers.fr/seine-saint-denis'},
+    'vincennes':   {nom:'Vincennes (94)', vide:{ref:21.5,min:16.1,maj:28.0}, meuble:{ref:25.8,min:19.4,maj:33.5}, url:'https://www.encadrementdesloyers.fr/val-de-marne'},
+    'neuilly':     {nom:'Neuilly-sur-Seine (92)', vide:{ref:24.1,min:18.1,maj:31.3}, meuble:{ref:28.9,min:21.7,maj:37.6}, url:'https://www.encadrementdesloyers.fr/hauts-de-seine'}
+  };
+
+  var zone=null;
+  Object.keys(zones).forEach(function(k){if(ville.includes(k))zone=zones[k];});
+
+  var m2=loyer/surface;
   var res=document.getElementById('elResult');
   res.style.display='block';
-  if(!est){
+
+  if(!zone){
     res.innerHTML='<div style="background:var(--vert-light);border:1.5px solid rgba(45,106,79,.25);border-radius:12px;padding:20px">'
-      +'<div style="font-weight:700;color:var(--vert);margin-bottom:6px">✓ Ville non soumise à l encadrement</div>'
-      +'<div style="font-size:.85rem;color:var(--gris)">'+ville.charAt(0).toUpperCase()+ville.slice(1)+' : ville non encadree a ce jour. Loyer libre.</div>'
-      +'<div style="font-size:.8rem;color:var(--gris);margin-top:10px">Prix constaté : <strong>'+m2+'€/m²</strong></div></div>';
-  } else {
-    res.innerHTML='<div style="background:#fff8e1;border:1.5px solid rgba(245,158,11,.3);border-radius:12px;padding:20px">'
-      +'<div style="font-weight:700;color:#856404;margin-bottom:8px">⚠️ Ville soumise a l encadrement des loyers</div>'
-      +'<div style="font-size:.85rem;color:var(--texte);margin-bottom:12px">Loyer constaté : <strong>'+m2+'€/m²</strong>. Vérifiez le loyer de référence majoré pour ce logement spécifique via le simulateur officiel.</div>'
-      +'<a href="https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers" target="_blank" class="btn-primary-pro" style="display:inline-flex;text-decoration:none;font-size:.84rem;padding:9px 16px">Vérifier sur service-public.fr →</a></div>';
+      +'<div style="font-weight:700;color:var(--vert);margin-bottom:6px;font-size:1rem">✓ Ville non soumise à l\'encadrement des loyers</div>'
+      +'<div style="font-size:.86rem;color:var(--gris);margin-bottom:10px">'+ville.charAt(0).toUpperCase()+ville.slice(1)+' ne figure pas dans les zones encadrées actuellement en vigueur.</div>'
+      +'<div style="background:#fff;border-radius:8px;padding:12px;font-size:.86rem">'
+      +'<strong>Prix constaté : '+m2.toFixed(2)+'€/m²/mois</strong> · Loyer total : '+loyer.toFixed(2)+'€/mois pour '+surface+' m²'
+      +'</div>'
+      +'<div style="margin-top:10px;font-size:.78rem;color:var(--gris)">⚠️ Cette liste est mise à jour régulièrement. Vérifiez sur <a href="https://observatoire-loyers.adil.org" target="_blank" style="color:var(--pro-accent)">observatoire-loyers.adil.org</a></div>'
+      +'</div>';
+    return;
   }
+
+  var tarifs=zone[btype]||zone['vide'];
+  var refTotal=tarifs.ref*surface;
+  var majTotal=tarifs.maj*surface;
+  var minTotal=tarifs.min*surface;
+  var depasse=m2>tarifs.maj;
+  var bas=m2<tarifs.min;
+  var couleur=depasse?'#c0392b':bas?'#2980b9':'#27ae60';
+  var bgColor=depasse?'#fdf2f2':bas?'#eef4fb':'#f0fdf4';
+  var borderColor=depasse?'rgba(192,57,43,.25)':bas?'rgba(41,128,185,.25)':'rgba(39,174,96,.25)';
+  var verdict=depasse?'⚠️ Loyer supérieur au plafond légal':bas?'ℹ️ Loyer inférieur au minimum de référence':'✓ Loyer dans la fourchette légale';
+
+  res.innerHTML='<div style="background:'+bgColor+';border:1.5px solid '+borderColor+';border-radius:12px;padding:20px">'
+    +'<div style="font-weight:700;color:'+couleur+';margin-bottom:12px;font-size:1rem">'+verdict+'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">'
+    +'<div style="background:#fff;border-radius:8px;padding:10px;text-align:center">'
+    +'<div style="font-size:.7rem;color:var(--gris);font-weight:600;margin-bottom:4px">REF. MINORÉ</div>'
+    +'<div style="font-size:1rem;font-weight:700;color:var(--texte)">'+tarifs.min.toFixed(2)+'€/m²</div>'
+    +'<div style="font-size:.72rem;color:var(--gris)">'+minTotal.toFixed(0)+'€/mois</div>'
+    +'</div>'
+    +'<div style="background:#fff;border:2px solid '+couleur+';border-radius:8px;padding:10px;text-align:center">'
+    +'<div style="font-size:.7rem;color:var(--gris);font-weight:600;margin-bottom:4px">LOYER DEMANDÉ</div>'
+    +'<div style="font-size:1rem;font-weight:700;color:'+couleur+'">'+m2.toFixed(2)+'€/m²</div>'
+    +'<div style="font-size:.72rem;color:var(--gris)">'+loyer.toFixed(0)+'€/mois</div>'
+    +'</div>'
+    +'<div style="background:#fff;border-radius:8px;padding:10px;text-align:center">'
+    +'<div style="font-size:.7rem;color:var(--gris);font-weight:600;margin-bottom:4px">REF. MAJORÉ</div>'
+    +'<div style="font-size:1rem;font-weight:700;color:var(--texte)">'+tarifs.maj.toFixed(2)+'€/m²</div>'
+    +'<div style="font-size:.72rem;color:var(--gris)">'+majTotal.toFixed(0)+'€/mois</div>'
+    +'</div>'
+    +'</div>'
+    +(depasse?'<div style="background:#fff3cd;border-radius:8px;padding:10px;font-size:.84rem;color:#856404;margin-bottom:12px">💡 Dépassement de <strong>'+(loyer-majTotal).toFixed(2)+'€/mois</strong>. Le locataire peut demander une réduction ou saisir la commission de conciliation.</div>':'')
+    +'<div style="font-size:.8rem;color:var(--gris);margin-bottom:10px">Zone : <strong>'+zone.nom+'</strong> · Logement '+btype+' · Données indicatives 2024/2025</div>'
+    +'<a href="'+zone.url+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--pro-accent);color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600">Simulateur officiel '+zone.nom+' →</a>'
+    +'</div>';
 }
+
 
 function exportResultPDF(){
   if(!proState.currentResult){alert('Aucun résultat à exporter.');return;}
@@ -2208,7 +2320,74 @@ function exportResultPDF(){
   }catch(e){alert('Erreur PDF : '+e.message);}
 }
 function exportCorrectionsPDF(){exportResultPDF();}
-function exportHistoPDF(id){alert('Export PDF disponible.');}
+function viewAnalysisDetail(id){
+  var a=proState.analyses.find(function(x){return x.id===id;});
+  if(!a){alert('Analyse introuvable.');return;}
+  if(!a.result){
+    alert('Les données complètes de cette analyse ne sont plus disponibles. Les analyses récentes sont sauvegardées avec tous les détails.');
+    return;
+  }
+  var d=a.result;
+  var sc=a.score>=70?'score-high':a.score>=45?'score-mid':'score-low';
+  var stc=a.score>=70?'Conforme':a.score>=45?'À vérifier':'Non conforme';
+  var clauseHtml=(d.clauses_abusives||[]).map(function(c){
+    var tc=c.type==='danger'?'rc-danger':c.type==='warning'?'rc-warn':'rc-ok';
+    var lb=c.type==='danger'?'Illégal':c.type==='warning'?'À corriger':'Conforme';
+    return '<div class="result-clause" style="margin-bottom:10px">'
+      +'<span class="result-clause-badge '+tc+'">'+lb+'</span>'
+      +'<div><div class="result-clause-title">'+c.titre+'</div>'
+      +'<div class="result-clause-desc">'+c.description+'</div>'
+      +(c.correction?'<div style="margin-top:6px;font-size:.8rem;background:#f0f9f0;border-radius:6px;padding:6px 10px;color:#2d6a4f">💡 '+c.correction+'</div>':'')
+      +'</div></div>';
+  }).join('');
+  var recoHtml=(d.recommandations||[]).map(function(r){
+    return '<div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start">'
+      +'<span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">→</span>'
+      +'<span style="font-size:.86rem;color:var(--texte)">'+r+'</span></div>';
+  }).join('');
+  var modal=document.getElementById('modalAnalyseDetail');
+  if(!modal){
+    modal=document.createElement('div');
+    modal.id='modalAnalyseDetail';
+    modal.className='modal-overlay';
+    modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.onclick=function(e){if(e.target===modal)modal.classList.remove('active');};
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML='<div style="background:#fff;border-radius:16px;max-width:720px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 80px rgba(0,0,0,0.25)">'
+    +'<div style="padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1">'
+    +'<div>'
+    +'<div style="font-weight:700;font-size:1.1rem;color:var(--noir)">'+(a.adresse||a.filename||'Analyse')+'</div>'
+    +'<div style="font-size:.8rem;color:var(--gris);margin-top:3px">'+(a.ville||'')+(a.surface?' · '+a.surface+' m²':'')+' · '+a.date+'</div>'
+    +'</div>'
+    +'<div style="display:flex;align-items:center;gap:12px">'
+    +'<span class="score-badge '+sc+'">'+a.score+'/100</span>'
+    +'<button class="btn-sm" onclick="exportHistoPDF('+id+')" style="background:var(--pro-accent);color:#fff">PDF</button>'
+    +'<button onclick="document.getElementById(\'modalAnalyseDetail\').classList.remove(\'active\')" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--gris);padding:0 4px">✕</button>'
+    +'</div>'
+    +'</div>'
+    +'<div style="padding:24px 28px">'
+    // Score + verdict
+    +'<div style="background:var(--bg);border-radius:12px;padding:16px 20px;margin-bottom:20px">'
+    +'<div style="font-weight:700;font-size:1rem;margin-bottom:4px">'+(d.verdict_titre||'Analyse terminée')+'</div>'
+    +'<div style="font-size:.86rem;color:var(--gris)">'+(d.resume||'')+'</div>'
+    +'</div>'
+    // Clauses
+    +(clauseHtml?'<div style="font-weight:700;font-size:.9rem;margin-bottom:12px;color:var(--noir)">Points analysés ('+((d.clauses_abusives||[]).length)+')</div>'+clauseHtml:'')
+    // Recommandations
+    +(recoHtml?'<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-weight:700;font-size:.9rem;margin-bottom:12px;color:var(--noir)">Recommandations</div>'+recoHtml+'</div>':'')
+    +'</div>'
+    +'</div>';
+  modal.classList.add('active');
+}
+
+function exportHistoPDF(id){
+  var a=proState.analyses.find(function(x){return x.id===id;});
+  if(!a){alert('Analyse introuvable.');return;}
+  if(!a.result){alert('Données complètes non disponibles pour cette analyse.');return;}
+  proState.currentResult=a.result;
+  exportResultPDF();
+}
 
 function saveSettings(){
   if(!proState.user)return;
@@ -2220,7 +2399,7 @@ function saveSettings(){
 function scrollToSection(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
 
 var pricingMode='mensuel', pricingEngagement=6;
-var BASE_PRICES={starter:79,pro:199};
+var BASE_PRICES = {starter:29, pro:79};
 function setPricing(mode){pricingMode=mode;document.getElementById('ptBtn1').className='ptoggle'+(mode==='mensuel'?' active':'');document.getElementById('ptBtn2').className='ptoggle'+(mode==='annuel'?' active':'');updatePrices();}
 function setEngagement(m){pricingEngagement=m;document.getElementById('engBtn6').className='engage-btn'+(m===6?' active':'');document.getElementById('engBtn12').className='engage-btn'+(m===12?' active':'');updatePrices();}
 function updatePrices(){
@@ -2620,12 +2799,393 @@ function genererBailConforme() {
     annexRgl: chk('genAnnRgl'),
     annexGarant: chk('genAnnGarant'),
     annexInventaire: chk('genAnnInventaire'),
+    loyerRef: val('genLoyerRef'),
+    loyerMajore: val('genLoyerMajore'),
+    loyerMinore: val('genLoyerMinore'),
+    irl: val('genIrl'),
     agence: proState.user ? proState.user.agence : '',
     agenceEmail: proState.user ? proState.user.email : ''
   };
 
   var bailText = buildBailComplet(g);
   finalizeBailGeneration(bailText, gsteps);
+}
+
+
+
+function sanitizePDF(str) {
+  if (!str) return '';
+  return str
+    .replace(/[\u2550\u2551\u2552-\u256C\u2500-\u254F]/g, '-')
+    .replace(/\u2019/g, "'").replace(/\u2018/g, "'")
+    .replace(/\u201C/g, '"').replace(/\u201D/g, '"')
+    .replace(/\u2013/g, '-').replace(/\u2014/g, '--')
+    .replace(/\u00AB/g, '<<').replace(/\u00BB/g, '>>')
+    .replace(/\u2026/g, '...')
+    .replace(/[^\x00-\xFF]/g, '?');
+}
+
+function buildBailComplet(g) {
+  var today = new Date().toLocaleDateString('fr-FR');
+  var totalLoyer = (parseFloat(g.loyer)||0) + (parseFloat(g.charges)||0) + (parseFloat(g.complement)||0);
+  var loyerLettre = nombreEnLettres(parseFloat(g.loyer)||0);
+  var chargesLettre = nombreEnLettres(parseFloat(g.charges)||0);
+  var depotLettre = nombreEnLettres(parseFloat(g.depot)||0);
+
+  var typeBailleur = g.bailleurType === 'sci' ? 'une SCI' : g.bailleurType === 'indivision' ? 'une indivision' : 'une personne physique';
+  var duree = g.duree || '3';
+  var dureeType = (g.gen_type === 'meuble') ? '1 an (logement meuble)' : duree + ' ans';
+
+  // Complément de loyer
+  var complementClause = '';
+  if (parseFloat(g.complement) > 0) {
+    complementClause = '\nCOMPLEMENT DE LOYER (art. 17 loi 89-462)\n' +
+      'Un complement de loyer de ' + g.complement + ' EUR/mois est applique, justifie par : ' + (g.complementJustif || 'caracteristiques exceptionnelles du logement') + '.\n' +
+      (g.complementDetail ? 'Detail : ' + g.complementDetail + '\n' : '') +
+      'Loyer de reference majore applicable : ' + (g.loyerMajore || 'NC') + ' EUR/m2/mois.\n';
+  }
+
+  // Annexes
+  var annexesList = [];
+  if (g.annexJardin) annexesList.push('jardin');
+  if (g.annexTerrace) annexesList.push('terrasse');
+  if (g.annexParking) annexesList.push('parking/garage');
+  if (g.annexCave) annexesList.push('cave');
+  if (g.annexGrenier) annexesList.push('grenier');
+  if (g.annexPiscine) annexesList.push('piscine');
+  var annexesText = annexesList.length ? 'Annexes comprises : ' + annexesList.join(', ') + '.' : 'Aucune annexe.';
+
+  // Restrictions
+  var restrictionsList = [];
+  if (g.annexAnimaux) restrictionsList.push('animaux de compagnie interdits');
+  if (g.annexFumeNon) restrictionsList.push('logement non-fumeur');
+  if (g.annexSousloc) restrictionsList.push('sous-location interdite');
+
+  // Documents annexes
+  var docsList = [];
+  if (g.annexDpe) docsList.push('DPE');
+  if (g.annexEtat) docsList.push('etat des lieux entree');
+  if (g.annexNotice) docsList.push('notice information bailleur/locataire');
+  if (g.annexRgl) docsList.push('reglement de copropriete (extraits)');
+  if (g.annexGarant) docsList.push('acte de cautionnement');
+  if (g.annexInventaire) docsList.push('inventaire mobilier');
+
+  var bail = [
+    '================================================================',
+    '         CONTRAT DE LOCATION - RESIDENCE PRINCIPALE',
+    '    Conforme loi n 89-462 du 6 juillet 1989 modifiee',
+    '         Loi ALUR du 24 mars 2014 - Loi ELAN 2018',
+    '================================================================',
+    'Redige par : ' + (g.agence || 'BailScan Pro') + '   |   Date : ' + today,
+    '',
+    '================================================================',
+    'ARTICLE 1 - PARTIES AU CONTRAT',
+    '================================================================',
+    '',
+    'BAILLEUR :',
+    'Nom et prenom : ' + (g.bailleurPrenom||'') + ' ' + (g.bailleurNom||''),
+    'Qualite : ' + typeBailleur,
+    'Adresse : ' + (g.bailleurAdresse||''),
+    'Email : ' + (g.bailleurEmail||''),
+    'Telephone : ' + (g.bailleurTel||''),
+    '',
+    'LOCATAIRE(S) :',
+    'Nom et prenom : ' + (g.locatairePrenom||'') + ' ' + (g.locataireNom||''),
+    'Adresse actuelle : ' + (g.locataireAdresse||''),
+    'Email : ' + (g.locataireEmail||''),
+    g.typeLocation === 'colocation' ? 'Type : Colocation - solidarite entre colocataires' : '',
+    '',
+    g.garant !== 'non' ? ('GARANT : ' + g.garant) : '',
+    '',
+    '================================================================',
+    'ARTICLE 2 - DESIGNATION DU LOGEMENT',
+    '================================================================',
+    '',
+    'Adresse du logement : ' + (g.bienAdresse||'') + ', ' + (g.ville||''),
+    'Type : Logement ' + (g.gen_type === 'meuble' ? 'meuble' : 'vide'),
+    'Surface habitable (loi Boutin) : ' + (g.surface||'') + ' m2',
+    'Nombre de pieces principales : ' + (g.pieces||''),
+    'Etage : ' + (g.etage||'RDC'),
+    'Equipements : ' + (g.equipements||''),
+    annexesText,
+    '',
+    'PERFORMANCE ENERGETIQUE :',
+    'Classe DPE : ' + (g.dpe||'NC') + '   |   Classe GES : ' + (g.ges||'NC'),
+    g.dpe === 'F' || g.dpe === 'G' ? ('ATTENTION : Ce logement est classe ' + g.dpe + '. Conformement a la loi Climat et Resilience,') : '',
+    g.dpe === 'F' || g.dpe === 'G' ? 'un audit energetique est obligatoire. Interdiction de location G+ en 2025.' : '',
+    '',
+    '================================================================',
+    'ARTICLE 3 - DESTINATION DES LIEUX',
+    '================================================================',
+    '',
+    "Le logement est loue exclusivement a usage d'habitation principale du locataire,",
+    "conformement a l'article 2 de la loi du 6 juillet 1989.",
+    "Le locataire s'interdit tout usage commercial, professionnel exclusif ou industriel.",
+    '',
+    '================================================================',
+    'ARTICLE 4 - DUREE DU BAIL',
+    '================================================================',
+    '',
+    'Duree : ' + dureeType,
+    'Date de prise d\'effet : ' + (g.dateEntree||today),
+    'Date d\'echeance : A compter de la date d\'effet, le bail se renouvelle par tacite reconduction.',
+    '',
+    'Preavis :',
+    '- Conge du locataire : 3 mois (1 mois en zone tendue, mutation, perte emploi, sante)',
+    '- Conge du bailleur : 6 mois avant echeance (reprise, vente, motif legitime)',
+    '',
+    '================================================================',
+    'ARTICLE 5 - LOYER ET CHARGES',
+    '================================================================',
+    '',
+    'LOYER MENSUEL HORS CHARGES : ' + (g.loyer||'') + ' EUR (' + loyerLettre + ' euros)',
+    'CHARGES MENSUELLES (provisions) : ' + (g.charges||'0') + ' EUR (' + chargesLettre + ' euros)',
+    complementClause,
+    'TOTAL MENSUEL : ' + totalLoyer.toFixed(2) + ' EUR',
+    '',
+    'Modalites de paiement : Le loyer est payable le 1er de chaque mois,',
+    'par virement bancaire ou tout autre mode convenu entre les parties.',
+    'Le bailleur ne peut pas imposer le prelevement automatique comme seul mode (art. 4 loi 89).',
+    '',
+    'REVISION DU LOYER (art. 17-1 loi 89) :',
+    g.revision ? 'Le loyer est revise chaque annee a la date anniversaire du bail selon l\'Indice de Reference des Loyers (IRL) publie par l\'INSEE.' : 'Pas de clause de revision prevue.',
+    '',
+    '================================================================',
+    'ARTICLE 6 - DEPOT DE GARANTIE',
+    '================================================================',
+    '',
+    'Montant : ' + (g.depot||'') + ' EUR (' + depotLettre + ' euros)',
+    'Plafond legal : 1 mois de loyer HC pour location vide (art. 22 loi 89).',
+    'Le depot de garantie doit etre restitue dans un delai de :',
+    '- 1 mois si l\'etat des lieux de sortie est conforme a l\'entree',
+    '- 2 mois si des retenues sont justifiees (avec justificatifs)',
+    'Passé ce delai, le montant porte interet au taux legal (art. 22 loi 89).',
+    '',
+    '================================================================',
+    'ARTICLE 7 - OBLIGATIONS DU BAILLEUR (art. 6 loi 89)',
+    '================================================================',
+    '',
+    'Le bailleur s\'oblige a :',
+    '1. Delivrer un logement decent (surface >= 9 m2, equipements minimaux, etancheite)',
+    '2. Assurer la jouissance paisible du logement',
+    '3. Entretenir le logement en etat de servir a l\'usage prevu',
+    '4. Effectuer les reparations urgentes et les grosses reparations',
+    '5. Ne pas s\'opposer aux amenagements du locataire (non constitutifs de transformation)',
+    '6. Remettre les diagnostics techniques obligatoires en annexe',
+    '7. Informer le locataire de la vente ou mutation du bien',
+    '',
+    '================================================================',
+    'ARTICLE 8 - OBLIGATIONS DU LOCATAIRE (art. 7 loi 89)',
+    '================================================================',
+    '',
+    'Le locataire s\'oblige a :',
+    '1. Payer le loyer et les charges aux termes convenus',
+    '2. User paisiblement du logement, selon sa destination',
+    '3. Repondre des degradations survenues pendant la location',
+    '4. Laisser executer les travaux urgents',
+    '5. S\'assurer contre les risques locatifs (assurance obligatoire, justificatif annuel)',
+    '6. Ne pas transformer les lieux sans accord ecrit du bailleur',
+    '7. Informer le bailleur de tout sinistre ou degradation',
+    restrictionsList.length ? ('8. Clauses particulieres : ' + restrictionsList.join(' ; ')) : '',
+    '',
+    '================================================================',
+    'ARTICLE 9 - TRAVAUX',
+    '================================================================',
+    '',
+    g.travauxLoc ? 'Des travaux de mise en conformite sont prevus avant entree dans les lieux : ' + g.travauxLoc : 'Aucun travaux prevu avant entree dans les lieux.',
+    '',
+    'Travaux du locataire : Tout travail de transformation necessite accord ecrit du bailleur.',
+    'En fin de bail, le bailleur peut exiger la remise en etat ou conserver les ameliorations.',
+    '',
+    '================================================================',
+    'ARTICLE 10 - ETAT DES LIEUX',
+    '================================================================',
+    '',
+    "Un etat des lieux d'entree contradictoire est etabli le jour de la remise des cles.",
+    "Un etat des lieux de sortie est etabli le jour de la restitution des cles.",
+    "En l'absence d'etat des lieux d'entree par faute du bailleur, le logement est presume en bon etat.",
+    'Le locataire dispose de 10 jours pour le completer (elements de chauffage notamment).',
+    '',
+    '================================================================',
+    'ARTICLE 11 - ASSURANCE',
+    '================================================================',
+    '',
+    "Le locataire est tenu de s'assurer contre les risques dont il doit repondre (art. 7g loi 89).",
+    "Justificatif a remettre au bailleur a la signature, puis chaque annee a sa demande.",
+    "A defaut, le bailleur peut souscrire une assurance pour compte du locataire,",
+    "dont la prime lui est refacturee (majoration max 10%).",
+    '',
+    '================================================================',
+    'ARTICLE 12 - CLAUSE RESOLUTOIRE (art. 24 loi 89)',
+    '================================================================',
+    '',
+    'Le contrat de location est resolu de plein droit par :',
+    '- Non-paiement du loyer ou des charges a leur terme',
+    '- Non-versement du depot de garantie',
+    '- Defaut d\'assurance habitation',
+    '- Troubles de voisinage constates par decision de justice',
+    '',
+    'La clause resolutoire ne joue que 2 mois apres commandement de payer reste infructueux',
+    '(adresse par huissier de justice), conformement a l\'article 24 de la loi du 6 juillet 1989.',
+    'La commission de surendettement peut suspendre la procedure (loi ALUR).',
+    '',
+    '================================================================',
+    'ARTICLE 13 - CONGE ET RESILIATION',
+    '================================================================',
+    '',
+    'CONGE DU LOCATAIRE :',
+    '- Preavis de 3 mois (lettre recommandee avec AR ou acte d\'huissier)',
+    '- Reduit a 1 mois : zone tendue, mutation professionnelle, perte d\'emploi, RSA, AAH, etat de sante',
+    '',
+    'CONGE DU BAILLEUR :',
+    '- Preavis de 6 mois avant terme du bail',
+    '- Motifs limitatifs : reprise pour habiter (lui ou proche), vente, motif legitime et serieux',
+    '- Le conge pour vente vaut offre de vente au locataire (droit de preemption)',
+    '',
+    '================================================================',
+    'ARTICLE 14 - ENCADREMENT DES LOYERS',
+    '================================================================',
+    '',
+    'Zones encadrees en 2025/2026 : Paris (75), Seine-Saint-Denis (93), Val-de-Marne (94),',
+    'Hauts-de-Seine (92), Lyon / Villeurbanne, Bordeaux, Montpellier, Grenoble,',
+    'Lille / Roubaix / Tourcoing, Bayonne / Anglet / Biarritz.',
+    '',
+    g.loyerRef ? ('Loyer de reference : ' + g.loyerRef + ' EUR/m2/mois') : '',
+    g.loyerMajore ? ('Loyer de reference majore : ' + g.loyerMajore + ' EUR/m2/mois (plafond applicable)') : '',
+    g.loyerMinore ? ('Loyer de reference minore : ' + g.loyerMinore + ' EUR/m2/mois') : '',
+    (!g.loyerRef && !g.loyerMajore && !g.loyerMinore) ? 'Verifier l\'applicabilite de l\'encadrement sur observatoire-loyers.adil.org' : '',
+    '',
+    g.irl ? ('Indice IRL de reference : ' + g.irl + ' (source INSEE)') : '',
+    'En cas de depassement injustifie, le locataire peut saisir la commission de conciliation (art. 20 loi 89).',
+    '',
+    g.honoraires ? (
+    '================================================================\n' +
+    'ARTICLE 15 - HONORAIRES D\'AGENCE (art. 5 loi 89)\n' +
+    '================================================================\n\n' +
+    'Honoraires de location a la charge du locataire : ' + g.honoraires + ' EUR TTC\n' +
+    'Plafond legal : zone tres tendue 12 EUR/m2, zone tendue 10 EUR/m2, reste 8 EUR/m2\n' +
+    'Les honoraires d\'etat des lieux sont partages par moitie.\n'
+    ) : '',
+    g.typeLocation === 'colocation' ? (
+    '================================================================\n' +
+    'ARTICLE 16 - SOLIDARITE ENTRE COLOCATAIRES\n' +
+    '================================================================\n\n' +
+    'Les colocataires sont solidaires et indivisibles pour le paiement du loyer et des charges.\n' +
+    'Le garant du colocataire partant reste engage 6 mois apres le conge (loi ALUR).\n'
+    ) : '',
+    g.specificites ? (
+    '================================================================\n' +
+    'CLAUSES PARTICULIERES\n' +
+    '================================================================\n\n' +
+    g.specificites + '\n'
+    ) : '',
+    '================================================================',
+    'ARTICLE ' + (g.honoraires && g.typeLocation === 'colocation' ? '17' : g.honoraires || g.typeLocation === 'colocation' ? '16' : '15') + ' - DOCUMENTS REMIS AU LOCATAIRE',
+    '================================================================',
+    '',
+    docsList.length ? ('Documents annexes au present bail :\n- ' + docsList.join('\n- ')) : 'Documents a remettre : DPE, notice d\'information, etat des lieux.',
+    '',
+    'Notice d\'information relative aux droits et obligations des locataires et bailleurs',
+    '(arrete du 29 mai 2015 modifie par arrete du 16 fevrier 2023).',
+    '',
+    '================================================================',
+    'SIGNATURES',
+    '================================================================',
+    '',
+    'Fait a ______________________, le ' + (g.dateEntree||today),
+    'En ' + (g.typeLocation === 'colocation' ? '3' : '2') + ' exemplaires originaux',
+    '',
+    'Le Bailleur :                          Le(s) Locataire(s) :',
+    '',
+    '(Signature precedee de "Lu et approuve")      (Signature precedee de "Lu et approuve")',
+    '',
+    '',
+    '_______________________________        _______________________________',
+    (g.bailleurPrenom||'') + ' ' + (g.bailleurNom||'') + '               ' + (g.locatairePrenom||'') + ' ' + (g.locataireNom||''),
+    '',
+    '================================================================',
+    'MENTIONS LEGALES',
+    '================================================================',
+    'Ce bail a ete genere par BailScan Pro (bailscan.app).',
+    'Il est fourni a titre d\'aide a la redaction et ne constitue pas un conseil juridique.',
+    'Conforme au decret du 29 mai 2015 (modele type loi ALUR) et ses modifications.',
+    'Loi n 89-462 du 6 juillet 1989 - Loi ALUR 2014 - Loi ELAN 2018 - Loi Climat 2021.',
+  ].filter(function(l){ return l !== null && l !== undefined; }).join('\n');
+
+  return bail;
+}
+
+
+function exportBailPDF() {
+  if (!proState.currentBail) { alert('Generez un bail avant.'); return; }
+  try {
+    if (!window.jspdf) { alert('Export PDF indisponible - rechargez la page.'); return; }
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ putOnlyUsedFonts: true, compress: true });
+    var pageW = 210; var margin = 14; var usableW = pageW - 2 * margin;
+    var y = 0;
+
+    var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
+    var agence = proState.user ? (proState.user.agence || 'BailScan Pro') : 'BailScan Pro';
+
+    if (logo) {
+      try {
+        doc.setFillColor(255,255,255);
+        doc.rect(0,0,pageW,30,'F');
+        doc.addImage(logo,'JPEG',margin,4,40,20);
+        doc.setFontSize(8); doc.setTextColor(120,120,120);
+        doc.text(agence, pageW-margin, 10, {align:'right'});
+        doc.setFontSize(7); doc.text('Bail conforme loi 89-462 | ALUR | ELAN', pageW-margin, 17, {align:'right'});
+        doc.setDrawColor(220,220,220); doc.line(margin,28,pageW-margin,28);
+        y = 34;
+      } catch(e) { y = headerBleu(doc, pageW, margin); }
+    } else {
+      y = headerBleu(doc, pageW, margin);
+    }
+
+    // Nettoyer le texte pour jsPDF (encodage latin-1)
+    var bailText = sanitizePDF(proState.currentBail);
+    var rawLines = bailText.split('\n');
+
+    rawLines.forEach(function(rawLine) {
+      var wrappedLines = doc.splitTextToSize(rawLine, usableW);
+      wrappedLines.forEach(function(line) {
+        if (y > 282) {
+          doc.addPage();
+          y = 14;
+          // Mini header sur chaque page
+          doc.setFontSize(7); doc.setTextColor(150,150,150);
+          doc.text(agence + ' | bailscan.app', margin, 8);
+          doc.setDrawColor(230,230,230); doc.line(margin,10,pageW-margin,10);
+          y = 14;
+        }
+        var isSeparator = /^={3,}/.test(line.trim());
+        var isTitle = /^ARTICLE\s+\d/i.test(line.trim()) || /^SIGNATURES/.test(line.trim()) || /^CLAUSES|^MENTIONS/.test(line.trim());
+        var isSubTitle = /^(BAILLEUR|LOCATAIRE|GARANT|LOYER|CONGE|PREAVIS|Modalites|Plafond|Revision|Documents|Restrictions|Travaux|Zones|Fait a|En \d)/i.test(line.trim());
+
+        if (isSeparator) {
+          doc.setDrawColor(60,60,60); doc.line(margin, y, pageW-margin, y);
+          y += 3; return;
+        }
+        doc.setFont('helvetica', isTitle ? 'bold' : 'normal');
+        doc.setFontSize(isTitle ? 9.5 : isSubTitle ? 8.5 : 8);
+        doc.setTextColor(isTitle ? 20 : 50, isTitle ? 20 : 50, isTitle ? 20 : 50);
+        if (line.trim()) {
+          doc.text(line, margin, y);
+        }
+        y += isTitle ? 6.5 : 5;
+      });
+    });
+
+    var pageCount = doc.internal.getNumberOfPages();
+    for (var p = 1; p <= pageCount; p++) {
+      doc.setPage(p);
+      doc.setFontSize(7); doc.setTextColor(180,180,180);
+      doc.text('Bail genere par BailScan Pro | bailscan.app | ' + new Date().toLocaleDateString('fr-FR'), margin, 292);
+      doc.text('Page ' + p + '/' + pageCount, pageW-margin, 292, {align:'right'});
+    }
+    doc.save('bail-conforme-' + new Date().toLocaleDateString('fr-FR').replace(/\//g,'-') + '.pdf');
+  } catch(e) { alert('Erreur PDF : ' + e.message); }
 }
 
 
@@ -2646,261 +3206,9 @@ function finalizeBailGeneration(bailText, gsteps) {
     if (btn) btn.disabled = false;
   }, 600);
 }
-function buildBailComplet(g) {
-  var today = new Date().toLocaleDateString('fr-FR');
-  var total = parseFloat(g.loyer) + (parseFloat(g.charges) || 0);
-  var totalComplement = total + (parseFloat(g.complement) || 0);
-  var typeLabel = g.type === 'meuble' ? 'MEUBLÉ' : g.type === 'colocation' ? 'COLOCATION' : 'VIDE (NON MEUBLÉ)';
-  var preavi = g.type === 'vide' ? '3 mois (1 mois en zone tendue, cas de force majeure ou perte d\'emploi)' : '1 mois';
-  var depotMax = g.type === 'vide' ? '1 mois de loyer HC' : '2 mois de loyer HC';
 
-  var annexes = [];
-  if (g.jardin) annexes.push('jardin privatif');
-  if (g.terrasse) annexes.push('terrasse/balcon');
-  if (g.parking) annexes.push('parking/garage' + (g.annexeNum ? ' (' + g.annexeNum + ')' : ''));
-  if (g.cave) annexes.push('cave/cellier' + (g.annexeNum && !g.parking ? ' (' + g.annexeNum + ')' : ''));
-  if (g.grenier) annexes.push('grenier/combles');
-  if (g.piscine) annexes.push('piscine');
 
-  var docsAnnexes = [];
-  if (g.annexDpe) docsAnnexes.push('Diagnostic de Performance Énergétique (DPE)');
-  if (g.annexEtat) docsAnnexes.push('État des lieux contradictoire d\'entrée');
-  if (g.annexNotice) docsAnnexes.push('Notice d\'information relative aux droits et obligations des locataires et bailleurs');
-  if (g.annexRgl) docsAnnexes.push('Extrait du règlement de copropriété');
-  if (g.annexGarant) docsAnnexes.push('Acte de cautionnement solidaire');
-  if (g.annexInventaire) docsAnnexes.push('Inventaire et état du mobilier (location meublée)');
 
-  var bail = '';
-  bail += '══════════════════════════════════════════════════════\n';
-  bail += 'CONTRAT DE BAIL — LOCATION ' + typeLabel + '\n';
-  bail += '══════════════════════════════════════════════════════\n';
-  bail += 'Loi n°89-462 du 6 juillet 1989 modifiée par la loi ALUR n°2014-366 du 24 mars 2014\n';
-  if (g.agence) bail += 'Établi par : ' + g.agence + (g.agenceEmail ? ' · ' + g.agenceEmail : '') + '\n';
-  bail += '\n';
-
-  bail += 'ARTICLE 1 — DÉSIGNATION DES PARTIES\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'BAILLEUR\n';
-  bail += 'Prénom et Nom : ' + g.bailleurPrenom + ' ' + g.bailleurNom + '\n';
-  bail += 'Adresse : ' + g.bailleurAdresse + '\n';
-  if (g.bailleurEmail) bail += 'Email : ' + g.bailleurEmail + '\n';
-  if (g.bailleurTel) bail += 'Tél : ' + g.bailleurTel + '\n';
-  bail += 'Qualité : ' + (g.bailleurType==='sci' ? 'Représentant(e) de société civile immobilière (SCI)' : g.bailleurType==='indivision' ? 'Indivisaire' : 'Propriétaire bailleur personne physique') + '\n';
-  bail += 'Ci-après dénommé(e) « le Bailleur »\n\n';
-  bail += 'LOCATAIRE\n';
-  bail += 'Prénom et Nom : ' + g.locatairePrenom + ' ' + g.locataireNom + '\n';
-  bail += 'Adresse actuelle : ' + g.locataireAdresse + '\n';
-  if (g.locataireEmail) bail += 'Email : ' + g.locataireEmail + '\n';
-  bail += 'Ci-après dénommé(e) « le Locataire »\n';
-  if (g.garant) bail += '\nGARANT\n' + g.garant + '\n';
-  bail += '\n';
-
-  bail += 'ARTICLE 2 — DÉSIGNATION DU LOGEMENT\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'Adresse : ' + g.bienAdresse + ', ' + g.ville + '\n';
-  if (g.etage) bail += 'Situation dans l\'immeuble : ' + g.etage + '\n';
-  bail += 'Surface habitable (loi Carrez/Boutin) : ' + g.surface + ' m²\n';
-  if (g.pieces) bail += 'Nombre de pièces principales : ' + g.pieces + '\n';
-  bail += 'Classement DPE : Classe ' + g.dpe + '  —  Émissions GES : Classe ' + g.ges + '\n';
-  bail += 'Type de chauffage : (à compléter — individuel/collectif, gaz/électrique)\n';
-  bail += 'Eau chaude : (à compléter — individuelle/collective)\n';
-  if (annexes.length) bail += 'Annexes et dépendances : ' + annexes.join(', ') + '\n';
-  if (g.equipements) bail += 'Équipements inclus : ' + g.equipements + '\n';
-  if (g.copro === 'oui') {
-    bail += 'Immeuble soumis au statut de la copropriété : OUI\n';
-    if (g.syndic) bail += 'Syndic : ' + g.syndic + '\n';
-  }
-  bail += '\n';
-
-  bail += 'ARTICLE 3 — DESTINATION DES LIEUX\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'Le logement est loué à usage exclusivement d\'habitation principale du Locataire.\n';
-  bail += 'Toute utilisation à titre professionnel ou commercial est interdite sans accord écrit préalable du Bailleur.\n\n';
-
-  bail += 'ARTICLE 4 — DURÉE DU BAIL\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'Le bail est consenti pour une durée de ' + g.duree + ', prenant effet le ' + g.dateEntree + '.\n';
-  bail += 'À l\'échéance, le bail se renouvelle par tacite reconduction pour une durée identique,\n';
-  bail += 'sauf congé délivré dans les délais légaux par l\'une ou l\'autre des parties.\n\n';
-
-  bail += 'ARTICLE 5 — LOYER ET CHARGES\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'Loyer mensuel hors charges : ' + g.loyer + ' €\n';
-  bail += 'Provision mensuelle sur charges récupérables : ' + g.charges + ' € (régularisation annuelle selon justificatifs)\n';
-  bail += 'Montant mensuel total : ' + total.toFixed(2) + ' €\n';
-  if (g.complement) {
-    bail += '\nCOMPLÉMENT DE LOYER (art. 17 loi 1989, zone encadrée)\n';
-    bail += 'Montant du complément : ' + g.complement + ' €/mois\n';
-    if (g.complementJustif) bail += 'Justificatif : ' + g.complementJustif + '\n';
-    if (g.complementDetail) bail += 'Détail : ' + g.complementDetail + '\n';
-    bail += 'Loyer de référence majoré + complément : ' + totalComplement.toFixed(2) + ' € TTC\n';
-  }
-  bail += '\nLe loyer est payable le 1er de chaque mois par virement bancaire ou tout autre moyen convenu.\n';
-  bail += 'Une quittance de loyer sera remise au Locataire sur demande (art. 21 loi 1989).\n';
-  bail += '\nRÉVISION ANNUELLE\n';
-  bail += 'Le loyer est révisé chaque année à la date anniversaire du bail, selon la variation\n';
-  bail += 'de l\'Indice de Référence des Loyers (IRL) publié par l\'INSEE (art. 17-1 loi 1989).\n\n';
-
-  bail += 'ARTICLE 6 — DÉPÔT DE GARANTIE\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'Un dépôt de garantie de ' + g.depot + ' € est versé à la signature du présent bail.\n';
-  bail += 'Ce dépôt ne peut excéder ' + depotMax + ' (art. 22 loi 1989).\n';
-  bail += 'Il sera restitué dans un délai de 1 mois (logement en bon état) ou 2 mois\n';
-  bail += 'après la remise des clés, déduction faite des sommes dues.\n\n';
-
-  bail += 'ARTICLE 7 — OBLIGATIONS DU BAILLEUR\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'Le Bailleur s\'engage à (art. 6 loi 1989) :\n';
-  bail += '- Délivrer un logement décent répondant aux normes de l\'art. 6 loi 1989 et du décret n°2002-120\n';
-  bail += '- Assurer la jouissance paisible du logement et la garantie des vices et défauts\n';
-  bail += '- Entretenir les locaux en état de servir à l\'usage prévu\n';
-  bail += '- Effectuer les réparations autres que locatives (gros œuvre, toiture, parties communes)\n';
-  bail += '- Remettre les diagnostics techniques obligatoires\n';
-  if (g.pno === 'oui') bail += '- Souscrire une assurance Propriétaire Non Occupant (PNO)\n';
-  bail += '\n';
-
-  bail += 'ARTICLE 8 — OBLIGATIONS DU LOCATAIRE\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'Le Locataire s\'engage à (art. 7 loi 1989) :\n';
-  bail += '- Payer le loyer et les charges aux termes convenus\n';
-  bail += '- User paisiblement des locaux selon leur destination\n';
-  bail += '- Souscrire et maintenir une assurance habitation (risques locatifs) et en justifier annuellement\n';
-  bail += '- Effectuer les réparations locatives et d\'entretien courant (décret n°87-712 du 26 août 1987)\n';
-  bail += '- Répondre des dégradations survenues de son fait\n';
-  bail += '- Laisser accès pour travaux urgents et nécessaires\n';
-  bail += '- Ne pas transformer les lieux sans accord écrit du Bailleur\n';
-  bail += '- Respecter le règlement de copropriété et la tranquillité du voisinage\n';
-  if (g.travauxLoc) bail += '- ' + g.travauxLoc + '\n';
-  bail += '\n';
-
-  bail += 'ARTICLE 9 — CONDITIONS D\'OCCUPATION\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  if (g.fumeNon) bail += '- Il est formellement interdit de fumer dans les locaux et parties communes.\n';
-  if (!g.animaux) bail += '- Les animaux domestiques de catégorie 1 et 2 (chiens dangereux) sont interdits. Les autres animaux sont tolérés sous réserve qu\'ils ne causent aucune nuisance.\n';
-  else bail += '- Les animaux de compagnie sont autorisés sous réserve de bonne tenue et absence de nuisances.\n';
-  if (g.souslocInterdit) bail += '- La sous-location totale ou partielle est interdite sans accord écrit préalable du Bailleur (art. 8 loi 1989).\n';
-  bail += '- Le logement est destiné à la résidence principale du Locataire.\n\n';
-
-  bail += 'ARTICLE 10 — RÉSILIATION ET PRÉAVIS\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'CONGÉ DU LOCATAIRE\n';
-  bail += 'Le Locataire peut donner congé à tout moment. Délai de préavis : ' + preavi + '.\n';
-  bail += 'Le congé est notifié par lettre recommandée avec avis de réception, acte d\'huissier,\n';
-  bail += 'ou remise en main propre contre récépissé.\n\n';
-  bail += 'CONGÉ DU BAILLEUR\n';
-  bail += 'Le Bailleur ne peut donner congé qu\'à l\'échéance du bail pour :\n';
-  bail += '- Reprise du logement pour y habiter lui-même ou un proche (art. 15-I loi 1989)\n';
-  bail += '- Vente du logement\n';
-  bail += '- Motif légitime et sérieux\n';
-  bail += 'Préavis du Bailleur : 6 mois avant l\'échéance (3 mois pour un meublé).\n\n';
-  if (g.resolutoire === 'oui') {
-    bail += 'CLAUSE RÉSOLUTOIRE\n';
-    bail += 'À défaut de paiement du loyer, des charges, du dépôt de garantie, ou en cas de non-respect\n';
-    bail += 'de l\'obligation d\'assurance, le bail est résilié de plein droit deux mois après commandement\n';
-    bail += 'de payer demeuré infructueux (art. 24 loi 1989).\n\n';
-  }
-
-  bail += 'ARTICLE 11 — ÉTAT DES LIEUX\n';
-  bail += '──────────────────────────────────────────────────────\n';
-  bail += 'Un état des lieux contradictoire est établi à l\'entrée et à la sortie du Locataire,\n';
-  bail += 'en présence des deux parties ou de leurs mandataires.\n';
-  bail += 'En l\'absence d\'état des lieux d\'entrée, le logement est présumé remis en bon état (art. 3-2 loi 1989).\n\n';
-
-  if (g.honoraires) {
-    bail += 'ARTICLE 12 — HONORAIRES D\'AGENCE\n';
-    bail += '──────────────────────────────────────────────────────\n';
-    bail += 'Honoraires TTC à la charge du Locataire : ' + g.honoraires + ' €\n';
-    bail += '(Conformément au décret n°2014-890 du 1er août 2014 relatif au plafonnement des honoraires)\n\n';
-  }
-
-  if (g.solidarite === 'oui') {
-    bail += 'ARTICLE ' + (g.honoraires ? '13' : '12') + ' — CLAUSE DE SOLIDARITÉ\n';
-    bail += '──────────────────────────────────────────────────────\n';
-    bail += 'Les colocataires sont tenus solidairement et indivisiblement au paiement du loyer,\n';
-    bail += 'des charges et de toutes sommes dues au titre du présent bail (art. 1310 C.civ.).\n\n';
-  }
-
-  var artN = 12 + (g.honoraires?1:0) + (g.solidarite==='oui'?1:0);
-  if (g.specificites) {
-    bail += 'ARTICLE ' + artN + ' — CLAUSES PARTICULIÈRES\n';
-    bail += '──────────────────────────────────────────────────────\n';
-    bail += g.specificites + '\n\n';
-    artN++;
-  }
-
-  if (docsAnnexes.length) {
-    bail += 'ARTICLE ' + artN + ' — DOCUMENTS REMIS AU LOCATAIRE\n';
-    bail += '──────────────────────────────────────────────────────\n';
-    bail += 'Le Bailleur remet au Locataire, en annexe du présent bail :\n';
-    docsAnnexes.forEach(function(d, i) { bail += (i+1) + '. ' + d + '\n'; });
-    bail += '\n';
-  }
-
-  bail += '══════════════════════════════════════════════════════\n';
-  bail += 'SIGNATURES\n';
-  bail += '══════════════════════════════════════════════════════\n';
-  bail += 'Fait en deux exemplaires originaux à ' + g.ville + ', le ' + today + '\n\n';
-  bail += 'LE BAILLEUR                           LE LOCATAIRE\n';
-  bail += g.bailleurPrenom + ' ' + g.bailleurNom + '             ' + g.locatairePrenom + ' ' + g.locataireNom + '\n\n';
-  bail += '(Précédé de la mention manuscrite « Lu et approuvé »)\n\n';
-  if (g.garant) {
-    bail += 'LE GARANT\n' + g.garant + '\n';
-    bail += '(Précédé de la mention manuscrite « Lu et approuvé »)\n';
-  }
-
-  return bail;
-}
-
-function exportBailPDF() {
-  if (!proState.currentBail) { alert('Générez un bail avant.'); return; }
-  try {
-    if (!window.jspdf) { alert('Export PDF indisponible — rechargez la page.'); return; }
-    var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF();
-    var pageW = 210; var margin = 14; var usableW = pageW - 2 * margin;
-    var y = 0;
-
-    var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
-    if (logo) {
-      try {
-
-        doc.setFillColor(255,255,255);
-        doc.rect(0, 0, 210, 28, 'F');
-        doc.addImage(logo, 'JPEG', margin, 4, 40, 20);
-        doc.setDrawColor(220,220,220);
-        doc.line(margin, 28, pageW - margin, 28);
-        y = 34;
-      } catch(e) {
-
-        y = headerBleu(doc, pageW, margin);
-      }
-    } else {
-      y = headerBleu(doc, pageW, margin);
-    }
-
-    var lines = doc.splitTextToSize(proState.currentBail, usableW);
-    lines.forEach(function(line) {
-      if (y > 282) { doc.addPage(); y = 14; }
-      var isTitre = /^═+/.test(line) || /^ARTICLE\s+\d/.test(line) || /^──+/.test(line);
-      var isSection = /^[A-ZÉÈÀÙÊÎÔÂ][A-ZÉÈÀÙÊÎÔÂ ]+$/.test(line.trim()) && line.trim().length > 3;
-      doc.setFont('helvetica', isTitre || isSection ? 'bold' : 'normal');
-      doc.setFontSize(isTitre ? 10 : 8.5);
-      doc.setTextColor(isTitre ? 30 : 60, isTitre ? 30 : 60, isTitre ? 30 : 60);
-      doc.text(line, margin, y);
-      y += isTitre ? 6 : 5;
-    });
-
-    var pageCount = doc.internal.getNumberOfPages();
-    for (var p = 1; p <= pageCount; p++) {
-      doc.setPage(p);
-      doc.setFontSize(7); doc.setTextColor(180,180,180);
-      doc.text('Bail généré par BailScan Pro · bailscan.app · ' + new Date().toLocaleDateString('fr-FR'), margin, 292);
-      doc.text('Page ' + p + '/' + pageCount, pageW - margin - 12, 292);
-    }
-
-    doc.save('bail-conforme-bailscan-' + new Date().toLocaleDateString('fr-FR').replace(/\//g,'-') + '.pdf');
-  } catch(e) { alert('Erreur PDF : ' + e.message); }
-}
 
 function headerBleu(doc, pageW, margin) {
   doc.setFillColor(17, 24, 39);
@@ -3277,6 +3585,8 @@ function prefillQuittance() {
 function updateQuittancePreview() {
   var locNom = document.getElementById('qLocNom').value||'[Locataire]';
   var adresse = document.getElementById('qAdresse').value||'[Adresse]';
+  var ville = (document.getElementById('qVille')||{value:''}).value||'';
+  var iban = (document.getElementById('qIban')||{value:''}).value||'';
   var loyer = parseFloat(document.getElementById('qLoyer').value)||0;
   var charges = parseFloat(document.getElementById('qCharges').value)||0;
   var mois = document.getElementById('qMois').value||'[Mois]';
@@ -3319,7 +3629,7 @@ function updateQuittancePreview() {
   if(prev) prev.innerHTML = html;
   if(btn) btn.style.display = 'block';
 
-  proState.currentQuittance = { locNom, adresse, loyer, charges, total, mois, annee, bailleur, datePayFr, mode, today };
+  proState.currentQuittance = { locNom, adresse, ville, iban, loyer, charges, total, mois, annee, bailleur, datePayFr, mode, today };
 }
 
 ['qLocNom','qAdresse','qLoyer','qCharges','qMois','qAnnee','qBailleur','qDatePaiement','qModePaiement'].forEach(function(id){
@@ -3370,60 +3680,165 @@ function refreshQuittancesHisto() {
 
 function exportQuittancePDF() {
   var q = proState.currentQuittance;
-  if(!q) { alert('Générez d\'abord une quittance.'); return; }
+  if(!q) { alert('Generez d\'abord une quittance.'); return; }
   try {
     if(!window.jspdf){ alert('jsPDF non disponible.'); return; }
     var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF({ format:'a4' });
+    var doc = new jsPDF({ format:'a4', compress:true });
     var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
-    var y = 20;
+    var agence = proState.user ? (proState.user.agence||'') : '';
+    var pW = 210; var mg = 16;
 
+    // ─── HEADER PLEINE LARGEUR ─────────────────────────────────────────
+    // Bande supérieure accent (5mm)
+    doc.setFillColor(59, 130, 246);
+    doc.rect(0, 0, pW, 5, 'F');
+
+    // Zone header blanche avec ombre simulée
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 5, pW, 52, 'F');
+    doc.setFillColor(240, 242, 248);
+    doc.rect(0, 55, pW, 2, 'F'); // séparateur
+
+    // Logo : grand, à gauche, centré verticalement dans le header
     if(logo) {
-      try { doc.addImage(logo,'JPEG',14,8,45,18); y=32; } catch(e){}
+      try {
+        // Calcul proportionnel : max 80mm large, max 36mm haut
+        doc.addImage(logo, 'JPEG', mg, 9, 80, 34);
+      } catch(e) {
+        doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.setTextColor(15,23,42);
+        doc.text(sanitizePDF(agence||'Agence'), mg, 30);
+      }
+    } else {
+      doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.setTextColor(15,23,42);
+      doc.text(sanitizePDF(agence||'BailScan Pro'), mg, 30);
     }
 
-    doc.setFillColor(248,247,244); doc.rect(0,y-2,210,14,'F');
-    doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(17,24,39);
-    doc.text('QUITTANCE DE LOYER', 105, y+7, {align:'center'}); y+=18;
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,100);
-    doc.text('Période : '+q.mois+' '+q.annee, 105, y, {align:'center'}); y+=12;
+    // QUITTANCE DE LOYER — bloc droit
+    doc.setFontSize(22); doc.setFont('helvetica','bold'); doc.setTextColor(15,23,42);
+    doc.text('QUITTANCE DE LOYER', pW - mg, 24, {align:'right'});
+    doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(100,115,140);
+    doc.text(sanitizePDF(q.mois) + ' ' + q.annee, pW - mg, 34, {align:'right'});
+    // Ref pill
+    doc.setFillColor(240,245,255);
+    var refText = 'Ref. QTT-' + q.annee + '-' + sanitizePDF(q.mois).toUpperCase().substring(0,3);
+    doc.roundedRect(pW - mg - 52, 39, 52, 9, 2, 2, 'F');
+    doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(59,130,246);
+    doc.text(refText, pW - mg - 26, 45, {align:'center'});
 
-    doc.setTextColor(30,30,30); doc.setFontSize(10); doc.setFont('helvetica','bold');
-    doc.text('Bailleur :', 14, y); doc.setFont('helvetica','normal'); doc.text(q.bailleur, 50, y); y+=7;
-    doc.setFont('helvetica','bold'); doc.text('Locataire :', 14, y); doc.setFont('helvetica','normal'); doc.text(q.locNom, 50, y); y+=7;
-    doc.setFont('helvetica','bold'); doc.text('Logement :', 14, y); doc.setFont('helvetica','normal');
-    var addrLines = doc.splitTextToSize(q.adresse, 140); doc.text(addrLines, 50, y); y += addrLines.length*6 + 4;
+    var y = 66;
 
-    doc.setFillColor(240,249,255); doc.rect(14,y-2,182,30,'F');
-    doc.setDrawColor(200,230,255); doc.rect(14,y-2,182,30,'S');
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60);
-    doc.text('Loyer hors charges', 20, y+6);
-    doc.setFont('helvetica','bold'); doc.text(q.loyer.toFixed(2)+' €', 190, y+6, {align:'right'});
-    doc.setFont('helvetica','normal'); doc.text('Provisions sur charges', 20, y+13);
-    doc.setFont('helvetica','bold'); doc.text(q.charges.toFixed(2)+' €', 190, y+13, {align:'right'});
-    doc.setDrawColor(170,210,240); doc.line(20, y+17, 194, y+17);
-    doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(17,24,39);
-    doc.text('TOTAL', 20, y+25); doc.text(q.total.toFixed(2)+' €', 190, y+25, {align:'right'}); y+=38;
+    // ─── PARTIES : 2 COLONNES ──────────────────────────────────────────
+    var cw = (pW - mg*2 - 8) / 2;
 
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,100);
-    doc.text('Mode de règlement : '+q.mode, 14, y);
-    doc.text('Date de paiement : '+q.datePayFr, 14, y+6); y+=18;
+    // Carte BAILLEUR
+    doc.setFillColor(249,250,252);
+    doc.roundedRect(mg, y, cw, 34, 3, 3, 'F');
+    doc.setDrawColor(226,232,244); doc.roundedRect(mg, y, cw, 34, 3, 3, 'S');
+    // Barre accent gauche
+    doc.setFillColor(59,130,246); doc.rect(mg, y, 3, 34, 'F');
+    doc.setFontSize(6.5); doc.setFont('helvetica','bold'); doc.setTextColor(100,115,140);
+    doc.text('BAILLEUR', mg+7, y+7);
+    doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(15,23,42);
+    doc.text(sanitizePDF(q.bailleur), mg+7, y+15);
+    if(agence) {
+      doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(90,105,130);
+      doc.text(sanitizePDF(agence), mg+7, y+23);
+    }
 
-    doc.setFontSize(8); doc.setTextColor(130,130,130);
-    doc.text('Fait le '+q.today, 14, y);
-    doc.setFont('helvetica','bold'); doc.setTextColor(30,30,30); doc.setFontSize(9);
-    doc.text('Signature du bailleur', 150, y);
-    doc.line(140, y+18, 200, y+18);
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(130,130,130);
-    doc.text(q.bailleur, 170, y+22, {align:'center'}); y+=30;
+    // Carte LOCATAIRE
+    var c2x = mg + cw + 8;
+    doc.setFillColor(249,250,252);
+    doc.roundedRect(c2x, y, cw, 34, 3, 3, 'F');
+    doc.setDrawColor(226,232,244); doc.roundedRect(c2x, y, cw, 34, 3, 3, 'S');
+    doc.setFillColor(100,180,100); doc.rect(c2x, y, 3, 34, 'F');
+    doc.setFontSize(6.5); doc.setFont('helvetica','bold'); doc.setTextColor(100,115,140);
+    doc.text('LOCATAIRE', c2x+7, y+7);
+    doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(15,23,42);
+    doc.text(sanitizePDF(q.locNom), c2x+7, y+15);
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(90,105,130);
+    var addrLines = doc.splitTextToSize(sanitizePDF(q.adresse), cw-14);
+    doc.text(addrLines.slice(0,2), c2x+7, y+23);
 
-    doc.setFontSize(7); doc.setTextColor(180,180,180);
-    doc.text('Cette quittance atteste du paiement intégral du loyer et des charges de la période indiquée (art. 21 loi n°89-462 du 6 juillet 1989)', 105, 285, {align:'center'});
-    doc.text('Générée par BailScan Pro · bailscan.app', 105, 290, {align:'center'});
+    y += 44;
 
-    doc.save('quittance-'+q.locNom.replace(/\s+/g,'-')+'-'+q.mois+'-'+q.annee+'.pdf');
+    // ─── TABLEAU FINANCIER ─────────────────────────────────────────────
+    // Header tableau
+    doc.setFillColor(15,23,42);
+    doc.roundedRect(mg, y, pW-mg*2, 11, 2, 2, 'F');
+    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+    doc.text('DESIGNATION', mg+6, y+7.5);
+    doc.text('MENSUALITE', pW-mg-6, y+7.5, {align:'right'});
+    y += 11;
+
+    function tableRow(label, amount, bg1, bg2) {
+      doc.setFillColor(bg1[0],bg1[1],bg1[2]);
+      doc.rect(mg, y, pW-mg*2, 11, 'F');
+      doc.setDrawColor(230,234,244); doc.line(mg, y+11, pW-mg, y+11);
+      doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(30,40,60);
+      doc.text(sanitizePDF(label), mg+6, y+7.5);
+      doc.setFont('helvetica','bold');
+      doc.text(amount+' EUR', pW-mg-6, y+7.5, {align:'right'});
+      y += 11;
+    }
+
+    tableRow('Loyer hors charges', q.loyer.toFixed(2), [255,255,255]);
+    tableRow('Provisions sur charges', q.charges.toFixed(2), [248,250,254]);
+    if(q.complement && parseFloat(q.complement) > 0) {
+      tableRow('Complement de loyer', parseFloat(q.complement).toFixed(2), [255,255,255]);
+    }
+
+    // Total
+    doc.setFillColor(59,130,246);
+    doc.roundedRect(mg, y, pW-mg*2, 14, 0, 0, 'F');
+    doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+    doc.text('TOTAL REGLE', mg+6, y+10);
+    doc.text(q.total.toFixed(2)+' EUR', pW-mg-6, y+10, {align:'right'});
+    y += 22;
+
+    // ─── BADGE PAIEMENT ────────────────────────────────────────────────
+    doc.setFillColor(240,253,244);
+    doc.roundedRect(mg, y, pW-mg*2, 18, 3, 3, 'F');
+    doc.setDrawColor(167,243,208); doc.roundedRect(mg, y, pW-mg*2, 18, 3, 3, 'S');
+    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(22,163,74);
+    doc.text('PAIEMENT RECU', mg+7, y+7);
+    doc.setFontSize(8.5); doc.setFont('helvetica','normal'); doc.setTextColor(30,60,30);
+    doc.text('Mode : '+sanitizePDF(q.mode)+'     Date : '+sanitizePDF(q.datePayFr), mg+7, y+14);
+    y += 26;
+
+    // ─── ATTESTATION LÉGALE ────────────────────────────────────────────
+    doc.setDrawColor(220,226,240); doc.line(mg, y, pW-mg, y); y += 8;
+    doc.setFontSize(8); doc.setFont('helvetica','italic'); doc.setTextColor(90,100,125);
+    var att = 'Je soussigne(e) ' + sanitizePDF(q.bailleur) + ', bailleur du logement designe ci-dessus, atteste avoir recu de ' +
+      sanitizePDF(q.locNom) + ' la somme de ' + q.total.toFixed(2) +
+      ' EUR en reglement du loyer et des charges du mois de ' + sanitizePDF(q.mois) + ' ' + q.annee +
+      '. Quittance etablie conformement a l\'article 21 de la loi n 89-462 du 6 juillet 1989.';
+    var attL = doc.splitTextToSize(att, pW-mg*2);
+    doc.text(attL, mg, y);
+    y += attL.length * 5 + 8;
+
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(120,130,150);
+    var faitLe = 'Document etabli le : ' + sanitizePDF(q.today);
+    if(q.ville) faitLe += '   |   Ville : ' + sanitizePDF(q.ville);
+    doc.text(faitLe, mg, y);
+    if(q.iban) {
+      y += 8;
+      doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(15,23,42);
+      doc.text('Paiement par virement — IBAN : ', mg, y);
+      doc.setFont('courier','normal'); doc.setFontSize(8.5); doc.setTextColor(30,30,80);
+      doc.text(sanitizePDF(q.iban), mg, y+6);
+      y += 6;
+    }
+
+    // ─── PIED DE PAGE ──────────────────────────────────────────────────
+    doc.setFillColor(15,23,42); doc.rect(0, 288, pW, 9, 'F');
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(180,195,220);
+    doc.text('BailScan Pro  |  bailscan.app  |  Conforme art. 21 loi n 89-462 du 6 juillet 1989', 105, 293.5, {align:'center'});
+
+    doc.save('quittance-'+sanitizePDF(q.locNom).replace(/\s+/g,'-')+'-'+sanitizePDF(q.mois)+'-'+q.annee+'.pdf');
   } catch(e) { alert('Erreur PDF: '+e.message); }
 }
+
 
 function selectCourrier(type, el) {
   proState.currentCourrierType = type;
@@ -3455,13 +3870,15 @@ async function genererCourrier() {
   document.getElementById('btnGenCourrier').disabled=true;
   document.getElementById('courrierActions').style.display='none';
 
+  var bailleurAdresse = (document.getElementById('coBailleurAdresse')||{value:''}).value.trim();
   var basePrompt = COURRIER_PROMPTS[type] || COURRIER_PROMPTS.conge_bailleur;
   var prompt = basePrompt + '\n\n'
-    + 'Bailleur/Agence : ' + bailleur + '\n'
-    + 'Locataire : ' + locataire + '\n'
+    + 'Bailleur/Expéditeur : ' + bailleur + '\n'
+    + (bailleurAdresse ? 'Adresse bailleur : ' + bailleurAdresse + '\n' : '')
+    + 'Locataire/Destinataire : ' + locataire + '\n'
     + (adresse ? 'Bien loué : ' + adresse + '\n' : '')
     + (details ? 'Informations complémentaires : ' + details + '\n' : '')
-    + '\nRédigez une lettre professionnelle et juridiquement conforme, avec en-tête, corps et formule de politesse. Date : '
+    + '\nRédigez une lettre professionnelle et juridiquement conforme. Incluez OBLIGATOIREMENT dans l\'en-tête :\n- Les coordonnées complètes de l\'expéditeur (bailleur) en haut à gauche\n- Les coordonnées du destinataire (locataire) à droite\n- La date et la ville\n- Un objet clair\nPuis le corps de la lettre et une formule de politesse. Date : '
     + new Date().toLocaleDateString('fr-FR') + '. Répondez UNIQUEMENT avec le texte de la lettre, sans explication.';
 
   var texte = '';
@@ -3484,7 +3901,7 @@ async function genererCourrier() {
   } catch(e) {}
 
   if (!texte) {
-    texte = genCourrierFallback(type, bailleur, locataire, adresse, details);
+    texte = genCourrierFallback(type, bailleur, locataire, adresse, details, bailleurAdresse);
   }
 
   proState.currentCourrier = texte;
@@ -3495,11 +3912,11 @@ async function genererCourrier() {
   document.getElementById('btnGenCourrier').disabled=false;
 }
 
-function genCourrierFallback(type, bailleur, locataire, adresse, details) {
+function genCourrierFallback(type, bailleur, locataire, adresse, details, bailleurAdresse) {
   var today = new Date().toLocaleDateString('fr-FR');
   var intros = {
-    mise_demeure: 'MISE EN DEMEURE DE PAYER\n\n'+bailleur+'\nÀ\n'+locataire+'\n\n'+today+'\n\nObjet : Mise en demeure — loyers impayés\nEnvoi par lettre recommandée avec accusé de réception\n\nMonsieur/Madame '+locataire+',\n\nPar la présente, nous vous mettons en demeure de procéder au règlement des loyers impayés afférents au logement situé au '+adresse+'.\n\n'+(details||'Malgré nos relances amiables, les sommes dues restent impayées à ce jour.')+'\n\nNous vous rappelons qu\'en application de l\'article 24 de la loi n°89-462 du 6 juillet 1989, à défaut de paiement dans un délai de deux mois à compter de la signification d\'un commandement de payer, le bail pourra être résilié de plein droit.\n\nNous vous demandons de régulariser votre situation dans les meilleurs délais.\n\nDans l\'attente, veuillez agréer, Monsieur/Madame, nos salutations distinguées.\n\n'+bailleur,
-    conge_bailleur: 'CONGÉ DONNÉ PAR LE BAILLEUR\n\n'+bailleur+'\nÀ\n'+locataire+'\n\n'+today+'\n\nObjet : Congé pour le logement situé au '+adresse+'\nEnvoi par lettre recommandée avec accusé de réception\n\nMonsieur/Madame '+locataire+',\n\nJe vous informe par la présente de ma décision de mettre fin au bail de location de l\'appartement situé au '+adresse+'.\n\n'+(details||'Ce congé est donné pour reprise du logement à usage personnel.')+'\n\nConformément à l\'article 15 de la loi n°89-462 du 6 juillet 1989, ce congé prend effet à l\'expiration du bail, sous réserve du respect du préavis légal de 6 mois pour une location vide (3 mois pour un meublé).\n\nVeuillez agréer, Monsieur/Madame, mes salutations distinguées.\n\n'+bailleur
+    mise_demeure: 'MISE EN DEMEURE DE PAYER\n\n'+(bailleurAdresse ? bailleurAdresse : bailleur)+'\n\nÀ l\'attention de :\n'+locataire+'\n\n'+today+'\n\nObjet : Mise en demeure — loyers impayés\nEnvoi par lettre recommandée avec accusé de réception\n\nMonsieur/Madame '+locataire+',\n\nPar la présente, nous vous mettons en demeure de procéder au règlement des loyers impayés afférents au logement situé au '+adresse+'.\n\n'+(details||'Malgré nos relances amiables, les sommes dues restent impayées à ce jour.')+'\n\nNous vous rappelons qu\'en application de l\'article 24 de la loi n°89-462 du 6 juillet 1989, à défaut de paiement dans un délai de deux mois à compter de la signification d\'un commandement de payer, le bail pourra être résilié de plein droit.\n\nNous vous demandons de régulariser votre situation dans les meilleurs délais.\n\nDans l\'attente, veuillez agréer, Monsieur/Madame, nos salutations distinguées.\n\n'+bailleur,
+    conge_bailleur: 'CONGÉ DONNÉ PAR LE BAILLEUR\n\n'+(bailleurAdresse ? bailleurAdresse : bailleur)+'\n\nÀ l\'attention de :\n'+locataire+'\n\n'+today+'\n\nObjet : Congé pour le logement situé au '+adresse+'\nEnvoi par lettre recommandée avec accusé de réception\n\nMonsieur/Madame '+locataire+',\n\nJe vous informe par la présente de ma décision de mettre fin au bail de location de l\'appartement situé au '+adresse+'.\n\n'+(details||'Ce congé est donné pour reprise du logement à usage personnel.')+'\n\nConformément à l\'article 15 de la loi n°89-462 du 6 juillet 1989, ce congé prend effet à l\'expiration du bail, sous réserve du respect du préavis légal de 6 mois pour une location vide (3 mois pour un meublé).\n\nVeuillez agréer, Monsieur/Madame, mes salutations distinguées.\n\n'+bailleur
   };
   return intros[type] || intros.conge_bailleur;
 }
@@ -3551,13 +3968,15 @@ async function genererCourrier() {
   document.getElementById('btnGenCourrier').disabled=true;
   document.getElementById('courrierActions').style.display='none';
 
+  var bailleurAdresse = (document.getElementById('coBailleurAdresse')||{value:''}).value.trim();
   var basePrompt = COURRIER_PROMPTS[type] || COURRIER_PROMPTS.conge_bailleur;
   var prompt = basePrompt + '\n\n'
-    + 'Bailleur/Agence : ' + bailleur + '\n'
-    + 'Locataire : ' + locataire + '\n'
+    + 'Bailleur/Expéditeur : ' + bailleur + '\n'
+    + (bailleurAdresse ? 'Adresse bailleur : ' + bailleurAdresse + '\n' : '')
+    + 'Locataire/Destinataire : ' + locataire + '\n'
     + (adresse ? 'Bien loué : ' + adresse + '\n' : '')
     + (details ? 'Informations complémentaires : ' + details + '\n' : '')
-    + '\nRédigez une lettre professionnelle et juridiquement conforme, avec en-tête, corps et formule de politesse. Date : '
+    + '\nRédigez une lettre professionnelle et juridiquement conforme. Incluez OBLIGATOIREMENT dans l\'en-tête :\n- Les coordonnées complètes de l\'expéditeur (bailleur) en haut à gauche\n- Les coordonnées du destinataire (locataire) à droite\n- La date et la ville\n- Un objet clair\nPuis le corps de la lettre et une formule de politesse. Date : '
     + new Date().toLocaleDateString('fr-FR') + '. Répondez UNIQUEMENT avec le texte de la lettre, sans explication.';
 
   var texte = '';
@@ -3580,7 +3999,7 @@ async function genererCourrier() {
   } catch(e) {}
 
   if (!texte) {
-    texte = genCourrierFallback(type, bailleur, locataire, adresse, details);
+    texte = genCourrierFallback(type, bailleur, locataire, adresse, details, bailleurAdresse);
   }
 
   proState.currentCourrier = texte;
