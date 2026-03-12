@@ -2499,6 +2499,8 @@
   </div>
 </footer>
 
+</div><!-- /dashboardSection -->
+
 <!-- MODALE LOGIN -->
 <div class="modal-overlay" id="modalLogin">
   <div class="modal">
@@ -2619,6 +2621,7 @@
 </div>
 
 <script>
+console.log("[BailScan] Script chargé v2026-03-12-fix");
 var proState = {
   isLoggedIn:false, user:null,
   analyses:[], currentResult:null, currentCorrections:null, currentBail:null,
@@ -2649,7 +2652,11 @@ var proWizardData = {
   fileB64:'', bailText:'', filename:'', gen_type:'vide'
 };
 
+window.onerror = function(msg, src, line, col, err) {
+  console.error('[BailScan] Erreur JS:', msg, 'ligne', line, err);
+};
 window.addEventListener('DOMContentLoaded', function() {
+  console.log('[BailScan] DOM prêt');
   var savedA = localStorage.getItem('bailscan_pro_analyses');
   if (savedA) { try { proState.analyses=JSON.parse(savedA); } catch(e){} }
   injectStyles();
