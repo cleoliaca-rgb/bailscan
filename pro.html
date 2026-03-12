@@ -36,6 +36,33 @@
   document.head.appendChild(s);
 })();
 </script>
+<style>
+    /* ══ ANALYSE DOSSIER ═══════════════════════════════════════════ */
+    .dossier-piece-card {
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      border:2px dashed var(--border);border-radius:12px;padding:14px 10px;
+      cursor:pointer;transition:all .2s;text-align:center;min-height:100px;
+      background:#fff;
+    }
+    .dossier-piece-card:hover { border-color:var(--pro-accent);background:#f5f3ff; }
+    .dossier-piece-card.loaded {
+      border-style:solid;border-color:var(--vert);background:#f0fdf4;
+    }
+    .dossier-piece-icon { font-size:1.6rem;margin-bottom:6px; }
+    .dossier-piece-label { font-size:.75rem;font-weight:700;color:var(--texte);margin-bottom:4px; }
+    .dossier-piece-status { font-size:.68rem;color:var(--gris); }
+    .dossier-piece-card.loaded .dossier-piece-status { color:var(--vert);font-weight:600; }
+    .score-bar-row { display:flex;align-items:center;gap:10px;margin-bottom:2px; }
+    .score-bar-row-label { font-size:.76rem;color:var(--texte);min-width:130px;font-weight:500; }
+    .score-bar-track { flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden; }
+    .score-bar-fill { height:100%;border-radius:4px;transition:width 1s; }
+    .score-bar-val { font-size:.74rem;font-weight:700;min-width:30px;text-align:right; }
+    .alerte-item { display:flex;gap:10px;padding:10px 14px;border-radius:8px;font-size:.82rem;align-items:flex-start; }
+    .alerte-item.rouge { background:#fdf2f2;border:1px solid rgba(192,57,43,.2); }
+    .alerte-item.orange { background:#fff8f0;border:1px solid rgba(217,119,6,.2); }
+    .alerte-item.vert { background:#f0fdf4;border:1px solid rgba(45,106,79,.2); }
+    .alerte-item.bleu { background:#eff6ff;border:1px solid rgba(30,64,175,.2); }
+</style>
 </head>
 <body>
 
@@ -334,11 +361,14 @@
         <div class="dash-nav-item" onclick="showDashTab('loyers')"><span class="dash-nav-icon">💶</span> Encadrement loyers</div>
         <div class="dash-nav-section">Gestion locative</div>
         <div class="dash-nav-item" onclick="showDashTab('alertes')"><span class="dash-nav-icon">🔔</span> Alertes & Échéances</div>
-        <div class="dash-nav-item" onclick="showDashTab('locataires')"><span class="dash-nav-icon">👤</span> Fiches locataires</div>
-        <div class="dash-nav-item" onclick="showDashTab('quittances')"><span class="dash-nav-icon">🧾</span> Quittances</div>
+        <div class="dash-nav-item" onclick="showDashTab('mandats')"><span class="dash-nav-icon">🏘</span> Mandats & Biens</div>
+          <div class="dash-nav-item" onclick="showDashTab('locataires')"><span class="dash-nav-icon">👤</span> Fiches locataires</div>
+        <div class="dash-nav-item" onclick="showDashTab('dossier')"><span class="dash-nav-icon">🎯</span> Analyse dossier</div>
+          <div class="dash-nav-item" onclick="showDashTab('quittances')"><span class="dash-nav-icon">🧾</span> Quittances</div>
         <div class="dash-nav-item" onclick="showDashTab('courriers')"><span class="dash-nav-icon">✉️</span> Courriers IA</div>
         <div class="dash-nav-section">Équipe</div>
-        <div class="dash-nav-item" onclick="showDashTab('equipe')"><span class="dash-nav-icon">👥</span> Utilisateurs</div>
+        <div class="dash-nav-item" onclick="showDashTab('veille')"><span class="dash-nav-icon">📡</span> Veille réglementaire</div>
+          <div class="dash-nav-item" onclick="showDashTab('equipe')"><span class="dash-nav-icon">👥</span> Utilisateurs</div>
         <div class="dash-nav-item" onclick="showDashTab('api')"><span class="dash-nav-icon">🔌</span> API</div>
         <div class="dash-nav-section">Compte</div>
         <div class="dash-nav-item" onclick="showDashTab('abonnement')"><span class="dash-nav-icon">💳</span> Abonnement</div>
@@ -1084,6 +1114,28 @@
           </div>
         </div>
       </div>
+          <!-- ══ HISTORIQUE BAUX GÉNÉRÉS ══ -->
+          <div class="dash-card" style="margin-top:20px">
+            <div class="dash-section-title" style="display:flex;justify-content:space-between;align-items:center">
+              📋 Historique des baux générés
+            </div>
+            <div style="overflow-x:auto;margin-top:12px">
+              <table style="width:100%;border-collapse:collapse;font-size:.84rem">
+                <thead>
+                  <tr style="border-bottom:2px solid var(--border)">
+                    <th style="text-align:left;padding:8px 6px;font-weight:600;font-size:.78rem;color:var(--gris)">Date</th>
+                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Locataire</th>
+                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Bien</th>
+                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Loyer</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="bailsHistoBody">
+                  <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gris)">Aucun bail généré pour l'instant.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
       
       <div id="tab-loyers" style="display:none">
@@ -1166,13 +1218,13 @@
               </a>
 
               <!-- ─── PAYS BASQUE ─── -->
-              <a href="https://www.communaute-paysbasque.fr/vivre-au-pays-basque/logement/encadrement-des-loyers" target="_blank" class="ville-encad-card">
+              <a href="https://www.communaute-paysbasque.fr/logement-et-urbanisme/lencadrement-des-loyers" target="_blank" class="ville-encad-card">
                 <div class="ville-encad-nom">🌊 Pays Basque (24 communes)</div>
                 <div class="ville-encad-info">Ahetze · Anglet · Arbonne · Arcangues · Ascain · Bassussarry · Bayonne · Biarritz · Bidart · Biriatou · Boucau · Ciboure · Guéthary · Hendaye · Jatxou · Lahonce · Larressore · Mouguerre · Saint-Jean-de-Luz · Saint-Pierre-d'Irube · Urcuit · Urrugne · Ustaritz · Villefranque · Depuis nov. 2024</div>
               </a>
 
               <!-- ─── GRENOBLE ─── -->
-              <a href="https://www.grenoblealpesmetropole.fr/817-encadrement-des-loyers.htm" target="_blank" class="ville-encad-card">
+              <a href="https://www.grenoblealpesmetropole.fr/loyers" target="_blank" class="ville-encad-card">
                 <div class="ville-encad-nom">⛰️ Grenoble-Alpes Métropole (21 communes)</div>
                 <div class="ville-encad-info">Grenoble · Échirolles · Fontaine · Saint-Martin-d'Hères · Seyssinet-Pariset · Meylan · La Tronche · Domène · Gières · Eybens · Seyssins · Poisat · Bresson · Claix · Varces · Le Fontanil-Cornillon · Murianette · Venon · Saint-Egrève · Sassenage · Le Pont-de-Claix · Depuis janv. 2025</div>
               </a>
@@ -1268,6 +1320,113 @@
       </div>
 
       
+
+      <div id="tab-veille" style="display:none">
+        <div class="dash-main-header">
+          <div>
+            <div class="dash-page-title">Veille réglementaire</div>
+            <div class="dash-page-sub">Alertes automatiques · Score de conformité portefeuille · Newsletter personnalisée</div>
+          </div>
+          <button class="btn-primary-pro" onclick="lancerAuditConformite()">🔄 Auditer le portefeuille</button>
+        </div>
+
+        <!-- Score conformité global -->
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;margin-bottom:20px;align-items:start">
+          <div class="dash-card" style="text-align:center;padding:28px 20px">
+            <div style="font-size:.72rem;font-weight:700;color:var(--gris);letter-spacing:.08em;margin-bottom:12px">SCORE DE CONFORMITÉ</div>
+            <div style="position:relative;width:110px;height:110px;margin:0 auto 14px">
+              <svg width="110" height="110" style="transform:rotate(-90deg)">
+                <circle cx="55" cy="55" r="46" fill="none" stroke="var(--border)" stroke-width="9"/>
+                <circle id="veilleScoreCircle" cx="55" cy="55" r="46" fill="none" stroke="var(--vert)" stroke-width="9" stroke-dasharray="289" stroke-dashoffset="289" style="transition:stroke-dashoffset 1.2s"/>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                <div id="veilleScoreNum" style="font-size:1.8rem;font-weight:800">—</div>
+                <div style="font-size:.6rem;font-weight:600;color:var(--gris)">/100</div>
+              </div>
+            </div>
+            <div id="veilleScoreMsg" style="font-size:.78rem;color:var(--gris);line-height:1.5">Lancez un audit pour obtenir le score de conformité de votre portefeuille.</div>
+          </div>
+
+          <div>
+            <!-- Stats conformité -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+              <div class="kpi-card" style="border-left:3px solid var(--vert)">
+                <div class="kpi-val" id="veilleConformes" style="color:var(--vert)">—</div>
+                <div class="kpi-label">Baux conformes</div>
+              </div>
+              <div class="kpi-card" style="border-left:3px solid #f59e0b">
+                <div class="kpi-val" id="veilleAAttention" style="color:#f59e0b">—</div>
+                <div class="kpi-label">À surveiller</div>
+              </div>
+              <div class="kpi-card" style="border-left:3px solid var(--accent)">
+                <div class="kpi-val" id="veilleNonConformes" style="color:var(--accent)">—</div>
+                <div class="kpi-label">Non conformes</div>
+              </div>
+            </div>
+            <!-- Dernier décret impactant -->
+            <div class="dash-card" style="margin:0;padding:14px 18px;border-left:4px solid var(--pro-accent)">
+              <div style="font-size:.72rem;font-weight:700;color:var(--pro-accent);letter-spacing:.06em;margin-bottom:6px">🆕 DERNIER DÉCRET IMPACTANT</div>
+              <div style="font-weight:700;font-size:.9rem;margin-bottom:4px" id="veilleLastDecret">Décret n°2025-1247 du 12/03/2026 — Encadrement DPE logements classés F et G</div>
+              <div style="font-size:.78rem;color:var(--gris);line-height:1.6" id="veilleLastDecretDetail">Interdiction de mise en location des logements classés G+ dès le 1er janvier 2026. Obligation de travaux ou dérogation préfectorale. Vérifiez vos biens classés F ou G.</div>
+              <div style="margin-top:8px;display:flex;gap:8px">
+                <button class="btn-sm" onclick="verifierImpactDecret()">Voir les biens impactés →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fil des alertes réglementaires -->
+        <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start">
+          <div>
+            <div class="dash-card">
+              <div class="dash-section-title" style="display:flex;justify-content:space-between;align-items:center">
+                📡 Alertes réglementaires
+                <button class="btn-sm" onclick="genererNouvelleAlerteIA()">+ Analyse IA</button>
+              </div>
+              <div id="veilleAlertesListe" style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+                <!-- Alertes pré-chargées -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel newsletter + paramètres -->
+          <div>
+            <div class="dash-card" style="margin-bottom:16px">
+              <div class="dash-section-title">📬 Newsletter mensuelle</div>
+              <div style="font-size:.82rem;color:var(--gris);margin-bottom:14px;line-height:1.6">
+                Recevez chaque mois uniquement les changements réglementaires qui impactent <strong>vos baux</strong>, pas ceux de tout le monde.
+              </div>
+              <div class="form-group-pro" style="margin-bottom:12px">
+                <label class="form-label">Email de réception</label>
+                <input type="email" class="form-input-pro" id="veilleEmail" placeholder="agence@cabinet.fr">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+                <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;cursor:pointer">
+                  <input type="checkbox" id="veilleChkDecrets" checked> Nouveaux décrets & lois locatives
+                </label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;cursor:pointer">
+                  <input type="checkbox" id="veilleChkIRL" checked> Mise à jour IRL (indice loyers)
+                </label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;cursor:pointer">
+                  <input type="checkbox" id="veilleChkDPE" checked> Évolutions DPE & obligations énergétiques
+                </label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;cursor:pointer">
+                  <input type="checkbox" id="veilleChkEncadrement"> Révision zones encadrement des loyers
+                </label>
+              </div>
+              <button class="btn-primary-pro" onclick="sauvegarderVeille()" style="width:100%">✉ Activer la newsletter</button>
+            </div>
+
+            <div class="dash-card">
+              <div class="dash-section-title">⚡ Actions recommandées</div>
+              <div id="veilleActions" style="display:flex;flex-direction:column;gap:8px;font-size:.82rem">
+                <div style="color:var(--gris);font-style:italic">Lancez un audit pour voir les actions prioritaires.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /tab-veille -->
+
       <div id="tab-equipe" style="display:none">
         <div class="dash-main-header">
           <div>
@@ -1383,6 +1542,45 @@
           <button class="btn-primary-pro" style="margin-top:8px" onclick="saveSettings()">Enregistrer</button>
         </div>
 
+
+        <!-- ══ INFORMATIONS ENTREPRISE POUR DOCUMENTS ══ -->
+        <div class="dash-card" style="margin-bottom:16px">
+          <div class="dash-section-title">🏢 Informations entreprise (baux, quittances, courriers)</div>
+          <div style="font-size:.8rem;color:var(--gris);margin-bottom:14px">Ces informations apparaissent sur tous les documents générés conformément à la loi.</div>
+          <div class="form-grid-pro">
+            <div class="form-group-pro">
+              <label class="form-label">Raison sociale / Dénomination *</label>
+              <input type="text" class="form-input-pro" id="aiNom" placeholder="Ex : SARL Immo Dupont / Agence Martin">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">SIRET *</label>
+              <input type="text" class="form-input-pro" id="aiSiret" placeholder="Ex : 123 456 789 00012" maxlength="17">
+            </div>
+            <div class="form-group-pro" style="grid-column:1/-1">
+              <label class="form-label">Adresse complète *</label>
+              <input type="text" class="form-input-pro" id="aiAdresse" placeholder="Ex : 12 rue de la Paix, 75001 Paris">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Téléphone</label>
+              <input type="text" class="form-input-pro" id="aiTel" placeholder="Ex : 01 23 45 67 89">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Email professionnel</label>
+              <input type="email" class="form-input-pro" id="aiEmail" placeholder="contact@agence.fr">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">N° carte professionnelle (si agent immo)</label>
+              <input type="text" class="form-input-pro" id="aiCarte" placeholder="Ex : CPI 75012023000012345">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Caisse de garantie / Assurance RC</label>
+              <input type="text" class="form-input-pro" id="aiGarantie" placeholder="Ex : GALIAN - N° police 12345">
+            </div>
+          </div>
+          <button class="btn-primary-pro" style="margin-top:12px" onclick="saveAgencyInfo()">💾 Enregistrer les informations</button>
+          <div id="aiSaveMsg" style="display:none;color:var(--vert);font-size:.82rem;margin-top:8px">✓ Informations enregistrées avec succès</div>
+        </div>
+
         <!-- Changer mot de passe -->
         <div class="dash-card" style="margin-bottom:16px">
           <div class="dash-section-title">Changer le mot de passe</div>
@@ -1474,6 +1672,169 @@
       </div>
 
       
+
+      <div id="tab-mandats" style="display:none">
+        <div class="dash-main-header">
+          <div>
+            <div class="dash-page-title">Mandats & Biens</div>
+            <div class="dash-page-sub">Portefeuille de biens · Référentiel pour analyses, dossiers et courriers</div>
+          </div>
+          <button class="btn-primary-pro" onclick="openNewMandat()">+ Ajouter un bien</button>
+        </div>
+
+        <!-- KPIs mandats -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
+          <div class="kpi-card"><div class="kpi-val" id="kpiBiensTotal">0</div><div class="kpi-label">Biens gérés</div></div>
+          <div class="kpi-card"><div class="kpi-val" id="kpiBiensLoues">0</div><div class="kpi-label">Loués</div></div>
+          <div class="kpi-card"><div class="kpi-val" id="kpiBiensVacants">0</div><div class="kpi-label">Vacants</div></div>
+          <div class="kpi-card"><div class="kpi-val" id="kpiLoyerTotal">0 €</div><div class="kpi-label">Loyers /mois</div></div>
+        </div>
+
+        <!-- Filtres -->
+        <div class="dash-filters-bar" style="margin-bottom:16px">
+          <div class="filter-search-wrap">
+            <span class="filter-search-icon">🔍</span>
+            <input type="text" class="filter-search" id="mandatSearch" placeholder="Adresse, ville, bailleur…" oninput="applyMandatFilters()">
+          </div>
+          <select class="filter-select" id="mandatFilterStatut" onchange="applyMandatFilters()">
+            <option value="">Tous statuts</option>
+            <option value="loue">Loué</option>
+            <option value="vacant">Vacant</option>
+            <option value="travaux">En travaux</option>
+          </select>
+          <select class="filter-select" id="mandatFilterType" onchange="applyMandatFilters()">
+            <option value="">Tous types</option>
+            <option value="appartement">Appartement</option>
+            <option value="maison">Maison</option>
+            <option value="studio">Studio</option>
+            <option value="commercial">Local commercial</option>
+          </select>
+        </div>
+
+        <!-- Tableau biens -->
+        <div class="dash-card" style="padding:0;overflow:hidden">
+          <table style="width:100%;border-collapse:collapse;font-size:.84rem">
+            <thead>
+              <tr style="background:var(--bg);border-bottom:2px solid var(--border)">
+                <th style="text-align:left;padding:12px 14px;font-weight:600;font-size:.78rem;color:var(--gris)">BIEN / ADRESSE</th>
+                <th style="font-weight:600;font-size:.78rem;color:var(--gris);padding:12px 8px">TYPE</th>
+                <th style="font-weight:600;font-size:.78rem;color:var(--gris);padding:12px 8px">BAILLEUR</th>
+                <th style="font-weight:600;font-size:.78rem;color:var(--gris);padding:12px 8px">LOYER HC</th>
+                <th style="font-weight:600;font-size:.78rem;color:var(--gris);padding:12px 8px">LOCATAIRE</th>
+                <th style="font-weight:600;font-size:.78rem;color:var(--gris);padding:12px 8px">STATUT</th>
+                <th style="font-weight:600;font-size:.78rem;color:var(--gris);padding:12px 8px">ANALYSES</th>
+                <th style="padding:12px 8px"></th>
+              </tr>
+            </thead>
+            <tbody id="mandatsTbody">
+              <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--gris)">
+                <div style="font-size:2rem;margin-bottom:10px">🏘</div>
+                <div style="font-weight:600;margin-bottom:6px">Aucun bien enregistré</div>
+                <div style="font-size:.82rem">Ajoutez vos biens pour rattacher analyses, dossiers et courriers.</div>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div><!-- /tab-mandats -->
+
+      <!-- ── MODALE NOUVEAU MANDAT ── -->
+      <div id="modalMandat" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModalMandat()">
+        <div class="modal-box" style="max-width:580px;max-height:90vh;overflow-y:auto">
+          <div class="modal-header">
+            <div class="modal-title" id="modalMandatTitle">🏘 Ajouter un bien</div>
+            <button class="modal-close" onclick="closeModalMandat()">×</button>
+          </div>
+          <div style="padding:20px 24px">
+            <input type="hidden" id="mandatEditId">
+            <div class="form-grid-pro">
+              <div class="form-group-pro" style="grid-column:1/-1">
+                <label class="form-label">Adresse complète *</label>
+                <input type="text" class="form-input-pro" id="mandatAdresse" placeholder="12 rue de la Paix, 75001 Paris">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Type de bien</label>
+                <select class="form-input-pro" id="mandatType">
+                  <option value="appartement">Appartement</option>
+                  <option value="maison">Maison</option>
+                  <option value="studio">Studio</option>
+                  <option value="commercial">Local commercial</option>
+                  <option value="garage">Garage / parking</option>
+                </select>
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Surface (m²)</label>
+                <input type="number" class="form-input-pro" id="mandatSurface" placeholder="45">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Loyer HC (€/mois)</label>
+                <input type="number" class="form-input-pro" id="mandatLoyer" placeholder="900">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Charges (€/mois)</label>
+                <input type="number" class="form-input-pro" id="mandatCharges" placeholder="80">
+              </div>
+              <div class="form-group-pro" style="grid-column:1/-1">
+                <label class="form-label">Bailleur (propriétaire)</label>
+                <input type="text" class="form-input-pro" id="mandatBailleur" placeholder="Jean Martin">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Email bailleur</label>
+                <input type="email" class="form-input-pro" id="mandatBailleurEmail" placeholder="jean@martin.fr">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Tél. bailleur</label>
+                <input type="tel" class="form-input-pro" id="mandatBailleurTel" placeholder="06 00 00 00 00">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Statut</label>
+                <select class="form-input-pro" id="mandatStatut">
+                  <option value="loue">Loué</option>
+                  <option value="vacant">Vacant</option>
+                  <option value="travaux">En travaux</option>
+                </select>
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Locataire actuel</label>
+                <select class="form-input-pro" id="mandatLocataire">
+                  <option value="">— Aucun —</option>
+                </select>
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">DPE</label>
+                <select class="form-input-pro" id="mandatDpe">
+                  <option value="">Non renseigné</option>
+                  <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                  <option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
+                </select>
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Zone encadrement</label>
+                <select class="form-input-pro" id="mandatZone">
+                  <option value="">Non concerné</option>
+                  <option value="paris">Paris</option>
+                  <option value="lyon">Lyon / Villeurbanne</option>
+                  <option value="bordeaux">Bordeaux Métropole</option>
+                  <option value="montpellier">Montpellier</option>
+                  <option value="lille">Lille</option>
+                  <option value="paysbasque">Pays Basque</option>
+                  <option value="grenoble">Grenoble Alpes Métropole</option>
+                  <option value="plaine_commune">Plaine Commune (93)</option>
+                  <option value="est_ensemble">Est Ensemble (93)</option>
+                </select>
+              </div>
+              <div class="form-group-pro" style="grid-column:1/-1">
+                <label class="form-label">Notes internes</label>
+                <textarea class="form-input-pro" id="mandatNotes" rows="3" placeholder="Travaux prévus, particularités, contacts…"></textarea>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px">
+              <button class="btn-primary-pro" onclick="saveMandat()" style="flex:1">💾 Enregistrer</button>
+              <button class="btn-sm" onclick="closeModalMandat()">Annuler</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="tab-locataires" style="display:none">
         <div class="dash-main-header">
           <div><div class="dash-page-title">Fiches Locataires</div><div class="dash-page-sub">Dossiers complets et scoring de solvabilité</div></div>
@@ -1606,6 +1967,326 @@
       </div>
 
       
+
+      <div id="tab-dossier" style="display:none">
+        <div class="dash-main-header">
+          <div>
+            <div class="dash-page-title">Analyse de Dossier Locataire</div>
+            <div class="dash-page-sub">Scoring IA · Taux d'effort · Cohérence des pièces · Détection documents suspects</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <span style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.04em">✨ PRO FEATURE</span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:20px;align-items:start">
+
+          <!-- ── PANNEAU GAUCHE : configuration + upload ── -->
+          <div>
+            <!-- Sélection locataire -->
+            <div class="dash-card" style="margin-bottom:16px">
+              <div class="dash-section-title">🔗 Rattacher à un mandat (bien) et un locataire</div>
+              <div style="margin-bottom:10px">
+                <label class="form-label" style="font-size:.76rem;margin-bottom:4px;display:block">🏘 Bien (mandat)</label>
+                <select class="form-input-pro" id="dossierMandatSel" onchange="selectDossierMandat(this.value)" style="cursor:pointer;margin-bottom:0">
+                  <option value="">— Sélectionner un bien —</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" style="font-size:.76rem;margin-bottom:4px;display:block">👤 Locataire candidat</label>
+                <select class="form-input-pro" id="dossierLocSel" onchange="selectDossierLoc(this.value)" style="cursor:pointer;margin-bottom:0">
+                <option value="">— Nouveau dossier libre —</option>
+              </select>
+            </div>
+
+            <!-- Infos logement pour calcul taux d'effort -->
+            <div class="dash-card" style="margin-bottom:16px">
+              <div class="dash-section-title">🏠 Logement visé</div>
+              <div class="form-grid-pro">
+                <div class="form-group-pro">
+                  <label class="form-label">Loyer mensuel HC (€) *</label>
+                  <input type="number" class="form-input-pro" id="dossierLoyer" placeholder="Ex : 900" min="0" step="10" oninput="updateDossierCalc()">
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Charges forfaitaires (€)</label>
+                  <input type="number" class="form-input-pro" id="dossierCharges" placeholder="Ex : 80" min="0" step="5" oninput="updateDossierCalc()">
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Type de location</label>
+                  <select class="form-input-pro" id="dossierTypeLoc">
+                    <option value="vide">Vide</option>
+                    <option value="meuble">Meublé</option>
+                    <option value="coloc">Colocation</option>
+                  </select>
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Garant exigé ?</label>
+                  <select class="form-input-pro" id="dossierGarant">
+                    <option value="non">Non</option>
+                    <option value="physique">Garant physique</option>
+                    <option value="visale">Visa Visale</option>
+                    <option value="garantme">GarantMe / Unkle</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Informations candidat (auto ou manuel) -->
+            <div class="dash-card" style="margin-bottom:16px">
+              <div class="dash-section-title">👤 Candidat locataire</div>
+              <div class="form-grid-pro">
+                <div class="form-group-pro">
+                  <label class="form-label">Prénom & Nom</label>
+                  <input type="text" class="form-input-pro" id="dossierNom" placeholder="Marie Dupont">
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Type de contrat</label>
+                  <select class="form-input-pro" id="dossierContrat">
+                    <option value="cdi">CDI</option>
+                    <option value="cdd">CDD</option>
+                    <option value="independant">Indépendant / TNS</option>
+                    <option value="retraite">Retraité</option>
+                    <option value="etudiant">Étudiant</option>
+                    <option value="autre">Autre</option>
+                  </select>
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Revenus nets déclarés (€/mois)</label>
+                  <input type="number" class="form-input-pro" id="dossierRevenus" placeholder="Ex : 2 700" min="0" oninput="updateDossierCalc()">
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Ancienneté au poste</label>
+                  <select class="form-input-pro" id="dossierAnciennete">
+                    <option value="moins6">Moins de 6 mois</option>
+                    <option value="6a12">6 à 12 mois</option>
+                    <option value="1a3">1 à 3 ans</option>
+                    <option value="plus3">Plus de 3 ans</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload des pièces -->
+            <div class="dash-card">
+              <div class="dash-section-title">📎 Pièces justificatives</div>
+              <div style="font-size:.78rem;color:var(--gris);margin-bottom:14px">Formats : PDF, JPG, PNG. L'IA analyse le contenu pour détecter incohérences et documents suspects.</div>
+
+              <div id="dossierPiecesGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+                <!-- CNI -->
+                <label class="dossier-piece-card" id="piece-cni-card" for="piece-cni">
+                  <div class="dossier-piece-icon">🪪</div>
+                  <div class="dossier-piece-label">Pièce d'identité</div>
+                  <div class="dossier-piece-status" id="piece-cni-status">Non fournie</div>
+                  <input type="file" id="piece-cni" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('cni',this)">
+                </label>
+
+                <!-- Bulletins de salaire -->
+                <label class="dossier-piece-card" id="piece-paie-card" for="piece-paie">
+                  <div class="dossier-piece-icon">💶</div>
+                  <div class="dossier-piece-label">3 bulletins de salaire</div>
+                  <div class="dossier-piece-status" id="piece-paie-status">Non fournis</div>
+                  <input type="file" id="piece-paie" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('paie',this)">
+                </label>
+
+                <!-- Avis d'imposition -->
+                <label class="dossier-piece-card" id="piece-impots-card" for="piece-impots">
+                  <div class="dossier-piece-icon">📋</div>
+                  <div class="dossier-piece-label">Avis d'imposition</div>
+                  <div class="dossier-piece-status" id="piece-impots-status">Non fourni</div>
+                  <input type="file" id="piece-impots" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('impots',this)">
+                </label>
+
+                <!-- Contrat de travail -->
+                <label class="dossier-piece-card" id="piece-contrat-card" for="piece-contrat">
+                  <div class="dossier-piece-icon">📄</div>
+                  <div class="dossier-piece-label">Contrat de travail</div>
+                  <div class="dossier-piece-status" id="piece-contrat-status">Optionnel</div>
+                  <input type="file" id="piece-contrat" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('contrat',this)">
+                </label>
+
+                <!-- Relevés bancaires -->
+                <label class="dossier-piece-card" id="piece-banque-card" for="piece-banque">
+                  <div class="dossier-piece-icon">🏦</div>
+                  <div class="dossier-piece-label">Relevés bancaires (3 mois)</div>
+                  <div class="dossier-piece-status" id="piece-banque-status">Optionnel</div>
+                  <input type="file" id="piece-banque" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('banque',this)">
+                </label>
+
+                <!-- Quittances de loyer -->
+                <label class="dossier-piece-card" id="piece-quittances-card" for="piece-quittances">
+                  <div class="dossier-piece-icon">🏠</div>
+                  <div class="dossier-piece-label">Quittances loyer précédent</div>
+                  <div class="dossier-piece-status" id="piece-quittances-status">Optionnel</div>
+                  <input type="file" id="piece-quittances" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('quittances',this)">
+                </label>
+
+              </div>
+
+              <button class="btn-primary-pro" id="btnAnalyseDossier" onclick="lancerAnalyseDossier()" style="width:100%;margin-top:16px;font-size:.9rem;padding:12px 0">
+                🎯 Analyser le dossier avec l'IA →
+              </button>
+            </div>
+          </div>
+
+          <!-- ── PANNEAU DROIT : résultats ── -->
+          <div>
+
+            <!-- Calcul taux d'effort en temps réel -->
+            <div class="dash-card" style="margin-bottom:16px" id="dossierEffortCard">
+              <div class="dash-section-title">📊 Taux d'effort (temps réel)</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+                <div style="text-align:center;padding:14px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+                  <div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:6px">LOYER HC</div>
+                  <div style="font-size:1.3rem;font-weight:800;color:var(--texte)" id="effortLoyer">—</div>
+                </div>
+                <div style="text-align:center;padding:14px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+                  <div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:6px">REVENUS NETS</div>
+                  <div style="font-size:1.3rem;font-weight:800;color:var(--texte)" id="effortRevenus">—</div>
+                </div>
+                <div style="text-align:center;padding:14px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+                  <div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:6px">TAUX D'EFFORT</div>
+                  <div style="font-size:1.3rem;font-weight:800" id="effortTaux">—</div>
+                </div>
+              </div>
+              <div id="effortBar" style="height:10px;border-radius:6px;background:var(--border);margin-bottom:10px;overflow:hidden">
+                <div id="effortBarFill" style="height:100%;width:0%;background:var(--vert);border-radius:6px;transition:width .4s,background .4s"></div>
+              </div>
+              <div id="effortMsg" style="font-size:.82rem;color:var(--gris)">Saisissez le loyer et les revenus pour voir le taux d'effort.</div>
+
+              <!-- Règle des 3x -->
+              <div style="margin-top:12px;padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);font-size:.82rem">
+                <div style="font-weight:700;margin-bottom:4px;color:var(--texte)">⚖️ Règle des 3× le loyer</div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap">
+                  <span>Minimum requis : <strong id="regle3xMin">—</strong></span>
+                  <span>Revenus déclarés : <strong id="regle3xAct">—</strong></span>
+                  <span id="regle3xBadge"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Zone loading -->
+            <div id="dossierLoading" style="display:none">
+              <div class="dash-card" style="text-align:center;padding:40px 20px">
+                <div style="font-size:2rem;margin-bottom:16px;animation:spin 1s linear infinite">🔍</div>
+                <div style="font-weight:700;font-size:.95rem;margin-bottom:8px">Analyse IA en cours…</div>
+                <div style="font-size:.82rem;color:var(--gris)" id="dossierLoadingMsg">Lecture des documents…</div>
+                <div style="background:var(--border);height:4px;border-radius:4px;margin-top:16px;overflow:hidden">
+                  <div id="dossierProgressBar" style="height:100%;width:0%;background:var(--pro-accent);border-radius:4px;transition:width .6s"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Résultat IA -->
+            <div id="dossierResult" style="display:none">
+
+              <!-- Score global Go / No-Go -->
+              <div class="dash-card" style="margin-bottom:16px" id="dossierScoreCard">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                  <div class="dash-section-title" style="margin:0">🎯 Verdict IA</div>
+                  <div id="dossierVerdictBadge" style="font-size:1rem;font-weight:800;padding:6px 20px;border-radius:10px"></div>
+                </div>
+
+                <!-- Jauge score circulaire (CSS) -->
+                <div style="display:flex;align-items:center;gap:24px;margin-bottom:16px">
+                  <div style="position:relative;width:90px;height:90px;flex-shrink:0">
+                    <svg width="90" height="90" style="transform:rotate(-90deg)">
+                      <circle cx="45" cy="45" r="38" fill="none" stroke="var(--border)" stroke-width="8"/>
+                      <circle id="dossierScoreCircle" cx="45" cy="45" r="38" fill="none" stroke="var(--vert)" stroke-width="8" stroke-dasharray="239" stroke-dashoffset="239" style="transition:stroke-dashoffset 1s,stroke .5s"/>
+                    </svg>
+                    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                      <div id="dossierScoreNum" style="font-size:1.4rem;font-weight:800;line-height:1">—</div>
+                      <div style="font-size:.6rem;font-weight:600;color:var(--gris)">/100</div>
+                    </div>
+                  </div>
+                  <div style="flex:1">
+                    <div id="dossierVerdictText" style="font-size:.88rem;line-height:1.6;color:var(--texte)"></div>
+                  </div>
+                </div>
+
+                <!-- Barres détail score -->
+                <div id="dossierScoreBars" style="display:flex;flex-direction:column;gap:8px"></div>
+              </div>
+
+              <!-- Alertes & points de vigilance -->
+              <div class="dash-card" style="margin-bottom:16px" id="dossierAlertesCard">
+                <div class="dash-section-title">⚠️ Points de vigilance</div>
+                <div id="dossierAlertesList" style="display:flex;flex-direction:column;gap:8px"></div>
+              </div>
+
+              <!-- Analyse détaillée IA -->
+              <div class="dash-card" style="margin-bottom:16px">
+                <div class="dash-section-title" style="display:flex;justify-content:space-between;align-items:center">
+                  📝 Analyse détaillée
+                  <button class="btn-sm" onclick="exportDossierPDF()">📄 Rapport PDF</button>
+                </div>
+                <div id="dossierAnalyseText" style="font-size:.84rem;line-height:1.8;color:var(--texte);white-space:pre-wrap;margin-top:8px"></div>
+              </div>
+
+              <!-- Actions -->
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <button class="btn-primary-pro" onclick="validerDossier(true)" style="flex:1;min-width:140px">✅ Dossier validé — GO</button>
+                <button class="btn-primary-pro" onclick="validerDossier(false)" style="flex:1;min-width:140px;background:var(--accent);border-color:var(--accent)">❌ Dossier refusé — NO GO</button>
+                <button class="btn-sm" onclick="resetDossierAnalyse()" style="width:100%;margin-top:6px">↩ Nouvelle analyse</button>
+              </div>
+            </div>
+
+            <!-- Placeholder initial -->
+            <div id="dossierPlaceholder" class="dash-card" style="text-align:center;padding:50px 30px">
+              <div style="font-size:3rem;margin-bottom:16px">🎯</div>
+              <div style="font-weight:700;font-size:1rem;margin-bottom:8px">Analyse IA de dossier locataire</div>
+              <div style="font-size:.84rem;color:var(--gris);max-width:320px;margin:0 auto;line-height:1.7">
+                Remplissez le formulaire et uploadez les pièces justificatives.<br>
+                L'IA calcule le <strong>taux d'effort</strong>, vérifie la <strong>cohérence</strong> des documents et fournit un <strong>score Go / No-Go</strong> en 15 secondes.
+              </div>
+              <div style="margin-top:20px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
+                <div style="font-size:.78rem;color:var(--gris);text-align:center">
+                  <div style="font-size:1.4rem">⚡</div>
+                  Résultat en 15s
+                </div>
+                <div style="font-size:.78rem;color:var(--gris);text-align:center">
+                  <div style="font-size:1.4rem">🔒</div>
+                  Données locales
+                </div>
+                <div style="font-size:.78rem;color:var(--gris);text-align:center">
+                  <div style="font-size:1.4rem">📊</div>
+                  Score 0-100
+                </div>
+                <div style="font-size:.78rem;color:var(--gris);text-align:center">
+                  <div style="font-size:1.4rem">🔍</div>
+                  Détection fraude
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── HISTORIQUE DES ANALYSES DE DOSSIERS ── -->
+        <div class="dash-card" style="margin-top:20px">
+          <div class="dash-section-title">📁 Historique des dossiers analysés</div>
+          <div style="overflow-x:auto;margin-top:12px">
+            <table style="width:100%;border-collapse:collapse;font-size:.84rem">
+              <thead>
+                <tr style="border-bottom:2px solid var(--border)">
+                  <th style="text-align:left;padding:8px 6px;font-weight:600;font-size:.78rem;color:var(--gris)">Date</th>
+                  <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Candidat</th>
+                  <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Logement</th>
+                  <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Taux effort</th>
+                  <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Score</th>
+                  <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Verdict</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="dossierHistoBody">
+                <tr><td colspan="7" style="text-align:center;padding:20px;color:var(--gris)">Aucun dossier analysé.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /tab-dossier -->
+
       <div id="tab-quittances" style="display:none">
         <div class="dash-main-header">
           <div><div class="dash-page-title">Quittances de loyer</div><div class="dash-page-sub">Génération automatique en un clic</div></div>
@@ -1700,11 +2381,27 @@
                 <div class="courrier-type-card" onclick="selectCourrier('assurance_relance',this)">🛡 Relance assurance<br><span>Justificatif non reçu</span></div>
                 <div class="courrier-type-card" onclick="selectCourrier('etat_lieux_sortie',this)">🏠 Convocation état des lieux<br><span>Sortie du locataire</span></div>
                 <div class="courrier-type-card" onclick="selectCourrier('restitution_depot',this)">💰 Restitution dépôt<br><span>Avec/sans retenues</span></div>
+                <div class="courrier-type-card" onclick="selectCourrier('clause_illegale',this)">⚠️ Clause illégale<br><span>Mise en demeure bailleur</span></div>
+                <div class="courrier-type-card" onclick="selectCourrier('trop_percu',this)">💸 Trop-perçu loyer<br><span>Info locataire + remboursement</span></div>
+                <div class="courrier-type-card" onclick="selectCourrier('notif_encadrement',this)">🔔 Notif. encadrement<br><span>Loyer hors plafond légal</span></div>
+                <div class="courrier-type-card" onclick="selectCourrier('reclamation_remboursement',this)">📩 Réclamation remboursement<br><span>Charges indues / dépôt tardif</span></div>
               </div>
             </div>
 
             <div class="dash-card">
               <div class="dash-section-title">Informations</div>
+              <div class="form-group-pro" style="margin-bottom:10px">
+                <label class="form-label">🏘 Bien rattaché (mandat)</label>
+                <select class="form-input-pro" id="coMandatSel" onchange="selectCourrierMandat(this.value)" style="cursor:pointer">
+                  <option value="">— Sélectionner un bien —</option>
+                </select>
+              </div>
+              <div class="form-group-pro" style="margin-bottom:14px">
+                <label class="form-label">🔗 Choisir un locataire (auto-remplit les champs)</label>
+                <select class="form-input-pro" id="coLocataireSel" onchange="selectCourrierLocataire(this.value)" style="cursor:pointer">
+                  <option value="">— Saisie manuelle —</option>
+                </select>
+              </div>
               <div class="form-grid-pro">
                 <div class="form-group-pro"><label class="form-label">Bailleur / Agence</label><input type="text" class="form-input-pro" id="coBailleur" placeholder="Jean Dupont / Agence XYZ"></div>
               <div class="form-group-pro"><label class="form-label">Adresse bailleur</label><input type="text" class="form-input-pro" id="coBailleurAdresse" placeholder="Ex : 12 rue de la Paix, 75001 Paris"></div>
@@ -1736,6 +2433,27 @@
                 <div style="font-size:2rem;margin-bottom:12px">✉️</div>
                 Sélectionnez un type de courrier et remplissez les informations
               </div>
+
+          <!-- ══ HISTORIQUE COURRIERS GÉNÉRÉS ══ -->
+          <div class="dash-card" style="margin-top:20px">
+            <div class="dash-section-title">📬 Historique des courriers générés</div>
+            <div style="overflow-x:auto;margin-top:12px">
+              <table style="width:100%;border-collapse:collapse;font-size:.84rem">
+                <thead>
+                  <tr style="border-bottom:2px solid var(--border)">
+                    <th style="text-align:left;padding:8px 6px;font-weight:600;font-size:.78rem;color:var(--gris)">Date</th>
+                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Type</th>
+                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Locataire</th>
+                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Bien</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="courrierHistoBody">
+                  <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gris)">Aucun courrier généré.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
             </div>
           </div>
         </div>
@@ -1904,8 +2622,26 @@
 var proState = {
   isLoggedIn:false, user:null,
   analyses:[], currentResult:null, currentCorrections:null, currentBail:null,
-  locataires:[], alertes:[], quittancesHisto:[], currentCourrier:null, currentCourrierType:'conge_bailleur', currentQuittance:null
-};
+  bailsHisto:[], // historique baux générés
+  locataires:[], alertes:[], quittancesHisto:[], currentCourrier:null, currentCourrierType:'conge_bailleur', currentQuittance:null,
+  courrierHisto:[], // historique courriers générés
+  agencyInfo:null, // infos entreprise pour les documents
+  dossierPieces:{}, // pièces uploadées pour l'analyse dossier
+  dossierHisto:[], // historique analyses dossiers
+  currentDossierResult:null, // résultat de l'analyse en cours
+  mandats:[], // mandats / biens immobiliers
+  courriersJuridiques:[], // courriers juridiques auto-générés
+  veille:[] // alertes veille réglementaire
+}
+
+// Charger historique depuis localStorage
+try { proState.bailsHisto = JSON.parse(localStorage.getItem('bailscan_bails_histo')||'[]'); } catch(e){}
+try { proState.courrierHisto = JSON.parse(localStorage.getItem('bailscan_courriers_histo')||'[]'); } catch(e){}
+try { proState.dossierHisto = JSON.parse(localStorage.getItem('bailscan_dossiers_histo')||'[]'); } catch(e){}
+try { proState.mandats = JSON.parse(localStorage.getItem('bailscan_mandats')||'[]'); } catch(e){}
+try { proState.courriersJuridiques = JSON.parse(localStorage.getItem('bailscan_courriers_juridiques')||'[]'); } catch(e){}
+try { proState.veille = JSON.parse(localStorage.getItem('bailscan_veille')||'[]'); } catch(e){}
+try { proState.agencyInfo = JSON.parse(localStorage.getItem('bailscan_agency_info')||'null'); } catch(e){};
 var proWizardData = {
   location_type:'location', bien_type:'vide', garant:'non',
   ville:'', surface:'', pieces:'', dpe:'',
@@ -2001,6 +2737,13 @@ function showDashboard(){
   var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
   if(logo) { proState.agencyLogo = logo; updateSidebarLogo(logo); }
   refreshKPIs(); refreshHisto();
+  refreshBailsHisto();
+  refreshCourrierHisto();
+  refreshDossierHisto();
+  refreshMandatsKPIs();
+  setTimeout(refreshAllMandatSelects, 400);
+  initVeilleData();
+  setTimeout(loadAgencyInfoFields, 300);
 }
 function logout(){
   proState.isLoggedIn=false; proState.user=null;
@@ -2013,7 +2756,7 @@ function logout(){
   document.querySelector('.btn-header-cta').style.display='';
 }
 function showDashTab(tab){
-  var tabs=['analyses','nouveau','corrections','generer','loyers','alertes','locataires','quittances','courriers','equipe','api','abonnement','parametres'];
+  var tabs=['analyses','nouveau','corrections','generer','loyers','alertes','mandats','locataires','dossier','quittances','courriers','veille','equipe','api','abonnement','parametres'];
   tabs.forEach(function(t){var el=document.getElementById('tab-'+t);if(el)el.style.display=t===tab?'block':'none';});
   document.querySelectorAll('.dash-nav-item').forEach(function(el){el.classList.remove('active');});
   var map={analyses:'analyses',nouveau:'nouvelle',corrections:'corrections',generer:'g',loyers:'loyers',alertes:'alerte',locataires:'locataire',quittances:'quittance',courriers:'courrier',equipe:'utilisateur',api:'api',abonnement:'abonnement',parametres:'param'};
@@ -2025,8 +2768,13 @@ function showDashTab(tab){
   if(tab==='analyses'){refreshKPIs();refreshHisto();}
   if(tab==='alertes'){refreshAlertes();}
   if(tab==='locataires'){refreshLocataires();}
+  if(tab==='dossier'){refreshDossierLocSelect();}
+  if(tab==='mandats'){refreshMandats();}
+  if(tab==='veille'){refreshVeille();}
   if(tab==='quittances'){prefillQuittanceMois();refreshLocSelect();}
-  if(tab==='courriers'){refreshLocatairesForCourriers();}
+  if(tab==='courriers'){refreshLocatairesForCourriers(); setTimeout(refreshCourrierLocataireSelect,50); setTimeout(refreshCourrierHisto,50);}
+  if(tab==='generer'){setTimeout(refreshBailsHisto,50);}
+  if(tab==='parametres'){setTimeout(loadAgencyInfoFields,50);}
 }
 
 var proCurrentStep = 1;
@@ -2192,6 +2940,7 @@ function displayProResult(data){
   goProStep('result');
   if(proState.currentCorrections.length>0) renderCorrections(proState.currentCorrections);
 
+  var _mId = (document.getElementById('coMandatSel')||{}).value || null;
   var entry={
     id:Date.now(),
     filename:proWizardData.filename||'bail-'+new Date().toLocaleDateString('fr-FR').replace(/\//g,'-')+'.pdf',
@@ -2202,6 +2951,7 @@ function displayProResult(data){
     surface:proWizardData.surface||'—',
     type:proWizardData.bien_type||'vide',
     clauses:(data.clauses_abusives||[]).filter(function(c){return c.type!=='ok';}).length,
+    mandatId:_mId,
     result:data
   };
   proState.analyses.unshift(entry);
@@ -2232,9 +2982,11 @@ function renderCorrections(corrections){
 
 function saveToHistory(){
   if(!proState.currentResult)return;
+  var _mandatId = (document.getElementById('dossierMandatSel')||{}).value || (document.getElementById('coMandatSel')||{}).value || null;
   var entry={id:Date.now(),filename:proWizardData.filename||'bail.pdf',date:new Date().toLocaleDateString('fr-FR'),
     score:proState.currentResult.score||0,
-    clauses:(proState.currentResult.clauses_abusives||[]).filter(function(c){return c.type!=='ok';}).length};
+    clauses:(proState.currentResult.clauses_abusives||[]).filter(function(c){return c.type!=='ok';}).length,
+    mandatId:_mandatId};
   proState.analyses.unshift(entry);
   localStorage.setItem('bailscan_pro_analyses',JSON.stringify(proState.analyses));
   refreshKPIs();refreshHisto();showDashTab('analyses');
@@ -2307,7 +3059,7 @@ function refreshHisto(){
       +'<td><span class="score-badge '+sc+'">'+a.score+'/100</span></td>'
       +'<td><span class="status-badge '+stc+'">'+stl+'</span></td>'
       +'<td style="font-size:.82rem;color:var(--accent)">'+(a.clauses>0?a.clauses+' pt'+(a.clauses>1?'s':''):'✓')+'</td>'
-      +'<td style="white-space:nowrap"><button class="btn-sm" onclick="viewAnalysisDetail('+a.id+')">👁 Voir</button> <button class="btn-sm" onclick="exportHistoPDF('+a.id+')">PDF</button></td>';
+      +'<td style="white-space:nowrap"><button class="btn-sm" onclick="viewAnalysisDetail('+a.id+')">👁 Voir</button> <button class="btn-sm" onclick="exportHistoPDF('+a.id+')">PDF</button> <button class="btn-sm" style="'+(a.traite?'background:var(--vert);color:#fff;border-color:var(--vert)':'')+'" onclick="toggleAnalyseTraitee('+a.id+')">'+(a.traite?'✓ Traité':'○ Traiter')+'</button></td>';
     tbody.appendChild(tr);
   });
   applyFilters();
@@ -2403,8 +3155,8 @@ function verifierEncadrement(){
   var URL_LYON    = 'https://demarches.toodego.com/logement/encadrement-des-loyers-v2/';
   var URL_MONTPEL = 'https://eservices.montpellier3m.fr/habitat/encadrement-des-loyers/';
   var URL_BDX     = 'https://simulateur-loyer.bordeaux-metropole.fr/';
-  var URL_BASQUE  = 'https://www.communaute-paysbasque.fr/vivre-au-pays-basque/logement/encadrement-des-loyers';
-  var URL_GRENOBLE= 'https://www.grenoblealpesmetropole.fr/817-encadrement-des-loyers.htm';
+  var URL_BASQUE  = 'https://www.communaute-paysbasque.fr/logement-et-urbanisme/lencadrement-des-loyers';
+  var URL_GRENOBLE= 'https://www.grenoblealpesmetropole.fr/loyers';
 
   var zones = {
     // ── PARIS ──────────────────────────────────────────────────────
@@ -2750,6 +3502,1347 @@ function exportHistoPDF(id){
   exportResultPDF();
 }
 
+
+function refreshBailsHisto() {
+  var el = document.getElementById('bailsHistoBody');
+  if (!el) return;
+  var arr = proState.bailsHisto || [];
+  if (!arr.length) {
+    el.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gris)">Aucun bail généré pour l\'instant.</td></tr>';
+    return;
+  }
+  el.innerHTML = arr.map(function(b, i) {
+    return '<tr style="border-bottom:1px solid var(--border)">'
+      + '<td style="padding:8px 6px;font-size:.82rem">' + b.date + '</td>'
+      + '<td style="font-weight:600;font-size:.84rem">' + (b.locataire || '—') + '</td>'
+      + '<td style="font-size:.82rem;color:var(--gris)">' + (b.adresse || '—') + '</td>'
+      + '<td style="font-size:.82rem">' + (b.loyer || '—') + '</td>'
+      + '<td style="text-align:right">'
+      + '<button class="btn-sm" onclick="retelechargerBail(' + i + ')">⬇ PDF</button>'
+      + ' <button class="btn-sm" style="color:var(--accent);border-color:var(--accent)" onclick="supprimerBailHisto(' + i + ')">✕</button>'
+      + '</td></tr>';
+  }).join('');
+}
+
+function retelechargerBail(idx) {
+  var b = proState.bailsHisto[idx];
+  if (!b) return;
+  proState.currentBail = b.texte;
+  exportBailPDF();
+}
+
+function supprimerBailHisto(idx) {
+  if (!confirm('Supprimer ce bail de l\'historique ?')) return;
+  proState.bailsHisto.splice(idx, 1);
+  localStorage.setItem('bailscan_bails_histo', JSON.stringify(proState.bailsHisto));
+  refreshBailsHisto();
+}
+
+function refreshCourrierHisto() {
+  // Refresh dans le tab courriers
+  var el = document.getElementById('courrierHistoBody');
+  if (!el) return;
+  var arr = proState.courrierHisto || [];
+  if (!arr.length) {
+    el.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gris)">Aucun courrier généré.</td></tr>';
+    return;
+  }
+  el.innerHTML = arr.map(function(co, i) {
+    return '<tr style="border-bottom:1px solid var(--border)">'
+      + '<td style="padding:8px 6px;font-size:.82rem">' + co.date + '</td>'
+      + '<td style="font-weight:600;font-size:.84rem">' + (co.typeLabel || co.type || '—') + '</td>'
+      + '<td style="font-size:.82rem">' + (co.locataire || '—') + '</td>'
+      + '<td style="font-size:.82rem;color:var(--gris)">' + (co.adresse || '—') + '</td>'
+      + '<td style="text-align:right">'
+      + '<button class="btn-sm" onclick="voirCourrier(' + i + ')">👁 Voir</button>'
+      + ' <button class="btn-sm" onclick="retelechargerCourrier(' + i + ')">⬇ PDF</button>'
+      + ' <button class="btn-sm" style="color:var(--accent);border-color:var(--accent)" onclick="supprimerCourrier(' + i + ')">✕</button>'
+      + '</td></tr>';
+  }).join('');
+}
+
+function refreshCourrierHistoFiche(locId, container) {
+  var arr = (proState.courrierHisto || []).filter(function(co){ return String(co.locId) === String(locId); });
+  if (!arr.length) {
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gris);font-size:.84rem">Aucun courrier pour ce locataire.</div>';
+    return;
+  }
+  var rows = arr.map(function(co, i) {
+    var globalIdx = proState.courrierHisto.findIndex(function(x){ return x.id === co.id; });
+    return '<tr style="border-bottom:1px solid var(--border)">'
+      + '<td style="padding:7px 6px;font-size:.8rem">' + co.date + '</td>'
+      + '<td style="font-weight:600;font-size:.82rem">' + (co.typeLabel || co.type || '—') + '</td>'
+      + '<td style="text-align:right">'
+      + '<button class="btn-sm" onclick="voirCourrier(' + globalIdx + ')">👁 Voir</button>'
+      + ' <button class="btn-sm" onclick="retelechargerCourrier(' + globalIdx + ')">⬇ PDF</button>'
+      + '</td></tr>';
+  }).join('');
+  container.innerHTML = '<table style="width:100%;font-size:.82rem;border-collapse:collapse">'
+    + '<thead><tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:6px;font-weight:600">Date</th><th style="font-weight:600">Type</th><th></th></tr></thead>'
+    + '<tbody>' + rows + '</tbody></table>';
+}
+
+function voirCourrier(idx) {
+  var co = proState.courrierHisto[idx];
+  if (!co) return;
+  proState.currentCourrier = co.texte;
+  showDashTab('courriers');
+  setTimeout(function(){
+    var el = document.getElementById('courrierResult');
+    if (el) { el.style.display='block'; el.textContent=co.texte; }
+    var act = document.getElementById('courrierActions');
+    if (act) act.style.display='flex';
+  }, 100);
+}
+
+function retelechargerCourrier(idx) {
+  var co = proState.courrierHisto[idx];
+  if (!co) return;
+  proState.currentCourrier = co.texte;
+  exportCourrierPDF();
+}
+
+function supprimerCourrier(idx) {
+  if (!confirm('Supprimer ce courrier ?')) return;
+  proState.courrierHisto.splice(idx, 1);
+  localStorage.setItem('bailscan_courriers_histo', JSON.stringify(proState.courrierHisto));
+  refreshCourrierHisto();
+}
+
+
+function saveAgencyInfo() {
+  var ai = {
+    nom: (document.getElementById('aiNom')||{value:''}).value.trim(),
+    siret: (document.getElementById('aiSiret')||{value:''}).value.trim(),
+    adresse: (document.getElementById('aiAdresse')||{value:''}).value.trim(),
+    tel: (document.getElementById('aiTel')||{value:''}).value.trim(),
+    email: (document.getElementById('aiEmail')||{value:''}).value.trim(),
+    carte: (document.getElementById('aiCarte')||{value:''}).value.trim(),
+    garantie: (document.getElementById('aiGarantie')||{value:''}).value.trim()
+  };
+  proState.agencyInfo = ai;
+  localStorage.setItem('bailscan_agency_info', JSON.stringify(ai));
+  var msg = document.getElementById('aiSaveMsg');
+  if (msg) { msg.style.display='block'; setTimeout(function(){ msg.style.display='none'; }, 3000); }
+}
+
+function loadAgencyInfoFields() {
+  var ai = proState.agencyInfo || {};
+  var fields = {aiNom:'nom',aiSiret:'siret',aiAdresse:'adresse',aiTel:'tel',aiEmail:'email',aiCarte:'carte',aiGarantie:'garantie'};
+  Object.keys(fields).forEach(function(id){
+    var el = document.getElementById(id);
+    if (el && ai[fields[id]]) el.value = ai[fields[id]];
+  });
+}
+
+
+function refreshCourrierLocataireSelect() {
+  refreshAllMandatSelects();
+  var sel = document.getElementById('coLocataireSel');
+  if (!sel) return;
+  var arr = loadLocataires();
+  sel.innerHTML = '<option value="">— Saisie manuelle —</option>';
+  arr.forEach(function(l){
+    var opt = document.createElement('option');
+    opt.value = l.id;
+    opt.textContent = (l.prenom||'')+' '+(l.nom||'') + (l.adresse?' — '+l.adresse:'');
+    sel.appendChild(opt);
+  });
+  // Pré-sélectionner si locId courant
+  if (proState.currentCourrierLocId) sel.value = proState.currentCourrierLocId;
+}
+
+function selectCourrierLocataire(locId) {
+  if (!locId) { proState.currentCourrierLocId = null; return; }
+  autoFillCourrierFromLocataire(locId);
+}
+
+function autoFillCourrierFromLocataire(locId) {
+  var arr = loadLocataires();
+  var l = arr.find(function(x){ return String(x.id) === String(locId); });
+  if (!l) return;
+  var ai = proState.agencyInfo || {};
+  var agenceNom = ai.nom || (proState.user ? proState.user.agence || '' : '');
+  var agenceAdresse = ai.adresse || '';
+
+  var f = function(id, val){ var el=document.getElementById(id); if(el&&val) el.value=val; };
+  f('coBailleur', agenceNom);
+  f('coBailleurAdresse', agenceAdresse);
+  f('coLocataire', (l.prenom||'')+' '+(l.nom||''));
+  f('coAdresse', l.adresse||'');
+  proState.currentCourrierLocId = locId;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MODULE ANALYSE DOSSIER LOCATAIRE — BailScan Pro
+// ═══════════════════════════════════════════════════════════════════════════
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MODULE MANDATS & BIENS
+// ═══════════════════════════════════════════════════════════════════════════
+
+function loadMandats() {
+  return proState.mandats || [];
+}
+
+function saveMandats() {
+  localStorage.setItem('bailscan_mandats', JSON.stringify(proState.mandats));
+}
+
+function refreshMandatsKPIs() {
+  var arr = loadMandats();
+  var loues = arr.filter(function(m){ return m.statut === 'loue'; }).length;
+  var vacants = arr.filter(function(m){ return m.statut === 'vacant'; }).length;
+  var totalLoyer = arr.reduce(function(sum, m){ return sum + (parseFloat(m.loyer)||0); }, 0);
+  var el = function(id, v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  el('kpiBiensTotal', arr.length);
+  el('kpiBiensLoues', loues);
+  el('kpiBiensVacants', vacants);
+  el('kpiLoyerTotal', totalLoyer.toLocaleString('fr-FR') + ' €');
+}
+
+function refreshMandats() {
+  refreshMandatsKPIs();
+  applyMandatFilters();
+  refreshAllMandatSelects();
+}
+
+function applyMandatFilters() {
+  var search = (document.getElementById('mandatSearch')||{}).value||'';
+  search = search.toLowerCase().trim();
+  var statut = (document.getElementById('mandatFilterStatut')||{}).value||'';
+  var type = (document.getElementById('mandatFilterType')||{}).value||'';
+  var arr = loadMandats().filter(function(m) {
+    if (search && !(m.adresse||'').toLowerCase().includes(search) && !(m.bailleur||'').toLowerCase().includes(search)) return false;
+    if (statut && m.statut !== statut) return false;
+    if (type && m.type !== type) return false;
+    return true;
+  });
+  renderMandatsTbody(arr);
+}
+
+function renderMandatsTbody(arr) {
+  var el = document.getElementById('mandatsTbody');
+  if (!el) return;
+  if (!arr.length) {
+    el.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--gris)"><div style="font-size:2rem;margin-bottom:10px">🏘</div><div style="font-weight:600;margin-bottom:6px">Aucun bien enregistré</div><div style="font-size:.82rem">Ajoutez vos biens pour rattacher analyses, dossiers et courriers.</div></td></tr>';
+    return;
+  }
+  var statutColors = { loue:'var(--vert)', vacant:'#f59e0b', travaux:'#6366f1' };
+  var statutLabels = { loue:'Loué', vacant:'Vacant', travaux:'Travaux' };
+  el.innerHTML = arr.map(function(m) {
+    var analyses = loadMandatAnalyses(m.id);
+    var statColor = statutColors[m.statut] || 'var(--gris)';
+    var dpeColor = { A:'#16a34a', B:'#65a30d', C:'#84cc16', D:'#eab308', E:'#f97316', F:'#ef4444', G:'#991b1b' };
+    var dpeBg = m.dpe ? ('<span style="background:'+(dpeColor[m.dpe]||'var(--gris)')
+      +';color:#fff;font-size:.7rem;font-weight:800;padding:1px 6px;border-radius:3px;margin-left:4px">'+m.dpe+'</span>') : '';
+    return '<tr style="border-bottom:1px solid var(--border);cursor:pointer" onclick="openFicheMandat(\''+m.id+'\')">'
+      + '<td style="padding:10px 14px">'
+      + '<div style="font-weight:700;font-size:.85rem">'+(m.adresse||'—')+'</div>'
+      + '<div style="font-size:.75rem;color:var(--gris)">'+(m.surface?m.surface+' m² — ':'')+(m.charges?'CC '+(parseInt(m.loyer||0)+parseInt(m.charges||0))+'€':'')+'</div>'
+      + '</td>'
+      + '<td style="font-size:.82rem;padding:8px">'+(m.type||'—')+dpeBg+'</td>'
+      + '<td style="font-size:.82rem;padding:8px">'+(m.bailleur||'—')+'<br><span style="font-size:.72rem;color:var(--gris)">'+(m.bailleurEmail||'')+'</span></td>'
+      + '<td style="font-size:.85rem;font-weight:600;padding:8px">'+(m.loyer?m.loyer+' €':'—')+'</td>'
+      + '<td style="font-size:.82rem;padding:8px" id="mandatLoc-'+m.id+'">'+(getMandatLocataireName(m.locataireId)||'<span style="color:var(--gris)">Vacant</span>')+'</td>'
+      + '<td style="padding:8px"><span style="background:'+(statColor.replace('var(--vert)','#f0fdf4').replace('#f59e0b','#fffbeb').replace('#6366f1','#eef2ff'))
+      +';color:'+statColor+';font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:5px">'+(statutLabels[m.statut]||m.statut)+'</span></td>'
+      + '<td style="font-size:.82rem;padding:8px">'+(analyses.length?'<span style="color:var(--pro-accent);font-weight:600">'+analyses.length+' analyse'+(analyses.length>1?'s':'')+'</span>':'<span style="color:var(--gris)">0</span>')+'</td>'
+      + '<td style="text-align:right;padding:8px;white-space:nowrap" onclick="event.stopPropagation()">'
+      + '<button class="btn-sm" onclick="editMandat(\''+m.id+'\')" title="Modifier">✏</button>'
+      + ' <button class="btn-sm" onclick="genererCourrierMandat(\''+m.id+'\')" title="Courrier juridique">✉</button>'
+      + ' <button class="btn-sm" style="color:var(--accent);border-color:var(--accent)" onclick="deleteMandat(\''+m.id+'\')">✕</button>'
+      + '</td></tr>';
+  }).join('');
+}
+
+function getMandatLocataireName(locId) {
+  if (!locId) return '';
+  var locs = loadLocataires ? loadLocataires() : (proState.locataires||[]);
+  var l = locs.find(function(x){ return String(x.id)===String(locId); });
+  return l ? (l.prenom||'')+' '+(l.nom||'') : '';
+}
+
+function loadMandatAnalyses(mandatId) {
+  return (proState.analyses||[]).filter(function(a){ return String(a.mandatId)===String(mandatId); });
+}
+
+function refreshAllMandatSelects() {
+  var arr = loadMandats();
+  var opts = '<option value="">— Sélectionner un bien —</option>'
+    + arr.map(function(m){ return '<option value="'+m.id+'">'+(m.adresse||'Bien sans adresse')+'</option>'; }).join('');
+  ['coMandatSel','dossierMandatSel','coursierMandatSel'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = opts;
+  });
+}
+
+function openNewMandat() {
+  document.getElementById('mandatEditId').value = '';
+  document.getElementById('modalMandatTitle').textContent = '🏘 Ajouter un bien';
+  ['mandatAdresse','mandatSurface','mandatLoyer','mandatCharges','mandatBailleur','mandatBailleurEmail','mandatBailleurTel','mandatNotes'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('mandatType').value = 'appartement';
+  document.getElementById('mandatStatut').value = 'loue';
+  document.getElementById('mandatDpe').value = '';
+  document.getElementById('mandatZone').value = '';
+  // Remplir le select locataires
+  var selLoc = document.getElementById('mandatLocataire');
+  if (selLoc) {
+    var locs = loadLocataires ? loadLocataires() : [];
+    selLoc.innerHTML = '<option value="">— Aucun —</option>'
+      + locs.map(function(l){ return '<option value="'+l.id+'">'+(l.prenom||'')+' '+(l.nom||'')+'</option>'; }).join('');
+  }
+  document.getElementById('modalMandat').style.display = 'flex';
+}
+
+function editMandat(id) {
+  var m = loadMandats().find(function(x){ return String(x.id)===String(id); });
+  if (!m) return;
+  openNewMandat();
+  document.getElementById('mandatEditId').value = m.id;
+  document.getElementById('modalMandatTitle').textContent = '✏️ Modifier le bien';
+  var f = function(fid, val){ var el=document.getElementById(fid); if(el&&val!==undefined) el.value=val; };
+  f('mandatAdresse', m.adresse); f('mandatSurface', m.surface); f('mandatLoyer', m.loyer);
+  f('mandatCharges', m.charges); f('mandatBailleur', m.bailleur);
+  f('mandatBailleurEmail', m.bailleurEmail); f('mandatBailleurTel', m.bailleurTel);
+  f('mandatType', m.type); f('mandatStatut', m.statut); f('mandatDpe', m.dpe||'');
+  f('mandatZone', m.zone||''); f('mandatNotes', m.notes||'');
+  f('mandatLocataire', m.locataireId||'');
+}
+
+function closeModalMandat() {
+  document.getElementById('modalMandat').style.display = 'none';
+}
+
+function saveMandat() {
+  var adresse = document.getElementById('mandatAdresse').value.trim();
+  if (!adresse) { alert('L\'adresse est obligatoire.'); return; }
+  var editId = document.getElementById('mandatEditId').value;
+  var mandat = {
+    id: editId || String(Date.now()),
+    adresse: adresse,
+    type: document.getElementById('mandatType').value,
+    surface: document.getElementById('mandatSurface').value,
+    loyer: document.getElementById('mandatLoyer').value,
+    charges: document.getElementById('mandatCharges').value,
+    bailleur: document.getElementById('mandatBailleur').value,
+    bailleurEmail: document.getElementById('mandatBailleurEmail').value,
+    bailleurTel: document.getElementById('mandatBailleurTel').value,
+    statut: document.getElementById('mandatStatut').value,
+    locataireId: document.getElementById('mandatLocataire').value || null,
+    dpe: document.getElementById('mandatDpe').value,
+    zone: document.getElementById('mandatZone').value,
+    notes: document.getElementById('mandatNotes').value,
+    dateCreation: editId ? undefined : new Date().toLocaleDateString('fr-FR')
+  };
+  if (editId) {
+    var idx = proState.mandats.findIndex(function(x){ return String(x.id)===String(editId); });
+    if (idx !== -1) { mandat.dateCreation = proState.mandats[idx].dateCreation; proState.mandats[idx] = mandat; }
+    else proState.mandats.unshift(mandat);
+  } else {
+    proState.mandats.unshift(mandat);
+  }
+  saveMandats();
+  closeModalMandat();
+  refreshMandats();
+  // Mettre à jour les sélecteurs
+  refreshAllMandatSelects();
+}
+
+function deleteMandat(id) {
+  var m = loadMandats().find(function(x){ return String(x.id)===String(id); });
+  if (!m) return;
+  if (!confirm('Supprimer le bien "'+m.adresse+'" ?\n\nSes analyses, dossiers et courriers resteront dans l\'historique.')) return;
+  proState.mandats = proState.mandats.filter(function(x){ return String(x.id)!==String(id); });
+  saveMandats();
+  refreshMandats();
+  refreshAllMandatSelects();
+}
+
+function openFicheMandat(id) {
+  var m = loadMandats().find(function(x){ return String(x.id)===String(id); });
+  if (!m) return;
+  var analyses = loadMandatAnalyses(id);
+  var statuts = { loue:'✅ Loué', vacant:'⚪ Vacant', travaux:'🔧 En travaux' };
+  var info = '🏘 FICHE BIEN\n\n'
+    + '📍 ' + m.adresse + '\n'
+    + '🏠 Type : ' + (m.type||'—') + (m.surface?' | '+m.surface+' m²':'') + (m.dpe?' | DPE '+m.dpe:'')+'\n'
+    + '👤 Bailleur : '+(m.bailleur||'—')+(m.bailleurEmail?' ('+m.bailleurEmail+')':'')+'\n'
+    + '💶 Loyer HC : '+(m.loyer||'—')+' €'+(m.charges?' + '+m.charges+' € charges':'')+'\n'
+    + '📊 Statut : '+(statuts[m.statut]||m.statut)+'\n'
+    + (m.locataireId?'👤 Locataire : '+getMandatLocataireName(m.locataireId)+'\n':'')
+    + '📋 Analyses rattachées : '+analyses.length+'\n'
+    + (m.notes?'\n📝 Notes : '+m.notes:'');
+  alert(info);
+}
+
+function genererCourrierMandat(mandatId) {
+  showDashTab('courriers');
+  setTimeout(function() {
+    var sel = document.getElementById('coMandatSel');
+    if (sel) { sel.value = mandatId; selectCourrierMandat(mandatId); }
+  }, 200);
+}
+
+function selectCourrierMandat(mandatId) {
+  if (!mandatId) return;
+  var m = loadMandats().find(function(x){ return String(x.id)===String(mandatId); });
+  if (!m) return;
+  // Auto-remplir les champs courrier depuis le mandat
+  var f = function(id, val){ var el=document.getElementById(id); if(el&&val) el.value=val; };
+  f('coBienAdresse', m.adresse);
+  if (m.locataireId) {
+    var selLoc = document.getElementById('coLocataireSel');
+    if (selLoc) { selLoc.value = m.locataireId; selectCourrierLocataire(m.locataireId); }
+  }
+  if (m.bailleur) f('coBailleurNom', m.bailleur);
+}
+
+function selectDossierMandat(mandatId) {
+  if (!mandatId) return;
+  var m = loadMandats().find(function(x){ return String(x.id)===String(mandatId); });
+  if (!m) return;
+  var f = function(id, val){ var el=document.getElementById(id); if(el&&val) el.value=val; };
+  f('dossierLoyer', m.loyer);
+  f('dossierCharges', m.charges);
+  // Sélectionner le locataire du mandat
+  if (m.locataireId) {
+    var selLoc = document.getElementById('dossierLocSel');
+    if (selLoc) { selLoc.value = m.locataireId; selectDossierLoc(m.locataireId); }
+  }
+  updateDossierCalc();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MODULE COURRIERS JURIDIQUES — nouveaux types
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Étendre selectCourrier pour les nouveaux types (ils s'ajoutent aux existants)
+// Les prompts pour genererCourrier sont déjà génériques — les nouveaux types
+// auront leurs propres descriptions dans la fonction de prompt
+
+function getCourrierJuridiquePrompt(type, data) {
+  var prompts = {
+    clause_illegale: 'Rédige une mise en demeure formelle de régularisation adressée par une agence immobilière au bailleur propriétaire. '
+      + 'Objet : une ou plusieurs clauses illégales identifiées dans le bail. '
+      + 'La lettre doit : (1) citer les clauses concernées avec leur référence légale (loi du 6/07/1989, art. 4), '
+      + '(2) demander leur suppression ou modification sous 15 jours, '
+      + '(3) informer des sanctions encourues (nullité, dommages-intérêts). '
+      + 'Ton : professionnel, ferme, juridiquement précis. Format : lettre avec en-tête, objet, corps, formule de politesse.',
+
+    trop_percu: 'Rédige une lettre d\'information au locataire sur un trop-perçu de loyer. '
+      + 'La lettre doit : (1) constater le dépassement du loyer légal ou de référence, '
+      + '(2) calculer le montant du trop-perçu, '
+      + '(3) informer des modalités de remboursement (déduction sur loyers suivants ou virement), '
+      + '(4) citer l\'article L632-1 du CCH ou l\'encadrement applicable. '
+      + 'Ton : informatif, bienveillant, légalement rigoureux.',
+
+    notif_encadrement: 'Rédige une notification formelle au bailleur l\'informant que le loyer pratiqué dépasse le loyer de référence majoré fixé par la préfecture dans le cadre de l\'encadrement des loyers. '
+      + 'La lettre doit : (1) rappeler le dispositif légal applicable (loi ELAN, décret préfectoral), '
+      + '(2) indiquer le loyer actuel, le plafond légal et l\'écart constaté, '
+      + '(3) demander la mise en conformité sous 1 mois avec nouveau bail ou avenant, '
+      + '(4) rappeler les sanctions (amende 5 000 € particulier, 15 000 € bailleur professionnel). '
+      + 'Ton : formel, légalement opposable.',
+
+    reclamation_remboursement: 'Rédige une lettre de réclamation de remboursement adressée au bailleur par l\'agence au nom du locataire. '
+      + 'Objet : charges indûment perçues, dépôt de garantie non restitué dans les délais légaux, ou provision pour charges injustifiée. '
+      + 'La lettre doit : (1) détailler le montant réclamé et son fondement légal, '
+      + '(2) mettre en demeure de rembourser sous 8 jours, '
+      + '(3) informer que sans réponse une saisine de la commission départementale sera engagée. '
+      + 'Ton : ferme, précis, légalement fondé.'
+  };
+  return prompts[type] || null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MODULE VEILLE RÉGLEMENTAIRE
+// ═══════════════════════════════════════════════════════════════════════════
+
+var VEILLE_ALERTES_INITIALES = [
+  {
+    id: 'dpe_g_2026',
+    date: '01/01/2026',
+    niveau: 'rouge',
+    icone: '⚡',
+    titre: 'Interdiction location logements classés G+ (>420 kWh/m²/an)',
+    detail: 'Les logements consommant plus de 420 kWh/m²/an (sous-classe G) ne peuvent plus être proposés à la location depuis le 1er janvier 2026. Un DPE est obligatoire. Les baux en cours sont maintenus mais non renouvelables.',
+    loi: 'Loi Climat & Résilience 2021 + Décret n°2021-1930',
+    impactBiensF: true,
+    impactBiensG: true,
+    action: 'Vérifier les biens classés F et G dans le portefeuille'
+  },
+  {
+    id: 'irl_t4_2025',
+    date: '15/01/2026',
+    niveau: 'bleu',
+    icone: '📈',
+    titre: 'IRL T4 2025 publié : +1,82 % sur 1 an',
+    detail: 'L\'Indice de Référence des Loyers du 4ème trimestre 2025 est fixé à 145,62. Hausse de +1,82 % sur 12 mois. Les révisions de loyer peuvent être appliquées pour les baux dont l\'échéance annuelle tombe ce trimestre.',
+    loi: 'INSEE — Série 001515333',
+    action: 'Calculer les révisions IRL dues pour les baux concernés'
+  },
+  {
+    id: 'encadrement_extension_2025',
+    date: '01/11/2025',
+    niveau: 'orange',
+    icone: '🗺',
+    titre: 'Extension encadrement des loyers : 3 nouvelles communes',
+    detail: 'Le gouvernement a étendu le dispositif d\'encadrement des loyers à Bordeaux Métropole, Montpellier et Pays Basque. Les baux conclus ou renouvelés depuis cette date doivent respecter les loyers de référence préfectoraux.',
+    loi: 'Décret du 30/10/2025',
+    action: 'Vérifier les biens dans ces zones et recalculer les loyers de référence'
+  },
+  {
+    id: 'quittance_obligation_2025',
+    date: '01/09/2025',
+    niveau: 'bleu',
+    icone: '🧾',
+    titre: 'Rappel : quittance de loyer obligatoire si demandée par le locataire',
+    detail: 'Le bailleur est légalement tenu de délivrer gratuitement une quittance au locataire qui en fait la demande. Le refus peut constituer une infraction. BailScan génère vos quittances en 1 clic.',
+    loi: 'Art. 21 loi n°89-462 du 6/07/1989',
+    action: null
+  }
+];
+
+function initVeilleData() {
+  if (!proState.veille || !proState.veille.length) {
+    proState.veille = VEILLE_ALERTES_INITIALES;
+    localStorage.setItem('bailscan_veille', JSON.stringify(proState.veille));
+  }
+  refreshVeille();
+}
+
+function refreshVeille() {
+  renderVeilleAlertes();
+  updateVeilleScore();
+  updateVeilleActions();
+}
+
+function renderVeilleAlertes() {
+  var el = document.getElementById('veilleAlertesListe');
+  if (!el) return;
+  var alertes = proState.veille || [];
+  if (!alertes.length) {
+    el.innerHTML = '<div style="color:var(--gris);font-size:.84rem;text-align:center;padding:20px">Aucune alerte réglementaire.</div>';
+    return;
+  }
+  var niveauColors = { rouge:'var(--accent)', orange:'#d97706', bleu:'var(--pro-accent)', vert:'var(--vert)' };
+  var niveauBg     = { rouge:'#fef2f2', orange:'#fffbeb', bleu:'#eff6ff', vert:'#f0fdf4' };
+  el.innerHTML = alertes.map(function(a, i) {
+    var c = niveauColors[a.niveau] || 'var(--gris)';
+    var bg = niveauBg[a.niveau] || '#f9f9f9';
+    return '<div style="background:'+bg+';border:1px solid '+c+'30;border-left:4px solid '+c+';border-radius:8px;padding:14px 16px">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'
+      + '<div style="display:flex;gap:10px;align-items:flex-start">'
+      + '<span style="font-size:1.3rem;flex-shrink:0">' + (a.icone||'ℹ') + '</span>'
+      + '<div>'
+      + '<div style="font-weight:700;font-size:.85rem;margin-bottom:3px">' + a.titre + '</div>'
+      + '<div style="font-size:.75rem;color:var(--gris);margin-bottom:6px">' + a.date + ' · ' + (a.loi||'') + '</div>'
+      + '<div style="font-size:.8rem;color:var(--texte);line-height:1.6">' + a.detail + '</div>'
+      + (a.action ? '<div style="margin-top:8px;display:flex;gap:6px">'
+        + '<button class="btn-sm" onclick="genCourrierDepuisAlerte('+i+')">✉ Générer courrier</button>'
+        + '<button class="btn-sm" onclick="voirBiensImpactes('+i+')">🏘 Biens impactés</button>'
+        + '</div>' : '')
+      + '</div></div>'
+      + '<button class="btn-sm" style="color:var(--gris);border-color:var(--gris);flex-shrink:0" onclick="dismissAlerte('+i+')">✕</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+function updateVeilleScore() {
+  var mandats = loadMandats();
+  if (!mandats.length) return;
+
+  // Calculer le score de conformité selon les analyses disponibles
+  var analyses = proState.analyses || [];
+  var scores = [];
+
+  mandats.forEach(function(m) {
+    var mandatAnalyses = analyses.filter(function(a){ return String(a.mandatId)===String(m.id); });
+    if (mandatAnalyses.length) {
+      var lastAnalyse = mandatAnalyses[0];
+      scores.push(lastAnalyse.score || 50);
+    }
+    // Pénalité DPE G
+    if (m.dpe === 'G') scores.push(10);
+    else if (m.dpe === 'F') scores.push(40);
+  });
+
+  var score = scores.length ? Math.round(scores.reduce(function(s,v){ return s+v; }, 0) / scores.length) : 72;
+  var circumference = 289;
+  var offset = circumference - (score / 100) * circumference;
+  var circle = document.getElementById('veilleScoreCircle');
+  var numEl = document.getElementById('veilleScoreNum');
+  var msgEl = document.getElementById('veilleScoreMsg');
+  if (circle) { circle.style.strokeDashoffset = offset; circle.style.stroke = score >= 70 ? 'var(--vert)' : score >= 50 ? '#f59e0b' : 'var(--accent)'; }
+  if (numEl) { numEl.textContent = score; numEl.style.color = score >= 70 ? 'var(--vert)' : score >= 50 ? '#f59e0b' : 'var(--accent)'; }
+  if (msgEl) msgEl.textContent = score >= 70 ? 'Portefeuille globalement conforme. Maintenez la veille.' : score >= 50 ? 'Des points d\'attention nécessitent une action.' : 'Non-conformités importantes détectées. Action urgente requise.';
+
+  // Compter conformes/non conformes
+  var conformes = scores.filter(function(s){ return s >= 70; }).length;
+  var attention = scores.filter(function(s){ return s >= 50 && s < 70; }).length;
+  var nonConf = scores.filter(function(s){ return s < 50; }).length;
+  var el = function(id, v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  el('veilleConformes', conformes || '—');
+  el('veilleAAttention', attention || '—');
+  el('veilleNonConformes', nonConf || '—');
+}
+
+function updateVeilleActions() {
+  var el = document.getElementById('veilleActions');
+  if (!el) return;
+  var mandats = loadMandats();
+  var actions = [];
+
+  // Biens DPE G ou F
+  var biensG = mandats.filter(function(m){ return m.dpe === 'G'; });
+  var biensF = mandats.filter(function(m){ return m.dpe === 'F'; });
+  if (biensG.length) actions.push({ niveau:'rouge', texte: biensG.length + ' bien(s) classé(s) G — interdits à la location. Travaux ou dérogation obligatoires.', action:'mandats' });
+  if (biensF.length) actions.push({ niveau:'orange', texte: biensF.length + ' bien(s) classé(s) F — interdiction prévue en 2028. Anticiper les travaux.', action:'mandats' });
+
+  // Biens en zone encadrement sans analyse
+  var biensEncadrement = mandats.filter(function(m){ return m.zone && m.zone !== ''; });
+  var biensEncadrementSansAnalyse = biensEncadrement.filter(function(m){ return !(proState.analyses||[]).some(function(a){ return String(a.mandatId)===String(m.id); }); });
+  if (biensEncadrementSansAnalyse.length) actions.push({ niveau:'orange', texte: biensEncadrementSansAnalyse.length + ' bien(s) en zone encadrement sans analyse bail récente.', action:'analyses' });
+
+  // Révisions IRL dues
+  actions.push({ niveau:'bleu', texte: 'Vérifiez les révisions IRL dues ce trimestre (IRL T4 2025 : 145,62).', action:'loyers' });
+
+  if (!actions.length) {
+    el.innerHTML = '<div style="color:var(--vert);font-size:.82rem;font-weight:600">✓ Aucune action urgente détectée.</div>';
+    return;
+  }
+  var nColors = { rouge:'var(--accent)', orange:'#d97706', bleu:'var(--pro-accent)' };
+  el.innerHTML = actions.map(function(a) {
+    return '<div style="display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border-radius:6px;border-left:3px solid '+(nColors[a.niveau]||'var(--gris)')+';">'
+      + '<span style="color:'+(nColors[a.niveau]||'var(--gris)')+'">●</span>'
+      + '<div style="flex:1">'
+      + '<div style="font-size:.8rem">' + a.texte + '</div>'
+      + '</div>'
+      + '<button class="btn-sm" onclick="showDashTab(\''+a.action+'\')" style="flex-shrink:0;font-size:.7rem">→</button>'
+      + '</div>';
+  }).join('');
+}
+
+function dismissAlerte(idx) {
+  proState.veille.splice(idx, 1);
+  localStorage.setItem('bailscan_veille', JSON.stringify(proState.veille));
+  renderVeilleAlertes();
+}
+
+function genCourrierDepuisAlerte(idx) {
+  var alerte = proState.veille[idx];
+  if (!alerte) return;
+  showDashTab('courriers');
+  setTimeout(function() {
+    // Sélectionner le type de courrier le plus approprié
+    var typeMap = {
+      dpe_g_2026: 'clause_illegale',
+      encadrement_extension_2025: 'notif_encadrement',
+      irl_t4_2025: 'revision_loyer',
+      quittance_obligation_2025: null
+    };
+    var type = typeMap[alerte.id] || 'mise_demeure';
+    if (type) {
+      var card = document.querySelector('.courrier-type-card.active');
+      if (card) card.classList.remove('active');
+      var cards = document.querySelectorAll('.courrier-type-card');
+      cards.forEach(function(c){ if(c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+type+"'")) { c.classList.add('active'); } });
+      proState.currentCourrierType = type;
+    }
+    // Pré-remplir l'objet si possible
+    var objet = document.getElementById('coObjet');
+    if (objet) objet.value = 'Suite à : ' + alerte.titre;
+  }, 300);
+}
+
+function voirBiensImpactes(idx) {
+  var alerte = proState.veille[idx];
+  if (!alerte) return;
+  showDashTab('mandats');
+  // Filtrer selon la nature de l'alerte
+  setTimeout(function() {
+    if (alerte.impactBiensG) {
+      var sel = document.getElementById('mandatFilterType');
+      // On ne peut pas filtrer par DPE directement mais on peut rechercher
+      var search = document.getElementById('mandatSearch');
+      if (search) { search.value = ''; }
+      applyMandatFilters();
+    }
+  }, 200);
+}
+
+function verifierImpactDecret() {
+  var mandats = loadMandats();
+  var biensG = mandats.filter(function(m){ return m.dpe === 'G'; });
+  var biensF = mandats.filter(function(m){ return m.dpe === 'F'; });
+  if (!biensG.length && !biensF.length) {
+    alert('✅ Aucun bien classé F ou G dans votre portefeuille.\n\nVous n\'êtes pas impacté par cette obligation.');
+  } else {
+    var msg = '⚠ Biens potentiellement impactés :\n\n';
+    if (biensG.length) msg += '🔴 ' + biensG.length + ' bien(s) classé(s) G (interdiction immédiate) :\n' + biensG.map(function(m){ return ' • '+m.adresse; }).join('\n') + '\n\n';
+    if (biensF.length) msg += '🟠 ' + biensF.length + ' bien(s) classé(s) F (interdiction en 2028) :\n' + biensF.map(function(m){ return ' • '+m.adresse; }).join('\n');
+    alert(msg);
+    showDashTab('mandats');
+  }
+}
+
+function lancerAuditConformite() {
+  var mandats = loadMandats();
+  if (!mandats.length) {
+    alert('Aucun bien enregistré. Ajoutez vos biens dans l\'onglet "Mandats & Biens" pour lancer l\'audit.');
+    showDashTab('mandats');
+    return;
+  }
+  // Mise à jour du score et des actions
+  updateVeilleScore();
+  updateVeilleActions();
+
+  // Vérifier les analyses manquantes
+  var sansAnalyse = mandats.filter(function(m){
+    return !(proState.analyses||[]).some(function(a){ return String(a.mandatId)===String(m.id); });
+  });
+
+  var msg = '🔄 Audit de conformité lancé.\n\n';
+  msg += mandats.length + ' bien(s) dans le portefeuille\n';
+  if (sansAnalyse.length) msg += '⚠ ' + sansAnalyse.length + ' bien(s) sans analyse de bail récente\n';
+  var biensG = mandats.filter(function(m){ return m.dpe==='G'; }).length;
+  var biensF = mandats.filter(function(m){ return m.dpe==='F'; }).length;
+  if (biensG) msg += '🔴 ' + biensG + ' bien(s) classé(s) G — action urgente\n';
+  if (biensF) msg += '🟠 ' + biensF + ' bien(s) classé(s) F — travaux à planifier\n';
+  msg += '\nLe score de conformité a été mis à jour.';
+  alert(msg);
+}
+
+function genererNouvelleAlerteIA() {
+  var mandats = loadMandats();
+  if (!mandats.length) {
+    alert('Ajoutez d\'abord des biens pour générer une analyse réglementaire personnalisée.');
+    return;
+  }
+  var zone = mandats.map(function(m){ return m.zone; }).filter(Boolean)[0] || '';
+  var dpes = mandats.map(function(m){ return m.dpe; }).filter(Boolean);
+  var prompt = 'Tu es un expert en droit locatif français. Génère une alerte réglementaire personnalisée en JSON uniquement (sans backticks) : '
+    + '{ "titre": "...", "detail": "...", "loi": "...", "niveau": "rouge|orange|bleu|vert", "icone": "<emoji>", "action": "..." }\n'
+    + 'Contexte portefeuille : ' + mandats.length + ' biens, '
+    + (zone ? 'zone encadrement : ' + zone + ', ' : '')
+    + (dpes.length ? 'DPE présents : ' + [...new Set(dpes)].join(',') + ', ' : '')
+    + 'date : ' + new Date().toLocaleDateString('fr-FR') + '. '
+    + 'Focus sur une actualité réglementaire récente et impactante.';
+
+  (async function() {
+    try {
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, messages: [{ role: 'user', content: prompt }] })
+      });
+      var data = await resp.json();
+      var raw = (data.content && data.content[0] && data.content[0].text) || '';
+      var clean = raw.replace(/```json|```/g, '').trim();
+      var alerte = JSON.parse(clean);
+      alerte.id = 'ia_' + Date.now();
+      alerte.date = new Date().toLocaleDateString('fr-FR');
+      proState.veille.unshift(alerte);
+      localStorage.setItem('bailscan_veille', JSON.stringify(proState.veille));
+      renderVeilleAlertes();
+    } catch(e) {
+      alert('Impossible de générer une alerte IA. Vérifiez la connexion.');
+    }
+  })();
+}
+
+function sauvegarderVeille() {
+  var email = document.getElementById('veilleEmail').value.trim();
+  if (!email) { alert('Veuillez saisir un email de réception.'); return; }
+  var prefs = {
+    email: email,
+    decrets: document.getElementById('veilleChkDecrets').checked,
+    irl: document.getElementById('veilleChkIRL').checked,
+    dpe: document.getElementById('veilleChkDPE').checked,
+    encadrement: document.getElementById('veilleChkEncadrement').checked
+  };
+  localStorage.setItem('bailscan_veille_prefs', JSON.stringify(prefs));
+  alert('✅ Newsletter activée pour ' + email + '\n\nVous recevrez les alertes personnalisées selon vos préférences.');
+}
+
+// Rattacher un mandatId lors de la sauvegarde d'une analyse
+// → Patch sur displayProResult pour stocker le mandatId actif
+var _origDisplayProResult = typeof displayProResult !== 'undefined' ? displayProResult : null;
+// On enrichit l'entry analyse avec mandatId si dossierMandatSel ou coMandatSel est renseigné
+// Hook sur proState.analyses.unshift via proxy non possible en vanilla — on patch saveToHistory
+var _origSaveToHistory = typeof saveToHistory !== 'undefined' ? saveToHistory : null;
+
+function refreshDossierLocSelect() {
+  var sel = document.getElementById('dossierLocSel');
+  if (!sel) return;
+  var arr = loadLocataires();
+  sel.innerHTML = '<option value="">— Nouveau dossier libre —</option>';
+  arr.forEach(function(l){
+    var opt = document.createElement('option');
+    opt.value = l.id;
+    opt.textContent = (l.prenom||'')+' '+(l.nom||'') + (l.adresse?' — '+l.adresse:'');
+    sel.appendChild(opt);
+  });
+}
+
+function selectDossierLoc(locId) {
+  if (!locId) return;
+  var arr = loadLocataires();
+  var l = arr.find(function(x){ return String(x.id)===String(locId); });
+  if (!l) return;
+  var f = function(id, val){ var el=document.getElementById(id); if(el && val) el.value=val; };
+  f('dossierNom', (l.prenom||'')+' '+(l.nom||''));
+  if (l.contrat) {
+    var sel = document.getElementById('dossierContrat');
+    if (sel) sel.value = l.contrat;
+  }
+  if (l.revenus) {
+    f('dossierRevenus', l.revenus);
+    updateDossierCalc();
+  }
+  if (l.loyer) f('dossierLoyer', l.loyer);
+  updateDossierCalc();
+}
+
+function updateDossierCalc() {
+  var loyer = parseFloat(document.getElementById('dossierLoyer').value) || 0;
+  var revenus = parseFloat(document.getElementById('dossierRevenus').value) || 0;
+
+  document.getElementById('effortLoyer').textContent = loyer ? loyer.toFixed(0)+' €' : '—';
+  document.getElementById('effortRevenus').textContent = revenus ? revenus.toFixed(0)+' €' : '—';
+  document.getElementById('regle3xMin').textContent = loyer ? (loyer*3).toFixed(0)+' €/mois' : '—';
+  document.getElementById('regle3xAct').textContent = revenus ? revenus.toFixed(0)+' €/mois' : '—';
+
+  if (!loyer || !revenus) {
+    document.getElementById('effortTaux').textContent = '—';
+    document.getElementById('effortTaux').style.color = 'var(--texte)';
+    document.getElementById('effortBarFill').style.width = '0%';
+    document.getElementById('effortMsg').textContent = 'Saisissez le loyer et les revenus pour voir le taux d\'effort.';
+    document.getElementById('regle3xBadge').innerHTML = '';
+    return;
+  }
+
+  var taux = (loyer / revenus) * 100;
+  var tauxStr = taux.toFixed(1) + ' %';
+  var couleur = taux <= 30 ? 'var(--vert)' : taux <= 40 ? '#f59e0b' : 'var(--accent)';
+  var msg = taux <= 30 ? '✓ Taux d\'effort acceptable (≤ 30 %). Dossier recevable selon la règle standard.'
+    : taux <= 40 ? '⚠ Taux d\'effort élevé (30–40 %). Exiger un garant ou vérifier les charges.'
+    : '⛔ Taux d\'effort excessif (> 40 %). Risque de défaut de paiement significatif.';
+
+  document.getElementById('effortTaux').textContent = tauxStr;
+  document.getElementById('effortTaux').style.color = couleur;
+  document.getElementById('effortBarFill').style.width = Math.min(taux, 100) + '%';
+  document.getElementById('effortBarFill').style.background = couleur;
+  document.getElementById('effortMsg').textContent = msg;
+  document.getElementById('effortMsg').style.color = couleur;
+
+  // Règle 3x
+  var ok3x = revenus >= loyer * 3;
+  document.getElementById('regle3xBadge').innerHTML = ok3x
+    ? '<span style="background:#f0fdf4;color:var(--vert);font-weight:700;font-size:.74rem;padding:2px 8px;border-radius:5px">✓ OK</span>'
+    : '<span style="background:#fdf2f2;color:var(--accent);font-weight:700;font-size:.74rem;padding:2px 8px;border-radius:5px">✗ Insuffisant</span>';
+}
+
+function handlePieceUpload(type, input) {
+  var files = input.files;
+  if (!files || !files.length) return;
+  var card = document.getElementById('piece-' + type + '-card');
+  var status = document.getElementById('piece-' + type + '-status');
+  if (!card || !status) return;
+
+  // Lire les fichiers en base64 (images) ou signaler PDF
+  var fileInfos = [];
+  var pending = files.length;
+  for (var i = 0; i < files.length; i++) {
+    (function(file) {
+      if (file.type.startsWith('image/')) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          fileInfos.push({ name: file.name, type: file.type, data: e.target.result, size: file.size });
+          pending--;
+          if (pending === 0) finishUpload();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // PDF : on garde le nom et taille uniquement (pas lisible en base64 utile pour Claude vision)
+        fileInfos.push({ name: file.name, type: file.type, data: null, size: file.size });
+        pending--;
+        if (pending === 0) finishUpload();
+      }
+    })(files[i]);
+  }
+
+  function finishUpload() {
+    proState.dossierPieces[type] = fileInfos;
+    card.classList.add('loaded');
+    status.textContent = files.length > 1 ? '✓ ' + files.length + ' fichiers' : '✓ ' + files[0].name.substring(0, 22) + (files[0].name.length > 22 ? '…' : '');
+  }
+}
+
+function lancerAnalyseDossier() {
+  var loyer = parseFloat(document.getElementById('dossierLoyer').value) || 0;
+  var revenus = parseFloat(document.getElementById('dossierRevenus').value) || 0;
+  var nom = document.getElementById('dossierNom').value.trim();
+  var contrat = document.getElementById('dossierContrat').value;
+  var anciennete = document.getElementById('dossierAnciennete').value;
+  var garant = document.getElementById('dossierGarant').value;
+
+  if (!loyer) { alert('Veuillez renseigner le loyer mensuel.'); return; }
+  if (!nom) { alert('Veuillez renseigner le nom du candidat.'); return; }
+
+  var pieces = proState.dossierPieces || {};
+  var piecesList = Object.keys(pieces).filter(function(k){ return pieces[k] && pieces[k].length; });
+
+  // Vérif minimum : au moins une pièce ou revenus renseignés
+  if (!revenus && !piecesList.length) {
+    alert('Renseignez au moins les revenus déclarés ou uploadez des pièces justificatives.');
+    return;
+  }
+
+  document.getElementById('dossierPlaceholder').style.display = 'none';
+  document.getElementById('dossierResult').style.display = 'none';
+  document.getElementById('dossierLoading').style.display = 'block';
+  document.getElementById('btnAnalyseDossier').disabled = true;
+
+  // Animer la barre de progression
+  var progress = 0;
+  var progressEl = document.getElementById('dossierProgressBar');
+  var msgEl = document.getElementById('dossierLoadingMsg');
+  var msgs = ['Lecture des documents…', 'Calcul du taux d\'effort…', 'Vérification de cohérence…', 'Détection d\'anomalies…', 'Génération du score…'];
+  var msgIdx = 0;
+  var progInterval = setInterval(function() {
+    progress = Math.min(progress + Math.random() * 12, 90);
+    progressEl.style.width = progress + '%';
+    if (msgIdx < msgs.length - 1 && progress > (msgIdx + 1) * 18) {
+      msgIdx++;
+      msgEl.textContent = msgs[msgIdx];
+    }
+  }, 400);
+
+  // Construire le prompt avec toutes les infos
+  var taux = revenus ? ((loyer / revenus) * 100).toFixed(1) : 'inconnu';
+  var contratLabels = {cdi:'CDI',cdd:'CDD',independant:'Indépendant/TNS',retraite:'Retraité',etudiant:'Étudiant',autre:'Autre'};
+  var ancLabels = {'moins6':'< 6 mois','6a12':'6-12 mois','1a3':'1-3 ans','plus3':'> 3 ans'};
+  var garantLabels = {non:'aucun garant',physique:'garant physique',visale:'Visa Visale',garantme:'GarantMe/Unkle'};
+
+  // Construire la liste des images disponibles pour analyse visuelle
+  var imagesForClaude = [];
+  Object.keys(pieces).forEach(function(type) {
+    if (!pieces[type]) return;
+    pieces[type].forEach(function(f) {
+      if (f.data && f.type.startsWith('image/')) {
+        imagesForClaude.push({ type: type, name: f.name, data: f.data, mediaType: f.type });
+      }
+    });
+  });
+
+  var promptText = 'Tu es un expert en analyse de dossiers locatifs pour une agence immobilière française. '
+    + 'Analyse le dossier suivant et fournis une évaluation structurée.\n\n'
+    + '═══ INFORMATIONS DU DOSSIER ═══\n'
+    + 'Candidat : ' + nom + '\n'
+    + 'Type de contrat : ' + (contratLabels[contrat] || contrat) + '\n'
+    + 'Ancienneté : ' + (ancLabels[anciennete] || anciennete) + '\n'
+    + 'Revenus nets déclarés : ' + (revenus ? revenus + ' €/mois' : 'non renseignés') + '\n'
+    + 'Loyer mensuel HC visé : ' + loyer + ' €/mois\n'
+    + 'Taux d\'effort calculé : ' + taux + ' %\n'
+    + 'Règle des 3x loyer : revenus ' + (revenus >= loyer * 3 ? 'SUFFISANTS' : 'INSUFFISANTS') + ' (' + (revenus ? revenus : 0) + ' € vs minimum ' + (loyer * 3) + ' €)\n'
+    + 'Garant prévu : ' + (garantLabels[garant] || garant) + '\n'
+    + 'Pièces fournies : ' + (piecesList.length ? piecesList.join(', ') : 'aucune uploadée') + '\n'
+    + (imagesForClaude.length ? 'Images analysables : ' + imagesForClaude.length + ' (vois les images jointes)\n' : '')
+    + '\n═══ INSTRUCTIONS ═══\n'
+    + 'Fournis une analyse en JSON UNIQUEMENT (sans markdown, sans backticks) avec cette structure exacte :\n'
+    + '{\n'
+    + '  "score": <0-100>,\n'
+    + '  "verdict": "GO" | "NO_GO" | "MITIGE",\n'
+    + '  "verdict_label": "<texte court du verdict>",\n'
+    + '  "verdict_texte": "<2-3 phrases synthétisant le verdict>",\n'
+    + '  "score_details": [\n'
+    + '    {"label": "Solvabilité", "score": <0-100>, "commentaire": "..."},\n'
+    + '    {"label": "Stabilité professionnelle", "score": <0-100>, "commentaire": "..."},\n'
+    + '    {"label": "Taux d\'effort", "score": <0-100>, "commentaire": "..."},\n'
+    + '    {"label": "Complétude dossier", "score": <0-100>, "commentaire": "..."},\n'
+    + '    {"label": "Cohérence documents", "score": <0-100>, "commentaire": "..."}\n'
+    + '  ],\n'
+    + '  "alertes": [\n'
+    + '    {"niveau": "rouge"|"orange"|"vert"|"bleu", "icone": "<emoji>", "titre": "...", "detail": "..."}\n'
+    + '  ],\n'
+    + '  "analyse_detaillee": "<texte complet de l\'analyse, 8-12 lignes, structuré en paragraphes>"\n'
+    + '}\n'
+    + 'Sois précis, professionnel et orienté décision. Mentionne explicitement les risques et points forts.';
+
+  // Construire le message multi-modal si des images sont disponibles
+  var messageContent;
+  if (imagesForClaude.length > 0) {
+    messageContent = [];
+    // Ajouter les images (max 4 pour ne pas dépasser les tokens)
+    var imgLimit = Math.min(imagesForClaude.length, 4);
+    for (var i = 0; i < imgLimit; i++) {
+      var img = imagesForClaude[i];
+      var base64 = img.data.split(',')[1];
+      messageContent.push({
+        type: 'image',
+        source: { type: 'base64', media_type: img.mediaType, data: base64 }
+      });
+    }
+    messageContent.push({ type: 'text', text: promptText });
+  } else {
+    messageContent = promptText;
+  }
+
+  (async function() {
+    var result = null;
+    try {
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': '',
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1800,
+          messages: [{ role: 'user', content: messageContent }]
+        })
+      });
+      var data = await resp.json();
+      var raw = (data.content && data.content[0] && data.content[0].text) || '';
+      // Parser le JSON
+      var clean = raw.replace(/```json|```/g, '').trim();
+      result = JSON.parse(clean);
+    } catch(e) {
+      // Fallback si API échoue ou JSON malformé
+      result = buildDossierFallback(loyer, revenus, contrat, anciennete, garant, piecesList, taux);
+    }
+
+    clearInterval(progInterval);
+    progressEl.style.width = '100%';
+
+    setTimeout(function() {
+      document.getElementById('dossierLoading').style.display = 'none';
+      document.getElementById('btnAnalyseDossier').disabled = false;
+      afficherResultatDossier(result, nom, loyer, revenus, taux);
+    }, 400);
+  })();
+}
+
+function buildDossierFallback(loyer, revenus, contrat, anciennete, garant, piecesList, taux) {
+  var tauxNum = parseFloat(taux) || 0;
+  var ok3x = revenus >= loyer * 3;
+  var score = 50;
+  if (ok3x) score += 20;
+  if (tauxNum <= 30) score += 15;
+  else if (tauxNum <= 40) score += 5;
+  if (contrat === 'cdi') score += 10;
+  else if (contrat === 'cdd') score -= 5;
+  if (anciennete === 'plus3') score += 5;
+  if (anciennete === 'moins6') score -= 10;
+  if (piecesList.length >= 3) score += 5;
+  score = Math.max(0, Math.min(100, score));
+
+  var verdict = score >= 65 ? 'GO' : score >= 45 ? 'MITIGE' : 'NO_GO';
+  var alertes = [];
+  if (!ok3x) alertes.push({niveau:'rouge',icone:'⚠',titre:'Revenus insuffisants',detail:'Les revenus ne respectent pas la règle des 3× le loyer (minimum requis : '+(loyer*3)+' €).'});
+  if (tauxNum > 40) alertes.push({niveau:'rouge',icone:'📊',titre:'Taux d\'effort excessif',detail:'Le taux d\'effort de '+taux+'% dépasse le seuil acceptable de 40%.'});
+  if (contrat === 'cdd') alertes.push({niveau:'orange',icone:'📄',titre:'CDD — durée à vérifier',detail:'Un CDD implique une incertitude sur la pérennité des revenus. Vérifier la durée restante.'});
+  if (anciennete === 'moins6') alertes.push({niveau:'orange',icone:'⏱',titre:'Poste récent',detail:'Moins de 6 mois à ce poste. Risque de période d\'essai non encore terminée.'});
+  if (!piecesList.length) alertes.push({niveau:'orange',icone:'📎',titre:'Aucune pièce justificative',detail:'Aucun document n\'a été fourni. L\'analyse est basée sur les informations déclaratives uniquement.'});
+  if (garant !== 'non') alertes.push({niveau:'vert',icone:'🛡',titre:'Garant prévu',detail:'Un garant est prévu, ce qui réduit le risque pour le bailleur.'});
+  if (score >= 70) alertes.push({niveau:'vert',icone:'✅',titre:'Dossier recevable',detail:'Le profil du candidat est globalement cohérent avec les exigences locatives standard.'});
+
+  return {
+    score: score,
+    verdict: verdict,
+    verdict_label: verdict === 'GO' ? '✅ Dossier recevable' : verdict === 'NO_GO' ? '❌ Dossier refusé' : '⚠ Dossier à étudier',
+    verdict_texte: verdict === 'GO'
+      ? 'Le profil financier du candidat est compatible avec le logement visé. Les indicateurs principaux sont dans les normes attendues.'
+      : verdict === 'NO_GO'
+      ? 'Le dossier présente des insuffisances importantes. Le risque de défaut de paiement est élevé selon les critères standard.'
+      : 'Le dossier présente à la fois des points forts et des zones d\'incertitude. Une analyse complémentaire ou un garant est recommandé.',
+    score_details: [
+      {label:'Solvabilité', score: ok3x ? 80 : 30, commentaire: ok3x ? 'Revenus suffisants (règle des 3×)' : 'Revenus inférieurs à 3× le loyer'},
+      {label:'Stabilité professionnelle', score: contrat==='cdi'?85:contrat==='cdd'?50:60, commentaire: contrat==='cdi'?'CDI : stabilité solide':'Statut à surveiller'},
+      {label:'Taux d\'effort', score: tauxNum<=30?90:tauxNum<=40?60:20, commentaire: 'Taux d\'effort : '+taux+'%'},
+      {label:'Complétude dossier', score: piecesList.length>=4?90:piecesList.length>=2?65:30, commentaire: piecesList.length+' pièce(s) fournie(s)'},
+      {label:'Cohérence documents', score: piecesList.length?70:50, commentaire: piecesList.length?'Pièces uploadées — vérification manuelle conseillée':'Aucune pièce à vérifier'}
+    ],
+    alertes: alertes,
+    analyse_detaillee: 'Analyse du dossier de '+(document.getElementById('dossierNom').value||'le candidat')+'.\n\n'
+      + 'SITUATION FINANCIÈRE : Les revenus déclarés s\'élèvent à '+(revenus||'NC')+'€/mois pour un loyer de '+loyer+'€. '
+      + 'Le taux d\'effort calculé est de '+taux+'%. '+(tauxNum<=30?'Ce taux est dans les normes acceptables.':tauxNum<=40?'Ce taux est élevé mais peut être acceptable avec un garant.':'Ce taux dépasse les seuils recommandés.')+'\n\n'
+      + 'STABILITÉ PROFESSIONNELLE : Contrat de type '+(contrat||'NC')+', ancienneté '+(anciennete||'NC')+'.'+(contrat==='cdi'?' Un CDI offre une bonne garantie de revenus stables.':' Vérifier la durée et les perspectives de renouvellement.')+'\n\n'
+      + 'COMPLÉTUDE DU DOSSIER : '+(piecesList.length?piecesList.length+' type(s) de pièce(s) fourni(s) : '+piecesList.join(', ')+'.':'Aucune pièce justificative uploadée. L\'analyse est purement déclarative.')+'\n\n'
+      + 'RECOMMANDATION : '+(verdict==='GO'?'Dossier recevable. Procéder à la vérification manuelle des originaux avant signature du bail.':verdict==='NO_GO'?'Dossier insuffisant. Demander un garant solide ou refuser la candidature.':'Dossier à compléter. Demander les pièces manquantes et vérifier la cohérence des documents.')
+  };
+}
+
+function afficherResultatDossier(result, nom, loyer, revenus, taux) {
+  if (!result) return;
+  proState.currentDossierResult = result;
+
+  var score = result.score || 0;
+  var verdict = result.verdict || 'MITIGE';
+
+  // Couleur selon verdict
+  var verdictColor = verdict === 'GO' ? 'var(--vert)' : verdict === 'NO_GO' ? '#dc2626' : '#d97706';
+  var verdictBg = verdict === 'GO' ? '#f0fdf4' : verdict === 'NO_GO' ? '#fef2f2' : '#fffbeb';
+
+  // Jauge circulaire
+  var circumference = 239;
+  var offset = circumference - (score / 100) * circumference;
+  var circle = document.getElementById('dossierScoreCircle');
+  if (circle) {
+    circle.style.strokeDashoffset = offset;
+    circle.style.stroke = verdictColor;
+  }
+  var scoreNum = document.getElementById('dossierScoreNum');
+  if (scoreNum) { scoreNum.textContent = score; scoreNum.style.color = verdictColor; }
+
+  // Verdict badge
+  var badge = document.getElementById('dossierVerdictBadge');
+  if (badge) {
+    badge.textContent = result.verdict_label || verdict;
+    badge.style.cssText = 'font-size:1rem;font-weight:800;padding:6px 20px;border-radius:10px;background:'+verdictBg+';color:'+verdictColor+';border:2px solid '+verdictColor;
+  }
+  var verdictTxt = document.getElementById('dossierVerdictText');
+  if (verdictTxt) verdictTxt.textContent = result.verdict_texte || '';
+
+  // Barres de détail
+  var barsEl = document.getElementById('dossierScoreBars');
+  if (barsEl && result.score_details) {
+    barsEl.innerHTML = result.score_details.map(function(d) {
+      var barColor = d.score >= 70 ? 'var(--vert)' : d.score >= 45 ? '#f59e0b' : '#dc2626';
+      return '<div class="score-bar-row">'
+        + '<div class="score-bar-row-label">' + d.label + '</div>'
+        + '<div class="score-bar-track"><div class="score-bar-fill" style="width:'+d.score+'%;background:'+barColor+'"></div></div>'
+        + '<div class="score-bar-val" style="color:'+barColor+'">' + d.score + '</div>'
+        + '</div>'
+        + (d.commentaire ? '<div style="font-size:.71rem;color:var(--gris);padding-left:140px;margin-top:-4px;margin-bottom:4px">'+d.commentaire+'</div>' : '');
+    }).join('');
+  }
+
+  // Alertes
+  var alertesEl = document.getElementById('dossierAlertesList');
+  if (alertesEl && result.alertes && result.alertes.length) {
+    alertesEl.innerHTML = result.alertes.map(function(a) {
+      return '<div class="alerte-item ' + (a.niveau||'bleu') + '">'
+        + '<span style="font-size:1.2rem">' + (a.icone||'ℹ') + '</span>'
+        + '<div><div style="font-weight:700;margin-bottom:2px">' + a.titre + '</div>'
+        + '<div style="font-size:.78rem;color:var(--gris)">' + a.detail + '</div></div>'
+        + '</div>';
+    }).join('');
+  } else if (alertesEl) {
+    alertesEl.innerHTML = '<div style="color:var(--gris);font-size:.84rem;padding:10px 0">Aucun point de vigilance particulier.</div>';
+  }
+
+  // Analyse détaillée
+  var analyseEl = document.getElementById('dossierAnalyseText');
+  if (analyseEl) analyseEl.textContent = result.analyse_detaillee || '';
+
+  document.getElementById('dossierResult').style.display = 'block';
+
+  // Sauvegarder dans l'historique
+  var entry = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('fr-FR'),
+    nom: nom,
+    loyer: loyer,
+    revenus: revenus,
+    taux: taux,
+    score: score,
+    verdict: verdict,
+    verdict_label: result.verdict_label || verdict,
+    locId: document.getElementById('dossierLocSel').value || null,
+    result: result
+  };
+  proState.dossierHisto.unshift(entry);
+  if (proState.dossierHisto.length > 50) proState.dossierHisto = proState.dossierHisto.slice(0, 50);
+  localStorage.setItem('bailscan_dossiers_histo', JSON.stringify(proState.dossierHisto));
+  refreshDossierHisto();
+}
+
+function refreshDossierHisto() {
+  var el = document.getElementById('dossierHistoBody');
+  if (!el) return;
+  var arr = proState.dossierHisto || [];
+  if (!arr.length) {
+    el.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--gris)">Aucun dossier analysé.</td></tr>';
+    return;
+  }
+  el.innerHTML = arr.map(function(d, i) {
+    var vColor = d.verdict==='GO'?'var(--vert)':d.verdict==='NO_GO'?'#dc2626':'#d97706';
+    var vBg    = d.verdict==='GO'?'#f0fdf4':d.verdict==='NO_GO'?'#fef2f2':'#fffbeb';
+    var taux = d.taux ? d.taux+'%' : '—';
+    return '<tr style="border-bottom:1px solid var(--border)">'
+      + '<td style="padding:8px 6px;font-size:.82rem">' + d.date + '</td>'
+      + '<td style="font-weight:600;font-size:.84rem">' + (d.nom||'—') + '</td>'
+      + '<td style="font-size:.82rem;color:var(--gris)">' + (d.loyer?d.loyer+' €/mois':'—') + '</td>'
+      + '<td style="font-size:.82rem">' + taux + '</td>'
+      + '<td><span class="score-badge '+(d.score>=70?'high':d.score>=50?'mid':'low')+'">' + d.score + '/100</span></td>'
+      + '<td><span style="background:'+vBg+';color:'+vColor+';font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:5px">' + (d.verdict_label||d.verdict) + '</span></td>'
+      + '<td style="text-align:right">'
+      + '<button class="btn-sm" onclick="revoirDossier(' + i + ')">👁 Voir</button>'
+      + ' <button class="btn-sm" onclick="exportDossierPDFIdx(' + i + ')">📄 PDF</button>'
+      + ' <button class="btn-sm" style="color:var(--accent);border-color:var(--accent)" onclick="supprimerDossierHisto(' + i + ')">✕</button>'
+      + '</td></tr>';
+  }).join('');
+}
+
+function revoirDossier(idx) {
+  var d = proState.dossierHisto[idx];
+  if (!d || !d.result) return;
+  document.getElementById('dossierPlaceholder').style.display = 'none';
+  document.getElementById('dossierLoading').style.display = 'none';
+  afficherResultatDossier(d.result, d.nom, d.loyer, d.revenus, d.taux);
+  showDashTab('dossier');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function supprimerDossierHisto(idx) {
+  if (!confirm('Supprimer cette analyse ?')) return;
+  proState.dossierHisto.splice(idx, 1);
+  localStorage.setItem('bailscan_dossiers_histo', JSON.stringify(proState.dossierHisto));
+  refreshDossierHisto();
+}
+
+function validerDossier(goDecision) {
+  var result = proState.currentDossierResult;
+  if (!result) return;
+  var locId = document.getElementById('dossierLocSel').value;
+  var label = goDecision ? 'Dossier validé — GO ✅' : 'Dossier refusé — NO GO ❌';
+  alert(label + '\n\nDécision enregistrée.' + (locId ? ' Vous pouvez retrouver ce dossier dans la fiche locataire.' : ''));
+  // Mettre à jour dans l'histo
+  if (proState.dossierHisto.length) {
+    proState.dossierHisto[0].decisionManuelle = goDecision ? 'GO' : 'NO_GO';
+    localStorage.setItem('bailscan_dossiers_histo', JSON.stringify(proState.dossierHisto));
+    refreshDossierHisto();
+  }
+}
+
+function resetDossierAnalyse() {
+  document.getElementById('dossierResult').style.display = 'none';
+  document.getElementById('dossierPlaceholder').style.display = 'block';
+  proState.dossierPieces = {};
+  // Reset les cards de pièces
+  ['cni','paie','impots','contrat','banque','quittances'].forEach(function(t) {
+    var card = document.getElementById('piece-' + t + '-card');
+    var status = document.getElementById('piece-' + t + '-status');
+    if (card) card.classList.remove('loaded');
+    if (status) {
+      var optional = ['contrat','banque','quittances'].indexOf(t) !== -1;
+      status.textContent = optional ? 'Optionnel' : 'Non fourni(e)';
+    }
+    var input = document.getElementById('piece-' + t);
+    if (input) input.value = '';
+  });
+  proState.currentDossierResult = null;
+}
+
+function exportDossierPDF() {
+  var result = proState.currentDossierResult;
+  if (!result) { alert('Générez d\'abord une analyse.'); return; }
+  var nom = document.getElementById('dossierNom').value || 'Candidat';
+  var loyer = document.getElementById('dossierLoyer').value || '—';
+  var revenus = document.getElementById('dossierRevenus').value || '—';
+  exportDossierPDFCore(result, nom, loyer, revenus);
+}
+
+function exportDossierPDFIdx(idx) {
+  var d = proState.dossierHisto[idx];
+  if (!d || !d.result) return;
+  exportDossierPDFCore(d.result, d.nom, d.loyer, d.revenus);
+}
+
+function exportDossierPDFCore(result, nom, loyer, revenus) {
+  try {
+    if (!window.jspdf) { alert('jsPDF non disponible.'); return; }
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF();
+    var ai = proState.agencyInfo || {};
+    var agence = ai.nom || (proState.user ? proState.user.agence || 'BailScan Pro' : 'BailScan Pro');
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 16;
+
+    // Header bleu
+    doc.setFillColor(67, 97, 238);
+    doc.rect(0, 0, pageW, 38, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16); doc.setFont(undefined, 'bold');
+    doc.text('Rapport d\'analyse de dossier locataire', margin, 15);
+    doc.setFontSize(9); doc.setFont(undefined, 'normal');
+    doc.text(agence + (ai.siret?' — SIRET : '+ai.siret:''), margin, 23);
+    doc.text('Généré le ' + new Date().toLocaleDateString('fr-FR') + ' par BailScan Pro', margin, 30);
+    doc.setTextColor(40, 40, 40);
+
+    var y = 48;
+
+    // Verdict
+    var verdictColor = result.verdict === 'GO' ? [39,174,96] : result.verdict === 'NO_GO' ? [220,38,38] : [217,119,6];
+    doc.setFillColor(verdictColor[0], verdictColor[1], verdictColor[2]);
+    doc.roundedRect(margin, y, pageW-margin*2, 22, 4, 4, 'F');
+    doc.setTextColor(255,255,255); doc.setFontSize(13); doc.setFont(undefined,'bold');
+    doc.text(result.verdict_label || result.verdict, pageW/2, y+10, {align:'center'});
+    doc.setFontSize(9); doc.setFont(undefined,'normal');
+    doc.text('Score de solvabilité : '+result.score+'/100', pageW/2, y+17, {align:'center'});
+    doc.setTextColor(40,40,40); y += 30;
+
+    // Infos candidat
+    doc.setFontSize(11); doc.setFont(undefined,'bold');
+    doc.text('Candidat : '+nom, margin, y); y += 7;
+    doc.setFontSize(9); doc.setFont(undefined,'normal');
+    doc.text('Loyer HC : '+loyer+' € | Revenus déclarés : '+revenus+' €/mois', margin, y); y += 12;
+
+    // Score details
+    if (result.score_details && result.score_details.length) {
+      doc.setFontSize(11); doc.setFont(undefined,'bold');
+      doc.text('Détail du score', margin, y); y += 7;
+      doc.setFontSize(9); doc.setFont(undefined,'normal');
+      result.score_details.forEach(function(d) {
+        var barColor = d.score >= 70 ? [39,174,96] : d.score >= 45 ? [217,119,6] : [220,38,38];
+        doc.text(d.label + ' : ' + d.score + '/100', margin, y);
+        doc.setFillColor(barColor[0],barColor[1],barColor[2]);
+        doc.rect(margin+80, y-4, (d.score/100)*80, 5, 'F');
+        if (d.commentaire) { doc.setTextColor(120,120,120); doc.text(d.commentaire, margin+165, y); doc.setTextColor(40,40,40); }
+        y += 8;
+      });
+      y += 4;
+    }
+
+    // Alertes
+    if (result.alertes && result.alertes.length) {
+      doc.setFontSize(11); doc.setFont(undefined,'bold');
+      doc.text('Points de vigilance', margin, y); y += 7;
+      doc.setFontSize(9); doc.setFont(undefined,'normal');
+      result.alertes.forEach(function(a) {
+        if (y > 260) { doc.addPage(); y = 20; }
+        doc.text('• ' + a.titre + (a.detail?' — '+a.detail:''), margin, y, {maxWidth: pageW-margin*2});
+        y += 8;
+      });
+      y += 4;
+    }
+
+    // Analyse détaillée
+    if (result.analyse_detaillee) {
+      if (y > 220) { doc.addPage(); y = 20; }
+      doc.setFontSize(11); doc.setFont(undefined,'bold');
+      doc.text('Analyse détaillée', margin, y); y += 7;
+      doc.setFontSize(9); doc.setFont(undefined,'normal');
+      var lines = doc.splitTextToSize(result.analyse_detaillee, pageW - margin*2);
+      lines.forEach(function(line) {
+        if (y > 270) { doc.addPage(); y = 20; }
+        doc.text(line, margin, y); y += 6;
+      });
+    }
+
+    doc.save('analyse-dossier-'+nom.replace(/\s+/g,'-').toLowerCase()+'-'+new Date().toISOString().split('T')[0]+'.pdf');
+  } catch(e) { alert('Erreur PDF : ' + e.message); }
+}
+
 function saveSettings(){
   if(!proState.user)return;
   proState.user.agence=document.getElementById('settingsAgence').value;
@@ -2773,6 +4866,17 @@ function updatePrices(){
   var nS=document.getElementById('noteStarter'), nP=document.getElementById('notePro');
   if(nS)nS.textContent=note?note+' | Total: '+(ps*(pricingMode==='annuel'?12:pricingEngagement))+'€':'';
   if(nP)nP.textContent=note?note+' | Total: '+(pp*(pricingMode==='annuel'?12:pricingEngagement))+'€':'';
+}
+
+
+function toggleAnalyseTraitee(id) {
+  var arr = proState.analyses;
+  var a = arr.find(function(x){ return x.id === id; });
+  if (!a) return;
+  a.traite = !a.traite;
+  a.dateTrait = a.traite ? new Date().toLocaleDateString('fr-FR') : null;
+  localStorage.setItem('bailscan_analyses', JSON.stringify(arr));
+  refreshHisto();
 }
 
 function applyFilters(){
@@ -3579,7 +5683,9 @@ function exportBailPDF() {
     var pW = 210; var mg = 18; var usableW = pW - mg * 2;
 
     var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
-    var agence = proState.user ? (proState.user.agence || 'BailScan Pro') : 'BailScan Pro';
+    var ai = proState.agencyInfo || {};
+    var agence = ai.nom || (proState.user ? (proState.user.agence || 'BailScan Pro') : 'BailScan Pro');
+    var agenceLine2 = (ai.siret ? 'SIRET : ' + ai.siret : '') + (ai.adresse ? (ai.siret ? ' · ' : '') + ai.adresse : '');
 
     // ══════════════════════════════════════════════════════
     // PAGE DE GARDE
@@ -3765,6 +5871,23 @@ function exportBailPDF() {
     }
 
     doc.save('bail-' + dateGen.replace(/\//g,'-') + '.pdf');
+    // Sauvegarder dans l'historique
+    try {
+      var bailEntry = {
+        id: Date.now(),
+        date: dateGen,
+        agence: agence,
+        bailleur: (js.match(/Nom[^:]*:\s*([^\n]+)/i)||[])[1] || '',
+        locataire: (proState.currentBail.match(/Locataire[^:]*:\s*([^\n]+)/i)||[])[1] || '',
+        adresse: (proState.currentBail.match(/Adresse du bien[^:]*:\s*([^\n]+)/i)||[])[1] || '',
+        loyer: (proState.currentBail.match(/Loyer mensuel[^:]*:\s*([^\n]+)/i)||[])[1] || '',
+        texte: proState.currentBail
+      };
+      proState.bailsHisto.unshift(bailEntry);
+      if (proState.bailsHisto.length > 50) proState.bailsHisto = proState.bailsHisto.slice(0, 50);
+      localStorage.setItem('bailscan_bails_histo', JSON.stringify(proState.bailsHisto));
+      refreshBailsHisto();
+    } catch(e2){}
   } catch(e) { alert('Erreur PDF : ' + e.message); console.error(e); }
 }
 
@@ -4128,14 +6251,14 @@ function openFicheLocataire(locId, event, tab) {
 
   var activeTab = tab || 'infos';
 
+  // Toujours recréer pour éviter les bugs de réouverture
   var modal = document.getElementById('modalFicheLocataire');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'modalFicheLocataire';
-    modal.className = 'modal-overlay';
-    modal.addEventListener('click', function(e){ if (e.target === modal) closeFicheLocataire(); });
-    document.body.appendChild(modal);
-  }
+  if (modal) { modal.remove(); }
+  modal = document.createElement('div');
+  modal.id = 'modalFicheLocataire';
+  modal.className = 'modal-overlay';
+  modal.addEventListener('click', function(e){ if (e.target === modal) closeFicheLocataire(); });
+  document.body.appendChild(modal);
 
   // ── Contenant principal ──
   var inner = document.createElement('div');
@@ -4163,9 +6286,11 @@ function openFicheLocataire(locId, event, tab) {
   var tabsBar = document.createElement('div');
   tabsBar.style.cssText = 'display:flex;gap:4px;border-bottom:2px solid var(--border);padding:0 24px';
 
+  var locCourriers = (proState.courrierHisto||[]).filter(function(co){ return String(co.locId)===String(locId); });
   [
     {id:'infos', label:'📋 Infos'},
     {id:'quittances', label:'🧾 Quittances ('+locQ.length+')'},
+    {id:'courriers', label:'📨 Courriers ('+locCourriers.length+')'},
     {id:'documents', label:'📎 Documents ('+docs.length+')'}
   ].forEach(function(t){
     var btn = document.createElement('button');
@@ -4223,6 +6348,23 @@ function openFicheLocataire(locId, event, tab) {
         +'<thead><tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:6px;font-weight:600">Période</th><th style="font-weight:600">Montant</th><th style="font-weight:600">Mode</th><th style="font-weight:600">Émise le</th><th></th></tr></thead>'
         +'<tbody>'+qRows+'</tbody></table>';
     }
+  }
+
+  if (activeTab === 'courriers') {
+    var courrierContainer = document.createElement('div');
+    courrierContainer.style.cssText = 'margin-bottom:12px';
+    var genBtn = document.createElement('button');
+    genBtn.className = 'btn-primary-pro';
+    genBtn.style.cssText = 'font-size:.84rem;padding:8px 16px;margin-bottom:16px';
+    genBtn.textContent = '✍️ Générer un courrier pour ce locataire';
+    genBtn.onclick = function() {
+      closeFicheLocataire();
+      showDashTab('courriers');
+      setTimeout(function(){ autoFillCourrierFromLocataire(locId); }, 150);
+    };
+    body.appendChild(genBtn);
+    refreshCourrierHistoFiche(locId, courrierContainer);
+    body.appendChild(courrierContainer);
   }
 
   if (activeTab === 'documents') {
@@ -4402,8 +6544,15 @@ function refreshLocSelect() {
 }
 
 function refreshLocatairesForCourriers() {
-
   refreshLocSelect();
+  refreshCourrierLocataireSelect();
+  // Auto-remplir bailleur depuis agencyInfo
+  var ai = proState.agencyInfo || {};
+  var agenceNom = ai.nom || (proState.user ? proState.user.agence || '' : '');
+  var agenceAdresse = ai.adresse || '';
+  var f = function(id, val){ var el=document.getElementById(id); if(el && !el.value && val) el.value=val; };
+  f('coBailleur', agenceNom);
+  f('coBailleurAdresse', agenceAdresse);
 }
 
 function prefillQuittanceMois() {
@@ -4545,7 +6694,10 @@ function exportQuittancePDF() {
     var jsPDF = window.jspdf.jsPDF;
     var doc = new jsPDF({ format:'a4', compress:true });
     var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
-    var agence = proState.user ? (proState.user.agence||'') : '';
+    var ai = proState.agencyInfo || {};
+    var agence = ai.nom || (proState.user ? (proState.user.agence||'') : '');
+    var agenceSIRET = ai.siret || '';
+    var agenceAdresse = ai.adresse || '';
     var pW = 210; var mg = 16;
 
     // ─── HEADER PLEINE LARGEUR ─────────────────────────────────────────
@@ -4722,54 +6874,91 @@ async function genererCourrier() {
   var locataire = document.getElementById('coLocataire').value.trim();
   var adresse = document.getElementById('coAdresse').value.trim();
   var details = document.getElementById('coDetails').value.trim();
-  if (!bailleur || !locataire) { alert('Renseignez bailleur et locataire.'); return; }
+  if (!bailleur || !locataire) { alert('Renseignez au moins le bailleur et le locataire.'); return; }
 
-  document.getElementById('courrierResult').style.display='none';
-  document.getElementById('courrierLoading').style.display='block';
-  document.getElementById('btnGenCourrier').disabled=true;
-  document.getElementById('courrierActions').style.display='none';
+  var btn = document.getElementById('btnGenCourrier');
+  var loadEl = document.getElementById('courrierLoading');
+  var resultEl = document.getElementById('courrierResult');
+  var actionsEl = document.getElementById('courrierActions');
 
-  var bailleurAdresse = (document.getElementById('coBailleurAdresse')||{value:''}).value.trim();
+  resultEl.style.display = 'none';
+  loadEl.style.display = 'block';
+  btn.disabled = true;
+  actionsEl.style.display = 'none';
+
+  var ai = proState.agencyInfo || {};
+  var agenceNom = ai.nom || (proState.user ? (proState.user.agence || 'BailScan Pro') : 'BailScan Pro');
+  var agenceAdresse = ai.adresse || (document.getElementById('coBailleurAdresse')||{value:''}).value.trim() || '';
+  var agenceSiret = ai.siret ? 'SIRET : ' + ai.siret : '';
+  var agenceTel = ai.tel ? 'Tél : ' + ai.tel : '';
+  var agenceEmail = ai.email ? 'Email : ' + ai.email : '';
+
   var basePrompt = COURRIER_PROMPTS[type] || COURRIER_PROMPTS.conge_bailleur;
   var prompt = basePrompt + '\n\n'
-    + 'Bailleur/Expéditeur : ' + bailleur + '\n'
-    + (bailleurAdresse ? 'Adresse bailleur : ' + bailleurAdresse + '\n' : '')
+    + 'Expéditeur/Bailleur : ' + agenceNom + '\n'
+    + (agenceAdresse ? 'Adresse expéditeur : ' + agenceAdresse + '\n' : '')
+    + (agenceSiret ? agenceSiret + '\n' : '')
+    + (agenceTel ? agenceTel + '\n' : '')
+    + (agenceEmail ? agenceEmail + '\n' : '')
     + 'Locataire/Destinataire : ' + locataire + '\n'
     + (adresse ? 'Bien loué : ' + adresse + '\n' : '')
     + (details ? 'Informations complémentaires : ' + details + '\n' : '')
-    + '\nRédigez une lettre professionnelle et juridiquement conforme. Incluez OBLIGATOIREMENT dans l\'en-tête :\n- Les coordonnées complètes de l\'expéditeur (bailleur) en haut à gauche\n- Les coordonnées du destinataire (locataire) à droite\n- La date et la ville\n- Un objet clair\nPuis le corps de la lettre et une formule de politesse. Date : '
-    + new Date().toLocaleDateString('fr-FR') + '. Répondez UNIQUEMENT avec le texte de la lettre, sans explication.';
+    + '\nRédigez une lettre professionnelle et juridiquement conforme. En-tête OBLIGATOIRE :\n'
+    + '- Coordonnées complètes de l\'expéditeur (bailleur) en haut à gauche\n'
+    + '- Coordonnées du destinataire (locataire) à droite\n'
+    + '- Date et ville\n- Objet clair\n'
+    + 'Puis corps de la lettre et formule de politesse. Date : '
+    + new Date().toLocaleDateString('fr-FR')
+    + '. Répondez UNIQUEMENT avec le texte de la lettre, sans explication.';
 
-  var texte = '';
-  try {
-    var resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':'',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514', max_tokens:1200,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    var data = await resp.json();
-    texte = (data.content && data.content[0] && data.content[0].text) || '';
-  } catch(e) {}
+  (async function() {
+    var texte = '';
+    try {
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':'','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1400,messages:[{role:'user',content:prompt}]})
+      });
+      var data = await resp.json();
+      texte = (data.content && data.content[0] && data.content[0].text) || '';
+    } catch(e) {}
 
-  if (!texte) {
-    texte = genCourrierFallback(type, bailleur, locataire, adresse, details, bailleurAdresse);
-  }
+    if (!texte) {
+      var bailleurAdresse = agenceAdresse;
+      texte = genCourrierFallback(type, agenceNom, locataire, adresse, details, bailleurAdresse);
+    }
 
-  proState.currentCourrier = texte;
-  document.getElementById('courrierLoading').style.display='none';
-  document.getElementById('courrierResult').style.display='block';
-  document.getElementById('courrierResult').textContent = texte;
-  document.getElementById('courrierActions').style.display='flex';
-  document.getElementById('btnGenCourrier').disabled=false;
+    proState.currentCourrier = texte;
+
+    // Sauvegarder dans l'historique courriers
+    try {
+      var courrierEntry = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString('fr-FR'),
+        type: type,
+        typeLabel: document.querySelector('.courrier-type-card.active') ? document.querySelector('.courrier-type-card.active').textContent.trim().split('\n')[0] : type,
+        bailleur: agenceNom,
+        locataire: locataire,
+        adresse: adresse,
+        texte: texte,
+        locId: proState.currentCourrierLocId || null
+      };
+      proState.courrierHisto.unshift(courrierEntry);
+      if (proState.courrierHisto.length > 100) proState.courrierHisto = proState.courrierHisto.slice(0, 100);
+      localStorage.setItem('bailscan_courriers_histo', JSON.stringify(proState.courrierHisto));
+      refreshCourrierHisto();
+    } catch(e2) {}
+
+    loadEl.style.display = 'none';
+    resultEl.style.display = 'block';
+    resultEl.textContent = texte;
+    actionsEl.style.display = 'flex';
+    btn.disabled = false;
+    btn.textContent = '✍️ Générer un nouveau courrier →';
+  })();
 }
+
+
 
 function genCourrierFallback(type, bailleur, locataire, adresse, details, bailleurAdresse) {
   var today = new Date().toLocaleDateString('fr-FR');
