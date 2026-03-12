@@ -1998,28 +1998,28 @@
                 <div style="font-size:2rem;margin-bottom:12px">✉️</div>
                 Sélectionnez un type de courrier et remplissez les informations
               </div>
-
-          <!-- ══ HISTORIQUE COURRIERS GÉNÉRÉS ══ -->
-          <div class="dash-card" style="margin-top:20px">
-            <div class="dash-section-title">📬 Historique des courriers générés</div>
-            <div style="overflow-x:auto;margin-top:12px">
-              <table style="width:100%;border-collapse:collapse;font-size:.84rem">
-                <thead>
-                  <tr style="border-bottom:2px solid var(--border)">
-                    <th style="text-align:left;padding:8px 6px;font-weight:600;font-size:.78rem;color:var(--gris)">Date</th>
-                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Type</th>
-                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Locataire</th>
-                    <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Bien</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody id="courrierHistoBody">
-                  <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gris)">Aucun courrier généré.</td></tr>
-                </tbody>
-              </table>
             </div>
           </div>
-            </div>
+        </div>
+
+        <!-- ══ HISTORIQUE COURRIERS GÉNÉRÉS ══ -->
+        <div class="dash-card" style="margin-top:20px">
+          <div class="dash-section-title">📬 Historique des courriers générés</div>
+          <div style="overflow-x:auto;margin-top:12px">
+            <table style="width:100%;border-collapse:collapse;font-size:.84rem">
+              <thead>
+                <tr style="border-bottom:2px solid var(--border)">
+                  <th style="text-align:left;padding:8px 6px;font-weight:600;font-size:.78rem;color:var(--gris)">Date</th>
+                  <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Type</th>
+                  <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Locataire</th>
+                  <th style="font-weight:600;font-size:.78rem;color:var(--gris)">Bien</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="courrierHistoBody">
+                <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gris)">Aucun courrier généré.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -2029,8 +2029,12 @@
           <div>
             <div class="dash-page-title">Veille réglementaire</div>
             <div class="dash-page-sub">Alertes automatiques · Score de conformité portefeuille · Newsletter personnalisée</div>
+            <div id="veilleUpdateStatus" style="font-size:.76rem;color:var(--gris);margin-top:4px">⏳ Vérification des mises à jour…</div>
           </div>
+          <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn-sm" onclick="autoUpdateVeille(true)" id="btnRefreshVeille">🔁 Actualiser</button>
           <button class="btn-primary-pro" onclick="lancerAuditConformite()">🔄 Auditer le portefeuille</button>
+          </div>
         </div>
 
         <!-- Score conformité global -->
@@ -2620,6 +2624,99 @@
     </div>
   </div>
 </footer>
+
+<!-- MODALE MANDAT -->
+<div class="modal-overlay" id="modalMandat" style="display:none">
+  <div class="modal" style="max-width:620px;width:95%">
+    <button class="modal-close" onclick="closeModalMandat()">×</button>
+    <div class="modal-title" id="modalMandatTitle">🏘 Ajouter un bien</div>
+    <input type="hidden" id="mandatEditId">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px">
+      <div class="form-group-pro" style="grid-column:1/-1">
+        <label class="form-label">Adresse du bien</label>
+        <input type="text" class="form-input-pro" id="mandatAdresse" placeholder="12 rue des Lilas, 75020 Paris">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Type</label>
+        <select class="form-input-pro" id="mandatType">
+          <option value="appartement">Appartement</option>
+          <option value="maison">Maison</option>
+          <option value="studio">Studio</option>
+          <option value="parking">Parking / Cave</option>
+          <option value="commercial">Local commercial</option>
+        </select>
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Statut</label>
+        <select class="form-input-pro" id="mandatStatut">
+          <option value="loue">Loué</option>
+          <option value="vacant">Vacant</option>
+          <option value="travaux">En travaux</option>
+        </select>
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Surface (m²)</label>
+        <input type="number" class="form-input-pro" id="mandatSurface" placeholder="45">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Loyer HC (€)</label>
+        <input type="number" class="form-input-pro" id="mandatLoyer" placeholder="800">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Charges (€)</label>
+        <input type="number" class="form-input-pro" id="mandatCharges" placeholder="80">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Zone encadrement</label>
+        <select class="form-input-pro" id="mandatZone">
+          <option value="">— Non concerné —</option>
+          <option value="Paris">Paris</option>
+          <option value="Lille">Lille</option>
+          <option value="Lyon">Lyon / Villeurbanne</option>
+          <option value="Bordeaux">Bordeaux</option>
+          <option value="Montpellier">Montpellier</option>
+          <option value="Grenoble">Grenoble-Alpes Métropole</option>
+          <option value="Pays Basque">Pays Basque</option>
+          <option value="Plaine Commune">Plaine Commune (93)</option>
+          <option value="Est Ensemble">Est Ensemble (93)</option>
+        </select>
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">DPE</label>
+        <select class="form-input-pro" id="mandatDpe">
+          <option value="">— Non renseigné —</option>
+          <option value="A">A</option><option value="B">B</option>
+          <option value="C">C</option><option value="D">D</option>
+          <option value="E">E</option><option value="F">F</option>
+          <option value="G">G</option>
+        </select>
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Bailleur / Propriétaire</label>
+        <input type="text" class="form-input-pro" id="mandatBailleur" placeholder="Jean Dupont">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Email bailleur</label>
+        <input type="email" class="form-input-pro" id="mandatBailleurEmail" placeholder="jean@email.com">
+      </div>
+      <div class="form-group-pro" style="grid-column:1/-1">
+        <label class="form-label">Téléphone bailleur</label>
+        <input type="tel" class="form-input-pro" id="mandatBailleurTel" placeholder="06 12 34 56 78">
+      </div>
+      <div class="form-group-pro" style="grid-column:1/-1">
+        <label class="form-label">Locataire actuel</label>
+        <select class="form-input-pro" id="mandatLocataire">
+          <option value="">— Aucun —</option>
+        </select>
+      </div>
+      <div class="form-group-pro" style="grid-column:1/-1">
+        <label class="form-label">Notes</label>
+        <textarea class="form-input-pro" id="mandatNotes" rows="2" placeholder="Informations complémentaires…" style="resize:vertical"></textarea>
+      </div>
+    </div>
+    <button class="btn-submit" onclick="saveMandat()" style="width:100%;margin-top:18px">💾 Enregistrer le bien</button>
+  </div>
+</div>
 
 <!-- MODALE LOGIN -->
 <div class="modal-overlay" id="modalLogin">
@@ -4173,6 +4270,64 @@ function initVeilleData() {
     localStorage.setItem('bailscan_veille', JSON.stringify(proState.veille));
   }
   refreshVeille();
+  autoUpdateVeille(false);
+}
+
+async function autoUpdateVeille(forceUpdate) {
+  var statusEl = document.getElementById('veilleUpdateStatus');
+  var btnEl = document.getElementById('btnRefreshVeille');
+  var lastUpdate = localStorage.getItem('bailscan_veille_lastupdate');
+  var today = new Date().toISOString().split('T')[0];
+
+  if (!forceUpdate && lastUpdate === today) {
+    if (statusEl) statusEl.textContent = '✅ À jour — ' + new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'});
+    return;
+  }
+
+  if (statusEl) statusEl.innerHTML = '<span style="color:var(--pro-accent)">🔄 Recherche des dernières actualités réglementaires…</span>';
+  if (btnEl) { btnEl.disabled = true; btnEl.textContent = '⏳…'; }
+
+  try {
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        system: 'Tu es un expert juridique en droit immobilier et locatif français. Réponds UNIQUEMENT en JSON valide, sans balises markdown.',
+        messages: [{
+          role: 'user',
+          content: 'Génère les 6 actualités réglementaires locatives françaises les plus récentes et importantes (lois, décrets, jurisprudences, obligations bailleur/locataire). Date du jour : ' + today + '. Réponds UNIQUEMENT avec un tableau JSON de 6 objets, format exact : [{"id":"unique_id","date":"JJ/MM/AAAA","niveau":"rouge|orange|bleu|vert","icone":"emoji","titre":"titre court","detail":"explication 2-3 phrases","loi":"référence légale","action":"action recommandée"}]'
+        }]
+      })
+    });
+
+    var data = await response.json();
+    var text = (data.content || []).map(function(b){ return b.text||''; }).join('');
+    var clean = text.replace(/```json|```/g,'').trim();
+    var newAlertes = JSON.parse(clean);
+
+    if (Array.isArray(newAlertes) && newAlertes.length > 0) {
+      // Fusionner avec les alertes initiales (garder les initiales, ajouter les nouvelles)
+      var ids = newAlertes.map(function(a){ return a.id; });
+      var merged = newAlertes.concat(
+        VEILLE_ALERTES_INITIALES.filter(function(a){ return !ids.includes(a.id); })
+      );
+      proState.veille = merged;
+      localStorage.setItem('bailscan_veille', JSON.stringify(merged));
+      localStorage.setItem('bailscan_veille_lastupdate', today);
+      refreshVeille();
+      if (statusEl) statusEl.innerHTML = '✅ Mis à jour le ' + new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'}) + ' — <span style="color:var(--vert)">' + newAlertes.length + ' nouvelles alertes chargées</span>';
+    } else {
+      throw new Error('Réponse invalide');
+    }
+  } catch(e) {
+    console.error('Veille update error:', e);
+    localStorage.setItem('bailscan_veille_lastupdate', today);
+    if (statusEl) statusEl.textContent = '⚠️ Mise à jour automatique indisponible — données de référence affichées';
+  }
+
+  if (btnEl) { btnEl.disabled = false; btnEl.textContent = '🔁 Actualiser'; }
 }
 
 function refreshVeille() {
