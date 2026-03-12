@@ -475,6 +475,12 @@
           <div class="pro-wizard-panel active" id="pstep-1">
             <div class="panel-title">Contexte du logement</div>
             <div class="panel-sub">Ces informations permettent une analyse précise et personnalisée</div>
+            <div class="form-group-pro" style="margin-bottom:14px">
+              <label class="form-label">🔗 Rattacher à un bien / mandat <span style="font-weight:400;color:var(--gris);font-size:.78rem">— pré-remplit adresse, loyer, surface</span></label>
+              <select class="form-input-pro" id="pMandatSel" onchange="preFillWizardFromMandat(this.value)">
+                <option value="">— Saisie manuelle —</option>
+              </select>
+            </div>
             <div class="form-grid-pro">
               <div class="form-group-pro">
                 <label class="form-label">Type de location</label>
@@ -672,7 +678,7 @@
               <div class="result-actions">
                 <button class="btn-result-action primary" onclick="exportResultPDF()">📄 Exporter PDF</button>
                 <button class="btn-result-action" onclick="showDashTab('corrections')">✏️ Voir les corrections</button>
-
+                <button class="btn-result-action" onclick="corrigerBailDepuisAnalyse()" style="background:var(--pro-accent);color:#fff;border-color:var(--pro-accent)">🔧 Corriger le bail</button>
                 <button class="btn-result-action" onclick="resetProWizard()">+ Nouvelle analyse</button>
               </div>
             </div>
@@ -706,6 +712,12 @@
         </div>
         <div class="dash-card">
           <div id="genererForm">
+            <div style="background:var(--pro-light);border:1.5px solid var(--pro-accent);border-radius:10px;padding:12px 16px;margin-bottom:16px">
+              <label class="form-label" style="font-size:.8rem;margin-bottom:6px;display:block">🏘 Pré-remplir depuis un bien / mandat <span style="font-weight:400;color:var(--gris)">(optionnel)</span></label>
+              <select class="form-input-pro" id="genMandatPrefill" style="font-size:.84rem" onchange="preFillGenererFromMandat(this.value)">
+                <option value="">— Saisie manuelle —</option>
+              </select>
+            </div>
             <div style="font-size:0.88rem;color:var(--gris);margin-bottom:20px;background:var(--pro-light);padding:14px 16px;border-radius:10px;border-left:3px solid var(--pro-accent)">
               ℹ️ BailScan génère un bail complet conforme loi du 6 juillet 1989 + ALUR. Ce document est fourni à titre indicatif — relecture conseillée pour les situations complexes.
             </div>
@@ -2684,7 +2696,15 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px">
       <div class="form-group-pro" style="grid-column:1/-1">
         <label class="form-label">Adresse du bien</label>
-        <input type="text" class="form-input-pro" id="mandatAdresse" placeholder="12 rue des Lilas, 75020 Paris">
+        <input type="text" class="form-input-pro" id="mandatAdresse" placeholder="12 rue des Lilas">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Code postal</label>
+        <input type="text" class="form-input-pro" id="mandatCp" placeholder="75020" maxlength="10">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Ville</label>
+        <input type="text" class="form-input-pro" id="mandatVille" placeholder="Paris">
       </div>
       <div class="form-group-pro">
         <label class="form-label">Type</label>
@@ -2752,6 +2772,18 @@
       <div class="form-group-pro" style="grid-column:1/-1">
         <label class="form-label">Téléphone bailleur</label>
         <input type="tel" class="form-input-pro" id="mandatBailleurTel" placeholder="06 12 34 56 78">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Date d'entrée</label>
+        <input type="date" class="form-input-pro" id="mandatDateEntree">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Date de fin de bail</label>
+        <input type="date" class="form-input-pro" id="mandatDateFin">
+      </div>
+      <div class="form-group-pro" style="grid-column:1/-1">
+        <label class="form-label">🔗 Lien annonce (SeLoger, LeBonCoin…)</label>
+        <input type="url" class="form-input-pro" id="mandatLienAnnonce" placeholder="https://www.seloger.com/...">
       </div>
       <div class="form-group-pro" style="grid-column:1/-1">
         <label class="form-label">Locataire actuel</label>
@@ -3029,6 +3061,8 @@ function showDashboard(){
   setTimeout(loadAgencyInfoFields, 300);
   // Génération automatique des alertes au chargement
   setTimeout(function(){ genAlertesAuto(); }, 200);
+
+  initSignatureUI();
 }
 function logout(){
   proState.isLoggedIn=false; proState.user=null;
@@ -3054,12 +3088,13 @@ function showDashTab(tab){
   if(tab==='alertes'){refreshAlertes();}
   if(tab==='locataires'){refreshLocataires();}
   if(tab==='dossier'){refreshDossierLocSelect();}
+  if(tab==='nouveau'){setTimeout(refreshAnalyseWizardMandatSelect,80);}
   if(tab==='mandats'){refreshMandats();}
   if(tab==='veille'){refreshVeille();}
   if(tab==='quittances'){prefillQuittanceMois();refreshLocSelect();}
   if(tab==='courriers'){refreshLocatairesForCourriers(); setTimeout(refreshCourrierLocataireSelect,50); setTimeout(refreshCourrierHisto,50);}
-  if(tab==='generer'){setTimeout(refreshBailsHisto,50);}
-  if(tab==='parametres'){setTimeout(loadAgencyInfoFields,50);}
+  if(tab==='generer'){setTimeout(refreshBailsHisto,50);setTimeout(refreshGenMandatPrefill,80);}
+  if(tab==='parametres'){setTimeout(loadAgencyInfoFields,50); setTimeout(initSignatureUI,80);}
 }
 
 var proCurrentStep = 1;
@@ -4122,7 +4157,7 @@ function refreshAllMandatSelects() {
   var arr = loadMandats();
   var opts = '<option value="">— Sélectionner un bien —</option>'
     + arr.map(function(m){ return '<option value="'+m.id+'">'+(m.adresse||'Bien sans adresse')+'</option>'; }).join('');
-  ['coMandatSel','dossierMandatSel','coursierMandatSel'].forEach(function(id) {
+  ['coMandatSel','dossierMandatSel','coursierMandatSel','bailRattachMandat'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.innerHTML = opts;
   });
@@ -4155,12 +4190,15 @@ function editMandat(id) {
   document.getElementById('mandatEditId').value = m.id;
   document.getElementById('modalMandatTitle').textContent = '✏️ Modifier le bien';
   var f = function(fid, val){ var el=document.getElementById(fid); if(el&&val!==undefined) el.value=val; };
-  f('mandatAdresse', m.adresse); f('mandatSurface', m.surface); f('mandatLoyer', m.loyer);
+  f('mandatAdresse', m.adresse); f('mandatCp', m.cp||''); f('mandatVille', m.ville||'');
+  f('mandatSurface', m.surface); f('mandatLoyer', m.loyer);
   f('mandatCharges', m.charges); f('mandatBailleur', m.bailleur);
   f('mandatBailleurEmail', m.bailleurEmail); f('mandatBailleurTel', m.bailleurTel);
   f('mandatType', m.type); f('mandatStatut', m.statut); f('mandatDpe', m.dpe||'');
   f('mandatZone', m.zone||''); f('mandatNotes', m.notes||'');
   f('mandatLocataire', m.locataireId||'');
+  f('mandatDateEntree', m.dateEntree||''); f('mandatDateFin', m.dateFin||'');
+  f('mandatLienAnnonce', m.lienAnnonce||'');
 }
 
 function closeModalMandat() {
@@ -4171,9 +4209,15 @@ function saveMandat() {
   var adresse = document.getElementById('mandatAdresse').value.trim();
   if (!adresse) { alert('L\'adresse est obligatoire.'); return; }
   var editId = document.getElementById('mandatEditId').value;
+  var cp = (document.getElementById('mandatCp')||{}).value||'';
+  var ville = (document.getElementById('mandatVille')||{}).value||'';
+  var adresseFull = adresse + (cp ? ', '+cp : '') + (ville ? ' '+ville : '');
   var mandat = {
     id: editId || String(Date.now()),
     adresse: adresse,
+    cp: cp,
+    ville: ville,
+    adresseFull: adresseFull,
     type: document.getElementById('mandatType').value,
     surface: document.getElementById('mandatSurface').value,
     loyer: document.getElementById('mandatLoyer').value,
@@ -4186,6 +4230,9 @@ function saveMandat() {
     dpe: document.getElementById('mandatDpe').value,
     zone: document.getElementById('mandatZone').value,
     notes: document.getElementById('mandatNotes').value,
+    dateEntree: (document.getElementById('mandatDateEntree')||{}).value||'',
+    dateFin: (document.getElementById('mandatDateFin')||{}).value||'',
+    lienAnnonce: (document.getElementById('mandatLienAnnonce')||{}).value||'',
     dateCreation: editId ? undefined : new Date().toLocaleDateString('fr-FR')
   };
   if (editId) {
@@ -4303,26 +4350,43 @@ function openFicheMandat(id) {
     + analyses.map(function(a){ return '<div style="font-size:.78rem;padding:4px 0;color:var(--texte)">· ' + (a.verdict_titre||'Analyse')+' — score: '+(a.score||'?')+'/100</div>'; }).join('')
     + '</div>' : '';
 
+  var photosHtml = buildPhotosHtml(id);
+  var candidatsHtml = buildCandidatsHtml(id);
+  var lienHtml = buildLienAnnonceHtml(m);
+  var adresseAff = (m.adresseFull || ((m.adresse||'') + (m.cp?' '+m.cp:'') + (m.ville?' '+m.ville:''))) || '—';
+
   el.innerHTML = '<div style="display:grid;gap:4px;font-size:.88rem">'
-    + '<div style="font-size:1.05rem;font-weight:700;color:var(--pro-accent);margin-bottom:8px">📍 ' + (m.adresse||'—') + '</div>'
+    + '<div style="font-size:1.05rem;font-weight:700;color:var(--pro-accent);margin-bottom:8px">📍 ' + adresseAff + '</div>'
     + datesHtml
     + kpisHtml
     + bailleurHtml
     + locsHtml
+    + candidatsHtml
     + bauxHtml
+    + photosHtml
+    + lienHtml
     + mandatAgenceHtml
     + analysesHtml
     + (m.notes ? '<div style="background:#fafaf9;border-radius:8px;padding:10px;font-size:.82rem;color:var(--gris)">📝 '+m.notes+'</div>' : '')
-    + '<div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--border);margin-top:4px">'
+    + '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px;padding-top:10px;border-top:1px solid var(--border);margin-top:4px">'
     + '<button class="btn-sm" data-mid="' + m.id + '" onclick="editMandat(this.dataset.mid);closeModalFicheBien()">✏️ Modifier</button>'
-    + '<div style="display:flex;gap:6px">'
+    + '<div style="display:flex;gap:6px;flex-wrap:wrap">'
+    + '<button class="btn-sm" data-mid="' + m.id + '" onclick="ajouterLocataireDepuisMandat(this.dataset.mid)" style="border-color:var(--pro-accent);color:var(--pro-accent)">👤 + Locataire</button>'
     + '<button class="btn-sm" data-mid="' + m.id + '" onclick="genererCourrierMandat(this.dataset.mid);closeModalFicheBien()">✉️ Courrier</button>'
     + '<button class="btn-sm" onclick="closeModalFicheBien();setTimeout(function(){showDashTab(String.fromCharCode(103,101,110,101,114,101,114))},100)" style="background:var(--pro-accent);color:#fff;border-color:var(--pro-accent)">📝 Nouveau bail</button>'
     + '</div></div>'
     + '</div>';
     
-  document.getElementById('modalFicheBienTitle').textContent = '🏘 ' + (m.adresse||'Fiche bien');
+  document.getElementById('modalFicheBienTitle').textContent = '🏘 ' + (adresseAff||'Fiche bien');
   document.getElementById('modalFicheBien').style.display = 'flex';
+  // Délégué d'événement pour data-action="editmandat"
+  el.onclick = function(e) {
+    var btn = e.target.closest('[data-action="editmandat"]');
+    if (btn) {
+      closeModalFicheBien();
+      setTimeout(function(){ editMandat(btn.getAttribute('data-mid')); }, 120);
+    }
+  };
 }
 
 function analyserBailGenere() {
@@ -5344,27 +5408,61 @@ function supprimerDossierHisto(idx) {
 function validerDossier(goDecision) {
   var result = proState.currentDossierResult;
   if (!result) return;
+  var decision = goDecision ? 'GO' : 'NO_GO';
   var locId = document.getElementById('dossierLocSel').value;
+  var mandatId = (document.getElementById('dossierMandatSel')||{}).value || null;
+
   // Mettre à jour dans l'histo
   if (proState.dossierHisto.length) {
-    proState.dossierHisto[0].decisionManuelle = goDecision ? 'GO' : 'NO_GO';
+    proState.dossierHisto[0].decisionManuelle = decision;
+    proState.dossierHisto[0].mandatId = mandatId;
     localStorage.setItem('bailscan_dossiers_histo', JSON.stringify(proState.dossierHisto));
     refreshDossierHisto();
   }
-  // Afficher confirmation inline sans alert()
-  var notif = document.getElementById('dossierDecisionNotif');
-  if (!notif) {
-    notif = document.createElement('div');
-    notif.id = 'dossierDecisionNotif';
-    notif.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;padding:16px 24px;border-radius:12px;font-weight:700;font-size:.95rem;box-shadow:0 8px 30px rgba(0,0,0,.15);transition:opacity .4s';
-    document.body.appendChild(notif);
+
+  // ── Mettre à jour le badge verdict EN DIRECT ──
+  var badge = document.getElementById('dossierVerdictBadge');
+  if (badge) {
+    badge.textContent = goDecision ? '✅ GO — Dossier validé' : '❌ NO GO — Dossier refusé';
+    badge.style.background = goDecision ? '#f0fdf4' : '#fef2f2';
+    badge.style.color = goDecision ? '#166534' : '#991b1b';
+    badge.style.border = '2px solid ' + (goDecision ? '#86efac' : '#fca5a5');
   }
-  notif.style.background = goDecision ? '#f0fdf4' : '#fef2f2';
-  notif.style.color = goDecision ? '#166534' : '#991b1b';
-  notif.style.border = goDecision ? '1.5px solid #86efac' : '1.5px solid #fca5a5';
-  notif.textContent = goDecision ? '✅ Dossier validé — GO' : '❌ Dossier refusé — NO GO';
-  notif.style.opacity = '1';
-  setTimeout(function(){ notif.style.opacity = '0'; }, 3000);
+
+  // Mettre à jour le locataire avec le verdict si locId renseigné
+  if (locId) {
+    var locs = loadLocataires();
+    var loc = locs.find(function(l){ return String(l.id) === String(locId); });
+    if (loc) {
+      loc.dossierVerdict = decision;
+      loc.dossierMandatId = mandatId;
+      localStorage.setItem('bailscan_locataires', JSON.stringify(locs));
+    }
+  }
+
+  // Enregistrer le candidat sur le mandat (pour liste GO/NO GO)
+  if (mandatId) {
+    var mans = loadMandats();
+    var man = mans.find(function(m){ return String(m.id) === String(mandatId); });
+    if (man) {
+      if (!man.candidats) man.candidats = [];
+      var nom = (document.getElementById('dossierNom')||{}).value || (locId || 'Candidat');
+      var existing = man.candidats.findIndex(function(ca){ return ca.locId === locId; });
+      var candidatEntry = {
+        locId: locId,
+        nom: nom,
+        score: result.score || 0,
+        verdict: decision,
+        date: new Date().toLocaleDateString('fr-FR')
+      };
+      if (existing !== -1) man.candidats[existing] = candidatEntry;
+      else man.candidats.unshift(candidatEntry);
+      localStorage.setItem('bailscan_mandats', JSON.stringify(mans));
+      proState.mandats = mans;
+    }
+  }
+
+  showToast(goDecision ? '✅ Dossier validé — GO' : '❌ Dossier refusé — NO GO', goDecision ? 'green' : 'red');
 }
 
 function resetDossierAnalyse() {
@@ -8211,6 +8309,288 @@ function exportCourrierPDF() {
     doc.save('courrier-'+new Date().toISOString().split('T')[0]+'.pdf');
   } catch(e) { alert('Erreur PDF: '+e.message); console.error(e); }
 }
+
+// ── Pré-remplir le wizard analyse depuis un mandat ──
+function preFillWizardFromMandat(mandatId) {
+  if (!mandatId) return;
+  var mans = loadMandats ? loadMandats() : [];
+  var m = mans.find(function(x){ return String(x.id) === String(mandatId); });
+  if (!m) return;
+  var setVal = function(id, val) { var el = document.getElementById(id); if (el && val) el.value = val; };
+  setVal('pAdresse', m.adresseFull || m.adresse);
+  setVal('pVille', m.ville || (m.adresse||'').split(',').pop().trim());
+  setVal('pSurface', m.surface);
+  setVal('pLoyerBase', m.loyer);
+  setVal('pCharges', m.charges);
+  if (m.dpe) {
+    var dpeEl = document.getElementById('pDPE');
+    if (dpeEl) dpeEl.value = m.dpe;
+  }
+  showToast('📋 Informations du bien pré-remplies depuis le mandat.', 'blue');
+}
+
+// ── Rafraîchir le select mandat du wizard analyse ──
+function refreshAnalyseWizardMandatSelect() {
+  var sel = document.getElementById('pMandatSel');
+  if (!sel) return;
+  var mans = loadMandats ? loadMandats() : [];
+  sel.innerHTML = '<option value="">— Saisie manuelle —</option>'
+    + mans.map(function(m){ return '<option value="'+m.id+'">'+((m.adresseFull||m.adresse)||'Bien #'+m.id)+'</option>'; }).join('');
+}
+
+// ── Corriger bail depuis résultat analyse ──
+function corrigerBailDepuisAnalyse() {
+  var result = proState.currentResult;
+  var corrections = proState.currentCorrections || [];
+  if (!result || !corrections.length) {
+    showToast('⚠️ Aucune correction — lancez d\'abord une analyse.', 'orange');
+    return;
+  }
+  // Construire un prompt de correction
+  var clausesList = corrections.map(function(c, i) {
+    return (i+1) + '. ' + c.titre + (c.correction ? ' → ' + c.correction : '');
+  }).join('\n');
+  
+  // Aller sur l'onglet génération avec un mode "correction"
+  showDashTab('generer');
+  setTimeout(function() {
+    var formEl = document.getElementById('genererForm');
+    var resEl = document.getElementById('genererResult');
+    if (formEl) formEl.style.display = 'none';
+    if (resEl) resEl.style.display = 'block';
+    
+    // Lancer la génération corrigée
+    var loadEl = document.getElementById('genererLoading');
+    if (loadEl) loadEl.style.display = 'flex';
+    
+    // Données du wizard pour contexte
+    var adresse = proWizardData.adresse || '';
+    var loyer = proWizardData.loyer_base || '';
+    var surface = proWizardData.surface || '';
+    
+    var correctionPrompt = 'Tu es un expert juridique en droit immobilier français. '
+      + 'Génère un bail de location CORRIGÉ intégrant les corrections suivantes:\n\n'
+      + clausesList + '\n\n'
+      + 'Contexte du bien : adresse=' + adresse + ', loyer=' + loyer + '€, surface=' + surface + 'm². '
+      + 'Génère un bail complet conforme à la loi ALUR, avec toutes les corrections appliquées. '
+      + 'Format : texte structuré, sections clairement identifiées.';
+    
+    (async function() {
+      try {
+        var resp = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 4000,
+            messages: [{ role: 'user', content: correctionPrompt }]
+          })
+        });
+        var data = await resp.json();
+        var texte = (data.content || []).map(function(b){ return b.text||''; }).join('');
+        if (!texte) throw new Error('Réponse vide');
+        if (loadEl) loadEl.style.display = 'none';
+        proState.currentBail = texte;
+        var txt = document.getElementById('genererResultText');
+        if (txt) txt.textContent = texte;
+        // Sauvegarder dans l'historique
+        var _genMandatId = (document.getElementById('genRattachMandat')||{}).value
+          || (document.getElementById('bailRattachMandat')||{}).value || null;
+        var _genLocId = (document.getElementById('genRattachLocataire')||{}).value
+          || (document.getElementById('bailRattachLocataire')||{}).value || null;
+        var entry = {
+          id: Date.now(),
+          date: new Date().toLocaleDateString('fr-FR'),
+          texte: texte,
+          mandatId: _genMandatId,
+          locataireId: _genLocId
+        };
+        proState.bailsHisto.unshift(entry);
+        proState._currentBailEntryId = entry.id;
+        localStorage.setItem('bailscan_bails_histo', JSON.stringify(proState.bailsHisto));
+        setTimeout(peuplerSelectsRattachementBail, 100);
+        showToast('✅ Bail corrigé généré avec ' + corrections.length + ' corrections appliquées.', 'green');
+      } catch(e) {
+        if (loadEl) loadEl.style.display = 'none';
+        showToast('⚠️ Erreur lors de la génération du bail corrigé.', 'orange');
+        if (formEl) formEl.style.display = 'block';
+        if (resEl) resEl.style.display = 'none';
+      }
+    })();
+  }, 200);
+}
+
+// ── Ajouter locataire depuis fiche mandat ──
+function ajouterLocataireDepuisMandat(mandatId) {
+  var mans = loadMandats();
+  var m = mans.find(function(x){ return String(x.id) === String(mandatId); });
+  closeModalFicheBien();
+  // Ouvrir le formulaire locataire pré-rempli avec les infos du bien
+  showDashTab('locataires');
+  setTimeout(function() {
+    openNewLocataire();
+    setTimeout(function() {
+      var f = function(id, val) { var el=document.getElementById(id); if(el && val) el.value=val; };
+      if (m) {
+        f('locAdresse', m.adresseFull || m.adresse);
+        f('locLoyer', m.loyer);
+        f('locMandatSel', mandatId);
+        // Pré-remplir dateEntree si disponible
+        if (m.dateEntree) f('locDateEntree', m.dateEntree);
+        if (m.dateFin) f('locDateFin', m.dateFin);
+      }
+      showToast('Renseignez les informations du locataire (adresse et loyer pré-remplis).', 'blue');
+    }, 300);
+  }, 150);
+}
+
+// ── Upload photos du bien sur mandat ──
+function uploadMandatPhoto(mandatId, input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showToast('Images uniquement (JPG, PNG, WebP).', 'orange'); return; }
+  if (file.size > 3*1024*1024) { showToast('Image trop lourde (max 3 Mo).', 'orange'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    // Redimensionner
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var maxW = 800, maxH = 600;
+      var ratio = Math.min(maxW/img.width, maxH/img.height, 1);
+      canvas.width = Math.round(img.width*ratio);
+      canvas.height = Math.round(img.height*ratio);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+      var key = 'bailscan_photos_' + mandatId;
+      var photos = JSON.parse(localStorage.getItem(key)||'[]');
+      if (photos.length >= 8) { showToast('Maximum 8 photos par bien.', 'orange'); return; }
+      photos.push({ id: Date.now(), data: dataUrl, name: file.name });
+      localStorage.setItem(key, JSON.stringify(photos));
+      showToast('📸 Photo ajoutée.', 'green');
+      openFicheMandat(mandatId);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function getMandatPhotos(mandatId) {
+  return JSON.parse(localStorage.getItem('bailscan_photos_' + mandatId)||'[]');
+}
+
+function supprimerMandatPhoto(mandatId, photoId) {
+  var key = 'bailscan_photos_' + mandatId;
+  var photos = JSON.parse(localStorage.getItem(key)||'[]').filter(function(p){ return p.id !== photoId; });
+  localStorage.setItem(key, JSON.stringify(photos));
+  openFicheMandat(mandatId);
+}
+
+function buildPhotosHtml(mandatId) {
+  var photos = getMandatPhotos(mandatId);
+  var html = '<div style="margin-bottom:12px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:8px;font-weight:700">📸 PHOTOS DU BIEN (' + photos.length + '/8)</div>';
+  if (photos.length) {
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:8px">';
+    photos.forEach(function(p) {
+      html += '<div style="position:relative;border-radius:6px;overflow:hidden;aspect-ratio:4/3">'
+        + '<img src="'+p.data+'" style="width:100%;height:100%;object-fit:cover">'
+        + '<button style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:4px;font-size:.65rem;cursor:pointer;padding:2px 5px" data-mid="'+mandatId+'" data-pid="'+p.id+'" onclick="supprimerMandatPhoto(this.dataset.mid, parseInt(this.dataset.pid))">✕</button>'
+        + '</div>';
+    });
+    html += '</div>';
+  }
+  if (photos.length < 8) {
+    html += '<label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;background:white;border:1.5px dashed var(--border);border-radius:8px;padding:8px 12px;font-size:.8rem;color:var(--gris)">'
+      + '📷 Ajouter une photo<input type="file" accept="image/*" style="display:none" data-mid="'+mandatId+'" onchange="uploadMandatPhoto(this.dataset.mid,this)">'
+      + '</label>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function buildLienAnnonceHtml(m) {
+  var mid = String(m.id);
+  var html = '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">\u{1F517} ANNONCE</div>';
+  if (m.lienAnnonce) {
+    var shortUrl = m.lienAnnonce.length > 60 ? m.lienAnnonce.substring(0, 60) + '\u2026' : m.lienAnnonce;
+    html += '<a href="' + m.lienAnnonce + '" target="_blank" rel="noopener" style="font-size:.82rem;color:var(--pro-accent);word-break:break-all">' + shortUrl + '</a>';
+    html += ' <button class="btn-sm" style="font-size:.7rem;margin-left:6px" data-action="editmandat" data-mid="' + mid + '">Modifier</button>';
+  } else {
+    html += '<button class="btn-sm" style="font-size:.75rem" data-action="editmandat" data-mid="' + mid + '">+ Ajouter un lien annonce</button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function buildCandidatsHtml(mandatId) {
+  var mans = loadMandats();
+  var m = mans.find(function(x){ return String(x.id) === String(mandatId); });
+  var candidats = (m && m.candidats) ? m.candidats : [];
+  if (!candidats.length) return '';
+  var html = '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">👥 CANDIDATS</div>';
+  candidats.forEach(function(ca) {
+    var isGo = ca.verdict === 'GO';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-radius:8px;border:1px solid '+(isGo?'#86efac':'#fca5a5')+';background:'+(isGo?'#f0fdf4':'#fef2f2')+';margin-bottom:4px">'
+      + '<div><div style="font-weight:600;font-size:.83rem">'+ca.nom+'</div>'
+      + '<div style="font-size:.72rem;color:var(--gris)">Score: '+ca.score+'/100 · '+ca.date+'</div></div>'
+      + '<span style="font-weight:800;font-size:.8rem;color:'+(isGo?'#166534':'#991b1b')+'">'+(isGo?'✅ GO':'❌ NO GO')+'</span>'
+      + '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+// Pré-remplir formulaire génération bail depuis mandat
+function preFillGenererFromMandat(mandatId) {
+  if (!mandatId) return;
+  var mans = loadMandats ? loadMandats() : [];
+  var m = mans.find(function(x){ return String(x.id) === String(mandatId); });
+  if (!m) return;
+  var s = function(id, val) { var el=document.getElementById(id); if(el && val !== undefined && val !== '') el.value = val; };
+  // Adresse du logement
+  s('genAdresse', m.adresseFull || m.adresse);
+  s('genVille', m.ville || (m.adresse||'').split(',').pop().trim());
+  s('genCodePostal', m.cp || '');
+  // Loyer / charges
+  s('genLoyer', m.loyer);
+  s('genCharges', m.charges);
+  // Surface
+  s('genSurface', m.surface);
+  // Bailleur
+  s('genBailleurNom', m.bailleur);
+  s('genBailleurEmail', m.bailleurEmail);
+  s('genBailleurTel', m.bailleurTel);
+  // Zone encadrement
+  if (m.zone) {
+    var zEl = document.getElementById('genZone');
+    if (zEl) zEl.value = m.zone;
+  }
+  // Pré-sélectionner le mandat dans le select rattachement résultat
+  var rattEl = document.getElementById('bailRattachMandat');
+  if (rattEl) rattEl.value = mandatId;
+  // Sauvegarder le lien
+  sauvegarderRattachementBail && sauvegarderRattachementBail();
+  showToast('📋 Formulaire pré-rempli depuis le bien.', 'blue');
+}
+
+function refreshGenMandatPrefill() {
+  var sel = document.getElementById('genMandatPrefill');
+  if (!sel) return;
+  var mans = loadMandats ? loadMandats() : [];
+  var cur = sel.value;
+  sel.innerHTML = '<option value="">— Saisie manuelle —</option>'
+    + mans.map(function(m){ return '<option value="'+m.id+'">'+(m.adresseFull||m.adresse||'Bien #'+m.id)+'</option>'; }).join('');
+  if (cur) sel.value = cur;
+}
+
+// Rafraîchir select mandat quand on ouvre le wizard
+function refreshAllMandatSelectsExtended() {
+  refreshAllMandatSelects();
+  refreshAnalyseWizardMandatSelect();
+  refreshGenMandatPrefill && refreshGenMandatPrefill();
+}
+
+
 
 
 
