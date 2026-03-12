@@ -7003,103 +7003,13 @@ function exportCourrierPDF() {
   } catch(e){ alert('Erreur PDF: '+e.message); }
 }
 
-async function genererCourrier() {
-  var type = proState.currentCourrierType || 'conge_bailleur';
-  var bailleur = document.getElementById('coBailleur').value.trim();
-  var locataire = document.getElementById('coLocataire').value.trim();
-  var adresse = document.getElementById('coAdresse').value.trim();
-  var details = document.getElementById('coDetails').value.trim();
-  if (!bailleur || !locataire) { alert('Renseignez bailleur et locataire.'); return; }
 
-  document.getElementById('courrierResult').style.display='none';
-  document.getElementById('courrierLoading').style.display='block';
-  document.getElementById('btnGenCourrier').disabled=true;
-  document.getElementById('courrierActions').style.display='none';
 
-  var bailleurAdresse = (document.getElementById('coBailleurAdresse')||{value:''}).value.trim();
-  var basePrompt = COURRIER_PROMPTS[type] || COURRIER_PROMPTS.conge_bailleur;
-  var prompt = basePrompt + '\n\n'
-    + 'Bailleur/Expéditeur : ' + bailleur + '\n'
-    + (bailleurAdresse ? 'Adresse bailleur : ' + bailleurAdresse + '\n' : '')
-    + 'Locataire/Destinataire : ' + locataire + '\n'
-    + (adresse ? 'Bien loué : ' + adresse + '\n' : '')
-    + (details ? 'Informations complémentaires : ' + details + '\n' : '')
-    + '\nRédigez une lettre professionnelle et juridiquement conforme. Incluez OBLIGATOIREMENT dans l\'en-tête :\n- Les coordonnées complètes de l\'expéditeur (bailleur) en haut à gauche\n- Les coordonnées du destinataire (locataire) à droite\n- La date et la ville\n- Un objet clair\nPuis le corps de la lettre et une formule de politesse. Date : '
-    + new Date().toLocaleDateString('fr-FR') + '. Répondez UNIQUEMENT avec le texte de la lettre, sans explication.';
 
-  var texte = '';
-  try {
-    var resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':'',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514', max_tokens:1200,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    var data = await resp.json();
-    texte = (data.content && data.content[0] && data.content[0].text) || '';
-  } catch(e) {}
 
-  if (!texte) {
-    texte = genCourrierFallback(type, bailleur, locataire, adresse, details, bailleurAdresse);
-  }
 
-  proState.currentCourrier = texte;
-  document.getElementById('courrierLoading').style.display='none';
-  document.getElementById('courrierResult').style.display='block';
-  document.getElementById('courrierResult').textContent = texte;
-  document.getElementById('courrierActions').style.display='flex';
-  document.getElementById('btnGenCourrier').disabled=false;
-}
 
-function genCourrierFallback(type, bailleur, locataire, adresse, details) {
-  var today = new Date().toLocaleDateString('fr-FR');
-  var intros = {
-    mise_demeure: 'MISE EN DEMEURE DE PAYER\n\n'+bailleur+'\nÀ\n'+locataire+'\n\n'+today+'\n\nObjet : Mise en demeure — loyers impayés\nEnvoi par lettre recommandée avec accusé de réception\n\nMonsieur/Madame '+locataire+',\n\nPar la présente, nous vous mettons en demeure de procéder au règlement des loyers impayés afférents au logement situé au '+adresse+'.\n\n'+(details||'Malgré nos relances amiables, les sommes dues restent impayées à ce jour.')+'\n\nNous vous rappelons qu\'en application de l\'article 24 de la loi n°89-462 du 6 juillet 1989, à défaut de paiement dans un délai de deux mois à compter de la signification d\'un commandement de payer, le bail pourra être résilié de plein droit.\n\nNous vous demandons de régulariser votre situation dans les meilleurs délais.\n\nDans l\'attente, veuillez agréer, Monsieur/Madame, nos salutations distinguées.\n\n'+bailleur,
-    conge_bailleur: 'CONGÉ DONNÉ PAR LE BAILLEUR\n\n'+bailleur+'\nÀ\n'+locataire+'\n\n'+today+'\n\nObjet : Congé pour le logement situé au '+adresse+'\nEnvoi par lettre recommandée avec accusé de réception\n\nMonsieur/Madame '+locataire+',\n\nJe vous informe par la présente de ma décision de mettre fin au bail de location de l\'appartement situé au '+adresse+'.\n\n'+(details||'Ce congé est donné pour reprise du logement à usage personnel.')+'\n\nConformément à l\'article 15 de la loi n°89-462 du 6 juillet 1989, ce congé prend effet à l\'expiration du bail, sous réserve du respect du préavis légal de 6 mois pour une location vide (3 mois pour un meublé).\n\nVeuillez agréer, Monsieur/Madame, mes salutations distinguées.\n\n'+bailleur
-  };
-  return intros[type] || intros.conge_bailleur;
-}
 
-function copierCourrier() {
-  if(!proState.currentCourrier) return;
-  navigator.clipboard.writeText(proState.currentCourrier).then(function(){
-    var btn = document.querySelector('[onclick="copierCourrier()"]');
-    if(btn){ btn.textContent='✅ Copié'; setTimeout(function(){ btn.textContent='📋 Copier'; },2000); }
-  });
-}
-
-function exportCourrierPDF() {
-  if(!proState.currentCourrier){ alert('Générez un courrier d\'abord.'); return; }
-  try {
-    if(!window.jspdf){ alert('jsPDF non disponible.'); return; }
-    var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF();
-    var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
-    var y = 16;
-    if(logo){ try{ doc.addImage(logo,'JPEG',14,8,40,16); y=30; }catch(e){} }
-    var agence = proState.user ? (proState.user.agence||'BailScan Pro') : 'BailScan Pro';
-    doc.setFontSize(8); doc.setTextColor(150,150,150); doc.text(agence, 196, 14, {align:'right'}); y=Math.max(y,20)+4;
-
-    doc.setDrawColor(220,220,220); doc.line(14,y,196,y); y+=8;
-
-    var lines = doc.splitTextToSize(proState.currentCourrier, 180);
-    lines.forEach(function(line){
-      if(y>282){ doc.addPage(); y=14; }
-      doc.setFontSize(9.5); doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30);
-      doc.text(line,14,y); y+=5.5;
-    });
-    doc.setFontSize(7); doc.setTextColor(180,180,180);
-    doc.text('Document généré par BailScan Pro · bailscan.app · '+new Date().toLocaleDateString('fr-FR'), 105, 292, {align:'center'});
-    doc.save('courrier-bailscan-'+new Date().toISOString().split('T')[0]+'.pdf');
-  } catch(e){ alert('Erreur PDF: '+e.message); }
-}
 
 </script>
 </body>
