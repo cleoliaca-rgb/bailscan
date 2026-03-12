@@ -685,15 +685,27 @@
 
             <!-- Section bailleur -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1.5px solid var(--pro-light)">👤 Bailleur (propriétaire)</div>
-            <div class="form-grid-pro" style="margin-bottom:0">
+            <div class="form-group-pro" style="margin-bottom:10px">
+              <label class="form-label">Type de bailleur</label>
+              <div class="radio-group-pro">
+                <label class="radio-pill-pro active" onclick="setGenRadio('gen_bailleur_type','physique',this);toggleBailleurType('physique')"><input type="radio" name="gen_bailleur_type" value="physique" checked> Personne physique</label>
+                <label class="radio-pill-pro" onclick="setGenRadio('gen_bailleur_type','sci',this);toggleBailleurType('sci')"><input type="radio" name="gen_bailleur_type" value="sci"> SCI</label>
+                <label class="radio-pill-pro" onclick="setGenRadio('gen_bailleur_type','morale',this);toggleBailleurType('morale')"><input type="radio" name="gen_bailleur_type" value="morale"> Personne morale</label>
+              </div>
+            </div>
+            <div class="form-grid-pro" style="margin-bottom:0" id="bailleurPrenomRow">
               <div class="form-group-pro">
                 <label class="form-label">Prénom</label>
                 <input type="text" class="form-input-pro" id="genBailleurPrenom" placeholder="Ex : Jean">
               </div>
               <div class="form-group-pro">
-                <label class="form-label">Nom</label>
+                <label class="form-label">Nom <span style="color:#e53e3e">*</span></label>
                 <input type="text" class="form-input-pro" id="genBailleurNom" placeholder="Ex : Dupont">
               </div>
+            </div>
+            <div class="form-group-pro" id="bailleurDenomRow" style="display:none;margin-bottom:0">
+              <label class="form-label">Dénomination sociale <span style="color:#e53e3e">*</span></label>
+              <input type="text" class="form-input-pro" id="genBailleurDenom" placeholder="Ex : SCI Les Lilas, Dupont Immobilier SARL">
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
               <div class="form-group-pro">
@@ -743,9 +755,35 @@
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:16px">
-              <div class="form-group-pro">
-                <label class="form-label">Garant(s) <span style="font-weight:400;color:var(--gris);font-size:.78rem">— optionnel</span></label>
-                <input type="text" class="form-input-pro" id="genGarant" placeholder="Ex : Paul Martin, 3 rue du Moulin, 75018 Paris">
+              <div class="form-group-pro" style="grid-column:1/-1">
+                <label class="form-label">Garant <span style="font-weight:400;color:var(--gris);font-size:.78rem">— optionnel</span></label>
+                <div style="background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--border)">
+                  <div class="form-grid-pro" style="margin-bottom:8px">
+                    <div class="form-group-pro" style="margin-bottom:0">
+                      <label class="form-label" style="font-size:.78rem">Nom complet du garant</label>
+                      <input type="text" class="form-input-pro" id="genGarantNom" placeholder="Ex : Paul Martin" style="font-size:.88rem">
+                    </div>
+                    <div class="form-group-pro" style="margin-bottom:0">
+                      <label class="form-label" style="font-size:.78rem">Adresse du garant</label>
+                      <input type="text" class="form-input-pro" id="genGarantAdresse" placeholder="Ex : 3 rue du Moulin, 75018 Paris" style="font-size:.88rem">
+                    </div>
+                  </div>
+                  <div class="form-group-pro" style="margin-bottom:8px">
+                    <label class="form-label" style="font-size:.78rem">Type de cautionnement</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+                      <label class="annex-check"><input type="radio" name="gen_cautionnement" value="solidaire" checked> Cautionnement solidaire <span style="font-size:.72rem;color:var(--gris)">(garant solidaire avec le locataire)</span></label>
+                      <label class="annex-check"><input type="radio" name="gen_cautionnement" value="simple"> Cautionnement simple <span style="font-size:.72rem;color:var(--gris)">(poursuites locataire d'abord)</span></label>
+                      <label class="annex-check"><input type="radio" name="gen_cautionnement" value="acte_notarie"> Acte notarié</label>
+                    </div>
+                  </div>
+                  <div class="form-group-pro" style="margin-bottom:0">
+                    <label class="form-label" style="font-size:.78rem">Durée du cautionnement</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+                      <label class="annex-check"><input type="radio" name="gen_caution_duree" value="indeterminee" checked> Durée indéterminée</label>
+                      <label class="annex-check"><input type="radio" name="gen_caution_duree" value="duree_bail"> Durée du bail uniquement</label>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="form-group-pro">
                 <label class="form-label">Type de location</label>
@@ -885,14 +923,38 @@
 
             <!-- Clauses spéciales -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1.5px solid var(--pro-light)">📋 Clauses & spécificités</div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
-                <label class="form-label">Travaux d'entretien à la charge du locataire</label>
-                <textarea class="form-input-pro" id="genTravauxLoc" rows="2" placeholder="Ex : entretien chaudière, nettoyage gouttières si pavillon…" style="resize:vertical;font-size:.85rem"></textarea>
+
+            <div class="form-group-pro" style="margin-bottom:12px">
+              <label class="form-label">Travaux d'entretien à la charge du locataire <span style="font-weight:400;color:var(--gris);font-size:.78rem">— cochez ce qui s'applique</span></label>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:6px">
+                <label class="annex-check"><input type="checkbox" id="trav_chaudiere"> 🔧 Entretien annuel chaudière individuelle</label>
+                <label class="annex-check"><input type="checkbox" id="trav_climatisation"> ❄️ Entretien climatisation</label>
+                <label class="annex-check"><input type="checkbox" id="trav_jardinage"> 🌿 Entretien jardin / tonte pelouse</label>
+                <label class="annex-check"><input type="checkbox" id="trav_gouttières"> 🏠 Nettoyage gouttières (pavillon)</label>
+                <label class="annex-check"><input type="checkbox" id="trav_piscine"> 🏊 Entretien piscine</label>
+                <label class="annex-check"><input type="checkbox" id="trav_ramonage"> 🔥 Ramonage cheminée</label>
+                <label class="annex-check"><input type="checkbox" id="trav_robinetterie"> 🚿 Remplacement joints / robinetterie courante</label>
+                <label class="annex-check"><input type="checkbox" id="trav_detartrage"> 💧 Détartrage équipements</label>
               </div>
-              <div class="form-group-pro">
-                <label class="form-label">Clauses particulières <span style="font-weight:400;color:var(--gris);font-size:.78rem">— optionnel</span></label>
-                <textarea class="form-input-pro" id="genSpecificites" rows="2" placeholder="Ex : animaux autorisés, sous-location interdite, parking n°12 inclus…" style="resize:vertical;font-size:.85rem"></textarea>
+              <div style="margin-top:8px">
+                <label class="form-label" style="font-size:.78rem">Autres travaux à préciser</label>
+                <input type="text" class="form-input-pro" id="genTravauxLoc" placeholder="Ex : entretien VMC, fosse septique…" style="font-size:.84rem">
+              </div>
+            </div>
+
+            <div class="form-group-pro" style="margin-bottom:0">
+              <label class="form-label">Clauses particulières <span style="font-weight:400;color:var(--gris);font-size:.78rem">— cochez + complétez si besoin</span></label>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:6px;margin-bottom:8px">
+                <label class="annex-check"><input type="checkbox" id="clause_sousloc"> 🔒 Sous-location interdite</label>
+                <label class="annex-check"><input type="checkbox" id="clause_cession"> 📄 Cession du bail interdite</label>
+                <label class="annex-check"><input type="checkbox" id="clause_assurance_pno"> 🛡️ Bailleur couvert par assurance PNO</label>
+                <label class="annex-check"><input type="checkbox" id="clause_releve_compteur"> 📊 Relevés compteurs contradictoires à l'entrée/sortie</label>
+                <label class="annex-check"><input type="checkbox" id="clause_dpe_travaux"> ⚡ Travaux de rénovation énergétique prévus</label>
+                <label class="annex-check"><input type="checkbox" id="clause_bail_num"> 📱 Bail numérique — signature électronique</label>
+              </div>
+              <div>
+                <label class="form-label" style="font-size:.78rem">Clauses libres supplémentaires</label>
+                <textarea class="form-input-pro" id="genSpecificites" rows="2" placeholder="Ex : parking n°12 inclus, local vélos accessible, clés boîte aux lettres n°4…" style="resize:vertical;font-size:.84rem"></textarea>
               </div>
             </div>
             <div class="form-group-pro" style="margin-bottom:20px">
@@ -935,8 +997,6 @@
               <label class="annex-check"><input type="checkbox" id="genCave"> 📦 Cave / Cellier</label>
               <label class="annex-check"><input type="checkbox" id="genGrenier"> 🏠 Grenier / Combles</label>
               <label class="annex-check"><input type="checkbox" id="genPiscine"> 🏊 Piscine</label>
-              <label class="annex-check"><input type="checkbox" id="genAnimaux"> 🐾 Animaux autorisés</label>
-              <label class="annex-check"><input type="checkbox" id="genFumeNon" checked> 🚭 Interdiction de fumer</label>
               <label class="annex-check"><input type="checkbox" id="genSousloc"> 🔒 Sous-location interdite</label>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
@@ -2722,12 +2782,24 @@ function toggleComplementDetail() {
   if (wrap) wrap.style.display = justif ? 'block' : 'none';
 }
 
+function toggleBailleurType(type) {
+  var prenomRow = document.getElementById('bailleurPrenomRow');
+  var denomRow = document.getElementById('bailleurDenomRow');
+  if (!prenomRow || !denomRow) return;
+  if (type === 'physique') {
+    prenomRow.style.display = '';
+    denomRow.style.display = 'none';
+  } else {
+    prenomRow.style.display = 'none';
+    denomRow.style.display = '';
+  }
+}
 function genererBailConforme() {
   var surface = document.getElementById('genSurface').value;
   var loyer = document.getElementById('genLoyer').value;
-  var bailleurNom = document.getElementById('genBailleurNom').value.trim();
+  var bailleurNom = document.getElementById('genBailleurNom').value.trim() || document.getElementById('genBailleurDenom').value.trim();
   if (!surface || !loyer) { alert('Surface et loyer obligatoires.'); return; }
-  if (!bailleurNom) { alert('Renseignez le nom du bailleur.'); return; }
+  if (!bailleurNom) { alert('Renseignez le nom ou la dénomination du bailleur.'); return; }
 
   document.getElementById('genererForm').style.display = 'none';
   document.getElementById('genererLoading').style.display = 'block';
@@ -2743,19 +2815,55 @@ function genererBailConforme() {
   function chk(id) { var el = document.getElementById(id); return el ? el.checked : false; }
   function rad(name) { var el = document.querySelector('input[name="'+name+'"]:checked'); return el ? el.value : ''; }
 
+  // Travaux cochés
+  var travCochesList = [];
+  if(chk('trav_chaudiere')) travCochesList.push('entretien annuel de la chaudière individuelle');
+  if(chk('trav_climatisation')) travCochesList.push('entretien de la climatisation');
+  if(chk('trav_jardinage')) travCochesList.push('entretien du jardin et tonte de la pelouse');
+  if(chk('trav_gouttières')) travCochesList.push('nettoyage des gouttières');
+  if(chk('trav_piscine')) travCochesList.push('entretien de la piscine');
+  if(chk('trav_ramonage')) travCochesList.push('ramonage de la cheminée');
+  if(chk('trav_robinetterie')) travCochesList.push('remplacement des joints et petite robinetterie');
+  if(chk('trav_detartrage')) travCochesList.push('détartrage des équipements');
+  if(val('genTravauxLoc').trim()) travCochesList.push(val('genTravauxLoc').trim());
+  var travText = travCochesList.join(', ');
+
+  // Clauses particulières cochées
+  var clausesCochesList = [];
+  if(chk('clause_sousloc')) clausesCochesList.push('La sous-location est interdite sans accord écrit préalable du bailleur (art. 8 loi 89).');
+  if(chk('clause_cession')) clausesCochesList.push('La cession du bail est interdite sans accord écrit du bailleur.');
+  if(chk('clause_assurance_pno')) clausesCochesList.push('Le bailleur déclare être couvert par une assurance propriétaire non-occupant (PNO).');
+  if(chk('clause_releve_compteur')) clausesCochesList.push('Des relevés contradictoires de tous les compteurs (eau, gaz, électricité) seront effectués lors de l\'état des lieux d\'entrée et de sortie.');
+  if(chk('clause_dpe_travaux')) clausesCochesList.push('Des travaux de rénovation énergétique sont prévus pendant la durée du bail ; le bailleur en informera le locataire avec un préavis raisonnable.');
+  if(chk('clause_bail_num')) clausesCochesList.push('Le présent bail peut être signé par voie électronique conformément à la loi ELAN.');
+  if(val('genSpecificites').trim()) clausesCochesList.push(val('genSpecificites').trim());
+  var clausesText = clausesCochesList.join('\n');
+
+  // Bailleur : nom complet selon type
+  var bailleurType = rad('gen_bailleur_type') || 'physique';
+  var bailleurIdentite = bailleurType === 'physique'
+    ? (val('genBailleurPrenom') ? val('genBailleurPrenom') + ' ' + bailleurNom : bailleurNom)
+    : (val('genBailleurDenom') || bailleurNom);
+
   var g = {
     type: rad('gen_type') || 'vide',
-    bailleurPrenom: val('genBailleurPrenom') || '[Prénom]',
-    bailleurNom: bailleurNom,
+    bailleurPrenom: bailleurType === 'physique' ? val('genBailleurPrenom') : '',
+    bailleurNom: bailleurType === 'physique' ? bailleurNom : '',
+    bailleurDenom: val('genBailleurDenom'),
+    bailleurIdentite: bailleurIdentite,
     bailleurAdresse: val('genBailleurAdresse') || '[Adresse bailleur]',
     bailleurEmail: val('genBailleurEmail'),
     bailleurTel: val('genBailleurTel'),
-    bailleurType: val('genBailleurType') || 'physique',
+    bailleurType: bailleurType,
     locatairePrenom: val('genLocatairePrenom') || '[Prénom locataire]',
     locataireNom: val('genLocataireNom') || '[Nom locataire]',
     locataireAdresse: val('genLocataireAdresse') || '[Adresse locataire]',
     locataireEmail: val('genLocataireEmail'),
-    garant: val('genGarant'),
+    garantNom: val('genGarantNom'),
+    garantAdresse: val('genGarantAdresse'),
+    cautionnement: rad('gen_cautionnement') || 'solidaire',
+    cautionDuree: rad('gen_caution_duree') || 'indeterminee',
+    garant: val('genGarantNom'),
     bienAdresse: val('genBienAdresse') || '[Adresse du bien]',
     ville: val('genVille') || '[Ville]',
     surface: surface,
@@ -2790,8 +2898,8 @@ function genererBailConforme() {
     resolutoire: rad('gen_resolutoire') || 'oui',
     solidarite: rad('gen_solidarite') || 'non',
     honoraires: val('genHonoraires'),
-    travauxLoc: val('genTravauxLoc'),
-    specificites: val('genSpecificites'),
+    travauxLoc: travText,
+    specificites: clausesText,
 
     annexDpe: chk('genAnnDpe'),
     annexEtat: chk('genAnnEtat'),
@@ -2807,8 +2915,18 @@ function genererBailConforme() {
     agenceEmail: proState.user ? proState.user.email : ''
   };
 
-  var bailText = buildBailComplet(g);
-  finalizeBailGeneration(bailText, gsteps);
+  try {
+    var bailText = buildBailComplet(g);
+    if (!bailText) throw new Error('Bail vide généré');
+    finalizeBailGeneration(bailText, gsteps);
+  } catch(e) {
+    document.getElementById('genererLoading').style.display = 'none';
+    document.getElementById('genererForm').style.display = 'block';
+    var btn = document.getElementById('btnGenerer');
+    if(btn) btn.disabled = false;
+    alert('Erreur lors de la génération : ' + e.message);
+    console.error('buildBailComplet error:', e);
+  }
 }
 
 
@@ -2823,6 +2941,29 @@ function sanitizePDF(str) {
     .replace(/\u00AB/g, '<<').replace(/\u00BB/g, '>>')
     .replace(/\u2026/g, '...')
     .replace(/[^\x00-\xFF]/g, '?');
+}
+
+function nombreEnLettres(n) {
+  if (!n || isNaN(n)) return 'zero';
+  n = Math.floor(n);
+  var u=['','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix',
+    'onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf'];
+  var d=['','','vingt','trente','quarante','cinquante','soixante','soixante','quatre-vingt','quatre-vingt'];
+  if(n===0) return 'zero';
+  if(n<0) return 'moins '+nombreEnLettres(-n);
+  if(n<20) return u[n];
+  if(n<100){
+    var dz=Math.floor(n/10), un=n%10;
+    if(dz===7||dz===9){ return d[dz]+(un===1?'-et-':'-')+(dz===7?u[10+un]:u[un+10]); }
+    return d[dz]+(un===1&&dz<8?' et un':un?'-'+u[un]:'')+(dz===8&&!un?'s':'');
+  }
+  if(n<1000){
+    var h=Math.floor(n/100), r=n%100;
+    var cents = (h>1?u[h]+' ':'')+'cent';
+    return cents+(r?' '+nombreEnLettres(r):(h>1?'s':''));
+  }
+  if(n<2000) return 'mille'+(n%1000?' '+nombreEnLettres(n%1000):'');
+  return nombreEnLettres(Math.floor(n/1000))+' mille'+(n%1000?' '+nombreEnLettres(n%1000):'');
 }
 
 function buildBailComplet(g) {
@@ -2883,7 +3024,9 @@ function buildBailComplet(g) {
     '================================================================',
     '',
     'BAILLEUR :',
-    'Nom et prenom : ' + (g.bailleurPrenom||'') + ' ' + (g.bailleurNom||''),
+    g.bailleurType === 'physique'
+      ? 'Nom et prenom : ' + (g.bailleurPrenom ? g.bailleurPrenom + ' ' : '') + (g.bailleurNom||'')
+      : 'Denomination sociale : ' + (g.bailleurDenom||g.bailleurNom||''),
     'Qualite : ' + typeBailleur,
     'Adresse : ' + (g.bailleurAdresse||''),
     'Email : ' + (g.bailleurEmail||''),
@@ -2895,7 +3038,14 @@ function buildBailComplet(g) {
     'Email : ' + (g.locataireEmail||''),
     g.typeLocation === 'colocation' ? 'Type : Colocation - solidarite entre colocataires' : '',
     '',
-    g.garant !== 'non' ? ('GARANT : ' + g.garant) : '',
+    (g.garantNom ? [
+      'GARANT :',
+      'Nom : ' + g.garantNom,
+      (g.garantAdresse ? 'Adresse : ' + g.garantAdresse : ''),
+      'Type de cautionnement : ' + (g.cautionnement==='solidaire'?'Cautionnement solidaire (acte sous seing prive)':g.cautionnement==='simple'?'Cautionnement simple':g.cautionnement==='acte_notarie'?'Acte notarié':'Cautionnement solidaire'),
+      'Duree : ' + (g.cautionDuree==='indeterminee'?'Duree indeterminee (resiliable avec preavis)':'Duree du bail uniquement'),
+      'L\'acte de cautionnement est annexe au present contrat (art. 22-1 loi 89).',
+    ].join('\n') : ''),
     '',
     '================================================================',
     'ARTICLE 2 - DESIGNATION DU LOGEMENT',
@@ -3010,10 +3160,13 @@ function buildBailComplet(g) {
     'ARTICLE 11 - ASSURANCE',
     '================================================================',
     '',
-    "Le locataire est tenu de s'assurer contre les risques dont il doit repondre (art. 7g loi 89).",
-    "Justificatif a remettre au bailleur a la signature, puis chaque annee a sa demande.",
-    "A defaut, le bailleur peut souscrire une assurance pour compte du locataire,",
-    "dont la prime lui est refacturee (majoration max 10%).",
+    "L'assurance habitation est OBLIGATOIRE pour le locataire (art. 7g loi 89).",
+    "Le locataire doit etre couvert contre les risques locatifs (incendie, degats des eaux, explosion).",
+    "Justificatif d'assurance a remettre au bailleur AVANT la remise des cles,",
+    "puis a chaque renouvellement annuel sur simple demande.",
+    "SANCTION : A defaut de justificatif sous 1 mois apres mise en demeure, le bailleur peut :",
+    "- Souscrire une assurance pour compte du locataire (prime refacturee + 10%)",
+    "- Invoquer la clause resolutoire du bail (art. 7g + art. 24 loi 89).",
     '',
     '================================================================',
     'ARTICLE 12 - CLAUSE RESOLUTOIRE (art. 24 loi 89)',
