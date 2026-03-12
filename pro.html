@@ -697,9 +697,15 @@
         </div>
         <div id="correctionsList" style="display:none">
           <div class="dash-card" style="margin-bottom:16px">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-              <div style="font-weight:700">Corrections prioritaires</div>
-              <button class="btn-primary-pro" style="font-size:0.82rem;padding:8px 16px" onclick="exportCorrectionsPDF()">📄 Exporter PDF</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <button class="btn-sm" onclick="showDashTab('nouveau')" style="font-size:.78rem">← Retour à l'analyse</button>
+                <div style="font-weight:700">Corrections prioritaires</div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn-primary-pro" style="font-size:0.82rem;padding:8px 16px;background:var(--pro-accent);border-color:var(--pro-accent)" onclick="corrigerBailDepuisAnalyse()">🔧 Corriger le bail</button>
+                <button class="btn-primary-pro" style="font-size:0.82rem;padding:8px 16px" onclick="exportCorrectionsPDF()">📄 Exporter PDF</button>
+              </div>
             </div>
             <div id="correctionsContent"></div>
           </div>
@@ -4309,112 +4315,151 @@ function buildBauxHtmlForMandat(baux, mandatId) {
   return '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">📄 BAIL(S)</div>' + rows.join('') + '</div>';
 }
 
-function openFicheMandat(id) {
+function openFicheMandat(id, activeTab) {
   var m = loadMandats().find(function(x){ return String(x.id)===String(id); });
   if (!m) return;
-  var analyses = loadMandatAnalyses(id);
-  var statuts = { loue:'✅ Loué', vacant:'⚪ Vacant', travaux:'🔧 En travaux' };
+  activeTab = activeTab || 'infos';
+  var statuts = { loue:'\u2705 Lou\u00e9', vacant:'\u26aa Vacant', travaux:'\ud83d\udd27 En travaux' };
   var dpeColors = { A:'#059669',B:'#10b981',C:'#84cc16',D:'#f59e0b',E:'#f97316',F:'#ef4444',G:'#991b1b' };
-  
-  // Trouver baux et locataires rattachés
   var baux = proState.bailsHisto.filter(function(b){ return String(b.mandatId)===String(id); });
   var locs = loadLocataires().filter(function(l){ return String(l.mandatId)===String(id) || String(m.locataireId)===String(l.id); });
-  
+  var photos = getMandatPhotos(id);
+  var candidats = m.candidats || [];
+  var analyses = loadMandatAnalyses ? loadMandatAnalyses(id) : [];
+
   var el = document.getElementById('modalFicheBienContent');
   if (!el) return;
-  
-  // KPIs
+
+  var adresseAff = m.adresseFull || ((m.adresse||'') + (m.cp?' '+m.cp:'') + (m.ville?' '+m.ville:'')) || '\u2014';
+
+  // ── Tabs ──
+  var tabs = [
+    { id:'infos',     label:'\ud83d\udccc Infos',    count:null },
+    { id:'locataires',label:'\ud83d\udc65 Locataires', count: locs.length },
+    { id:'baux',      label:'\ud83d\udcc4 Baux',      count: baux.length },
+    { id:'photos',    label:'\ud83d\udcf7 Photos',    count: photos.length },
+    { id:'candidats', label:'\ud83d\udc65 Candidats', count: candidats.length }
+  ];
+
+  var tabBar = tabs.map(function(t) {
+    var isActive = t.id === activeTab;
+    var lbl = t.label + (t.count !== null ? ' <span style="background:'+(isActive?'rgba(255,255,255,.35)':'var(--pro-light)')+';color:'+(isActive?'#fff':'var(--gris)')+';border-radius:10px;padding:1px 6px;font-size:.7rem">' + t.count + '</span>' : '');
+    return '<button data-tab="'+t.id+'" data-mid="'+id+'" style="border:none;background:'+(isActive?'var(--pro-accent)':'transparent')+';color:'+(isActive?'#fff':'var(--gris)')+';font-weight:'+(isActive?'700':'500')+';font-size:.78rem;padding:6px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all .15s">'+lbl+'</button>';
+  }).join('');
+
+  // ── Tab: Infos ──
   var kpisHtml = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'
-    + '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">Type</div><div style="font-weight:600">' + (m.type||'—') + (m.surface?' · '+m.surface+' m²':'') + '</div></div>'
-    + '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">Statut</div><div style="font-weight:600">' + (statuts[m.statut]||m.statut||'—') + '</div></div>'
-    + '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">Loyer HC</div><div style="font-weight:600">' + (m.loyer||'—') + ' €' + (m.charges?' + '+m.charges+' € ch.':'') + '</div></div>'
-    + '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">DPE / GES</div><div style="font-weight:700;color:' + (dpeColors[m.dpe]||'var(--gris)') + '">' + (m.dpe||'—') + '</div></div>'
+    + '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">Type</div><div style="font-weight:600">'+(m.type||'\u2014')+(m.surface?' \u00b7 '+m.surface+' m\u00b2':'')+'</div></div>'
+    + '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">Statut</div><div style="font-weight:600">'+(statuts[m.statut]||m.statut||'\u2014')+'</div></div>'
+    + '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">Loyer HC</div><div style="font-weight:600">'+(m.loyer||'\u2014')+' \u20ac'+(m.charges?' + '+m.charges+' \u20ac ch.':'')+'</div></div>'
+    + '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">DPE</div><div style="font-weight:700;color:'+(dpeColors[m.dpe]||'var(--gris)')+'">'+( m.dpe||'\u2014')+'</div></div>'
+    + (m.dateEntree ? '<div class="kpi-card" style="padding:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">Entr\u00e9e</div><div style="font-size:.84rem">'+new Date(m.dateEntree).toLocaleDateString('fr-FR')+'</div></div>' : '')
+    + (m.dateFin ? '<div class="kpi-card" style="padding:10px;'+(new Date(m.dateFin)<new Date()?'background:#fef2f2':'')+'"><div style="font-size:.72rem;color:var(--gris);margin-bottom:3px">Fin de bail</div><div style="font-size:.84rem;font-weight:600;color:'+(new Date(m.dateFin)<new Date()?'#dc2626':'inherit')+'">'+new Date(m.dateFin).toLocaleDateString('fr-FR')+'</div></div>' : '')
     + '</div>';
-    
-  // Bailleur
-  var bailleurHtml = m.bailleur ? '<div style="background:#f8f7f4;border-radius:8px;padding:10px;margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:4px;font-weight:700">👤 BAILLEUR</div>'
-    + '<div style="font-weight:600">' + m.bailleur + '</div>'
-    + (m.bailleurEmail ? '<div style="color:var(--gris);font-size:.8rem">✉️ '+m.bailleurEmail+'</div>' : '')
-    + (m.bailleurTel ? '<div style="color:var(--gris);font-size:.8rem">📞 '+m.bailleurTel+'</div>' : '')
-    + '</div>' : '';
-    
-  // Locataires rattachés
-  var locsHtml = locs.length ? '<div style="background:#eef2fb;border-radius:8px;padding:10px;margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">👥 LOCATAIRE(S)</div>'
-    + locs.map(function(l){ return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.05)">'
-      + '<div><div style="font-weight:600;font-size:.85rem">' + (l.prenom||'') + ' ' + (l.nom||'') + '</div>'
-      + '<div style="font-size:.75rem;color:var(--gris)">' + (l.email||'') + (l.tel?' · '+l.tel:'') + '</div></div>'
-      + '<button class="btn-sm" style="font-size:.72rem" onclick="showDashTab(\'locataires\');closeModalFicheBien()">Fiche →</button>'
-      + '</div>'; }).join('')
-    + '</div>' : '';
-    
-  // Dates de location
-  var dateDebut = m.dateEntree || m.dateDebut || '';
-  var dateFin = m.dateFin || '';
-  var datesHtml = (dateDebut || dateFin) ? '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">'
-    + '<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px;text-align:center"><div style="font-size:.68rem;color:#166534;font-weight:700;margin-bottom:2px">📅 DÉBUT</div><div style="font-weight:700;color:#166534">' + (dateDebut||'—') + '</div></div>'
-    + (dateFin ? '<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:8px;text-align:center"><div style="font-size:.68rem;color:#991b1b;font-weight:700;margin-bottom:2px">🔚 FIN / ÉCHÉANCE</div><div style="font-weight:700;color:#991b1b">' + dateFin + '</div></div>' : '')
-    + '</div>' : '';
-    
-  // Baux rattachés — construction DOM sans strings inline problématiques
-  var bauxHtml = buildBauxHtmlForMandat(baux, m.id);
 
-  // Mandat agence upload
+  var bailleurHtml = m.bailleur ? '<div style="background:#f8f7f4;border-radius:8px;padding:10px;margin-bottom:10px">'
+    + '<div style="font-size:.72rem;color:var(--gris);margin-bottom:4px;font-weight:700">\ud83d\udc64 BAILLEUR</div>'
+    + '<div style="font-weight:600;font-size:.88rem">'+m.bailleur+'</div>'
+    + (m.bailleurEmail?'<div style="font-size:.78rem;color:var(--gris);margin-top:2px">\ud83d\udce7 <a href="mailto:'+m.bailleurEmail+'" style="color:var(--pro-accent)">'+m.bailleurEmail+'</a></div>':'')
+    + (m.bailleurTel?'<div style="font-size:.78rem;color:var(--gris);margin-top:2px">\ud83d\udcde '+m.bailleurTel+'</div>':'')
+    + '</div>' : '';
+
   var mandatAgenceHtml = buildMandatAgenceHtml(m);
-  
-  // Analyses
-  var analysesHtml = analyses.length ? '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">🔍 ANALYSES</div>'
-    + analyses.map(function(a){ return '<div style="font-size:.78rem;padding:4px 0;color:var(--texte)">· ' + (a.verdict_titre||'Analyse')+' — score: '+(a.score||'?')+'/100</div>'; }).join('')
-    + '</div>' : '';
+  var notesHtml = m.notes ? '<div style="background:#fafaf9;border-radius:8px;padding:10px;font-size:.82rem;color:var(--gris)">\ud83d\udcdd '+m.notes+'</div>' : '';
 
-  var photosHtml = buildPhotosHtml(id);
-  var candidatsHtml = buildCandidatsHtml(id);
-  var lienHtml = buildLienAnnonceHtml(m);
-  var adresseAff = (m.adresseFull || ((m.adresse||'') + (m.cp?' '+m.cp:'') + (m.ville?' '+m.ville:''))) || '—';
+  var lienHtml = m.lienAnnonce
+    ? '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:4px;font-weight:700">\ud83d\udd17 ANNONCE</div>'
+      + '<a href="'+m.lienAnnonce+'" target="_blank" rel="noopener" style="font-size:.82rem;color:var(--pro-accent);word-break:break-all">'+(m.lienAnnonce.length>60?m.lienAnnonce.substring(0,60)+'\u2026':m.lienAnnonce)+'</a>'
+      + ' <button class="btn-sm" style="font-size:.7rem" data-action="editmandat" data-mid="'+id+'">Modifier</button>'
+      + '</div>'
+    : '';
 
-  el.innerHTML = '<div style="display:grid;gap:4px;font-size:.88rem">'
-    + '<div style="font-size:1.05rem;font-weight:700;color:var(--pro-accent);margin-bottom:8px">📍 ' + adresseAff + '</div>'
-    + datesHtml
-    + kpisHtml
-    + bailleurHtml
-    + locsHtml
-    + candidatsHtml
-    + bauxHtml
-    + photosHtml
-    + lienHtml
-    + mandatAgenceHtml
-    + analysesHtml
-    + (m.notes ? '<div style="background:#fafaf9;border-radius:8px;padding:10px;font-size:.82rem;color:var(--gris)">📝 '+m.notes+'</div>' : '')
-    + '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px;padding-top:10px;border-top:1px solid var(--border);margin-top:4px">'
-    + '<button class="btn-sm" data-mid="' + m.id + '" onclick="editMandat(this.dataset.mid);closeModalFicheBien()">✏️ Modifier</button>'
-    + '<div style="display:flex;gap:6px;flex-wrap:wrap">'
-    + '<button class="btn-sm" data-mid="' + m.id + '" onclick="ajouterLocataireDepuisMandat(this.dataset.mid)" style="border-color:var(--pro-accent);color:var(--pro-accent)">👤 + Locataire</button>'
-    + '<button class="btn-sm" data-mid="' + m.id + '" onclick="exportFicheMandat(this.dataset.mid)">📄 Fiche PDF</button>'
-    + '<button class="btn-sm" data-mid="' + m.id + '" onclick="genererCourrierMandat(this.dataset.mid);closeModalFicheBien()">✉️ Courrier</button>'
-    + '<button class="btn-sm" onclick="closeModalFicheBien();setTimeout(function(){showDashTab(String.fromCharCode(103,101,110,101,114,101,114))},100)" style="background:var(--pro-accent);color:#fff;border-color:var(--pro-accent)">📝 Nouveau bail</button>'
-    + '</div></div>'
+  // ── Contenu selon tab actif ──
+  var content = '';
+  if (activeTab === 'infos') {
+    content = kpisHtml + bailleurHtml + lienHtml + mandatAgenceHtml + notesHtml;
+  } else if (activeTab === 'locataires') {
+    if (!locs.length) {
+      content = '<div style="text-align:center;padding:24px;color:var(--gris);font-size:.86rem">Aucun locataire rattach\u00e9 \u00e0 ce bien.</div>';
+    } else {
+      content = locs.map(function(l) {
+        return '<div style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">'
+          + '<div><div style="font-weight:600">'+(l.prenom||'')+' '+(l.nom||'')+'</div>'
+          + '<div style="font-size:.76rem;color:var(--gris)">'+(l.email||'')+(l.loyer?' \u00b7 '+l.loyer+' \u20ac':'')+' '+(l.dossierVerdict?'<span style="font-weight:700;color:'+(l.dossierVerdict==='GO'?'#166534':'#991b1b')+'">'+(l.dossierVerdict==='GO'?'\u2705':'❌')+' '+l.dossierVerdict+'</span>':'')+'</div>'
+          + '</div>'
+          + '<button class="btn-sm" data-lid="'+l.id+'" onclick="closeFicheMandat();setTimeout(function(){openFicheLocataire(\''+l.id+'\')},120)">Voir fiche</button>'
+          + '</div>';
+      }).join('');
+    }
+    content += '<button class="btn-primary-pro" style="width:100%;font-size:.83rem;margin-top:8px" data-action="ajout-loc" data-mid="'+id+'">👤 + Ajouter un locataire</button>';
+  } else if (activeTab === 'baux') {
+    var mandats2 = loadMandats();
+    if (!baux.length) {
+      content = '<div style="text-align:center;padding:24px;color:var(--gris);font-size:.86rem">Aucun bail g\u00e9n\u00e9r\u00e9 pour ce bien.</div>';
+    } else {
+      content = baux.map(function(b) {
+        return '<div style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px">'
+          + '<div style="font-weight:600;font-size:.86rem">\ud83d\udcc4 Bail du '+b.date+'</div>'
+          + '<div style="font-size:.75rem;color:var(--gris);margin-top:3px">'+(b.emailDestinataire?'\ud83d\udce7 '+b.emailDestinataire:'')+'</div>'
+          + '<button class="btn-sm" style="font-size:.72rem;margin-top:6px" data-bid="'+b.id+'" onclick="voirBailHistoMandat(this.dataset.bid)">Voir →</button>'
+          + '</div>';
+      }).join('');
+    }
+    content += '<button class="btn-primary-pro" style="width:100%;font-size:.83rem;margin-top:8px" onclick="closeFicheMandat();setTimeout(function(){showDashTab(\'generer\')},120)">\ud83d\udcdd Nouveau bail</button>';
+  } else if (activeTab === 'photos') {
+    content = buildPhotosHtml(id);
+  } else if (activeTab === 'candidats') {
+    content = buildCandidatsHtml(id) || '<div style="text-align:center;padding:24px;color:var(--gris);font-size:.86rem">Aucun candidat enregistr\u00e9.</div>';
+    content += '<button class="btn-primary-pro" style="width:100%;font-size:.83rem;margin-top:8px" onclick="closeFicheMandat();setTimeout(function(){showDashTab(\'dossier\')},120)">\ud83d\udd0d Analyser un dossier</button>';
+  }
+
+  el.innerHTML = '<div>'
+    // Titre adresse
+    + '<div style="font-size:1rem;font-weight:700;color:var(--pro-accent);margin-bottom:10px">\ud83d\udccd '+adresseAff+'</div>'
+    // Tab bar
+    + '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px;background:var(--pro-light);padding:4px;border-radius:10px">' + tabBar + '</div>'
+    // Contenu
+    + '<div id="ficheMandatTabContent" style="min-height:80px">' + content + '</div>'
+    // Actions
+    + '<div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:12px;border-top:1px solid var(--border);margin-top:8px">'
+    + '<button class="btn-sm" data-action="editmandat" data-mid="'+id+'">✏️ Modifier</button>'
+    + '<button class="btn-sm" data-mid="'+id+'" onclick="genererCourrierMandat(\''+id+'\');closeModalFicheBien()">\u2709\ufe0f Courrier</button>'
+    + '</div>'
     + '</div>';
-    
-  var bailleurLabel = m.bailleur ? ' — ' + m.bailleur : '';
-  document.getElementById('modalFicheBienTitle').textContent = '🏘 ' + (adresseAff||'Fiche bien') + bailleurLabel;
+
+  document.getElementById('modalFicheBienTitle').textContent = '\ud83c\udfe0 '+(adresseAff||'Fiche bien');
   document.getElementById('modalFicheBien').style.display = 'flex';
-  // Délégué d'événement unifié
+
+  // Délégué d'événements
   el.onclick = function(e) {
     var btn = e.target.closest('[data-action]');
     if (!btn) return;
     var action = btn.getAttribute('data-action');
-    var mid = btn.getAttribute('data-mid');
+    var mid = btn.getAttribute('data-mid') || id;
     if (action === 'editmandat') {
       closeModalFicheBien();
       setTimeout(function(){ editMandat(mid); }, 120);
-    } else if (action === 'addlien') {
-      ajouterLienAnnonce(mid);
-    } else if (action === 'dellien') {
-      supprimerLienAnnonce(mid, btn.getAttribute('data-lidx'));
-    } else if (action === 'delphoto') {
-      supprimerMandatPhoto(mid, parseInt(btn.getAttribute('data-pid')));
+    } else if (action === 'ajout-loc') {
+      ajouterLocataireDepuisMandat(mid);
+    }
+    // Tab switch
+    var tabBtn = e.target.closest('[data-tab]');
+    if (tabBtn && !btn) {
+      var t = tabBtn.getAttribute('data-tab');
+      openFicheMandat(id, t);
     }
   };
+
+  // Tab click via data-tab
+  el.querySelectorAll('[data-tab]').forEach(function(btn2) {
+    btn2.addEventListener('click', function() {
+      openFicheMandat(id, this.getAttribute('data-tab'));
+    });
+  });
 }
+
+function closeFicheMandat() { closeModalFicheBien(); }
+
 
 function analyserBailGenere() {
   if (!proState.currentBail) { alert('Aucun bail à analyser.'); return; }
@@ -6842,14 +6887,19 @@ function exportBailPDF() {
       });
     });
 
-    // ── Signature ──
+    // ── Signature (proportionnelle, avant mention finale) ──
     var sigBail = getSignature();
     if (sigBail) {
       try {
-        if (y + 30 > 278) { doc.addPage(); y = 25; }
+        if (y + 35 > 278) { doc.addPage(); y = 25; }
         var sigBailFmt = sigBail.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-        doc.addImage(sigBail, sigBailFmt, mg, y + 4, 45, 18);
-        y += 26;
+        var sbImg = new Image(); sbImg.src = sigBail;
+        var sbW = sbImg.naturalWidth || 300; var sbH = sbImg.naturalHeight || 100;
+        var maxSBW = 55; var maxSBH = 22;
+        var sbRatio = Math.min(maxSBW/sbW, maxSBH/sbH);
+        var fwSB = sbW * sbRatio; var fhSB = sbH * sbRatio;
+        doc.addImage(sigBail, sigBailFmt, mg, y + 4, fwSB, fhSB);
+        y += fhSB + 8;
       } catch(e2) { console.warn('Signature bail error:', e2); }
     }
 
@@ -7275,6 +7325,7 @@ function genAlertesAuto() {
   var today = new Date(); today.setHours(0,0,0,0);
   
   // Nettoyer les alertes auto obsolètes (reconstruit à chaque fois)
+  var doneIds = JSON.parse(localStorage.getItem('bailscan_alertes_done')||'[]');
   existing = existing.filter(function(a){ return !a.autoId; });
 
   locs.forEach(function(l) {
@@ -7287,14 +7338,15 @@ function genAlertesAuto() {
       var fin = new Date(finStr);
       if (!isNaN(fin)) {
         var diffDays = Math.round((fin - today) / 86400000);
-        if (diffDays <= 180) {
+        if (diffDays <= 60 || diffDays < 0) {
+          var _finId = 'fin_' + l.id;
           existing.push({
-            id: 'fin_' + l.id, autoId: 'fin_' + l.id,
+            id: _finId, autoId: _finId,
             type: 'fin_bail', bien: adresse,
-            date: finStr, 
+            date: finStr,
             note: nom + ' — ' + (diffDays > 0 ? diffDays + ' jours' : 'ÉCHU'),
             urgence: diffDays <= 30 ? 'urgent' : diffDays <= 90 ? 'warning' : 'info',
-            done: false
+            done: doneIds.includes(_finId)
           });
         }
       }
@@ -7309,12 +7361,13 @@ function genAlertesAuto() {
         if (moisDepuis > 0 && moisDepuis % 12 <= 2) {
           var revDate = new Date(entree);
           revDate.setFullYear(entree.getFullYear() + Math.floor(moisDepuis/12) + (moisDepuis%12>0?1:0));
+          var _irlId = 'irl_' + l.id + '_' + today.getFullYear();
           existing.push({
-            id: 'irl_' + l.id + '_' + today.getFullYear(), autoId: 'irl_' + l.id + '_' + today.getFullYear(),
+            id: _irlId, autoId: _irlId,
             type: 'revision_irl', bien: adresse,
             date: revDate.toISOString().split('T')[0],
             note: 'Révision loyer IRL — ' + nom,
-            urgence: 'warning', done: false
+            urgence: 'warning', done: doneIds.includes(_irlId)
           });
         }
       }
@@ -7328,13 +7381,56 @@ function genAlertesAuto() {
         assurDate.setFullYear(today.getFullYear());
         var diffAssur = Math.round((assurDate - today) / 86400000);
         if (diffAssur >= -15 && diffAssur <= 30) {
+          var _assurId = 'assur_' + l.id + '_' + today.getFullYear();
           existing.push({
-            id: 'assur_' + l.id + '_' + today.getFullYear(), autoId: 'assur_' + l.id + '_' + today.getFullYear(),
+            id: _assurId, autoId: _assurId,
             type: 'assurance', bien: adresse,
             date: assurDate.toISOString().split('T')[0],
             note: 'Renouvellement assurance habitation — ' + nom,
-            urgence: 'info', done: false
+            urgence: 'info', done: doneIds.includes(_assurId)
           });
+        }
+      }
+    }
+  });
+
+  // 4b. Fin de bail depuis les mandats (dateEntree + dateFin du mandat)
+  mans.forEach(function(m) {
+    if (!m.dateFin) return;
+    var finM = new Date(m.dateFin);
+    if (isNaN(finM)) return;
+    var diffM = Math.round((finM - today) / 86400000);
+    if (diffM <= 60 || diffM < 0) {
+      var _mfId = 'fin_mandat_' + m.id;
+      if (!existing.find(function(e){ return e.autoId === _mfId; })) {
+        existing.push({
+          id: _mfId, autoId: _mfId,
+          type: 'fin_bail', bien: m.adresseFull || m.adresse || 'Bien #' + m.id,
+          date: m.dateFin,
+          note: 'Fin de bail — ' + (m.adresseFull || m.adresse || 'Bien #' + m.id) + (diffM > 0 ? ' — ' + diffM + ' jours' : ' — ÉCHU'),
+          urgence: diffM <= 15 ? 'urgent' : diffM <= 30 ? 'warning' : 'info',
+          done: doneIds.includes(_mfId)
+        });
+      }
+    }
+    // IRL depuis dateEntree du mandat
+    if (m.dateEntree) {
+      var entreeM = new Date(m.dateEntree);
+      if (!isNaN(entreeM)) {
+        var moisDepuisM = (today.getFullYear() - entreeM.getFullYear())*12 + (today.getMonth() - entreeM.getMonth());
+        if (moisDepuisM > 0 && moisDepuisM % 12 <= 2) {
+          var _mirlId = 'irl_mandat_' + m.id + '_' + today.getFullYear();
+          if (!existing.find(function(e){ return e.autoId === _mirlId; })) {
+            var revM = new Date(entreeM);
+            revM.setFullYear(entreeM.getFullYear() + Math.max(1, Math.floor(moisDepuisM/12)));
+            existing.push({
+              id: _mirlId, autoId: _mirlId,
+              type: 'revision_irl', bien: m.adresseFull || m.adresse || 'Bien #' + m.id,
+              date: revM.toISOString().split('T')[0],
+              note: 'Révision loyer IRL — ' + (m.adresseFull || m.adresse || 'Bien #' + m.id),
+              urgence: 'warning', done: doneIds.includes(_mirlId)
+            });
+          }
         }
       }
     }
@@ -7349,12 +7445,13 @@ function genAlertesAuto() {
         dpeExp.setFullYear(dpeDate.getFullYear() + 10);
         var diffDpe = Math.round((dpeExp - today) / 86400000);
         if (diffDpe <= 180) {
+          var _dpeId = 'dpe_' + m.id;
           existing.push({
-            id: 'dpe_' + m.id, autoId: 'dpe_' + m.id,
+            id: _dpeId, autoId: _dpeId,
             type: 'dpe_expiration', bien: m.adresse||'Bien #'+m.id,
             date: dpeExp.toISOString().split('T')[0],
             note: 'DPE arrivant à expiration — ' + (m.adresse||''),
-            urgence: diffDpe <= 30 ? 'urgent' : 'warning', done: false
+            urgence: diffDpe <= 30 ? 'urgent' : 'warning', done: doneIds.includes(_dpeId)
           });
         }
       }
@@ -7421,10 +7518,17 @@ function refreshAlertes() {
 }
 
 function doneAlerte(id) {
+  // Stocker dans une liste persistante des alertes traitées
+  var doneIds = JSON.parse(localStorage.getItem('bailscan_alertes_done')||'[]');
+  if (!doneIds.includes(String(id))) doneIds.push(String(id));
+  localStorage.setItem('bailscan_alertes_done', JSON.stringify(doneIds));
+  // Aussi marquer dans l'array courant
   var arr = loadAlertes();
-  var a = arr.find(function(x){ return x.id == id; });
-  if(a) a.done = true;
-  saveAlertes(arr); refreshAlertes();
+  var a = arr.find(function(x){ return String(x.id) == String(id) || String(x.autoId) == String(id); });
+  if (a) a.done = true;
+  saveAlertes(arr);
+  refreshAlertes();
+  showToast('✓ Échéance marquée comme traitée.', 'green');
 }
 function deleteAlerte(id) {
   var arr = loadAlertes().filter(function(x){ return x.id != id; });
@@ -8494,9 +8598,14 @@ function exportCourrierPDF() {
     var y = 8;
     if (logo) {
       try {
+        // Calcul proportionnel pour ne pas écraser
+        var img2 = new Image(); img2.src = logo;
+        var lw = img2.naturalWidth || 200; var lh = img2.naturalHeight || 60;
+        var maxLogoW = 40; var maxLogoH = 9;
+        var ratio = Math.min(maxLogoW/lw, maxLogoH/lh);
+        var fwL = lw * ratio; var fhL = lh * ratio;
         var logoFmt = logo.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-        // Ajuster la taille pour tenir dans la bande de 12mm
-        doc.addImage(logo, logoFmt, marginL, 1.5, 32, 9);
+        doc.addImage(logo, logoFmt, marginL, (12 - fhL) / 2, fwL, fhL);
       } catch(e) { console.warn('Logo error:', e); }
     } else {
       doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
@@ -8563,17 +8672,25 @@ function exportCourrierPDF() {
       }
     }
 
-    // ── Signature ──
+    // ── Signature (avant nom agence) ──
     var sig = getSignature();
     if (sig) {
       try {
-        if (y + 30 > pageH - marginB) { doc.addPage(); y = 20; }
-        // Détecter le format depuis le data URL
+        if (y + 35 > pageH - marginB) { doc.addPage(); y = 20; }
         var sigFmt = sig.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-        doc.addImage(sig, sigFmt, marginL, y + 6, 45, 18);
-        y += 28;
+        var sImg = new Image(); sImg.src = sig;
+        var sw = sImg.naturalWidth || 300; var sh = sImg.naturalHeight || 100;
+        var maxSW = 50; var maxSH = 20;
+        var sRatio = Math.min(maxSW/sw, maxSH/sh);
+        var fwS = sw * sRatio; var fhS = sh * sRatio;
+        doc.addImage(sig, sigFmt, marginL, y + 4, fwS, fhS);
+        y += fhS + 6;
       } catch(e) { console.warn('Signature PDF error:', e); }
     }
+    // Nom agence sous la signature
+    doc.setFontSize(8.5); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+    doc.text(agenceNom, marginL, y + 2);
+    y += 7;
 
     // ── Pied de page ──
     var nbPages = doc.getNumberOfPages();
@@ -8623,81 +8740,74 @@ function corrigerBailDepuisAnalyse() {
   var result = proState.currentResult;
   var corrections = proState.currentCorrections || [];
   if (!result || !corrections.length) {
-    showToast('⚠️ Aucune correction — lancez d\'abord une analyse.', 'orange');
+    showToast("Aucune correction — lancez d'abord une analyse.", 'orange');
     return;
   }
-  // Construire un prompt de correction
   var clausesList = corrections.map(function(c, i) {
     return (i+1) + '. ' + c.titre + (c.correction ? ' → ' + c.correction : '');
   }).join('\n');
-  
-  // Aller sur l'onglet génération avec un mode "correction"
+
   showDashTab('generer');
+
   setTimeout(function() {
     var formEl = document.getElementById('genererForm');
-    var resEl = document.getElementById('genererResult');
+    var resEl  = document.getElementById('genererResult');
+    var txtEl  = document.getElementById('genererResultText');
+    var loadEl = document.getElementById('genererLoading');
+
     if (formEl) formEl.style.display = 'none';
-    if (resEl) resEl.style.display = 'block';
-    
-    // Lancer la génération corrigée
-    var loadEl = document.getElementById('genererLoading') || document.getElementById('genererResult');
-    if (loadEl) {
-      loadEl.innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:2rem;margin-bottom:12px">⚙️</div><div style="font-weight:600;color:var(--pro-accent)">Génération du bail corrigé en cours…</div><div style="font-size:.83rem;color:var(--gris);margin-top:6px">Correction de '+corrections.length+' clause(s) détectée(s)</div></div>';
-      loadEl.style.display = 'block';
-    }
-    
-    // Données du wizard pour contexte
+    if (resEl)  resEl.style.display  = 'block';
+    if (loadEl) loadEl.style.display = 'flex';
+    if (txtEl)  txtEl.textContent    = '';
+
     var adresse = proWizardData.adresse || '';
-    var loyer = proWizardData.loyer_base || '';
+    var loyer   = proWizardData.loyer_base || '';
     var surface = proWizardData.surface || '';
-    
-    var correctionPrompt = 'Tu es un expert juridique en droit immobilier français. '
-      + 'Génère un bail de location CORRIGÉ intégrant les corrections suivantes:\n\n'
+
+    var prompt = 'Tu es un expert juridique en droit immobilier français. '
+      + 'Génère un bail de location CORRIGÉ intégrant TOUTES les corrections suivantes :\n\n'
       + clausesList + '\n\n'
-      + 'Contexte du bien : adresse=' + adresse + ', loyer=' + loyer + '€, surface=' + surface + 'm². '
-      + 'Génère un bail complet conforme à la loi ALUR, avec toutes les corrections appliquées. '
-      + 'Format : texte structuré, sections clairement identifiées.';
-    
+      + 'Bien : adresse=' + adresse + ', loyer=' + loyer + '€, surface=' + surface + 'm². '
+      + 'Génère le bail complet conforme loi ALUR. Format : texte structuré.';
+
     (async function() {
       try {
         var resp = await fetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
+          headers: {
+            'Content-Type': 'application/json',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 4000,
-            messages: [{ role: 'user', content: correctionPrompt }]
+            messages: [{ role: 'user', content: prompt }]
           })
         });
         var data = await resp.json();
-        var texte = (data.content || []).map(function(b){ return b.text||''; }).join('');
-        if (!texte) throw new Error('Réponse vide');
+        var texte = (data.content || []).map(function(b){ return b.text || ''; }).join('');
+        if (!texte) throw new Error('Vide');
         if (loadEl) loadEl.style.display = 'none';
         proState.currentBail = texte;
-        var txt = document.getElementById('genererResultText');
-        if (txt) txt.textContent = texte;
-        // Sauvegarder dans l'historique
-        var _genMandatId = (document.getElementById('genRattachMandat')||{}).value
-          || (document.getElementById('bailRattachMandat')||{}).value || null;
-        var _genLocId = (document.getElementById('genRattachLocataire')||{}).value
-          || (document.getElementById('bailRattachLocataire')||{}).value || null;
+        if (txtEl) txtEl.textContent = texte;
         var entry = {
           id: Date.now(),
           date: new Date().toLocaleDateString('fr-FR'),
           texte: texte,
-          mandatId: _genMandatId,
-          locataireId: _genLocId
+          mandatId: (document.getElementById('bailRattachMandat')||{}).value || null,
+          locataireId: (document.getElementById('bailRattachLocataire')||{}).value || null
         };
         proState.bailsHisto.unshift(entry);
         proState._currentBailEntryId = entry.id;
         localStorage.setItem('bailscan_bails_histo', JSON.stringify(proState.bailsHisto));
         setTimeout(peuplerSelectsRattachementBail, 100);
-        showToast('✅ Bail corrigé généré avec ' + corrections.length + ' corrections appliquées.', 'green');
+        showToast('✅ Bail corrigé généré — ' + corrections.length + ' correction(s) appliquée(s).', 'green');
       } catch(e) {
+        console.error('corrigerBail:', e);
         if (loadEl) loadEl.style.display = 'none';
-        showToast('⚠️ Erreur lors de la génération du bail corrigé.', 'orange');
         if (formEl) formEl.style.display = 'block';
-        if (resEl) resEl.style.display = 'none';
+        if (resEl)  resEl.style.display  = 'none';
+        showToast('⚠️ Erreur génération bail corrigé : ' + e.message, 'orange');
       }
     })();
   }, 200);
