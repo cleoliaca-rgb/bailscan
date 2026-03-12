@@ -1101,9 +1101,30 @@
           <div id="genererResult" style="display:none">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
               <div style="font-weight:700;font-size:1rem;color:var(--vert)">✅ Bail généré avec succès</div>
-              <div style="display:flex;gap:8px">
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
                 <button class="btn-result-action" onclick="downloadBailTxt()">⬇ .txt</button>
-                <button class="btn-result-action primary" onclick="exportBailPDF()">📄 Exporter PDF</button>
+                <button class="btn-result-action primary" onclick="exportBailPDF()">📄 PDF</button>
+                <button class="btn-result-action" onclick="envoyerBailEmail()" style="background:#0ea5e9;color:#fff;border-color:#0ea5e9">✉️ Envoyer</button>
+                <button class="btn-result-action" onclick="demanderSignatureElectronique()" style="background:var(--vert);color:#fff;border-color:var(--vert)">✍️ Signature</button>
+              </div>
+            </div>
+            <!-- Rattachement locataire & mandat -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;padding:14px;background:var(--pro-light);border-radius:10px;border:1px solid rgba(59,111,212,.15)">
+              <div>
+                <label class="form-label" style="font-size:.76rem">🔗 Rattacher à un locataire</label>
+                <select class="form-input-pro" id="bailRattachLocataire" style="font-size:.83rem" onchange="sauvegarderRattachementBail()">
+                  <option value="">— Aucun —</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" style="font-size:.76rem">🏘 Rattacher à un mandat</label>
+                <select class="form-input-pro" id="bailRattachMandat" style="font-size:.83rem" onchange="sauvegarderRattachementBail()">
+                  <option value="">— Aucun —</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" style="font-size:.76rem">📧 Email destinataire</label>
+                <input type="email" class="form-input-pro" id="bailEmailDestinataire" placeholder="locataire@email.com" style="font-size:.83rem">
               </div>
             </div>
             <div style="background:#f8f7f4;border:1px solid var(--border);border-radius:10px;padding:20px;font-size:0.82rem;line-height:1.9;white-space:pre-wrap;max-height:500px;overflow-y:auto;font-family:monospace" id="genererResultText"></div>
@@ -3136,10 +3157,28 @@ function launchProAnalysis(){
     complement_justif:v.complement_justif,charges:v.charges,depot:v.depot,
     type_analyse:'bail',source:'pro_agence'};
   var payload=v.fileB64?{pdf:v.fileB64,context:context}:{texte:v.bailText,context:context};
-  fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-    .then(function(r){return r.json();})
-    .then(function(data){setTimeout(function(){displayProResult(data);},5500);})
-    .catch(function(){setTimeout(function(){displayProResult(getDemoResult());},5500);});
+  // Appel direct API Anthropic
+  (async function() {
+    try {
+      var sysPrompt = 'Tu es un expert juridique spécialisé en droit locatif français. Analyse ce bail et réponds UNIQUEMENT en JSON valide (sans backticks), format: {"score":0-100,"verdict_titre":"...","resume":"...","clauses_abusives":[{"type":"danger|warning|ok","titre":"...","description":"...","article":"...","action":"..."}],"corrections":[{"priorite":"haute|moyenne","titre":"...","probleme":"...","correction":"...","article":"..."}],"recommandations":"..."}';
+      var userContent = v.fileB64
+        ? [{type:'document',source:{type:'base64',media_type:'application/pdf',data:v.fileB64}},{type:'text',text:'Analyse ce bail locatif. Contexte: ville='+v.ville+', surface='+v.surface+'m², loyer='+v.loyer_base+'€, charges='+v.charges+'€, dépôt='+v.depot+'€. Type: '+v.bien_type+' '+v.location_type}]
+        : 'Analyse ce bail locatif:\n\n'+v.bailText+'\n\nContexte: ville='+v.ville+', surface='+v.surface+'m², loyer='+v.loyer_base+'€, charges='+v.charges+'€.';
+      var resp = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,system:sysPrompt,messages:[{role:'user',content:userContent}]})
+      });
+      var apiData = await resp.json();
+      var rawText = (apiData.content && apiData.content[0] && apiData.content[0].text) || '';
+      var clean = rawText.replace(/```json|```/g,'').trim();
+      var result = JSON.parse(clean);
+      setTimeout(function(){displayProResult(result);},5500);
+    } catch(e) {
+      console.error('Analyse API error:', e);
+      setTimeout(function(){displayProResult(getDemoResult());},5500);
+    }
+  })();
 }
 
 function getDemoResult(){
@@ -4352,8 +4391,12 @@ async function autoUpdateVeille(forceUpdate) {
 
     var data = await response.json();
     var text = (data.content || []).map(function(b){ return b.text||''; }).join('');
+    if (!text) throw new Error('Réponse vide');
     var clean = text.replace(/```json|```/g,'').trim();
-    var newAlertes = JSON.parse(clean);
+    // Extraire le tableau JSON si entouré de texte
+    var jsonMatch = clean.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) throw new Error('Tableau JSON introuvable');
+    var newAlertes = JSON.parse(jsonMatch[0]);
 
     if (Array.isArray(newAlertes) && newAlertes.length > 0) {
       // Fusionner avec les alertes initiales (garder les initiales, ajouter les nouvelles)
@@ -4614,8 +4657,12 @@ function genererNouvelleAlerteIA() {
       });
       var data = await resp.json();
       var raw = (data.content && data.content[0] && data.content[0].text) || '';
+      if (!raw) throw new Error('Réponse vide de l\'IA');
       var clean = raw.replace(/```json|```/g, '').trim();
-      var alerte = JSON.parse(clean);
+      // Extraire le JSON si entouré de texte
+      var jsonMatch = clean.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('JSON introuvable dans la réponse');
+      var alerte = JSON.parse(jsonMatch[0]);
       alerte.id = 'ia_' + Date.now();
       alerte.date = new Date().toLocaleDateString('fr-FR');
       proState.veille.unshift(alerte);
@@ -4873,7 +4920,6 @@ function lancerAnalyseDossier() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': '',
           'anthropic-version': '2023-06-01',
           'anthropic-dangerous-direct-browser-access': 'true'
         },
@@ -6048,13 +6094,7 @@ function buildBailComplet(g) {
     '_______________________________        _______________________________',
     (g.bailleurPrenom||'') + ' ' + (g.bailleurNom||'') + '               ' + (g.locatairePrenom||'') + ' ' + (g.locataireNom||''),
     '',
-    '================================================================',
-    'MENTIONS LEGALES',
-    '================================================================',
-    'Ce bail a ete genere par BailScan Pro (bailscan.app).',
-    'Il est fourni a titre d\'aide a la redaction et ne constitue pas un conseil juridique.',
-    'Conforme au decret du 29 mai 2015 (modele type loi ALUR) et ses modifications.',
-    'Loi n 89-462 du 6 juillet 1989 - Loi ALUR 2014 - Loi ELAN 2018 - Loi Climat 2021.',
+
   ].filter(function(l){ return l !== null && l !== undefined; }).join('\n');
 
   return bail;
@@ -6287,7 +6327,6 @@ function exportBailPDF() {
 
 
 function finalizeBailGeneration(bailText, gsteps) {
-  // Marquer la dernière étape comme terminée
   if (gsteps && gsteps.length) {
     var last = document.getElementById(gsteps[gsteps.length-1]);
     if (last) { last.className='analysis-step-pro done'; var chk=last.querySelector('.step-check'); if(chk) chk.textContent='✓'; }
@@ -6301,7 +6340,107 @@ function finalizeBailGeneration(bailText, gsteps) {
     if (txt) txt.textContent = bailText;
     var btn = document.getElementById('btnGenerer');
     if (btn) btn.disabled = false;
+
+    // Sauvegarder dans l'historique avec ID pour rattachement
+    var bailEntry = {
+      id: Date.now(),
+      date: new Date().toLocaleDateString('fr-FR'),
+      texte: bailText,
+      locataireId: null,
+      mandatId: null,
+      emailDestinataire: ''
+    };
+    proState.bailsHisto.unshift(bailEntry);
+    if (proState.bailsHisto.length > 50) proState.bailsHisto = proState.bailsHisto.slice(0,50);
+    localStorage.setItem('bailscan_bails_histo', JSON.stringify(proState.bailsHisto));
+    proState._currentBailEntryId = bailEntry.id;
+
+    // Peupler les selects de rattachement
+    peuplerSelectsRattachementBail();
+
+    // Pré-remplir email depuis le locataire sélectionné dans le formulaire
+    var emailLoc = document.getElementById('genLocataireEmail');
+    if (emailLoc && emailLoc.value) {
+      var emailDest = document.getElementById('bailEmailDestinataire');
+      if (emailDest) emailDest.value = emailLoc.value;
+    }
   }, 600);
+}
+
+function peuplerSelectsRattachementBail() {
+  var selLoc = document.getElementById('bailRattachLocataire');
+  var selMan = document.getElementById('bailRattachMandat');
+  if (!selLoc || !selMan) return;
+  var locs = loadLocataires ? loadLocataires() : [];
+  var mans = loadMandats ? loadMandats() : [];
+  selLoc.innerHTML = '<option value="">— Aucun —</option>'
+    + locs.map(function(l){ return '<option value="'+l.id+'">'+(l.prenom||'')+' '+(l.nom||'')+'</option>'; }).join('');
+  selMan.innerHTML = '<option value="">— Aucun —</option>'
+    + mans.map(function(m){ return '<option value="'+m.id+'">'+(m.adresse||'Bien #'+m.id)+'</option>'; }).join('');
+  // Pré-sélectionner si locataire connu depuis le formulaire
+  var prenomField = document.getElementById('genLocatairePrenom');
+  var nomField = document.getElementById('genLocataireNom');
+  if (prenomField && nomField) {
+    var prenom = prenomField.value.trim().toLowerCase();
+    var nom = nomField.value.trim().toLowerCase();
+    locs.forEach(function(l) {
+      if ((l.prenom||'').toLowerCase()===prenom && (l.nom||'').toLowerCase()===nom) {
+        selLoc.value = l.id;
+        sauvegarderRattachementBail();
+      }
+    });
+  }
+}
+
+function sauvegarderRattachementBail() {
+  var id = proState._currentBailEntryId;
+  if (!id) return;
+  var entry = proState.bailsHisto.find(function(b){ return b.id === id; });
+  if (!entry) return;
+  var selLoc = document.getElementById('bailRattachLocataire');
+  var selMan = document.getElementById('bailRattachMandat');
+  var emailEl = document.getElementById('bailEmailDestinataire');
+  if (selLoc) entry.locataireId = selLoc.value || null;
+  if (selMan) entry.mandatId = selMan.value || null;
+  if (emailEl) entry.emailDestinataire = emailEl.value || '';
+  localStorage.setItem('bailscan_bails_histo', JSON.stringify(proState.bailsHisto));
+}
+
+function envoyerBailEmail() {
+  var emailEl = document.getElementById('bailEmailDestinataire');
+  var email = emailEl ? emailEl.value.trim() : '';
+  if (!proState.currentBail) { alert('Générez un bail d\'abord.'); return; }
+  if (!email) {
+    email = prompt('Adresse email du destinataire :');
+    if (!email) return;
+    if (emailEl) emailEl.value = email;
+  }
+  var ai = proState.agencyInfo || {};
+  var expediteur = ai.email || (proState.user ? proState.user.email : '');
+  var sujet = encodeURIComponent('Bail de location — ' + new Date().toLocaleDateString('fr-FR'));
+  var corps = encodeURIComponent('Bonjour,%0A%0AVeuillez trouver ci-joint le bail de location genere par BailScan Pro.%0A%0ACordialement,%0A' + (ai.nom || 'BailScan Pro'));
+  if (expediteur) {
+    window.location.href = 'mailto:'+email+'?from='+encodeURIComponent(expediteur)+'&subject='+sujet+'&body='+corps;
+  } else {
+    window.location.href = 'mailto:'+email+'?subject='+sujet+'&body='+corps;
+  }
+  sauvegarderRattachementBail();
+  showToast('📧 Ouverture de votre client mail…', 'blue');
+}
+
+function demanderSignatureElectronique() {
+  if (!proState.currentBail) { alert('Générez un bail d\'abord.'); return; }
+  var emailEl = document.getElementById('bailEmailDestinataire');
+  var email = emailEl ? emailEl.value.trim() : '';
+  // Modale d'info signature électronique
+  var msg = '✍️ Signature électronique\n\n';
+  msg += 'Pour la signature électronique de ce bail, deux options :\n\n';
+  msg += '1. DocuSign — docusign.com\n';
+  msg += '2. Yousign (français, conforme eIDAS) — yousign.com\n';
+  msg += '3. YouSign via API (intégration possible via votre compte Pro)\n\n';
+  if (email) msg += 'Destinataire détecté : '+email+'\n\n';
+  msg += 'Le bail a été sauvegardé. Exportez-le en PDF puis uploadez-le sur votre service de signature.';
+  showToast('✍️ Exportez le PDF puis envoyez-le via DocuSign ou Yousign pour la signature électronique.', 'blue');
 }
 
 
@@ -7571,7 +7710,7 @@ async function genererCourrier() {
     try {
       var resp = await fetch('https://api.anthropic.com/v1/messages', {
         method:'POST',
-        headers:{'Content-Type':'application/json','x-api-key':'','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
         body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1400,messages:[{role:'user',content:prompt}]})
       });
       var data = await resp.json();
@@ -7621,7 +7760,33 @@ function genCourrierFallback(type, bailleur, locataire, adresse, details, baille
     mise_demeure: 'MISE EN DEMEURE DE PAYER\n\n'+(bailleurAdresse ? bailleurAdresse : bailleur)+'\n\nÀ l\'attention de :\n'+locataire+'\n\n'+today+'\n\nObjet : Mise en demeure — loyers impayés\nEnvoi par lettre recommandée avec accusé de réception\n\nMonsieur/Madame '+locataire+',\n\nPar la présente, nous vous mettons en demeure de procéder au règlement des loyers impayés afférents au logement situé au '+adresse+'.\n\n'+(details||'Malgré nos relances amiables, les sommes dues restent impayées à ce jour.')+'\n\nNous vous rappelons qu\'en application de l\'article 24 de la loi n°89-462 du 6 juillet 1989, à défaut de paiement dans un délai de deux mois à compter de la signification d\'un commandement de payer, le bail pourra être résilié de plein droit.\n\nNous vous demandons de régulariser votre situation dans les meilleurs délais.\n\nDans l\'attente, veuillez agréer, Monsieur/Madame, nos salutations distinguées.\n\n'+bailleur,
     conge_bailleur: 'CONGÉ DONNÉ PAR LE BAILLEUR\n\n'+(bailleurAdresse ? bailleurAdresse : bailleur)+'\n\nÀ l\'attention de :\n'+locataire+'\n\n'+today+'\n\nObjet : Congé pour le logement situé au '+adresse+'\nEnvoi par lettre recommandée avec accusé de réception\n\nMonsieur/Madame '+locataire+',\n\nJe vous informe par la présente de ma décision de mettre fin au bail de location de l\'appartement situé au '+adresse+'.\n\n'+(details||'Ce congé est donné pour reprise du logement à usage personnel.')+'\n\nConformément à l\'article 15 de la loi n°89-462 du 6 juillet 1989, ce congé prend effet à l\'expiration du bail, sous réserve du respect du préavis légal de 6 mois pour une location vide (3 mois pour un meublé).\n\nVeuillez agréer, Monsieur/Madame, mes salutations distinguées.\n\n'+bailleur
   };
-  return intros[type] || intros.conge_bailleur;
+  if (!intros[type]) {
+    // Générer un fallback générique pour les types non couverts
+    var titres = {
+      regularisation: 'RÉGULARISATION ANNUELLE DES CHARGES', revision_loyer: 'RÉVISION DU LOYER (IRL)',
+      travaux_locataire: 'RÉPONSE À DEMANDE DE TRAVAUX', assurance_relance: 'RELANCE JUSTIFICATIF ASSURANCE',
+      etat_lieux_sortie: 'CONVOCATION ÉTAT DES LIEUX DE SORTIE', restitution_depot: 'RESTITUTION DU DÉPÔT DE GARANTIE',
+      clause_illegale: 'NOTIFICATION — CLAUSE ILLÉGALE', trop_percu: 'REMBOURSEMENT TROP-PERÇU DE LOYER',
+      notif_encadrement: 'NOTIFICATION — DÉPASSEMENT ENCADREMENT DES LOYERS',
+      reclamation_remboursement: 'RÉCLAMATION ET DEMANDE DE REMBOURSEMENT'
+    };
+    var corps = {
+      regularisation: "Conformement a l'article 23 de la loi n°89-462, nous vous adressons le decompte annuel des charges. " + (details||"Apres decompte des depenses reelles, une regularisation est a effectuer."),
+      revision_loyer: "Conformement a l'article 17-1 de la loi du 6 juillet 1989, nous vous informons de la revision annuelle de votre loyer selon l'IRL. " + (details||"Le nouveau loyer sera applicable a compter de la prochaine date anniversaire du bail."),
+      travaux_locataire: "Nous avons bien recu votre demande d'autorisation de travaux concernant le logement situe au " + adresse + ". " + (details||"Apres examen de votre demande, nous vous apportons notre reponse ci-apres."),
+      assurance_relance: "Nous vous rappelons que conformement a l'article 7g de la loi n°89-462, vous etes tenu de nous remettre annuellement une attestation d'assurance couvrant les risques locatifs. " + (details||"A ce jour, nous n'avons pas recu ce justificatif."),
+      etat_lieux_sortie: "Nous vous invitons a vous presenter pour l'etat des lieux de sortie du logement situe au " + adresse + ". " + (details||"Merci de vous munir de vos cles et documents de bail."),
+      restitution_depot: "Suite a votre depart du logement situe au " + adresse + ", nous procedons au traitement de votre depot de garantie conformement a l'article 22 de la loi du 6 juillet 1989. " + (details||""),
+      clause_illegale: "Nous vous informons que notre bail contient une clause contraire aux dispositions imperatives de la loi n°89-462 du 6 juillet 1989. " + (details||"Nous vous demandons de prendre acte de la nullite de cette clause."),
+      trop_percu: "Il apparait qu'un trop-percu de loyer a ete collecte au titre du bien situe au " + adresse + ". " + (details||"Nous vous informons des modalites de remboursement ci-apres."),
+      notif_encadrement: "Nous vous informons que le loyer du logement situe au " + adresse + " depasse le loyer de reference majore fixe par la prefecture dans le cadre de l'encadrement des loyers. " + (details||"Nous vous demandons de proceder a sa mise en conformite."),
+      reclamation_remboursement: "Par la presente, nous formulons une reclamation concernant le logement situe au " + adresse + ". " + (details||"Nous vous demandons de bien vouloir traiter cette demande dans les meilleurs delais.")
+    };
+    var titre = titres[type] || type.toUpperCase();
+    var corpsTxt = corps[type] || (details || 'Nous vous contactons concernant le logement situé au '+adresse+'.');
+    return titre + '\n\n' + (bailleurAdresse ? bailleurAdresse : bailleur) + '\n\nA l\'attention de :\n' + locataire + '\n\n' + today + '\n\nObjet : ' + titre + '\nEnvoi LRAR\n\nMonsieur/Madame ' + locataire + ',\n\n' + corpsTxt + '\n\nVeuillez agreer, Monsieur/Madame, nos salutations distinguees.\n\n' + bailleur
+  }
+  return intros[type];
 }
 
 function copierCourrier() {
@@ -7634,30 +7799,105 @@ function copierCourrier() {
 
 function exportCourrierPDF() {
   var PC = getPdfColors();
-  var PR = PC.primary; var SEC = PC.secondary;
+  var PR = PC.primary; var SEC = PC.secondary; var BODY = PC.body;
   if(!proState.currentCourrier){ alert('Générez un courrier d\'abord.'); return; }
   try {
-    if(!window.jspdf){ alert('jsPDF non disponible.'); return; }
+    if(!window.jspdf){ alert('jsPDF non disponible — rechargez la page.'); return; }
     var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF();
+    var doc = new jsPDF({ unit:'mm', format:'a4' });
+    var pageW = 210; var pageH = 297;
+    var marginL = 20; var marginR = 20; var marginT = 20; var marginB = 18;
+    var contentW = pageW - marginL - marginR;
+    var ai = proState.agencyInfo || {};
+    var agenceNom = ai.nom || (proState.user ? (proState.user.agence||'BailScan Pro') : 'BailScan Pro');
     var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
-    var y = 16;
-    if(logo){ try{ doc.addImage(logo,'JPEG',14,8,40,16); y=30; }catch(e){} }
-    var agence = proState.user ? (proState.user.agence||'BailScan Pro') : 'BailScan Pro';
-    doc.setFontSize(8); doc.setTextColor(150,150,150); doc.text(agence, 196, 14, {align:'right'}); y=Math.max(y,20)+4;
 
-    doc.setDrawColor(220,220,220); doc.line(14,y,196,y); y+=8;
+    // ── Bande de couleur supérieure ──
+    doc.setFillColor(PR[0], PR[1], PR[2]);
+    doc.rect(0, 0, pageW, 12, 'F');
 
-    var lines = doc.splitTextToSize(proState.currentCourrier, 180);
-    lines.forEach(function(line){
-      if(y>282){ doc.addPage(); y=14; }
-      doc.setFontSize(9.5); doc.setFont('helvetica','normal'); doc.setTextColor(SEC[0],SEC[1],SEC[2]);
-      doc.text(line,14,y); y+=5.5;
-    });
-    doc.setFontSize(7); doc.setTextColor(180,180,180);
-    doc.text('Document généré par BailScan Pro · bailscan.app · '+new Date().toLocaleDateString('fr-FR'), 105, 292, {align:'center'});
-    doc.save('courrier-bailscan-'+new Date().toISOString().split('T')[0]+'.pdf');
-  } catch(e){ alert('Erreur PDF: '+e.message); }
+    // ── Logo ou nom agence dans la bande ──
+    var y = 8;
+    if (logo) {
+      try { doc.addImage(logo, 'JPEG', marginL, 1, 28, 10); } catch(e) {}
+    } else {
+      doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+      doc.text(agenceNom, marginL, 7.5);
+    }
+    // Petite mention à droite dans la bande
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(255,255,255,180);
+    doc.text('Document officiel', pageW - marginR, 7.5, {align:'right'});
+
+    y = 20;
+
+    // ── Informations agence (expéditeur) ──
+    if (ai.adresse || ai.tel || ai.email) {
+      doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+      doc.text(agenceNom, marginL, y); y += 5;
+      doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
+      if (ai.adresse) { doc.text(ai.adresse, marginL, y); y += 4.5; }
+      if (ai.tel) { doc.text('Tél : '+ai.tel, marginL, y); y += 4; }
+      if (ai.email) { doc.text(ai.email, marginL, y); y += 4; }
+      if (ai.siret) { doc.setFontSize(7); doc.text('SIRET : '+ai.siret, marginL, y); y += 4; }
+      y += 4;
+    }
+
+    // ── Date (droite) ──
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
+    doc.text(new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}), pageW-marginR, y-8, {align:'right'});
+
+    // ── Ligne séparatrice ──
+    doc.setDrawColor(PR[0], PR[1], PR[2]);
+    doc.setLineWidth(0.6);
+    doc.line(marginL, y, pageW - marginR, y); y += 8;
+
+    // ── Corps du courrier ──
+    var texte = proState.currentCourrier;
+    var lignes = texte.split('\n');
+    doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(BODY[0],BODY[1],BODY[2]);
+
+    for (var li = 0; li < lignes.length; li++) {
+      var ligne = lignes[li];
+      // Détection titres/objets (majuscules ou "Objet :")
+      var isTitre = /^(OBJET|LETTRE|CONGÉ|MISE EN DEMEURE|RÉVISION|RÉGULARISATION|CONVOCATION|RESTITUTION|NOTIFICATION|RÉCLAMATION|À L'ATTENTION|Objet\s*:)/i.test(ligne.trim());
+      var isGros = ligne.trim() === ligne.trim().toUpperCase() && ligne.trim().length > 5 && /[A-ZÀÉÈÊËÎÏÔÙÛÜ]/.test(ligne.trim());
+
+      if (isTitre || isGros) {
+        doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+      } else if (ligne.trim() === '') {
+        y += 3.5; continue;
+      } else {
+        doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(BODY[0],BODY[1],BODY[2]);
+      }
+
+      // Wrap automatique
+      var wrapped = doc.splitTextToSize(ligne, contentW);
+      for (var wi = 0; wi < wrapped.length; wi++) {
+        if (y > pageH - marginB - 10) {
+          doc.addPage();
+          doc.setFillColor(PR[0], PR[1], PR[2]);
+          doc.rect(0, 0, pageW, 6, 'F');
+          y = 14;
+          doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(BODY[0],BODY[1],BODY[2]);
+        }
+        doc.text(wrapped[wi], marginL, y);
+        y += 5.5;
+      }
+    }
+
+    // ── Pied de page ──
+    var nbPages = doc.getNumberOfPages();
+    for (var p = 1; p <= nbPages; p++) {
+      doc.setPage(p);
+      doc.setFillColor(245,245,245);
+      doc.rect(0, pageH-10, pageW, 10, 'F');
+      doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
+      doc.text(agenceNom+' · Document généré par BailScan Pro · bailscan.app', marginL, pageH-4);
+      if (nbPages > 1) doc.text('Page '+p+'/'+nbPages, pageW-marginR, pageH-4, {align:'right'});
+    }
+
+    doc.save('courrier-'+new Date().toISOString().split('T')[0]+'.pdf');
+  } catch(e) { alert('Erreur PDF: '+e.message); console.error(e); }
 }
 
 
