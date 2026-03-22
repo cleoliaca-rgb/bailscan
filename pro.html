@@ -6791,7 +6791,7 @@ function lancerAnalyseDossier() {
   var ancLabels = {'moins6':'< 6 mois','6a12':'6-12 mois','1a3':'1-3 ans','plus3':'> 3 ans'};
   var garantLabels = {non:'aucun garant',physique:'garant physique',visale:'Visa Visale',garantme:'GarantMe/Unkle'};
   var garantContratLabels = {cdi:'CDI',fonctionnaire:'Fonctionnaire',retraite:'Retraité',independant:'Indépendant/TNS',autre:'Autre'};
-  var ancGarantLabels = {plus3:'> 3 ans',1a3:'1-3 ans',moins1:'< 1 an'};
+  var ancGarantLabels = {plus3:'> 3 ans','1a3':'1-3 ans',moins1:'< 1 an'};
 
   // Ligne garant enrichie
   var garantLine = 'Garant prévu : ' + (garantLabels[garant] || garant);
