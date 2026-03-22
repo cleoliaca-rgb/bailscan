@@ -12719,7 +12719,6 @@ function sendAgentMessage() {
 
   addAgentBubble('user', text);
   agentHistory.push({ role:'user', content: text });
-  addAgentBubble('assistant', '', true);
   agentTyping = true;
 
   var btn = document.getElementById('agentSendBtn');
@@ -12727,9 +12726,11 @@ function sendAgentMessage() {
 
   var anthropicKey = localStorage.getItem('bailscan_anthropic_key') || '';
 
+  // Diagnostic immédiat visible dans le chat
+  var debugInfo = 'Clé: ' + (anthropicKey ? anthropicKey.substring(0,10)+'…('+anthropicKey.length+'car)' : 'VIDE');
+  addAgentBubble('assistant', '🔄 Envoi en cours… ' + debugInfo);
+
   if (!anthropicKey) {
-    document.getElementById('agentLoadingRow') && document.getElementById('agentLoadingRow').remove();
-    addAgentBubble('assistant', '⚙️ Clé API manquante — entrez-la dans le bandeau orange ci-dessus.');
     agentTyping = false;
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
     var setup = document.getElementById('agentSetupKey');
@@ -12754,27 +12755,27 @@ function sendAgentMessage() {
   })
   .then(function(r) {
     if (!r.ok) {
-      return r.json().then(function(e) { throw new Error(e.error ? e.error.message : 'HTTP ' + r.status); });
+      return r.json().then(function(e) { throw new Error((e.error ? e.error.message : '') || 'HTTP ' + r.status); });
     }
     return r.json();
   })
   .then(function(data) {
-    var el = document.getElementById('agentLoadingRow');
-    if (el) el.remove();
+    // Supprimer bulle debug
+    var msgs = document.getElementById('agentChatMessages');
+    if (msgs && msgs.lastChild) msgs.removeChild(msgs.lastChild);
     var reply = (data.content && data.content[0] && data.content[0].text)
-      ? data.content[0].text
-      : '⚠️ Réponse vide.';
+      ? data.content[0].text : '⚠️ Réponse vide.';
     agentHistory.push({ role: 'assistant', content: reply });
     addAgentBubble('assistant', reply);
   })
   .catch(function(err) {
-    var el = document.getElementById('agentLoadingRow');
-    if (el) el.remove();
+    var msgs = document.getElementById('agentChatMessages');
+    if (msgs && msgs.lastChild) msgs.removeChild(msgs.lastChild);
     var msg = err && err.message ? err.message : 'Erreur inconnue';
-    var isCors = msg === 'Failed to fetch' || msg.includes('NetworkError') || msg.includes('CORS');
+    var isCors = msg === 'Failed to fetch' || msg.includes('NetworkError') || msg.includes('CORS') || msg.includes('network');
     addAgentBubble('assistant', isCors
-      ? '🔒 **Erreur CORS** — Ce fichier doit être servi via HTTP, pas ouvert directement (file://).\n\nSolution rapide : déploie sur **bailscan.app** via Vercel, ou lance `npx serve .` en local.'
-      : '❌ Erreur : ' + msg);
+      ? '🔒 **Erreur CORS** — fichier ouvert en `file://`.\n\nIl faut le servir via HTTP. Déploie sur **bailscan.app** via Vercel ou lance :\n`npx serve .`'
+      : '❌ **Erreur ' + msg + '**\n\nClé utilisée : ' + anthropicKey.substring(0,12) + '…');
   })
   .finally(function() {
     agentTyping = false;
