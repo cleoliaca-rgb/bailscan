@@ -12735,13 +12735,14 @@ function sendAgentMessage() {
   if (!anthropicKey) {
     var typing2 = document.getElementById('agentLoadingRow');
     if (typing2) typing2.remove();
-    addAgentBubble('assistant', '⚙️ **Clé API non configurée.**\n\nAllez dans **Paramètres → Agent IA**, collez votre clé Anthropic (`sk-ant-…`) et cliquez "Enregistrer la clé".');
+    addAgentBubble('assistant', '⚙️ **Clé API non configurée.**\n\nAllez dans **Paramètres → Agent IA**, collez votre clé Anthropic (`sk-ant-…`) et cliquez "Enregistrer la clé".\n\n_Debug : clé lue = vide_');
     agentTyping = false;
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
-    // Ouvrir les paramètres automatiquement
     setTimeout(function(){ showDashTab('parametres'); toggleAgentIA(); }, 1200);
     return;
   }
+  // Debug — afficher les 8 premiers caractères de la clé
+  console.log('[Agent IA] Clé lue depuis localStorage :', anthropicKey.substring(0,12) + '…');
 
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -12791,6 +12792,17 @@ function sendAgentMessage() {
   });
 }
 
+// Sauvegarde rapide clé depuis popup
+function saveAgentQuickKey() {
+  var key = (document.getElementById('agentQuickApiKey') || {value:''}).value.trim();
+  if (!key || !key.startsWith('sk-')) { showToast('Clé invalide (doit commencer par sk-)', 'orange'); return; }
+  localStorage.setItem('bailscan_anthropic_key', key);
+  document.getElementById('agentSetupKey').style.display = 'none';
+  showToast('✅ Clé enregistrée !', 'green');
+  // Réinitialiser le chat pour afficher statut mis à jour
+  clearAgentChat();
+}
+
 // Toggle popup
 function toggleAgentIA() {
   var win = document.getElementById('agentIAWindow');
@@ -12799,11 +12811,9 @@ function toggleAgentIA() {
   var isOpen = win && win.style.display === 'flex';
 
   if (isOpen) {
-    // Fermer avec animation
     if (win) { win.style.opacity = '0'; win.style.transform = 'scale(.95) translateY(8px)'; }
     setTimeout(function() { if(win) win.style.display = 'none'; }, 200);
   } else {
-    // Ouvrir
     if (win) {
       win.style.display = 'flex';
       setTimeout(function() {
@@ -12812,10 +12822,17 @@ function toggleAgentIA() {
       }, 10);
     }
     if (dot) dot.style.display = 'none';
-    // Init chat si premier ouverture
+    // Afficher ou masquer le bloc setup clé
+    var setupDiv = document.getElementById('agentSetupKey');
+    var hasKey = !!localStorage.getItem('bailscan_anthropic_key');
+    if (setupDiv) setupDiv.style.display = hasKey ? 'none' : 'block';
+    // Init chat
     setTimeout(function() { initAgentChat(); }, 50);
-    // Focus input
-    setTimeout(function() { var inp = document.getElementById('agentInput'); if(inp) inp.focus(); }, 280);
+    setTimeout(function() {
+      var inp = document.getElementById('agentInput');
+      if (inp && hasKey) inp.focus();
+      else if (!hasKey) { var qk = document.getElementById('agentQuickApiKey'); if(qk) qk.focus(); }
+    }, 280);
   }
 }
 
@@ -13380,8 +13397,16 @@ uploadDPEFile = function(mandatId, input) {
       </div>
     </div>
 
-    <!-- Messages -->
-    <div id="agentChatMessages" style="height:280px;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:8px;flex-shrink:0"></div>
+    <!-- Setup clé API si absente -->
+    <div id="agentSetupKey" style="display:none;padding:14px 16px;background:rgba(249,115,22,.08);border-bottom:1px solid rgba(249,115,22,.2)">
+      <div style="font-size:.75rem;color:#fb923c;font-weight:700;margin-bottom:8px">⚙️ Clé API Anthropic requise</div>
+      <div style="display:flex;gap:6px">
+        <input type="password" id="agentQuickApiKey" placeholder="sk-ant-api03-…"
+          style="flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:7px;color:#fff;font-size:.78rem;font-family:monospace;padding:6px 10px;outline:none"
+          onkeydown="if(event.key==='Enter')saveAgentQuickKey()">
+        <button onclick="saveAgentQuickKey()" style="background:#f97316;border:none;color:#fff;border-radius:7px;padding:6px 12px;font-size:.75rem;font-weight:700;cursor:pointer;flex-shrink:0">Enregistrer</button>
+      </div>
+    </div>
 
     <!-- Suggestions -->
     <div id="agentSuggestions" style="padding:0 12px 8px;display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0">
