@@ -5830,6 +5830,34 @@ function openFicheMandat(id, activeTab) {
         + m.notes + '</div>';
     }
 
+    // Bloc DPE uploadable
+    var dpeClass = m.dpe || '—';
+    var hasDpeFile = m.dpeFile;
+    var dpePreviewHtml = '';
+    if (hasDpeFile) {
+      if (m.dpeFile.match(/^data:image/)) {
+        dpePreviewHtml = '<img src="'+m.dpeFile+'" style="max-height:70px;border-radius:6px;border:1px solid var(--border);margin-top:8px">';
+      } else {
+        dpePreviewHtml = '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;border:1px solid #86efac;margin-top:8px">'
+          + '<span style="font-size:1.2rem">📄</span>'
+          + '<div style="flex:1;min-width:0"><div style="font-weight:600;font-size:.78rem;color:#166534;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(m.dpeFileName||'DPE.pdf')+'</div>'
+          + '<div style="font-size:.7rem;color:var(--gris)">Uploadé le '+(m.dpeUploadDate||'—')+'</div></div>'
+          + '<a href="'+m.dpeFile+'" download="'+(m.dpeFileName||'dpe.pdf')+'" style="font-size:.72rem;color:var(--pro-accent);font-weight:600;text-decoration:none;flex-shrink:0">⬇ DL</a>'
+          + '</div>';
+      }
+    }
+    content += '<div style="margin-top:12px;padding:14px;background:white;border:1.5px solid var(--border);border-radius:12px">'
+      + '<div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;font-weight:600;margin-bottom:8px">📋 DPE — Diagnostic Performance Énergétique</div>'
+      + '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+      + (dpeClass !== '—' ? '<span style="font-size:1.2rem;font-weight:900;background:#dbeafe;color:#1e40af;border-radius:6px;padding:3px 12px;letter-spacing:.05em">'+dpeClass+'</span>' : '<span style="font-size:.8rem;color:var(--gris);font-style:italic">Classe non renseignée</span>')
+      + '<label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:var(--pro-light);border:1.5px solid var(--pro-accent);border-radius:7px;padding:6px 12px;font-size:.75rem;font-weight:600;color:var(--pro-accent)">'
+      + '📤 '+(hasDpeFile?'Remplacer':'Uploader le DPE')
+      + '<input type="file" accept=".pdf,image/*" style="display:none" onchange="uploadDPEFile(\''+id+'\',this)">'
+      + '</label>'
+      + '</div>'
+      + '<div id="dpePreview_'+id+'">'+dpePreviewHtml+'</div>'
+      + '</div>';
+
   } else if (activeTab === 'locataires') {
     if (!locs.length) {
       content = '<div style="text-align:center;padding:32px;color:var(--gris)">'
@@ -9598,6 +9626,7 @@ function refreshLocataires() {
       + '</div>'
       + (l.adresse?'<div style="font-size:.8rem;font-weight:500;margin-bottom:4px">🏠 '+l.adresse+'</div>':'')
       + (l.loyer?'<div style="font-size:.78rem;color:var(--gris)">Loyer: '+l.loyer+' €/mois HC</div>':'')
+      + (l.garant && l.garant!=='non' ? '<div style="font-size:.75rem;color:#7e22ce;margin-top:3px">🛡️ Garant'+(l.garant==='physique'?' physique'+(l.garantNom?' : '+l.garantNom:''):l.garant==='visale'?' Visale':' organisme')+'</div>' : '')
       + finBail
       + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:6px">'
       + '<div style="display:flex;gap:6px;align-items:center">'+scoreHtml+(scoreHtml&&qBadge?' ':'')+qBadge+'</div>'
@@ -12124,7 +12153,44 @@ function initTravauxDemoData() {
 // Appeler init démo quand on ouvre le tab travaux
 var _origRefreshTravaux = refreshTravaux;
 refreshTravaux = function() {
-  initTravauxDemoData();
+  // Injecter les démos si le tab est vraiment vide (pas de tickets du tout)
+  var existing = [];
+  try { existing = JSON.parse(localStorage.getItem('bailscan_tickets')||'[]'); } catch(e){}
+  if (!existing.length) {
+    var today = new Date();
+    var fmt = function(d){ return d.toISOString().split('T')[0]; };
+    var demos = [
+      { id: Date.now()-5000, titre:'Fuite robinet cuisine', mandatId:'', locId:'', categorie:'plomberie', prio:'urgente', statut:'en_cours',
+        date: fmt(new Date(today-3*864e5)), dateIntervention: fmt(new Date(today.getTime()+2*864e5)),
+        prestataire:'Plomberie Martin — 06 12 34 56 78', cout:'180',
+        desc:'Fuite au niveau du joint du robinet de cuisine. Dégâts potentiels sur le meuble sous l\'évier.', charge:'bailleur' },
+      { id: Date.now()-4000, titre:'Chaudière en panne — plus de chauffage', mandatId:'', locId:'', categorie:'chauffage', prio:'urgente', statut:'attente_devis',
+        date: fmt(new Date(today-7*864e5)), dateIntervention:'',
+        prestataire:'Thermique Pro — en attente de devis', cout:'450',
+        desc:'Chaudière Vaillant 2018 en panne totale. Locataire sans chauffage. Devis demandé à 2 entreprises.', charge:'bailleur' },
+      { id: Date.now()-3000, titre:'Serrure entrée défectueuse', mandatId:'', locId:'', categorie:'menuiserie', prio:'haute', statut:'planifie',
+        date: fmt(new Date(today-10*864e5)), dateIntervention: fmt(new Date(today.getTime()+5*864e5)),
+        prestataire:'Serrurier Express — 01 23 45 67 89', cout:'120',
+        desc:'Serrure difficile à tourner. Risque de blocage. Intervention planifiée.', charge:'locataire' },
+      { id: Date.now()-2000, titre:'Peinture couloir — usure normale', mandatId:'', locId:'', categorie:'peinture', prio:'basse', statut:'ouvert',
+        date: fmt(new Date(today-20*864e5)), dateIntervention:'', prestataire:'', cout:'350',
+        desc:'Peinture couloir à refaire lors du départ du locataire.', charge:'bailleur' },
+      { id: Date.now()-1000, titre:'Remplacement joint baignoire', mandatId:'', locId:'', categorie:'plomberie', prio:'normale', statut:'clos',
+        date: fmt(new Date(today-30*864e5)), dateIntervention: fmt(new Date(today-25*864e5)),
+        prestataire:'Plomberie Martin', cout:'80',
+        desc:'Joint baignoire remplacé. Intervention effectuée.', charge:'locataire' }
+    ];
+    // Essayer de rattacher aux vrais mandats/locataires si disponibles
+    try {
+      var mans = JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');
+      var locs = JSON.parse(localStorage.getItem('bailscan_locataires')||'[]');
+      if (mans.length) { demos[0].mandatId=String(mans[0].id); demos[1].mandatId=String(mans[0].id); demos[4].mandatId=String(mans[0].id); }
+      if (mans.length>1) { demos[2].mandatId=String(mans[1].id); demos[3].mandatId=String(mans[1].id); }
+      if (locs.length) { demos[0].locId=String(locs[0].id); demos[1].locId=String(locs[0].id); demos[4].locId=String(locs[0].id); }
+      if (locs.length>1) { demos[2].locId=String(locs[1].id); demos[3].locId=String(locs[1].id); }
+    } catch(e2){}
+    localStorage.setItem('bailscan_tickets', JSON.stringify(demos));
+  }
   _origRefreshTravaux();
 };
 
