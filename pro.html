@@ -9166,6 +9166,8 @@ document.addEventListener('click', function(e) {
 
 // ── Fin recherche mandat ─────────────────────────────────────────────────────
 
+// Pré-remplir formulaire génération bail depuis mandat
+function preFillGenererFromMandat(mandatId) {
   if (!mandatId) return;
   var mans = loadMandats ? loadMandats() : [];
   var m = mans.find(function(x){ return String(x.id) === String(mandatId); });
