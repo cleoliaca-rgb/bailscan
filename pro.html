@@ -12713,36 +12713,29 @@ function sendAgentMessage() {
   if (!text) return;
   if (input) { input.value = ''; input.style.height = 'auto'; }
 
-  // Si pas de contexte encore, initialiser
   if (!agentHistory.length) {
     agentHistory = [{ role:'user', content: buildPortfolioContext() }];
   }
 
-  // Ajouter message user
   addAgentBubble('user', text);
-  agentHistory.push({ role:'assistant', content:'(contexte portefeuille chargé)' });
   agentHistory.push({ role:'user', content: text });
-
-  // Afficher loading
   addAgentBubble('assistant', '', true);
   agentTyping = true;
 
   var btn = document.getElementById('agentSendBtn');
   if (btn) { btn.disabled = true; btn.style.opacity = '.5'; }
 
-  // Appel API Claude — avec clé depuis Paramètres
   var anthropicKey = localStorage.getItem('bailscan_anthropic_key') || '';
+
   if (!anthropicKey) {
-    var typing2 = document.getElementById('agentLoadingRow');
-    if (typing2) typing2.remove();
-    addAgentBubble('assistant', '⚙️ **Clé API non configurée.**\n\nAllez dans **Paramètres → Agent IA**, collez votre clé Anthropic (`sk-ant-…`) et cliquez "Enregistrer la clé".\n\n_Debug : clé lue = vide_');
+    document.getElementById('agentLoadingRow') && document.getElementById('agentLoadingRow').remove();
+    addAgentBubble('assistant', '⚙️ Clé API manquante — entrez-la dans le bandeau orange ci-dessus.');
     agentTyping = false;
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
-    setTimeout(function(){ showDashTab('parametres'); toggleAgentIA(); }, 1200);
+    var setup = document.getElementById('agentSetupKey');
+    if (setup) setup.style.display = 'block';
     return;
   }
-  // Debug — afficher les 8 premiers caractères de la clé
-  console.log('[Agent IA] Clé lue depuis localStorage :', anthropicKey.substring(0,12) + '…');
 
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -12756,35 +12749,32 @@ function sendAgentMessage() {
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1000,
       system: buildPortfolioContext(),
-      messages: [{ role:'user', content: text }]
+      messages: [{ role: 'user', content: text }]
     })
   })
-  .then(function(r){ return r.json(); })
-  .then(function(data) {
-    // Supprimer typing bubble
-    var typing = document.getElementById('agentLoadingRow');
-    if (typing) typing.remove();
-
-    var reply = '';
-    if (data.content && data.content[0] && data.content[0].text) {
-      reply = data.content[0].text;
-    } else if (data.error) {
-      reply = '⚠️ Erreur API : ' + (data.error.message || 'Vérifiez votre clé API dans Paramètres.');
-    } else {
-      reply = '⚠️ Réponse inattendue du serveur.';
+  .then(function(r) {
+    if (!r.ok) {
+      return r.json().then(function(e) { throw new Error(e.error ? e.error.message : 'HTTP ' + r.status); });
     }
-
-    agentHistory.push({ role:'assistant', content: reply });
+    return r.json();
+  })
+  .then(function(data) {
+    var el = document.getElementById('agentLoadingRow');
+    if (el) el.remove();
+    var reply = (data.content && data.content[0] && data.content[0].text)
+      ? data.content[0].text
+      : '⚠️ Réponse vide.';
+    agentHistory.push({ role: 'assistant', content: reply });
     addAgentBubble('assistant', reply);
   })
   .catch(function(err) {
-    var typing = document.getElementById('agentLoadingRow');
-    if (typing) typing.remove();
-    var errMsg = err && err.message ? err.message : '';
-    var isCors = errMsg.toLowerCase().includes('cors') || errMsg.toLowerCase().includes('network') || errMsg === 'Failed to fetch';
+    var el = document.getElementById('agentLoadingRow');
+    if (el) el.remove();
+    var msg = err && err.message ? err.message : 'Erreur inconnue';
+    var isCors = msg === 'Failed to fetch' || msg.includes('NetworkError') || msg.includes('CORS');
     addAgentBubble('assistant', isCors
-      ? '🔒 **Erreur CORS** — L\'API Anthropic bloque les appels directs depuis le navigateur.\n\nSolution : utilisez BailScan via un serveur (ex: `npx serve .` ou hébergement Vercel). En local sur `file://`, CORS bloque systématiquement.'
-      : '⚠️ Erreur réseau : ' + (errMsg || 'inconnue') + '. Vérifiez votre connexion.');
+      ? '🔒 **Erreur CORS** — Ce fichier doit être servi via HTTP, pas ouvert directement (file://).\n\nSolution rapide : déploie sur **bailscan.app** via Vercel, ou lance `npx serve .` en local.'
+      : '❌ Erreur : ' + msg);
   })
   .finally(function() {
     agentTyping = false;
