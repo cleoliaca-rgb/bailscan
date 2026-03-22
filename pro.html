@@ -858,8 +858,8 @@ body.is-dashboard header { display: none !important; }
 <!-- DASHBOARD (visible après connexion) -->
 
 <div class="modal-overlay" id="modalFicheBien" style="display:none" onclick="if(event.target===this)closeModalFicheBien()">
-  <button class="modal-close-fixed" onclick="closeModalFicheBien()" title="Fermer">✕</button>
-  <div class="modal" style="max-width:780px;width:96%;padding:0;border-radius:20px;overflow:hidden;max-height:90vh;display:flex;flex-direction:column">
+  <div class="modal" style="max-width:780px;width:96%;padding:0;border-radius:20px;overflow:hidden;max-height:90vh;display:flex;flex-direction:column;position:relative">
+    <button onclick="event.stopPropagation();closeModalFicheBien()" title="Fermer" style="position:absolute;top:12px;right:12px;z-index:999;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0">✕</button>
     <div id="modalFicheBienContent" style="overflow-y:auto;flex:1"></div>
   </div>
 </div>
@@ -5748,8 +5748,7 @@ function openFicheMandat(id, activeTab) {
         + '<div style="font-size:1.15rem;font-weight:800;text-shadow:0 1px 6px rgba(0,0,0,.5)">'+adresseAff+'</div>'
         + '<div style="font-size:.75rem;opacity:.8;margin-top:2px">'+photos.length+' photo'+(photos.length>1?'s':'')+' · cliquer pour voir</div>'
       + '</div>'
-      + '<span style="position:absolute;top:12px;right:48px;background:'+st.bg+';color:'+st.color+';font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:20px">'+st.label+'</span>'
-      + '<button onclick="closeModalFicheBien()" style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)">×</button>'
+      + '<span style="position:absolute;top:12px;right:16px;background:'+st.bg+';color:'+st.color+';font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:20px">'+st.label+'</span>'
       + '</div>';
   } else {
     heroHtml = '<div style="position:relative;height:72px;background:linear-gradient(135deg,var(--pro) 0%,var(--pro-mid) 100%);display:flex;align-items:center;padding:0 20px;gap:12px">'
@@ -5758,7 +5757,6 @@ function openFicheMandat(id, activeTab) {
         + '<div style="font-size:.72rem;color:rgba(255,255,255,.55);margin-top:2px">'+(m.type||'')+(m.surface?' · '+m.surface+' m²':'')+'</div>'
       + '</div>'
       + '<span style="background:'+st.bg+';color:'+st.color+';font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0">'+st.label+'</span>'
-      + '<button onclick="closeModalFicheBien()" style="background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:50%;width:30px;height:30px;font-size:1rem;cursor:pointer;flex-shrink:0">×</button>'
       + '</div>';
   }
 
@@ -11802,6 +11800,333 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   }, 300);
 });
+
+// ════════════════════════════════════════════════════════
+// FIX 1 — RENDRE LOCATAIRE : badge "Locataire actuel" sur la fiche mandat
+// ════════════════════════════════════════════════════════
+// Override de rendreLocataireDepuisMandat pour marquer le candidat + statut mandat
+var _origRendreLocataire = rendreLocataireDepuisMandat;
+rendreLocataireDepuisMandat = function(candidatId, candidatNom, mandatId) {
+  // Marquer le candidat comme locataire actuel sur le mandat
+  if (mandatId) {
+    var mans = loadMandats();
+    var mIdx = mans.findIndex(function(m){ return String(m.id) === String(mandatId); });
+    if (mIdx !== -1) {
+      // Marquer le candidat choisi dans la liste
+      if (mans[mIdx].candidats) {
+        mans[mIdx].candidats = mans[mIdx].candidats.map(function(c) {
+          c.estLocataireActuel = (String(c.id) === String(candidatId) || c.nom === candidatNom);
+          return c;
+        });
+      }
+      mans[mIdx].statut = 'loue';
+      mans[mIdx].locataireNomActuel = candidatNom;
+      localStorage.setItem('bailscan_mandats', JSON.stringify(mans));
+      proState.mandats = mans;
+    }
+  }
+  // Appeler l'original
+  _origRendreLocataire(candidatId, candidatNom, mandatId);
+};
+
+// Mettre à jour buildCandidatsHtml pour afficher le badge locataire
+var _origBuildCandidats = buildCandidatsHtml;
+buildCandidatsHtml = function(mandatId) {
+  var mans = loadMandats();
+  var m = mans.find(function(x){ return String(x.id) === String(mandatId); });
+  var candidats = (m && m.candidats) ? m.candidats : [];
+  if (!candidats.length) return '';
+
+  var html = '<div style="margin-bottom:10px">'
+    + '<div style="font-size:.72rem;color:var(--gris);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em">👥 Candidats analysés (' + candidats.length + ')</div>';
+
+  candidats.slice().reverse().forEach(function(ca) {
+    var isGo = ca.verdict === 'GO';
+    var isMitige = ca.verdict === 'MITIGE';
+    var estLocataire = ca.estLocataireActuel === true;
+    var borderColor = estLocataire ? '#86efac' : isGo ? '#86efac' : isMitige ? '#fcd34d' : '#fca5a5';
+    var bgColor = estLocataire ? '#f0fdf4' : isGo ? '#f0fdf4' : isMitige ? '#fffbeb' : '#fef2f2';
+    var verdictIcon = estLocataire ? '🏠 Locataire actuel' : isGo ? '✅ GO' : isMitige ? '⚠️ Mitigé' : '❌ NO GO';
+    var verdictColor = estLocataire ? '#166534' : isGo ? '#166534' : isMitige ? '#92400e' : '#991b1b';
+    var caId = ca.id ? String(ca.id) : '';
+
+    html += '<div style="border:1.5px solid '+borderColor+';background:'+bgColor+';border-radius:10px;padding:10px 12px;margin-bottom:8px'+(estLocataire?';box-shadow:0 0 0 2px #86efac':'')+'">​'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="voirAnalyseCandidatDepuisMandat(\''+caId+'\',\''+((ca.nom||'').replace(/'/g,"\\'"))+'\')">​'
+        + '<div>'
+          + '<div style="font-weight:700;font-size:.84rem;color:#111">'+(ca.nom||'—')+'</div>'
+          + '<div style="font-size:.72rem;color:var(--gris);margin-top:2px">'
+            + (ca.date||'')+' · Score : <strong>'+(ca.score||'—')+'/100</strong>'
+            + (estLocataire ? '' : ' <span style="color:'+verdictColor+';font-size:.65em;margin-left:4px">— voir le détail →</span>')
+          + '</div>'
+        + '</div>'
+        + '<span style="font-weight:800;font-size:.78rem;color:'+verdictColor+';white-space:nowrap;background:'+(estLocataire?'#dcfce7':'transparent')+';padding:'+(estLocataire?'4px 10px':'0')+';border-radius:20px">' + verdictIcon + '</span>'
+      + '</div>'
+      + (!estLocataire && isGo
+          ? '<div style="margin-top:8px;padding-top:8px;border-top:1px solid '+borderColor+'">'
+            + '<button onclick="rendreLocataireDepuisMandat(\''+caId+'\',\''+((ca.nom||'').replace(/'/g,"\\'"))+'\',\''+mandatId+'\')" '
+            + 'style="background:var(--vert);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:.75rem;font-weight:700;cursor:pointer">🏠 Rendre locataire</button>'
+            + '</div>'
+          : '')
+      + '</div>';
+  });
+
+  html += '</div>';
+  return html;
+};
+
+// ════════════════════════════════════════════════════════
+// FIX 2 — GARANT ANALYSE DOSSIER → SYNC FICHE LOCATAIRE
+// ════════════════════════════════════════════════════════
+// Enrichir validerDossier : sync garant vers fiche locataire existante
+var _origValiderDossier = validerDossier;
+validerDossier = function(goDecision) {
+  // Récupérer les infos garant du formulaire
+  var garantType = (document.getElementById('dossierGarant')||{value:'non'}).value;
+  var garantNom = (document.getElementById('dossierGarantNom')||{value:''}).value.trim();
+  var garantRevenus = (document.getElementById('dossierGarantRevenus')||{value:''}).value;
+  var garantContrat = (document.getElementById('dossierGarantContrat')||{value:''}).value;
+  var locId = document.getElementById('dossierLocSel').value;
+
+  // Sync vers la fiche locataire si elle existe
+  if (locId && garantType !== 'non') {
+    var locs = loadLocataires();
+    var locIdx = locs.findIndex(function(l){ return String(l.id) === String(locId); });
+    if (locIdx !== -1) {
+      if (garantType) locs[locIdx].garant = garantType;
+      if (garantNom) locs[locIdx].garantNom = garantNom;
+      if (garantRevenus) locs[locIdx].garantRevenus = garantRevenus;
+      if (garantContrat) locs[locIdx].garantContrat = garantContrat;
+      localStorage.setItem('bailscan_locataires', JSON.stringify(locs));
+      if (garantNom) showToast('ℹ️ Informations garant synchronisées vers la fiche locataire.', 'blue');
+    }
+  }
+
+  // Aussi stocker le garant dans l'entrée histo pour rendreLocataireDepuisMandat
+  if (proState.dossierHisto && proState.dossierHisto.length) {
+    proState.dossierHisto[0].garantNom = garantNom;
+    proState.dossierHisto[0].garantRevenus = garantRevenus;
+    proState.dossierHisto[0].garantContrat = garantContrat;
+    proState.dossierHisto[0].garantType = garantType;
+    localStorage.setItem('bailscan_dossiers_histo', JSON.stringify(proState.dossierHisto));
+  }
+
+  _origValiderDossier(goDecision);
+};
+
+// ════════════════════════════════════════════════════════
+// FIX 3 — DPE UPLOADABLE + SYNC MANDATS ↔ DIAGNOSTICS
+// ════════════════════════════════════════════════════════
+function uploadDPEFile(mandatId, input) {
+  var file = input.files[0];
+  if (!file) return;
+  // Accepter PDF et images
+  if (!file.type.match(/pdf|image\//)) {
+    showToast('Format non supporté. PDF ou image requis.', 'orange');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var data = e.target.result;
+    // Sauvegarder dans le mandat
+    var mans = loadMandats();
+    var mIdx = mans.findIndex(function(m){ return String(m.id) === String(mandatId); });
+    if (mIdx !== -1) {
+      mans[mIdx].dpeFile = data;
+      mans[mIdx].dpeFileName = file.name;
+      mans[mIdx].dpeUploadDate = new Date().toLocaleDateString('fr-FR');
+      localStorage.setItem('bailscan_mandats', JSON.stringify(mans));
+      proState.mandats = mans;
+    }
+
+    // Sync vers diagnostics : créer/màj l'entrée DPE pour ce mandat
+    var diags = loadDiags();
+    var dpeIdx = diags.findIndex(function(d){ return d.type === 'dpe' && String(d.mandatId) === String(mandatId); });
+    var dpeEntry = {
+      id: dpeIdx !== -1 ? diags[dpeIdx].id : ('dpe-' + mandatId),
+      mandatId: String(mandatId),
+      type: 'dpe',
+      resultat: mans[mIdx] ? ('Classe ' + (mans[mIdx].dpe || '—')) : '—',
+      dateReal: new Date().toISOString().split('T')[0],
+      dateExp: (function(){ var d=new Date(); d.setFullYear(d.getFullYear()+10); return d.toISOString().split('T')[0]; })(),
+      organisme: '',
+      notes: 'DPE uploadé depuis la fiche mandat — ' + file.name,
+      fileData: data,
+      fileName: file.name
+    };
+    if (dpeIdx !== -1) diags[dpeIdx] = dpeEntry;
+    else diags.unshift(dpeEntry);
+    saveDiags(diags);
+
+    showToast('✅ DPE uploadé et synchronisé avec les diagnostics.', 'green');
+
+    // Rafraîchir l'aperçu dans la fiche mandat
+    var preview = document.getElementById('dpePreview_' + mandatId);
+    if (preview) {
+      if (file.type.match(/image\//)) {
+        preview.innerHTML = '<img src="'+data+'" style="max-height:80px;border-radius:6px;border:1px solid var(--border)">';
+      } else {
+        preview.innerHTML = '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;border:1px solid #86efac">'
+          + '<span style="font-size:1.4rem">📄</span>'
+          + '<div><div style="font-weight:600;font-size:.8rem;color:#166534">'+file.name+'</div>'
+          + '<div style="font-size:.72rem;color:var(--gris)">DPE uploadé le '+new Date().toLocaleDateString('fr-FR')+'</div></div>'
+          + '<a href="'+data+'" download="'+file.name+'" style="margin-left:auto;font-size:.72rem;color:var(--pro-accent);font-weight:600">⬇ Télécharger</a>'
+          + '</div>';
+      }
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// Injecter le bloc DPE dans la fiche mandat (onglet Infos)
+// Cette fonction est appelée dans buildFicheInfosHtml si elle existe
+function buildDPEUploadBlock(mandatId) {
+  var mans = loadMandats();
+  var m = mans.find(function(x){ return String(x.id) === String(mandatId); });
+  var hasDpe = m && m.dpeFile;
+  var dpeClass = m && m.dpe ? m.dpe : '—';
+
+  var preview = '';
+  if (hasDpe) {
+    if (m.dpeFile.match(/^data:image/)) {
+      preview = '<img src="'+m.dpeFile+'" style="max-height:80px;border-radius:6px;border:1px solid var(--border);margin-top:8px">';
+    } else {
+      preview = '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;border:1px solid #86efac;margin-top:8px">'
+        + '<span style="font-size:1.4rem">📄</span>'
+        + '<div><div style="font-weight:600;font-size:.8rem;color:#166534">'+(m.dpeFileName||'DPE.pdf')+'</div>'
+        + '<div style="font-size:.72rem;color:var(--gris)">Uploadé le '+(m.dpeUploadDate||'—')+'</div></div>'
+        + '<a href="'+m.dpeFile+'" download="'+(m.dpeFileName||'dpe.pdf')+'" style="margin-left:auto;font-size:.72rem;color:var(--pro-accent);font-weight:600">⬇ Télécharger</a>'
+        + '</div>';
+    }
+  }
+
+  return '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">'
+    + '<div style="font-size:.76rem;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">📋 DPE — Diagnostic de Performance Énergétique</div>'
+    + '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'
+    + (dpeClass !== '—' ? '<span style="font-size:1.4rem;font-weight:800;background:#dbeafe;color:#1e40af;border-radius:8px;padding:4px 14px">'+dpeClass+'</span>' : '')
+    + '<label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;background:var(--pro-light);border:1.5px solid var(--pro-accent);border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:600;color:var(--pro-accent)">'
+    + '📤 '+(hasDpe ? 'Remplacer le DPE' : 'Uploader le DPE')
+    + '<input type="file" accept=".pdf,image/*" style="display:none" onchange="uploadDPEFile(\''+mandatId+'\',this)">'
+    + '</label>'
+    + '</div>'
+    + '<div id="dpePreview_'+mandatId+'">'+preview+'</div>'
+    + '</div>';
+}
+
+// Patch openFicheMandat pour injecter le bloc DPE dans l'onglet infos
+var _origOpenFicheMandat = openFicheMandat;
+openFicheMandat = function(id, activeTab) {
+  _origOpenFicheMandat(id, activeTab);
+  // Après le rendu, injecter le DPE dans les infos
+  setTimeout(function() {
+    var infosPanel = document.getElementById('mandat-tab-infos-' + id);
+    if (infosPanel && !infosPanel.querySelector('.dpe-block')) {
+      var dpeBlock = document.createElement('div');
+      dpeBlock.className = 'dpe-block';
+      dpeBlock.innerHTML = buildDPEUploadBlock(id);
+      infosPanel.appendChild(dpeBlock);
+    }
+  }, 200);
+};
+
+// ════════════════════════════════════════════════════════
+// FIX 4 — TRAVAUX & INTERVENTIONS : données démo + améliorations
+// ════════════════════════════════════════════════════════
+function initTravauxDemoData() {
+  var existing = loadTickets();
+  if (existing.length > 0) return; // Ne pas écraser si données existantes
+
+  var mans = loadMandats();
+  var locs = loadLocataires();
+  var firstMandatId = mans.length ? String(mans[0].id) : '';
+  var firstLocId = locs.length ? String(locs[0].id) : '';
+
+  var demos = [
+    {
+      id: Date.now() - 5000,
+      titre: 'Fuite robinet cuisine',
+      mandatId: firstMandatId,
+      locId: firstLocId,
+      categorie: 'plomberie',
+      prio: 'urgente',
+      statut: 'en_cours',
+      date: new Date(Date.now() - 3*24*3600*1000).toISOString().split('T')[0],
+      dateIntervention: new Date(Date.now() + 2*24*3600*1000).toISOString().split('T')[0],
+      prestataire: 'Plomberie Martin — 06 12 34 56 78',
+      cout: '180',
+      desc: 'Fuite au niveau du joint du robinet de cuisine. Locataire a signalé dégâts potentiels sur le meuble sous l\'évier.',
+      charge: 'bailleur'
+    },
+    {
+      id: Date.now() - 4000,
+      titre: 'Chaudière en panne — plus de chauffage',
+      mandatId: firstMandatId,
+      locId: firstLocId,
+      categorie: 'chauffage',
+      prio: 'urgente',
+      statut: 'attente_devis',
+      date: new Date(Date.now() - 7*24*3600*1000).toISOString().split('T')[0],
+      dateIntervention: '',
+      prestataire: 'Thermique Pro — en attente devis',
+      cout: '450',
+      desc: 'Chaudière Vaillant 2018 en panne totale. Locataire sans chauffage. Devis demandé à 2 entreprises.',
+      charge: 'bailleur'
+    },
+    {
+      id: Date.now() - 3000,
+      titre: 'Serrure d\'entrée défectueuse',
+      mandatId: mans.length > 1 ? String(mans[1].id) : firstMandatId,
+      locId: locs.length > 1 ? String(locs[1].id) : firstLocId,
+      categorie: 'menuiserie',
+      prio: 'haute',
+      statut: 'planifie',
+      date: new Date(Date.now() - 10*24*3600*1000).toISOString().split('T')[0],
+      dateIntervention: new Date(Date.now() + 5*24*3600*1000).toISOString().split('T')[0],
+      prestataire: 'Serrurier Vite — 01 23 45 67 89',
+      cout: '120',
+      desc: 'La serrure de la porte d\'entrée est difficile à tourner. Risque de blocage. Intervention planifiée.',
+      charge: 'locataire'
+    },
+    {
+      id: Date.now() - 2000,
+      titre: 'Peinture couloir — usure normale',
+      mandatId: mans.length > 1 ? String(mans[1].id) : firstMandatId,
+      locId: locs.length > 1 ? String(locs[1].id) : firstLocId,
+      categorie: 'peinture',
+      prio: 'basse',
+      statut: 'ouvert',
+      date: new Date(Date.now() - 20*24*3600*1000).toISOString().split('T')[0],
+      dateIntervention: '',
+      prestataire: '',
+      cout: '350',
+      desc: 'Peinture couloir à refaire lors du départ du locataire. Prévu lors de l\'état des lieux de sortie.',
+      charge: 'bailleur'
+    },
+    {
+      id: Date.now() - 1000,
+      titre: 'Remplacement joint baignoire',
+      mandatId: firstMandatId,
+      locId: firstLocId,
+      categorie: 'plomberie',
+      prio: 'normale',
+      statut: 'clos',
+      date: new Date(Date.now() - 30*24*3600*1000).toISOString().split('T')[0],
+      dateIntervention: new Date(Date.now() - 25*24*3600*1000).toISOString().split('T')[0],
+      prestataire: 'Plomberie Martin',
+      cout: '80',
+      desc: 'Joint baignoire remplacé. Intervention effectuée le '+new Date(Date.now()-25*24*3600*1000).toLocaleDateString('fr-FR')+'.',
+      charge: 'locataire'
+    }
+  ];
+
+  saveTickets(demos);
+}
+
+// Appeler init démo quand on ouvre le tab travaux
+var _origRefreshTravaux = refreshTravaux;
+refreshTravaux = function() {
+  initTravauxDemoData();
+  _origRefreshTravaux();
+};
 
 </script>
 </body>
