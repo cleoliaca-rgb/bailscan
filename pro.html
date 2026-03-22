@@ -12707,10 +12707,11 @@ function sendAgentPrompt(text) {
 }
 
 function sendAgentMessage() {
-  if (agentTyping) return;
+  try {
+  if (agentTyping) { console.log('[Agent] bloqué: agentTyping=true'); return; }
   var input = document.getElementById('agentInput');
   var text = (input ? input.value : '').trim();
-  if (!text) return;
+  if (!text) { console.log('[Agent] texte vide'); return; }
   if (input) { input.value = ''; input.style.height = 'auto'; }
 
   if (!agentHistory.length) {
@@ -12760,7 +12761,6 @@ function sendAgentMessage() {
     return r.json();
   })
   .then(function(data) {
-    // Supprimer bulle debug
     var msgs = document.getElementById('agentChatMessages');
     if (msgs && msgs.lastChild) msgs.removeChild(msgs.lastChild);
     var reply = (data.content && data.content[0] && data.content[0].text)
@@ -12781,6 +12781,11 @@ function sendAgentMessage() {
     agentTyping = false;
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
   });
+  } catch(e) {
+    agentTyping = false;
+    addAgentBubble('assistant', '❌ Erreur JS : ' + e.message);
+    console.error('[Agent] erreur:', e);
+  }
 }
 
 // Sauvegarde rapide clé depuis popup
@@ -12797,7 +12802,6 @@ function saveAgentQuickKey() {
 // Toggle popup
 function toggleAgentIA() {
   var win = document.getElementById('agentIAWindow');
-  var bubble = document.getElementById('agentIABubble');
   var dot = document.getElementById('agentUnreadDot');
   var isOpen = win && win.style.display === 'flex';
 
@@ -12805,6 +12809,11 @@ function toggleAgentIA() {
     if (win) { win.style.opacity = '0'; win.style.transform = 'scale(.95) translateY(8px)'; }
     setTimeout(function() { if(win) win.style.display = 'none'; }, 200);
   } else {
+    // Réinitialiser l'état bloqué
+    agentTyping = false;
+    var sendBtn = document.getElementById('agentSendBtn');
+    if (sendBtn) { sendBtn.disabled = false; sendBtn.style.opacity = '1'; }
+
     if (win) {
       win.style.display = 'flex';
       setTimeout(function() {
@@ -12813,11 +12822,9 @@ function toggleAgentIA() {
       }, 10);
     }
     if (dot) dot.style.display = 'none';
-    // Afficher ou masquer le bloc setup clé
     var setupDiv = document.getElementById('agentSetupKey');
     var hasKey = !!localStorage.getItem('bailscan_anthropic_key');
     if (setupDiv) setupDiv.style.display = hasKey ? 'none' : 'block';
-    // Init chat
     setTimeout(function() { initAgentChat(); }, 50);
     setTimeout(function() {
       var inp = document.getElementById('agentInput');
