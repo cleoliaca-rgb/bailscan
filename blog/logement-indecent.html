@@ -1,121 +1,231 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logement indécent : vos droits face à un propriétaire qui n'entretient pas — BailScan</title>
-<meta name="description" content="Humidité, absence de chauffage, surface trop petite — les recours disponibles face à un logement indécent.">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logement indécent 2026 : critères, recours et obligations | BailScan</title>
+<meta name="description" content="Humidité, absence de chauffage, surface insuffisante — les critères légaux du logement indécent et les recours pour forcer votre propriétaire à faire les travaux.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://bailscan.app/blog/logement-indecent">
+<meta property="og:title" content="Logement indécent 2026 : critères, recours et obligations | BailScan"><meta property="og:description" content="Humidité, absence de chauffage, surface insuffisante — les critères légaux du logement indécent et les recours pour forcer votre propriétaire à faire les travaux."><meta property="og:type" content="article"><meta property="og:url" content="https://bailscan.app/blog/logement-indecent">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"Logement indécent 2026","datePublished":"2024-03-01","dateModified":"2026-03-01","author":{"@type":"Person","name":"BailScan"},"publisher":{"@type":"Organization","name":"BailScan","url":"https://bailscan.app"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Puis-je cesser de payer mon loyer si le logement est indécent ?","acceptedAnswer":{"@type":"Answer","text":"Non, pas spontanément. Sans autorisation du juge, arrêter de payer vous expose à une procédure d’expulsion. Suivez la procédure légale."}},{"@type":"Question","name":"Qu’est-ce qu’un arrêté d’insalubrité ?","acceptedAnswer":{"@type":"Answer","text":"C’est un acte administratif pris par la préfecture qui contraint le propriétaire à réaliser des travaux sous peine de sanctions. Pendant les travaux, vous pouvez être reLogé à ses frais."}}]}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --noir: #0d0d0d; --creme: #f5f0e8; --accent: #c84b2f; --accent2: #e8a87c; --vert: #2d6a4f; --vert-light: #e8f5ee; --rouge-light: #fdf0ed; --texte: #1a1a1a; --gris: #6b6b6b; --border: #d8d0c4; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-  header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); }
-  .logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); text-decoration: none; }
-  .logo span { color: var(--accent); }
-  nav { display: flex; gap: 24px; align-items: center; }
-  nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; }
-  .btn-nav { background: var(--noir); color: var(--creme) !important; padding: 10px 22px; border-radius: 8px; font-weight: 500; }
-  .article-wrap { max-width: 720px; margin: 0 auto; padding: 120px 48px 80px; }
-  .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--gris); text-decoration: none; font-size: 0.85rem; margin-bottom: 40px; transition: color 0.2s; }
-  .back-link:hover { color: var(--accent); }
-  .article-tag { display: inline-block; background: var(--rouge-light); color: var(--accent); font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; letter-spacing: 0.05em; }
-  h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.15; letter-spacing: -0.03em; color: var(--noir); margin-bottom: 20px; }
-  .article-meta { font-size: 0.82rem; color: var(--gris); margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); display: flex; gap: 16px; }
-  h2 { font-family: 'Instrument Serif', serif; font-size: 1.5rem; color: var(--noir); margin: 40px 0 16px; }
-  h3 { font-size: 1rem; font-weight: 700; color: var(--noir); margin: 28px 0 10px; }
-  p { font-size: 0.95rem; line-height: 1.85; color: var(--texte); margin-bottom: 18px; }
-  ul, ol { padding-left: 24px; margin-bottom: 18px; }
-  ul li, ol li { font-size: 0.95rem; line-height: 1.85; margin-bottom: 8px; }
-  .highlight-box { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 24px 28px; margin: 28px 0; }
-  .highlight-box.danger { background: var(--rouge-light); border-color: rgba(200,75,47,0.3); }
-  .highlight-box.success { background: var(--vert-light); border-color: rgba(45,106,79,0.3); }
-  .highlight-box.warning { background: #fff8e1; border-color: rgba(245,158,11,0.3); }
-  .highlight-box strong { display: block; margin-bottom: 8px; font-size: 0.9rem; }
-  .highlight-box p { margin-bottom: 0; font-size: 0.9rem; }
-  .law-ref { font-size: 0.82rem; color: var(--accent); font-weight: 600; background: var(--rouge-light); padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
-  .cta-box { background: var(--noir); border-radius: 16px; padding: 36px; text-align: center; margin: 48px 0; }
-  .cta-box h3 { color: white; margin-bottom: 10px; font-family: 'Instrument Serif', serif; font-size: 1.4rem; }
-  .cta-box p { color: rgba(255,255,255,0.6); margin-bottom: 20px; font-size: 0.88rem; }
-  .cta-btn { display: inline-block; background: var(--accent); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; }
-  .cta-btn:hover { background: #a83a20; }
-  .related { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); }
-  .related h3 { font-family: 'Instrument Serif', serif; font-size: 1.3rem; color: var(--noir); margin-bottom: 24px; }
-  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .related-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; transition: all 0.2s; }
-  .related-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .related-card h4 { font-size: 0.92rem; font-weight: 600; color: var(--noir); margin-bottom: 6px; line-height: 1.4; }
-  .related-card span { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
-  footer { padding: 40px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--gris); font-size: 0.82rem; }
-  footer a { color: var(--accent); text-decoration: none; }
-  @media (max-width: 768px) { header { padding: 16px 20px; } nav a:not(.btn-nav) { display: none; } .article-wrap { padding: 100px 20px 60px; } .related-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 12px; text-align: center; } }
+:root{--noir:#0d0d0d;--creme:#f5f0e8;--accent:#c84b2f;--accent2:#e8a87c;--vert:#2d6a4f;--vert-light:#e8f5ee;--rouge-light:#fdf0ed;--texte:#1a1a1a;--gris:#6b6b6b;--border:#d8d0c4;--warning:#f59e0b;--warning-light:#fffbeb}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:var(--creme);color:var(--texte);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:rgba(245,240,232,0.95);backdrop-filter:blur(12px)}
+.logo{font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir);text-decoration:none}.logo span{color:var(--accent)}
+nav{display:flex;gap:28px;align-items:center}nav a{color:var(--gris);text-decoration:none;font-size:0.9rem;transition:color .2s}nav a:hover{color:var(--accent)}
+.btn-nav{background:var(--noir);color:var(--creme)!important;padding:10px 22px;border-radius:8px;font-weight:600}.btn-nav:hover{background:var(--accent)!important}
+.nav-agences{color:var(--gris)!important;font-size:0.88rem!important}.nav-agences:hover{color:var(--accent)!important}
+.breadcrumb{max-width:760px;margin:0 auto;padding:100px 24px 0;display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--gris)}
+.breadcrumb a{color:var(--gris)}.breadcrumb a:hover{color:var(--accent)}.breadcrumb .sep{opacity:.4}
+.page-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 280px;gap:48px;padding:40px 24px 80px;align-items:start}
+.article-body{min-width:0;animation:fadeUp .5s ease both}
+.article-category{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.article-category::before{content:'';display:inline-block;width:18px;height:2px;background:var(--accent)}
+.article-h1{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.15;color:var(--noir);letter-spacing:-.03em;margin-bottom:20px}
+.article-intro{font-family:'Instrument Serif',serif;font-size:1.1rem;color:var(--gris);line-height:1.75;margin-bottom:28px;font-style:italic}
+.article-meta{display:flex;align-items:center;gap:18px;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:40px;flex-wrap:wrap}
+.meta-avatar{width:34px;height:34px;border-radius:50%;background:var(--noir);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--creme);flex-shrink:0}
+.meta-author-name{font-weight:700;font-size:.82rem;color:var(--noir)}.meta-author-bio{font-size:.75rem;color:var(--gris)}
+.meta-div{width:1px;height:24px;background:var(--border)}.meta-item{font-size:.78rem;color:var(--gris)}.meta-item strong{color:var(--texte);font-weight:600}
+.badge-update{background:var(--vert-light);color:var(--vert);border:1px solid rgba(45,106,79,.2);font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:20px;margin-left:auto}
+.article-body h2{font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir);margin-top:56px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.article-body h2:first-child{margin-top:0}.article-body h3{font-size:1rem;font-weight:700;color:var(--texte);margin-top:36px;margin-bottom:12px}
+.article-body p{font-size:.96rem;color:var(--texte);line-height:1.78;margin-bottom:16px}
+.article-body strong{font-weight:700;color:var(--noir)}.article-body ul,.article-body ol{padding-left:22px;margin-bottom:16px}
+.article-body li{font-size:.96rem;line-height:1.75;margin-bottom:6px}.article-body li::marker{color:var(--accent);font-weight:700}
+.callout{display:flex;gap:12px;padding:16px 20px;border-radius:10px;margin:24px 0;font-size:.875rem;line-height:1.65}
+.callout-info{background:var(--vert-light);border-left:3px solid var(--vert);color:#1a4a31}
+.callout-warn{background:var(--warning-light);border-left:3px solid var(--warning);color:#78450a}
+.callout-cta{background:var(--rouge-light);border-left:3px solid var(--accent);color:#7a2c1a}
+.callout-icon{font-size:1rem;flex-shrink:0;margin-top:1px}.callout p{margin:0;font-size:.875rem}.callout a{color:inherit;font-weight:700;text-decoration:underline}
+.table-wrap{width:100%;overflow-x:auto;margin:24px 0;border-radius:12px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+table{width:100%;border-collapse:collapse;font-size:.875rem}thead tr{background:var(--noir);color:var(--creme)}
+thead th{padding:12px 16px;text-align:left;font-weight:700;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase}
+tbody tr{border-bottom:1px solid var(--border)}tbody tr:last-child{border-bottom:none}tbody tr:nth-child(even){background:rgba(0,0,0,.02)}
+tbody td{padding:13px 16px;vertical-align:top;font-size:.875rem;line-height:1.55}tbody td:first-child{font-weight:500}
+.faq{margin:28px 0;display:grid;gap:10px}.faq-item{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:white}
+.faq-q{padding:16px 20px;cursor:pointer;font-size:.9rem;font-weight:600;color:var(--noir);display:flex;justify-content:space-between;align-items:center;gap:12px;transition:background .15s;list-style:none;user-select:none}
+.faq-q:hover{background:var(--vert-light)}.faq-q::after{content:'+';font-size:1.2rem;font-weight:400;color:var(--gris);flex-shrink:0}
+details[open] .faq-q::after{transform:rotate(45deg)}.faq-a{padding:0 20px 16px;font-size:.875rem;color:var(--gris);line-height:1.7;border-top:1px solid var(--border)}
+.faq-a p{margin:10px 0 0}
+.letter-card{background:white;border:1.5px solid var(--border);border-radius:14px;margin:32px 0;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.letter-card-header{background:var(--noir);color:white;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.letter-card-title{font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.copy-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;padding:6px 14px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:background .15s;white-space:nowrap}
+.copy-btn:hover{background:rgba(255,255,255,.22)}.copy-btn.copied{background:var(--vert);border-color:var(--vert)}
+.letter-body{padding:28px;font-size:.88rem;line-height:1.85;color:var(--texte)}
+.letter-coord{color:var(--gris);font-size:.84rem;margin-bottom:16px;line-height:1.7}
+.letter-objet{font-weight:700;font-size:.88rem;color:var(--noir);margin-bottom:20px;line-height:1.5}
+.letter-content p{margin-bottom:12px;font-size:.88rem;line-height:1.85}
+.letter-content ul{padding-left:20px;margin:10px 0 12px}.letter-content li{font-size:.88rem;margin-bottom:4px;line-height:1.7}
+.letter-placeholder{background:#f5f0e8;border-radius:4px;padding:1px 5px;font-style:italic;color:var(--accent);font-weight:600}
+.letter-divider{border:none;border-top:1px dashed var(--border);margin:16px 0}
+.cta-inline{background:var(--accent);border-radius:16px;padding:28px 32px;color:white;display:flex;align-items:center;gap:20px;margin:40px 0;flex-wrap:wrap}
+.cta-inline-text{flex:1;min-width:200px}.cta-inline-title{font-family:'Instrument Serif',serif;font-size:1.2rem;margin-bottom:5px}
+.cta-inline-sub{font-size:.85rem;opacity:.88;line-height:1.55}
+.cta-inline-btn{display:inline-flex;align-items:center;background:white;color:var(--accent);padding:11px 22px;border-radius:8px;font-size:.875rem;font-weight:700;white-space:nowrap;transition:transform .15s}
+.cta-inline-btn:hover{transform:translateY(-1px);text-decoration:none}
+.steps{display:grid;gap:0;margin:28px 0}.step{display:flex;gap:20px;padding:22px 0;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:15px;top:54px;width:2px;bottom:0;background:var(--border)}
+.step-num{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:var(--noir);color:var(--creme);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;position:relative;z-index:1}
+.step-content h4{font-size:.98rem;font-weight:700;color:var(--noir);margin-bottom:6px}.step-content p{font-size:.875rem;margin-bottom:0;color:var(--gris)}
+.step-tag{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-bottom:6px}
+.tag-s1{background:rgba(200,75,47,.12);color:var(--accent)}.tag-s2{background:var(--warning-light);color:#78450a}.tag-s3{background:rgba(13,13,13,.08);color:var(--noir)}
+.article-sources{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:.78rem;color:var(--gris);line-height:1.8}
+.related-articles{margin-top:48px;padding-top:24px;border-top:2px solid var(--border)}
+.related-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:16px}
+.related-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.related-card{border:1.5px solid var(--border);border-radius:10px;padding:16px;background:white;transition:border-color .15s;display:block}
+.related-card:hover{border-color:var(--accent);text-decoration:none}
+.related-card-label{font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.related-card-title{font-size:.85rem;font-weight:700;color:var(--noir);line-height:1.4}
+.sidebar{position:sticky;top:90px;animation:fadeUp .5s ease .1s both}
+.toc-box{background:white;border-radius:14px;border:1.5px solid var(--border);padding:20px;margin-bottom:20px}
+.toc-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.toc-list{list-style:none;display:grid;gap:2px}
+.toc-list li a{display:block;padding:5px 8px;border-radius:6px;font-size:.8rem;color:var(--gris);transition:all .15s;line-height:1.4}
+.toc-list li a:hover{background:var(--vert-light);color:var(--vert);text-decoration:none}.toc-list li a.active{background:var(--vert-light);color:var(--vert);font-weight:600}
+.sidebar-cta-box{background:var(--noir);border-radius:14px;padding:22px;color:white;text-align:center}
+.sidebar-cta-icon{font-size:2rem;margin-bottom:10px}.sidebar-cta-title{font-family:'Instrument Serif',serif;font-size:1.05rem;margin-bottom:7px}
+.sidebar-cta-sub{font-size:.78rem;opacity:.7;line-height:1.55;margin-bottom:16px}
+.sidebar-cta-btn{display:block;text-align:center;background:var(--accent);color:white;padding:11px 16px;border-radius:8px;font-size:.82rem;font-weight:700;transition:background .15s}
+.sidebar-cta-btn:hover{background:#b03f24;text-decoration:none}
+.sidebar-tip{background:var(--vert-light);border:1.5px solid rgba(45,106,79,.2);border-radius:10px;padding:14px 16px;margin-top:14px;font-size:.78rem;color:#1a4a31;line-height:1.55}
+.sidebar-tip strong{display:block;margin-bottom:4px;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--vert)}
+.footer-seo{background:var(--noir);color:rgba(255,255,255,0.7)}
+.footer-inner{max-width:1100px;margin:0 auto;padding:52px 48px 28px;width:100%;box-sizing:border-box}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand .footer-logo{font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;margin-bottom:8px}
+.footer-brand .footer-logo span{color:var(--accent)}.footer-tagline{font-size:.85rem;color:rgba(255,255,255,.55)}
+.footer-copy{font-size:.78rem;color:rgba(255,255,255,.35);margin-top:20px}
+.footer-col{display:flex;flex-direction:column;gap:10px}
+.footer-col-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:4px}
+.footer-col a{color:rgba(255,255,255,.65);text-decoration:none;font-size:.84rem;transition:color .2s}.footer-col a:hover{color:white}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;font-size:.75rem;color:rgba(255,255,255,.3);text-align:center}
+@media(max-width:900px){header{padding:16px 20px}nav a:not(.btn-nav):not(.nav-agences){display:none}.page-wrap{grid-template-columns:1fr}.sidebar{display:none}.related-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr 1fr;gap:28px}.footer-inner{padding:40px 20px 24px}}
+@media(max-width:560px){.article-h1{font-size:1.75rem}.article-meta{gap:10px}.badge-update{margin-left:0}.cta-inline{flex-direction:column}.footer-top{grid-template-columns:1fr}.breadcrumb{padding-top:90px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 <header>
   <a href="/" class="logo">Bail<span>Scan</span></a>
   <nav>
-    <a href="/blog.html">Blog</a>
-    <a href="/" class="btn-nav">Analyser mon bail →</a>
+    <a href="/blog.html">Guide locataire</a>
+    <a href="/pro.html" class="nav-agences">Pour les agences &#x2192;</a>
+    <a href="/#app" class="btn-nav">Analyser mon bail &#x2192;</a>
   </nav>
 </header>
-<div class="article-wrap">
-  <a href="/blog.html" class="back-link">← Retour au blog</a>
-  <span class="article-tag">Logement décent</span>
-  <h1>Logement indécent : vos droits face à un propriétaire qui n'entretient pas</h1>
-  <div class="article-meta"><span>📅 Mars 2025</span><span>⏱ 8 min de lecture</span></div>
-  
-    <p>En France, tout locataire a le droit à un logement décent. Ce n'est pas un vœu pieux : c'est une obligation légale pour le propriétaire. Si votre logement ne répond pas aux critères, vous avez des recours puissants.</p>
-
-    <h2>Qu'est-ce qu'un logement décent ?</h2>
-    <p>La loi SRU de 2000 et le décret du 30 janvier 2002 définissent les critères de décence : <span class="law-ref">Décret 2002-120 du 30/01/2002</span></p>
-    <h3>Surface minimale</h3>
-    <p>9 m² de surface habitable avec une hauteur sous plafond d'au moins 2,20m (ou 20 m³ de volume habitable).</p>
-    <h3>Sécurité et santé</h3>
-    <ul>
-      <li>Absence d'humidité, de moisissures, d'infiltrations</li>
-      <li>Absence de plomb (peintures au plomb interdites)</li>
-      <li>Absence d'amiante en mauvais état</li>
-      <li>Installations électriques et de gaz sûres</li>
-      <li>Ouvertures sur l'extérieur (fenêtres)</li>
-    </ul>
-    <h3>Confort minimal</h3>
-    <ul>
-      <li>Eau potable courante</li>
-      <li>Installation sanitaire intérieure (WC, douche ou baignoire)</li>
-      <li>Chauffage suffisant</li>
-      <li>Cuisine ou coin cuisine équipé</li>
-      <li>Réseau électrique</li>
-    </ul>
-
-    <h2>Comment signaler un logement indécent</h2>
-    <h3>Étape 1 : mise en demeure au propriétaire</h3>
-    <p>Envoyez une lettre recommandée décrivant précisément les problèmes avec photos et en citant le décret sur la décence. Donnez un délai de 2 mois pour effectuer les travaux.</p>
-    <h3>Étape 2 : la Commission Départementale de Conciliation</h3>
-    <p>Si le propriétaire ne réagit pas, saisissez la CDC. La procédure est gratuite et peut aboutir rapidement.</p>
-    <h3>Étape 3 : la Mairie et l'ARS</h3>
-    <p>Signalez le logement à la mairie et à l'Agence Régionale de Santé. Ils peuvent diligenter une inspection et prendre un arrêté d'insalubrité.</p>
-    <div class="highlight-box success"><strong>✅ Arrêté d'insalubrité</strong><p>Si un arrêté d'insalubrité est pris, le propriétaire est contraint de réaliser les travaux sous peine de sanctions. Pendant les travaux, vous pouvez être relogé aux frais du propriétaire.</p></div>
-    <h3>Étape 4 : le tribunal</h3>
-    <p>Le juge peut ordonner les travaux, réduire votre loyer, voire suspendre son paiement jusqu'à mise en conformité.</p>
-
-    <h2>La suspension du loyer</h2>
-    <p>Dans les cas les plus graves, le juge peut autoriser la consignation du loyer (dépôt à la Caisse des Dépôts) jusqu'à ce que les travaux soient réalisés. Vous ne payez plus votre propriétaire mais vous n'êtes pas en situation d'impayé.</p>
-    <div class="highlight-box warning"><strong>⚠️ Ne cessez jamais de payer spontanément</strong><p>Sans autorisation du juge, arrêter de payer votre loyer vous expose à une procédure d'expulsion, même si le logement est indécent. Suivez la procédure légale.</p></div>
-    
-  <div class="cta-box">
-    <h3>Votre bail contient peut-être ces clauses</h3>
-    <p>Analysez-le gratuitement en 2 minutes avec BailScan</p>
-    <a href="/" class="cta-btn">Analyser mon bail gratuitement →</a>
+<nav class="breadcrumb"><a href="/">Accueil</a><span class="sep">&#x203A;</span><a href="/blog.html">Blog</a><span class="sep">&#x203A;</span><span>Logement indécent</span></nav>
+<div class="page-wrap">
+  <main class="article-body" id="main-content">
+    <div class="article-category">Logement décent</div>
+    <h1 class="article-h1">Logement ind&eacute;cent&nbsp;: vos droits face &agrave; un propri&eacute;taire qui n&rsquo;entretient pas</h1>
+    <p class="article-intro">Tout locataire a le droit &agrave; un logement d&eacute;cent en France. Ce n&rsquo;est pas un vœu pieux&nbsp;: c&rsquo;est une obligation l&eacute;gale pour le propri&eacute;taire, avec des recours puissants &agrave; votre disposition.</p>
+  <div class="article-meta">
+    <div class="meta-avatar">BS</div>
+    <div><div class="meta-author-name">&#201;quipe juridique BailScan</div><div class="meta-author-bio">Sp&eacute;cialistes droit locatif</div></div>
+    <div class="meta-div"></div><div class="meta-item">Mis &agrave; jour&nbsp;: <strong><time datetime="2026-03-01">Mars 2026</time></strong></div>
+    <div class="meta-div"></div><div class="meta-item">Lecture&nbsp;: <strong>8&nbsp;min</strong></div>
+    <span class="badge-update">&#x1F195; Mars 2026</span>
   </div>
-  <div class="related"><h3>Articles liés</h3><div class="related-grid">
-      <a href="/blog/travaux-logement.html" class="related-card"><h4>Travaux : qui paye quoi ?</h4><span>6 min →</span></a>
-      <a href="/blog/conge-proprietaire.html" class="related-card"><h4>Congé donné par le propriétaire : quand peut-il vous mettre dehors ?</h4><span>6 min →</span></a>
-    </div></div>
+    <h2 id="criteres">Qu&rsquo;est-ce qu&rsquo;un logement d&eacute;cent&nbsp;?</h2>
+    <p>La loi SRU de 2000 et le d&eacute;cret du 30&nbsp;janvier 2002 d&eacute;finissent les crit&egrave;res de d&eacute;cence. Un logement doit r&eacute;pondre &agrave; toutes ces exigences pour &ecirc;tre consid&eacute;r&eacute; comme d&eacute;cent.</p>
+    <h2 id="surface">Surface minimale</h2>
+    <p><strong>9&nbsp;m&sup2;</strong> de surface habitable avec une hauteur sous plafond d&rsquo;au moins <strong>2,20&nbsp;m</strong> (ou 20&nbsp;m&sup3; de volume habitable).</p>
+    <h2 id="securite">S&eacute;curit&eacute;, sant&eacute; et confort minimal</h2>
+    <div class="table-wrap"><table><thead><tr><th>Cat&eacute;gorie</th><th>Exigences</th></tr></thead><tbody>
+    <tr><td>Sant&eacute;</td><td>Absence d&rsquo;humidit&eacute;, de moisissures, d&rsquo;infiltrations, de plomb et d&rsquo;amiante en mauvais &eacute;tat</td></tr>
+    <tr><td>S&eacute;curit&eacute;</td><td>Installations &eacute;lectriques et de gaz s&ucirc;res, ouvertures sur l&rsquo;ext&eacute;rieur</td></tr>
+    <tr><td>Confort</td><td>Eau potable courante, WC int&eacute;rieur, chauffage suffisant, coin cuisine &eacute;quip&eacute;, r&eacute;seau &eacute;lectrique</td></tr>
+    </tbody></table></div>
+    <h2 id="recours">Comment agir&nbsp;: les 4&nbsp;&eacute;tapes</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><span class="step-tag tag-s1">&Agrave; faire en premier</span><h4>Mise en demeure au propri&eacute;taire</h4><p>LRAR d&eacute;crivant pr&eacute;cis&eacute;ment les probl&egrave;mes avec photos, citant le d&eacute;cret sur la d&eacute;cence. Donnez 2&nbsp;mois pour r&eacute;aliser les travaux.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><span class="step-tag tag-s2">Si pas de r&eacute;action</span><h4>Commission D&eacute;partementale de Conciliation</h4><p>Gratuite, peut aboutir rapidement. La proc&eacute;dure est d&eacute;sormais enti&egrave;rement en ligne.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><span class="step-tag tag-s2">Signalement administratif</span><h4>Mairie et ARS</h4><p>Signalez &agrave; la mairie et &agrave; l&rsquo;Agence R&eacute;gionale de Sant&eacute;. Ils peuvent diligenter une inspection et prendre un arr&ecirc;t&eacute; d&rsquo;insalubrit&eacute;.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><span class="step-tag tag-s3">Dernier recours</span><h4>Tribunal judiciaire</h4><p>Le juge peut ordonner les travaux, r&eacute;duire votre loyer, voire suspendre son paiement jusqu&rsquo;&agrave; mise en conformit&eacute;.</p></div></div>
+    </div>
+    <h2 id="loyer">La suspension du loyer</h2>
+    <p>Dans les cas les plus graves, le juge peut autoriser la <strong>consignation du loyer</strong> (d&eacute;p&ocirc;t &agrave; la Caisse des D&eacute;p&ocirc;ts) jusqu&rsquo;&agrave; ce que les travaux soient r&eacute;alis&eacute;s. Vous ne payez plus votre propri&eacute;taire, mais vous n&rsquo;&ecirc;tes pas en situation d&rsquo;impay&eacute;.</p>
+    <div class="callout callout-warn"><span class="callout-icon">&#x1F6A8;</span><p><strong>Ne cessez jamais de payer spontan&eacute;ment.</strong> Sans autorisation du juge, arr&ecirc;ter de payer vous expose &agrave; une proc&eacute;dure d&rsquo;expulsion, m&ecirc;me si le logement est ind&eacute;cent. Suivez la proc&eacute;dure l&eacute;gale.</p></div>
+    <div class="cta-inline"><div class="cta-inline-text"><div class="cta-inline-title">Votre bail prot&egrave;ge-t-il vos droits sur la d&eacute;cence&nbsp;?</div><div class="cta-inline-sub">BailScan analyse votre contrat et identifie toutes les anomalies en 2&nbsp;minutes.</div></div><a href="/#app" class="cta-inline-btn">Analyser mon bail &rarr;</a></div>
+    <h2 id="faq">Questions fr&eacute;quentes</h2>
+    <div class="faq">
+      <details class="faq-item"><summary class="faq-q">Puis-je cesser de payer mon loyer si le logement est ind&eacute;cent&nbsp;?</summary><div class="faq-a"><p>Non, pas spontan&eacute;ment. Sans autorisation du juge, arr&ecirc;ter de payer vous expose &agrave; une proc&eacute;dure d&rsquo;expulsion. Suivez la proc&eacute;dure l&eacute;gale.</p></div></details>
+      <details class="faq-item"><summary class="faq-q">Qu&rsquo;est-ce qu&rsquo;un arr&ecirc;t&eacute; d&rsquo;insalubrit&eacute;&nbsp;?</summary><div class="faq-a"><p>C&rsquo;est un acte administratif qui contraint le propri&eacute;taire &agrave; r&eacute;aliser des travaux sous peine de sanctions. Pendant les travaux, vous pouvez &ecirc;tre reloger aux frais du propri&eacute;taire.</p></div></details>
+      <details class="faq-item"><summary class="faq-q">Mon logement a des moisissures. Est-ce un logement ind&eacute;cent&nbsp;?</summary><div class="faq-a"><p>Oui si elles sont caus&eacute;es par des d&eacute;fauts structurels (infiltrations, mauvaise isolation) plut&ocirc;t que par un d&eacute;faut d&rsquo;a&eacute;ration du locataire. Une expertise peut &ecirc;tre n&eacute;cessaire pour l&rsquo;&eacute;tablir.</p></div></details>
+    </div>
+ 
+    <div class="article-sources"><strong>Sources&nbsp;:</strong> Art. 6 loi n° 89-462 du 6 juillet 1989 — Décret n° 2002-120 du 30 janvier 2002 (critères de décence) — Loi SRU 2000</div>
+    <div class="related-articles">
+      <div class="related-title">Articles li&eacute;s</div>
+      <div class="related-grid">
+        <a href="/blog/travaux-logement.html" class="related-card"><div class="related-card-label">Guide</div><div class="related-card-title">Travaux : qui paie quoi ?</div></a>
+        <a href="/blog/lettre-contestation-clause-abusive-bail.html" class="related-card"><div class="related-card-label">Modèle</div><div class="related-card-title">Lettre de contestation : modèle gratuit</div></a>
+      </div>
+    </div>
+  </main>
+  <aside class="sidebar">
+    <nav class="toc-box">
+      <div class="toc-title">Table des mati&egrave;res</div>
+      <ul class="toc-list">
+        <li><a href="#criteres">Qu’est-ce qu’un logement décent ?</a></li>
+        <li><a href="#surface">Surface minimale</a></li>
+        <li><a href="#securite">Sécurité et santé</a></li>
+        <li><a href="#recours">Comment agir : les 4 étapes</a></li>
+        <li><a href="#loyer">Suspension du loyer</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-cta-box">
+      <div class="sidebar-cta-icon">&#x1F3DA;</div>
+      <div class="sidebar-cta-title">Votre logement est-il décent ?</div>
+      <div class="sidebar-cta-sub">BailScan analyse votre bail et détecte les clauses relatives à la décence du logement.</div>
+      <a href="/#app" class="sidebar-cta-btn">Essayer gratuitement &rarr;</a>
+    </div>
+    <div class="sidebar-tip"><strong>&#x1F4A1; Bon &agrave; savoir</strong>Ne cessez jamais de payer spontanément : sans autorisation du juge, vous vous exposez à une procédure d’expulsion même si le logement est indécent.</div>
+  </aside>
 </div>
-<footer>
-  <div>© 2025 BailScan</div>
-  <div style="display:flex;gap:20px;"><a href="/blog.html">Blog</a><a href="/legal.html">Mentions légales</a></div>
+<footer class="footer-seo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Bail<span>Scan</span></div>
+        <div class="footer-tagline">Fait pour les locataires et les agences &#x2764;</div>
+        <div class="footer-copy">&copy; 2026 BailScan &mdash; Tous droits r&eacute;serv&eacute;s</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Outil</div>
+        <a href="/#app">Analyser mon bail</a>
+        <a href="/#app">V&eacute;rifier mon loyer</a>
+        <a href="/pro.html">Espace professionnel</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Guides</div>
+        <a href="/blog/clauses-abusives-bail-location.html">Clauses ill&eacute;gales</a>
+        <a href="/blog/depot-garantie-non-rendu-recours.html">D&eacute;p&ocirc;t de garantie</a>
+        <a href="/blog/encadrement-loyers.html">Encadrement des loyers</a>
+        <a href="/blog.html">Tous les guides &rarr;</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Informations</div>
+        <a href="/legal.html">Mentions l&eacute;gales</a>
+        <a href="/legal.html">CGV</a>
+        <a href="/legal.html">Confidentialit&eacute;</a>
+        <a href="mailto:contact@bailscan.app">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">BailScan n'est pas un cabinet juridique. Les analyses sont fournies &agrave; titre informatif.</div>
+  </div>
 </footer>
+<script>
+(function(){var h=document.querySelectorAll('h2[id]'),l=document.querySelectorAll('.toc-list a');if(!h.length||!l.length)return;function u(){var s=window.scrollY+100,c='';h.forEach(function(x){if(x.offsetTop<=s)c=x.id;});l.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+c);});}window.addEventListener('scroll',u,{passive:true});u();})();
+function copyLetter(id,btn){var el=document.getElementById(id);if(!el)return;var t=el.innerText;navigator.clipboard.writeText(t).then(function(){var o=btn.innerHTML;btn.innerHTML='&#x2713; Copi&eacute;&nbsp;!';btn.classList.add('copied');setTimeout(function(){btn.innerHTML=o;btn.classList.remove('copied');},2000);}).catch(function(){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);var o=btn.innerHTML;btn.innerHTML='&#x2713; Copi&eacute;&nbsp;!';btn.classList.add('copied');setTimeout(function(){btn.innerHTML=o;btn.classList.remove('copied');},2000);});}</script>
 </body>
 </html>
