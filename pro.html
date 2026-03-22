@@ -12735,9 +12735,11 @@ function sendAgentMessage() {
   if (!anthropicKey) {
     var typing2 = document.getElementById('agentLoadingRow');
     if (typing2) typing2.remove();
-    addAgentBubble('assistant', '⚙️ Clé API Anthropic non configurée. Rendez-vous dans **Paramètres → Agent IA** pour renseigner votre clé `sk-ant-…`.');
+    addAgentBubble('assistant', '⚙️ **Clé API non configurée.**\n\nAllez dans **Paramètres → Agent IA**, collez votre clé Anthropic (`sk-ant-…`) et cliquez "Enregistrer la clé".');
     agentTyping = false;
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+    // Ouvrir les paramètres automatiquement
+    setTimeout(function(){ showDashTab('parametres'); toggleAgentIA(); }, 1200);
     return;
   }
 
@@ -12777,7 +12779,11 @@ function sendAgentMessage() {
   .catch(function(err) {
     var typing = document.getElementById('agentLoadingRow');
     if (typing) typing.remove();
-    addAgentBubble('assistant', '⚠️ Impossible de joindre l\'API. Vérifiez votre connexion et votre clé API dans Paramètres → API.');
+    var errMsg = err && err.message ? err.message : '';
+    var isCors = errMsg.toLowerCase().includes('cors') || errMsg.toLowerCase().includes('network') || errMsg === 'Failed to fetch';
+    addAgentBubble('assistant', isCors
+      ? '🔒 **Erreur CORS** — L\'API Anthropic bloque les appels directs depuis le navigateur.\n\nSolution : utilisez BailScan via un serveur (ex: `npx serve .` ou hébergement Vercel). En local sur `file://`, CORS bloque systématiquement.'
+      : '⚠️ Erreur réseau : ' + (errMsg || 'inconnue') + '. Vérifiez votre connexion.');
   })
   .finally(function() {
     agentTyping = false;
@@ -13221,7 +13227,8 @@ function loadAnthropicKeyField() {
 function saveAnthropicApiKey() {
   var key = (document.getElementById('anthropicApiKey') || {value:''}).value.trim();
   if (!key) { showToast('Clé vide — rien enregistré.', 'orange'); return; }
-  if (!key.startsWith('sk-ant-')) { showToast('Format invalide. La clé doit commencer par sk-ant-…', 'orange'); return; }
+  // Validation souple — accepte sk-ant- et sk-
+  if (!key.startsWith('sk-')) { showToast('Format invalide. La clé doit commencer par sk-…', 'orange'); return; }
   localStorage.setItem('bailscan_anthropic_key', key);
   showToast('✅ Clé API enregistrée.', 'green');
   var st = document.getElementById('anthropicKeyStatus');
@@ -13264,7 +13271,16 @@ function testAnthropicApiKey() {
     if (st) { st.style.color = ok ? 'var(--vert)' : 'var(--accent)'; st.textContent = ok ? '✅ Clé valide !' : '❌ ' + (data.error ? data.error.message : 'Erreur inconnue'); }
     showToast(ok ? '✅ Clé API valide !' : '❌ Clé invalide.', ok ? 'green' : 'red');
   })
-  .catch(function(){ if(st){ st.style.color='var(--accent)'; st.textContent='❌ Connexion impossible.'; } })
+  .catch(function(err){ 
+    var errMsg = err && err.message ? err.message : '';
+    var isCors = errMsg === 'Failed to fetch' || errMsg.toLowerCase().includes('cors');
+    if(st){ 
+      st.style.color='var(--accent)'; 
+      st.textContent = isCors 
+        ? '🔒 Erreur CORS — normal en local (file://). Testez depuis un serveur web (Vercel, npx serve).'
+        : '❌ Connexion impossible : ' + errMsg; 
+    } 
+  })
   .finally(function(){ if(btn){ btn.textContent='🧪 Tester'; btn.disabled=false; } });
 }
 
