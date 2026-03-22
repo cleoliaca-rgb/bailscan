@@ -3578,6 +3578,28 @@ body.is-dashboard #marketingFooter { display: none !important; }
           <button class="btn-primary-pro" style="margin-top:8px" onclick="changePassword()">Changer le mot de passe</button>
         </div>
 
+        <!-- Clé API Anthropic pour l'agent IA -->
+        <div class="dash-card" style="border:1.5px solid rgba(99,102,241,.25);background:#fafaff">
+          <div class="dash-section-title">✨ Agent IA — Clé API Anthropic</div>
+          <p style="font-size:.84rem;color:var(--gris);margin-bottom:14px;line-height:1.6">
+            L'agent IA du dashboard utilise l'API Claude d'Anthropic. Renseignez votre clé API pour activer le chat.
+            <a href="https://console.anthropic.com/account/keys" target="_blank" style="color:var(--pro-accent);font-weight:600">Obtenir une clé →</a>
+          </p>
+          <div class="form-group-pro" style="margin-bottom:10px">
+            <label class="form-label">Clé API Anthropic</label>
+            <div style="display:flex;gap:8px">
+              <input type="password" class="form-input-pro" id="anthropicApiKey" placeholder="sk-ant-api03-…" style="flex:1;font-family:monospace;font-size:.85rem">
+              <button class="btn-sm" onclick="toggleAnthropicKeyVisibility()" id="btnToggleKey" style="flex-shrink:0">👁 Voir</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-primary-pro" style="padding:9px 18px;font-size:.84rem" onclick="saveAnthropicApiKey()">💾 Enregistrer la clé</button>
+            <button class="btn-sm" onclick="testAnthropicApiKey()" id="btnTestKey">🧪 Tester</button>
+            <button class="btn-sm" onclick="clearAnthropicApiKey()" style="color:var(--accent);border-color:var(--accent)">✕ Effacer</button>
+          </div>
+          <div id="anthropicKeyStatus" style="margin-top:10px;font-size:.8rem;display:none"></div>
+        </div>
+
         <!-- Supprimer compte -->
         <div class="dash-card" style="border:1.5px solid rgba(200,75,47,0.2);background:#fdf8f7">
           <div class="dash-section-title" style="color:var(--accent)">Zone de danger</div>
@@ -12708,10 +12730,25 @@ function sendAgentMessage() {
   var btn = document.getElementById('agentSendBtn');
   if (btn) { btn.disabled = true; btn.style.opacity = '.5'; }
 
-  // Appel API Claude
+  // Appel API Claude — avec clé depuis Paramètres
+  var anthropicKey = localStorage.getItem('bailscan_anthropic_key') || '';
+  if (!anthropicKey) {
+    var typing2 = document.getElementById('agentLoadingRow');
+    if (typing2) typing2.remove();
+    addAgentBubble('assistant', '⚙️ Clé API Anthropic non configurée. Rendez-vous dans **Paramètres → Agent IA** pour renseigner votre clé `sk-ant-…`.');
+    agentTyping = false;
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+    return;
+  }
+
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': anthropicKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1000,
@@ -13168,6 +13205,125 @@ refreshTravaux = function() {
     localStorage.setItem('bailscan_tickets', JSON.stringify(demos));
   }
   _origRefreshTravaux();
+};
+
+// ════════════════════════════════════════════════════════
+// GESTION CLÉ API ANTHROPIC
+// ════════════════════════════════════════════════════════
+function loadAnthropicKeyField() {
+  var key = localStorage.getItem('bailscan_anthropic_key') || '';
+  var el = document.getElementById('anthropicApiKey');
+  if (el) el.value = key;
+  var st = document.getElementById('anthropicKeyStatus');
+  if (st && key) { st.style.display='block'; st.style.color='var(--vert)'; st.textContent='✅ Clé enregistrée.'; }
+}
+
+function saveAnthropicApiKey() {
+  var key = (document.getElementById('anthropicApiKey') || {value:''}).value.trim();
+  if (!key) { showToast('Clé vide — rien enregistré.', 'orange'); return; }
+  if (!key.startsWith('sk-ant-')) { showToast('Format invalide. La clé doit commencer par sk-ant-…', 'orange'); return; }
+  localStorage.setItem('bailscan_anthropic_key', key);
+  showToast('✅ Clé API enregistrée.', 'green');
+  var st = document.getElementById('anthropicKeyStatus');
+  if (st) { st.style.display='block'; st.style.color='var(--vert)'; st.textContent='✅ Clé enregistrée — l\'agent IA est prêt.'; }
+}
+
+function clearAnthropicApiKey() {
+  if (!confirm('Effacer la clé API Anthropic ?')) return;
+  localStorage.removeItem('bailscan_anthropic_key');
+  var el = document.getElementById('anthropicApiKey'); if (el) el.value = '';
+  var st = document.getElementById('anthropicKeyStatus');
+  if (st) { st.style.display='block'; st.style.color='var(--accent)'; st.textContent='Clé effacée.'; }
+  showToast('Clé API effacée.', 'orange');
+}
+
+function toggleAnthropicKeyVisibility() {
+  var el = document.getElementById('anthropicApiKey');
+  var btn = document.getElementById('btnToggleKey');
+  if (!el) return;
+  el.type = el.type === 'password' ? 'text' : 'password';
+  if (btn) btn.textContent = el.type === 'password' ? '👁 Voir' : '🙈 Masquer';
+}
+
+function testAnthropicApiKey() {
+  var key = (document.getElementById('anthropicApiKey') || {value:''}).value.trim();
+  if (!key) { showToast('Renseignez d\'abord une clé.', 'orange'); return; }
+  var btn = document.getElementById('btnTestKey');
+  var st = document.getElementById('anthropicKeyStatus');
+  if (btn) { btn.textContent = '⏳ Test…'; btn.disabled = true; }
+  if (st) { st.style.display='block'; st.style.color='var(--gris)'; st.textContent='Test en cours…'; }
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json', 'x-api-key':key, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
+    body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:10, messages:[{role:'user',content:'OK'}] })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    var ok = data.content && data.content[0] && data.content[0].text;
+    if (st) { st.style.color = ok ? 'var(--vert)' : 'var(--accent)'; st.textContent = ok ? '✅ Clé valide !' : '❌ ' + (data.error ? data.error.message : 'Erreur inconnue'); }
+    showToast(ok ? '✅ Clé API valide !' : '❌ Clé invalide.', ok ? 'green' : 'red');
+  })
+  .catch(function(){ if(st){ st.style.color='var(--accent)'; st.textContent='❌ Connexion impossible.'; } })
+  .finally(function(){ if(btn){ btn.textContent='🧪 Tester'; btn.disabled=false; } });
+}
+
+// Charger la clé dans le champ à l'ouverture des paramètres
+var _origShowDashTab3 = showDashTab;
+showDashTab = function(tab) {
+  _origShowDashTab3(tab);
+  if (tab === 'parametres') setTimeout(loadAnthropicKeyField, 50);
+};
+
+// Override initAgentChat pour afficher statut clé
+var _origInitAgentChat = initAgentChat;
+initAgentChat = function() {
+  var msgs = document.getElementById('agentChatMessages');
+  if (msgs && msgs.children.length > 0) return;
+  var key = localStorage.getItem('bailscan_anthropic_key') || '';
+  var keyStatus = key
+    ? '\n\n✅ Clé API configurée — posez votre question.'
+    : '\n\n⚙️ Clé API manquante. Allez dans **Paramètres → Agent IA** pour la configurer.';
+  var ctx = buildPortfolioContext();
+  agentHistory = [{ role:'user', content: ctx }];
+  addAgentBubble('assistant',
+    '👋 Bonjour ! Je suis votre assistant IA BailScan, connecté à votre portefeuille en temps réel.\n\n'
+    + 'J\'ai chargé **'+(loadMandats?loadMandats().length:0)+'** bien(s) et **'+(loadLocataires?loadLocataires().filter(function(l){return l.statut==='actif';}).length:0)+'** locataire(s) actif(s).'
+    + keyStatus
+  );
+};
+
+// FIX DPE PDF — pas de base64 pour les PDF (trop lourd pour localStorage)
+var _origUploadDPEFile2 = uploadDPEFile;
+uploadDPEFile = function(mandatId, input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (!file.type.match(/pdf|image\//)) { showToast('Format non supporté.', 'orange'); return; }
+  if (file.type === 'application/pdf') {
+    var objectUrl = URL.createObjectURL(file);
+    var mans = loadMandats();
+    var mIdx = mans.findIndex(function(m){ return String(m.id)===String(mandatId); });
+    if (mIdx !== -1) {
+      mans[mIdx].dpeFileName = file.name;
+      mans[mIdx].dpeUploadDate = new Date().toLocaleDateString('fr-FR');
+      mans[mIdx].dpePdfUrl = objectUrl;
+      mans[mIdx].dpeFile = null;
+      localStorage.setItem('bailscan_mandats', JSON.stringify(mans));
+      proState.mandats = mans;
+    }
+    var preview = document.getElementById('dpePreview_' + mandatId);
+    if (preview) {
+      preview.innerHTML = '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;border:1px solid #86efac;margin-top:8px">'
+        + '<span style="font-size:1.2rem">📄</span>'
+        + '<div style="flex:1;min-width:0"><div style="font-weight:600;font-size:.78rem;color:#166534">'+file.name+'</div>'
+        + '<div style="font-size:.7rem;color:var(--gris)">Chargé le '+new Date().toLocaleDateString('fr-FR')+' (session)</div></div>'
+        + '<a href="'+objectUrl+'" target="_blank" style="font-size:.72rem;color:var(--pro-accent);font-weight:600;text-decoration:none;flex-shrink:0">📖 Ouvrir</a>'
+        + '</div>';
+    }
+    showToast('✅ DPE PDF chargé. Disponible pour cette session.', 'green');
+    return;
+  }
+  _origUploadDPEFile2(mandatId, input);
 };
 
 </script>
