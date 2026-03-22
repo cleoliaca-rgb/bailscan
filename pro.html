@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>:root{--noir:#0d0d0d;--creme:#f5f0e8;--accent:#c84b2f;--vert:#2d6a4f;--vert-light:#e8f5ee;--texte:#1a1a1a;--gris:#6b6b6b;--border:#d8d0c4;--pro:#111827;--pro-mid:#1f2f4a;--pro-accent:#3b6fd4;--pro-light:#eef2fb;}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;scroll-padding-top:80px;}body{background:var(--creme);color:var(--texte);font-family:'DM Sans',sans-serif;overflow-x:hidden;}header{position:fixed;top:0;left:0;right:0;z-index:200;padding:7px 48px;min-height:50px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);background:rgba(17,24,39,0.97);backdrop-filter:blur(12px);}.logo{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;text-decoration:none;}.logo span{color:var(--accent);}.logo-badge{font-size:0.6rem;font-weight:700;background:var(--pro-accent);color:white;padding:2px 7px;border-radius:4px;margin-left:7px;letter-spacing:0.06em;vertical-align:middle;font-family:'DM Sans',sans-serif;}nav{display:flex;gap:20px;align-items:center;}nav a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;transition:color .2s;}nav a:hover{color:white;}.btn-header-login{background:transparent;border:1.5px solid rgba(255,255,255,0.2);color:white !important;padding:8px 18px;border-radius:8px;font-weight:600;font-size:0.85rem !important;transition:all .2s !important;}.btn-header-login:hover{border-color:rgba(255,255,255,0.5) !important;}.btn-header-cta{background:var(--pro-accent);color:white !important;padding:9px 20px;border-radius:8px;font-weight:700;font-size:0.88rem !important;transition:all .2s !important;}.btn-header-cta:hover{background:#2a5bbf !important;}.hero{background:var(--pro);display:flex;align-items:center;padding:110px 48px 80px;position:relative;overflow:hidden;}.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:900px;height:900px;background:radial-gradient(circle,rgba(59,111,212,0.12) 0%,transparent 60%);}.hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(200,75,47,0.08) 0%,transparent 60%);}.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;position:relative;z-index:1;}.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(59,111,212,0.15);color:#7fa8e8;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:22px;border:1px solid rgba(59,111,212,0.25);}.hero-tag::before{content:'';width:6px;height:6px;background:#7fa8e8;border-radius:50%;animation:pulse 2s infinite;}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2rem,3.2vw,3rem);line-height:1.1;letter-spacing:-0.03em;color:white;margin-bottom:20px;}.hero h1 em{font-style:italic;color:#7fa8e8;}.hero-sub{font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.75;margin-bottom:36px;max-width:460px;}.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}.btn-primary-pro{background:var(--pro-accent);color:white;padding:13px 26px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;}.btn-primary-pro:hover{background:#2a5bbf;transform:translateY(-1px);}.btn-secondary-pro{background:transparent;color:rgba(255,255,255,0.75);padding:13px 22px;border-radius:10px;font-weight:600;font-size:0.95rem;text-decoration:none;border:1.5px solid rgba(255,255,255,0.18);transition:all .2s;display:inline-flex;align-items:center;gap:8px;cursor:pointer;}.btn-secondary-pro:hover{border-color:rgba(255,255,255,0.45);color:white;}.hero-stats{display:flex;gap:28px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}.stat-n{font-family:'Instrument Serif',serif;font-size:2rem;color:white;}.stat-l{font-size:0.75rem;color:rgba(255,255,255,0.38);margin-top:2px;line-height:1.4;}.dash-preview{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;overflow:hidden;}.dash-topbar{background:rgba(255,255,255,0.05);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.07);}.dash-dots{display:flex;gap:5px;}.dash-dot{width:9px;height:9px;border-radius:50%;}.dash-url{font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:10px;}.dash-body{padding:16px;}.dash-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}.dash-kpi{background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;}.dash-kpi-n{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;}.dash-kpi-l{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}.dash-table{width:100%;border-collapse:collapse;}.dash-table th{font-size:0.64rem;color:rgba(255,255,255,0.3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;padding:6px 8px;text-align:left;}.dash-table td{font-size:0.72rem;color:rgba(255,255,255,0.65);padding:7px 8px;border-top:1px solid rgba(255,255,255,0.05);}.dash-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.62rem;font-weight:700;}.badge-ok{background:rgba(45,106,79,0.25);color:#7ec8a0;}.badge-warn{background:rgba(200,75,47,0.25);color:#e8806b;}.badge-check{background:rgba(59,111,212,0.25);color:#7fa8e8;}.section-inner{max-width:1100px;margin:0 auto;}.section-tag{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pro-accent);margin-bottom:12px;}.section-title{font-family:'Instrument Serif',serif;font-size:2.4rem;color:var(--noir);line-height:1.15;margin-bottom:16px;}.section-sub{font-size:0.95rem;color:var(--gris);line-height:1.75;max-width:520px;}.features{padding:80px 48px;background:white;}.particulier-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;}@media(max-width:900px){.footer-top-pro{grid-template-columns:1fr 1fr;gap:28px;}}@media(max-width:560px){.features-grid{grid-template-columns:1fr;}}.feat-card{background:var(--creme);border:1.5px solid var(--border);border-radius:16px;padding:28px;transition:all .25s;}.feat-card:hover{border-color:var(--pro-accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(59,111,212,0.1);}.feat-icon{font-size:1.8rem;margin-bottom:16px;}.feat-title{font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:8px;}.feat-desc{font-size:0.85rem;color:var(--gris);line-height:1.65;}.how{padding:80px 48px;background:var(--creme);border-top:1px solid var(--border);}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;position:relative;}.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--border);z-index:0;}.step{text-align:center;position:relative;z-index:1;padding:0 16px;}.step-num{width:56px;height:56px;border-radius:50%;background:white;border:2px solid var(--pro-accent);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:1.4rem;color:var(--pro-accent);margin:0 auto 20px;}.step-title{font-weight:700;font-size:0.92rem;color:var(--noir);margin-bottom:8px;}.step-desc{font-size:0.8rem;color:var(--gris);line-height:1.6;}.pricing{padding:80px 48px;background:white;border-top:1px solid var(--border);}.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px;align-items:start;}.pricing-toggle-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin:32px 0 8px;}.pricing-toggle{display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;}.ptoggle{padding:7px 22px;border:none;border-radius:7px;font-weight:600;font-size:0.85rem;cursor:pointer;background:transparent;color:var(--gris);transition:all .2s;}.ptoggle.active{background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,0.1);}.ptoggle-save{background:var(--vert);color:white;font-size:0.65rem;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px;}.pricing-engage-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}.engage-label{font-size:0.82rem;color:var(--gris);font-weight:600;}.engage-btn{padding:5px 16px;border:1.5px solid var(--border);border-radius:7px;font-size:0.82rem;font-weight:600;cursor:pointer;background:white;color:var(--gris);transition:all .2s;}.engage-btn.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.pricing-card{background:var(--creme);border:1.5px solid var(--border);border-radius:18px;padding:32px;position:relative;}.pricing-card.featured{background:var(--pro);border-color:var(--pro-accent);}.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;font-size:0.65rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;}.pricing-plan{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);margin-bottom:8px;}.pricing-card.featured .pricing-plan{color:rgba(255,255,255,0.45);}.pricing-price{font-family:'Instrument Serif',serif;font-size:3rem;color:var(--noir);line-height:1;}.pricing-card.featured .pricing-price{color:white;}.pricing-price sup{font-size:1.2rem;vertical-align:super;font-family:'DM Sans',sans-serif;font-weight:600;}.pricing-period{font-size:0.8rem;color:var(--gris);margin:6px 0 24px;}.pricing-card.featured .pricing-period{color:rgba(255,255,255,0.4);}.pricing-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}.pricing-feature{display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte);}.pricing-card.featured .pricing-feature{color:rgba(255,255,255,0.75);}.pricing-feature::before{content:'✓';color:var(--pro-accent);font-weight:700;flex-shrink:0;}.pricing-divider{height:1px;background:var(--border);margin:16px 0;}.pricing-card.featured .pricing-divider{background:rgba(255,255,255,0.1);}.btn-pricing{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;border:none;cursor:pointer;transition:all .2s;}.btn-pricing-outline{background:white;color:var(--noir);border:1.5px solid var(--border) !important;}.btn-pricing-outline:hover{border-color:var(--pro-accent) !important;color:var(--pro-accent);}.btn-pricing-pro{background:var(--pro-accent);color:white;}.btn-pricing-pro:hover{background:#2a5bbf;}.btn-pricing-contact{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2) !important;}.btn-pricing-contact:hover{border-color:rgba(255,255,255,0.5) !important;color:white;}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:500;align-items:center;justify-content:center;padding:20px;}.modal-overlay.active{display:flex;}.modal{background:#fff;border-radius:16px;padding:0;width:100%;max-width:560px;position:relative;animation:slideUp .3s ease;box-shadow:0 25px 80px rgba(0,0,0,.25);overflow:hidden;}.modal .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--gris);z-index:2;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s;}.modal .modal-close:hover{background:#f3f4f6;}.modal .modal-title{font-family:"Instrument Serif",serif;font-size:1.35rem;font-weight:700;color:var(--texte);padding:24px 28px 4px;}.modal .modal-sub{font-size:.83rem;color:var(--gris);padding:0 28px 16px;border-bottom:1px solid var(--border);margin-bottom:16px;}.modal .form-group,.modal .form-group-pro{padding:0 28px;margin-bottom:14px;}.modal .btn-submit{display:block;width:calc(100% - 56px);margin:8px 28px 24px;padding:13px;border-radius:10px;background:var(--pro-accent);color:#fff;border:none;font-size:.95rem;font-weight:700;cursor:pointer;transition:opacity .2s;}.modal .btn-submit:hover{opacity:.88;}.modal .trial-badge{margin:16px 28px 0;}@keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(0.98)}to{opacity:1;transform:translateY(0)}}.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.4rem;color:var(--gris);cursor:pointer;line-height:1;}.modal-title{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--noir);margin-bottom:6px;}.modal-sub{font-size:0.85rem;color:var(--gris);margin-bottom:28px;line-height:1.6;}.trial-badge{display:inline-flex;align-items:center;gap:6px;background:var(--vert-light);color:var(--vert);font-size:0.78rem;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(45,106,79,0.2);}.form-group{margin-bottom:16px;}.form-label{font-size:0.82rem;font-weight:600;color:var(--texte);margin-bottom:6px;display:block;}.form-input-pro{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:'DM Sans',sans-serif;color:var(--texte);background:white;transition:border-color .2s;}.form-input-pro:focus{outline:none;border-color:var(--pro-accent);}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}.btn-submit{width:100%;padding:13px;background:var(--pro-accent);color:white;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all .2s;margin-top:8px;}.btn-submit:hover{background:#2a5bbf;}.btn-submit.loading{opacity:0.7;cursor:not-allowed;}.modal-switch{text-align:center;margin-top:18px;font-size:0.83rem;color:var(--gris);}.modal-switch a{color:var(--pro-accent);cursor:pointer;font-weight:600;text-decoration:none;}.modal-switch a:hover{text-decoration:underline;}.form-legal{font-size:0.74rem;color:var(--gris);margin-top:12px;line-height:1.5;}.success-box{display:none;background:var(--vert-light);border:1.5px solid rgba(45,106,79,0.25);border-radius:12px;padding:24px;text-align:center;}.success-box.active{display:block;}.success-icon{font-size:2.5rem;margin-bottom:12px;}.success-title{font-weight:700;font-size:1.1rem;color:var(--vert);margin-bottom:6px;}.success-text{font-size:0.85rem;color:var(--gris);line-height:1.65;}#dashboardSection{display:none;padding:0;}.dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 65px);margin-top:65px;}.dash-sidebar{background:var(--pro);padding:28px 0;position:sticky;top:65px;height:calc(100vh - 65px);overflow-y:auto;}.dash-sidebar-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;}.dash-sidebar-logo span{font-family:'Instrument Serif',serif;font-size:1.3rem;color:white;}.dash-sidebar-logo span em{color:var(--accent);font-style:normal;}.dash-trial-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(59,111,212,0.2);color:#7fa8e8;font-size:0.65rem;font-weight:700;padding:3px 8px;border-radius:5px;margin-top:6px;}.dash-nav{padding:0 12px;}.dash-nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;font-size:0.85rem;color:rgba(255,255,255,0.55);cursor:pointer;transition:all .2s;margin-bottom:2px;}.dash-nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);}.dash-nav-item.active{background:rgba(59,111,212,0.2);color:#7fa8e8;font-weight:600;}.dash-nav-icon{font-size:1rem;flex-shrink:0;}.dash-nav-section{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.2);padding:14px 14px 6px;}.dash-user{padding:16px 24px;margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);}.dash-user-name{font-size:0.84rem;font-weight:600;color:rgba(255,255,255,0.75);}.dash-user-role{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;}.dash-btn-logout{font-size:0.75rem;color:rgba(255,255,255,0.3);background:none;border:none;cursor:pointer;margin-top:10px;display:block;transition:color .2s;}.dash-btn-logout:hover{color:rgba(255,255,255,0.6);}.dash-main{background:#f8f7f4;padding:36px 40px;overflow-y:auto;}.dash-main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:16px;}.dash-page-title{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--noir);}.dash-page-sub{font-size:0.84rem;color:var(--gris);margin-top:4px;}.dash-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}.kpi-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px 22px;}.kpi-val{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--noir);}.kpi-label{font-size:0.78rem;color:var(--gris);margin-top:4px;}.kpi-trend{font-size:0.72rem;font-weight:600;margin-top:6px;}.kpi-trend.up{color:var(--vert);}.kpi-trend.warn{color:var(--accent);}.dash-section-title{font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}.dash-card{background:white;border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;}.dash-table-full{width:100%;border-collapse:collapse;}.dash-table-full th{font-size:0.72rem;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:0.06em;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);}.dash-table-full td{font-size:0.85rem;color:var(--texte);padding:12px 14px;border-bottom:1px solid var(--border);}.dash-table-full tr:last-child td{border-bottom:none;}.dash-table-full tr:hover td{background:#fafaf8;}.score-pill{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:0.85rem;}.score-high{background:rgba(45,106,79,0.1);color:var(--vert);}.score-mid{background:rgba(245,158,11,0.1);color:#d97706;}.score-low{background:rgba(200,75,47,0.1);color:var(--accent);}.status-badge{display:inline-block;padding:3px 10px;border-radius:5px;font-size:0.72rem;font-weight:700;}.status-ok{background:var(--vert-light);color:var(--vert);}.status-warn{background:#fff3cd;color:#856404;}.status-danger{background:#fdf0ed;color:var(--accent);}.btn-sm{padding:5px 12px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--texte);transition:all .2s;}.btn-sm:hover{border-color:var(--pro-accent);color:var(--pro-accent);}.upload-zone-pro{border:2px dashed var(--border);border-radius:14px;padding:40px 24px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;}.upload-zone-pro:hover{border-color:var(--pro-accent);background:var(--pro-light);}.upload-zone-pro input{position:absolute;inset:0;opacity:0;cursor:pointer;}.upload-icon{font-size:2.5rem;margin-bottom:12px;}.upload-title{font-weight:700;font-size:0.95rem;color:var(--noir);margin-bottom:6px;}.upload-sub{font-size:0.82rem;color:var(--gris);}.upload-progress{display:none;margin-top:20px;}.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}.progress-fill{height:100%;background:var(--pro-accent);border-radius:3px;width:0;transition:width .4s ease;}.analysis-live{display:none;background:var(--pro);border-radius:14px;padding:24px;margin-top:16px;}.analysis-live-title{font-weight:600;color:white;font-size:0.9rem;margin-bottom:16px;display:flex;align-items:center;gap:8px;}.analysis-live-title::before{content:'';width:8px;height:8px;border-radius:50%;background:#7fa8e8;animation:pulse 1.5s infinite;flex-shrink:0;}.analysis-step-pro{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:0.82rem;color:rgba(255,255,255,0.4);transition:color .3s;}.analysis-step-pro.active{color:rgba(255,255,255,0.9);}.analysis-step-pro.done{color:rgba(255,255,255,0.5);}.step-check{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}.analysis-step-pro.done .step-check{background:var(--vert);border-color:var(--vert);color:white;}.analysis-step-pro.active .step-check{border-color:#7fa8e8;animation:spin 1s linear infinite;}@keyframes spin{to{transform:rotate(360deg);}}.result-pro{display:none;background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:16px;}.result-pro-header{background:var(--pro);padding:20px 24px;display:flex;align-items:center;gap:20px;}.result-score-circle{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}.result-score-num{font-family:'Instrument Serif',serif;font-size:1.4rem;color:white;line-height:1;}.result-score-label{font-size:0.55rem;color:rgba(255,255,255,0.45);text-transform:uppercase;}.result-verdict{color:white;}.result-verdict-title{font-weight:700;font-size:1rem;margin-bottom:4px;}.result-verdict-sub{font-size:0.8rem;color:rgba(255,255,255,0.55);}.result-pro-body{padding:20px 24px;}.result-clause{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}.result-clause:last-child{border-bottom:none;}.result-clause-badge{padding:3px 9px;border-radius:5px;font-size:0.68rem;font-weight:700;text-transform:uppercase;flex-shrink:0;margin-top:2px;}.rc-danger{background:#fdf0ed;color:var(--accent);}.rc-warn{background:#fff3cd;color:#856404;}.rc-ok{background:var(--vert-light);color:var(--vert);}.result-clause-title{font-weight:700;font-size:0.88rem;color:var(--noir);margin-bottom:4px;}.result-clause-desc{font-size:0.8rem;color:var(--gris);line-height:1.6;}.result-actions{display:flex;gap:10px;padding:16px 24px;border-top:1px solid var(--border);background:#fafaf8;flex-wrap:wrap;}.btn-result-action{padding:8px 18px;border-radius:8px;font-size:0.82rem;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;transition:all .2s;color:var(--texte);}.btn-result-action.primary{background:var(--pro-accent);color:white;border-color:var(--pro-accent);}.btn-result-action:hover{border-color:var(--pro-accent);color:var(--pro-accent);}.btn-result-action.primary:hover{background:#2a5bbf;color:white;}.trial-banner{background:linear-gradient(135deg,var(--pro-accent),#1d4ed8);border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;}.trial-banner-text{color:white;}.trial-banner-title{font-weight:700;font-size:0.92rem;}.trial-banner-sub{font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:3px;}.btn-trial-upgrade{background:white;color:var(--pro-accent);padding:8px 18px;border-radius:8px;font-size:0.82rem;font-weight:700;border:none;cursor:pointer;flex-shrink:0;}@media(max-width:900px){header{padding:8px 20px;min-height:50px;}nav a{display:none;}nav a:first-child{display:flex;}.btn-header-login{display:none;}.btn-header-cta{font-size:0.78rem !important;padding:7px 12px;}.hero{padding:0 0 60px;min-height:auto;align-items:flex-start;margin-top:0;}.hero-inner{padding:0 20px;grid-template-columns:1fr;gap:32px;}.hero-inner > div:first-child{padding-top:110px;}.hero-tag{font-size:0.7rem;padding:4px 10px;}.dash-preview{display:none;}.features-grid{grid-template-columns:1fr;}.pricing-grid{grid-template-columns:1fr;}.steps{grid-template-columns:1fr 1fr;gap:24px;}.steps::before{display:none;}.features,.how,.pricing{padding:52px 20px;}section[style*="padding:80px 48px"]{padding:52px 20px !important;}.particulier-grid{grid-template-columns:1fr !important;}.dash-layout{grid-template-columns:1fr;}.dash-sidebar{display:none;}.dash-main{padding:24px 16px;}.dash-kpi-row{grid-template-columns:1fr 1fr;}}footer.footer-seo-pro{background:var(--pro);color:rgba(255,255,255,0.7);flex-direction:column;align-items:stretch;padding:0;}.footer-inner-pro{max-width:1100px;margin:0 auto;padding:52px 48px 28px;width:100%;box-sizing:border-box;}.footer-top-pro{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}.footer-brand-pro .footer-logo-pro{font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;margin-bottom:8px;}.footer-tagline-pro{font-size:0.85rem;color:rgba(255,255,255,0.55);margin-bottom:6px;}.footer-copy-pro{font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:20px;}.footer-col-pro{display:flex;flex-direction:column;gap:10px;}.footer-col-title-pro{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:4px;}.footer-col-pro a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.84rem;transition:color .2s;}.footer-col-pro a:hover{color:white;}.footer-bottom-pro{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;font-size:0.75rem;color:rgba(255,255,255,0.3);text-align:center;}@media(max-width:600px){.footer-top-pro{grid-template-columns:1fr;}}.annex-check{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:500;transition:all .2s;background:white;}.annex-check:hover{border-color:var(--pro-accent);background:var(--pro-light);}.annex-check input[type=checkbox]{accent-color:var(--pro-accent);width:14px;height:14px;}.annex-check:has(input:checked){border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.wizard-progress{display:flex;align-items:center;gap:0;margin-bottom:32px}.wizard-step-indicator{display:flex;align-items:center;gap:8px;flex:1}.wizard-step-indicator:last-child{flex:0}.step-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--gris);background:white;flex-shrink:0;transition:all .3s}.step-dot.active{border-color:var(--pro-accent);background:var(--pro-accent);color:white}.step-dot.done{border-color:var(--vert);background:var(--vert);color:white}.step-label{font-size:.75rem;font-weight:600;color:var(--gris)}.step-label.active{color:var(--pro-accent)}.step-line{flex:1;height:2px;background:var(--border);margin:0 8px;transition:background .3s}.step-line.done{background:var(--vert)}.pro-wizard-panel{display:none;animation:fadeIn .3s ease}.pro-wizard-panel.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.panel-title{font-family:"Instrument Serif",serif;font-size:1.5rem;color:var(--noir);margin-bottom:6px}.panel-sub{font-size:.88rem;color:var(--gris);margin-bottom:24px;line-height:1.6}.form-grid-pro{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.form-grid-pro.cols3{grid-template-columns:1fr 1fr 1fr}.form-group-pro{display:flex;flex-direction:column;gap:5px;margin-bottom:0}.radio-group-pro{display:flex;gap:8px;flex-wrap:wrap}.radio-pill-pro{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;color:var(--texte);transition:all .2s;background:white}.radio-pill-pro input{display:none}.radio-pill-pro.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);font-weight:700}.wizard-nav-pro{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:24px;border-top:1px solid var(--border)}.btn-wizard-back-pro{background:transparent;border:1.5px solid var(--border);color:var(--gris);padding:10px 20px;border-radius:8px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .2s}.btn-wizard-back-pro:hover{border-color:var(--noir);color:var(--noir)}.btn-wizard-next-pro{background:var(--pro);color:white;padding:10px 24px;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;border:none}.btn-wizard-next-pro:hover{background:var(--pro-accent)}.loyer-breakdown-pro{background:#f8f7f4;border-radius:10px;padding:14px 16px;margin-top:12px}.loyer-row-pro{display:flex;justify-content:space-between;padding:4px 0;font-size:.84rem;color:var(--texte)}.upload-tab-pro{padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;background:white;font-size:.84rem;font-weight:600;cursor:pointer;color:var(--gris);transition:all .2s}.upload-tab-pro.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent)}.recap-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:.85rem}.recap-row:last-child{border-bottom:none}.recap-label{color:var(--gris)}.recap-val{font-weight:600;color:var(--noir)}.corr-item{background:white;border:1.5px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.corr-item.danger{border-color:rgba(200,75,47,.3);background:#fdf8f7}.corr-item.warning{border-color:rgba(245,158,11,.3);background:#fffbf0}.corr-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}.corr-badge{padding:2px 9px;border-radius:5px;font-size:.68rem;font-weight:700;text-transform:uppercase}.cb-danger{background:#fdf0ed;color:var(--accent)}.cb-warning{background:#fff3cd;color:#856404}.corr-title{font-weight:700;font-size:.92rem}.corr-section{margin-bottom:8px}.corr-section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);margin-bottom:4px}.corr-section-text{font-size:.84rem;color:var(--texte);line-height:1.65}.corr-law{font-size:.78rem;color:var(--accent);font-weight:600;background:var(--rouge-light);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px}@media(max-width:768px){.form-grid-pro,.form-grid-pro.cols3{grid-template-columns:1fr}}.dash-filters-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}.filter-search-wrap{position:relative;display:flex;align-items:center;flex:1;min-width:200px;}.filter-search-icon{position:absolute;left:12px;font-size:.9rem;pointer-events:none;z-index:1;}.filter-search{width:100%;padding:8px 32px 8px 34px;border:1.5px solid var(--border);border-radius:9px;font-size:.84rem;background:white;color:var(--noir);outline:none;transition:border-color .2s;}.filter-search:focus{border-color:var(--pro-accent);}.filter-search-clear{position:absolute;right:8px;background:none;border:none;cursor:pointer;color:var(--gris);font-size:1rem;line-height:1;padding:2px 4px;border-radius:4px;display:flex;align-items:center;justify-content:center;}.filter-search-clear:hover{color:var(--noir);background:var(--pro-light);}.filter-search:focus{border-color:var(--pro-accent)}.filter-select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.84rem;font-family:inherit;background:white;cursor:pointer;outline:none}.filter-select:focus{border-color:var(--pro-accent)}.courrier-type-card{padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s;background:white;line-height:1.4;}.courrier-type-card span{font-weight:400;color:var(--gris);font-size:.73rem;display:block;margin-top:2px;}.courrier-type-card:hover{border-color:var(--pro-accent);background:var(--pro-light);}.courrier-type-card.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.loc-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px;transition:all .2s;cursor:pointer;}.loc-card:hover{border-color:var(--pro-accent);box-shadow:0 4px 16px rgba(59,111,212,.1);}.loc-score-vert{background:#f0fdf4;color:#166534;border:1px solid #86efac;}.loc-score-orange{background:#fffbeb;color:#92400e;border:1px solid #fcd34d;}.loc-score-rouge{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;}.alerte-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}.alerte-urgent{border-left:3px solid var(--accent);padding-left:12px;}.alerte-warning{border-left:3px solid #f59e0b;padding-left:12px;}.alerte-ok{border-left:3px solid var(--vert);padding-left:12px;}@keyframes spin{to{transform:rotate(360deg)}}
+<style>:root{--noir:#0d0d0d;--creme:#f5f0e8;--accent:#c84b2f;--vert:#2d6a4f;--vert-light:#e8f5ee;--texte:#1a1a1a;--gris:#6b6b6b;--border:#d8d0c4;--pro:#111827;--pro-mid:#1f2f4a;--pro-accent:#3b6fd4;--pro-light:#eef2fb;}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;scroll-padding-top:80px;}body{background:var(--creme);color:var(--texte);font-family:'DM Sans',sans-serif;overflow-x:hidden;}header{position:fixed;top:0;left:0;right:0;z-index:200;padding:7px 48px;min-height:50px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);background:rgba(17,24,39,0.97);backdrop-filter:blur(12px);}.logo{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;text-decoration:none;}.logo span{color:var(--accent);}.logo-badge{font-size:0.6rem;font-weight:700;background:var(--pro-accent);color:white;padding:2px 7px;border-radius:4px;margin-left:7px;letter-spacing:0.06em;vertical-align:middle;font-family:'DM Sans',sans-serif;}nav{display:flex;gap:20px;align-items:center;}nav a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;transition:color .2s;}nav a:hover{color:white;}.btn-header-login{background:transparent;border:1.5px solid rgba(255,255,255,0.2);color:white !important;padding:8px 18px;border-radius:8px;font-weight:600;font-size:0.85rem !important;transition:all .2s !important;}.btn-header-login:hover{border-color:rgba(255,255,255,0.5) !important;}.btn-header-cta{background:var(--pro-accent);color:white !important;padding:9px 20px;border-radius:8px;font-weight:700;font-size:0.88rem !important;transition:all .2s !important;}.btn-header-cta:hover{background:#2a5bbf !important;}.hero{background:var(--pro);display:flex;align-items:center;padding:110px 48px 80px;position:relative;overflow:hidden;}.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:900px;height:900px;background:radial-gradient(circle,rgba(59,111,212,0.12) 0%,transparent 60%);}.hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(200,75,47,0.08) 0%,transparent 60%);}.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;position:relative;z-index:1;}.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(59,111,212,0.15);color:#7fa8e8;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:22px;border:1px solid rgba(59,111,212,0.25);}.hero-tag::before{content:'';width:6px;height:6px;background:#7fa8e8;border-radius:50%;animation:pulse 2s infinite;}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2rem,3.2vw,3rem);line-height:1.1;letter-spacing:-0.03em;color:white;margin-bottom:20px;}.hero h1 em{font-style:italic;color:#7fa8e8;}.hero-sub{font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.75;margin-bottom:36px;max-width:460px;}.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}.btn-primary-pro{background:var(--pro-accent);color:white;padding:13px 26px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;}.btn-primary-pro:hover{background:#2a5bbf;transform:translateY(-1px);}.btn-secondary-pro{background:transparent;color:rgba(255,255,255,0.75);padding:13px 22px;border-radius:10px;font-weight:600;font-size:0.95rem;text-decoration:none;border:1.5px solid rgba(255,255,255,0.18);transition:all .2s;display:inline-flex;align-items:center;gap:8px;cursor:pointer;}.btn-secondary-pro:hover{border-color:rgba(255,255,255,0.45);color:white;}.hero-stats{display:flex;gap:28px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}.stat-n{font-family:'Instrument Serif',serif;font-size:2rem;color:white;}.stat-l{font-size:0.75rem;color:rgba(255,255,255,0.38);margin-top:2px;line-height:1.4;}.dash-preview{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;overflow:hidden;}.dash-topbar{background:rgba(255,255,255,0.05);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.07);}.dash-dots{display:flex;gap:5px;}.dash-dot{width:9px;height:9px;border-radius:50%;}.dash-url{font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:10px;}.dash-body{padding:16px;}.dash-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}.dash-kpi{background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;}.dash-kpi-n{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;}.dash-kpi-l{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}.dash-table{width:100%;border-collapse:collapse;}.dash-table th{font-size:0.64rem;color:rgba(255,255,255,0.3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;padding:6px 8px;text-align:left;}.dash-table td{font-size:0.72rem;color:rgba(255,255,255,0.65);padding:7px 8px;border-top:1px solid rgba(255,255,255,0.05);}.dash-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.62rem;font-weight:700;}.badge-ok{background:rgba(45,106,79,0.25);color:#7ec8a0;}.badge-warn{background:rgba(200,75,47,0.25);color:#e8806b;}.badge-check{background:rgba(59,111,212,0.25);color:#7fa8e8;}.section-inner{max-width:1100px;margin:0 auto;}.section-tag{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pro-accent);margin-bottom:12px;}.section-title{font-family:'Instrument Serif',serif;font-size:2.4rem;color:var(--noir);line-height:1.15;margin-bottom:16px;}.section-sub{font-size:0.95rem;color:var(--gris);line-height:1.75;max-width:520px;}.features{padding:80px 48px;background:white;}.particulier-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;}@media(max-width:900px){.footer-top-pro{grid-template-columns:1fr 1fr;gap:28px;}}@media(max-width:560px){.features-grid{grid-template-columns:1fr;}}.feat-card{background:var(--creme);border:1.5px solid var(--border);border-radius:16px;padding:28px;transition:all .25s;}.feat-card:hover{border-color:var(--pro-accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(59,111,212,0.1);}.feat-icon{font-size:1.8rem;margin-bottom:16px;}.feat-title{font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:8px;}.feat-desc{font-size:0.85rem;color:var(--gris);line-height:1.65;}.how{padding:80px 48px;background:var(--creme);border-top:1px solid var(--border);}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;position:relative;}.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--border);z-index:0;}.step{text-align:center;position:relative;z-index:1;padding:0 16px;}.step-num{width:56px;height:56px;border-radius:50%;background:white;border:2px solid var(--pro-accent);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:1.4rem;color:var(--pro-accent);margin:0 auto 20px;}.step-title{font-weight:700;font-size:0.92rem;color:var(--noir);margin-bottom:8px;}.step-desc{font-size:0.8rem;color:var(--gris);line-height:1.6;}.pricing{padding:80px 48px;background:white;border-top:1px solid var(--border);}.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px;align-items:start;}.pricing-toggle-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin:32px 0 8px;}.pricing-toggle{display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;}.ptoggle{padding:7px 22px;border:none;border-radius:7px;font-weight:600;font-size:0.85rem;cursor:pointer;background:transparent;color:var(--gris);transition:all .2s;}.ptoggle.active{background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,0.1);}.ptoggle-save{background:var(--vert);color:white;font-size:0.65rem;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px;}.pricing-engage-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}.engage-label{font-size:0.82rem;color:var(--gris);font-weight:600;}.engage-btn{padding:5px 16px;border:1.5px solid var(--border);border-radius:7px;font-size:0.82rem;font-weight:600;cursor:pointer;background:white;color:var(--gris);transition:all .2s;}.engage-btn.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.pricing-card{background:var(--creme);border:1.5px solid var(--border);border-radius:18px;padding:32px;position:relative;}.pricing-card.featured{background:var(--pro);border-color:var(--pro-accent);}.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;font-size:0.65rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;}.pricing-plan{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);margin-bottom:8px;}.pricing-card.featured .pricing-plan{color:rgba(255,255,255,0.45);}.pricing-price{font-family:'Instrument Serif',serif;font-size:3rem;color:var(--noir);line-height:1;}.pricing-card.featured .pricing-price{color:white;}.pricing-price sup{font-size:1.2rem;vertical-align:super;font-family:'DM Sans',sans-serif;font-weight:600;}.pricing-period{font-size:0.8rem;color:var(--gris);margin:6px 0 24px;}.pricing-card.featured .pricing-period{color:rgba(255,255,255,0.4);}.pricing-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}.pricing-feature{display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte);}.pricing-card.featured .pricing-feature{color:rgba(255,255,255,0.75);}.pricing-feature::before{content:'✓';color:var(--pro-accent);font-weight:700;flex-shrink:0;}.pricing-divider{height:1px;background:var(--border);margin:16px 0;}.pricing-card.featured .pricing-divider{background:rgba(255,255,255,0.1);}.btn-pricing{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;border:none;cursor:pointer;transition:all .2s;}.btn-pricing-outline{background:white;color:var(--noir);border:1.5px solid var(--border) !important;}.btn-pricing-outline:hover{border-color:var(--pro-accent) !important;color:var(--pro-accent);}.btn-pricing-pro{background:var(--pro-accent);color:white;}.btn-pricing-pro:hover{background:#2a5bbf;}.btn-pricing-contact{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2) !important;}.btn-pricing-contact:hover{border-color:rgba(255,255,255,0.5) !important;color:white;}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:500;align-items:center;justify-content:center;padding:20px;}.modal-overlay.active{display:flex;}.modal{background:#fff;border-radius:16px;padding:0;width:100%;max-width:560px;position:relative;animation:slideUp .3s ease;box-shadow:0 25px 80px rgba(0,0,0,.25);overflow:hidden;}.modal .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--gris);z-index:2;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s;}.modal .modal-close:hover{background:#f3f4f6;}.modal .modal-title{font-family:"Instrument Serif",serif;font-size:1.35rem;font-weight:700;color:var(--texte);padding:24px 28px 4px;}.modal .modal-sub{font-size:.83rem;color:var(--gris);padding:0 28px 16px;border-bottom:1px solid var(--border);margin-bottom:16px;}.modal .form-group,.modal .form-group-pro{padding:0 28px;margin-bottom:14px;}.modal .btn-submit{display:block;width:calc(100% - 56px);margin:8px 28px 24px;padding:13px;border-radius:10px;background:var(--pro-accent);color:#fff;border:none;font-size:.95rem;font-weight:700;cursor:pointer;transition:opacity .2s;}.modal .btn-submit:hover{opacity:.88;}.modal .trial-badge{margin:16px 28px 0;}@keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(0.98)}to{opacity:1;transform:translateY(0)}}.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.4rem;color:var(--gris);cursor:pointer;line-height:1;}.modal-title{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--noir);margin-bottom:6px;}.modal-sub{font-size:0.85rem;color:var(--gris);margin-bottom:28px;line-height:1.6;}.trial-badge{display:inline-flex;align-items:center;gap:6px;background:var(--vert-light);color:var(--vert);font-size:0.78rem;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(45,106,79,0.2);}.form-group{margin-bottom:16px;}.form-label{font-size:0.82rem;font-weight:600;color:var(--texte);margin-bottom:6px;display:block;}.form-input-pro{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:'DM Sans',sans-serif;color:var(--texte);background:white;transition:border-color .2s;}.form-input-pro:focus{outline:none;border-color:var(--pro-accent);}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}.btn-submit{width:100%;padding:13px;background:var(--pro-accent);color:white;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all .2s;margin-top:8px;}.btn-submit:hover{background:#2a5bbf;}.btn-submit.loading{opacity:0.7;cursor:not-allowed;}.modal-switch{text-align:center;margin-top:18px;font-size:0.83rem;color:var(--gris);}.modal-switch a{color:var(--pro-accent);cursor:pointer;font-weight:600;text-decoration:none;}.modal-switch a:hover{text-decoration:underline;}.form-legal{font-size:0.74rem;color:var(--gris);margin-top:12px;line-height:1.5;}.success-box{display:none;background:var(--vert-light);border:1.5px solid rgba(45,106,79,0.25);border-radius:12px;padding:24px;text-align:center;}.success-box.active{display:block;}.success-icon{font-size:2.5rem;margin-bottom:12px;}.success-title{font-weight:700;font-size:1.1rem;color:var(--vert);margin-bottom:6px;}.success-text{font-size:0.85rem;color:var(--gris);line-height:1.65;}#dashboardSection{display:none;padding:0;}.dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 65px);margin-top:65px;}.dash-sidebar{background:var(--pro);padding:28px 0;position:sticky;top:65px;height:calc(100vh - 65px);overflow-y:auto;}.dash-sidebar-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;}.dash-sidebar-logo span{font-family:'Instrument Serif',serif;font-size:1.3rem;color:white;}.dash-sidebar-logo span em{color:var(--accent);font-style:normal;}.dash-trial-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(59,111,212,0.2);color:#7fa8e8;font-size:0.65rem;font-weight:700;padding:3px 8px;border-radius:5px;margin-top:6px;}.dash-nav{padding:0 12px;}.dash-nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;font-size:0.85rem;color:rgba(255,255,255,0.55);cursor:pointer;transition:all .2s;margin-bottom:2px;}.dash-nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);}.dash-nav-item.active{background:rgba(59,111,212,0.2);color:#7fa8e8;font-weight:600;}.dash-nav-icon{font-size:1rem;flex-shrink:0;}.dash-nav-section{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.2);padding:14px 14px 6px;}.dash-user{padding:16px 24px;margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);}.dash-user-name{font-size:0.84rem;font-weight:600;color:rgba(255,255,255,0.75);}.dash-user-role{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;}.dash-btn-logout{font-size:0.75rem;color:rgba(255,255,255,0.3);background:none;border:none;cursor:pointer;margin-top:10px;display:block;transition:color .2s;}.dash-btn-logout:hover{color:rgba(255,255,255,0.6);}.dash-main{background:#f8f7f4;padding:36px 40px;overflow-y:auto;}.dash-main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:16px;}.dash-page-title{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--noir);}.dash-page-sub{font-size:0.84rem;color:var(--gris);margin-top:4px;}.dash-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}.kpi-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px 22px;}.kpi-val{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--noir);}.kpi-label{font-size:0.78rem;color:var(--gris);margin-top:4px;}.kpi-trend{font-size:0.72rem;font-weight:600;margin-top:6px;}.kpi-trend.up{color:var(--vert);}.kpi-trend.warn{color:var(--accent);}.dash-section-title{font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}.dash-card{background:white;border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;}.dash-table-full{width:100%;border-collapse:collapse;}.dash-table-full th{font-size:0.72rem;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:0.06em;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);}.dash-table-full td{font-size:0.85rem;color:var(--texte);padding:12px 14px;border-bottom:1px solid var(--border);}.dash-table-full tr:last-child td{border-bottom:none;}.dash-table-full tr:hover td{background:#fafaf8;}.score-pill{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:0.85rem;}.score-high{background:rgba(45,106,79,0.1);color:var(--vert);}.score-mid{background:rgba(245,158,11,0.1);color:#d97706;}.score-low{background:rgba(200,75,47,0.1);color:var(--accent);}.status-badge{display:inline-block;padding:3px 10px;border-radius:5px;font-size:0.72rem;font-weight:700;}.status-ok{background:var(--vert-light);color:var(--vert);}.status-warn{background:#fff3cd;color:#856404;}.status-danger{background:#fdf0ed;color:var(--accent);}.btn-sm{padding:5px 12px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--texte);transition:all .2s;}.btn-sm:hover{border-color:var(--pro-accent);color:var(--pro-accent);}.upload-zone-pro{border:2px dashed var(--border);border-radius:14px;padding:40px 24px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative;}.upload-zone-pro:hover{border-color:var(--pro-accent);background:var(--pro-light);}.upload-zone-pro input{position:absolute;inset:0;opacity:0;cursor:pointer;}.upload-icon{font-size:2.5rem;margin-bottom:12px;}.upload-title{font-weight:700;font-size:0.95rem;color:var(--noir);margin-bottom:6px;}.upload-sub{font-size:0.82rem;color:var(--gris);}.upload-progress{display:none;margin-top:20px;}.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}.progress-fill{height:100%;background:var(--pro-accent);border-radius:3px;width:0;transition:width .4s ease;}.analysis-live{display:none;background:var(--pro);border-radius:14px;padding:24px;margin-top:16px;}.analysis-live-title{font-weight:600;color:white;font-size:0.9rem;margin-bottom:16px;display:flex;align-items:center;gap:8px;}.analysis-live-title::before{content:'';width:8px;height:8px;border-radius:50%;background:#7fa8e8;animation:pulse 1.5s infinite;flex-shrink:0;}.analysis-step-pro{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:0.82rem;color:rgba(255,255,255,0.4);transition:color .3s;}.analysis-step-pro.active{color:rgba(255,255,255,0.9);}.analysis-step-pro.done{color:rgba(255,255,255,0.5);}.step-check{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}.analysis-step-pro.done .step-check{background:var(--vert);border-color:var(--vert);color:white;}.analysis-step-pro.active .step-check{border-color:#7fa8e8;animation:spin 1s linear infinite;}@keyframes spin{to{transform:rotate(360deg);}}.result-pro{display:none;background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:16px;}.result-pro-header{background:var(--pro);padding:20px 24px;display:flex;align-items:center;gap:20px;}.result-score-circle{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}.result-score-num{font-family:'Instrument Serif',serif;font-size:1.4rem;color:white;line-height:1;}.result-score-label{font-size:0.55rem;color:rgba(255,255,255,0.45);text-transform:uppercase;}.result-verdict{color:white;}.result-verdict-title{font-weight:700;font-size:1rem;margin-bottom:4px;}.result-verdict-sub{font-size:0.8rem;color:rgba(255,255,255,0.55);}.result-pro-body{padding:20px 24px;}.result-clause{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}.result-clause:last-child{border-bottom:none;}.result-clause-badge{padding:3px 9px;border-radius:5px;font-size:0.68rem;font-weight:700;text-transform:uppercase;flex-shrink:0;margin-top:2px;}.rc-danger{background:#fdf0ed;color:var(--accent);}.rc-warn{background:#fff3cd;color:#856404;}.rc-ok{background:var(--vert-light);color:var(--vert);}.result-clause-title{font-weight:700;font-size:0.88rem;color:var(--noir);margin-bottom:4px;}.result-clause-desc{font-size:0.8rem;color:var(--gris);line-height:1.6;}.result-actions{display:flex;gap:10px;padding:16px 24px;border-top:1px solid var(--border);background:#fafaf8;flex-wrap:wrap;}.btn-result-action{padding:8px 18px;border-radius:8px;font-size:0.82rem;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;transition:all .2s;color:var(--texte);}.btn-result-action.primary{background:var(--pro-accent);color:white;border-color:var(--pro-accent);}.btn-result-action:hover{border-color:var(--pro-accent);color:var(--pro-accent);}.btn-result-action.primary:hover{background:#2a5bbf;color:white;}.trial-banner{background:linear-gradient(135deg,var(--pro-accent),#1d4ed8);border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;}.trial-banner-text{color:white;}.trial-banner-title{font-weight:700;font-size:0.92rem;}.trial-banner-sub{font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:3px;}.btn-trial-upgrade{background:white;color:var(--pro-accent);padding:8px 18px;border-radius:8px;font-size:0.82rem;font-weight:700;border:none;cursor:pointer;flex-shrink:0;}@media(max-width:900px){header{padding:8px 20px;min-height:50px;}nav a{display:none;}nav a:first-child{display:flex;}.btn-header-login{display:none;}.btn-header-cta{font-size:0.78rem !important;padding:7px 12px;}.hero{padding:0 0 60px;min-height:auto;align-items:flex-start;margin-top:0;}.hero-inner{padding:0 20px;grid-template-columns:1fr;gap:32px;}.hero-inner > div:first-child{padding-top:110px;}.hero-tag{font-size:0.7rem;padding:4px 10px;}.dash-preview{display:none;}.features-grid{grid-template-columns:1fr;}.pricing-grid{grid-template-columns:1fr;}.steps{grid-template-columns:1fr 1fr;gap:24px;}.steps::before{display:none;}.features,.how,.pricing{padding:52px 20px;}section[style*="padding:80px 48px"]{padding:52px 20px !important;}.particulier-grid{grid-template-columns:1fr !important;}.dash-layout{grid-template-columns:1fr;}.dash-sidebar{display:none;}.dash-main{padding:24px 16px;}.dash-kpi-row{grid-template-columns:1fr 1fr;}}footer.footer-seo-pro{display:flex;background:var(--pro);color:rgba(255,255,255,0.7);flex-direction:column;align-items:stretch;padding:0;}.footer-inner-pro{max-width:1100px;margin:0 auto;padding:52px 48px 28px;width:100%;box-sizing:border-box;}.footer-top-pro{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}.footer-brand-pro .footer-logo-pro{font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;margin-bottom:8px;}.footer-tagline-pro{font-size:0.85rem;color:rgba(255,255,255,0.55);margin-bottom:6px;}.footer-copy-pro{font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:20px;}.footer-col-pro{display:flex;flex-direction:column;gap:10px;}.footer-col-title-pro{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:4px;}.footer-col-pro a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.84rem;transition:color .2s;}.footer-col-pro a:hover{color:white;}.footer-bottom-pro{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;font-size:0.75rem;color:rgba(255,255,255,0.3);text-align:center;}@media(max-width:600px){.footer-top-pro{grid-template-columns:1fr;}}.annex-check{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:500;transition:all .2s;background:white;}.annex-check:hover{border-color:var(--pro-accent);background:var(--pro-light);}.annex-check input[type=checkbox]{accent-color:var(--pro-accent);width:14px;height:14px;}.annex-check:has(input:checked){border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.wizard-progress{display:flex;align-items:center;gap:0;margin-bottom:32px}.wizard-step-indicator{display:flex;align-items:center;gap:8px;flex:1}.wizard-step-indicator:last-child{flex:0}.step-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--gris);background:white;flex-shrink:0;transition:all .3s}.step-dot.active{border-color:var(--pro-accent);background:var(--pro-accent);color:white}.step-dot.done{border-color:var(--vert);background:var(--vert);color:white}.step-label{font-size:.75rem;font-weight:600;color:var(--gris)}.step-label.active{color:var(--pro-accent)}.step-line{flex:1;height:2px;background:var(--border);margin:0 8px;transition:background .3s}.step-line.done{background:var(--vert)}.pro-wizard-panel{display:none;animation:fadeIn .3s ease}.pro-wizard-panel.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.panel-title{font-family:"Instrument Serif",serif;font-size:1.5rem;color:var(--noir);margin-bottom:6px}.panel-sub{font-size:.88rem;color:var(--gris);margin-bottom:24px;line-height:1.6}.form-grid-pro{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.form-grid-pro.cols3{grid-template-columns:1fr 1fr 1fr}.form-group-pro{display:flex;flex-direction:column;gap:5px;margin-bottom:0}.radio-group-pro{display:flex;gap:8px;flex-wrap:wrap}.radio-pill-pro{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;color:var(--texte);transition:all .2s;background:white}.radio-pill-pro input{display:none}.radio-pill-pro.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);font-weight:700}.wizard-nav-pro{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:24px;border-top:1px solid var(--border)}.btn-wizard-back-pro{background:transparent;border:1.5px solid var(--border);color:var(--gris);padding:10px 20px;border-radius:8px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .2s}.btn-wizard-back-pro:hover{border-color:var(--noir);color:var(--noir)}.btn-wizard-next-pro{background:var(--pro);color:white;padding:10px 24px;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;border:none}.btn-wizard-next-pro:hover{background:var(--pro-accent)}.loyer-breakdown-pro{background:#f8f7f4;border-radius:10px;padding:14px 16px;margin-top:12px}.loyer-row-pro{display:flex;justify-content:space-between;padding:4px 0;font-size:.84rem;color:var(--texte)}.upload-tab-pro{padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;background:white;font-size:.84rem;font-weight:600;cursor:pointer;color:var(--gris);transition:all .2s}.upload-tab-pro.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent)}.recap-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:.85rem}.recap-row:last-child{border-bottom:none}.recap-label{color:var(--gris)}.recap-val{font-weight:600;color:var(--noir)}.corr-item{background:white;border:1.5px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.corr-item.danger{border-color:rgba(200,75,47,.3);background:#fdf8f7}.corr-item.warning{border-color:rgba(245,158,11,.3);background:#fffbf0}.corr-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}.corr-badge{padding:2px 9px;border-radius:5px;font-size:.68rem;font-weight:700;text-transform:uppercase}.cb-danger{background:#fdf0ed;color:var(--accent)}.cb-warning{background:#fff3cd;color:#856404}.corr-title{font-weight:700;font-size:.92rem}.corr-section{margin-bottom:8px}.corr-section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);margin-bottom:4px}.corr-section-text{font-size:.84rem;color:var(--texte);line-height:1.65}.corr-law{font-size:.78rem;color:var(--accent);font-weight:600;background:var(--rouge-light);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px}@media(max-width:768px){.form-grid-pro,.form-grid-pro.cols3{grid-template-columns:1fr}}.dash-filters-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}.filter-search-wrap{position:relative;display:flex;align-items:center;flex:1;min-width:200px;}.filter-search-icon{position:absolute;left:12px;font-size:.9rem;pointer-events:none;z-index:1;}.filter-search{width:100%;padding:8px 32px 8px 34px;border:1.5px solid var(--border);border-radius:9px;font-size:.84rem;background:white;color:var(--noir);outline:none;transition:border-color .2s;}.filter-search:focus{border-color:var(--pro-accent);}.filter-search-clear{position:absolute;right:8px;background:none;border:none;cursor:pointer;color:var(--gris);font-size:1rem;line-height:1;padding:2px 4px;border-radius:4px;display:flex;align-items:center;justify-content:center;}.filter-search-clear:hover{color:var(--noir);background:var(--pro-light);}.filter-search:focus{border-color:var(--pro-accent)}.filter-select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.84rem;font-family:inherit;background:white;cursor:pointer;outline:none}.filter-select:focus{border-color:var(--pro-accent)}.courrier-type-card{padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s;background:white;line-height:1.4;}.courrier-type-card span{font-weight:400;color:var(--gris);font-size:.73rem;display:block;margin-top:2px;}.courrier-type-card:hover{border-color:var(--pro-accent);background:var(--pro-light);}.courrier-type-card.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.loc-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px;transition:all .2s;cursor:pointer;}.loc-card:hover{border-color:var(--pro-accent);box-shadow:0 4px 16px rgba(59,111,212,.1);}.loc-score-vert{background:#f0fdf4;color:#166534;border:1px solid #86efac;}.loc-score-orange{background:#fffbeb;color:#92400e;border:1px solid #fcd34d;}.loc-score-rouge{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;}.alerte-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}.alerte-urgent{border-left:3px solid var(--accent);padding-left:12px;}.alerte-warning{border-left:3px solid #f59e0b;padding-left:12px;}.alerte-ok{border-left:3px solid var(--vert);padding-left:12px;}@keyframes spin{to{transform:rotate(360deg)}}
 .ville-encad-card{display:block;background:var(--pro-light);border:1.5px solid transparent;border-radius:10px;padding:12px 14px;text-decoration:none;transition:all .18s;}
 .ville-encad-card:hover{border-color:var(--pro-accent);background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,111,212,.1);}
 .ville-encad-nom{font-weight:700;font-size:.84rem;color:var(--noir);margin-bottom:2px;}
@@ -576,6 +576,34 @@ body.is-dashboard header { display: none !important; }
 }
 </style>
 
+<style>
+/* ═══ EDL PRO — Design tablette agence ═══ */
+.edl-step { animation: fadeIn .2s ease; }
+.edl-section-title { font-family:'Instrument Serif',serif; font-size:1.1rem; color:var(--pro); margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid var(--card-border); font-weight:700; }
+.edl-equip-bloc { background:#f8f9ff; border:1.5px solid #e0e7ff; border-radius:12px; padding:14px 16px; margin-bottom:12px; }
+.edl-equip-titre { font-weight:700; font-size:.82rem; color:var(--pro-accent); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; }
+.edl-step-dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.25); cursor:pointer; transition:all .2s; border:2px solid rgba(255,255,255,.3); }
+.edl-step-dot.active { background:#fff; border-color:#fff; transform:scale(1.3); }
+.edl-step-dot.done { background:rgba(255,255,255,.7); border-color:rgba(255,255,255,.7); }
+.edl-type-btn { padding:9px 20px; border-radius:9px; border:2px solid var(--card-border); background:white; font-size:.84rem; font-weight:600; cursor:pointer; transition:all .15s; color:var(--gris); }
+.edl-type-btn.active { border-color:var(--pro-accent); background:var(--pro-light); color:var(--pro-accent); }
+.edl-piece-card { background:white; border:1.5px solid var(--card-border); border-radius:12px; overflow:hidden; margin-bottom:10px; }
+.edl-piece-header { background:#f8f9ff; padding:10px 14px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--card-border); }
+.edl-piece-nom { font-weight:700; font-size:.88rem; flex:1; border:none; background:transparent; color:var(--pro); }
+.edl-piece-nom:focus { outline:none; }
+.edl-piece-body { padding:12px 14px; }
+.edl-surface-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:8px; }
+.edl-surface-item { background:#f8f9ff; border:1px solid var(--card-border); border-radius:8px; padding:8px 10px; }
+.edl-surface-label { font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--gris); font-weight:700; margin-bottom:4px; }
+.edl-etat-select { width:100%; border:1px solid var(--card-border); border-radius:6px; padding:5px 7px; font-size:.78rem; font-family:inherit; background:white; }
+.edl-etat-select.neuf { background:#f0fdf4; border-color:#86efac; color:#166534; }
+.edl-etat-select.bon { background:#f0fdf4; border-color:#86efac; color:#166534; }
+.edl-etat-select.moyen { background:#fffbeb; border-color:#fde68a; color:#92400e; }
+.edl-etat-select.mauvais { background:#fef2f2; border-color:#fca5a5; color:#991b1b; }
+.edl-etat-select.renover { background:#fef2f2; border-color:#fca5a5; color:#991b1b; }
+.edl-obs-input { width:100%; border:1px solid var(--card-border); border-radius:6px; padding:6px 8px; font-size:.78rem; font-family:inherit; background:white; margin-top:4px; }
+.edl-cle-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+</style>
 </head>
 <body>
 
@@ -2457,7 +2485,7 @@ body.is-dashboard header { display: none !important; }
                   </select>
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Garant exigé ?</label>
+                  <label class="form-label">Garant ?</label>
                   <select class="form-input-pro" id="dossierGarant" onchange="toggleDossierGarantFields()">
                     <option value="non">Non</option>
                     <option value="physique">Garant physique</option>
@@ -2466,9 +2494,9 @@ body.is-dashboard header { display: none !important; }
                   </select>
                 </div>
               </div>
-              <!-- Champs garant physique -->
-              <div id="dossierGarantFields" style="display:none;margin-top:8px;background:#f8f7f4;border-radius:10px;padding:12px">
-                <div style="font-size:.76rem;font-weight:700;color:var(--gris);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">🛡️ Informations garant</div>
+              <!-- Champs garant physique — s'affiche si "Garant physique" sélectionné -->
+              <div id="dossierGarantFields" style="display:none;margin-top:8px;background:#f5f3ff;border:1.5px solid #d8b4fe;border-radius:10px;padding:14px">
+                <div style="font-size:.76rem;font-weight:700;color:#7e22ce;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">🛡️ Informations garant physique</div>ottom:8px;text-transform:uppercase;letter-spacing:.06em">🛡️ Informations garant</div>
                 <div class="form-grid-pro">
                   <div class="form-group-pro">
                     <label class="form-label">Revenus nets garant (€/mois)</label>
@@ -3514,8 +3542,11 @@ body.is-dashboard header { display: none !important; }
         <!-- Supprimer compte -->
         <div class="dash-card" style="border:1.5px solid rgba(200,75,47,0.2);background:#fdf8f7">
           <div class="dash-section-title" style="color:var(--accent)">Zone de danger</div>
-          <div style="font-size:.84rem;color:var(--gris);margin-bottom:12px">La suppression du compte est définitive. Toutes vos données seront effacées.</div>
-          <button class="btn-sm" onclick="deleteAccount()" style="color:var(--accent);border-color:var(--accent)">Supprimer mon compte</button>
+          <div style="font-size:.84rem;color:var(--gris);margin-bottom:12px">Réinitialiser ou supprimer les données.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-sm" onclick="resetDemoData()" style="color:#7e22ce;border-color:#d8b4fe">🧹 Effacer données de démo</button>
+            <button class="btn-sm" onclick="deleteAccount()" style="color:var(--accent);border-color:var(--accent)">Supprimer mon compte</button>
+          </div>
         </div>
       </div>
 
@@ -3626,43 +3657,71 @@ body.is-dashboard header { display: none !important; }
 ═══════════════════════════════════════════════════════ -->
 <div id="tab-etat-lieux" style="display:none">
   <div class="dash-main-header">
-    <div><div class="dash-page-title">État des lieux</div><div class="dash-page-sub">Entrée & Sortie · Pièce par pièce · Export PDF signable</div></div>
+    <div><div class="dash-page-title">État des lieux</div><div class="dash-page-sub">Entrée & Sortie · Style tablette agence · Rapport PDF professionnel</div></div>
     <button class="btn-primary-pro" onclick="openNouvelEDL()">+ Nouvel état des lieux</button>
   </div>
-  <!-- Liste des EDL -->
+
+  <!-- KPIs EDL -->
+  <div class="dash-kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+    <div class="kpi-card"><div class="kpi-val" id="edlKpiTotal">0</div><div class="kpi-label">EDL au total</div></div>
+    <div class="kpi-card"><div class="kpi-val" id="edlKpiEntree" style="color:var(--success)">0</div><div class="kpi-label">Entrées</div></div>
+    <div class="kpi-card"><div class="kpi-val" id="edlKpiSortie" style="color:var(--danger)">0</div><div class="kpi-label">Sorties</div></div>
+    <div class="kpi-card"><div class="kpi-val" id="edlKpiMoisDernier" style="color:var(--pro-accent)">0</div><div class="kpi-label">Ce mois-ci</div></div>
+  </div>
+
+  <!-- Liste EDL -->
   <div id="edlListeContainer">
     <div id="edlListeVide" class="dash-card" style="text-align:center;padding:48px;color:var(--gris)">
-      <div style="font-size:2.5rem;margin-bottom:12px">📝</div>
+      <div style="font-size:2.5rem;margin-bottom:12px">📋</div>
       <div style="font-weight:600;margin-bottom:4px">Aucun état des lieux</div>
-      <div style="font-size:.82rem;margin-bottom:16px">Créez votre premier état des lieux d'entrée ou de sortie</div>
+      <div style="font-size:.82rem;margin-bottom:16px">Créez votre premier EDL — formulaire complet style tablette agence</div>
       <button class="btn-primary-pro" onclick="openNouvelEDL()">+ Créer un état des lieux</button>
     </div>
-    <div id="edlListe" style="display:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px"></div>
+    <div id="edlListe" style="display:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px"></div>
   </div>
-  <!-- Modale création EDL -->
+
+  <!-- ═══ MODALE EDL PRO ═══ -->
   <div id="modalEDL" class="modal-overlay" style="display:none">
-    <div class="modal" style="max-width:780px;width:96%;max-height:92vh;overflow-y:auto;padding:0;border-radius:18px">
-      <div style="background:linear-gradient(135deg,var(--pro) 0%,#1e3a5f 100%);padding:20px 24px;border-radius:18px 18px 0 0;display:flex;justify-content:space-between;align-items:center">
+    <div id="edlModalInner" style="background:white;width:96%;max-width:900px;border-radius:20px;max-height:96vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.25)">
+
+      <!-- Header modale -->
+      <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%);padding:18px 24px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
         <div>
-          <div style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:#fff" id="edlModalTitle">Nouvel état des lieux</div>
-          <div style="font-size:.75rem;color:rgba(255,255,255,.55);margin-top:2px" id="edlModalSub">Complétez chaque pièce</div>
+          <div style="font-family:'Instrument Serif',serif;font-size:1.25rem;color:#fff;display:flex;align-items:center;gap:10px">
+            <span id="edlModalTypeIcon">📋</span>
+            <span id="edlModalTitle">Nouvel état des lieux</span>
+          </div>
+          <div style="font-size:.74rem;color:rgba(255,255,255,.5);margin-top:3px" id="edlModalSub">Complétez chaque section</div>
         </div>
-        <button onclick="closeModalEDL()" style="background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem">×</button>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div id="edlProgressBar" style="display:flex;gap:4px;align-items:center">
+            <div class="edl-step-dot active" id="edlDot1" onclick="goEDLStep(1)" title="Informations générales"></div>
+            <div class="edl-step-dot" id="edlDot2" onclick="goEDLStep(2)" title="Équipements"></div>
+            <div class="edl-step-dot" id="edlDot3" onclick="goEDLStep(3)" title="Pièces"></div>
+            <div class="edl-step-dot" id="edlDot4" onclick="goEDLStep(4)" title="Relevés & Clés"></div>
+            <div class="edl-step-dot" id="edlDot5" onclick="goEDLStep(5)" title="Signatures"></div>
+          </div>
+          <button onclick="closeModalEDL()" style="background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem;flex-shrink:0;margin-left:8px">×</button>
+        </div>
       </div>
-      <div style="padding:20px 24px">
-        <!-- Infos générales -->
-        <div style="background:#f8f9ff;border-radius:12px;padding:16px;margin-bottom:16px">
-          <div style="font-weight:700;font-size:.85rem;color:var(--pro);margin-bottom:12px">📋 Informations générales</div>
-          <div class="form-grid-pro">
+
+      <!-- Corps scrollable -->
+      <div style="overflow-y:auto;flex:1;padding:20px 24px">
+
+        <!-- ÉTAPE 1 : Infos générales -->
+        <div id="edlStep1" class="edl-step active">
+          <div class="edl-section-title">📋 Informations générales</div>
+          <div class="form-grid-pro" style="margin-bottom:12px">
             <div class="form-group-pro">
-              <label class="form-label">Type d'état des lieux</label>
-              <select class="form-input-pro" id="edlType">
-                <option value="entree">Entrée</option>
-                <option value="sortie">Sortie</option>
-              </select>
+              <label class="form-label">Type d'état des lieux *</label>
+              <div style="display:flex;gap:8px">
+                <button class="edl-type-btn active" id="edlBtnEntree" onclick="setEDLType('entree',this)">🟢 Entrée</button>
+                <button class="edl-type-btn" id="edlBtnSortie" onclick="setEDLType('sortie',this)">🔴 Sortie</button>
+              </div>
+              <input type="hidden" id="edlType" value="entree">
             </div>
             <div class="form-group-pro">
-              <label class="form-label">Date</label>
+              <label class="form-label">Date *</label>
               <input type="date" class="form-input-pro" id="edlDate">
             </div>
             <div class="form-group-pro">
@@ -3677,32 +3736,262 @@ body.is-dashboard header { display: none !important; }
                 <option value="">— Sélectionner —</option>
               </select>
             </div>
-            <div class="form-group-pro">
-              <label class="form-label">Relevé compteur eau (m³)</label>
-              <input type="number" class="form-input-pro" id="edlCompteurEau" placeholder="Ex: 142.3">
-            </div>
-            <div class="form-group-pro">
-              <label class="form-label">Relevé compteur gaz/élec</label>
-              <input type="text" class="form-input-pro" id="edlCompteurElec" placeholder="Ex: 8250 kWh">
+            <div class="form-group-pro" style="grid-column:1/-1">
+              <label class="form-label">Adresse complète du bien</label>
+              <input type="text" class="form-input-pro" id="edlAdresse" placeholder="12 rue des Lilas, 75020 Paris">
             </div>
           </div>
-          <div class="form-group-pro">
-            <label class="form-label">Clés remises</label>
-            <input type="text" class="form-input-pro" id="edlCles" placeholder="Ex: 2 clés entrée, 1 clé boîte aux lettres, 1 badge parking">
+          <div class="form-grid-pro">
+            <div class="form-group-pro">
+              <label class="form-label">Surface (m²)</label>
+              <input type="number" class="form-input-pro" id="edlSurface" placeholder="45">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Étage</label>
+              <input type="text" class="form-input-pro" id="edlEtage" placeholder="2ème étage">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Nom agent présent</label>
+              <input type="text" class="form-input-pro" id="edlAgent" placeholder="Marie Dupont">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Heure d'intervention</label>
+              <input type="time" class="form-input-pro" id="edlHeure">
+            </div>
+          </div>
+          <div style="margin-top:16px;padding:12px;background:#fff7ed;border-radius:10px;border:1px solid #fed7aa;font-size:.8rem;color:#92400e">
+            💡 <strong>Conseil :</strong> L'état des lieux contradictoire est obligatoire lors de la remise et restitution des clés. Il doit être signé par les deux parties (bailleur/agence + locataire).
           </div>
         </div>
-        <!-- Pièces -->
-        <div style="font-weight:700;font-size:.88rem;color:var(--pro);margin-bottom:10px">🏠 État des pièces</div>
-        <div id="edlPiecesContainer"></div>
-        <button class="btn-sm" onclick="ajouterPieceEDL()" style="margin-bottom:16px;width:100%;text-align:center;padding:10px;border-style:dashed">+ Ajouter une pièce</button>
-        <!-- Observations générales -->
-        <div class="form-group-pro" style="margin-bottom:16px">
-          <label class="form-label">Observations générales</label>
-          <textarea class="form-input-pro" id="edlObservations" rows="3" placeholder="Notes générales, réserves éventuelles…" style="resize:vertical"></textarea>
+
+        <!-- ÉTAPE 2 : Équipements généraux -->
+        <div id="edlStep2" class="edl-step" style="display:none">
+          <div class="edl-section-title">⚡ Équipements & État général</div>
+
+          <!-- Chauffage -->
+          <div class="edl-equip-bloc">
+            <div class="edl-equip-titre">🔥 Chauffage</div>
+            <div class="form-grid-pro">
+              <div class="form-group-pro">
+                <label class="form-label">Type de chauffage</label>
+                <select class="form-input-pro" id="edlChauffageType">
+                  <option value="">— Sélectionner —</option>
+                  <option>Gaz individuel</option><option>Gaz collectif</option>
+                  <option>Électrique</option><option>Fioul</option>
+                  <option>Pompe à chaleur</option><option>Poêle à bois</option>
+                </select>
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">État du chauffage</label>
+                <select class="form-input-pro" id="edlChauffageEtat">
+                  <option value="neuf">Neuf</option><option value="bon">Bon état</option>
+                  <option value="moyen" selected>État moyen</option><option value="mauvais">Mauvais état</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group-pro" style="margin-top:6px">
+              <label class="form-label">Observations chauffage</label>
+              <input type="text" class="form-input-pro" id="edlChauffageObs" placeholder="Ex: Chaudière vérifiée en 2024, radiateurs OK">
+            </div>
+          </div>
+
+          <!-- Eau chaude -->
+          <div class="edl-equip-bloc">
+            <div class="edl-equip-titre">💧 Eau chaude sanitaire</div>
+            <div class="form-grid-pro">
+              <div class="form-group-pro">
+                <label class="form-label">Type</label>
+                <select class="form-input-pro" id="edlECSType">
+                  <option>Chauffe-eau électrique</option><option>Chauffe-eau gaz</option>
+                  <option>Chaudière (ECS intégrée)</option><option>Thermodynamique</option><option>Solaire</option>
+                </select>
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">État</label>
+                <select class="form-input-pro" id="edlECSEtat">
+                  <option value="neuf">Neuf</option><option value="bon" selected>Bon état</option>
+                  <option value="moyen">État moyen</option><option value="mauvais">Mauvais état</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Électricité -->
+          <div class="edl-equip-bloc">
+            <div class="edl-equip-titre">⚡ Installation électrique</div>
+            <div class="form-grid-pro">
+              <div class="form-group-pro">
+                <label class="form-label">Tableau électrique</label>
+                <select class="form-input-pro" id="edlElecTableau">
+                  <option value="bon" selected>Bon état</option><option value="moyen">État moyen</option><option value="mauvais">À vérifier</option>
+                </select>
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Prises / interrupteurs</label>
+                <select class="form-input-pro" id="edlElecPrises">
+                  <option value="bon" selected>Bon état</option><option value="moyen">État moyen</option><option value="mauvais">Plusieurs défauts</option>
+                </select>
+              </div>
+              <div class="form-group-pro" style="grid-column:1/-1">
+                <label class="form-label">Observations électricité</label>
+                <input type="text" class="form-input-pro" id="edlElecObs" placeholder="Ex: Disjoncteur 3×32A, VMC en bon état…">
+              </div>
+            </div>
+          </div>
+
+          <!-- Fenêtres / Isolation -->
+          <div class="edl-equip-bloc">
+            <div class="edl-equip-titre">🪟 Menuiseries & Isolation</div>
+            <div class="form-grid-pro">
+              <div class="form-group-pro">
+                <label class="form-label">Type de vitrage</label>
+                <select class="form-input-pro" id="edlVitrageType">
+                  <option>Simple vitrage</option><option>Double vitrage</option><option>Triple vitrage</option>
+                </select>
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">État fenêtres</label>
+                <select class="form-input-pro" id="edlVitrageEtat">
+                  <option value="neuf">Neuf</option><option value="bon" selected>Bon état</option>
+                  <option value="moyen">État moyen</option><option value="mauvais">Mauvais état</option>
+                </select>
+              </div>
+              <div class="form-group-pro" style="grid-column:1/-1">
+                <label class="form-label">Observations menuiseries</label>
+                <input type="text" class="form-input-pro" id="edlVitrageObs" placeholder="Ex: Poignée fenêtre cuisine à régler, double vitrage PVC OK…">
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="display:flex;gap:10px">
-          <button class="btn-primary-pro" style="flex:1" onclick="saveEDL()">💾 Enregistrer l'état des lieux</button>
-          <button class="btn-sm" onclick="exportEDLPDF()">📄 Exporter PDF</button>
+
+        <!-- ÉTAPE 3 : Pièces par pièce -->
+        <div id="edlStep3" class="edl-step" style="display:none">
+          <div class="edl-section-title" style="display:flex;justify-content:space-between;align-items:center">
+            🏠 Pièces — état par surface
+            <button class="btn-sm" onclick="ajouterPieceEDL()" style="font-size:.75rem">+ Ajouter une pièce</button>
+          </div>
+          <div id="edlPiecesContainer"></div>
+        </div>
+
+        <!-- ÉTAPE 4 : Relevés & Clés -->
+        <div id="edlStep4" class="edl-step" style="display:none">
+          <div class="edl-section-title">📊 Relevés de compteurs & Clés</div>
+
+          <!-- Compteurs -->
+          <div class="edl-equip-bloc">
+            <div class="edl-equip-titre">🔢 Relevés de compteurs</div>
+            <div class="form-grid-pro">
+              <div class="form-group-pro">
+                <label class="form-label">Compteur électricité (kWh)</label>
+                <input type="text" class="form-input-pro" id="edlCompteurElec" placeholder="Ex: 8 250">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">N° PDL / compteur élec</label>
+                <input type="text" class="form-input-pro" id="edlCompteurElecNum" placeholder="Ex: 04524700">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Compteur gaz (m³)</label>
+                <input type="text" class="form-input-pro" id="edlCompteurGaz" placeholder="Ex: 1 243,5">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Compteur eau froide (m³)</label>
+                <input type="number" class="form-input-pro" id="edlCompteurEau" placeholder="Ex: 142,3" step="0.1">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Compteur eau chaude (m³)</label>
+                <input type="number" class="form-input-pro" id="edlCompteurECS" placeholder="Ex: 87,1" step="0.1">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">N° compteur eau</label>
+                <input type="text" class="form-input-pro" id="edlCompteurEauNum" placeholder="Ex: CE-12345">
+              </div>
+            </div>
+          </div>
+
+          <!-- Clés remises -->
+          <div class="edl-equip-bloc">
+            <div class="edl-equip-titre">🔑 Clés & Accès remis</div>
+            <div id="edlClesContainer">
+              <!-- Généré dynamiquement -->
+            </div>
+            <button class="btn-sm" onclick="ajouterCleEDL()" style="margin-top:8px;width:100%;border-style:dashed;padding:8px">+ Ajouter un type de clé</button>
+            <div class="form-group-pro" style="margin-top:10px">
+              <label class="form-label">Observations remise des clés</label>
+              <input type="text" class="form-input-pro" id="edlClesObs" placeholder="Ex: Remis en main propre le jour de l'état des lieux">
+            </div>
+          </div>
+
+          <!-- Observations générales -->
+          <div class="edl-equip-bloc">
+            <div class="edl-equip-titre">📝 Observations générales & Réserves</div>
+            <textarea class="form-input-pro" id="edlObservations" rows="4" placeholder="Consignez ici toutes les réserves et observations générales non couvertes dans les sections précédentes…" style="resize:vertical"></textarea>
+          </div>
+        </div>
+
+        <!-- ÉTAPE 5 : Signatures -->
+        <div id="edlStep5" class="edl-step" style="display:none">
+          <div class="edl-section-title">✍️ Signatures & Validation</div>
+
+          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:16px;margin-bottom:16px;font-size:.84rem;color:#166534">
+            ✅ L'état des lieux est <strong>prêt à être signé</strong>. Récapitulatif ci-dessous avant validation.
+          </div>
+
+          <!-- Récap avant signature -->
+          <div id="edlRecap" style="background:#f8f9ff;border-radius:12px;padding:16px;margin-bottom:16px;font-size:.83rem"></div>
+
+          <!-- Signataires -->
+          <div class="form-grid-pro" style="margin-bottom:16px">
+            <div class="edl-equip-bloc" style="margin:0">
+              <div class="edl-equip-titre">👤 Locataire / Entrant</div>
+              <div class="form-group-pro">
+                <label class="form-label">Nom et prénom</label>
+                <input type="text" class="form-input-pro" id="edlSig1Nom" placeholder="Marie Dupont">
+              </div>
+              <div class="form-group-pro" style="margin-top:8px">
+                <label class="form-label">Date de signature</label>
+                <input type="date" class="form-input-pro" id="edlSig1Date">
+              </div>
+              <!-- Canvas signature locataire -->
+              <div style="margin-top:8px">
+                <label class="form-label">Signature électronique</label>
+                <div style="border:2px dashed #d1d9f0;border-radius:8px;background:#fafbff;text-align:center;padding:20px;font-size:.8rem;color:var(--gris);cursor:pointer" onclick="initSignatureCanvas('sigCanvas1')">
+                  <div id="sigCanvas1Placeholder">✍️ Cliquer pour signer</div>
+                  <canvas id="sigCanvas1" width="300" height="100" style="display:none;touch-action:none;cursor:crosshair"></canvas>
+                  <div id="sigCanvas1Clear" style="display:none;margin-top:6px"><button class="btn-sm" onclick="clearCanvas('sigCanvas1')" style="font-size:.7rem">Effacer</button></div>
+                </div>
+              </div>
+            </div>
+            <div class="edl-equip-bloc" style="margin:0">
+              <div class="edl-equip-titre">🏢 Agent / Bailleur</div>
+              <div class="form-group-pro">
+                <label class="form-label">Nom et prénom</label>
+                <input type="text" class="form-input-pro" id="edlSig2Nom" placeholder="Jean Martin — Agence">
+              </div>
+              <div class="form-group-pro" style="margin-top:8px">
+                <label class="form-label">Date de signature</label>
+                <input type="date" class="form-input-pro" id="edlSig2Date">
+              </div>
+              <div style="margin-top:8px">
+                <label class="form-label">Signature électronique</label>
+                <div style="border:2px dashed #d1d9f0;border-radius:8px;background:#fafbff;text-align:center;padding:20px;font-size:.8rem;color:var(--gris);cursor:pointer" onclick="initSignatureCanvas('sigCanvas2')">
+                  <div id="sigCanvas2Placeholder">✍️ Cliquer pour signer</div>
+                  <canvas id="sigCanvas2" width="300" height="100" style="display:none;touch-action:none;cursor:crosshair"></canvas>
+                  <div id="sigCanvas2Clear" style="display:none;margin-top:6px"><button class="btn-sm" onclick="clearCanvas('sigCanvas2')" style="font-size:.7rem">Effacer</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer navigation étapes -->
+      <div style="padding:14px 24px;border-top:1px solid var(--card-border);background:#fafbff;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
+        <button id="edlBtnPrev" onclick="edlStepNav(-1)" class="btn-sm" style="display:none">← Précédent</button>
+        <div style="font-size:.78rem;color:var(--gris)" id="edlStepLabel">Étape 1 / 5</div>
+        <div style="display:flex;gap:8px">
+          <button id="edlBtnNext" onclick="edlStepNav(1)" class="btn-primary-pro" style="padding:9px 22px">Suivant →</button>
+          <button id="edlBtnSave" onclick="saveEDL()" class="btn-primary-pro" style="display:none;background:var(--success)">💾 Enregistrer</button>
+          <button id="edlBtnPDF" onclick="exportEDLPDF(null,true)" class="btn-sm" style="display:none">📄 PDF + Enregistrer</button>
         </div>
       </div>
     </div>
@@ -4446,7 +4735,7 @@ function logout(){
   document.querySelector('.btn-header-cta').style.display='';
 }
 function showDashTab(tab){
-  var tabs=['analyses','nouveau','corrections','generer','loyers','alertes','mandats','locataires','dossier','quittances','courriers','veille','equipe','api','abonnement','parametres','loyers-suivi','etat-lieux','registre','diagnostics','irl'];
+  var tabs=['analyses','nouveau','corrections','generer','loyers','alertes','mandats','locataires','dossier','quittances','courriers','veille','equipe','api','abonnement','parametres','loyers-suivi','etat-lieux','registre','diagnostics','irl','travaux'];
   tabs.forEach(function(t){var el=document.getElementById('tab-'+t);if(el)el.style.display=t===tab?'block':'none';});
   document.querySelectorAll('.dash-nav-item').forEach(function(el){el.classList.remove('active');});
   var map={analyses:'tableau',nouveau:'nouvelle',corrections:'corrections',generer:'bail',loyers:'encadrement','loyers-suivi':'impay','etat-lieux':'état','registre':'registre','diagnostics':'diagnostic','irl':'révision',alertes:'alerte',locataires:'locataire',quittances:'quittance',courriers:'courrier',equipe:'utilisateur',api:'api',abonnement:'abonnement',parametres:'param'};
@@ -7528,6 +7817,15 @@ function changePassword(){
   ['pwdActuel','pwdNew','pwdConfirm'].forEach(function(id){document.getElementById(id).value='';});
 }
 function showPwdMsg(txt,type){var el=document.getElementById('pwdMsg');el.textContent=txt;el.style.display='block';el.style.color=type==='error'?'var(--accent)':'var(--vert)';}
+
+function resetDemoData() {
+  if (!confirm('Effacer toutes les données de démo (tickets travaux, etc.) ? Vos vraies données ne seront pas supprimées.')) return;
+  // Effacer uniquement les clés démo
+  ['bailscan_tickets'].forEach(function(k) { localStorage.removeItem(k); });
+  showToast('🧹 Données de démo effacées. Rechargez les onglets concernés.', 'blue');
+  // Forcer rechargement travaux
+  if (typeof refreshTravaux === 'function') refreshTravaux();
+}
 
 function deleteAccount(){
   if(!confirm('Supprimer definitivement votre compte ? Irreversible.'))return;
@@ -11041,77 +11339,280 @@ function genererRelanceImpaye(locId) {
 // ════════════════════════════════════════════════════════
 // MODULE 2 : ÉTAT DES LIEUX
 // ════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// MODULE EDL PRO — État des lieux style tablette agence
+// ════════════════════════════════════════════════════════
 var edlPieces = [];
 var edlEditId = null;
-var PIECES_DEFAUT = ['Entrée / Couloir','Séjour','Cuisine','Chambre 1','Chambre 2','Salle de bain','WC','Balcon / Terrasse'];
-var ETATS = ['Neuf','Très bon état','Bon état','État moyen','Mauvais état','À rénover'];
+var edlCurrentStep = 1;
+var edlCles = []; // [{type, nb}]
+
+var PIECES_DEFAUT = [
+  {nom:'Entrée / Hall', surfaces:['Sol','Murs','Plafond','Portes','Interrupteurs/prises']},
+  {nom:'Séjour / Salon', surfaces:['Sol','Murs','Plafond','Fenêtres','Volets/stores','Radiateur','Prises/interrupteurs']},
+  {nom:'Cuisine', surfaces:['Sol','Murs','Plafond','Fenêtre','Plan de travail','Évier','Placard/rangements','Électroménager','Hotte']},
+  {nom:'Chambre 1', surfaces:['Sol','Murs','Plafond','Fenêtre','Volets/stores','Radiateur','Placard','Prises/interrupteurs']},
+  {nom:'Chambre 2', surfaces:['Sol','Murs','Plafond','Fenêtre','Volets/stores','Radiateur','Placard','Prises/interrupteurs']},
+  {nom:'Salle de bain', surfaces:['Sol','Murs/carrelage','Plafond','Baignoire/douche','Lavabo','Robinetterie','Miroir','VMC']},
+  {nom:'WC', surfaces:['Sol','Murs','Plafond','WC/chasse d\'eau','Porte']},
+  {nom:'Couloir / Dégagement', surfaces:['Sol','Murs','Plafond','Portes']},
+];
+
+var ETATS_EDL = ['Neuf','Très bon état','Bon état','État moyen','Mauvais état','À rénover'];
+var ETATS_CLASS = {'Neuf':'neuf','Très bon état':'bon','Bon état':'bon','État moyen':'moyen','Mauvais état':'mauvais','À rénover':'renover'};
 
 function loadEDL() { try { return JSON.parse(localStorage.getItem('bailscan_edl')||'[]'); } catch(e){ return []; } }
 function saveEDL_store(arr) { localStorage.setItem('bailscan_edl', JSON.stringify(arr)); }
 
 function openNouvelEDL() {
   edlEditId = null;
-  edlPieces = PIECES_DEFAUT.map(function(n){ return {nom:n, etat:'Bon état', observations:'', photos:[]}; });
-  document.getElementById('edlType').value = 'entree';
-  document.getElementById('edlDate').value = new Date().toISOString().split('T')[0];
-  document.getElementById('edlObservations').value = '';
-  ['edlCompteurEau','edlCompteurElec','edlCles'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  edlCurrentStep = 1;
+  edlCles = [{type:'Clé entrée principale', nb:2},{type:'Clé boîte aux lettres', nb:1}];
+  edlPieces = PIECES_DEFAUT.map(function(p){ return {
+    nom: p.nom,
+    surfaces: p.surfaces.map(function(s){ return {nom:s, etat:'Bon état', obs:''}; }),
+    observations: ''
+  };});
+
   // Remplir selects
   var mSel = document.getElementById('edlMandatId');
-  if (mSel) { var mans = loadMandats(); mSel.innerHTML = '<option value="">— Sélectionner —</option>'+mans.map(function(m){ return '<option value="'+m.id+'">'+(m.adresse||'Bien #'+m.id)+'</option>'; }).join(''); }
+  if (mSel) { var mans=loadMandats(); mSel.innerHTML='<option value="">— Sélectionner —</option>'+mans.map(function(m){return '<option value="'+m.id+'">'+(m.adresse||'Bien #'+m.id)+'</option>';}).join(''); }
   var lSel = document.getElementById('edlLocId');
-  if (lSel) { var locs = loadLocataires(); lSel.innerHTML = '<option value="">— Sélectionner —</option>'+locs.map(function(l){ return '<option value="'+l.id+'">'+(l.prenom||'')+' '+(l.nom||'')+'</option>'; }).join(''); }
-  renderEDLPieces();
+  if (lSel) { var locs=loadLocataires(); lSel.innerHTML='<option value="">— Sélectionner —</option>'+locs.map(function(l){return '<option value="'+l.id+'">'+(l.prenom||'')+' '+(l.nom||'')+'</option>';}).join(''); }
+
+  // Date par défaut
+  var dateEl = document.getElementById('edlDate'); if (dateEl) dateEl.value = new Date().toISOString().split('T')[0];
+  var heureEl = document.getElementById('edlHeure'); if (heureEl) heureEl.value = new Date().toTimeString().slice(0,5);
+  var sig1Date = document.getElementById('edlSig1Date'); if (sig1Date) sig1Date.value = new Date().toISOString().split('T')[0];
+  var sig2Date = document.getElementById('edlSig2Date'); if (sig2Date) sig2Date.value = new Date().toISOString().split('T')[0];
+
+  // Pré-remplir agent
+  var ai = proState.agencyInfo || {};
+  var agentEl = document.getElementById('edlAgent');
+  if (agentEl && ai.nom) agentEl.value = ai.nom;
+  var sig2El = document.getElementById('edlSig2Nom');
+  if (sig2El && ai.nom) sig2El.value = ai.nom;
+
+  // Type par défaut = entrée
+  setEDLType('entree', document.getElementById('edlBtnEntree'));
+
+  goEDLStep(1);
   document.getElementById('modalEDL').style.display = 'flex';
 }
 
-function closeModalEDL() { document.getElementById('modalEDL').style.display = 'none'; }
+function setEDLType(type, btn) {
+  document.getElementById('edlType').value = type;
+  document.querySelectorAll('.edl-type-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  var icon = document.getElementById('edlModalTypeIcon');
+  var title = document.getElementById('edlModalTitle');
+  if (icon) icon.textContent = type === 'entree' ? '🟢' : '🔴';
+  if (title) title.textContent = type === 'entree' ? "État des lieux d'entrée" : "État des lieux de sortie";
+}
+
+function closeModalEDL() {
+  document.getElementById('modalEDL').style.display = 'none';
+}
 
 function prefillEDLFromMandat() {
   var mandatId = (document.getElementById('edlMandatId')||{}).value;
   if (!mandatId) return;
   var m = loadMandats().find(function(x){ return String(x.id)===String(mandatId); });
   if (!m) return;
+  var adresseEl = document.getElementById('edlAdresse');
+  if (adresseEl) adresseEl.value = m.adresseFull || m.adresse || '';
   if (m.locataireId) { var lSel = document.getElementById('edlLocId'); if(lSel) lSel.value = m.locataireId; }
+  // Pré-remplir locataire dans signataire
+  var loc = m.locataireId ? loadLocataires().find(function(l){ return String(l.id)===String(m.locataireId); }) : null;
+  if (loc) { var s1 = document.getElementById('edlSig1Nom'); if(s1) s1.value = (loc.prenom||'')+' '+(loc.nom||''); }
 }
 
+function goEDLStep(n) {
+  edlCurrentStep = n;
+  for (var i = 1; i <= 5; i++) {
+    var step = document.getElementById('edlStep'+i);
+    if (step) step.style.display = i === n ? 'block' : 'none';
+    var dot = document.getElementById('edlDot'+i);
+    if (dot) { dot.className = 'edl-step-dot' + (i === n ? ' active' : i < n ? ' done' : ''); }
+  }
+  var label = document.getElementById('edlStepLabel');
+  if (label) label.textContent = 'Étape '+n+' / 5';
+  var prev = document.getElementById('edlBtnPrev');
+  var next = document.getElementById('edlBtnNext');
+  var save = document.getElementById('edlBtnSave');
+  var pdf = document.getElementById('edlBtnPDF');
+  if (prev) prev.style.display = n > 1 ? 'inline-flex' : 'none';
+  if (next) next.style.display = n < 5 ? 'inline-flex' : 'none';
+  if (save) save.style.display = n === 5 ? 'inline-flex' : 'none';
+  if (pdf) pdf.style.display = n === 5 ? 'inline-flex' : 'none';
+
+  // Render selon l'étape
+  if (n === 3) renderEDLPieces();
+  if (n === 4) renderEDLCles();
+  if (n === 5) renderEDLRecap();
+}
+
+function edlStepNav(dir) { goEDLStep(edlCurrentStep + dir); }
+
+// ── ÉTAPE 3 : Pièces pro ──
 function ajouterPieceEDL() {
-  edlPieces.push({nom:'Nouvelle pièce',etat:'Bon état',observations:'',photos:[]});
+  edlPieces.push({
+    nom: 'Nouvelle pièce',
+    surfaces: ['Sol','Murs','Plafond'].map(function(s){ return {nom:s,etat:'Bon état',obs:''}; }),
+    observations: ''
+  });
   renderEDLPieces();
 }
 
 function renderEDLPieces() {
   var container = document.getElementById('edlPiecesContainer');
   if (!container) return;
-  container.innerHTML = edlPieces.map(function(p, i) {
-    return '<div style="background:#f8f9ff;border:1.5px solid #e0e7ff;border-radius:12px;padding:14px;margin-bottom:10px">'
-      + '<div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">'
-        + '<input type="text" value="'+p.nom+'" style="flex:1;padding:8px 12px;border:1.5px solid var(--card-border);border-radius:8px;font-size:.84rem;font-weight:600" onchange="edlPieces['+i+'].nom=this.value">'
-        + '<select style="padding:8px 10px;border:1.5px solid var(--card-border);border-radius:8px;font-size:.82rem" onchange="edlPieces['+i+'].etat=this.value">'
-          + ETATS.map(function(e){ return '<option'+(p.etat===e?' selected':'')+'>'+e+'</option>'; }).join('')
-        + '</select>'
-        + '<button style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:7px;padding:5px 10px;cursor:pointer;font-size:.75rem" onclick="supprimerPieceEDL('+i+')">✕</button>'
-      + '</div>'
-      + '<textarea placeholder="Observations, dégradations, remarques…" style="width:100%;padding:8px 10px;border:1.5px solid var(--card-border);border-radius:8px;font-size:.82rem;resize:vertical;min-height:52px;font-family:inherit" onchange="edlPieces['+i+'].observations=this.value">'+p.observations+'</textarea>'
+  container.innerHTML = edlPieces.map(function(p, pi) {
+    var surfacesHtml = '<div class="edl-surface-grid">'
+      + p.surfaces.map(function(s, si) {
+          var cls = ETATS_CLASS[s.etat] || 'bon';
+          return '<div class="edl-surface-item">'
+            + '<div class="edl-surface-label">'+s.nom+'</div>'
+            + '<select class="edl-etat-select '+cls+'" onchange="edlSurfaceChange('+pi+','+si+',this)">'
+            + ETATS_EDL.map(function(e){ return '<option'+(s.etat===e?' selected':'')+'>'+e+'</option>'; }).join('')
+            + '</select>'
+            + '<input class="edl-obs-input" type="text" placeholder="Obs…" value="'+s.obs.replace(/"/g,'&quot;')+'" onchange="edlSurfaceObs('+pi+','+si+',this.value)">'
+            + '</div>';
+        }).join('')
       + '</div>';
+    return '<div class="edl-piece-card">'
+      + '<div class="edl-piece-header">'
+        + '<span style="font-size:1.1rem">🚪</span>'
+        + '<input class="edl-piece-nom" type="text" value="'+p.nom.replace(/"/g,'&quot;')+'" onchange="edlPieces['+pi+'].nom=this.value">'
+        + '<button onclick="edlAjouterSurface('+pi+')" style="background:#eef2fb;border:1px solid #c7d7f8;color:var(--pro-accent);border-radius:6px;padding:3px 8px;font-size:.7rem;cursor:pointer">+ Surface</button>'
+        + '<button onclick="supprimerPieceEDL('+pi+')" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:3px 8px;font-size:.7rem;cursor:pointer">✕</button>'
+      + '</div>'
+      + '<div class="edl-piece-body">'
+        + surfacesHtml
+        + '<div style="margin-top:8px">'
+          + '<input type="text" class="form-input-pro" placeholder="Observations générales de la pièce…" value="'+p.observations.replace(/"/g,'&quot;')+'" onchange="edlPieces['+pi+'].observations=this.value" style="font-size:.8rem">'
+        + '</div>'
+      + '</div>'
+    + '</div>';
   }).join('');
 }
 
-function supprimerPieceEDL(i) { edlPieces.splice(i, 1); renderEDLPieces(); }
+function edlSurfaceChange(pi, si, sel) {
+  edlPieces[pi].surfaces[si].etat = sel.value;
+  var cls = ETATS_CLASS[sel.value] || 'bon';
+  sel.className = 'edl-etat-select ' + cls;
+}
+function edlSurfaceObs(pi, si, val) { edlPieces[pi].surfaces[si].obs = val; }
+function edlAjouterSurface(pi) { edlPieces[pi].surfaces.push({nom:'Nouvel élément',etat:'Bon état',obs:''}); renderEDLPieces(); }
+function supprimerPieceEDL(i) { edlPieces.splice(i,1); renderEDLPieces(); }
 
+// ── ÉTAPE 4 : Clés ──
+function renderEDLCles() {
+  var container = document.getElementById('edlClesContainer');
+  if (!container) return;
+  container.innerHTML = edlCles.map(function(c,i){
+    return '<div class="edl-cle-row">'
+      + '<input type="text" class="form-input-pro" style="flex:1;font-size:.84rem" value="'+c.type.replace(/"/g,'&quot;')+'" onchange="edlCles['+i+'].type=this.value" placeholder="Type de clé">'
+      + '<input type="number" class="form-input-pro" style="width:70px;font-size:.84rem;text-align:center" value="'+c.nb+'" min="0" max="20" onchange="edlCles['+i+'].nb=parseInt(this.value)||0" placeholder="Nb">'
+      + '<button onclick="edlCles.splice('+i+',1);renderEDLCles()" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:5px 8px;font-size:.75rem;cursor:pointer">✕</button>'
+    + '</div>';
+  }).join('');
+}
+function ajouterCleEDL() { edlCles.push({type:'',nb:1}); renderEDLCles(); }
+
+// ── ÉTAPE 5 : Récap ──
+function renderEDLRecap() {
+  var recap = document.getElementById('edlRecap');
+  if (!recap) return;
+  var type = (document.getElementById('edlType')||{value:'entree'}).value;
+  var date = (document.getElementById('edlDate')||{value:''}).value;
+  var adresse = (document.getElementById('edlAdresse')||{value:''}).value;
+  var surface = (document.getElementById('edlSurface')||{value:''}).value;
+  var nbPieces = edlPieces.length;
+  var etatCounts = {};
+  edlPieces.forEach(function(p){ p.surfaces.forEach(function(s){ etatCounts[s.etat] = (etatCounts[s.etat]||0)+1; }); });
+  var totalSurfaces = Object.values(etatCounts).reduce(function(a,b){return a+b;},0);
+  var enBonEtat = (etatCounts['Neuf']||0)+(etatCounts['Très bon état']||0)+(etatCounts['Bon état']||0);
+  var pct = totalSurfaces ? Math.round((enBonEtat/totalSurfaces)*100) : 0;
+  var clesTxt = edlCles.filter(function(c){return c.type&&c.nb;}).map(function(c){return c.nb+'× '+c.type;}).join(', ');
+
+  recap.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
+    + '<div style="padding:10px;background:white;border-radius:8px;border:1px solid var(--card-border)"><div style="font-size:.68rem;text-transform:uppercase;color:var(--gris);font-weight:700;margin-bottom:3px">Type</div><div style="font-weight:700;color:'+(type==='entree'?'var(--success)':'var(--danger)')+'">'+(type==='entree'?"Entrée":"Sortie")+'</div></div>'
+    + '<div style="padding:10px;background:white;border-radius:8px;border:1px solid var(--card-border)"><div style="font-size:.68rem;text-transform:uppercase;color:var(--gris);font-weight:700;margin-bottom:3px">Date</div><div style="font-weight:700">'+(date?new Date(date).toLocaleDateString('fr-FR'):'—')+'</div></div>'
+    + '<div style="padding:10px;background:white;border-radius:8px;border:1px solid var(--card-border);grid-column:1/-1"><div style="font-size:.68rem;text-transform:uppercase;color:var(--gris);font-weight:700;margin-bottom:3px">Bien</div><div style="font-weight:700">'+(adresse||'Non renseigné')+(surface?' — '+surface+' m²':'')+'</div></div>'
+    + '<div style="padding:10px;background:white;border-radius:8px;border:1px solid var(--card-border)"><div style="font-size:.68rem;text-transform:uppercase;color:var(--gris);font-weight:700;margin-bottom:3px">Pièces</div><div style="font-weight:700">'+nbPieces+' pièces · '+totalSurfaces+' éléments</div></div>'
+    + '<div style="padding:10px;background:white;border-radius:8px;border:1px solid var(--card-border)"><div style="font-size:.68rem;text-transform:uppercase;color:var(--gris);font-weight:700;margin-bottom:3px">État général</div><div style="font-weight:700;color:'+(pct>=80?'var(--success)':pct>=50?'var(--warn)':'var(--danger)')+'">'+pct+'% bon état</div></div>'
+    + (clesTxt?'<div style="padding:10px;background:white;border-radius:8px;border:1px solid var(--card-border);grid-column:1/-1"><div style="font-size:.68rem;text-transform:uppercase;color:var(--gris);font-weight:700;margin-bottom:3px">Clés remises</div><div style="font-weight:700">'+clesTxt+'</div></div>':'')
+  + '</div>';
+}
+
+// ── Signature canvas ──
+function initSignatureCanvas(id) {
+  var canvas = document.getElementById(id);
+  var placeholder = document.getElementById(id+'Placeholder');
+  var clearDiv = document.getElementById(id+'Clear');
+  if (!canvas || canvas.style.display === 'block') return;
+  canvas.style.display = 'block';
+  if (placeholder) placeholder.style.display = 'none';
+  if (clearDiv) clearDiv.style.display = 'block';
+
+  var ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+  var drawing = false;
+  var getPos = function(e) {
+    var r = canvas.getBoundingClientRect();
+    var t = e.touches ? e.touches[0] : e;
+    return {x: (t.clientX - r.left) * (canvas.width/r.width), y: (t.clientY - r.top) * (canvas.height/r.height)};
+  };
+  canvas.addEventListener('mousedown', function(e){ drawing=true; var p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); });
+  canvas.addEventListener('mousemove', function(e){ if(!drawing) return; var p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); e.preventDefault(); });
+  canvas.addEventListener('mouseup', function(){ drawing=false; });
+  canvas.addEventListener('touchstart', function(e){ drawing=true; var p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); },{passive:false});
+  canvas.addEventListener('touchmove', function(e){ if(!drawing) return; var p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); e.preventDefault(); },{passive:false});
+  canvas.addEventListener('touchend', function(){ drawing=false; });
+}
+function clearCanvas(id) {
+  var c = document.getElementById(id); if(!c) return;
+  c.getContext('2d').clearRect(0,0,c.width,c.height);
+}
+
+// ── SAVE EDL ──
 function saveEDL() {
   var arr = loadEDL();
+  var getV = function(id){ var e=document.getElementById(id); return e?e.value:''; };
   var entry = {
     id: edlEditId || Date.now(),
-    type: (document.getElementById('edlType')||{}).value,
-    date: (document.getElementById('edlDate')||{}).value,
-    mandatId: (document.getElementById('edlMandatId')||{}).value,
-    locId: (document.getElementById('edlLocId')||{}).value,
-    compteurEau: (document.getElementById('edlCompteurEau')||{}).value,
-    compteurElec: (document.getElementById('edlCompteurElec')||{}).value,
-    cles: (document.getElementById('edlCles')||{}).value,
-    observations: (document.getElementById('edlObservations')||{}).value,
-    pieces: edlPieces.map(function(p){ return {nom:p.nom, etat:p.etat, observations:p.observations}; }),
+    type: getV('edlType'),
+    date: getV('edlDate'),
+    heure: getV('edlHeure'),
+    mandatId: getV('edlMandatId'),
+    locId: getV('edlLocId'),
+    adresse: getV('edlAdresse'),
+    surface: getV('edlSurface'),
+    etage: getV('edlEtage'),
+    agent: getV('edlAgent'),
+    // Équipements
+    chauffageType: getV('edlChauffageType'), chauffageEtat: getV('edlChauffageEtat'), chauffageObs: getV('edlChauffageObs'),
+    ecsType: getV('edlECSType'), ecsEtat: getV('edlECSEtat'),
+    elecTableau: getV('edlElecTableau'), elecPrises: getV('edlElecPrises'), elecObs: getV('edlElecObs'),
+    vitrageType: getV('edlVitrageType'), vitrageEtat: getV('edlVitrageEtat'), vitrageObs: getV('edlVitrageObs'),
+    // Compteurs
+    compteurElec: getV('edlCompteurElec'), compteurElecNum: getV('edlCompteurElecNum'),
+    compteurGaz: getV('edlCompteurGaz'),
+    compteurEau: getV('edlCompteurEau'), compteurECS: getV('edlCompteurECS'), compteurEauNum: getV('edlCompteurEauNum'),
+    clesObs: getV('edlClesObs'),
+    // Clés
+    cles: edlCles.slice(),
+    // Observations
+    observations: getV('edlObservations'),
+    // Pièces
+    pieces: edlPieces.map(function(p){ return {nom:p.nom, surfaces:p.surfaces.slice(), observations:p.observations}; }),
+    // Signataires
+    sig1Nom: getV('edlSig1Nom'), sig1Date: getV('edlSig1Date'),
+    sig2Nom: getV('edlSig2Nom'), sig2Date: getV('edlSig2Date'),
+    // Signatures canvas (base64)
+    sig1: (function(){ var c=document.getElementById('sigCanvas1'); return c&&c.style.display==='block'?c.toDataURL():''; })(),
+    sig2: (function(){ var c=document.getElementById('sigCanvas2'); return c&&c.style.display==='block'?c.toDataURL():''; })(),
     createdAt: new Date().toLocaleDateString('fr-FR')
   };
   if (edlEditId) { var idx=arr.findIndex(function(x){return String(x.id)===String(edlEditId);}); if(idx>=0) arr[idx]=entry; else arr.unshift(entry); }
@@ -11119,37 +11620,52 @@ function saveEDL() {
   saveEDL_store(arr);
   closeModalEDL();
   refreshEDLListe();
-  showToast('✅ État des lieux enregistré.','green');
+  showToast('✅ État des lieux enregistré.', 'green');
 }
 
 function refreshEDLListe() {
   var arr = loadEDL();
+  // KPIs
+  var now = new Date(); var mois = now.getMonth(); var annee = now.getFullYear();
+  var f = function(id,v){ var el=document.getElementById(id); if(el)el.textContent=v; };
+  f('edlKpiTotal', arr.length);
+  f('edlKpiEntree', arr.filter(function(e){return e.type==='entree';}).length);
+  f('edlKpiSortie', arr.filter(function(e){return e.type==='sortie';}).length);
+  f('edlKpiMoisDernier', arr.filter(function(e){
+    var d = e.date ? new Date(e.date) : null;
+    return d && d.getMonth()===mois && d.getFullYear()===annee;
+  }).length);
+
   var vide = document.getElementById('edlListeVide');
   var liste = document.getElementById('edlListe');
   if (!arr.length) { if(vide) vide.style.display='block'; if(liste) liste.style.display='none'; return; }
   if(vide) vide.style.display='none';
-  if(liste) { liste.style.display='grid'; }
+  if(liste) liste.style.display='grid';
   var mandats = loadMandats(); var locs = loadLocataires();
   liste.innerHTML = arr.map(function(e) {
-    var mandat = e.mandatId ? mandats.find(function(m){ return String(m.id)===String(e.mandatId); }) : null;
-    var loc = e.locId ? locs.find(function(l){ return String(l.id)===String(e.locId); }) : null;
-    var typeLabel = e.type === 'entree' ? '🟢 Entrée' : '🔴 Sortie';
-    var typeBg = e.type === 'entree' ? '#f0fdf4' : '#fef2f2';
-    var typeColor = e.type === 'entree' ? '#166534' : '#991b1b';
+    var m = e.mandatId ? mandats.find(function(x){return String(x.id)===String(e.mandatId);}) : null;
+    var l = e.locId ? locs.find(function(x){return String(x.id)===String(e.locId);}) : null;
+    var typeColor = e.type==='entree' ? {bg:'#f0fdf4',color:'#166534',label:'🟢 Entrée'} : {bg:'#fef2f2',color:'#991b1b',label:'🔴 Sortie'};
+    var nbPieces = (e.pieces||[]).length;
+    var hasSigs = e.sig1 || e.sig2;
     return '<div style="background:white;border:1.5px solid var(--card-border);border-radius:14px;overflow:hidden;box-shadow:var(--card-shadow)">'
       + '<div style="background:linear-gradient(135deg,#f8f9ff,#eef2fb);padding:14px 16px;border-bottom:1px solid var(--card-border)">'
-        + '<div style="display:flex;justify-content:space-between;align-items:center">'
-          + '<span style="background:'+typeBg+';color:'+typeColor+';font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px">'+typeLabel+'</span>'
-          + '<span style="font-size:.75rem;color:var(--gris)">'+e.date+'</span>'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+          + '<span style="background:'+typeColor.bg+';color:'+typeColor.color+';font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px">'+typeColor.label+'</span>'
+          + '<span style="font-size:.74rem;color:var(--gris)">'+(e.date?new Date(e.date).toLocaleDateString('fr-FR'):'—')+(e.heure?' · '+e.heure:'')+'</span>'
         + '</div>'
-        + '<div style="font-weight:700;font-size:.92rem;margin-top:8px;color:var(--pro)">'+(mandat?mandat.adresse||'Bien':e.mandatId||'—')+'</div>'
-        + '<div style="font-size:.76rem;color:var(--gris);margin-top:2px">'+(loc?(loc.prenom||'')+' '+(loc.nom||''):'Locataire non renseigné')+'</div>'
+        + '<div style="font-weight:700;font-size:.92rem;color:var(--pro)">'+(e.adresse||m&&m.adresse||'Adresse non renseignée')+'</div>'
+        + (e.surface?'<div style="font-size:.74rem;color:var(--gris);margin-top:2px">'+e.surface+' m²'+(e.etage?' · '+e.etage:'')+'</div>':'')
+        + (l?'<div style="font-size:.76rem;color:var(--gris);margin-top:2px">👤 '+(l.prenom||'')+' '+(l.nom||'')+'</div>':'')
       + '</div>'
       + '<div style="padding:12px 16px">'
-        + '<div style="font-size:.76rem;color:var(--gris);margin-bottom:6px">'+e.pieces.length+' pièce'+(e.pieces.length>1?'s':'')+'</div>'
+        + '<div style="display:flex;gap:8px;margin-bottom:8px;font-size:.75rem;color:var(--gris)">'
+          + '<span>📋 '+nbPieces+' pièce'+(nbPieces>1?'s':'')+'</span>'
+          + (hasSigs?'<span>✍️ Signé</span>':'<span style="color:var(--warn)">⚠️ Non signé</span>')
+        + '</div>'
         + '<div style="display:flex;gap:6px;flex-wrap:wrap">'
-          + '<button class="btn-sm" style="font-size:.72rem" onclick="ouvrirEDL('+e.id+')">Voir →</button>'
-          + '<button class="btn-sm" style="font-size:.72rem" onclick="exportEDLPDF('+e.id+')">📄 PDF</button>'
+          + '<button class="btn-sm" style="font-size:.72rem" onclick="ouvrirEDL('+e.id+')">✏️ Modifier</button>'
+          + '<button class="btn-sm" style="font-size:.72rem" onclick="exportEDLPDF('+e.id+',false)">📄 PDF</button>'
           + '<button class="btn-sm" style="font-size:.72rem;color:var(--danger);border-color:var(--danger)" onclick="supprimerEDL('+e.id+')">✕</button>'
         + '</div>'
       + '</div></div>';
@@ -11161,54 +11677,188 @@ function ouvrirEDL(id) {
   var e = arr.find(function(x){ return String(x.id)===String(id); });
   if (!e) return;
   edlEditId = e.id;
-  edlPieces = (e.pieces||[]).map(function(p){ return {nom:p.nom,etat:p.etat,observations:p.observations,photos:[]}; });
-  document.getElementById('edlType').value = e.type;
-  document.getElementById('edlDate').value = e.date;
-  document.getElementById('edlObservations').value = e.observations||'';
-  ['edlCompteurEau','edlCompteurElec','edlCles'].forEach(function(fid){ var el=document.getElementById(fid); if(el) el.value = e[fid.replace('edl','').toLowerCase()]||''; });
-  var mSel = document.getElementById('edlMandatId');
-  if (mSel) { var mans = loadMandats(); mSel.innerHTML = '<option value="">—</option>'+mans.map(function(m){ return '<option value="'+m.id+'"'+(String(m.id)===String(e.mandatId)?' selected':'')+'>'+m.adresse+'</option>'; }).join(''); }
-  var lSel = document.getElementById('edlLocId');
-  if (lSel) { var locs = loadLocataires(); lSel.innerHTML = '<option value="">—</option>'+locs.map(function(l){ return '<option value="'+l.id+'"'+(String(l.id)===String(e.locId)?' selected':'')+'>'+l.prenom+' '+l.nom+'</option>'; }).join(''); }
-  renderEDLPieces();
-  document.getElementById('modalEDL').style.display = 'flex';
+  edlPieces = (e.pieces||[]).map(function(p){ return {nom:p.nom, surfaces:(p.surfaces||[]).slice(), observations:p.observations||''}; });
+  edlCles = (e.cles||[]).slice();
+  if (!edlCles.length) edlCles = [{type:'Clé entrée principale',nb:2}];
+  openNouvelEDL();
+  setTimeout(function(){
+    var setV = function(id,v){ var el=document.getElementById(id); if(el) el.value=v||''; };
+    setV('edlType',e.type); setEDLType(e.type, document.getElementById(e.type==='entree'?'edlBtnEntree':'edlBtnSortie'));
+    setV('edlDate',e.date); setV('edlHeure',e.heure); setV('edlAdresse',e.adresse);
+    setV('edlSurface',e.surface); setV('edlEtage',e.etage); setV('edlAgent',e.agent);
+    setV('edlMandatId',e.mandatId); setV('edlLocId',e.locId);
+    setV('edlCompteurElec',e.compteurElec); setV('edlCompteurGaz',e.compteurGaz);
+    setV('edlCompteurEau',e.compteurEau); setV('edlObservations',e.observations);
+    setV('edlSig1Nom',e.sig1Nom); setV('edlSig2Nom',e.sig2Nom);
+  }, 100);
 }
 
 function supprimerEDL(id) {
   if (!confirm('Supprimer cet état des lieux ?')) return;
-  var arr = loadEDL().filter(function(x){ return String(x.id)!==String(id); });
-  saveEDL_store(arr); refreshEDLListe();
+  saveEDL_store(loadEDL().filter(function(x){ return String(x.id)!==String(id); }));
+  refreshEDLListe();
+  showToast('EDL supprimé.', 'green');
 }
 
-function exportEDLPDF(id) {
-  var arr = loadEDL();
-  var e = id ? arr.find(function(x){ return String(x.id)===String(id); }) : null;
-  if (!e && !id) { e = { type:'entree', date:new Date().toLocaleDateString('fr-FR'), pieces:edlPieces, observations:(document.getElementById('edlObservations')||{}).value||'' }; }
+function exportEDLPDF(id, saveFirst) {
+  if (saveFirst) { saveEDL(); return; }
+  var e = id ? loadEDL().find(function(x){return String(x.id)===String(id);}) : null;
   if (!e) { showToast('EDL introuvable.','orange'); return; }
-  if (!window.jspdf) { showToast('jsPDF non disponible.','orange'); return; }
-  var jsPDF = window.jspdf.jsPDF; var doc = new jsPDF();
-  var ai = proState.agencyInfo || {}; var agence = ai.nom || 'BailScan Pro';
-  var mandats = loadMandats(); var locs = loadLocataires();
-  var mandat = e.mandatId ? mandats.find(function(m){ return String(m.id)===String(e.mandatId); }) : null;
-  var loc = e.locId ? locs.find(function(l){ return String(l.id)===String(e.locId); }) : null;
-  doc.setFillColor(15,23,42); doc.rect(0,0,210,16,'F');
-  doc.setFontSize(10); doc.setFont(undefined,'bold'); doc.setTextColor(255,255,255);
-  doc.text('ÉTAT DES LIEUX '+(e.type==='entree'?"D'ENTRÉE":'DE SORTIE')+' — '+agence, 14, 10);
-  doc.setTextColor(40,40,40); var y=24;
-  doc.setFontSize(12); doc.text((mandat?mandat.adresse:'Bien non renseigné'), 14, y); y+=7;
-  if (loc) { doc.setFontSize(9); doc.text('Locataire : '+(loc.prenom||'')+' '+(loc.nom||''), 14, y); y+=5; }
-  doc.setFontSize(9); doc.text('Date : '+e.date, 14, y); y+=10;
-  (e.pieces||[]).forEach(function(p) {
-    if (y > 265) { doc.addPage(); y = 20; }
-    doc.setFont(undefined,'bold'); doc.setFontSize(10); doc.text(p.nom, 14, y); y+=5;
-    doc.setFont(undefined,'normal'); doc.setFontSize(9);
-    doc.text('État : '+p.etat, 18, y); y+=5;
-    if (p.observations) { var lines=doc.splitTextToSize(p.observations,170); lines.forEach(function(l){ doc.text(l,18,y); y+=4.5; }); }
-    y+=3;
+  if (!window.jspdf) { showToast('jsPDF non disponible. Réessayez dans quelques secondes.','orange'); return; }
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  var ai = proState.agencyInfo || {};
+  var agence = ai.nom || 'BailScan Pro';
+  var W = 210; var mg = 14; var contentW = W - mg*2;
+
+  // ── En-tête ──
+  var typeLabel = e.type==='entree' ? "ÉTAT DES LIEUX D'ENTRÉE" : "ÉTAT DES LIEUX DE SORTIE";
+  doc.setFillColor(15,23,42); doc.rect(0,0,W,22,'F');
+  doc.setFontSize(11); doc.setFont(undefined,'bold'); doc.setTextColor(255,255,255);
+  doc.text(typeLabel, mg, 10);
+  doc.setFontSize(8); doc.setFont(undefined,'normal');
+  doc.text(agence + (ai.adresse?' — '+ai.adresse:''), mg, 16);
+  doc.text('Date : '+(e.date?new Date(e.date).toLocaleDateString('fr-FR'):'—')+(e.heure?' à '+e.heure:''), W-mg, 16, {align:'right'});
+
+  var y = 28;
+  doc.setTextColor(30,30,30);
+
+  // ── Bien & Locataire ──
+  doc.setFillColor(238,242,251); doc.rect(mg, y, contentW, 18,'F');
+  doc.setFont(undefined,'bold'); doc.setFontSize(10);
+  doc.text(e.adresse || 'Adresse non renseignée', mg+3, y+6);
+  doc.setFont(undefined,'normal'); doc.setFontSize(8);
+  if (e.surface) doc.text('Surface : '+e.surface+' m²'+(e.etage?' — '+e.etage:''), mg+3, y+12);
+  var locs = loadLocataires();
+  var loc = e.locId ? locs.find(function(l){return String(l.id)===String(e.locId);}) : null;
+  if (loc) doc.text('Locataire : '+(loc.prenom||'')+' '+(loc.nom||''), mg+3, y+17);
+  doc.text('Agent : '+(e.agent||'—'), contentW/2+mg, y+12);
+  y += 24;
+
+  // ── Équipements ──
+  doc.setFont(undefined,'bold'); doc.setFontSize(9); doc.setFillColor(99,149,255);
+  doc.rect(mg, y, contentW, 6, 'F'); doc.setTextColor(255,255,255);
+  doc.text('ÉQUIPEMENTS & INSTALLATIONS', mg+2, y+4.2); y += 8;
+  doc.setTextColor(30,30,30); doc.setFont(undefined,'normal'); doc.setFontSize(8);
+  var equips = [
+    {l:'Chauffage', v:(e.chauffageType||'—')+' — '+(e.chauffageEtat||'—')+(e.chauffageObs?' ('+e.chauffageObs+')':'')},
+    {l:'Eau chaude', v:(e.ecsType||'—')+' — '+(e.ecsEtat||'—')},
+    {l:'Électricité', v:'Tableau : '+(e.elecTableau||'—')+', Prises : '+(e.elecPrises||'—')+(e.elecObs?' ('+e.elecObs+')':'')},
+    {l:'Menuiseries', v:(e.vitrageType||'—')+' — '+(e.vitrageEtat||'—')+(e.vitrageObs?' ('+e.vitrageObs+')':'')},
+  ];
+  equips.forEach(function(eq) {
+    doc.setFont(undefined,'bold'); doc.text(eq.l+' :', mg+2, y); doc.setFont(undefined,'normal');
+    var lines = doc.splitTextToSize(eq.v, contentW-30);
+    doc.text(lines, mg+28, y); y += 4.5 * lines.length + 1;
   });
-  if (e.observations) { doc.setFont(undefined,'bold'); doc.text('Observations générales :', 14, y); y+=5; doc.setFont(undefined,'normal'); var obs=doc.splitTextToSize(e.observations,180); obs.forEach(function(l){ doc.text(l,14,y); y+=4.5; }); }
-  doc.save('etat-des-lieux-'+(e.type)+'-'+e.date+'.pdf');
-  showToast('📄 PDF téléchargé.','green');
+  y += 3;
+
+  // ── Pièces ──
+  doc.setFont(undefined,'bold'); doc.setFontSize(9); doc.setFillColor(99,149,255);
+  doc.rect(mg, y, contentW, 6, 'F'); doc.setTextColor(255,255,255);
+  doc.text('ÉTAT DES PIÈCES', mg+2, y+4.2); y += 9;
+  doc.setTextColor(30,30,30);
+  (e.pieces||[]).forEach(function(p) {
+    if (y > 265) { doc.addPage(); y = 15; }
+    doc.setFont(undefined,'bold'); doc.setFontSize(9); doc.setFillColor(248,249,255);
+    doc.rect(mg, y-3, contentW, 7,'F'); doc.setTextColor(15,23,42);
+    doc.text(p.nom, mg+2, y+1.5); y += 6;
+    doc.setTextColor(50,50,50); doc.setFont(undefined,'normal'); doc.setFontSize(8);
+    (p.surfaces||[]).forEach(function(s){
+      if (y > 270) { doc.addPage(); y = 15; }
+      var etatColor = {'Neuf':[22,101,52],'Très bon état':[22,101,52],'Bon état':[22,101,52],'État moyen':[146,64,14],'Mauvais état':[153,27,27],'À rénover':[153,27,27]}[s.etat]||[80,80,80];
+      doc.text('• '+s.nom+' :', mg+3, y);
+      doc.setTextColor(etatColor[0],etatColor[1],etatColor[2]); doc.setFont(undefined,'bold');
+      doc.text(s.etat, mg+30, y);
+      doc.setTextColor(80,80,80); doc.setFont(undefined,'normal');
+      if (s.obs) doc.text('— '+s.obs, mg+55, y);
+      y += 4.5;
+    });
+    if (p.observations) {
+      var obsLines = doc.splitTextToSize('Obs : '+p.observations, contentW-6);
+      doc.setTextColor(100,100,100); obsLines.forEach(function(l){ doc.text(l,mg+3,y); y+=4; });
+    }
+    y += 2;
+  });
+  if (y > 240) { doc.addPage(); y = 15; }
+
+  // ── Compteurs ──
+  doc.setFont(undefined,'bold'); doc.setFontSize(9); doc.setFillColor(99,149,255);
+  doc.rect(mg, y, contentW, 6,'F'); doc.setTextColor(255,255,255);
+  doc.text('RELEVÉS DE COMPTEURS', mg+2, y+4.2); y += 8;
+  doc.setTextColor(30,30,30); doc.setFont(undefined,'normal'); doc.setFontSize(8);
+  var compteurs = [
+    ['Électricité', (e.compteurElec||'—')+' kWh'+(e.compteurElecNum?' (N°'+e.compteurElecNum+')':'')],
+    ['Gaz', (e.compteurGaz||'—')+' m³'],
+    ['Eau froide', (e.compteurEau||'—')+' m³'+(e.compteurEauNum?' (N°'+e.compteurEauNum+')':'')],
+    ['Eau chaude', (e.compteurECS||'—')+' m³'],
+  ];
+  compteurs.forEach(function(c){
+    doc.setFont(undefined,'bold'); doc.text(c[0]+' :', mg+2, y); doc.setFont(undefined,'normal');
+    doc.text(c[1], mg+30, y); y += 5;
+  });
+  y += 3;
+
+  // ── Clés ──
+  if (e.cles && e.cles.length) {
+    if (y > 255) { doc.addPage(); y = 15; }
+    doc.setFont(undefined,'bold'); doc.setFontSize(9); doc.setFillColor(99,149,255);
+    doc.rect(mg, y, contentW, 6,'F'); doc.setTextColor(255,255,255);
+    doc.text('CLÉS REMISES', mg+2, y+4.2); y += 8;
+    doc.setTextColor(30,30,30); doc.setFont(undefined,'normal'); doc.setFontSize(8);
+    e.cles.filter(function(c){return c.type&&c.nb;}).forEach(function(c){
+      doc.text('• '+c.nb+'× '+c.type, mg+3, y); y += 5;
+    });
+    if (e.clesObs) { var obsL = doc.splitTextToSize('Obs : '+e.clesObs, contentW-6); obsL.forEach(function(l){ doc.text(l,mg+3,y); y+=4; }); }
+    y += 3;
+  }
+
+  // ── Observations générales ──
+  if (e.observations) {
+    if (y > 245) { doc.addPage(); y = 15; }
+    doc.setFont(undefined,'bold'); doc.setFontSize(9); doc.setFillColor(99,149,255);
+    doc.rect(mg, y, contentW, 6,'F'); doc.setTextColor(255,255,255);
+    doc.text('OBSERVATIONS GÉNÉRALES', mg+2, y+4.2); y += 8;
+    doc.setTextColor(30,30,30); doc.setFont(undefined,'normal'); doc.setFontSize(8);
+    var obsLines = doc.splitTextToSize(e.observations, contentW-4);
+    obsLines.forEach(function(l){ doc.text(l,mg,y); y+=4.5; }); y+=3;
+  }
+
+  // ── Signatures ──
+  if (y > 230) { doc.addPage(); y = 15; }
+  doc.setFont(undefined,'bold'); doc.setFontSize(9); doc.setFillColor(99,149,255);
+  doc.rect(mg, y, contentW, 6,'F'); doc.setTextColor(255,255,255);
+  doc.text('SIGNATURES', mg+2, y+4.2); y += 8;
+  doc.setTextColor(30,30,30);
+  var sigW = (contentW-10)/2;
+  // Colonne locataire
+  doc.setFont(undefined,'bold'); doc.setFontSize(8); doc.text('Locataire / Entrant', mg, y);
+  doc.setFont(undefined,'normal'); doc.text(e.sig1Nom||'— Nom non renseigné', mg, y+5);
+  doc.text('Date : '+(e.sig1Date?new Date(e.sig1Date).toLocaleDateString('fr-FR'):'—'), mg, y+10);
+  if (e.sig1 && e.sig1.startsWith('data:image')) {
+    try { doc.addImage(e.sig1, 'PNG', mg, y+12, sigW, 20); } catch(err){}
+  } else { doc.rect(mg, y+12, sigW, 20); }
+  // Colonne agent
+  var col2 = mg + sigW + 10;
+  doc.setFont(undefined,'bold'); doc.text('Agent / Bailleur', col2, y);
+  doc.setFont(undefined,'normal'); doc.text(e.sig2Nom||'— Nom non renseigné', col2, y+5);
+  doc.text('Date : '+(e.sig2Date?new Date(e.sig2Date).toLocaleDateString('fr-FR'):'—'), col2, y+10);
+  if (e.sig2 && e.sig2.startsWith('data:image')) {
+    try { doc.addImage(e.sig2, 'PNG', col2, y+12, sigW, 20); } catch(err){}
+  } else { doc.rect(col2, y+12, sigW, 20); }
+  y += 38;
+
+  // ── Footer ──
+  var pagesCount = doc.internal.getNumberOfPages();
+  for (var pi = 1; pi <= pagesCount; pi++) {
+    doc.setPage(pi);
+    doc.setFontSize(7); doc.setTextColor(150,150,150);
+    doc.text('BailScan Pro — '+agence+' — Page '+pi+'/'+pagesCount, W/2, 293, {align:'center'});
+  }
+
+  var filename = 'EDL-'+(e.type==='entree'?'entree':'sortie')+'-'+(e.adresse||'bien').replace(/[^a-z0-9]/gi,'-').toLowerCase().substring(0,20)+'-'+(e.date||new Date().toISOString().split('T')[0])+'.pdf';
+  doc.save(filename);
+  showToast('📄 PDF professionnel généré.', 'green');
 }
 
 // ════════════════════════════════════════════════════════
