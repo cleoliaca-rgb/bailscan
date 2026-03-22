@@ -32,8 +32,9 @@
 
 <!-- LAYOUT FIX — écrase le style compressé ci-dessus -->
 <style>
-/* === DASHBOARD : cacher le header marketing === */
+/* === DASHBOARD : cacher header marketing + footer === */
 body.is-dashboard header { display: none !important; }
+body.is-dashboard #marketingFooter { display: none !important; }
 
 /* === LAYOUT === */
 #dashboardSection { display:none; }
@@ -608,7 +609,7 @@ body.is-dashboard header { display: none !important; }
 <body>
 
 <header>
-  <a href="/" class="logo">Bail<span>Scan</span><span class="logo-badge">PRO</span></a>
+  <a href="/" class="logo">Bail<em style="font-style:italic;color:#7fa8e8">Scan</em><span class="logo-badge">PRO</span></a>
   <nav>
     <a href="#" onclick="history.back();return false;" style="display:none" id="navRetour">← Retour</a>
     <a href="#fonctionnalites">Fonctionnalités</a>
@@ -624,16 +625,16 @@ body.is-dashboard header { display: none !important; }
 <section class="hero" id="hero">
   <div class="hero-inner">
     <div>
-      <div class="hero-tag">Solution B2B · Pour agences &amp; gestionnaires</div>
-      <h1>Zéro litige.<br><em>Zéro clause illégale.</em></h1>
-      <p class="hero-sub">Analyse de baux IA, fiches locataires, alertes d'échéances, quittances PDF, courriers juridiques et bail conforme — tout ce qu'une agence gère au quotidien, automatisé en un seul outil.</p>
+      <div class="hero-tag">Solution B2B · Pour agences &amp; gestionnaires immobiliers</div>
+      <h1>Le dashboard IA<br>de vos <em>baux &amp; mandats.</em></h1>
+      <p class="hero-sub">Analyse de baux clause par clause, fiches locataires &amp; garants, états des lieux pro, alertes d'échéances, révision IRL, quittances PDF, courriers juridiques, diagnostics — tout ce qu'une agence gère au quotidien, centralisé et automatisé.</p>
       <div class="hero-ctas">
         <button class="btn-primary-pro" onclick="openModal('signup')">Démarrer l'essai gratuit →</button>
-        <button class="btn-secondary-pro" onclick="scrollToSection('fonctionnalites')">Voir les fonctionnalités</button>
+        <button class="btn-secondary-pro" onclick="openModal('login')">Se connecter</button>
       </div>
       <div class="hero-stats">
         <div><div class="stat-n">3j</div><div class="stat-l">d'essai gratuit<br>sans CB requise</div></div>
-        <div><div class="stat-n">2min</div><div class="stat-l">par bail<br>analysé</div></div>
+        <div><div class="stat-n">13</div><div class="stat-l">modules métier<br>intégrés</div></div>
         <div><div class="stat-n">100%</div><div class="stat-l">conforme loi<br>1989 + ALUR</div></div>
       </div>
     </div>
@@ -4426,7 +4427,7 @@ body.is-dashboard header { display: none !important; }
   <div class="footer-inner-pro">
     <div class="footer-top-pro">
       <div class="footer-brand-pro">
-        <div class="footer-logo-pro">Bail<span style="color:var(--pro-accent)">Scan</span> Pro</div>
+        <div class="footer-logo-pro">Bail<em style="font-style:italic;color:#7fa8e8">Scan</em> <span style="font-size:.55em;font-weight:700;background:var(--pro-accent);color:white;padding:2px 7px;border-radius:4px;letter-spacing:.06em;vertical-align:middle">PRO</span></div>
         <div class="footer-tagline-pro">Solution IA pour agences immobilières ❤️</div>
         <div class="footer-copy-pro">© 2026 BailScan — Tous droits réservés</div>
       </div>
