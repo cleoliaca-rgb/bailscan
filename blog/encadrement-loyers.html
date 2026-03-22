@@ -1,125 +1,237 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Encadrement des loyers : votre loyer est-il légal ? — BailScan</title>
-<meta name="description" content="Dans les zones tendues, le loyer est plafonné. Comment vérifier si votre loyer respecte l'encadrement et demander une baisse.">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encadrement des loyers 2026 : Paris, Lyon, Bordeaux | BailScan</title>
+<meta name="description" content="Votre loyer respecte-t-il le plafond légal ? Villes concernées, loyer de référence, et comment récupérer le trop-perçu jusqu’à 3 ans en arrière.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://bailscan.app/blog/encadrement-loyers">
+<meta property="og:title" content="Encadrement des loyers 2026 : Paris, Lyon, Bordeaux | BailScan"><meta property="og:description" content="Votre loyer respecte-t-il le plafond légal ? Villes concernées, loyer de référence, et comment récupérer le trop-perçu jusqu’à 3 ans en arrière."><meta property="og:type" content="article"><meta property="og:url" content="https://bailscan.app/blog/encadrement-loyers">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"Encadrement des loyers 2026","datePublished":"2024-03-01","dateModified":"2026-03-01","author":{"@type":"Person","name":"BailScan"},"publisher":{"@type":"Organization","name":"BailScan","url":"https://bailscan.app"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment vérifier si mon loyer est encadré ?","acceptedAnswer":{"@type":"Answer","text":"Consultez l’observatoire officiel de votre ville avec l’adresse, le nombre de pièces et le type de logement."}},{"@type":"Question","name":"Puis-je réclamer le trop-perçu sur plusieurs années ?","acceptedAnswer":{"@type":"Answer","text":"Oui, vous avez 3 ans pour réclamer rétroactivement le trop-perçu."}}]}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --noir: #0d0d0d; --creme: #f5f0e8; --accent: #c84b2f; --accent2: #e8a87c; --vert: #2d6a4f; --vert-light: #e8f5ee; --rouge-light: #fdf0ed; --texte: #1a1a1a; --gris: #6b6b6b; --border: #d8d0c4; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-  header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); }
-  .logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); text-decoration: none; }
-  .logo span { color: var(--accent); }
-  nav { display: flex; gap: 24px; align-items: center; }
-  nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; }
-  .btn-nav { background: var(--noir); color: var(--creme) !important; padding: 10px 22px; border-radius: 8px; font-weight: 500; }
-  .article-wrap { max-width: 720px; margin: 0 auto; padding: 120px 48px 80px; }
-  .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--gris); text-decoration: none; font-size: 0.85rem; margin-bottom: 40px; transition: color 0.2s; }
-  .back-link:hover { color: var(--accent); }
-  .article-tag { display: inline-block; background: var(--rouge-light); color: var(--accent); font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; letter-spacing: 0.05em; }
-  h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.15; letter-spacing: -0.03em; color: var(--noir); margin-bottom: 20px; }
-  .article-meta { font-size: 0.82rem; color: var(--gris); margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); display: flex; gap: 16px; }
-  h2 { font-family: 'Instrument Serif', serif; font-size: 1.5rem; color: var(--noir); margin: 40px 0 16px; }
-  h3 { font-size: 1rem; font-weight: 700; color: var(--noir); margin: 28px 0 10px; }
-  p { font-size: 0.95rem; line-height: 1.85; color: var(--texte); margin-bottom: 18px; }
-  ul, ol { padding-left: 24px; margin-bottom: 18px; }
-  ul li, ol li { font-size: 0.95rem; line-height: 1.85; margin-bottom: 8px; }
-  .highlight-box { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 24px 28px; margin: 28px 0; }
-  .highlight-box.danger { background: var(--rouge-light); border-color: rgba(200,75,47,0.3); }
-  .highlight-box.success { background: var(--vert-light); border-color: rgba(45,106,79,0.3); }
-  .highlight-box.warning { background: #fff8e1; border-color: rgba(245,158,11,0.3); }
-  .highlight-box strong { display: block; margin-bottom: 8px; font-size: 0.9rem; }
-  .highlight-box p { margin-bottom: 0; font-size: 0.9rem; }
-  .law-ref { font-size: 0.82rem; color: var(--accent); font-weight: 600; background: var(--rouge-light); padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
-  .cta-box { background: var(--noir); border-radius: 16px; padding: 36px; text-align: center; margin: 48px 0; }
-  .cta-box h3 { color: white; margin-bottom: 10px; font-family: 'Instrument Serif', serif; font-size: 1.4rem; }
-  .cta-box p { color: rgba(255,255,255,0.6); margin-bottom: 20px; font-size: 0.88rem; }
-  .cta-btn { display: inline-block; background: var(--accent); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; }
-  .cta-btn:hover { background: #a83a20; }
-  .related { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); }
-  .related h3 { font-family: 'Instrument Serif', serif; font-size: 1.3rem; color: var(--noir); margin-bottom: 24px; }
-  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .related-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; transition: all 0.2s; }
-  .related-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .related-card h4 { font-size: 0.92rem; font-weight: 600; color: var(--noir); margin-bottom: 6px; line-height: 1.4; }
-  .related-card span { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
-  footer { padding: 40px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--gris); font-size: 0.82rem; }
-  footer a { color: var(--accent); text-decoration: none; }
-  @media (max-width: 768px) { header { padding: 16px 20px; } nav a:not(.btn-nav) { display: none; } .article-wrap { padding: 100px 20px 60px; } .related-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 12px; text-align: center; } }
+:root{--noir:#0d0d0d;--creme:#f5f0e8;--accent:#c84b2f;--accent2:#e8a87c;--vert:#2d6a4f;--vert-light:#e8f5ee;--rouge-light:#fdf0ed;--texte:#1a1a1a;--gris:#6b6b6b;--border:#d8d0c4;--warning:#f59e0b;--warning-light:#fffbeb}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:var(--creme);color:var(--texte);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:rgba(245,240,232,0.95);backdrop-filter:blur(12px)}
+.logo{font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir);text-decoration:none}.logo span{color:var(--accent)}
+nav{display:flex;gap:28px;align-items:center}nav a{color:var(--gris);text-decoration:none;font-size:0.9rem;transition:color .2s}nav a:hover{color:var(--accent)}
+.btn-nav{background:var(--noir);color:var(--creme)!important;padding:10px 22px;border-radius:8px;font-weight:600}.btn-nav:hover{background:var(--accent)!important}
+.nav-agences{color:var(--gris)!important;font-size:0.88rem!important}.nav-agences:hover{color:var(--accent)!important}
+.breadcrumb{max-width:760px;margin:0 auto;padding:100px 24px 0;display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--gris)}
+.breadcrumb a{color:var(--gris)}.breadcrumb a:hover{color:var(--accent)}.breadcrumb .sep{opacity:.4}
+.page-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 280px;gap:48px;padding:40px 24px 80px;align-items:start}
+.article-body{min-width:0;animation:fadeUp .5s ease both}
+.article-category{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.article-category::before{content:'';display:inline-block;width:18px;height:2px;background:var(--accent)}
+.article-h1{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.15;color:var(--noir);letter-spacing:-.03em;margin-bottom:20px}
+.article-intro{font-family:'Instrument Serif',serif;font-size:1.1rem;color:var(--gris);line-height:1.75;margin-bottom:28px;font-style:italic}
+.article-meta{display:flex;align-items:center;gap:18px;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:40px;flex-wrap:wrap}
+.meta-avatar{width:34px;height:34px;border-radius:50%;background:var(--noir);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--creme);flex-shrink:0}
+.meta-author-name{font-weight:700;font-size:.82rem;color:var(--noir)}.meta-author-bio{font-size:.75rem;color:var(--gris)}
+.meta-div{width:1px;height:24px;background:var(--border)}.meta-item{font-size:.78rem;color:var(--gris)}.meta-item strong{color:var(--texte);font-weight:600}
+.badge-update{background:var(--vert-light);color:var(--vert);border:1px solid rgba(45,106,79,.2);font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:20px;margin-left:auto}
+.article-body h2{font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir);margin-top:56px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.article-body h2:first-child{margin-top:0}.article-body h3{font-size:1rem;font-weight:700;color:var(--texte);margin-top:36px;margin-bottom:12px}
+.article-body p{font-size:.96rem;color:var(--texte);line-height:1.78;margin-bottom:16px}
+.article-body strong{font-weight:700;color:var(--noir)}.article-body ul,.article-body ol{padding-left:22px;margin-bottom:16px}
+.article-body li{font-size:.96rem;line-height:1.75;margin-bottom:6px}.article-body li::marker{color:var(--accent);font-weight:700}
+.callout{display:flex;gap:12px;padding:16px 20px;border-radius:10px;margin:24px 0;font-size:.875rem;line-height:1.65}
+.callout-info{background:var(--vert-light);border-left:3px solid var(--vert);color:#1a4a31}
+.callout-warn{background:var(--warning-light);border-left:3px solid var(--warning);color:#78450a}
+.callout-cta{background:var(--rouge-light);border-left:3px solid var(--accent);color:#7a2c1a}
+.callout-icon{font-size:1rem;flex-shrink:0;margin-top:1px}.callout p{margin:0;font-size:.875rem}.callout a{color:inherit;font-weight:700;text-decoration:underline}
+.table-wrap{width:100%;overflow-x:auto;margin:24px 0;border-radius:12px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+table{width:100%;border-collapse:collapse;font-size:.875rem}thead tr{background:var(--noir);color:var(--creme)}
+thead th{padding:12px 16px;text-align:left;font-weight:700;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase}
+tbody tr{border-bottom:1px solid var(--border)}tbody tr:last-child{border-bottom:none}tbody tr:nth-child(even){background:rgba(0,0,0,.02)}
+tbody td{padding:13px 16px;vertical-align:top;font-size:.875rem;line-height:1.55}tbody td:first-child{font-weight:500}
+.faq{margin:28px 0;display:grid;gap:10px}.faq-item{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:white}
+.faq-q{padding:16px 20px;cursor:pointer;font-size:.9rem;font-weight:600;color:var(--noir);display:flex;justify-content:space-between;align-items:center;gap:12px;transition:background .15s;list-style:none;user-select:none}
+.faq-q:hover{background:var(--vert-light)}.faq-q::after{content:'+';font-size:1.2rem;font-weight:400;color:var(--gris);flex-shrink:0}
+details[open] .faq-q::after{transform:rotate(45deg)}.faq-a{padding:0 20px 16px;font-size:.875rem;color:var(--gris);line-height:1.7;border-top:1px solid var(--border)}
+.faq-a p{margin:10px 0 0}
+.letter-card{background:white;border:1.5px solid var(--border);border-radius:14px;margin:32px 0;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.letter-card-header{background:var(--noir);color:white;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.letter-card-title{font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.copy-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;padding:6px 14px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:background .15s;white-space:nowrap}
+.copy-btn:hover{background:rgba(255,255,255,.22)}.copy-btn.copied{background:var(--vert);border-color:var(--vert)}
+.letter-body{padding:28px;font-size:.88rem;line-height:1.85;color:var(--texte)}
+.letter-coord{color:var(--gris);font-size:.84rem;margin-bottom:16px;line-height:1.7}
+.letter-objet{font-weight:700;font-size:.88rem;color:var(--noir);margin-bottom:20px;line-height:1.5}
+.letter-content p{margin-bottom:12px;font-size:.88rem;line-height:1.85}
+.letter-content ul{padding-left:20px;margin:10px 0 12px}.letter-content li{font-size:.88rem;margin-bottom:4px;line-height:1.7}
+.letter-placeholder{background:#f5f0e8;border-radius:4px;padding:1px 5px;font-style:italic;color:var(--accent);font-weight:600}
+.letter-divider{border:none;border-top:1px dashed var(--border);margin:16px 0}
+.cta-inline{background:var(--accent);border-radius:16px;padding:28px 32px;color:white;display:flex;align-items:center;gap:20px;margin:40px 0;flex-wrap:wrap}
+.cta-inline-text{flex:1;min-width:200px}.cta-inline-title{font-family:'Instrument Serif',serif;font-size:1.2rem;margin-bottom:5px}
+.cta-inline-sub{font-size:.85rem;opacity:.88;line-height:1.55}
+.cta-inline-btn{display:inline-flex;align-items:center;background:white;color:var(--accent);padding:11px 22px;border-radius:8px;font-size:.875rem;font-weight:700;white-space:nowrap;transition:transform .15s}
+.cta-inline-btn:hover{transform:translateY(-1px);text-decoration:none}
+.steps{display:grid;gap:0;margin:28px 0}.step{display:flex;gap:20px;padding:22px 0;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:15px;top:54px;width:2px;bottom:0;background:var(--border)}
+.step-num{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:var(--noir);color:var(--creme);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;position:relative;z-index:1}
+.step-content h4{font-size:.98rem;font-weight:700;color:var(--noir);margin-bottom:6px}.step-content p{font-size:.875rem;margin-bottom:0;color:var(--gris)}
+.step-tag{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-bottom:6px}
+.tag-s1{background:rgba(200,75,47,.12);color:var(--accent)}.tag-s2{background:var(--warning-light);color:#78450a}.tag-s3{background:rgba(13,13,13,.08);color:var(--noir)}
+.article-sources{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:.78rem;color:var(--gris);line-height:1.8}
+.related-articles{margin-top:48px;padding-top:24px;border-top:2px solid var(--border)}
+.related-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:16px}
+.related-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.related-card{border:1.5px solid var(--border);border-radius:10px;padding:16px;background:white;transition:border-color .15s;display:block}
+.related-card:hover{border-color:var(--accent);text-decoration:none}
+.related-card-label{font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.related-card-title{font-size:.85rem;font-weight:700;color:var(--noir);line-height:1.4}
+.sidebar{position:sticky;top:90px;animation:fadeUp .5s ease .1s both}
+.toc-box{background:white;border-radius:14px;border:1.5px solid var(--border);padding:20px;margin-bottom:20px}
+.toc-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.toc-list{list-style:none;display:grid;gap:2px}
+.toc-list li a{display:block;padding:5px 8px;border-radius:6px;font-size:.8rem;color:var(--gris);transition:all .15s;line-height:1.4}
+.toc-list li a:hover{background:var(--vert-light);color:var(--vert);text-decoration:none}.toc-list li a.active{background:var(--vert-light);color:var(--vert);font-weight:600}
+.sidebar-cta-box{background:var(--noir);border-radius:14px;padding:22px;color:white;text-align:center}
+.sidebar-cta-icon{font-size:2rem;margin-bottom:10px}.sidebar-cta-title{font-family:'Instrument Serif',serif;font-size:1.05rem;margin-bottom:7px}
+.sidebar-cta-sub{font-size:.78rem;opacity:.7;line-height:1.55;margin-bottom:16px}
+.sidebar-cta-btn{display:block;text-align:center;background:var(--accent);color:white;padding:11px 16px;border-radius:8px;font-size:.82rem;font-weight:700;transition:background .15s}
+.sidebar-cta-btn:hover{background:#b03f24;text-decoration:none}
+.sidebar-tip{background:var(--vert-light);border:1.5px solid rgba(45,106,79,.2);border-radius:10px;padding:14px 16px;margin-top:14px;font-size:.78rem;color:#1a4a31;line-height:1.55}
+.sidebar-tip strong{display:block;margin-bottom:4px;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--vert)}
+.footer-seo{background:var(--noir);color:rgba(255,255,255,0.7)}
+.footer-inner{max-width:1100px;margin:0 auto;padding:52px 48px 28px;width:100%;box-sizing:border-box}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand .footer-logo{font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;margin-bottom:8px}
+.footer-brand .footer-logo span{color:var(--accent)}.footer-tagline{font-size:.85rem;color:rgba(255,255,255,.55)}
+.footer-copy{font-size:.78rem;color:rgba(255,255,255,.35);margin-top:20px}
+.footer-col{display:flex;flex-direction:column;gap:10px}
+.footer-col-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:4px}
+.footer-col a{color:rgba(255,255,255,.65);text-decoration:none;font-size:.84rem;transition:color .2s}.footer-col a:hover{color:white}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;font-size:.75rem;color:rgba(255,255,255,.3);text-align:center}
+@media(max-width:900px){header{padding:16px 20px}nav a:not(.btn-nav):not(.nav-agences){display:none}.page-wrap{grid-template-columns:1fr}.sidebar{display:none}.related-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr 1fr;gap:28px}.footer-inner{padding:40px 20px 24px}}
+@media(max-width:560px){.article-h1{font-size:1.75rem}.article-meta{gap:10px}.badge-update{margin-left:0}.cta-inline{flex-direction:column}.footer-top{grid-template-columns:1fr}.breadcrumb{padding-top:90px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 <header>
   <a href="/" class="logo">Bail<span>Scan</span></a>
   <nav>
-    <a href="/blog.html">Blog</a>
-    <a href="/" class="btn-nav">Analyser mon bail →</a>
+    <a href="/blog.html">Guide locataire</a>
+    <a href="/pro.html" class="nav-agences">Pour les agences &#x2192;</a>
+    <a href="/#app" class="btn-nav">Analyser mon bail &#x2192;</a>
   </nav>
 </header>
-<div class="article-wrap">
-  <a href="/blog.html" class="back-link">← Retour au blog</a>
-  <span class="article-tag">Loyer</span>
-  <h1>Encadrement des loyers : votre loyer est-il légal ?</h1>
-  <div class="article-meta"><span>📅 Mars 2025</span><span>⏱ 7 min de lecture</span></div>
-  
-    <p>Depuis 2019 à Paris et progressivement dans d'autres villes, l'encadrement des loyers impose un plafond que les propriétaires ne peuvent pas dépasser. Des milliers de locataires paient trop cher sans le savoir.</p>
-
-    <h2>Quelles villes sont concernées ?</h2>
-    <p>En 2025, l'encadrement des loyers s'applique dans :</p>
-    <ul>
-      <li><strong>Paris</strong> (depuis 2019)</li>
-      <li><strong>Lille, Hellemmes, Lomme</strong> (depuis 2020)</li>
-      <li><strong>Lyon et Villeurbanne</strong> (depuis 2021)</li>
-      <li><strong>Bordeaux</strong> (depuis 2022)</li>
-      <li><strong>Montpellier</strong> (depuis 2022)</li>
-      <li><strong>Paris Banlieue</strong> — plusieurs communes d'Île-de-France (progressivement)</li>
-    </ul>
-    <div class="highlight-box warning"><strong>⚠️ Zones tendues vs encadrement</strong><p>Attention à ne pas confondre « zone tendue » (où le préavis est réduit à 1 mois) et « encadrement des loyers » (où le loyer est plafonné). Les deux dispositifs sont différents.</p></div>
-
-    <h2>Comment fonctionne l'encadrement ?</h2>
-    <p>Dans les zones concernées, chaque logement a un <strong>loyer de référence</strong> déterminé selon :</p>
-    <ul>
-      <li>Le type de logement (meublé / vide)</li>
-      <li>Le nombre de pièces</li>
-      <li>L'époque de construction</li>
-      <li>Le quartier ou l'arrondissement</li>
-    </ul>
-    <p>Le loyer que vous payez ne peut pas dépasser le loyer de référence majoré de 20%. Le propriétaire peut appliquer un complément de loyer uniquement si le logement présente des caractéristiques exceptionnelles (terrasse, vue panoramique, prestations haut de gamme).</p>
-
-    <h2>Comment vérifier votre loyer ?</h2>
-    <p>Rendez-vous sur les observatoires officiels :</p>
-    <ul>
-      <li><strong>Paris :</strong> observatoire-des-loyers.paris</li>
-      <li><strong>Lyon :</strong> oll.fr</li>
-      <li><strong>Bordeaux :</strong> bordeaux-metropole.fr/logement</li>
-    </ul>
-    <p>Vous avez besoin de : l'adresse exacte du logement, le nombre de pièces, la surface et le type (meublé ou vide).</p>
-
-    <h2>Votre loyer est trop élevé : que faire ?</h2>
-    <h3>1. Agir pendant les 3 premières années du bail</h3>
-    <p>Si vous êtes en cours de bail, vous avez 3 ans pour contester un loyer non conforme à l'encadrement. Passé ce délai, vous perdez vos droits pour les sommes déjà versées.</p>
-    <h3>2. Demander la mise en conformité</h3>
-    <p>Envoyez une lettre recommandée à votre propriétaire en indiquant le loyer de référence applicable et en demandant une réduction. Le propriétaire a 2 mois pour répondre.</p>
-    <h3>3. Saisir le juge</h3>
-    <p>En l'absence de réponse ou de refus, vous pouvez saisir le tribunal judiciaire. Si vous avez raison, le juge ordonnera la diminution du loyer et le remboursement du trop-perçu.</p>
-    <div class="highlight-box success"><strong>✅ Remboursement possible</strong><p>Si votre loyer dépasse l'encadrement depuis plusieurs années, le trop-perçu peut être réclamé rétroactivement dans la limite de 3 ans. Cela peut représenter plusieurs milliers d'euros.</p></div>
-    
-  <div class="cta-box">
-    <h3>Votre bail contient peut-être ces clauses</h3>
-    <p>Analysez-le gratuitement en 2 minutes avec BailScan</p>
-    <a href="/" class="cta-btn">Analyser mon bail gratuitement →</a>
+<nav class="breadcrumb"><a href="/">Accueil</a><span class="sep">&#x203A;</span><a href="/blog.html">Blog</a><span class="sep">&#x203A;</span><span>Encadrement des loyers</span></nav>
+<div class="page-wrap">
+  <main class="article-body" id="main-content">
+    <div class="article-category">Loyer</div>
+    <h1 class="article-h1">Encadrement des loyers 2026&nbsp;: votre loyer est-il l&eacute;gal&nbsp;?</h1>
+    <p class="article-intro">Des milliers de locataires paient trop cher sans le savoir. Depuis 2019 &agrave; Paris et progressivement dans d&rsquo;autres villes, un plafond l&eacute;gal s&rsquo;impose aux propri&eacute;taires. V&eacute;rifiez si le v&ocirc;tre est concern&eacute;.</p>
+  <div class="article-meta">
+    <div class="meta-avatar">BS</div>
+    <div><div class="meta-author-name">&#201;quipe juridique BailScan</div><div class="meta-author-bio">Sp&eacute;cialistes droit locatif</div></div>
+    <div class="meta-div"></div><div class="meta-item">Mis &agrave; jour&nbsp;: <strong><time datetime="2026-03-01">Mars 2026</time></strong></div>
+    <div class="meta-div"></div><div class="meta-item">Lecture&nbsp;: <strong>7&nbsp;min</strong></div>
+    <span class="badge-update">&#x1F195; Mars 2026</span>
   </div>
-  <div class="related"><h3>Articles liés</h3><div class="related-grid">
-      <a href="/blog/charges-locatives.html" class="related-card"><h4>Charges locatives : ce que le propriétaire peut facturer</h4><span>5 min →</span></a>
-      <a href="/blog/clauses-abusives-bail.html" class="related-card"><h4>Les 10 clauses illégales les plus courantes</h4><span>8 min →</span></a>
-    </div></div>
+    <h2 id="villes">Quelles villes sont concern&eacute;es&nbsp;?</h2>
+    <p>L&rsquo;encadrement des loyers s&rsquo;applique dans les agglom&eacute;rations ayant adopt&eacute; le dispositif exp&eacute;rimental pr&eacute;vu par la loi ELAN&nbsp;:</p>
+    <div class="table-wrap"><table><thead><tr><th>Ville</th><th>Entr&eacute;e en vigueur</th></tr></thead><tbody>
+    <tr><td>Paris intra-muros</td><td>2019</td></tr>
+    <tr><td>Lille, Hellemmes, Lomme</td><td>2020</td></tr>
+    <tr><td>Lyon &amp; Villeurbanne</td><td>2021</td></tr>
+    <tr><td>Bordeaux M&eacute;tropole</td><td>2022</td></tr>
+    <tr><td>Montpellier</td><td>2022</td></tr>
+    <tr><td>Grenoble agglom&eacute;ration</td><td>2023</td></tr>
+    <tr><td>Communes Ile-de-France (liste croissante)</td><td>2021&ndash;2026</td></tr>
+    </tbody></table></div>
+    <div class="callout callout-warn"><span class="callout-icon">&#x26A0;&#xFE0F;</span><p><strong>Zone tendue &#x2260; encadrement des loyers.</strong> La zone tendue r&eacute;duit le pr&eacute;avis &agrave; 1&nbsp;mois. L&rsquo;encadrement plafonne le montant du loyer. Les deux dispositifs sont ind&eacute;pendants.</p></div>
+    <h2 id="fonctionnement">Comment fonctionne l&rsquo;encadrement&nbsp;?</h2>
+    <p>Chaque logement a un <strong>loyer de r&eacute;f&eacute;rence</strong> d&eacute;termin&eacute; selon le type (meubl&eacute;/vide), le nombre de pi&egrave;ces, l&rsquo;&eacute;poque de construction et le quartier. Le loyer ne peut pas d&eacute;passer le loyer de r&eacute;f&eacute;rence major&eacute; de <strong>20&nbsp;%</strong>. Un compl&eacute;ment de loyer n&rsquo;est possible que pour des caract&eacute;ristiques exceptionnelles (terrasse, vue panoramique).</p>
+    <h2 id="verifier">Comment v&eacute;rifier votre loyer&nbsp;?</h2>
+    <p>Rendez-vous sur les observatoires officiels de chaque ville avec l&rsquo;adresse exacte, le nombre de pi&egrave;ces et le type de logement&nbsp;: <strong>observatoire-des-loyers.paris</strong> pour Paris, <strong>oll.fr</strong> pour Lyon, portails m&eacute;tropolitains pour les autres villes. BailScan v&eacute;rifie &eacute;galement automatiquement lors de l&rsquo;analyse de votre bail.</p>
+    <h2 id="recours">Votre loyer est trop &eacute;lev&eacute;&nbsp;: que faire&nbsp;?</h2>
+    <h3>1. Agir dans les 3 premi&egrave;res ann&eacute;es du bail</h3>
+    <p>Vous avez <strong>3&nbsp;ans</strong> pour contester un loyer non conforme. Pass&eacute; ce d&eacute;lai, vous perdez vos droits pour les sommes d&eacute;j&agrave; vers&eacute;es &mdash; mais vous pouvez toujours demander la mise en conformit&eacute; pour l&rsquo;avenir.</p>
+    <h3>2. Lettre recommand&eacute;e au propri&eacute;taire</h3>
+    <p>Mentionnez le loyer de r&eacute;f&eacute;rence applicable et demandez la r&eacute;duction. Le propri&eacute;taire a 2&nbsp;mois pour r&eacute;pondre. BailScan g&eacute;n&egrave;re cette lettre automatiquement avec les r&eacute;f&eacute;rences l&eacute;gales exactes.</p>
+    <h3>3. Tribunal judiciaire en cas de refus</h3>
+    <p>Le juge peut ordonner la diminution du loyer et le remboursement du trop-per&ccedil;u &mdash; potentiellement <strong>plusieurs milliers d&rsquo;euros</strong> pour plusieurs ann&eacute;es de d&eacute;passement.</p>
+    <div class="callout callout-info"><span class="callout-icon">&#x2705;</span><p><strong>Remboursement r&eacute;troactif sur 3 ans.</strong> Pour un loyer d&eacute;passant de 100&nbsp;&euro;/mois, cela repr&eacute;sente jusqu&rsquo;&agrave; 3&nbsp;600&nbsp;&euro; &agrave; r&eacute;cup&eacute;rer.</p></div>
+    <div class="cta-inline"><div class="cta-inline-text"><div class="cta-inline-title">Votre loyer respecte-t-il la loi&nbsp;?</div><div class="cta-inline-sub">BailScan v&eacute;rifie l&rsquo;encadrement et g&eacute;n&egrave;re la lettre de contestation en 30&nbsp;secondes.</div></div><a href="/#app" class="cta-inline-btn">Analyser mon bail &rarr;</a></div>
+    <h2 id="faq">Questions fr&eacute;quentes</h2>
+    <div class="faq">
+      <details class="faq-item"><summary class="faq-q">Comment v&eacute;rifier si mon loyer est encadr&eacute;&nbsp;?</summary><div class="faq-a"><p>Consultez l&rsquo;observatoire officiel de votre ville ou utilisez BailScan qui le v&eacute;rifie automatiquement lors de l&rsquo;analyse de votre contrat.</p></div></details>
+      <details class="faq-item"><summary class="faq-q">Puis-je r&eacute;clamer le trop-per&ccedil;u sur plusieurs ann&eacute;es&nbsp;?</summary><div class="faq-a"><p>Oui, vous avez <strong>3&nbsp;ans</strong> pour r&eacute;clamer r&eacute;troactivement. Au-del&agrave;, vous perdez les sommes d&eacute;j&agrave; vers&eacute;es.</p></div></details>
+      <details class="faq-item"><summary class="faq-q">Le compl&eacute;ment de loyer est-il toujours l&eacute;gal&nbsp;?</summary><div class="faq-a"><p>Seulement pour des caract&eacute;ristiques exceptionnelles (terrasse, double exposition, prestations haut de gamme). Il doit figurer dans le bail. Vous pouvez le contester dans les 3&nbsp;mois suivant la signature.</p></div></details>
+    </div>
+    <h2 id="conclusion">Conclusion</h2>
+    <p>Si vous habitez Paris, Lyon, Bordeaux, Lille, Montpellier ou Grenoble, v&eacute;rifiez votre loyer. Des dizaines de milliers de logements d&eacute;passent les plafonds l&eacute;gaux &mdash; et le trop-per&ccedil;u des 3 derni&egrave;res ann&eacute;es peut repr&eacute;senter une somme significative &agrave; r&eacute;cup&eacute;rer.</p>
+ 
+    <div class="article-sources"><strong>Sources&nbsp;:</strong> Art. 17 loi n° 89-462 du 6 juillet 1989 — Loi ELAN 2018 — Décret n° 2013-392 du 10 mai 2013 — Arrêtés préfectoraux de fixation des loyers de référence</div>
+    <div class="related-articles">
+      <div class="related-title">Articles li&eacute;s</div>
+      <div class="related-grid">
+        <a href="/blog/clauses-abusives-bail-location.html" class="related-card"><div class="related-card-label">Article pilier</div><div class="related-card-title">Clauses abusives bail : liste complète 2026</div></a>
+        <a href="/blog/zone-tendue-liste-communes.html" class="related-card"><div class="related-card-label">Guide</div><div class="related-card-title">Zones tendues : liste des communes et droits</div></a>
+      </div>
+    </div>
+  </main>
+  <aside class="sidebar">
+    <nav class="toc-box">
+      <div class="toc-title">Table des mati&egrave;res</div>
+      <ul class="toc-list">
+        <li><a href="#villes">Villes concernées</a></li>
+        <li><a href="#fonctionnement">Comment ça fonctionne</a></li>
+        <li><a href="#verifier">Vérifier votre loyer</a></li>
+        <li><a href="#recours">Que faire si trop élevé</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-cta-box">
+      <div class="sidebar-cta-icon">&#x1F4B8;</div>
+      <div class="sidebar-cta-title">Votre loyer est-il l&eacute;gal&nbsp;?</div>
+      <div class="sidebar-cta-sub">BailScan v&eacute;rifie l&rsquo;encadrement et d&eacute;tecte tout d&eacute;passement en 30&nbsp;secondes.</div>
+      <a href="/#app" class="sidebar-cta-btn">Essayer gratuitement &rarr;</a>
+    </div>
+    <div class="sidebar-tip"><strong>&#x1F4A1; Bon &agrave; savoir</strong>Le trop-per&ccedil;u peut &ecirc;tre r&eacute;clam&eacute; sur 3 ans. Pour 100&nbsp;&euro;/mois de d&eacute;passement, c&rsquo;est jusqu&rsquo;&agrave; 3&nbsp;600&nbsp;&euro; r&eacute;cup&eacute;rables.</div>
+  </aside>
 </div>
-<footer>
-  <div>© 2025 BailScan</div>
-  <div style="display:flex;gap:20px;"><a href="/blog.html">Blog</a><a href="/legal.html">Mentions légales</a></div>
+<footer class="footer-seo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Bail<span>Scan</span></div>
+        <div class="footer-tagline">Fait pour les locataires et les agences &#x2764;</div>
+        <div class="footer-copy">&copy; 2026 BailScan &mdash; Tous droits r&eacute;serv&eacute;s</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Outil</div>
+        <a href="/#app">Analyser mon bail</a>
+        <a href="/#app">V&eacute;rifier mon loyer</a>
+        <a href="/pro.html">Espace professionnel</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Guides</div>
+        <a href="/blog/clauses-abusives-bail-location.html">Clauses ill&eacute;gales</a>
+        <a href="/blog/depot-garantie-non-rendu-recours.html">D&eacute;p&ocirc;t de garantie</a>
+        <a href="/blog/encadrement-loyers.html">Encadrement des loyers</a>
+        <a href="/blog.html">Tous les guides &rarr;</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Informations</div>
+        <a href="/legal.html">Mentions l&eacute;gales</a>
+        <a href="/legal.html">CGV</a>
+        <a href="/legal.html">Confidentialit&eacute;</a>
+        <a href="mailto:contact@bailscan.app">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">BailScan n'est pas un cabinet juridique. Les analyses sont fournies &agrave; titre informatif.</div>
+  </div>
 </footer>
+<script>
+(function(){var h=document.querySelectorAll('h2[id]'),l=document.querySelectorAll('.toc-list a');if(!h.length||!l.length)return;function u(){var s=window.scrollY+100,c='';h.forEach(function(x){if(x.offsetTop<=s)c=x.id;});l.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+c);});}window.addEventListener('scroll',u,{passive:true});u();})();
+function copyLetter(id,btn){var el=document.getElementById(id);if(!el)return;var t=el.innerText;navigator.clipboard.writeText(t).then(function(){var o=btn.innerHTML;btn.innerHTML='&#x2713; Copi&eacute;&nbsp;!';btn.classList.add('copied');setTimeout(function(){btn.innerHTML=o;btn.classList.remove('copied');},2000);}).catch(function(){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);var o=btn.innerHTML;btn.innerHTML='&#x2713; Copi&eacute;&nbsp;!';btn.classList.add('copied');setTimeout(function(){btn.innerHTML=o;btn.classList.remove('copied');},2000);});}</script>
 </body>
 </html>
