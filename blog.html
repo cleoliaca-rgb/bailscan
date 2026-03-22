@@ -421,7 +421,7 @@ nav a.active { color: var(--noir); font-weight: 600; }
       <p class="hero-desc">1&nbsp;bail sur 3 contient au moins une clause illégale. Nos 19&nbsp;guides analysent le droit locatif avec les références légales exactes — pour que vous sachiez exactement où vous en êtes.</p>
       <div class="hero-kpis">
         <div>
-          <span class="kpi-n">19</span>
+          <span class="kpi-n">24</span>
           <div class="kpi-l">Guides juridiques<br>mis à jour</div>
         </div>
         <div>
@@ -436,7 +436,6 @@ nav a.active { color: var(--noir); font-weight: 600; }
     </div>
  
     <a href="blog/depot-garantie-non-rendu-recours.html" class="featured">
-      <div class="featured-label">Article phare · 12 000 recherches/mois</div>
       <div class="featured-cat">Dépôt de garantie</div>
       <h2>Dépôt de garantie non rendu : délais légaux, pénalité de 10 % et lettre de mise en demeure</h2>
       <p class="featured-desc">Chaque mois de retard coûte automatiquement 10 % du loyer au propriétaire — sans juge. Guide complet avec le calcul exact et le modèle de lettre.</p>
@@ -657,6 +656,57 @@ nav a.active { color: var(--noir); font-weight: 600; }
       <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">6 min</span></div>
     </a>
  
+ 
+    <a href="blog/revision-loyer-irl.html" class="card" data-cat="loyer">
+      <div class="card-stripe encre-stripe"></div>
+      <div class="card-body-inner">
+        <div class="card-cat encre">Loyer</div>
+        <h3>Révision du loyer avec l'IRL : calcul, plafond et contestation</h3>
+        <p>Conditions légales, formule de calcul, valeurs IRL 2025 et comment contester une augmentation non conforme.</p>
+      </div>
+      <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">6 min</span></div>
+    </a>
+ 
+    <a href="blog/sous-location-bail.html" class="card" data-cat="clauses">
+      <div class="card-stripe"></div>
+      <div class="card-body-inner">
+        <div class="card-cat">Droits &amp; bail</div>
+        <h3>Sous-location : conditions légales, accord du propriétaire et risques</h3>
+        <p>L'accord écrit du propriétaire est obligatoire. Démarche légale, loyer plafonné et risques en cas d'infraction.</p>
+      </div>
+      <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">6 min</span></div>
+    </a>
+ 
+    <a href="blog/loyer-impaye-procedure.html" class="card" data-cat="depart">
+      <div class="card-stripe vert-stripe"></div>
+      <div class="card-body-inner">
+        <div class="card-cat vert">Procédure</div>
+        <h3>Loyer impayé : procédure, trêve hivernale et droits du locataire</h3>
+        <p>Commandement de payer, délais légaux, trêve du 1er novembre au 31 mars, aides disponibles en urgence.</p>
+      </div>
+      <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">7 min</span></div>
+    </a>
+ 
+    <a href="blog/renouvellement-bail.html" class="card" data-cat="clauses">
+      <div class="card-stripe"></div>
+      <div class="card-body-inner">
+        <div class="card-cat">Droits &amp; bail</div>
+        <h3>Renouvellement de bail : durée, conditions et droits du locataire</h3>
+        <p>Renouvellement automatique, durées selon le type de logement, augmentation de loyer et motifs légaux de non-renouvellement.</p>
+      </div>
+      <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">6 min</span></div>
+    </a>
+ 
+    <a href="blog/garant-caution-bail.html" class="card" data-cat="clauses">
+      <div class="card-stripe"></div>
+      <div class="card-body-inner">
+        <div class="card-cat">Droits &amp; bail</div>
+        <h3>Garant pour un bail : obligations, durée et comment se libérer</h3>
+        <p>Caution solidaire vs simple, formalités obligatoires, comment se désengager et alternatives (Visale, GLI).</p>
+      </div>
+      <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">7 min</span></div>
+    </a>
+ 
   </div>
 </div>
  
@@ -699,14 +749,14 @@ nav a.active { color: var(--noir); font-weight: 600; }
         <a href="/legal.html">Mentions légales</a>
         <a href="/legal.html">CGV</a>
         <a href="/legal.html">Confidentialité</a>
-        <a href="mailto:contact@bailscan.app">Contact</a>
+        <a href="/cdn-cgi/l/email-protection#cfaca0a1bbaeacbb8fadaea6a3bcacaea1e1aebfbf">Contact</a>
       </div>
     </div>
     <div class="footer-bottom">BailScan n'est pas un cabinet juridique. Les analyses sont fournies à titre informatif et ne constituent pas un conseil juridique.</div>
   </div>
 </footer>
  
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function filterCards(cat, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -716,10 +766,4 @@ function filterCards(cat, btn) {
     card.style.display = show ? 'flex' : 'none';
     if (show) count++;
   });
-  document.getElementById('grid-label').textContent =
-    count + (count > 1 ? ' guides disponibles' : ' guide disponible');
-}
-</script>
-</body>
-</html>
-
+  
