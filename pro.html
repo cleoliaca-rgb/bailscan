@@ -28,6 +28,17 @@
 .invite-role-card.active{border-color:#86efac;background:#f0fdf4}
 
 </style>
+
+<!-- LAYOUT FIX — écrase le style compressé ci-dessus -->
+<style>
+#dashboardSection { display:none; }
+#dashboardSection[style*="block"], #dashboardSection[style*="flex"] { display:block !important; }
+.dash-layout { display:block !important; position:relative; min-height:100vh; margin-top:0 !important; }
+.dash-sidebar { position:fixed !important; top:0; left:0; width:256px !important; height:100vh !important; z-index:50; }
+.dash-main { margin-left:256px !important; width:calc(100% - 256px) !important; min-height:100vh; padding:28px 32px 48px !important; background:#f5f6fa !important; box-sizing:border-box !important; display:block !important; }
+@media(max-width:900px){ .dash-sidebar{display:none !important;} .dash-main{margin-left:0 !important;width:100% !important;} }
+</style>
+
 <script>
 (function(){
   var s=document.createElement('script');
@@ -101,8 +112,7 @@
 #dashboardSection { background: var(--dash-bg); }
 
 .dash-layout {
-  display: grid;
-  grid-template-columns: var(--side-w) 1fr;
+  display: flex !important;
   min-height: 100vh;
   margin-top: 0 !important;
 }
@@ -144,6 +154,19 @@
   letter-spacing: -.01em;
 }
 .dash-sidebar-logo span em { color: #f97316; font-style: normal; }
+.dash-sidebar-logo .logo-pro-badge {
+  font-size: .55rem;
+  font-weight: 800;
+  background: var(--pro-accent);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  letter-spacing: .06em;
+  font-family: 'DM Sans', sans-serif;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
 .dash-trial-pill {
   font-size: .62rem;
   font-weight: 700;
@@ -230,10 +253,15 @@
 
 /* ── Main content ── */
 .dash-main {
-  margin-left: var(--side-w);
-  background: var(--dash-bg);
+  margin-left: var(--side-w) !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+  width: calc(100% - var(--side-w)) !important;
+  background: var(--dash-bg) !important;
   min-height: 100vh;
-  padding: 28px 32px 48px;
+  padding: 28px 32px 48px !important;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 /* ── Page header ── */
@@ -904,7 +932,7 @@
     <!-- Sidebar -->
     <div class="dash-sidebar">
       <div class="dash-sidebar-logo">
-        <span>Bail<em>Scan</em> Pro</span>
+        <span>Bail<em>Scan</em><span class="logo-pro-badge">PRO</span></span>
         <div class="dash-trial-pill" id="trialPill">⏱ <span id="trialDaysLeft">3</span>j</div>
       </div>
 
