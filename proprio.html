@@ -1145,7 +1145,9 @@ function saveAllState(){
 function payWithStripe(){
   var btn=document.getElementById('btnPayConfirm');btn.textContent='Redirection…';btn.disabled=true;
   sessionStorage.setItem('proprio_state',JSON.stringify(saveAllState()));
-  fetch('/api/checkout-proprio',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:4900,mode:S.mode})})
+  // Récupérer l'email bailleur pour le reçu Stripe
+  var email=v('genBailleurEmail')||'';
+  fetch('/api/checkout-proprio',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:4900,mode:S.mode,email:email})})
   .then(function(r){return r.json();})
   .then(function(d){if(d.url){window.location.href=d.url;}else{throw new Error(d.error);}})
   .catch(function(e){btn.textContent='Obtenir mon document →';btn.disabled=false;alert('Erreur: '+e.message);});
@@ -1951,3 +1953,4 @@ checkPaymentReturn();
 </script>
 </body>
 </html>
+ 
