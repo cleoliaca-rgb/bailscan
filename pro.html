@@ -10605,7 +10605,7 @@ function searchQLocataire(q) {
   drop.innerHTML = filtered.slice(0,8).map(function(l){
     var name = (l.prenom||'') + ' ' + (l.nom||'');
     var detail = [l.adresse, l.email].filter(Boolean).join(' · ');
-    return '<div onclick="pickQLocataire(''+l.id+'')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #f0ede8" onmouseover="this.style.background='#eef2fb'" onmouseout="this.style.background='white'">'
+    return '<div onclick="pickQLocataire(\'' + l.id + '\')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #f0ede8" onmouseover="this.style.background=\'#eef2fb\'" onmouseout="this.style.background=\'white\'">'
       +'<div style="font-weight:600;font-size:.87rem">'+name+'</div>'
       +(detail?'<div style="font-size:.75rem;color:var(--gris)">'+detail+'</div>':'')
       +'</div>';
@@ -10681,7 +10681,7 @@ function searchPMandat(q) {
   drop.innerHTML = filtered.slice(0,8).map(function(m){
     var label = m.adresseFull||m.adresse||'Bien sans adresse';
     var detail = [m.type, m.loyer?m.loyer+'€/mois':'', m.surface?m.surface+'m²':''].filter(Boolean).join(' · ');
-    return '<div onclick="pickPMandat(''+m.id+'')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #f0ede8" onmouseover="this.style.background='#eef2fb'" onmouseout="this.style.background='white'">'
+    return '<div onclick="pickPMandat(\'' + m.id + '\')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #f0ede8" onmouseover="this.style.background=\'#eef2fb\'" onmouseout="this.style.background=\'white\'">'
       +'<div style="font-weight:600;font-size:.87rem">'+label+'</div>'
       +(detail?'<div style="font-size:.75rem;color:var(--gris)">'+detail+'</div>':'')
       +'</div>';
