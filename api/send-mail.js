@@ -1,9 +1,11 @@
 // api/send-mail.js
-// Placer dans /api/send-mail.js dans le repo
+// CommonJS — compatible avec tous les projets Vercel
 // npm install resend
-// Vercel env : RESEND_API_KEY=re_xxxxxxxxxx
+// Variable Vercel : RESEND_API_KEY=re_xxxxxxxxxx
  
-export default async function handler(req, res) {
+const { Resend } = require('resend');
+ 
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -14,20 +16,11 @@ export default async function handler(req, res) {
     const { to, nom, message, pdfBase64, pdfName, bailleur, adresse, date } = req.body || {};
  
     if (!to || !pdfBase64) {
-      return res.status(400).json({ error: 'Paramètres manquants : to et pdfBase64 requis' });
+      return res.status(400).json({ error: 'Parametres manquants : to et pdfBase64 requis' });
     }
  
     if (!process.env.RESEND_API_KEY) {
       return res.status(500).json({ error: 'RESEND_API_KEY manquante dans les variables Vercel' });
-    }
- 
-    // Import dynamique pour éviter les erreurs si resend pas installé
-    let Resend;
-    try {
-      const resendModule = await import('resend');
-      Resend = resendModule.Resend;
-    } catch (importErr) {
-      return res.status(500).json({ error: 'Module resend non installé — exécute : npm install resend' });
     }
  
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -36,8 +29,7 @@ export default async function handler(req, res) {
     const html = `<!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f5f0e8;font-family:Arial,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:20px">
+<body style="margin:0;padding:20px;background:#f5f0e8;font-family:Arial,sans-serif">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto">
   <tr><td style="background:#0d0d0d;border-radius:10px 10px 0 0;border-bottom:3px solid #c84b2f;padding:16px 24px">
     <span style="font-family:Georgia,serif;font-size:1.3rem;color:white;font-weight:bold">BailScan</span>
@@ -46,8 +38,8 @@ export default async function handler(req, res) {
   <tr><td style="background:white;border:1px solid #e0d8cc;border-top:none;border-radius:0 0 10px 10px;padding:28px">
     <p style="margin:0 0 14px;font-size:.9rem;color:#333">Bonjour${nom ? ' ' + nom : ''},</p>
     <p style="margin:0 0 20px;font-size:.88rem;color:#444;line-height:1.6">${message || 'Veuillez trouver ci-joint votre bail de location généré via BailScan.'}</p>
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0e8;border-radius:8px;border:1px solid #e0d8cc;margin-bottom:20px">
-      <tr><td style="padding:14px 16px">
+    <table width="100%" cellpadding="8" style="background:#f5f0e8;border-radius:8px;border:1px solid #e0d8cc;margin-bottom:20px">
+      <tr><td>
         <p style="margin:0 0 8px;font-size:.65rem;font-weight:700;color:#c84b2f;text-transform:uppercase;letter-spacing:.1em">Récapitulatif</p>
         ${bailleur ? `<p style="margin:0 0 5px;font-size:.82rem;color:#333"><strong>Bailleur :</strong> ${bailleur}</p>` : ''}
         ${adresse ? `<p style="margin:0 0 5px;font-size:.82rem;color:#333"><strong>Bien loué :</strong> ${adresse}</p>` : ''}
@@ -60,7 +52,6 @@ export default async function handler(req, res) {
     <p style="font-size:.7rem;color:#aaa;margin:0">BailScan · bailscan.app · Loi 89-462 · ALUR · ELAN 2018</p>
   </td></tr>
 </table>
-</td></tr></table>
 </body></html>`;
  
     const { data, error } = await resend.emails.send({
@@ -83,8 +74,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, id: data?.id });
  
   } catch (err) {
-    console.error('send-mail handler error:', err);
+    console.error('send-mail error:', err);
     return res.status(500).json({ error: err.message || 'Erreur serveur interne' });
   }
-}
- 
+};
