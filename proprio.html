@@ -1280,13 +1280,21 @@ function buildPdfBase64(){
     doc.text('Conforme loi n°89-462 du 6 juillet 1989  |  ALUR  |  ELAN 2018',mg+6,62);
     doc.setFontSize(7.5);doc.setTextColor(120,100,90);
     doc.text('Etabli le '+dateGen,pW-mg,76,{align:'right'});
+    // Récap depuis S directement (pas de regex fragile)
+    var loyer=parseFloat(S.genLoyer)||0,charges=parseFloat(S.genCharges)||0,complement=parseFloat(S.genComplement)||0;
+    var totalLoyer=loyer+charges+complement;
+    var recapBailleur=S.genBailleurType==='physique'?(S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom:(S.genBailleurDenom||'');
+    var recapLocataire=(S.genLocPrenom?S.genLocPrenom+' ':'')+S.genLocNom;
+    var recapAdresse=(S.genAdresse||'')+(S.genCp?' '+S.genCp:'')+(S.genVille?' '+S.genVille:'');
+    var recapLoyer=totalLoyer>0?totalLoyer.toFixed(2)+' EUR/mois':'';
+    var recapDate=S.genDateEntree?new Date(S.genDateEntree).toLocaleDateString('fr-FR'):'';
     var rows=[
-      {l:'BAILLEUR',v:exL(/Nom et pr.nom[^:]*:\s*([^\n]+)/i)||exL(/D.nomination sociale[^:]*:\s*([^\n]+)/i)},
-      {l:'LOCATAIRE(S)',v:exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)},
-      {l:'BIEN LOUE',v:exL(/Adresse du logement[^:]*:\s*([^\n]+)/i)},
-      {l:'LOYER TOTAL MENSUEL',v:exL(/TOTAL MENSUEL[^:]*:\s*([^\n]+)/i)||exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},
-      {l:'DATE ENTREE',v:exL(/Date de prise d.effet[^:]*:\s*([^\n]+)/i)},
-      {l:'DUREE DU BAIL',v:exL(/Dur.e\s*:\s*([^\n]+)/i)},
+      {l:'BAILLEUR',v:sp(recapBailleur)},
+      {l:'LOCATAIRE(S)',v:sp(recapLocataire)},
+      {l:'BIEN LOUE',v:sp(recapAdresse)},
+      {l:'LOYER TOTAL MENSUEL',v:recapLoyer},
+      {l:'DATE D\'ENTREE',v:recapDate},
+      {l:'DUREE DU BAIL',v:S.genDuree||''},
     ];
     var fy=95;
     doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
@@ -1373,7 +1381,11 @@ function sendMailNow(){
   })
   .then(function(r){
     if(!r.ok&&r.status===404){throw new Error('Endpoint /api/send-mail introuvable — vérifiez le déploiement');}
-    return r.json();
+    // Lire le texte d'abord pour éviter l'erreur JSON si le serveur renvoie du HTML
+    return r.text().then(function(txt){
+      try{return JSON.parse(txt);}
+      catch(e){throw new Error('Erreur serveur ('+r.status+'): '+txt.substring(0,120));}
+    });
   })
   .then(function(d){
     if(d.ok){
@@ -1686,13 +1698,21 @@ function exportPDF(){
     doc.setFontSize(7.5);doc.setTextColor(120,100,90);
     doc.text('Etabli le '+dateGen,pW-mg,76,{align:'right'});
  
+    // Récap depuis S directement (pas de regex fragile)
+    var loyer=parseFloat(S.genLoyer)||0,charges=parseFloat(S.genCharges)||0,complement=parseFloat(S.genComplement)||0;
+    var totalLoyer=loyer+charges+complement;
+    var recapBailleur=S.genBailleurType==='physique'?(S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom:(S.genBailleurDenom||'');
+    var recapLocataire=(S.genLocPrenom?S.genLocPrenom+' ':'')+S.genLocNom;
+    var recapAdresse=(S.genAdresse||'')+(S.genCp?' '+S.genCp:'')+(S.genVille?' '+S.genVille:'');
+    var recapLoyer=totalLoyer>0?totalLoyer.toFixed(2)+' EUR/mois':'';
+    var recapDate=S.genDateEntree?new Date(S.genDateEntree).toLocaleDateString('fr-FR'):'';
     var rows=[
-      {l:'BAILLEUR',v:exL(/Nom et pr.nom[^:]*:\s*([^\n]+)/i)||exL(/D.nomination sociale[^:]*:\s*([^\n]+)/i)},
-      {l:'LOCATAIRE(S)',v:exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)},
-      {l:'BIEN LOUE',v:exL(/Adresse du logement[^:]*:\s*([^\n]+)/i)},
-      {l:'LOYER TOTAL MENSUEL',v:exL(/TOTAL MENSUEL[^:]*:\s*([^\n]+)/i)||exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},
-      {l:'DATE ENTREE',v:exL(/Date de prise d.effet[^:]*:\s*([^\n]+)/i)},
-      {l:'DUREE DU BAIL',v:exL(/Dur.e\s*:\s*([^\n]+)/i)},
+      {l:'BAILLEUR',v:sp(recapBailleur)},
+      {l:'LOCATAIRE(S)',v:sp(recapLocataire)},
+      {l:'BIEN LOUE',v:sp(recapAdresse)},
+      {l:'LOYER TOTAL MENSUEL',v:recapLoyer},
+      {l:'DATE D\'ENTREE',v:recapDate},
+      {l:'DUREE DU BAIL',v:S.genDuree||''},
     ];
     var fy=95;
     doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
@@ -1784,46 +1804,50 @@ function exportPDF(){
     });
  
     // SIGNATURES
-    if(y+55>pH-BOTTOM){doc.addPage();pageHeader();}
-    y+=8;
-    doc.setDrawColor(200,190,180);doc.setLineWidth(0.4);doc.line(mg,y,pW-mg,y);y+=10;
+    if(y+60>pH-BOTTOM){doc.addPage();pageHeader();}
+    y+=10;
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(NOIR[0],NOIR[1],NOIR[2]);
-    doc.text('SIGNATURES',mg,y);y+=12;
+    doc.text('SIGNATURES',mg,y);y+=8;
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
+    doc.text('(Faire précéder chaque signature de la mention manuscrite "Lu et approuvé")',mg,y);y+=10;
+ 
     var midX=pW/2;
-    // Données directement depuis S
     var sigBailleur=sp(S.genBailleurType==='physique'?(S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom:(S.genBailleurDenom||'')||'');
     var sigLocataire=sp((S.genLocPrenom?S.genLocPrenom+' ':'')+S.genLocNom||'');
-    // Colonne BAILLEUR
-    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(mg,y,midX-mg-5,36,2,2,'F');
-    doc.setDrawColor(200,190,180);doc.setLineWidth(0.3);doc.roundedRect(mg,y,midX-mg-5,36,2,2,'S');
+    var colW=(usableW-8)/2;
+ 
+    // ─ Colonne BAILLEUR ─
     doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
-    doc.text('LE BAILLEUR',mg+5,y+7);
+    doc.text('LE BAILLEUR',mg,y);
+    // Ligne de signature
+    doc.setDrawColor(NOIR[0],NOIR[1],NOIR[2]);doc.setLineWidth(0.5);
+    doc.line(mg,y+14,mg+colW,y+14);
+    // Nom sous la ligne
     doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-    doc.text(sigBailleur,mg+5,y+13);
-    doc.text('Lu et approuve :',mg+5,y+21);
-    doc.setDrawColor(180,170,160);doc.line(mg+5,y+32,midX-mg-9,y+32);
-    // Colonne LOCATAIRE
-    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(midX+2,y,midX-mg-7,36,2,2,'F');
-    doc.setDrawColor(200,190,180);doc.roundedRect(midX+2,y,midX-mg-7,36,2,2,'S');
+    doc.text(sigBailleur,mg,y+19);
+ 
+    // ─ Colonne LOCATAIRE ─
+    var x2=mg+colW+8;
     doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
-    doc.text('LE(S) LOCATAIRE(S)',midX+7,y+7);
+    doc.text('LE(S) LOCATAIRE(S)',x2,y);
+    doc.setDrawColor(NOIR[0],NOIR[1],NOIR[2]);doc.setLineWidth(0.5);
+    doc.line(x2,y+14,x2+colW,y+14);
     doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-    doc.text(sigLocataire,midX+7,y+13);
-    doc.text('Lu et approuve :',midX+7,y+21);
-    doc.setDrawColor(180,170,160);doc.line(midX+7,y+32,pW-mg-5,y+32);
-    y+=42;
-    // Garant si applicable
+    doc.text(sigLocataire,x2,y+19);
+    y+=28;
+ 
+    // ─ Garant si applicable ─
     if(S.genGarantNom){
       var sigGarant=sp((S.genGarantPrenom?S.genGarantPrenom+' ':'')+S.genGarantNom);
-      if(y+36>pH-BOTTOM){doc.addPage();pageHeader();}
-      doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(mg,y,midX-mg-5,36,2,2,'F');
-      doc.setDrawColor(200,190,180);doc.setLineWidth(0.3);doc.roundedRect(mg,y,midX-mg-5,36,2,2,'S');
+      if(y+28>pH-BOTTOM){doc.addPage();pageHeader();}
+      y+=6;
       doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
-      doc.text('LE GARANT',mg+5,y+7);
+      doc.text('LE GARANT',mg,y);
+      doc.setDrawColor(NOIR[0],NOIR[1],NOIR[2]);doc.setLineWidth(0.5);
+      doc.line(mg,y+14,mg+colW,y+14);
       doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-      doc.text(sigGarant,mg+5,y+13);
-      doc.text('Lu et approuve :',mg+5,y+21);
-      doc.setDrawColor(180,170,160);doc.line(mg+5,y+32,midX-mg-9,y+32);
+      doc.text(sigGarant,mg,y+19);
+      y+=28;
     }
  
     var pc=doc.internal.getNumberOfPages();
@@ -1878,3 +1902,4 @@ checkPaymentReturn();
 </script>
 </body>
 </html>
+ 
