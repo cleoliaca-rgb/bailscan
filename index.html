@@ -448,6 +448,29 @@ select.form-input { cursor:pointer; }
  
 /* Section Pro accueil */
 .pro-home { padding:60px 48px; background:var(--noir); border-top:1px solid #333; }
+ 
+/* Section Propriétaire particulier */
+.proprio-home { padding:60px 48px; background:var(--creme); border-top:1px solid var(--border); }
+.proprio-home-inner { max-width:1000px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+.proprio-home-badge { display:inline-block; background:var(--accent); color:white; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; padding:4px 10px; border-radius:5px; margin-bottom:16px; }
+.proprio-home-title { font-family:'Instrument Serif',serif; font-size:2rem; color:var(--noir); margin-bottom:12px; line-height:1.2; }
+.proprio-home-desc { font-size:0.9rem; color:var(--gris); line-height:1.75; margin-bottom:24px; }
+.proprio-home-features { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; }
+.proprio-home-feature { display:flex; align-items:center; gap:10px; font-size:0.85rem; color:var(--texte); }
+.proprio-home-feature::before { content:"✓"; color:var(--vert); font-weight:700; flex-shrink:0; }
+.proprio-price-card { background:var(--noir); border-radius:20px; padding:32px; text-align:center; }
+.proprio-price-badge { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent2); margin-bottom:12px; }
+.proprio-price-amount { font-family:'Instrument Serif',serif; font-size:3.5rem; color:white; line-height:1; margin-bottom:4px; }
+.proprio-price-sub { font-size:0.8rem; color:rgba(255,255,255,0.5); margin-bottom:24px; }
+.proprio-price-features { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; text-align:left; }
+.proprio-price-feature { display:flex; align-items:center; gap:10px; font-size:0.82rem; color:rgba(255,255,255,0.75); }
+.proprio-price-feature::before { content:"✓"; color:#4ade80; font-weight:700; flex-shrink:0; }
+.btn-proprio { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px 26px; background:var(--accent); color:white; border-radius:10px; font-size:0.9rem; font-weight:700; text-decoration:none; transition:all .2s; border:none; cursor:pointer; font-family:inherit; }
+.btn-proprio:hover { background:#a83a20; transform:translateY(-1px); }
+@media(max-width:640px){
+  .proprio-home { padding:40px 20px; }
+  .proprio-home-inner { grid-template-columns:1fr; gap:32px; }
+}
 .pro-home-inner { max-width:1000px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap; }
 .pro-home-text { flex:1; min-width:280px; }
 .pro-home-badge { display:inline-block; background:var(--accent); color:white; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; padding:4px 10px; border-radius:5px; margin-bottom:16px; }
@@ -524,7 +547,7 @@ select.form-input { cursor:pointer; }
     <div class="modal-price"><div class="modal-price-n">29€</div><div class="modal-price-sub">paiement unique</div></div>
     <div class="modal-price-once">Accès à vie à votre rapport</div>
     <button class="btn-pay" id="btnPayConfirm" onclick="payWithStripe()">Débloquer mon rapport complet →</button>
-    <div class="modal-secure">🔒 Paiement sécurisé par Stripe · Satisfait ou remboursé</div>
+    <div class="modal-secure">🔒 Paiement sécurisé · Satisfait ou remboursé</div>
   </div>
 </div>
  
@@ -546,7 +569,7 @@ select.form-input { cursor:pointer; }
     <div>
       <div class="hero-tag">IA juridique · Loi du 6 juillet 1989</div>
       <h1>Votre bail vous coûte peut-être <em>trop cher.</em></h1>
-      <p class="hero-sub">BailScan analyse votre bail, vérifie l'encadrement des loyers et détecte les clauses illégales — avec les explications juridiques complètes pour agir.</p>
+      <p class="hero-sub">BailScan analyse votre bail, vérifie l'encadrement des loyers et détecte les clauses illégales, avec les explications juridiques complètes pour agir.</p>
       <div class="hero-ctas">
         <a href="#app" class="btn-primary">Analyser mon bail gratuitement →</a>
         <a href="#app" class="btn-secondary">Analyser un état des lieux</a>
@@ -560,11 +583,11 @@ select.form-input { cursor:pointer; }
     <div class="hero-card">
       <div class="hero-card-title">Ce que BailScan analyse</div>
       <div class="hero-card-features">
-        <div class="feature-row"><div class="feature-icon">📄</div><div class="feature-text"><strong>Bail</strong> — clauses abusives, dépôt, préavis</div></div>
-        <div class="feature-row new"><div class="feature-icon">🏠</div><div class="feature-text"><strong>État des lieux</strong> — retenues abusives détectées</div><div class="feature-badge">Nouveau</div></div>
-        <div class="feature-row new"><div class="feature-icon">💶</div><div class="feature-text"><strong>Encadrement loyers</strong> — vérification automatique</div><div class="feature-badge">Nouveau</div></div>
-        <div class="feature-row"><div class="feature-icon">⚖️</div><div class="feature-text"><strong>Explications juridiques</strong> — références légales complètes</div></div>
-        <div class="feature-row"><div class="feature-icon">✉️</div><div class="feature-text"><strong>5 lettres officielles</strong> — générées par IA</div></div>
+        <div class="feature-row"><div class="feature-icon">📄</div><div class="feature-text"><strong>Bail</strong> : clauses abusives, dépôt, préavis</div></div>
+        <div class="feature-row new"><div class="feature-icon">🏠</div><div class="feature-text"><strong>État des lieux</strong> : retenues abusives détectées</div><div class="feature-badge">Nouveau</div></div>
+        <div class="feature-row new"><div class="feature-icon">💶</div><div class="feature-text"><strong>Encadrement loyers</strong> : vérification automatique</div><div class="feature-badge">Nouveau</div></div>
+        <div class="feature-row"><div class="feature-icon">⚖️</div><div class="feature-text"><strong>Explications juridiques</strong> : références légales complètes</div></div>
+        <div class="feature-row"><div class="feature-icon">✉️</div><div class="feature-text"><strong>5 lettres officielles</strong> : personnalisées selon votre situation</div></div>
       </div>
     </div>
   </div>
@@ -574,7 +597,7 @@ select.form-input { cursor:pointer; }
 <section id="app">
   <div class="app-inner">
     <h2 class="app-title">Analysez votre document</h2>
-    <p class="app-sub">Suivez les 4 étapes — l'analyse prend moins de 2 minutes</p>
+    <p class="app-sub">Suivez les 4 étapes, l'analyse prend moins de 2 minutes</p>
  
     <!-- TYPE SELECTOR -->
     <div class="type-selector" id="typeSelectorBlock">
@@ -984,13 +1007,43 @@ select.form-input { cursor:pointer; }
  
  
  
+<!-- PROPRIÉTAIRE PARTICULIER -->
+<section class="proprio-home">
+  <div class="proprio-home-inner">
+    <div class="proprio-home-text">
+      <div class="proprio-home-badge">Propriétaires</div>
+      <h2 class="proprio-home-title">Vous louez à un locataire ?</h2>
+      <div class="proprio-home-desc">Protégez-vous avant la signature. BailScan génère un bail conforme à la loi du 6 juillet 1989 en 30 secondes, adapté à votre bien, zéro risque de litige.</div>
+      <div class="proprio-home-features">
+        <div class="proprio-home-feature">Bail rédigé selon la loi 1989 / ALUR / ELAN</div>
+        <div class="proprio-home-feature">Adapté à votre bien : meublé, vide, saisonnier</div>
+        <div class="proprio-home-feature">Zéro clause illégale, zéro risque de litige</div>
+        <div class="proprio-home-feature">Économisez 300–500€ de notaire ou juriste</div>
+      </div>
+    </div>
+    <div class="proprio-price-card">
+      <div class="proprio-price-badge">Paiement unique · Accès à vie</div>
+      <div class="proprio-price-amount">49€</div>
+      <div class="proprio-price-sub">Résultat en moins de 2 minutes</div>
+      <div class="proprio-price-features">
+        <div class="proprio-price-feature">Bail conforme rédigé en 30 secondes</div>
+        <div class="proprio-price-feature">Adapté à votre bien : meublé, vide, saisonnier</div>
+        <div class="proprio-price-feature">Toutes les clauses légales incluses</div>
+        <div class="proprio-price-feature">Export PDF prêt à signer</div>
+      </div>
+      <a href="#app" class="btn-proprio">Obtenir mon bail conforme →</a>
+      <div style="margin-top:12px;font-size:0.72rem;color:rgba(255,255,255,0.35)">🔒 Paiement sécurisé · Sans abonnement</div>
+    </div>
+  </div>
+</section>
+ 
 <!-- BLOG HOME -->
 <section class="blog-home">
   <div class="blog-home-inner">
     <div class="blog-home-header">
       <div>
         <h2 class="blog-home-title">Guide du locataire</h2>
-        <div class="blog-home-sub">Tout ce que vous devez savoir sur vos droits — rédigé par des experts</div>
+        <div class="blog-home-sub">Tout ce que vous devez savoir sur vos droits, rédigé par des experts</div>
       </div>
     </div>
     <div class="blog-grid-home">
@@ -1083,7 +1136,7 @@ select.form-input { cursor:pointer; }
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">Quelle est la fiabilité de l'analyse ? <span class="faq-toggle">+</span></div>
-      <div class="faq-answer">BailScan applique la loi du 6 juillet 1989, la loi ALUR (2014) et la loi ELAN (2018). Chaque clause détectée est accompagnée de sa référence légale exacte. BailScan est un outil d'aide — pour les litiges complexes, consultez un juriste ou l'ADIL de votre département.</div>
+      <div class="faq-answer">BailScan applique la loi du 6 juillet 1989, la loi ALUR (2014) et la loi ELAN (2018). Chaque clause détectée est accompagnée de sa référence légale exacte. BailScan est un outil d'aide. Pour les litiges complexes, consultez un juriste ou l'ADIL de votre département.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">L'encadrement des loyers est-il vérifié automatiquement ? <span class="faq-toggle">+</span></div>
@@ -2179,4 +2232,3 @@ function scrollToApp() {
 </script>
 </body>
 </html>
- 
