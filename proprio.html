@@ -656,7 +656,12 @@ footer a:hover{color:var(--accent);}
           <div class="paywall-title" id="pwTitle" style="font-size:1.3rem;margin-bottom:0">Débloquer le document complet</div>
         </div>
         <div class="paywall-sub" id="pwSub">Génération + Analyse de bail incluses</div>
-        <div class="paywall-feats" id="pwFeats"></div>
+        <div class="paywall-feats" id="pwFeats">
+          <div class="paywall-feat">Bail généré conforme loi 1989 / ALUR / ELAN</div>
+          <div class="paywall-feat">Analyse de bail existant incluse</div>
+          <div class="paywall-feat">Export PDF prêt à signer</div>
+          <div class="paywall-feat">Modifications illimitées sans repayer</div>
+        </div>
         <div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:4px">
           <div class="paywall-price">49€</div>
           <div style="font-size:.85rem;color:rgba(255,255,255,.5)">paiement unique</div>
@@ -776,7 +781,7 @@ function selectMode(mode){
     document.getElementById('panelClausesAnalyser').style.display='block';
     document.getElementById('pwTitle').textContent='Accès complet — 49€';
     document.getElementById('pwSub').textContent='Analyse + Génération de bail incluses';
-    document.getElementById('pwFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
+    document.getElementById('pwFeats').innerHTML=['Bail généré conforme loi 1989 / ALUR / ELAN','Analyse de bail existant incluse','Export PDF prêt à signer','Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
     document.getElementById('modalTitle').textContent='Accès complet BailScan';
     document.getElementById('modalFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
   }else{
@@ -790,7 +795,7 @@ function selectMode(mode){
     document.getElementById('panelClausesAnalyser').style.display='none';
     document.getElementById('pwTitle').textContent='Accès complet — 49€';
     document.getElementById('pwSub').textContent='Génération + Analyse de bail incluses';
-    document.getElementById('pwFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
+    document.getElementById('pwFeats').innerHTML=['Bail généré conforme loi 1989 / ALUR / ELAN','Analyse de bail existant incluse','Export PDF prêt à signer','Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
     document.getElementById('modalTitle').textContent='Accès complet BailScan';
     document.getElementById('modalFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
   }
@@ -876,12 +881,30 @@ document.addEventListener('DOMContentLoaded',function(){
   if(cpEl)cpEl.addEventListener('input',function(){document.getElementById('complementJustifGroup').style.display=parseFloat(this.value)>0?'block':'none';});
   var zone=document.getElementById('uploadZone');
   if(zone){zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('dragover');});zone.addEventListener('dragleave',function(){zone.classList.remove('dragover');});zone.addEventListener('drop',function(e){e.preventDefault();zone.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});}
-  // Écouter la checkbox colocation
   var chkCol=document.getElementById('chkColocation');
   if(chkCol)chkCol.addEventListener('change',toggleColocsSection);
+ 
+  // Autosave sur tous les champs
+  document.querySelectorAll('input,select,textarea').forEach(function(el){
+    el.addEventListener('input',autosave);
+    el.addEventListener('change',autosave);
+  });
+ 
+  // Restaurer brouillon si existant
+  if(localStorage.getItem(SAVE_KEY)){
+    var restored=restoreState();
+    if(restored){
+      var notif=document.createElement('div');
+      notif.style.cssText='position:fixed;bottom:20px;right:20px;background:var(--noir);color:white;padding:10px 16px;border-radius:10px;font-size:.78rem;z-index:500;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,.2)';
+      notif.innerHTML='<span style="color:#4ade80">✓</span> Brouillon restauré <button onclick="clearSave();this.parentNode.remove()" style="margin-left:8px;background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:.78rem;font-family:inherit">Effacer</button>';
+      document.body.appendChild(notif);
+      setTimeout(function(){notif.style.transition='opacity .5s';notif.style.opacity='0';setTimeout(function(){if(notif.parentNode)notif.parentNode.removeChild(notif);},500);},4000);
+    }
+  }
 });
  
 function goStep(n){
+  _currentStep=n;
   if(n>=2&&!S.mode) S.mode='generer';
   // Si déjà payé et qu'on arrive à l'étape 5 depuis une modification → régénérer directement
   if(n===5&&S.isPaid&&S.mode==='generer'){
@@ -954,7 +977,11 @@ function buildRecap(){
  
   document.getElementById('bailPreviewContent').innerHTML=html;
  
-  // Paywall feats — texte sans emoji en préfixe (le ::before ajoute déjà ✓)
+  // Toujours initialiser le titre et sous-titre du paywall
+  document.getElementById('pwTitle').textContent='Débloquer le document complet';
+  document.getElementById('pwSub').textContent='Génération + Analyse de bail incluses';
+ 
+  // Paywall feats
   document.getElementById('pwFeats').innerHTML=[
     'Bail généré conforme loi 1989 / ALUR / ELAN',
     'Analyse de bail existant incluse',
@@ -970,6 +997,104 @@ function clearFile(){S.pdf=null;S.pdfName='';document.getElementById('uploadZone
  
 function openModal(){document.getElementById('modalOverlay').classList.add('active');}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('active');}
+ 
+// ─── PERSISTANCE LOCALE ────────────────────────────────────
+var SAVE_KEY='bailscan_proprio_draft';
+var _saveTimer=null;
+ 
+function autosave(){
+  clearTimeout(_saveTimer);
+  _saveTimer=setTimeout(function(){
+    try{
+      var state=saveAllState();
+      state._step=_currentStep||1;
+      state._mode=S.mode;
+      localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+    }catch(e){}
+  },600);
+}
+ 
+function restoreState(){
+  try{
+    var raw=localStorage.getItem(SAVE_KEY);
+    if(!raw)return false;
+    var g=JSON.parse(raw);
+    if(!g)return false;
+ 
+    // Mode
+    if(g._mode)selectMode(g._mode);
+ 
+    // Radios — type bien
+    if(g.genType){var el=document.querySelector('.rpill[data-group="genType"][onclick*="\''+g.genType+'\'"]');if(el)setR('genType',g.genType,el);}
+    if(g.genType==='meuble'||g.genType==='vide') onTypeChange(g.genType);
+ 
+    // Durée
+    if(g.genDuree){var el=document.querySelector('.rpill[data-group="genDuree"][onclick*="\''+g.genDuree+'\'"]');if(el)setR('genDuree',g.genDuree,el);}
+ 
+    // Champs texte/number/date/email/select
+    var fields=['genAdresse','genCp','genVille','genSurface','genPieces','genEtage','genDpe','genGes','genEquipements',
+      'genAnnexeNum','genSyndic','genLoyer','genCharges','genDepot','genDateEntree',
+      'genLoyerRef','genLoyerMajore','genLoyerMinore','genComplement','genComplementJustif','genIrl',
+      'genBailleurPrenom','genBailleurNom','genBailleurDenom','genBailleurAdresse','genBailleurCp','genBailleurVille','genBailleurEmail','genBailleurTel',
+      'genLocPrenom','genLocNom','genLocAdresse','genLocCp','genLocVille','genLocEmail',
+      'genGarantPrenom','genGarantNom','genGarantAdresse','genGarantCp','genGarantVille','genGarantEmail','genGarantTel',
+      'analyseVille','analyseLoyer','analyseSurface','analyseDepot','textBail','travAutres','clausesLibres'];
+    fields.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el&&g[id]!==undefined)el.value=g[id];
+    });
+ 
+    // Checkboxes
+    var checks=['chkColocation','chkJardin','chkTerrasse','chkParking','chkCave','chkGrenier','chkPiscine',
+      'travChaudiere','travClim','travJardin','travGouttiere','travPiscine','travRamonage','travRobinetterie','travDetartrage',
+      'clauseSousloc','clauseCession','clausePno','clauseCompteur','clauseDpeTrav','clauseNum','clauseFumeur',
+      'annDpe','annEdl','annNotice','annRgl','annGarant','annInventaire'];
+    checks.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el&&g[id]!==undefined)el.checked=!!g[id];
+    });
+ 
+    // Radios restants
+    ['genBailleurType','genCopro','genCaution','genPno','genResolutoire','genSolidarite','genRevision'].forEach(function(name){
+      if(g[name]){var el=document.querySelector('.rpill[data-group="'+name+'"][onclick*="\''+g[name]+'\'"]');if(el)setR(name,g[name],el);}
+    });
+ 
+    // Bailleur type (affichage)
+    if(g.genBailleurType)toggleBailleur(g.genBailleurType);
+ 
+    // Colocation
+    toggleColocsSection();
+    if(g.chkColocation&&g.colocs&&g.colocs.length){
+      g.colocs.forEach(function(col){
+        addColoc();
+        var n=colocCount;
+        ['prenom','nom','adresse','cp','ville','email'].forEach(function(f){
+          var el=document.getElementById('coloc_'+f+'_'+n);
+          if(el&&col[f])el.value=col[f];
+        });
+      });
+    }
+ 
+    // Complément
+    var cpEl=document.getElementById('genComplement');
+    if(cpEl&&g.genComplement){cpEl.value=g.genComplement;if(parseFloat(g.genComplement)>0){var jg=document.getElementById('complementJustifGroup');if(jg)jg.style.display='block';}}
+ 
+    // Restaurer l'étape
+    var step=parseInt(g._step)||1;
+    goStep(step);
+ 
+    return true;
+  }catch(e){
+    console.warn('Restore error:',e);
+    return false;
+  }
+}
+ 
+function clearSave(){
+  localStorage.removeItem(SAVE_KEY);
+}
+ 
+var _currentStep=1;
  
 function saveAllState(){
   return{mode:S.mode,pdf:S.pdf,pdfName:S.pdfName,
@@ -1105,88 +1230,142 @@ function editBail(){
 function openMailModal(){document.getElementById('mailModal').classList.add('active');}
 function closeMailModal(){document.getElementById('mailModal').classList.remove('active');}
  
+function buildPdfBase64(){
+  // Génère le même PDF qu'exportPDF mais retourne le base64 au lieu de sauvegarder
+  if(!window.jspdf||!S.currentBail)return null;
+  try{
+    var jsPDF=window.jspdf.jsPDF;
+    var doc=new jsPDF({putOnlyUsedFonts:true,compress:true,unit:'mm',format:'a4'});
+    var pW=210,pH=297,mg=20,usableW=pW-mg*2;
+    var ROUGE=[200,75,47],NOIR=[13,13,13],CREME=[245,240,232],GRIS=[107,107,107];
+    var ROUGE_LIGHT=[253,240,237],BLANC=[255,255,255];
+    var dateGen=new Date().toLocaleDateString('fr-FR');
+    var bt=S.currentBail;
+    function sp(str){return sanitizePDF(str);}
+    function exL(rx){var m=bt.match(rx);return m?m[1].trim():'';}
+    // Page de garde
+    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.rect(0,0,pW,pH,'F');
+    doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,pH-85,pW,85,'F');
+    doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,pH-85,6,85,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(22);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
+    doc.text('BailScan',mg+6,pH-67);
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(200,160,140);
+    doc.text('bailscan.app',mg+6,pH-61);
+    doc.setFont('helvetica','bold');doc.setFontSize(30);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
+    doc.text('BAIL DE LOCATION',mg+6,pH-43);
+    doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(200,160,140);
+    doc.text('Conforme loi n°89-462 du 6 juillet 1989  |  ALUR  |  ELAN 2018',mg+6,pH-35);
+    doc.setFontSize(7.5);doc.setTextColor(120,100,90);
+    doc.text('Etabli le '+dateGen,pW-mg,pH-21,{align:'right'});
+    var rows=[
+      {l:'BAILLEUR',v:exL(/Nom et pr.nom[^:]*:\s*([^\n]+)/i)||exL(/D.nomination sociale[^:]*:\s*([^\n]+)/i)},
+      {l:'LOCATAIRE(S)',v:exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)},
+      {l:'BIEN LOUE',v:exL(/Adresse du logement[^:]*:\s*([^\n]+)/i)},
+      {l:'LOYER HORS CHARGES',v:exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},
+      {l:'DATE ENTREE',v:exL(/Date de prise d.effet[^:]*:\s*([^\n]+)/i)},
+      {l:'DUREE DU BAIL',v:exL(/Dur.e\s*:\s*([^\n]+)/i)},
+    ];
+    var fy=20;
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+    doc.text('RECAPITULATIF DU CONTRAT',mg+6,fy);
+    doc.setDrawColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.setLineWidth(0.4);doc.line(mg+6,fy+1.5,mg+80,fy+1.5);fy+=8;
+    rows.forEach(function(row){
+      if(!row.v)return;
+      doc.setFillColor(BLANC[0],BLANC[1],BLANC[2]);doc.roundedRect(mg+6,fy,usableW-6,10,1.5,1.5,'F');
+      doc.setDrawColor(220,212,202);doc.setLineWidth(0.3);doc.roundedRect(mg+6,fy,usableW-6,10,1.5,1.5,'S');
+      doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.roundedRect(mg+6,fy,3,10,1,1,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
+      doc.text(row.l,mg+13,fy+4.5);
+      doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(NOIR[0],NOIR[1],NOIR[2]);
+      doc.text(sp(row.v).substring(0,60),pW-mg-4,fy+6.5,{align:'right'});fy+=12;
+    });
+    doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,pH-18,pW,18,'F');
+    doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,pH-18,6,18,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(160,130,120);
+    doc.text('Document etabli conformement a la loi du 6 juillet 1989  |  BailScan  |  bailscan.app',pW/2,pH-9,{align:'center'});
+    // Pages contenu
+    doc.addPage();var y=0;var BOTTOM=14,ART_H=12,SUB_H=9,LINE_H=6,EMPTY_H=3;
+    function pageHeader(){doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,0,pW,10,'F');doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,0,4,10,'F');doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);doc.text('BailScan',mg,7);doc.setFont('helvetica','normal');doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.text('BAIL DE LOCATION',pW-mg,7,{align:'right'});y=22;}
+    function pageFooter(pn,tot){doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,pH-9,pW,9,'F');doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,pH-9,4,9,'F');doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(160,130,120);doc.text('BailScan  |  bailscan.app  |  Loi 89-462',mg,pH-4);doc.setTextColor(120,100,90);doc.text('Page '+pn+' / '+tot,pW-mg,pH-4,{align:'right'});}
+    pageHeader();
+    sp(S.currentBail).split('\n').forEach(function(rawLine){
+      doc.splitTextToSize(rawLine,usableW).forEach(function(line){
+        var isSep=/^={5,}/.test(line.trim()),isArt=/^ARTICLE\s+\d/i.test(line.trim());
+        var isSub=/^(BAILLEUR\s*:|LOCATAIRE|GARANT\s*:|CLAUSES PARTI|SIGNATURES|COPROPRI|Fait a|En \d)/i.test(line.trim());
+        var isBullet=/^[-]/.test(line.trim()),isEmpty=!line.trim();
+        if(isArt){y+=7;if(y+ART_H>pH-BOTTOM){doc.addPage();pageHeader();}doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.roundedRect(mg,y-1,usableW,ART_H,2,2,'F');doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.roundedRect(mg,y-1,4,ART_H,1.5,1.5,'F');doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);doc.text(line.trim(),mg+8,y+7.5);y+=ART_H+5;return;}
+        if(isSep){if(y+3>pH-BOTTOM){doc.addPage();pageHeader();}doc.setDrawColor(210,200,190);doc.setLineWidth(0.25);doc.line(mg,y,pW-mg,y);y+=EMPTY_H;return;}
+        if(isSub){y+=1;if(y+SUB_H>pH-BOTTOM){doc.addPage();pageHeader();}doc.setFillColor(ROUGE_LIGHT[0],ROUGE_LIGHT[1],ROUGE_LIGHT[2]);doc.roundedRect(mg,y-1,usableW,SUB_H,1.5,1.5,'F');doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.text(line.trim(),mg+4,y+5.5);y+=SUB_H+1;return;}
+        if(isEmpty){y+=EMPTY_H;return;}
+        if(y+LINE_H>pH-BOTTOM){doc.addPage();pageHeader();}
+        doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(40,45,55);doc.text(line.trim(),isBullet?mg+4:mg,y+5);y+=LINE_H;
+      });
+    });
+    var pc=doc.internal.getNumberOfPages();
+    for(var p=1;p<=pc;p++){doc.setPage(p);if(p>1)pageFooter(p,pc);}
+    return doc.output('datauristring').split(',')[1];
+  }catch(e){console.error('PDF build error',e);return null;}
+}
+ 
 function sendMailNow(){
   var to=document.getElementById('mailTo').value.trim();
   var nom=document.getElementById('mailNom').value.trim();
   var msg=document.getElementById('mailMsg').value.trim();
-  if(!to){alert('Veuillez renseigner l\'email destinataire.');return;}
+  if(!to||!to.includes('@')){alert('Veuillez renseigner un email valide.');return;}
   if(!S.currentBail){alert('Aucun bail disponible.');return;}
  
   var btn=document.getElementById('btnSendMail');
   var status=document.getElementById('mailStatus');
-  btn.textContent='Envoi en cours…';btn.disabled=true;
+  btn.textContent='Génération du PDF…';btn.disabled=true;
   status.style.display='none';
  
-  // Générer le PDF en base64 pour l'envoyer
-  var pdfBase64='';
-  try{
-    if(window.jspdf){
-      // On réutilise exportPDF mais en mode "retour base64" au lieu de save
-      var jsPDF=window.jspdf.jsPDF;
-      var doc=new jsPDF({putOnlyUsedFonts:true,compress:true});
-      // Version simplifiée pour l'email
-      doc.setFontSize(10);doc.setFont('helvetica','normal');
-      doc.setFillColor(13,13,13);doc.rect(0,0,210,25,'F');
-      doc.setTextColor(255,255,255);doc.setFontSize(14);doc.setFont('helvetica','bold');
-      doc.text('BAIL DE LOCATION — BailScan',18,16);
-      var y=32;
-      sanitizePDF(S.currentBail).split('\n').forEach(function(line){
-        if(y>280){doc.addPage();y=15;}
-        var isSep=/^={5,}/.test(line.trim());
-        var isArt=/^ARTICLE\s+\d/i.test(line.trim());
-        if(isSep){doc.setDrawColor(200,190,180);doc.line(18,y,192,y);y+=3;return;}
-        if(isArt){doc.setFillColor(13,13,13);doc.rect(18,y-1,174,8,'F');doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);doc.text(line.trim(),21,y+5);doc.setTextColor(0,0,0);y+=11;return;}
-        if(!line.trim()){y+=2.5;return;}
-        doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(40,40,40);
-        doc.splitTextToSize(line.trim(),174).forEach(function(l){if(y>280){doc.addPage();y=15;}doc.text(l,18,y);y+=5.5;});
-      });
-      pdfBase64=doc.output('datauristring').split(',')[1];
-    }
-  }catch(e){console.warn('PDF encode error',e);}
+  // Générer le PDF (même rendu qu'exportPDF)
+  var pdfBase64=buildPdfBase64();
+  if(!pdfBase64){
+    btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;
+    status.style.cssText='display:block;color:var(--accent)';
+    status.textContent='Erreur lors de la génération du PDF.';
+    return;
+  }
  
-  // Envoi via EmailJS (service public de BailScan)
-  // Utilisation du service EmailJS avec template générique
-  var templateParams={
-    to_email: to,
-    to_name: nom||'',
-    from_name: 'BailScan',
-    message: msg||('Veuillez trouver ci-joint le bail de location généré via BailScan.\n\nBien cordialement,\nL\'équipe BailScan'),
-    bail_content: S.currentBail.substring(0,4000), // contenu texte pour corps email
-    date_generation: new Date().toLocaleDateString('fr-FR'),
-    bailleur: (S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom,
-    bien_adresse: (S.genAdresse||'')+(S.genCp?' '+S.genCp:'')+(S.genVille?' '+S.genVille:''),
-  };
+  btn.textContent='Envoi en cours…';
  
-  // EmailJS — l'utilisateur doit configurer son propre service
-  // On propose un fallback mailto si EmailJS n'est pas configuré
-  if(typeof emailjs !== 'undefined' && window.EMAILJS_PUBLIC_KEY){
-    emailjs.send(window.EMAILJS_SERVICE_ID||'bailscan_service', window.EMAILJS_TEMPLATE_ID||'bailscan_bail', templateParams, window.EMAILJS_PUBLIC_KEY)
-    .then(function(){
+  var dateGen=new Date().toLocaleDateString('fr-FR');
+  var bailleur=(S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom;
+  var adresse=(S.genAdresse||'')+(S.genCp?' '+S.genCp:'')+(S.genVille?' '+S.genVille:'');
+ 
+  fetch('/api/send-mail',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      to: to,
+      nom: nom||'',
+      message: msg||'Veuillez trouver ci-joint le bail de location généré via BailScan.',
+      pdfBase64: pdfBase64,
+      pdfName: 'BailScan-Bail-'+dateGen.replace(/\//g,'-')+'.pdf',
+      bailleur: bailleur,
+      adresse: adresse,
+      date: dateGen
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(d.ok){
       btn.textContent='✓ Email envoyé !';
       status.style.cssText='display:block;color:var(--vert);font-weight:600';
-      status.textContent='✓ Email envoyé avec succès à '+to;
+      status.textContent='Email envoyé à '+to;
       setTimeout(function(){closeMailModal();btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;status.style.display='none';},3000);
-    })
-    .catch(function(e){
-      fallbackMailto(to,nom,msg);
-      btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;
-    });
-  }else{
-    // Fallback : ouvrir le client mail avec le texte du bail
-    fallbackMailto(to,nom,msg);
+    }else{
+      throw new Error(d.error||'Erreur envoi');
+    }
+  })
+  .catch(function(e){
+    // Fallback : télécharger le PDF et ouvrir le client mail
     btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;
-    status.style.cssText='display:block;color:var(--vert);font-size:.78rem';
-    status.textContent='✓ Votre client mail s\'est ouvert. Le PDF est aussi disponible via "Export PDF" pour le joindre manuellement.';
-  }
-}
- 
-function fallbackMailto(to,nom,msg){
-  var sujet=encodeURIComponent('Bail de location — BailScan');
-  var corps=encodeURIComponent(
-    (msg?msg+'\n\n':'Bonjour'+(nom?' '+nom:'')+',\n\nVeuillez trouver ci-dessous le bail de location généré via BailScan.\n\n')+
-    '---\n'+S.currentBail.substring(0,2000)+(S.currentBail.length>2000?'\n[...] — Téléchargez le PDF complet via BailScan':'')
-  );
-  window.location.href='mailto:'+to+'?subject='+sujet+'&body='+corps;
+    status.style.cssText='display:block;color:var(--gris);font-size:.78rem';
+    status.textContent='Envoi automatique indisponible. Téléchargez le PDF puis joignez-le manuellement.';
+    exportPDF(); // on déclenche le téléchargement
+  });
 }
  
 function resetApp(){
@@ -1194,7 +1373,8 @@ function resetApp(){
   document.getElementById('app').style.display='block';
   document.getElementById('modeSection').style.display='block';
   var banner=document.getElementById('editBanner');if(banner)banner.remove();
-  S={mode:null,isPaid:false,currentBail:null,pdf:null,pdfName:''};
+  clearSave();
+  S={mode:'generer',isPaid:false,currentBail:null,pdf:null,pdfName:''};
   goStep(1);
 }
  
