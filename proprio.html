@@ -22,7 +22,8 @@ nav a:hover{color:var(--accent);}
 .btn-nav{background:var(--noir);color:var(--creme)!important;padding:9px 18px;border-radius:8px;font-weight:600;font-size:0.82rem;}
 .btn-nav:hover{background:var(--accent)!important;}
 @media(max-width:768px){header{padding:12px 16px;}nav a:not(.btn-nav){display:none;}}
-.hero{padding:120px 48px 60px;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center;}
+.hero-section{background:white;border-bottom:1px solid var(--border);}
+.hero{padding:120px 48px 72px;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center;}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--vert-light);color:var(--vert);font-size:0.78rem;font-weight:600;padding:5px 12px;border-radius:20px;margin-bottom:20px;border:1px solid rgba(45,106,79,.2);}
 h1.hero-title{font-family:'Instrument Serif',serif;font-size:2.8rem;line-height:1.1;letter-spacing:-.03em;color:var(--noir);margin-bottom:14px;}
 h1.hero-title em{color:var(--accent);font-style:italic;}
@@ -47,7 +48,7 @@ h1.hero-title em{color:var(--accent);font-style:italic;}
 .price-tag-amount{font-family:'Instrument Serif',serif;font-size:2.4rem;color:white;}
 .price-tag-sub{font-size:0.78rem;color:rgba(255,255,255,.45);}
 @media(max-width:768px){.hero{grid-template-columns:1fr;padding:100px 20px 40px;gap:28px;}.hero-doc{display:none;}h1.hero-title{font-size:2rem;}}
-.mode-section{max-width:860px;margin:0 auto;padding:0 48px 48px;}
+.mode-section{max-width:860px;margin:0 auto;padding:40px 48px 48px;}
 .sec-title{font-family:'Instrument Serif',serif;font-size:1.7rem;color:var(--noir);text-align:center;margin-bottom:6px;}
 .sec-sub{text-align:center;color:var(--gris);font-size:0.88rem;margin-bottom:28px;}
 .mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -65,7 +66,7 @@ h1.hero-title em{color:var(--accent);font-style:italic;}
 .mode-card.selected .mc-check{background:var(--accent);border-color:var(--accent);color:white;}
 @media(max-width:640px){.mode-section{padding:0 20px 40px;}.mode-cards{grid-template-columns:1fr;}}
 .app-section{max-width:860px;margin:0 auto;padding:0 48px 80px;}
-.app-card{background:white;border:1.5px solid var(--border);border-radius:20px;padding:40px;}
+.app-card{background:white;border:1.5px solid var(--border);border-radius:20px;padding:40px;box-shadow:0 4px 24px rgba(0,0,0,.06);}
 @media(max-width:768px){.app-section{padding:0 16px 60px;}.app-card{padding:24px 18px;}}
 .wizard-progress{display:flex;align-items:center;margin-bottom:36px;}
 .wstep{display:flex;align-items:center;gap:6px;flex:1;}
@@ -266,7 +267,7 @@ footer a:hover{color:var(--accent);}
   </nav>
 </header>
  
-<section class="hero">
+<section class="hero-section"><section class="hero">
   <div>
     <div class="hero-tag">✦ Propriétaires particuliers</div>
     <h1 class="hero-title">Votre bail,<br><em>conforme et protégé</em></h1>
@@ -323,11 +324,11 @@ footer a:hover{color:var(--accent);}
     </div>
     <div class="doc-pages-badge">📄 5 pages · PDF téléchargeable · Prêt à signer</div>
   </div>
-</section>
+</section></section>
  
-<section class="mode-section" id="modeSection">
+<section class="mode-section" id="modeSection" style="border-top:3px solid var(--accent);">
   <h2 class="sec-title">Que souhaitez-vous faire ?</h2>
-  <p class="sec-sub">Les deux sont inclus dans les 49€ — paiement unique, accès à vie</p>
+  <p class="sec-sub">Les deux sont inclus dans les 49€, paiement unique, accès à vie</p>
   <div class="mode-cards">
     <div class="mode-card" id="modeGenerer" onclick="selectMode('generer')">
       <div class="mc-check" id="checkGenerer"></div>
@@ -357,7 +358,7 @@ footer a:hover{color:var(--accent);}
   </div>
 </section>
  
-<section class="app-section" id="app">
+<section class="app-section" id="app" style="background:var(--bg,#fafaf8);padding-top:40px;margin-top:0;border-top:1px solid var(--border);">
   <div class="app-card">
     <div class="wizard-progress">
       <div class="wstep"><div class="wdot active" id="d1">1</div><div class="wlbl active" id="l1">Bien</div></div>
@@ -664,7 +665,7 @@ footer a:hover{color:var(--accent);}
   </div>
 </div>
  
-<section class="results-section" id="resultsSection">
+<section class="results-section" id="resultsSection" style="padding-top:40px;">
   <div class="results-card">
  
     <!-- HEADER -->
@@ -1559,4 +1560,3 @@ checkPaymentReturn();
 </script>
 </body>
 </html>
- 
