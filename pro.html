@@ -11050,6 +11050,210 @@ async function envoyerCourrierMail() {
   finally { if(btn) { btn.textContent='✉️ Envoyer'; btn.disabled=false; } }
 }
 
+
+
+function openNewLocataire() {
+  document.getElementById('locEditId').value = '';
+  document.getElementById('locFormTitle').textContent = 'Nouveau locataire';
+  var mandatSel = document.getElementById('locMandatSel');
+  if (mandatSel) refreshMandatSelectForLoc(mandatSel, '');
+  refreshLocBailSel('');
+  ['locPrenom','locNom','locEmail','locTel','locAdresse','locLoyer','locRevenus','locNotes','locAgent'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  ['locDateEntree','locDateFin'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('locStatut').value='actif';
+  document.getElementById('locContrat').value='cdi';
+  document.getElementById('locGarant').value='non';
+  // Reset champs garant
+  ['locGarantNom','locGarantAdresse','locGarantEmail','locGarantTel','locGarantRevenus'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  var gc = document.getElementById('locGarantContrat'); if(gc) gc.value='cdi';
+  var gf = document.getElementById('locGarantFields'); if(gf) gf.style.display='none';
+  var sc=document.getElementById('locScoreDisplay'); if(sc) sc.textContent='— Renseignez loyer et revenus';
+  document.getElementById('locataireForm').style.display='flex';
+}
+
+function closeLocataireForm() {
+  document.getElementById('locataireForm').style.display='none';
+}
+
+function prefillQuittance() {
+  var id = document.getElementById('qLocataire').value;
+  if(!id) return;
+  var l = loadLocataires().find(function(x){ return String(x.id)===String(id); });
+  if(!l) return;
+  var n = document.getElementById('qLocNom'); if(n) n.value = l.prenom+' '+l.nom;
+  var a = document.getElementById('qAdresse'); if(a) a.value = l.adresse||'';
+  var lo = document.getElementById('qLoyer'); if(lo) lo.value = l.loyer||'';
+  updateQuittancePreview();
+}
+
+function genererQuittance() {
+  updateQuittancePreview();
+  var q = proState.currentQuittance;
+  if(!q || !q.locNom || q.locNom==='[Locataire]') { alert('Remplissez au moins le nom du locataire.'); return; }
+
+  var histo = JSON.parse(localStorage.getItem('bailscan_quittances')||'[]');
+  histo.unshift({ id:Date.now(), ...q, createdAt: new Date().toLocaleDateString('fr-FR') });
+  localStorage.setItem('bailscan_quittances', JSON.stringify(histo));
+  refreshQuittancesHisto();
+  exportQuittancePDF();
+}
+
+function refreshLocSelect() {
+  var sel = document.getElementById('qLocataire');
+  if(!sel) return;
+  var arr = loadLocataires().filter(function(l){ return l.statut==='actif'||l.statut==='preavis'; });
+  sel.innerHTML = '<option value="">— Sélectionner un locataire —</option>'
+    + arr.map(function(l){ return '<option value="'+l.id+'">'+l.prenom+' '+l.nom+(l.adresse?' — '+l.adresse.split(',')[0]:'')+'</option>'; }).join('');
+}
+
+function saveLocataire() {
+  var prenom = document.getElementById('locPrenom').value.trim();
+  var nom = document.getElementById('locNom').value.trim();
+  if (!prenom || !nom) { showToast('Prénom et nom obligatoires.', 'orange'); return; }
+  var scoreData = calcScore();
+  var id = document.getElementById('locEditId').value;
+  var arr = loadLocataires();
+  var entry = {
+    id: id || Date.now(),
+    prenom: prenom, nom: nom,
+    email: document.getElementById('locEmail').value.trim(),
+    tel: document.getElementById('locTel').value.trim(),
+    adresse: document.getElementById('locAdresse').value.trim(),
+    loyer: document.getElementById('locLoyer').value,
+    revenus: document.getElementById('locRevenus').value,
+    contrat: document.getElementById('locContrat').value,
+    garant: document.getElementById('locGarant').value,
+    garantNom: (document.getElementById('locGarantNom')||{value:''}).value.trim(),
+    garantAdresse: (document.getElementById('locGarantAdresse')||{value:''}).value.trim(),
+    garantRevenus: (document.getElementById('locGarantRevenus')||{value:''}).value,
+    garantContrat: (document.getElementById('locGarantContrat')||{value:''}).value,
+    garantEmail: (document.getElementById('locGarantEmail')||{value:''}).value.trim(),
+    garantTel: (document.getElementById('locGarantTel')||{value:''}).value.trim(),
+    dateEntree: document.getElementById('locDateEntree').value,
+    dateFin: document.getElementById('locDateFin').value,
+    statut: document.getElementById('locStatut').value,
+    agent: document.getElementById('locAgent').value.trim(),
+    notes: document.getElementById('locNotes').value.trim(),
+    score: scoreData ? scoreData.score : null,
+    scoreCls: scoreData ? scoreData.cls : null,
+    scoreLabel: scoreData ? scoreData.label : null,
+    mandatId: document.getElementById('locMandatSel') ? document.getElementById('locMandatSel').value : '',
+    bailId: document.getElementById('locBailSel') ? document.getElementById('locBailSel').value : '',
+    createdAt: new Date().toLocaleDateString('fr-FR')
+  };
+  if (id) {
+    var idx = arr.findIndex(function(x){ return String(x.id)===String(id); });
+    if(idx!==-1) arr[idx]=entry; else arr.push(entry);
+  } else {
+    arr.unshift(entry);
+  }
+  saveLocatairesDB(arr);
+  // Si un mandat est sélectionné, y rattacher ce locataire
+  var mandatId = entry.mandatId;
+  if (mandatId) {
+    var mandats = JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');
+    var mIdx = mandats.findIndex(function(m){ return String(m.id)===String(mandatId); });
+    if (mIdx !== -1) {
+      mandats[mIdx].locataireId = String(entry.id);
+      mandats[mIdx].statut = 'loue';
+      localStorage.setItem('bailscan_mandats', JSON.stringify(mandats));
+      proState.mandats = mandats;
+    }
+  }
+  closeLocataireForm();
+  refreshLocataires();
+  refreshLocSelect();
+  if (typeof refreshMandats === 'function') refreshMandats();
+}
+
+
+function refreshQuittances() {
+  var arr = JSON.parse(localStorage.getItem('bailscan_quittances')||'[]');
+  var tbody = document.getElementById('quittancesHistoBody');
+  if (!tbody) return;
+  if (!arr.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gris)">Aucune quittance générée.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = arr.slice().reverse().map(function(q) {
+    return '<tr>'
+      +'<td>'+( q.date||'—')+'</td>'
+      +'<td>'+(q.locataire||'—')+'</td>'
+      +'<td>'+(q.adresse||'—')+'</td>'
+      +'<td>'+(q.mois||'—')+' '+(q.annee||'')+'</td>'
+      +'<td>'+(q.total||'—')+' €</td>'
+      +'</tr>';
+  }).join('');
+}
+
+
+function refreshLocataires() {
+  var arr = loadLocataires();
+  var empty = document.getElementById('locatairesEmpty');
+  var list = document.getElementById('locatairesList');
+
+  var kT=document.getElementById('locKpiTotal'),kA=document.getElementById('locKpiActifs');
+  var kP=document.getElementById('locKpiPreavis'),kPr=document.getElementById('locKpiProspects');
+  if(kT) kT.textContent=arr.length;
+  if(kA) kA.textContent=arr.filter(function(l){return l.statut==='actif';}).length;
+  if(kP) kP.textContent=arr.filter(function(l){return l.statut==='preavis';}).length;
+  if(kPr) kPr.textContent=arr.filter(function(l){return l.statut==='prospect';}).length;
+
+  if (!arr.length) {
+    if(empty) empty.style.display='block';
+    if(list) list.style.display='none';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  if(list) { list.style.display='grid'; }
+
+  var statutColors = {
+    actif:{bg:'#f0fdf4',col:'#166534',label:'🟢 En cours'},
+    preavis:{bg:'#fffbeb',col:'#92400e',label:'🟡 Préavis'},
+    sorti:{bg:'#f1f5f9',col:'#475569',label:'⚫ Sorti'},
+    prospect:{bg:'#eff6ff',col:'#1e40af',label:'🔵 Prospect'}
+  };
+
+  list.innerHTML = arr.map(function(l) {
+    var sc = statutColors[l.statut]||statutColors.actif;
+    var scoreHtml = l.score != null
+      ? '<span class="loc-score-'+l.scoreCls+'" style="font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:6px">'+l.scoreLabel+'</span>'
+      : '';
+    var finBail = l.dateFin ? '<div style="font-size:.75rem;color:var(--gris);margin-top:4px">📅 Fin: '+new Date(l.dateFin).toLocaleDateString('fr-FR')+'</div>' : '';
+    // Quittances liées à ce locataire
+    var allQ = JSON.parse(localStorage.getItem('bailscan_quittances')||'[]');
+    var locQ = allQ.filter(function(q){ return q.locNom && l.prenom && l.nom && q.locNom.toLowerCase().includes(l.nom.toLowerCase()); });
+    var qBadge = locQ.length
+      ? '<span style="background:var(--pro-light);color:var(--pro-accent);font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:6px;cursor:pointer" onclick="viewQuittancesLocataire('+JSON.stringify(l.id)+')">🧾 '+locQ.length+' quittance'+(locQ.length>1?'s':'')+'</span>'
+      : '';
+
+    return '<div class="loc-card" data-statut="'+l.statut+'" data-score="'+(l.scoreCls||'')+'" style="cursor:pointer" onclick="openFicheLocataire('+JSON.stringify(l.id)+',event)">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">'
+      + '<div>'
+      + '<div style="font-weight:700;font-size:.95rem">'+l.prenom+' '+l.nom+'</div>'
+      + '<div style="font-size:.76rem;color:var(--gris);margin-top:2px">'+(l.email||'')+(l.tel?' · '+l.tel:'')+'</div>'
+      + '</div>'
+      + '<span style="background:'+sc.bg+';color:'+sc.col+';font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap">'+sc.label+'</span>'
+      + '</div>'
+      + (l.adresse?'<div style="font-size:.8rem;font-weight:500;margin-bottom:4px">🏠 '+l.adresse+'</div>':'')
+      + (l.loyer?'<div style="font-size:.78rem;color:var(--gris)">Loyer: '+l.loyer+' €/mois HC</div>':'')
+      + (l.garant && l.garant!=='non' ? '<div style="font-size:.75rem;color:#7e22ce;margin-top:3px">🛡️ Garant'+(l.garant==='physique'?' physique'+(l.garantNom?' : '+l.garantNom:''):l.garant==='visale'?' Visale':' organisme')+'</div>' : '')
+      + finBail
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:6px">'
+      + '<div style="display:flex;gap:6px;align-items:center">'+scoreHtml+(scoreHtml&&qBadge?' ':'')+qBadge+'</div>'
+      + '<div style="display:flex;gap:6px">'
+      + '<button class="btn-sm" onclick="genQuittanceDepuis('+JSON.stringify(l.id)+')" style="font-size:.72rem">🧾</button>'
+      + '<button class="btn-sm" onclick="editLocataire('+JSON.stringify(l.id)+')" style="font-size:.72rem">✏️</button>'
+      + '<button class="btn-sm" onclick="deleteLocataire('+JSON.stringify(l.id)+')" style="color:var(--accent);border-color:var(--accent);font-size:.72rem">✕</button>'
+      + '</div></div>'
+      + '</div>';
+  }).join('');
+}
+
 // ─── MODALES ─────────────────────────────────────────────
 function openModal(name) {
   var ids = { login:'modalLogin', signup:'modalSignup', invite:'modalInvite', forgot:'modalForgot' };
