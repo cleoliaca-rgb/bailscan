@@ -4534,9 +4534,10 @@ body.is-dashboard #marketingFooter { display: none !important; }
         <label class="form-label">Adresse du bien</label>
         <input type="text" class="form-input-pro" id="mandatAdresse" placeholder="12 rue des Lilas">
       </div>
-      <div class="form-group-pro">
+      <div class="form-group-pro" style="position:relative">
         <label class="form-label">Code postal</label>
-        <input type="text" class="form-input-pro" id="mandatCp" placeholder="75020" maxlength="10">
+        <input type="text" class="form-input-pro" id="mandatCp" placeholder="75020" maxlength="5" oninput="cpAutoMandat(this.value)" autocomplete="off">
+        <div id="mandatCpDrop" style="position:absolute;top:calc(100% + 2px);left:0;width:100%;background:white;border:1.5px solid #d8d0c4;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none;z-index:300;max-height:160px;overflow-y:auto"></div>
       </div>
       <div class="form-group-pro">
         <label class="form-label">Ville</label>
@@ -4567,6 +4568,10 @@ body.is-dashboard #marketingFooter { display: none !important; }
       <div class="form-group-pro">
         <label class="form-label">Loyer HC (€)</label>
         <input type="number" class="form-input-pro" id="mandatLoyer" placeholder="800">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Complément loyer (€) <small style="font-weight:400;color:#888">optionnel</small></label>
+        <input type="number" class="form-input-pro" id="mandatComplement" placeholder="0" min="0">
       </div>
       <div class="form-group-pro">
         <label class="form-label">Charges (€)</label>
@@ -6360,6 +6365,7 @@ function saveMandat() {
   refreshMandats();
   // Mettre à jour les sélecteurs
   refreshAllMandatSelects();
+  obCompleteStep();
 }
 
 function deleteMandat(id) {
@@ -9892,6 +9898,7 @@ function saveLocataire() {
   refreshLocataires();
   refreshLocSelect();
   if (typeof refreshMandats === 'function') refreshMandats();
+  obCompleteStep();
 }
 
 function editLocataire(id) {
@@ -13742,87 +13749,143 @@ uploadDPEFile = function(mandatId, input) {
 // ═══ ONBOARDING ══════════════════════════════════════════════
 var _obDone = [];
 
+// CP autocomplete mandat
+var _cpMTimer=null;
+function cpAutoMandat(v){
+  clearTimeout(_cpMTimer);
+  var b=document.getElementById('mandatCpDrop');
+  if(!b)return;
+  if(!v||v.length<4){b.style.display='none';return;}
+  _cpMTimer=setTimeout(function(){
+    fetch('https://api-adresse.data.gouv.fr/search/?type=municipality&q='+encodeURIComponent(v)+'&limit=6')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(!d.features||!d.features.length){b.style.display='none';return;}
+      b.innerHTML=d.features.map(function(f){
+        var cp=f.properties.postcode||v,city=f.properties.city||f.properties.label;
+        return '<div onclick="pickCpMandat(\''+cp+'\',\''+city+'\')" style="padding:9px 12px;cursor:pointer;font-size:.85rem;border-bottom:1px solid #f5f0e8" onmouseover="this.style.background=\'#eef2fb\'" onmouseout="this.style.background=\'white\'">'+cp+' &mdash; '+city+'</div>';
+      }).join('');
+      b.style.display='block';
+    }).catch(function(){b.style.display='none';});
+  },300);
+}
+function pickCpMandat(cp,city){
+  var c=document.getElementById('mandatCp'),v=document.getElementById('mandatVille'),b=document.getElementById('mandatCpDrop');
+  if(c)c.value=cp; if(v)v.value=city; if(b)b.style.display='none';
+}
+document.addEventListener('click',function(e){
+  var b=document.getElementById('mandatCpDrop');
+  if(b&&!b.contains(e.target)&&e.target.id!=='mandatCp')b.style.display='none';
+});
+
+
 async function showOnboarding() {
   var uid = proState.user && proState.user.id || 'x';
-  var localKey = 'bs_ob2_' + uid;
-  if (localStorage.getItem(localKey)) return;
+  var k = 'bs_ob2_' + uid;
+  if (localStorage.getItem(k)) return;
   try {
-    var sb = getSupabase(); var agId = proState._agenceId;
-    if (sb && agId) {
-      var res = await sb.from('agences').select('onboarding_done').eq('id', agId).single();
-      if (res.data && res.data.onboarding_done) { localStorage.setItem(localKey,'1'); return; }
-    }
-  } catch(e) {}
+    var sb=getSupabase(),agId=proState._agenceId;
+    if(sb&&agId){var res=await sb.from('agences').select('onboarding_done').eq('id',agId).single();if(res.data&&res.data.onboarding_done){localStorage.setItem(k,'1');return;}}
+  } catch(e){}
+  _obStep = 0;
+  _obDone = [];
+  renderObStep();
+}
+
+var _obStep = 0;
+var _obSteps = [
+  {tab:'mandats', title:'Cr\u00e9ez votre premier mandat', desc:'Ajoutez un bien immobilier \u00e0 g\u00e9rer : adresse, loyer, type de bien.', cta:'Cr\u00e9er un mandat \u2192', action:'saveMandat'},
+  {tab:'locataires', title:'Ajoutez un locataire', desc:'Cr\u00e9ez la fiche de votre locataire avec scoring de solvabilit\u00e9 automatique.', cta:'Ajouter un locataire \u2192', action:'saveLocataire'},
+  {tab:'nouveau', title:'Analysez un bail existant', desc:'Uploadez un PDF de bail \u2014 l\u2019IA d\u00e9tecte les clauses ill\u00e9gales en 30 secondes.', cta:'Analyser un bail \u2192', action:'analyser'},
+  {tab:'generer', title:'G\u00e9n\u00e9rez un bail conforme', desc:'Cr\u00e9ez un bail loi 89/ALUR adapt\u00e9 \u00e0 votre bien en quelques minutes.', cta:'G\u00e9n\u00e9rer un bail \u2192', action:'generer'}
+];
+
+function renderObStep() {
   var el = document.getElementById('modalOnboarding');
   if (!el) {
     el = document.createElement('div');
     el.id = 'modalOnboarding';
-    el.style.cssText = 'position:fixed;inset:0;background:rgba(17,24,39,.88);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
-    var steps=[['mandats',1,'Creer mon premier mandat','Ajoutez un bien: adresse, loyer, type'],['locataires',2,'Ajouter un locataire','Fiche avec scoring de solvabilite'],['nouveau',3,'Analyser un bail existant','PDF - detection des clauses illegales en 30s'],['generer',4,'Generer un bail conforme','Bail loi 89/ALUR, export PDF']];
-    var h='<div style="background:white;border-radius:20px;width:100%;max-width:580px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4)">'
-      +'<div style="background:#111827;padding:26px 30px 20px">'
-      +'<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;color:#7fa8e8;margin-bottom:8px">Bienvenue sur BailScan Pro !</div>'
-      +'<div style="font-family:Instrument Serif,serif;font-size:1.4rem;color:white;line-height:1.3">Votre espace est pret. Par ou commencer ?</div>'
-      +'<div style="font-size:.8rem;color:rgba(255,255,255,.4);margin-top:6px">4 etapes pour bien demarrer.</div>'
-      +'</div><div style="padding:18px 26px 8px">';
-    steps.forEach(function(s){
-      h+='<div onclick="obGo(\''+s[0]+'\','+s[1]+')" style="display:flex;align-items:center;gap:13px;padding:12px 13px;border:1.5px solid #e0d8cc;border-radius:10px;cursor:pointer;margin-bottom:8px;background:white" onmouseover="this.style.borderColor=\'#3b6fd4\'" onmouseout="this.style.borderColor=\'#e0d8cc\'">'
-        +'<div style="width:34px;height:34px;border-radius:8px;background:#eef2fb;display:flex;align-items:center;justify-content:center;font-weight:700;color:#3b6fd4;flex-shrink:0">'+s[1]+'</div>'
-        +'<div style="flex:1"><div style="font-weight:700;font-size:.88rem">'+s[2]+'</div><div style="font-size:.75rem;color:#888">'+s[3]+'</div></div>'
-        +'<span style="color:#ccc">-&gt;</span></div>';
-    });
-    h+='</div><div style="padding:10px 26px 20px;display:flex;justify-content:space-between">'
-      +'<button onclick="closeOnboarding()" style="background:none;border:none;color:#aaa;font-size:.78rem;cursor:pointer;text-decoration:underline">Passer</button>'
-      +'<button onclick="closeOnboarding()" style="background:#3b6fd4;color:white;border:none;padding:10px 22px;border-radius:9px;font-weight:700;cursor:pointer">Commencer !</button>'
-      +'</div></div>';
-    el.innerHTML = h;
+    el.style.cssText = 'position:fixed;inset:0;background:rgba(17,24,39,.92);backdrop-filter:blur(10px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
     document.body.appendChild(el);
-  } else { el.style.display = 'flex'; }
+  }
+  el.style.display = 'flex';
+  var s = _obSteps[_obStep];
+  var total = _obSteps.length;
+  // Pastilles
+  var dots = _obSteps.map(function(x,i){
+    var active = i === _obStep;
+    var done = _obDone.includes(i);
+    var bg = done ? '#2d6a4f' : active ? '#3b6fd4' : '#d8d0c4';
+    var inner = done ? '&#10003;' : (i+1);
+    return '<div style="width:'+(active?'36px':'28px')+';height:'+(active?'36px':'28px')+';border-radius:50%;background:'+bg+';color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:'+(active?'.9':'0.75')+'rem;transition:all .3s;flex-shrink:0">'+inner+'</div>';
+  }).join('<div style="flex:1;height:2px;background:#e0d8cc;margin:0 4px;align-self:center"></div>');
+  el.innerHTML = '<div style="background:white;border-radius:22px;width:100%;max-width:520px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.45)">'
+    +'<div style="background:#111827;padding:24px 28px 20px">'
+    +'<div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#7fa8e8;margin-bottom:4px">'
+    +'\u00c9tape '+(_obStep+1)+' sur '+total+'</div>'
+    +'<div style="font-family:Instrument Serif,serif;font-size:1.4rem;color:white;line-height:1.3">'+s.title+'</div>'
+    +'</div>'
+    +'<div style="padding:20px 28px 8px;display:flex;align-items:center;gap:6px">'+dots+'</div>'
+    +'<div style="padding:16px 28px 24px">'
+    +'<p style="font-size:.88rem;color:#555;line-height:1.65;margin-bottom:22px">'+s.desc+'</p>'
+    +'<button onclick="obGoStep()" style="width:100%;padding:13px;background:#3b6fd4;color:white;border:none;border-radius:10px;font-weight:700;font-size:.92rem;cursor:pointer;margin-bottom:10px">'+s.cta+'</button>'
+    +'<button onclick="obSkipStep()" style="width:100%;padding:10px;background:none;border:1.5px solid #e0d8cc;border-radius:10px;font-weight:600;font-size:.85rem;cursor:pointer;color:#888">Passer cette \u00e9tape</button>'
+    +'</div></div>';
 }
+
+function obGoStep() {
+  var s = _obSteps[_obStep];
+  closeOnboarding();
+  showDashTab(s.tab);
+  // Marquer comme fait quand l'action est accomplie
+  proState._obPendingStep = _obStep;
+}
+
+function obSkipStep() {
+  _obDone.push(_obStep);
+  _obStep++;
+  if (_obStep >= _obSteps.length) {
+    closeOnboarding();
+  } else {
+    renderObStep();
+  }
+}
+
+function obCompleteStep() {
+  // Appelé quand une action est accomplie (save mandat, save locataire etc.)
+  if (proState._obPendingStep !== undefined && proState._obPendingStep !== null) {
+    _obDone.push(proState._obPendingStep);
+    _obStep = proState._obPendingStep + 1;
+    proState._obPendingStep = null;
+    if (_obStep < _obSteps.length) {
+      setTimeout(renderObStep, 600);
+    } else {
+      closeOnboarding();
+    }
+  }
+}
+
 async function closeOnboarding() {
   var el = document.getElementById('modalOnboarding');
   if (el) el.style.display = 'none';
-  // Mémoriser localement
   var uid = proState.user && proState.user.id || 'x';
   localStorage.setItem('bs_ob2_' + uid, '1');
-  // Marquer dans Supabase en arrière-plan
   try {
-    var sb = getSupabase();
-    var agId = proState._agenceId || await getAgenceId();
-    if (sb && agId) {
-      await sb.from('agences').update({ onboarding_done: true }).eq('id', agId);
-    }
-  } catch(e) { /* silencieux */ }
+    var sb=getSupabase(),agId=proState._agenceId||(await getAgenceId());
+    if(sb&&agId) await sb.from('agences').update({onboarding_done:true}).eq('id',agId);
+  } catch(e){}
 }
 
 function resetOnboarding() {
-  _obDone = [];
-  document.querySelectorAll('.ob-step').forEach(function(s){ s.classList.remove('done'); });
-  updateObProgress();
-  var el = document.getElementById('modalOnboarding');
-  if (el) el.style.display = 'flex';
+  var uid = proState.user && proState.user.id || 'x';
+  localStorage.removeItem('bs_ob2_' + uid);
+  _obDone = []; _obStep = 0;
+  renderObStep();
 }
 
-function obGo(tab, num) {
-  // Marquer comme fait
-  if (!_obDone.includes(num)) {
-    _obDone.push(num);
-    var el = document.getElementById('ob' + num);
-    if (el) el.classList.add('done');
-    updateObProgress();
-  }
-  // Fermer et aller à l'onglet
-  closeOnboarding();
-  showDashTab(tab);
-}
+function obGo(tab, num) { closeOnboarding(); showDashTab(tab); }
 
-function updateObProgress() {
-  var n = _obDone.length;
-  var el = document.getElementById('obProgress');
-  var bar = document.getElementById('obProgressBar');
-  if (el) el.textContent = n + ' / 4 étapes';
-  if (bar) bar.style.width = (n * 25) + '%';
-}
+function updateObProgress() {}
 
 </script>
 <!-- ═══════════════════════════════════════════════════════════
