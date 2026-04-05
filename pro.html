@@ -660,7 +660,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 </header>
 
 <!-- PAGE MARKETING (visible si non connecté) -->
-<div id="marketingPage">
+<div id="marketingPage" style="display:block">
 
 <section class="hero" id="hero">
   <div class="hero-inner">
@@ -844,7 +844,7 @@ body.is-dashboard #marketingPage { display: none !important; }
   <div style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
     <div>
       <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px">Pour les propriétaires particuliers</div>
-      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:var(--noir);line-height:1.15;margin-bottom:16px">Vous louez à un locataire ?<br><em style="color:var(--accent);font-style:italic">Sécurisez votre bail<br>en une fois.</em></h2>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:var(--noir);line-height:1.15;margin-bottom:16px">Vous louez à un locataire ?<br><em style="color:var(--accent);font-style:italic">Sécurisez votre bail.</em></h2>
       <p style="font-size:.92rem;color:var(--gris);line-height:1.75;margin-bottom:28px">Pas d’abonnement. Payez une seule fois et obtenez la vérification complète de votre bail + la rédaction d’un bail 100 % conforme avant signature.</p>
       <div style="display:flex;flex-direction:column;gap:10px">
         <div style="display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texte)"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-weight:700;font-size:.8rem">✓</div>Résultat en moins de 2 minutes</div>
@@ -4941,7 +4941,7 @@ async function handleGoogleLogin() {
 function showDashboard(){
   if (proState._dashShown) return; proState._dashShown = true;
   document.body.classList.add('is-dashboard');
-  document.getElementById('marketingPage').style.display='none';
+  var _mp=document.getElementById('marketingPage');if(_mp){_mp.style.cssText='display:none!important';}
   document.getElementById('marketingFooter').style.display='none';
   document.getElementById('dashboardSection').style.display='block';
   document.querySelector('.btn-header-login').style.display='none';
@@ -13931,4 +13931,3 @@ function updateObProgress() {}
         oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
       <button onclick="sendAgentMessage()" id="agentSendBtn"
         style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;border-radius:9px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;flex-shrink:0;height:36px;transition:opa
-
