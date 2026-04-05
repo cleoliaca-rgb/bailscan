@@ -1,6 +1,6 @@
 // api/checkout-pro.js
-// Abonnement Stripe récurrent — Starter 79€/mois ou Pro 199€/mois
-// Variables Vercel : STRIPE_SECRET_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY
+// Abonnement Stripe BailScan Pro — mensuel / 6 mois / 12 mois
+// Variables Vercel : STRIPE_SECRET_KEY
  
 const Stripe = require('stripe');
  
@@ -11,23 +11,21 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
  
-  const { plan, email, agence_id, prenom, nom } = req.body || {};
- 
-  if (!plan || !email) return res.status(400).json({ error: 'plan et email requis' });
-  if (!['starter', 'pro'].includes(plan)) return res.status(400).json({ error: 'plan invalide' });
+  const { email, agence_id, mode } = req.body || {};
+  if (!email) return res.status(400).json({ error: 'email requis' });
  
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
  
-  // Prix mensuels récurrents (à créer dans Stripe Dashboard ou via API)
-  // Starter : 79€/mois — Pro : 199€/mois
-  const PRICES = {
-    starter: { amount: 7900, name: 'BailScan Pro Starter', description: 'Jusqu\'à 50 analyses/mois, tous outils inclus' },
-    pro:     { amount: 19900, name: 'BailScan Pro',        description: 'Analyses illimitées, équipe, export, support prioritaire' },
+  // Prix selon l'engagement
+  const CONFIGS = {
+    mensuel: { amount: 15000, interval: 'month', interval_count: 1, label: 'Mensuel — sans engagement' },
+    '6mois': { amount: 13500, interval: 'month', interval_count: 1, label: '6 mois — 135€/mois', trial_days: 0, coupon: null },
+    '12mois': { amount: 12000, interval: 'month', interval_count: 1, label: '12 mois — 120€/mois' },
   };
-  const p = PRICES[plan];
+  const cfg = CONFIGS[mode] || CONFIGS.mensuel;
  
   try {
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams = {
       payment_method_types: ['card'],
       mode: 'subscription',
       customer_email: email,
@@ -35,24 +33,27 @@ module.exports = async function handler(req, res) {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: p.name,
-            description: p.description,
+            name: 'BailScan Pro',
+            description: cfg.label,
           },
-          unit_amount: p.amount,
-          recurring: { interval: 'month' },
+          unit_amount: cfg.amount,
+          recurring: { interval: cfg.interval },
         },
         quantity: 1,
       }],
       subscription_data: {
-        metadata: { agence_id: agence_id || '', plan, email },
-        trial_period_days: 0,
+        metadata: { agence_id: agence_id || '', email, mode: mode || 'mensuel' },
+        // Engagement 6 ou 12 mois via cancel_at
+        ...(mode === '6mois' ? { cancel_at: Math.floor(Date.now() / 1000) + 6 * 30 * 24 * 3600 } : {}),
+        ...(mode === '12mois' ? { cancel_at: Math.floor(Date.now() / 1000) + 365 * 24 * 3600 } : {}),
       },
-      metadata: { agence_id: agence_id || '', plan },
-      success_url: 'https://' + req.headers.host + '/pro.html?subscribed=true&plan=' + plan,
-      cancel_url: 'https://' + req.headers.host + '/pro.html?subscribed=false',
+      metadata: { agence_id: agence_id || '', mode: mode || 'mensuel' },
+      success_url: 'https://' + req.headers.host + '/pro.html?subscribed=true&plan=pro',
+      cancel_url: 'https://' + req.headers.host + '/pro.html',
       locale: 'fr',
-    });
+    };
  
+    const session = await stripe.checkout.sessions.create(sessionParams);
     return res.status(200).json({ url: session.url });
   } catch (err) {
     console.error('checkout-pro error:', err);
