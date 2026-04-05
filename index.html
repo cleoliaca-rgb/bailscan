@@ -655,22 +655,55 @@ select.form-input { cursor:pointer; }
         </div>
       </div>
  
-      <div class="form-grid cols3">
-        <div class="form-group">
-          <label for="loyer_base">Loyer de base hors charges (&#8364;/mois)</label>
-          <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal()">
-          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">💡 Montant que vous payez chaque mois, hors charges</small>
+      <!-- Loyer de base — obligatoire -->
+      <div class="form-group">
+        <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="color:var(--accent);font-size:0.8rem">*</span></label>
+        <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal()">
+        <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">💡 Montant que vous payez chaque mois, hors charges</small>
+      </div>
+ 
+      <!-- Loyers de référence — zone encadrée -->
+      <div class="form-group" style="margin-top:12px">
+        <label style="font-size:0.85rem;font-weight:700;color:var(--noir);margin-bottom:8px;display:block">Loyers de référence <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— si indiqués dans le bail (zone encadrée)</span></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div>
+            <label for="loyer_minore" style="font-size:0.78rem;color:var(--gris);font-weight:600">Loyer minoré (&#8364;/mois)</label>
+            <input type="number" id="loyer_minore" class="form-input" placeholder="Ex : 780" min="0" oninput="calcLoyerTotal()" style="margin-top:4px">
+          </div>
+          <div>
+            <label for="loyer_ref" style="font-size:0.78rem;color:var(--gris);font-weight:600">Loyer de référence (&#8364;/mois)</label>
+            <input type="number" id="loyer_ref" class="form-input" placeholder="Ex : 870" min="0" oninput="calcLoyerTotal()" style="margin-top:4px">
+          </div>
+          <div>
+            <label for="loyer_majore" style="font-size:0.78rem;color:var(--gris);font-weight:600">Loyer majoré (&#8364;/mois)</label>
+            <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 950" min="0" oninput="calcLoyerTotal()" style="margin-top:4px">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="loyer_majore">Plafond légal majoré (&#8364;/mois) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— si indiqué dans le bail</span></label>
-          <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 950" min="0" oninput="calcLoyerTotal()">
-          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">💡 Loyer de référence majoré mentionné dans le bail (zone encadrée)</small>
+        <!-- Cases à cocher : lequel est pris en compte -->
+        <div id="loyer_ref_checkboxes" style="display:none;margin-top:10px;padding:12px;background:var(--creme);border-radius:10px;border:1px solid var(--border)">
+          <p style="font-size:0.78rem;font-weight:700;color:var(--noir);margin:0 0 8px">Quel(s) loyer(s) de référence est/sont mentionné(s) dans votre bail ?</p>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;cursor:pointer">
+              <input type="checkbox" id="use_loyer_minore" onchange="calcLoyerTotal()" style="width:15px;height:15px;accent-color:var(--accent)">
+              Loyer minoré
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;cursor:pointer">
+              <input type="checkbox" id="use_loyer_ref" onchange="calcLoyerTotal()" style="width:15px;height:15px;accent-color:var(--accent)">
+              Loyer de référence
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;cursor:pointer">
+              <input type="checkbox" id="use_loyer_majore" onchange="calcLoyerTotal()" style="width:15px;height:15px;accent-color:var(--accent)">
+              Loyer majoré
+            </label>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="complement_loyer">Complément de loyer (&#8364;) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— facultatif</span></label>
-          <input type="number" id="complement_loyer" class="form-input" placeholder="Ex : 0" min="0" oninput="calcLoyerTotal()">
-          <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Si mentionné dans le bail (facultatif)</small>
-        </div>
+      </div>
+ 
+      <!-- Complément de loyer -->
+      <div class="form-group" style="margin-top:12px">
+        <label for="complement_loyer">Complément de loyer (&#8364;) <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— facultatif</span></label>
+        <input type="number" id="complement_loyer" class="form-input" placeholder="Ex : 0" min="0" oninput="calcLoyerTotal()">
+        <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Si mentionné dans le bail</small>
       </div>
       <div class="form-group" id="complement_justif_group" style="margin:0 0 16px;">
         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem;font-weight:600">
@@ -716,11 +749,11 @@ select.form-input { cursor:pointer; }
         <button class="upload-tab" id="tab-text" onclick="switchTab('text')">✍️ Coller le texte</button>
       </div>
       <div id="upload-panel">
-        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-zone" id="uploadZone" onclick="triggerFileInput(event)">
           <div class="upload-zone-icon">📄</div>
           <div class="upload-zone-title">Glissez votre PDF ici ou cliquez pour parcourir</div>
           <div class="upload-zone-sub">PDF uniquement · Max 10 Mo</div>
-          <input type="file" id="fileInput" accept=".pdf" style="position:absolute;inset:0;opacity:0;cursor:pointer" onchange="handleFile(this.files[0])">
+          <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleFile(this.files[0])">
         </div>
         <div class="upload-success" id="uploadSuccess" style="display:none">
           <div class="upload-success-icon">✅</div>
@@ -1154,10 +1187,32 @@ function toggleComplementJustif() {
  
 function calcLoyerTotal() {
   var b = parseFloat(document.getElementById('loyer_base').value) || 0;
+  var minore = parseFloat(document.getElementById('loyer_minore') && document.getElementById('loyer_minore').value) || 0;
+  var ref = parseFloat(document.getElementById('loyer_ref') && document.getElementById('loyer_ref').value) || 0;
   var m = parseFloat(document.getElementById('loyer_majore').value) || 0;
   var c = parseFloat(document.getElementById('complement_loyer').value) || 0;
   var ch = parseFloat(document.getElementById('charges').value) || 0;
-  appState.loyerBase = b; appState.loyerMajore = m; appState.complementLoyer = c; appState.charges = ch;
+ 
+  // Afficher les cases à cocher si au moins un loyer de référence est renseigné
+  var hasRef = minore > 0 || ref > 0 || m > 0;
+  var checkboxDiv = document.getElementById('loyer_ref_checkboxes');
+  if (checkboxDiv) checkboxDiv.style.display = hasRef ? 'block' : 'none';
+ 
+  // Lire les cases cochées
+  var useMinore = document.getElementById('use_loyer_minore') && document.getElementById('use_loyer_minore').checked;
+  var useRef = document.getElementById('use_loyer_ref') && document.getElementById('use_loyer_ref').checked;
+  var useMajore = document.getElementById('use_loyer_majore') && document.getElementById('use_loyer_majore').checked;
+ 
+  // Stocker dans appState — chaque valeur séparément, pas additionnées
+  appState.loyerBase = b;
+  appState.loyerMinore = useMinore ? minore : 0;
+  appState.loyerRef = useRef ? ref : 0;
+  appState.loyerMajore = useMajore ? m : 0;
+  appState.complementLoyer = c;
+  appState.charges = ch;
+ 
+  // Pour le calcul du trop-perçu, le plafond applicable = loyer majoré si coché, sinon loyer de référence
+  appState.plafondApplicable = useMajore && m > 0 ? m : (useRef && ref > 0 ? ref : 0);
   var justifEl = document.getElementById('complement_justif');
   appState.complementJustif = (document.getElementById('has_complement_justif') && document.getElementById('has_complement_justif').checked && justifEl) ? justifEl.value : '';
  
@@ -1185,11 +1240,12 @@ function calcLoyerTotal() {
     if (dureeEl2) dureeEl2.style.display = 'none';
   }
  
-  var total = b + m + c + ch;
+  // Total = loyer de base + complément + charges (les loyers de référence ne s'additionnent PAS)
+  var total = b + c + ch;
   if (b > 0) {
     document.getElementById('loyerBreakdown').style.display = 'block';
     document.getElementById('lb1').textContent = b ? b + ' €' : '—';
-    document.getElementById('lb2').textContent = m ? '+' + m + ' €' : '—';
+    document.getElementById('lb2').textContent = m ? m + ' € (ref. majoré)' : '—';
     document.getElementById('lb3').textContent = c ? '+' + c + ' €' : '—';
     document.getElementById('lb4').textContent = ch ? '+' + ch + ' € (charges)' : '—';
     document.getElementById('lb_total').textContent = total + ' €/mois';
@@ -1250,6 +1306,15 @@ function switchTab(tab) {
   document.getElementById('tab-text').className = 'upload-tab' + (tab === 'text' ? ' active' : '');
   document.getElementById('upload-panel').style.display = tab === 'upload' ? 'block' : 'none';
   document.getElementById('text-panel').style.display = tab === 'text' ? 'block' : 'none';
+}
+ 
+var _fileInputLock = false;
+function triggerFileInput(e) {
+  if (e && e.target && e.target.id === 'fileInput') return; // évite double déclenchement
+  if (_fileInputLock) return;
+  _fileInputLock = true;
+  setTimeout(function() { _fileInputLock = false; }, 1000);
+  document.getElementById('fileInput').click();
 }
  
 function handleFile(file) {
