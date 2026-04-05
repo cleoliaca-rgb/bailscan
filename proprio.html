@@ -7,6 +7,7 @@
 <meta name="description" content="Générez un bail conforme loi 1989/ALUR ou analysez votre bail existant. Pour propriétaires particuliers. Résultat en 2 minutes.">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root{--noir:#0d0d0d;--creme:#f5f0e8;--accent:#c84b2f;--accent2:#e8a87c;--vert:#2d6a4f;--vert-light:#e8f5ee;--rouge-light:#fdf0ed;--texte:#1a1a1a;--gris:#6b6b6b;--border:#d8d0c4;--bg:#fafaf8;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -156,7 +157,7 @@ textarea.fi{resize:vertical;min-height:90px;}
 .lstep{font-size:.82rem;color:var(--gris);display:flex;align-items:center;gap:8px;opacity:.4;transition:opacity .4s;}
 .lstep.active{opacity:1;color:var(--accent);}
 .lstep.done{opacity:.7;color:var(--vert);}
-.results-section{display:none;max-width:860px;margin:0 auto;padding:0 48px 80px;}
+.results-section{display:none;max-width:900px;margin:0 auto;padding:0 48px 80px;}
 .results-card{background:white;border:1.5px solid var(--border);border-radius:20px;padding:40px;}
 .result-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px;}
 .result-badge{background:var(--vert-light);color:var(--vert);font-size:.75rem;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid rgba(45,106,79,.2);}
@@ -166,10 +167,29 @@ textarea.fi{resize:vertical;min-height:90px;}
 .btn-action:hover{border-color:var(--noir);}
 .btn-action.primary{background:var(--accent);color:white;border-color:var(--accent);}
 .btn-action.primary:hover{background:#a83a20;}
-.result-content{font-size:.85rem;line-height:1.85;color:var(--texte);white-space:pre-wrap;font-family:'DM Sans',sans-serif;background:var(--bg);border-radius:10px;padding:24px;max-height:600px;overflow-y:auto;border:1px solid var(--border);}
+.btn-action.green{background:var(--vert);color:white;border-color:var(--vert);}
+.btn-action.green:hover{background:#1e5038;}
+.result-content{font-size:.83rem;line-height:1.85;color:var(--texte);white-space:pre-wrap;font-family:'DM Sans',sans-serif;background:var(--bg);border-radius:10px;padding:24px;max-height:500px;overflow-y:auto;border:1px solid var(--border);}
 .btn-reset{background:none;border:1.5px solid var(--border);color:var(--gris);padding:9px 18px;border-radius:9px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:12px;transition:all .2s;}
 .btn-reset:hover{border-color:var(--noir);color:var(--noir);}
-@media(max-width:768px){.results-section{padding:0 16px 60px;}.results-card{padding:24px 18px;}}
+/* Blocs récap résultats */
+.res-recap{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+.res-recap-item{background:var(--creme);border-radius:10px;padding:12px 14px;}
+.res-recap-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:3px;}
+.res-recap-value{font-size:.88rem;font-weight:600;color:var(--noir);}
+/* Blocs action en bas */
+.res-actions-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:24px;}
+.res-action-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all .2s;}
+.res-action-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.res-action-icon{font-size:1.8rem;margin-bottom:10px;}
+.res-action-title{font-weight:700;font-size:.88rem;color:var(--noir);margin-bottom:5px;}
+.res-action-desc{font-size:.76rem;color:var(--gris);line-height:1.5;margin-bottom:14px;}
+/* Modal envoi mail */
+.mail-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:400;align-items:center;justify-content:center;padding:20px;}
+.mail-modal.active{display:flex;}
+.mail-modal-inner{background:white;border-radius:18px;padding:36px;max-width:440px;width:100%;position:relative;}
+.mail-modal-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--gris);}
+@media(max-width:768px){.results-section{padding:0 16px 60px;}.results-card{padding:24px 18px;}.res-recap{grid-template-columns:1fr 1fr;}.res-actions-grid{grid-template-columns:1fr;}}
 footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;color:var(--gris);font-size:.8rem;flex-wrap:wrap;gap:10px;}
 footer a{color:var(--gris);text-decoration:none;}
 footer a:hover{color:var(--accent);}
@@ -308,9 +328,10 @@ footer a:hover{color:var(--accent);}
           <label class="rpill" onclick="setR('genType','saisonnier',this)"><input type="radio" name="genType" value="saisonnier">Saisonnier</label>
         </div>
       </div>
-      <div class="fgrid">
-        <div class="fg"><label for="genAdresse">Adresse complète du bien <span style="color:var(--accent)">*</span></label><input type="text" id="genAdresse" class="fi" placeholder="Ex : 12 rue de la Paix, 75001 Paris"></div>
-        <div class="fg"><label for="genVille">Ville</label><input type="text" id="genVille" class="fi" placeholder="Ex : Paris, Lyon, Bordeaux…"></div>
+      <div class="fg"><label for="genAdresse">Adresse (rue, numéro) <span style="color:var(--accent)">*</span></label><input type="text" id="genAdresse" class="fi" placeholder="Ex : 12 rue de la Paix"></div>
+      <div class="fgrid g3">
+        <div class="fg"><label for="genCp">Code postal <span style="color:var(--accent)">*</span></label><input type="text" id="genCp" class="fi" placeholder="Ex : 75001" maxlength="5"></div>
+        <div class="fg" style="grid-column:span 2"><label for="genVille">Ville <span style="color:var(--accent)">*</span></label><input type="text" id="genVille" class="fi" placeholder="Ex : Paris"></div>
       </div>
       <div class="fgrid g3">
         <div class="fg"><label for="genSurface">Surface habitable (m²) <span style="color:var(--accent)">*</span></label><input type="number" id="genSurface" class="fi" placeholder="Ex : 45" min="1"></div>
@@ -400,16 +421,33 @@ footer a:hover{color:var(--accent);}
         </div>
         <div id="bPhysiqueFields"><div class="fgrid"><div class="fg"><label for="genBailleurPrenom">Prénom</label><input type="text" id="genBailleurPrenom" class="fi" placeholder="Ex : Jean"></div><div class="fg"><label for="genBailleurNom">Nom <span style="color:var(--accent)">*</span></label><input type="text" id="genBailleurNom" class="fi" placeholder="Ex : Dupont"></div></div></div>
         <div id="bMoraleFields" style="display:none"><div class="fg"><label for="genBailleurDenom">Dénomination sociale <span style="color:var(--accent)">*</span></label><input type="text" id="genBailleurDenom" class="fi" placeholder="Ex : SCI Les Lilas"></div></div>
-        <div class="fgrid"><div class="fg"><label for="genBailleurAdresse">Adresse complète</label><input type="text" id="genBailleurAdresse" class="fi" placeholder="Ex : 5 rue Victor Hugo, 75011 Paris"></div><div class="fg"><label for="genBailleurEmail">Email</label><input type="email" id="genBailleurEmail" class="fi" placeholder="Ex : jean.dupont@email.com"></div></div>
+        <div class="fg"><label for="genBailleurAdresse">Adresse (rue, numéro)</label><input type="text" id="genBailleurAdresse" class="fi" placeholder="Ex : 5 rue Victor Hugo"></div>
+        <div class="fgrid g3">
+          <div class="fg"><label for="genBailleurCp">Code postal</label><input type="text" id="genBailleurCp" class="fi" placeholder="Ex : 75011" maxlength="5"></div>
+          <div class="fg"><label for="genBailleurVille">Ville</label><input type="text" id="genBailleurVille" class="fi" placeholder="Ex : Paris"></div>
+          <div class="fg"><label for="genBailleurEmail">Email</label><input type="email" id="genBailleurEmail" class="fi" placeholder="Ex : jean.dupont@email.com"></div>
+        </div>
         <div class="fg"><label for="genBailleurTel">Téléphone</label><input type="text" id="genBailleurTel" class="fi" placeholder="Ex : 06 12 34 56 78"></div>
  
         <div class="sh">🏠 Locataire(s)</div>
         <div class="fgrid"><div class="fg"><label for="genLocPrenom">Prénom</label><input type="text" id="genLocPrenom" class="fi" placeholder="Ex : Marie"></div><div class="fg"><label for="genLocNom">Nom</label><input type="text" id="genLocNom" class="fi" placeholder="Ex : Martin"></div></div>
-        <div class="fgrid"><div class="fg"><label for="genLocAdresse">Adresse actuelle</label><input type="text" id="genLocAdresse" class="fi" placeholder="Ex : 5 avenue Victor Hugo, 69001 Lyon"></div><div class="fg"><label for="genLocEmail">Email</label><input type="email" id="genLocEmail" class="fi" placeholder="Ex : marie.martin@email.com"></div></div>
+        <div class="fg"><label for="genLocAdresse">Adresse actuelle (rue, numéro)</label><input type="text" id="genLocAdresse" class="fi" placeholder="Ex : 5 avenue Victor Hugo"></div>
+        <div class="fgrid g3">
+          <div class="fg"><label for="genLocCp">Code postal</label><input type="text" id="genLocCp" class="fi" placeholder="Ex : 69001" maxlength="5"></div>
+          <div class="fg"><label for="genLocVille">Ville</label><input type="text" id="genLocVille" class="fi" placeholder="Ex : Lyon"></div>
+          <div class="fg"><label for="genLocEmail">Email</label><input type="email" id="genLocEmail" class="fi" placeholder="Ex : marie.martin@email.com"></div>
+        </div>
+ 
+        <!-- COLOCATAIRES SUPPLÉMENTAIRES (affiché si colocation) -->
+        <div id="colocsSection" style="display:none">
+          <div id="colocsList"></div>
+          <button type="button" onclick="addColoc()" style="display:inline-flex;align-items:center;gap:8px;background:none;border:1.5px dashed var(--border);color:var(--gris);padding:10px 18px;border-radius:9px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gris)'">＋ Ajouter un colocataire</button>
+        </div>
  
         <div class="sh">🔐 Garant <small style="font-weight:400;font-size:.76rem;color:var(--gris)">— optionnel</small></div>
         <div style="background:var(--creme);border-radius:10px;padding:16px;border:1px solid var(--border)">
-          <div class="fgrid"><div class="fg" style="margin-bottom:0"><label for="genGarantNom">Nom complet</label><input type="text" id="genGarantNom" class="fi" placeholder="Ex : Paul Martin"></div><div class="fg" style="margin-bottom:0"><label for="genGarantAdresse">Adresse</label><input type="text" id="genGarantAdresse" class="fi" placeholder="Ex : 3 rue du Moulin, 75018 Paris"></div></div>
+          <div class="fgrid"><div class="fg" style="margin-bottom:0"><label for="genGarantNom">Nom complet</label><input type="text" id="genGarantNom" class="fi" placeholder="Ex : Paul Martin"></div><div class="fg" style="margin-bottom:0"><label for="genGarantAdresse">Adresse (rue, numéro)</label><input type="text" id="genGarantAdresse" class="fi" placeholder="Ex : 3 rue du Moulin"></div></div>
+          <div class="fgrid" style="margin-top:10px"><div class="fg" style="margin-bottom:0"><label for="genGarantCp">Code postal</label><input type="text" id="genGarantCp" class="fi" placeholder="Ex : 75018" maxlength="5"></div><div class="fg" style="margin-bottom:0"><label for="genGarantVille">Ville</label><input type="text" id="genGarantVille" class="fi" placeholder="Ex : Paris"></div></div>
           <div class="fg" style="margin-top:10px;margin-bottom:0"><label>Type de cautionnement</label>
             <div class="rpills"><label class="rpill active" onclick="setR('genCaution','solidaire',this)"><input type="radio" name="genCaution" value="solidaire" checked>Solidaire</label><label class="rpill" onclick="setR('genCaution','simple',this)"><input type="radio" name="genCaution" value="simple">Simple</label><label class="rpill" onclick="setR('genCaution','notarie',this)"><input type="radio" name="genCaution" value="notarie">Acte notarié</label></div>
           </div>
@@ -475,7 +513,6 @@ footer a:hover{color:var(--accent);}
           <label class="chk-item"><input type="checkbox" id="clauseCompteur"> 📊 Relevés compteurs contradictoires</label>
           <label class="chk-item"><input type="checkbox" id="clauseDpeTrav"> ⚡ Travaux rénovation énergétique prévus</label>
           <label class="chk-item"><input type="checkbox" id="clauseNum"> 📱 Signature électronique</label>
-          <label class="chk-item"><input type="checkbox" id="clauseAnimaux"> 🐾 Animaux interdits</label>
           <label class="chk-item"><input type="checkbox" id="clauseFumeur"> 🚭 Logement non-fumeur</label>
         </div>
         <div class="fg" style="margin-top:10px"><label for="clausesLibres">Clauses libres supplémentaires</label><textarea id="clausesLibres" class="fi" rows="3" placeholder="Ex : parking n°12 inclus, local vélos accessible…"></textarea></div>
@@ -526,17 +563,81 @@ footer a:hover{color:var(--accent);}
   </div>
 </section>
  
+<!-- MODAL ENVOI EMAIL -->
+<div class="mail-modal" id="mailModal">
+  <div class="mail-modal-inner">
+    <button class="mail-modal-close" onclick="closeMailModal()">✕</button>
+    <div style="font-family:'Instrument Serif',serif;font-size:1.5rem;color:var(--noir);margin-bottom:4px">Envoyer le bail par email</div>
+    <div style="font-size:.83rem;color:var(--gris);margin-bottom:20px">Le PDF sera envoyé directement depuis BailScan</div>
+    <div class="fg"><label for="mailTo">Email destinataire <span style="color:var(--accent)">*</span></label><input type="email" id="mailTo" class="fi" placeholder="Ex : marie.martin@email.com"></div>
+    <div class="fg"><label for="mailNom">Nom du destinataire</label><input type="text" id="mailNom" class="fi" placeholder="Ex : Marie Martin"></div>
+    <div class="fg"><label for="mailMsg">Message personnalisé <small style="font-weight:400;color:var(--gris)">(optionnel)</small></label><textarea id="mailMsg" class="fi" rows="3" placeholder="Ex : Bonjour, veuillez trouver ci-joint le bail de location pour signature…"></textarea></div>
+    <button onclick="sendMailNow()" id="btnSendMail" style="width:100%;background:var(--accent);color:white;border:none;padding:13px;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .2s">📧 Envoyer le PDF →</button>
+    <div id="mailStatus" style="display:none;margin-top:10px;text-align:center;font-size:.82rem"></div>
+  </div>
+</div>
+ 
 <section class="results-section" id="resultsSection">
   <div class="results-card">
+ 
+    <!-- HEADER -->
     <div class="result-header">
-      <div><div class="result-badge" id="resBadge">✓ Document généré</div><div class="result-title" id="resTitle">Votre bail conforme</div></div>
+      <div>
+        <div class="result-badge" id="resBadge">✓ Bail généré</div>
+        <div class="result-title" id="resTitle">Votre bail conforme</div>
+        <div style="font-size:.78rem;color:var(--gris);margin-top:4px" id="resDate"></div>
+      </div>
       <div class="result-actions">
         <button class="btn-action" onclick="downloadTxt()">⬇ .txt</button>
-        <button class="btn-action primary" onclick="exportPDF()">📄 PDF</button>
+        <button class="btn-action primary" onclick="exportPDF()">📄 Export PDF</button>
       </div>
     </div>
+ 
+    <!-- RÉCAP CONTRAT -->
+    <div class="res-recap" id="resRecap"></div>
+ 
+    <!-- CONTENU BAIL -->
+    <div style="margin-bottom:8px;font-size:.8rem;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:.06em">Contenu du bail</div>
     <div class="result-content" id="resContent"></div>
-    <button class="btn-reset" onclick="resetApp()">↩ Nouveau document</button>
+ 
+    <!-- GRILLE ACTIONS -->
+    <div class="res-actions-grid" id="resActionsGrid">
+ 
+      <!-- MODIFIER SANS REPAYER -->
+      <div class="res-action-card">
+        <div class="res-action-icon">✏️</div>
+        <div class="res-action-title">Modifier le bail</div>
+        <div class="res-action-desc">Corriger une information sans repayer. Le formulaire se rouvre avec vos données.</div>
+        <button class="btn-action" style="width:100%" onclick="editBail()">Modifier →</button>
+      </div>
+ 
+      <!-- ENVOYER PAR MAIL -->
+      <div class="res-action-card">
+        <div class="res-action-icon">📧</div>
+        <div class="res-action-title">Envoyer par email</div>
+        <div class="res-action-desc">Envoyez le PDF directement au locataire ou à vous-même pour signature.</div>
+        <button class="btn-action primary" style="width:100%" onclick="openMailModal()">Envoyer →</button>
+      </div>
+ 
+      <!-- ANALYSE INCLUSE -->
+      <div class="res-action-card" id="cardAnalyse" style="display:none">
+        <div class="res-action-icon">🔍</div>
+        <div class="res-action-title">Analyser un bail</div>
+        <div class="res-action-desc">Inclus dans votre accès. Analysez un bail existant sans frais supplémentaires.</div>
+        <button class="btn-action green" style="width:100%" onclick="switchToAnalyse()">Analyser →</button>
+      </div>
+ 
+    </div>
+ 
+    <!-- INFOS COMPLÉMENTAIRES -->
+    <div id="resInfosCompl" style="display:none;margin-top:24px;padding:20px 24px;background:var(--creme);border-radius:14px;border:1px solid var(--border)">
+      <div style="font-weight:700;font-size:.88rem;color:var(--noir);margin-bottom:14px">📋 Rappels importants</div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="resRappelsList"></div>
+    </div>
+ 
+    <div style="margin-top:20px;display:flex;justify-content:flex-end">
+      <button class="btn-reset" onclick="resetApp()">↩ Nouveau document</button>
+    </div>
   </div>
 </section>
  
@@ -595,15 +696,86 @@ function v(id){var el=document.getElementById(id);return el?el.value:'';}
 function chk(id){var el=document.getElementById(id);return el&&el.checked;}
 function toggleBailleur(type){document.getElementById('bPhysiqueFields').style.display=type==='physique'?'block':'none';document.getElementById('bMoraleFields').style.display=type!=='physique'?'block':'none';}
  
+// ─── COLOCATAIRES DYNAMIQUES ───────────────────────────────
+var colocCount=0;
+function toggleColocsSection(){
+  var type=rad('genType');
+  var sec=document.getElementById('colocsSection');
+  if(sec)sec.style.display=(type==='colocation')?'block':'none';
+}
+function addColoc(){
+  colocCount++;
+  var n=colocCount;
+  var div=document.createElement('div');
+  div.id='coloc_'+n;
+  div.style.cssText='background:var(--creme);border-radius:10px;padding:16px;border:1px solid var(--border);margin-top:12px;position:relative';
+  div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:.82rem;font-weight:700;color:var(--accent)">Colocataire '+n+'</div><button type="button" onclick="removeColoc('+n+')" style="background:none;border:none;color:var(--gris);font-size:1rem;cursor:pointer;padding:2px 6px" title="Supprimer">✕</button></div>'
+  +'<div class="fgrid"><div class="fg"><label>Prénom</label><input type="text" id="coloc_prenom_'+n+'" class="fi" placeholder="Ex : Lucas"></div><div class="fg"><label>Nom</label><input type="text" id="coloc_nom_'+n+'" class="fi" placeholder="Ex : Petit"></div></div>'
+  +'<div class="fg"><label>Adresse actuelle (rue, numéro)</label><input type="text" id="coloc_adresse_'+n+'" class="fi" placeholder="Ex : 8 rue des Lilas"></div>'
+  +'<div class="fgrid g3"><div class="fg"><label>Code postal</label><input type="text" id="coloc_cp_'+n+'" class="fi" placeholder="Ex : 75018" maxlength="5"></div><div class="fg"><label>Ville</label><input type="text" id="coloc_ville_'+n+'" class="fi" placeholder="Ex : Paris"></div><div class="fg"><label>Email</label><input type="email" id="coloc_email_'+n+'" class="fi" placeholder="Ex : lucas@email.com"></div></div>';
+  document.getElementById('colocsList').appendChild(div);
+}
+function removeColoc(n){var el=document.getElementById('coloc_'+n);if(el)el.remove();}
+function getColocs(){
+  var colocs=[];
+  document.querySelectorAll('[id^="coloc_"]:not([id*="_prenom_"]):not([id*="_nom_"]):not([id*="_adresse_"]):not([id*="_cp_"]):not([id*="_ville_"]):not([id*="_email_"])').forEach(function(el){
+    var n=el.id.replace('coloc_','');
+    if(!isNaN(n)){
+      var prenom=document.getElementById('coloc_prenom_'+n);
+      var nom=document.getElementById('coloc_nom_'+n);
+      if(prenom&&prenom.value.trim()){
+        colocs.push({
+          prenom:prenom?prenom.value:'',nom:nom?nom.value:'',
+          adresse:document.getElementById('coloc_adresse_'+n)?document.getElementById('coloc_adresse_'+n).value:'',
+          cp:document.getElementById('coloc_cp_'+n)?document.getElementById('coloc_cp_'+n).value:'',
+          ville:document.getElementById('coloc_ville_'+n)?document.getElementById('coloc_ville_'+n).value:'',
+          email:document.getElementById('coloc_email_'+n)?document.getElementById('coloc_email_'+n).value:''
+        });
+      }
+    }
+  });
+  return colocs;
+}
+ 
+// ─── SWITCH VERS ANALYSE (après paiement, gratuit) ────────
+function switchToAnalyse(){
+  S.mode='analyser';
+  selectMode('analyser');
+  document.getElementById('resultsSection').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('modeSection').style.display='none';
+  goStep(3);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+ 
 document.addEventListener('DOMContentLoaded',function(){
   var cpEl=document.getElementById('genComplement');
   if(cpEl)cpEl.addEventListener('input',function(){document.getElementById('complementJustifGroup').style.display=parseFloat(this.value)>0?'block':'none';});
   var zone=document.getElementById('uploadZone');
   if(zone){zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('dragover');});zone.addEventListener('dragleave',function(){zone.classList.remove('dragover');});zone.addEventListener('drop',function(e){e.preventDefault();zone.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});}
+  // Écouter les changements de type pour afficher/cacher les colocataires
+  document.querySelectorAll('input[name="genType"]').forEach(function(radio){
+    radio.addEventListener('change',toggleColocsSection);
+  });
 });
  
 function goStep(n){
   if(n>=2&&!S.mode){selectMode('generer');setTimeout(function(){goStep(n);},300);return;}
+  // Si déjà payé et qu'on arrive à l'étape 5 depuis une modification → régénérer directement
+  if(n===5&&S.isPaid&&S.mode==='generer'){
+    var banner=document.getElementById('editBanner');if(banner)banner.remove();
+    document.getElementById('app').style.display='none';
+    document.getElementById('modeSection').style.display='none';
+    var ov=document.getElementById('loadingOverlay');ov.classList.add('active');
+    document.getElementById('ls4').textContent='Mise à jour du bail…';
+    var steps=['ls1','ls2','ls3','ls4'];
+    [0,600,1400,2200].forEach(function(delay,i){setTimeout(function(){if(i>0)document.getElementById(steps[i-1]).className='lstep done';document.getElementById(steps[i]).className='lstep active';},delay);});
+    setTimeout(function(){
+      try{var bail=buildBailComplet();S.currentBail=bail;ov.classList.remove('active');showResults(bail,null);}
+      catch(e){ov.classList.remove('active');document.getElementById('app').style.display='block';alert('Erreur : '+e.message);}
+    },3000);
+    return;
+  }
   if(n===5)buildRecap();
   document.querySelectorAll('.wpanel').forEach(function(p){p.classList.remove('active');});
   document.getElementById('step'+n).classList.add('active');
@@ -626,16 +798,17 @@ function closeModal(){document.getElementById('modalOverlay').classList.remove('
  
 function saveAllState(){
   return{mode:S.mode,pdf:S.pdf,pdfName:S.pdfName,
-    genType:rad('genType'),genAdresse:v('genAdresse'),genVille:v('genVille'),genSurface:v('genSurface'),genPieces:v('genPieces'),genEtage:v('genEtage'),genDpe:v('genDpe'),genGes:v('genGes'),genEquipements:v('genEquipements'),
+    genType:rad('genType'),genAdresse:v('genAdresse'),genCp:v('genCp'),genVille:v('genVille'),genSurface:v('genSurface'),genPieces:v('genPieces'),genEtage:v('genEtage'),genDpe:v('genDpe'),genGes:v('genGes'),genEquipements:v('genEquipements'),
     chkJardin:chk('chkJardin'),chkTerrasse:chk('chkTerrasse'),chkParking:chk('chkParking'),chkCave:chk('chkCave'),chkGrenier:chk('chkGrenier'),chkPiscine:chk('chkPiscine'),genAnnexeNum:v('genAnnexeNum'),genCopro:rad('genCopro'),genSyndic:v('genSyndic'),
     genLoyer:v('genLoyer'),genCharges:v('genCharges'),genDepot:v('genDepot'),genDateEntree:v('genDateEntree'),genDuree:rad('genDuree'),genRevision:rad('genRevision'),genLoyerRef:v('genLoyerRef'),genLoyerMajore:v('genLoyerMajore'),genLoyerMinore:v('genLoyerMinore'),genComplement:v('genComplement'),genComplementJustif:v('genComplementJustif'),genIrl:v('genIrl'),
-    genBailleurType:rad('genBailleurType'),genBailleurPrenom:v('genBailleurPrenom'),genBailleurNom:v('genBailleurNom'),genBailleurDenom:v('genBailleurDenom'),genBailleurAdresse:v('genBailleurAdresse'),genBailleurEmail:v('genBailleurEmail'),genBailleurTel:v('genBailleurTel'),
-    genLocPrenom:v('genLocPrenom'),genLocNom:v('genLocNom'),genLocAdresse:v('genLocAdresse'),genLocEmail:v('genLocEmail'),genGarantNom:v('genGarantNom'),genGarantAdresse:v('genGarantAdresse'),genCaution:rad('genCaution'),
+    genBailleurType:rad('genBailleurType'),genBailleurPrenom:v('genBailleurPrenom'),genBailleurNom:v('genBailleurNom'),genBailleurDenom:v('genBailleurDenom'),genBailleurAdresse:v('genBailleurAdresse'),genBailleurCp:v('genBailleurCp'),genBailleurVille:v('genBailleurVille'),genBailleurEmail:v('genBailleurEmail'),genBailleurTel:v('genBailleurTel'),
+    genLocPrenom:v('genLocPrenom'),genLocNom:v('genLocNom'),genLocAdresse:v('genLocAdresse'),genLocCp:v('genLocCp'),genLocVille:v('genLocVille'),genLocEmail:v('genLocEmail'),genGarantNom:v('genGarantNom'),genGarantAdresse:v('genGarantAdresse'),genGarantCp:v('genGarantCp'),genGarantVille:v('genGarantVille'),genCaution:rad('genCaution'),
     analyseVille:v('analyseVille'),analyseLoyer:v('analyseLoyer'),analyseSurface:v('analyseSurface'),analyseDepot:v('analyseDepot'),textBail:v('textBail'),
     travChaudiere:chk('travChaudiere'),travClim:chk('travClim'),travJardin:chk('travJardin'),travGouttiere:chk('travGouttiere'),travPiscine:chk('travPiscine'),travRamonage:chk('travRamonage'),travRobinetterie:chk('travRobinetterie'),travDetartrage:chk('travDetartrage'),travAutres:v('travAutres'),
     clauseSousloc:chk('clauseSousloc'),clauseCession:chk('clauseCession'),clausePno:chk('clausePno'),clauseCompteur:chk('clauseCompteur'),clauseDpeTrav:chk('clauseDpeTrav'),clauseNum:chk('clauseNum'),clauseAnimaux:chk('clauseAnimaux'),clauseFumeur:chk('clauseFumeur'),clausesLibres:v('clausesLibres'),
     genPno:rad('genPno'),genResolutoire:rad('genResolutoire'),genSolidarite:rad('genSolidarite'),
-    annDpe:chk('annDpe'),annEdl:chk('annEdl'),annNotice:chk('annNotice'),annRgl:chk('annRgl'),annGarant:chk('annGarant'),annInventaire:chk('annInventaire')
+    annDpe:chk('annDpe'),annEdl:chk('annEdl'),annNotice:chk('annNotice'),annRgl:chk('annRgl'),annGarant:chk('annGarant'),annInventaire:chk('annInventaire'),
+    colocs:getColocs()
   };
 }
  
@@ -680,11 +853,166 @@ function launchGeneration(){
  
 function showResults(bail,analyse){
   document.getElementById('resultsSection').style.display='block';
+  document.getElementById('resDate').textContent='Généré le '+new Date().toLocaleDateString('fr-FR');
+ 
   if(bail){
     document.getElementById('resBadge').textContent='✓ Bail généré';
     document.getElementById('resTitle').textContent='Votre bail conforme';
     document.getElementById('resContent').textContent=bail;
+ 
+    // Récap contrat
+    var recapItems=[
+      {l:'Type',v:(S.genType||'Vide').charAt(0).toUpperCase()+(S.genType||'vide').slice(1)},
+      {l:'Bien loué',v:(S.genAdresse||'')+(S.genCp?' '+S.genCp:'')+(S.genVille?' '+S.genVille:'')},
+      {l:'Bailleur',v:S.genBailleurType==='physique'?(S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom:(S.genBailleurDenom||'')},
+      {l:'Locataire',v:(S.genLocPrenom?S.genLocPrenom+' ':'')+S.genLocNom},
+      {l:'Loyer HC',v:S.genLoyer?S.genLoyer+' €/mois':'—'},
+      {l:'Durée',v:S.genDuree||'3 ans'},
+    ];
+    document.getElementById('resRecap').innerHTML=recapItems.map(function(i){
+      return'<div class="res-recap-item"><div class="res-recap-label">'+i.l+'</div><div class="res-recap-value">'+(i.v||'—')+'</div></div>';
+    }).join('');
+ 
+    // Rappels importants
+    var rappels=[];
+    if(S.annDpe)rappels.push('📄 <strong>DPE</strong> : joindre le diagnostic de performance énergétique à la signature.');
+    if(S.annEdl)rappels.push('📋 <strong>État des lieux d\'entrée</strong> : à établir contradictoirement le jour de la remise des clés.');
+    if(S.annNotice)rappels.push('📘 <strong>Notice d\'information</strong> : remettre au locataire (arrêté du 29 mai 2015).');
+    if(S.annGarant)rappels.push('🔐 <strong>Acte de cautionnement</strong> : à faire signer séparément et à annexer.');
+    if(S.annInventaire)rappels.push('🛋️ <strong>Inventaire du mobilier</strong> : obligatoire pour un bail meublé.');
+    rappels.push('✍️ Chaque exemplaire doit être signé par toutes les parties avec la mention <strong>"Lu et approuvé"</strong>.');
+    rappels.push('📧 Conservez une copie signée de chaque partie.');
+    if(rappels.length){
+      document.getElementById('resInfosCompl').style.display='block';
+      document.getElementById('resRappelsList').innerHTML=rappels.map(function(r){
+        return'<div style="display:flex;align-items:flex-start;gap:8px;font-size:.83rem;line-height:1.6;color:var(--texte)"><span style="flex-shrink:0;color:var(--vert)">✓</span><span>'+r+'</span></div>';
+      }).join('');
+    }
+ 
+    // Afficher carte analyse
+    document.getElementById('cardAnalyse').style.display='block';
+    document.getElementById('resActionsGrid').style.display='grid';
+ 
   }else{
+    document.getElementById('resBadge').textContent='✓ Analyse terminée';
+    document.getElementById('resTitle').textContent='Rapport d\'analyse';
+    document.getElementById('resRecap').innerHTML='';
+    document.getElementById('resActionsGrid').style.display='none';
+    document.getElementById('resInfosCompl').style.display='none';
+    var html='';
+    if(analyse.resume)html+='<p style="margin-bottom:18px;line-height:1.8;font-size:.9rem">'+analyse.resume+'</p>';
+    if(analyse.clauses_abusives&&analyse.clauses_abusives.length){html+='<h3 style="margin-bottom:10px;font-family:\'Instrument Serif\',serif;font-size:1.1rem">Points à corriger</h3>';analyse.clauses_abusives.forEach(function(c){html+='<div style="background:var(--rouge-light);border-radius:8px;padding:14px;margin-bottom:10px"><strong>'+c.titre+'</strong><p style="margin-top:5px;font-size:.83rem;color:var(--gris)">'+c.description+'</p><p style="margin-top:4px;font-size:.78rem;color:var(--accent)">Base légale : '+(c.base_legale||[]).join(', ')+'</p></div>';});}
+    if(analyse.plan_action&&analyse.plan_action.length){html+='<h3 style="margin:20px 0 10px;font-family:\'Instrument Serif\',serif;font-size:1.1rem">Plan d\'action</h3>';analyse.plan_action.forEach(function(step,i){html+='<div style="display:flex;gap:10px;margin-bottom:8px"><div style="width:22px;height:22px;background:var(--accent);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0">'+(i+1)+'</div><div style="font-size:.85rem;line-height:1.6">'+step+'</div></div>';});}
+    document.getElementById('resContent').innerHTML=html;
+  }
+  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
+}
+ 
+// ─── MODIFIER SANS REPAYER ─────────────────────────────────
+function editBail(){
+  // On garde S.isPaid=true, on réaffiche juste le formulaire
+  document.getElementById('resultsSection').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('modeSection').style.display='none';
+  // Remettre le mode
+  selectMode(S.mode||'generer');
+  // Les champs ont encore leurs valeurs (pas de reset), on va juste sur l'étape 1
+  goStep(1);
+  // Banner info
+  var banner=document.createElement('div');
+  banner.style.cssText='background:var(--vert-light);border:1px solid rgba(45,106,79,.25);border-radius:10px;padding:12px 16px;font-size:.83rem;color:var(--vert);margin-bottom:16px;display:flex;align-items:center;gap:10px';
+  banner.innerHTML='<span>✓</span><span><strong>Modification gratuite</strong> — Corrigez vos informations puis cliquez sur Continuer jusqu\'à l\'étape 5. Le bail sera régénéré sans frais.</span>';
+  var appCard=document.querySelector('.app-card');
+  if(appCard&&!document.getElementById('editBanner')){banner.id='editBanner';appCard.insertBefore(banner,appCard.firstChild);}
+}
+ 
+// ─── MODAL EMAIL ───────────────────────────────────────────
+function openMailModal(){document.getElementById('mailModal').classList.add('active');}
+function closeMailModal(){document.getElementById('mailModal').classList.remove('active');}
+ 
+function sendMailNow(){
+  var to=document.getElementById('mailTo').value.trim();
+  var nom=document.getElementById('mailNom').value.trim();
+  var msg=document.getElementById('mailMsg').value.trim();
+  if(!to){alert('Veuillez renseigner l\'email destinataire.');return;}
+  if(!S.currentBail){alert('Aucun bail disponible.');return;}
+ 
+  var btn=document.getElementById('btnSendMail');
+  var status=document.getElementById('mailStatus');
+  btn.textContent='Envoi en cours…';btn.disabled=true;
+  status.style.display='none';
+ 
+  // Générer le PDF en base64 pour l'envoyer
+  var pdfBase64='';
+  try{
+    if(window.jspdf){
+      // On réutilise exportPDF mais en mode "retour base64" au lieu de save
+      var jsPDF=window.jspdf.jsPDF;
+      var doc=new jsPDF({putOnlyUsedFonts:true,compress:true});
+      // Version simplifiée pour l'email
+      doc.setFontSize(10);doc.setFont('helvetica','normal');
+      doc.setFillColor(13,13,13);doc.rect(0,0,210,25,'F');
+      doc.setTextColor(255,255,255);doc.setFontSize(14);doc.setFont('helvetica','bold');
+      doc.text('BAIL DE LOCATION — BailScan',18,16);
+      var y=32;
+      sanitizePDF(S.currentBail).split('\n').forEach(function(line){
+        if(y>280){doc.addPage();y=15;}
+        var isSep=/^={5,}/.test(line.trim());
+        var isArt=/^ARTICLE\s+\d/i.test(line.trim());
+        if(isSep){doc.setDrawColor(200,190,180);doc.line(18,y,192,y);y+=3;return;}
+        if(isArt){doc.setFillColor(13,13,13);doc.rect(18,y-1,174,8,'F');doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);doc.text(line.trim(),21,y+5);doc.setTextColor(0,0,0);y+=11;return;}
+        if(!line.trim()){y+=2.5;return;}
+        doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(40,40,40);
+        doc.splitTextToSize(line.trim(),174).forEach(function(l){if(y>280){doc.addPage();y=15;}doc.text(l,18,y);y+=5.5;});
+      });
+      pdfBase64=doc.output('datauristring').split(',')[1];
+    }
+  }catch(e){console.warn('PDF encode error',e);}
+ 
+  // Envoi via EmailJS (service public de BailScan)
+  // Utilisation du service EmailJS avec template générique
+  var templateParams={
+    to_email: to,
+    to_name: nom||'',
+    from_name: 'BailScan',
+    message: msg||('Veuillez trouver ci-joint le bail de location généré via BailScan.\n\nBien cordialement,\nL\'équipe BailScan'),
+    bail_content: S.currentBail.substring(0,4000), // contenu texte pour corps email
+    date_generation: new Date().toLocaleDateString('fr-FR'),
+    bailleur: (S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom,
+    bien_adresse: (S.genAdresse||'')+(S.genCp?' '+S.genCp:'')+(S.genVille?' '+S.genVille:''),
+  };
+ 
+  // EmailJS — l'utilisateur doit configurer son propre service
+  // On propose un fallback mailto si EmailJS n'est pas configuré
+  if(typeof emailjs !== 'undefined' && window.EMAILJS_PUBLIC_KEY){
+    emailjs.send(window.EMAILJS_SERVICE_ID||'bailscan_service', window.EMAILJS_TEMPLATE_ID||'bailscan_bail', templateParams, window.EMAILJS_PUBLIC_KEY)
+    .then(function(){
+      btn.textContent='✓ Email envoyé !';
+      status.style.cssText='display:block;color:var(--vert);font-weight:600';
+      status.textContent='✓ Email envoyé avec succès à '+to;
+      setTimeout(function(){closeMailModal();btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;status.style.display='none';},3000);
+    })
+    .catch(function(e){
+      fallbackMailto(to,nom,msg);
+      btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;
+    });
+  }else{
+    // Fallback : ouvrir le client mail avec le texte du bail
+    fallbackMailto(to,nom,msg);
+    btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;
+    status.style.cssText='display:block;color:var(--vert);font-size:.78rem';
+    status.textContent='✓ Votre client mail s\'est ouvert. Le PDF est aussi disponible via "Export PDF" pour le joindre manuellement.';
+  }
+}
+ 
+function fallbackMailto(to,nom,msg){
+  var sujet=encodeURIComponent('Bail de location — BailScan');
+  var corps=encodeURIComponent(
+    (msg?msg+'\n\n':'Bonjour'+(nom?' '+nom:'')+',\n\nVeuillez trouver ci-dessous le bail de location généré via BailScan.\n\n')+
+    '---\n'+S.currentBail.substring(0,2000)+(S.currentBail.length>2000?'\n[...] — Téléchargez le PDF complet via BailScan':'')
+  );
+  window.location.href='mailto:'+to+'?subject='+sujet+'&body='+corps;
+}
     document.getElementById('resBadge').textContent='✓ Analyse terminée';
     document.getElementById('resTitle').textContent='Rapport d\'analyse';
     var html='';
@@ -696,7 +1024,14 @@ function showResults(bail,analyse){
   document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
 }
  
-function resetApp(){document.getElementById('resultsSection').style.display='none';document.getElementById('app').style.display='block';document.getElementById('modeSection').style.display='block';S={mode:null,isPaid:false,currentBail:null,pdf:null,pdfName:''};goStep(1);}
+function resetApp(){
+  document.getElementById('resultsSection').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('modeSection').style.display='block';
+  var banner=document.getElementById('editBanner');if(banner)banner.remove();
+  S={mode:null,isPaid:false,currentBail:null,pdf:null,pdfName:''};
+  goStep(1);
+}
  
 // ═══ BAIL COMPLET (même moteur que BailScan Pro) ═══
 function sanitizePDF(str){if(!str)return'';return str.replace(/[\u2550\u2551\u2552-\u256C\u2500-\u254F]/g,'-').replace(/\u2019/g,"'").replace(/\u2018/g,"'").replace(/\u201C/g,'"').replace(/\u201D/g,'"').replace(/\u2013/g,'-').replace(/\u2014/g,'--').replace(/\u00AB/g,'<<').replace(/\u00BB/g,'>>').replace(/\u2026/g,'...').replace(/[^\x00-\xFF]/g,'?');}
@@ -707,9 +1042,20 @@ function buildBailComplet(){
   var loyer=parseFloat(g.genLoyer)||0,charges=parseFloat(g.genCharges)||0,depot=parseFloat(g.genDepot)||loyer,complement=parseFloat(g.genComplement)||0;
   var totalLoyer=loyer+charges+complement;
   var bType=g.genBailleurType||'physique';
+  var bAdresseFull=(g.genBailleurAdresse||'')+(g.genBailleurCp?' '+g.genBailleurCp:'')+(g.genBailleurVille?' '+g.genBailleurVille:'');
   var bId=bType==='physique'?(g.genBailleurPrenom?g.genBailleurPrenom+' ':'')+g.genBailleurNom:(g.genBailleurDenom||'');
   if(!bId)bId='[Nom bailleur]';
+  var locAdresseFull=(g.genLocAdresse||'')+(g.genLocCp?' '+g.genLocCp:'')+(g.genLocVille?' '+g.genLocVille:'');
+  var garantAdresseFull=(g.genGarantAdresse||'')+(g.genGarantCp?' '+g.genGarantCp:'')+(g.genGarantVille?' '+g.genGarantVille:'');
+  var bienAdresseFull=(g.genAdresse||'')+(g.genCp?' '+g.genCp:'')+(g.genVille?' '+g.genVille:'');
   var type=g.genType||'vide';
+  // Colocataires supplémentaires
+  var colocs=g.colocs||[];
+  var tousLocataires=[{prenom:g.genLocPrenom||'',nom:g.genLocNom||'',adresse:g.genLocAdresse||'',cp:g.genLocCp||'',ville:g.genLocVille||'',email:g.genLocEmail||''}].concat(colocs);
+  var locListText=tousLocataires.map(function(loc,i){
+    var adrf=(loc.adresse||'')+(loc.cp?' '+loc.cp:'')+(loc.ville?' '+loc.ville:'');
+    return (tousLocataires.length>1?'Locataire '+(i+1)+' : ':'')+((loc.prenom?loc.prenom+' ':'')+loc.nom).trim()+(adrf?'\nAdresse : '+adrf:'')+(loc.email?'\nEmail : '+loc.email:'');
+  }).join('\n\n');
   var trav=[];
   if(g.travChaudiere)trav.push('entretien annuel de la chaudière individuelle');
   if(g.travClim)trav.push('entretien de la climatisation');
@@ -727,7 +1073,6 @@ function buildBailComplet(){
   if(g.clauseCompteur)clauses.push('Des relevés contradictoires de tous les compteurs seront effectués lors de l\'état des lieux.');
   if(g.clauseDpeTrav)clauses.push('Des travaux de rénovation énergétique sont prévus pendant la durée du bail.');
   if(g.clauseNum)clauses.push('Le présent bail peut être signé par voie électronique (loi ELAN).');
-  if(g.clauseAnimaux)clauses.push('Les animaux de compagnie sont interdits dans le logement.');
   if(g.clauseFumeur)clauses.push('Le logement est non-fumeur.');
   if(g.clausesLibres)clauses.push(g.clausesLibres);
   var annexes=[];
@@ -753,23 +1098,21 @@ function buildBailComplet(){
 'BAILLEUR :',
 bType==='physique'?'Nom et prénom : '+(g.genBailleurPrenom?g.genBailleurPrenom+' ':'')+(g.genBailleurNom||''):'Dénomination sociale : '+(g.genBailleurDenom||''),
 'Qualité : '+(bType==='physique'?'Personne physique':bType==='sci'?'SCI (Société Civile Immobilière)':'Indivision'),
-'Adresse : '+(g.genBailleurAdresse||''),
+'Adresse : '+bAdresseFull,
 g.genBailleurEmail?'Email : '+g.genBailleurEmail:'',
 g.genBailleurTel?'Téléphone : '+g.genBailleurTel:'',
 '',
 'LOCATAIRE(S) :',
-'Nom et prénom : '+(g.genLocPrenom||'')+' '+(g.genLocNom||''),
-'Adresse actuelle : '+(g.genLocAdresse||''),
-g.genLocEmail?'Email : '+g.genLocEmail:'',
+locListText,
 type==='colocation'?'Type : Colocation — solidarité entre colocataires':'',
 '',
-g.genGarantNom?'GARANT :\nNom : '+g.genGarantNom+'\n'+(g.genGarantAdresse?'Adresse : '+g.genGarantAdresse+'\n':'')+'Type de cautionnement : '+(g.genCaution==='solidaire'?'Cautionnement solidaire':g.genCaution==='simple'?'Cautionnement simple':'Acte notarié')+'\nL\'acte de cautionnement est annexé au présent contrat (art. 22-1 loi 89).\n':'',
+g.genGarantNom?'GARANT :\nNom : '+g.genGarantNom+'\n'+(garantAdresseFull?'Adresse : '+garantAdresseFull+'\n':'')+'Type de cautionnement : '+(g.genCaution==='solidaire'?'Cautionnement solidaire':g.genCaution==='simple'?'Cautionnement simple':'Acte notarié')+'\nL\'acte de cautionnement est annexé au présent contrat (art. 22-1 loi 89).\n':'',
 '',
 '================================================================',
 'ARTICLE 2 - DÉSIGNATION DU LOGEMENT',
 '================================================================',
 '',
-'Adresse du logement : '+(g.genAdresse||'')+', '+(g.genVille||''),
+'Adresse du logement : '+bienAdresseFull,
 'Type : Logement '+(type==='meuble'?'meublé':type==='colocation'?'en colocation':type==='saisonnier'?'saisonnier':'vide'),
 'Surface habitable (loi Boutin) : '+(g.genSurface||'')+' m²',
 g.genPieces?'Nombre de pièces principales : '+g.genPieces:'',
@@ -924,14 +1267,14 @@ docs.length?'Documents annexés au présent bail :\n- '+docs.join('\n- '):'Docum
 '================================================================',
 '',
 'Fait à ______________________, le '+(g.genDateEntree||today),
-'En '+(type==='colocation'?'3':'2')+' exemplaires originaux',
+'En '+(tousLocataires.length>1?String(tousLocataires.length+1):type==='colocation'?'3':'2')+' exemplaires originaux',
 '',
 'Le Bailleur :                          Le(s) Locataire(s) :',
 '',
 '(Signature précédée de "Lu et approuvé")    (Signature précédée de "Lu et approuvé")',
 '',
 '_______________________________        _______________________________',
-bId+'               '+(g.genLocPrenom||'')+' '+(g.genLocNom||''),
+bId+'               '+tousLocataires.map(function(l){return((l.prenom?l.prenom+' ':'')+l.nom).trim();}).join(' / '),
 '',
 '================================================================',
 'Fin du contrat — '+today+' — BailScan',
@@ -947,44 +1290,206 @@ function exportPDF(){
   if(!S.currentBail){alert('Aucun bail disponible.');return;}
   if(!window.jspdf){alert('Export PDF indisponible — rechargez la page.');return;}
   try{
-    var jsPDF=window.jspdf.jsPDF;var doc=new jsPDF({putOnlyUsedFonts:true,compress:true});
-    var pW=210,mg=18,usableW=pW-mg*2;
-    var PR=[200,75,47],SEC=[13,13,13],LT=[253,240,237];
+    var jsPDF=window.jspdf.jsPDF;
+    var doc=new jsPDF({putOnlyUsedFonts:true,compress:true,unit:'mm',format:'a4'});
+    var pW=210,pH=297,mg=20,usableW=pW-mg*2;
+    // Palette
+    var ROUGE=[200,75,47],NOIR=[13,13,13],CREME=[245,240,232],GRIS=[107,107,107];
+    var ROUGE_LIGHT=[253,240,237],VERT=[45,106,79],BLANC=[255,255,255];
     var dateGen=new Date().toLocaleDateString('fr-FR');
-    // PAGE DE GARDE
-    doc.setFillColor(SEC[0],SEC[1],SEC[2]);doc.rect(0,0,pW,90,'F');
-    doc.setFillColor(PR[0],PR[1],PR[2]);doc.rect(0,0,4,90,'F');
-    doc.setFontSize(22);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);doc.text('BAIL DE LOCATION',mg,55);
-    doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(200,150,130);doc.text('Conforme loi n\xb089-462 du 6 juillet 1989  |  ALUR  |  ELAN',mg,66);
-    doc.setFontSize(8);doc.setTextColor(120,120,120);doc.text('Généré le '+dateGen+' — BailScan',pW-mg,80,{align:'right'});
-    doc.setFillColor(LT[0],LT[1],LT[2]);doc.rect(0,90,pW,210,'F');
     var bt=S.currentBail;
+    function sp(str){return sanitizePDF(str);}
     function exL(rx){var m=bt.match(rx);return m?m[1].trim():'';}
-    var rows=[{l:'BAILLEUR',v:exL(/Nom et prénom[^:]*:\s*([^\n]+)/i)||exL(/Dénomination sociale[^:]*:\s*([^\n]+)/i)},{l:'LOCATAIRE',v:exL(/LOCATAIRE\(S\)[\s\S]*?Nom et prénom[^:]*:\s*([^\n]+)/i)},{l:'BIEN LOUÉ',v:exL(/Adresse du logement[^:]*:\s*([^\n]+)/i)},{l:'LOYER HC',v:exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},{l:'DATE ENTRÉE',v:exL(/Date de prise d'effet[^:]*:\s*([^\n]+)/i)},{l:'DURÉE',v:exL(/Durée[^:]*:\s*([^\n]+)/i)}];
-    var fy=105;
-    doc.setFontSize(8.5);doc.setFont('helvetica','bold');doc.setTextColor(PR[0],PR[1],PR[2]);doc.text('RÉCAPITULATIF DU CONTRAT',mg,fy);doc.setDrawColor(PR[0],PR[1],PR[2]);doc.line(mg,fy+2,mg+70,fy+2);fy+=12;
-    rows.forEach(function(row){doc.setFillColor(255,255,255);doc.roundedRect(mg,fy,usableW,11,1.5,1.5,'F');doc.setDrawColor(220,210,200);doc.roundedRect(mg,fy,usableW,11,1.5,1.5,'S');doc.setFontSize(7);doc.setFont('helvetica','bold');doc.setTextColor(120,110,100);doc.text(row.l,mg+4,fy+7.5);doc.setFont('helvetica','normal');doc.setTextColor(13,13,13);doc.setFontSize(8);doc.text(sanitizePDF(row.v||'—'),pW-mg-4,fy+7.5,{align:'right'});fy+=13;});
-    doc.setFillColor(SEC[0],SEC[1],SEC[2]);doc.rect(0,280,pW,17,'F');doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(PR[0],PR[1],PR[2]);doc.text('Document établi conformément à la loi du 6 juillet 1989  |  BailScan  |  bailscan.app',pW/2,290,{align:'center'});
+ 
+    // ══════════════════════════════════════════════
+    // PAGE DE GARDE
+    // ══════════════════════════════════════════════
+ 
+    // Fond pleine page crème
+    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.rect(0,0,pW,pH,'F');
+ 
+    // Bloc supérieur noir (70mm)
+    doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,0,pW,72,'F');
+ 
+    // Bande accent gauche
+    doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,0,6,72,'F');
+ 
+    // Logo BailScan
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
+    doc.text('BailScan',mg+6,18);
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(200,160,140);
+    doc.text('bailscan.app',mg+6,24);
+ 
+    // Titre principal
+    doc.setFont('helvetica','bold');doc.setFontSize(28);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
+    doc.text('BAIL DE LOCATION',mg+6,48);
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(180,140,120);
+    doc.text('Conforme loi n\xb089-462 du 6 juillet 1989  \u2013  ALUR  \u2013  ELAN 2018',mg+6,56);
+    doc.setFontSize(7.5);doc.setTextColor(120,100,90);
+    doc.text('Etabli le '+dateGen,pW-mg,64,{align:'right'});
+ 
+    // ─── Fiche récap ───────────────────────────────
+    var rows=[
+      {l:'BAILLEUR',v:exL(/Nom et pr.nom[^:]*:\s*([^\n]+)/i)||exL(/D.nomination sociale[^:]*:\s*([^\n]+)/i)},
+      {l:'LOCATAIRE(S)',v:exL(/LOCATAIRE\(S\)\s*:\s*\n((?:[^\n]+\n?)+?)(?:\n\n|\n[A-Z])/i)||exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)},
+      {l:'BIEN LOU\xc9',v:exL(/Adresse du logement[^:]*:\s*([^\n]+)/i)},
+      {l:'LOYER HORS CHARGES',v:exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},
+      {l:'DATE D\'ENTR\xc9E',v:exL(/Date de prise d.effet[^:]*:\s*([^\n]+)/i)},
+      {l:'DUR\xc9E DU BAIL',v:exL(/Dur.e\s*:\s*([^\n]+)/i)},
+    ];
+ 
+    var fy=84;
+    // Titre récap
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+    doc.text('R\xc9CAPITULATIF DU CONTRAT',mg+6,fy);
+    doc.setDrawColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.setLineWidth(0.4);doc.line(mg+6,fy+1.5,mg+80,fy+1.5);
+    fy+=8;
+ 
+    rows.forEach(function(row){
+      if(!row.v)return;
+      // Fond blanc arrondi
+      doc.setFillColor(BLANC[0],BLANC[1],BLANC[2]);
+      doc.roundedRect(mg+6,fy,usableW-6,10,1.5,1.5,'F');
+      doc.setDrawColor(220,212,202);doc.setLineWidth(0.3);
+      doc.roundedRect(mg+6,fy,usableW-6,10,1.5,1.5,'S');
+      // Bande couleur gauche
+      doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+      doc.roundedRect(mg+6,fy,3,10,1,1,'F');
+      // Label
+      doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
+      doc.text(row.l,mg+13,fy+4.5);
+      // Valeur
+      doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(NOIR[0],NOIR[1],NOIR[2]);
+      var val=sp(row.v).substring(0,60)+(sp(row.v).length>60?'…':'');
+      doc.text(val,pW-mg-4,fy+6.5,{align:'right'});
+      fy+=12;
+    });
+ 
+    // Mention légale bas de page de garde
+    doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,pH-18,pW,18,'F');
+    doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,pH-18,6,18,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(160,130,120);
+    doc.text('Document etabli conformement a la loi du 6 juillet 1989  |  BailScan  |  bailscan.app',pW/2,pH-9,{align:'center'});
+    doc.setTextColor(100,80,70);
+    doc.text('Ce document est fourni a titre indicatif et ne constitue pas un conseil juridique.',pW/2,pH-5,{align:'center'});
+ 
+    // ══════════════════════════════════════════════
     // PAGES CONTENU
-    doc.addPage();var y=0;
-    function mh(){doc.setFillColor(SEC[0],SEC[1],SEC[2]);doc.rect(0,0,pW,12,'F');doc.setFillColor(PR[0],PR[1],PR[2]);doc.rect(0,0,4,12,'F');doc.setFontSize(7.5);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);doc.text('BailScan',mg,8);doc.setFont('helvetica','normal');doc.setTextColor(PR[0],PR[1],PR[2]);doc.text('BAIL DE LOCATION',pW-mg,8,{align:'right'});y=20;}
-    mh();
-    sanitizePDF(S.currentBail).split('\n').forEach(function(rawLine){
-      doc.splitTextToSize(rawLine,usableW).forEach(function(line){
-        var isSep=/^={5,}/.test(line.trim());var isArt=/^ARTICLE\s+\d/i.test(line.trim());var isEmpty=!line.trim();
-        var isSec=/^(BAILLEUR\s*:|LOCATAIRE\s*:|GARANT\s*:|CLAUSES PARTICULIÈRES|SIGNATURES|COPROPRIÉTÉ)/i.test(line.trim());
-        var lineH=isArt?10:isSep?4:5.5;
-        if(y+lineH>276){doc.setFillColor(SEC[0],SEC[1],SEC[2]);doc.rect(0,286,pW,11,'F');doc.setFontSize(6.5);doc.setFont('helvetica','normal');doc.setTextColor(PR[0],PR[1],PR[2]);doc.text('BailScan  |  bailscan.app',mg,292);doc.addPage();mh();}
-        if(isSep){doc.setDrawColor(200,190,180);doc.setLineWidth(0.3);doc.line(mg,y,pW-mg,y);y+=4;return;}
-        if(isArt){doc.setFillColor(SEC[0],SEC[1],SEC[2]);doc.roundedRect(mg,y-1,usableW,9,2,2,'F');doc.setFillColor(PR[0],PR[1],PR[2]);doc.rect(mg,y-1,3,9,'F');doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);doc.text(line.trim(),mg+5,y+5.5);y+=12;return;}
-        if(isSec){doc.setFillColor(LT[0],LT[1],LT[2]);doc.roundedRect(mg,y-1,usableW,8,1.5,1.5,'F');doc.setFontSize(7.5);doc.setFont('helvetica','bold');doc.setTextColor(PR[0],PR[1],PR[2]);doc.text(line.trim(),mg+4,y+5);y+=10;return;}
-        if(isEmpty){y+=3;return;}
-        doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(50,55,65);doc.text(line.trim(),/^[-•·]/.test(line.trim())?mg+4:mg,y+5);y+=5.5;
+    // ══════════════════════════════════════════════
+    doc.addPage();
+    var y=0;
+ 
+    function pageHeader(){
+      // Header fin
+      doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,0,pW,10,'F');
+      doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,0,4,10,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
+      doc.text('BailScan',mg,7);
+      doc.setFont('helvetica','normal');doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+      doc.text('BAIL DE LOCATION',pW-mg,7,{align:'right'});
+      y=18;
+    }
+ 
+    function pageFooter(pageNum,total){
+      doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,pH-9,pW,9,'F');
+      doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,pH-9,4,9,'F');
+      doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(160,130,120);
+      doc.text('BailScan  |  bailscan.app  |  Loi 89-462',mg,pH-4);
+      doc.setTextColor(120,100,90);
+      doc.text('Page '+pageNum+' / '+total,pW-mg,pH-4,{align:'right'});
+    }
+ 
+    pageHeader();
+ 
+    var lines=sp(S.currentBail).split('\n');
+    lines.forEach(function(rawLine){
+      var wrapped=doc.splitTextToSize(rawLine,usableW);
+      wrapped.forEach(function(line){
+        var isSep=/^={5,}/.test(line.trim());
+        var isArt=/^ARTICLE\s+\d/i.test(line.trim());
+        var isSub=/^(BAILLEUR\s*:|LOCATAIRE|GARANT\s*:|CLAUSES PARTI|SIGNATURES|COPROPRI|Fait a|En \d)/i.test(line.trim());
+        var isBullet=/^[-\u2022\u00b7]/.test(line.trim());
+        var isEmpty=!line.trim();
+        var needH=isArt?12:isSub?9:isSep?3:isEmpty?3:6;
+ 
+        if(y+needH>pH-14){
+          doc.addPage();pageHeader();
+        }
+ 
+        if(isSep){
+          doc.setDrawColor(210,200,190);doc.setLineWidth(0.25);
+          doc.line(mg,y,pW-mg,y);y+=3;return;
+        }
+ 
+        if(isArt){
+          if(y>18)y+=2;
+          // Fond noir article
+          doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);
+          doc.roundedRect(mg,y-1,usableW,10,2,2,'F');
+          // Bande rouge
+          doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+          doc.roundedRect(mg,y-1,4,10,1.5,1.5,'F');
+          doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
+          doc.text(line.trim(),mg+8,y+6.2);
+          y+=14;return;
+        }
+ 
+        if(isSub){
+          if(y>18)y+=1;
+          doc.setFillColor(ROUGE_LIGHT[0],ROUGE_LIGHT[1],ROUGE_LIGHT[2]);
+          doc.roundedRect(mg,y-1,usableW,8,1.5,1.5,'F');
+          doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+          doc.text(line.trim(),mg+4,y+5);
+          y+=10;return;
+        }
+ 
+        if(isEmpty){y+=2.5;return;}
+ 
+        // Texte normal
+        doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(40,45,55);
+        var x=isBullet?mg+4:mg;
+        doc.text(line.trim(),x,y+5);
+        y+=6;
       });
     });
+ 
+    // ─── Bloc signatures joli ─────────────────────
+    if(y+50>pH-14){doc.addPage();pageHeader();}
+    y+=6;
+    doc.setDrawColor(200,190,180);doc.setLineWidth(0.3);doc.line(mg,y,pW-mg,y);y+=8;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(NOIR[0],NOIR[1],NOIR[2]);
+    doc.text('SIGNATURES',mg,y);y+=10;
+ 
+    var midX=pW/2;
+    // Colonne bailleur
+    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(mg,y,midX-mg-5,30,2,2,'F');
+    doc.setDrawColor(200,190,180);doc.roundedRect(mg,y,midX-mg-5,30,2,2,'S');
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+    doc.text('LE BAILLEUR',mg+5,y+6);
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
+    doc.text(sp(exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)||exL(/D.nomination\s*:\s*([^\n]+)/i)),mg+5,y+12);
+    doc.text('Lu et approuve :',mg+5,y+18);
+    doc.setDrawColor(180,170,160);doc.line(mg+5,y+27,midX-mg-9,y+27);
+ 
+    // Colonne locataire
+    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(midX+2,y,midX-mg-7,30,2,2,'F');
+    doc.setDrawColor(200,190,180);doc.roundedRect(midX+2,y,midX-mg-7,30,2,2,'S');
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+    doc.text('LE(S) LOCATAIRE(S)',midX+7,y+6);
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
+    var locName=sp(exL(/LOCATAIRE\(S\)\s*:\s*\nNom et pr.nom\s*:\s*([^\n]+)/i)||exL(/Nom et pr.nom\s*:\s*([^\n]+)/i));
+    doc.text(locName,midX+7,y+12);
+    doc.text('Lu et approuve :',midX+7,y+18);
+    doc.setDrawColor(180,170,160);doc.line(midX+7,y+27,pW-mg-5,y+27);
+ 
+    // ─── Numérotation finale ──────────────────────
     var pc=doc.internal.getNumberOfPages();
-    for(var p=1;p<=pc;p++){doc.setPage(p);if(p>1){doc.setFillColor(SEC[0],SEC[1],SEC[2]);doc.rect(0,286,pW,11,'F');doc.setFontSize(6.5);doc.setFont('helvetica','normal');doc.setTextColor(PR[0],PR[1],PR[2]);doc.text('BailScan  |  bailscan.app  |  Loi 89-462',mg,292);doc.setTextColor(150,140,130);doc.text('Page '+p+' / '+pc,pW-mg,292,{align:'right'});}}
-    doc.save('bail-'+dateGen.replace(/\//g,'-')+'.pdf');
+    for(var p=1;p<=pc;p++){
+      doc.setPage(p);
+      if(p>1) pageFooter(p,pc);
+    }
+ 
+    doc.save('BailScan-Bail-'+dateGen.replace(/\//g,'-')+'.pdf');
   }catch(e){alert('Erreur PDF : '+e.message);console.error(e);}
 }
  
@@ -992,4 +1497,3 @@ checkPaymentReturn();
 </script>
 </body>
 </html>
- 
