@@ -121,7 +121,7 @@ textarea.fi{resize:vertical;min-height:90px;}
 .recap-value{font-size:.88rem;font-weight:600;color:var(--noir);}
 @media(max-width:600px){.recap-grid{grid-template-columns:1fr 1fr;}}
 .bail-preview{position:relative;margin-bottom:24px;border-radius:14px;overflow:hidden;border:1.5px solid var(--border);}
-.bail-preview-content{background:var(--bg);padding:20px 24px;font-size:.8rem;line-height:1.8;color:var(--texte);font-family:'DM Sans',sans-serif;white-space:pre-wrap;max-height:220px;overflow:hidden;pointer-events:none;user-select:none;}
+.bail-preview-content{background:white;border-radius:0 0 12px 12px;max-height:280px;overflow:hidden;pointer-events:none;user-select:none;}
 .bail-preview-blur{position:absolute;bottom:0;left:0;right:0;height:140px;background:linear-gradient(to bottom,transparent,var(--creme) 80%);pointer-events:none;}
 .bail-preview-lock{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:16px 20px 20px;}
 .bail-preview-pages{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.75rem;color:var(--gris);margin-bottom:10px;}
@@ -906,31 +906,61 @@ function goStep(n){
 }
  
 function buildRecap(){
-  // Générer un aperçu partiel du bail avec les vraies données
-  try{
-    var preview=buildBailComplet();
-    // Garder seulement les 60 premières lignes pour l'aperçu
-    var lines=preview.split('\n').slice(0,60).join('\n');
-    document.getElementById('bailPreviewContent').textContent=lines;
-  }catch(e){
-    document.getElementById('bailPreviewContent').textContent=
-      '================================================================\n'+
-      '         CONTRAT DE LOCATION - RESIDENCE PRINCIPALE\n'+
-      '================================================================\n\n'+
-      'ARTICLE 1 - PARTIES AU CONTRAT\n\n'+
-      'BAILLEUR :\nNom et prénom : '+(document.getElementById('genBailleurPrenom')&&document.getElementById('genBailleurPrenom').value?document.getElementById('genBailleurPrenom').value+' ':'')+
-      (document.getElementById('genBailleurNom')&&document.getElementById('genBailleurNom').value||'[Bailleur]')+'\n\n'+
-      'LOCATAIRE(S) :\nNom et prénom : '+(document.getElementById('genLocPrenom')&&document.getElementById('genLocPrenom').value?document.getElementById('genLocPrenom').value+' ':'')+
-      (document.getElementById('genLocNom')&&document.getElementById('genLocNom').value||'[Locataire]')+'\n\n'+
-      'ARTICLE 2 - DÉSIGNATION DU LOGEMENT\n\n'+
-      'Adresse : '+(document.getElementById('genAdresse')&&document.getElementById('genAdresse').value||'[Adresse]')+'\n'+
-      'Surface : '+(document.getElementById('genSurface')&&document.getElementById('genSurface').value||'—')+' m²\n\n'+
-      '[…]\n';
-  }
-  // Remplir les paywall feats si vides
-  if(!document.getElementById('pwFeats').innerHTML){
-    document.getElementById('pwFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
-  }
+  // Collecter les données directement depuis les champs
+  var bailleur=(v('genBailleurPrenom')?v('genBailleurPrenom')+' ':'')+v('genBailleurNom')||v('genBailleurDenom')||'[Bailleur]';
+  var locataire=(v('genLocPrenom')?v('genLocPrenom')+' ':'')+v('genLocNom')||'[Locataire]';
+  var adresse=(v('genAdresse')?v('genAdresse')+', ':'')+(v('genCp')?v('genCp')+' ':'')+v('genVille')||'[Adresse]';
+  var loyer=v('genLoyer')?v('genLoyer')+' € HC/mois':'[Loyer]';
+  var surface=v('genSurface')?v('genSurface')+' m²':'[Surface]';
+  var duree=rad('genDuree')||'3 ans';
+  var type=rad('genType')||'vide';
+  var dateEntree=v('genDateEntree')?new Date(v('genDateEntree')).toLocaleDateString('fr-FR'):'[Date]';
+ 
+  // Preview HTML stylisée (pas de texte brut)
+  var html=''
+  +'<div style="background:var(--noir);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;border-radius:8px 8px 0 0">'
+    +'<div style="font-family:\'Instrument Serif\',serif;font-size:.9rem;color:white">BailScan</div>'
+    +'<div style="font-size:.6rem;font-weight:700;color:var(--accent);letter-spacing:.08em">BAIL DE LOCATION</div>'
+  +'</div>'
+  +'<div style="background:var(--creme);padding:12px 16px;border-bottom:2px solid var(--accent)">'
+    +'<div style="font-size:.85rem;font-weight:800;color:var(--noir);letter-spacing:.03em">BAIL DE LOCATION</div>'
+    +'<div style="font-size:.65rem;color:var(--gris);margin-top:2px">Conforme loi n°89-462 · ALUR · ELAN 2018</div>'
+  +'</div>'
+  +'<div style="padding:10px 16px">'
+    +'<div style="font-size:.6rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Récapitulatif</div>'
+    +[['Bailleur',bailleur],['Locataire',locataire],['Bien loué',adresse],['Loyer HC',loyer],['Surface',surface],['Durée',duree]].map(function(r){
+      return '<div style="display:flex;align-items:center;background:var(--creme);border-left:2px solid var(--accent);border-radius:4px;padding:4px 8px;margin-bottom:3px">'
+        +'<span style="font-size:.6rem;font-weight:700;color:var(--gris);min-width:70px;text-transform:uppercase">'+r[0]+'</span>'
+        +'<span style="font-size:.7rem;font-weight:600;color:var(--noir)">'+r[1]+'</span>'
+      +'</div>';
+    }).join('')
+  +'</div>'
+  +'<div style="background:var(--noir);margin:0 16px 4px;border-radius:4px;padding:5px 10px;border-left:3px solid var(--accent)">'
+    +'<span style="font-size:.65rem;font-weight:700;color:white">ARTICLE 1 &mdash; PARTIES AU CONTRAT</span>'
+  +'</div>'
+  +'<div style="padding:6px 16px 4px;font-size:.65rem;line-height:1.7;color:var(--texte)">'
+    +'<div style="font-weight:700;color:var(--accent)">BAILLEUR :</div>'
+    +'<div>Nom et prénom : '+bailleur+'</div>'
+    +'<div style="margin-top:4px;font-weight:700;color:var(--accent)">LOCATAIRE(S) :</div>'
+    +'<div>Nom et prénom : '+locataire+'</div>'
+  +'</div>'
+  +'<div style="background:var(--noir);margin:4px 16px;border-radius:4px;padding:5px 10px;border-left:3px solid var(--accent)">'
+    +'<span style="font-size:.65rem;font-weight:700;color:white">ARTICLE 2 &mdash; DÉSIGNATION DU LOGEMENT</span>'
+  +'</div>'
+  +'<div style="padding:6px 16px 10px;font-size:.65rem;line-height:1.7;color:var(--texte)">'
+    +'<div>Adresse : '+adresse+'</div>'
+    +'<div>Surface : '+surface+' &nbsp;·&nbsp; Type : Logement '+(type==='meuble'?'meublé':'vide')+'</div>'
+  +'</div>';
+ 
+  document.getElementById('bailPreviewContent').innerHTML=html;
+ 
+  // Paywall feats — texte sans emoji en préfixe (le ::before ajoute déjà ✓)
+  document.getElementById('pwFeats').innerHTML=[
+    'Bail généré conforme loi 1989 / ALUR / ELAN',
+    'Analyse de bail existant incluse',
+    'Export PDF prêt à signer',
+    'Modifications illimitées sans repayer'
+  ].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
 }
  
 var _lock=false;
