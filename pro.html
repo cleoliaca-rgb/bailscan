@@ -638,6 +638,12 @@ body.is-dashboard #marketingFooter { display: none !important; }
 .edl-obs-input { width:100%; border:1px solid var(--card-border); border-radius:6px; padding:6px 8px; font-size:.78rem; font-family:inherit; background:white; margin-top:4px; }
 .edl-cle-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
 </style>
+
+<style>
+.ob-step:hover { border-color: var(--pro-accent) !important; background: var(--pro-light) !important; transform: translateX(4px); }
+.ob-step.done { border-color: rgba(45,106,79,.3) !important; background: #f0fdf4 !important; }
+.ob-step.done > div:last-child::before { content: '✓'; color: var(--vert); font-weight:700; }
+</style>
 </head>
 <body>
 
@@ -5004,6 +5010,8 @@ function showDashboard(){
   loadAllData();
   // Vérifier le plan et le trial
   checkPlanAccess();
+  // Onboarding premier login
+  setTimeout(showOnboarding, 800);
 }
 
 // ─── GESTION PLAN / TRIAL ─────────────────────────────────
@@ -13719,6 +13727,47 @@ uploadDPEFile = function(mandatId, input) {
   }
   _origUploadDPEFile2(mandatId, input);
 };
+
+
+// ═══ ONBOARDING ══════════════════════════════════════════════
+var _obDone = [];
+
+function showOnboarding() {
+  // Afficher seulement à la première connexion
+  var key = 'bs_onboarding_done_' + (proState.user && proState.user.id || 'x');
+  if (localStorage.getItem(key)) return;
+  var el = document.getElementById('modalOnboarding');
+  if (el) el.style.display = 'flex';
+  updateObProgress();
+}
+
+function closeOnboarding() {
+  var el = document.getElementById('modalOnboarding');
+  if (el) el.style.display = 'none';
+  var key = 'bs_onboarding_done_' + (proState.user && proState.user.id || 'x');
+  localStorage.setItem(key, '1');
+}
+
+function obGo(tab, num) {
+  // Marquer comme fait
+  if (!_obDone.includes(num)) {
+    _obDone.push(num);
+    var el = document.getElementById('ob' + num);
+    if (el) el.classList.add('done');
+    updateObProgress();
+  }
+  // Fermer et aller à l'onglet
+  closeOnboarding();
+  showDashTab(tab);
+}
+
+function updateObProgress() {
+  var n = _obDone.length;
+  var el = document.getElementById('obProgress');
+  var bar = document.getElementById('obProgressBar');
+  if (el) el.textContent = n + ' / 4 étapes';
+  if (bar) bar.style.width = (n * 25) + '%';
+}
 
 </script>
 <!-- ═══════════════════════════════════════════════════════════
