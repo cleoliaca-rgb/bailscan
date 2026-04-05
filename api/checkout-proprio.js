@@ -9,12 +9,7 @@ module.exports = async function handler(req, res) {
  
   try {
     var mode = (req.body && req.body.mode) || 'generer';
-    var productName = mode === 'generer'
-      ? 'BailScan — Bail conforme généré'
-      : 'BailScan — Analyse bail propriétaire';
-    var description = mode === 'generer'
-      ? 'Bail conforme rédigé selon loi 1989 / ALUR / ELAN, adapté à votre bien'
-      : 'Analyse complète de votre bail avec détection des clauses à risque';
+    var email = (req.body && req.body.email) || null;
  
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -22,14 +17,20 @@ module.exports = async function handler(req, res) {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: productName,
-            description: description,
+            name: 'BailScan — Accès complet propriétaire',
+            description: 'Génération de bail conforme + Analyse de bail. Accès à vie, modifications illimitées.',
           },
           unit_amount: 4900, // 49€
         },
         quantity: 1,
       }],
       mode: 'payment',
+      // Email pour le reçu automatique Stripe
+      ...(email ? { customer_email: email } : {}),
+      payment_intent_data: {
+        ...(email ? { receipt_email: email } : {}),
+        description: 'BailScan — Accès propriétaire (génération + analyse)',
+      },
       success_url: 'https://' + req.headers.host + '/proprio.html?paid=true&session_id={CHECKOUT_SESSION_ID}',
       cancel_url: 'https://' + req.headers.host + '/proprio.html?paid=false',
       locale: 'fr',
@@ -40,4 +41,3 @@ module.exports = async function handler(req, res) {
     res.status(500).json({ error: err.message });
   }
 };
- 
