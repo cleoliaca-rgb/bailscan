@@ -13751,19 +13751,16 @@ document.addEventListener('click',function(e){
 
 
 async function showOnboarding() {
-  console.log('[Onboarding] called, user:', proState.user && proState.user.email);
-  var uid = (proState.user && (proState.user.id || proState.user.email)) || null;
-  if (!uid) { console.log('[Onboarding] no uid, retry'); setTimeout(showOnboarding, 500); return; }
-  var k = 'bs_ob2_' + uid;
-  if (localStorage.getItem(k)) { console.log('[Onboarding] already seen'); return; }
+  console.log('[Onboarding] called');
+  // Verifier Supabase uniquement
   try {
     var sb=getSupabase(), agId=proState._agenceId;
     if(sb && agId) {
       var res = await sb.from('agences').select('onboarding_done').eq('id',agId).single();
-      if(res.data && res.data.onboarding_done) { localStorage.setItem(k,'1'); return; }
+      if(res.data && res.data.onboarding_done) { console.log('[Onboarding] done in DB'); return; }
     }
-  } catch(e) { console.log('[Onboarding] supabase error:', e.message); }
-  console.log('[Onboarding] rendering step', _obStep);
+  } catch(e) {}
+  console.log('[Onboarding] showing');
   _obStep = 0; _obDone = [];
   renderObStep();
 }
