@@ -322,10 +322,10 @@ footer a:hover{color:var(--accent);}
       <div class="fg">
         <label>Type de location <span style="color:var(--accent)">*</span></label>
         <div class="rpills">
-          <label class="rpill active" onclick="setR('genType','vide',this)"><input type="radio" name="genType" value="vide" checked>Vide</label>
-          <label class="rpill" onclick="setR('genType','meuble',this)"><input type="radio" name="genType" value="meuble">Meublé</label>
-          <label class="rpill" onclick="setR('genType','colocation',this)"><input type="radio" name="genType" value="colocation">Colocation</label>
-          <label class="rpill" onclick="setR('genType','saisonnier',this)"><input type="radio" name="genType" value="saisonnier">Saisonnier</label>
+          <label class="rpill active" onclick="setR('genType','vide',this)">Vide</label>
+          <label class="rpill" onclick="setR('genType','meuble',this)">Meublé</label>
+          <label class="rpill" onclick="setR('genType','colocation',this)">Colocation</label>
+          <label class="rpill" onclick="setR('genType','saisonnier',this)">Saisonnier</label>
         </div>
       </div>
       <div class="fg"><label for="genAdresse">Adresse (rue, numéro) <span style="color:var(--accent)">*</span></label><input type="text" id="genAdresse" class="fi" placeholder="Ex : 12 rue de la Paix"></div>
@@ -359,7 +359,7 @@ footer a:hover{color:var(--accent);}
       <div class="fgrid" style="margin-top:10px">
         <div class="fg"><label for="genAnnexeNum">N° parking / cave <small>si applicable</small></label><input type="text" id="genAnnexeNum" class="fi" placeholder="Ex : Parking n°12, Cave B4"></div>
         <div class="fg"><label>Immeuble en copropriété ?</label>
-          <div class="rpills"><label class="rpill active" onclick="setR('genCopro','oui',this)"><input type="radio" name="genCopro" value="oui" checked>Oui</label><label class="rpill" onclick="setR('genCopro','non',this)"><input type="radio" name="genCopro" value="non">Non</label></div>
+          <div class="rpills"><label class="rpill active" onclick="setR('genCopro','oui',this)">Oui</label><label class="rpill" onclick="setR('genCopro','non',this)">Non</label></div>
         </div>
       </div>
       <div class="fg"><label for="genSyndic">Syndic de copropriété <small>si applicable</small></label><input type="text" id="genSyndic" class="fi" placeholder="Ex : Cabinet Foncia — 01 23 45 67 89"></div>
@@ -381,15 +381,15 @@ footer a:hover{color:var(--accent);}
       </div>
       <div class="fg"><label>Durée du bail</label>
         <div class="rpills">
-          <label class="rpill active" onclick="setR('genDuree','3 ans',this)"><input type="radio" name="genDuree" value="3 ans" checked>3 ans (vide)</label>
-          <label class="rpill" onclick="setR('genDuree','1 an',this)"><input type="radio" name="genDuree" value="1 an">1 an (meublé)</label>
-          <label class="rpill" onclick="setR('genDuree','9 mois',this)"><input type="radio" name="genDuree" value="9 mois">9 mois (étudiant)</label>
+          <label class="rpill active" onclick="setR('genDuree','3 ans',this)">3 ans (vide)</label>
+          <label class="rpill" onclick="setR('genDuree','1 an',this)">1 an (meublé)</label>
+          <label class="rpill" onclick="setR('genDuree','9 mois',this)">9 mois (étudiant)</label>
         </div>
       </div>
       <div class="fg"><label>Révision du loyer</label>
         <div class="rpills">
-          <label class="rpill active" onclick="setR('genRevision','IRL',this)"><input type="radio" name="genRevision" value="IRL" checked>IRL (Indice de Référence des Loyers)</label>
-          <label class="rpill" onclick="setR('genRevision','non',this)"><input type="radio" name="genRevision" value="non">Pas de révision</label>
+          <label class="rpill active" onclick="setR('genRevision','IRL',this)">IRL (Indice de Référence des Loyers)</label>
+          <label class="rpill" onclick="setR('genRevision','non',this)">Pas de révision</label>
         </div>
       </div>
       <div class="sh">📍 Encadrement des loyers <small style="font-weight:400;font-size:.76rem;color:var(--gris)">(Paris, Lyon, Bordeaux, Montpellier, Grenoble, Lille…)</small></div>
@@ -414,9 +414,9 @@ footer a:hover{color:var(--accent);}
         <div class="sh">👤 Bailleur (vous)</div>
         <div class="fg"><label>Type de bailleur</label>
           <div class="rpills">
-            <label class="rpill active" onclick="setR('genBailleurType','physique',this);toggleBailleur('physique')"><input type="radio" name="genBailleurType" value="physique" checked>Personne physique</label>
-            <label class="rpill" onclick="setR('genBailleurType','sci',this);toggleBailleur('sci')"><input type="radio" name="genBailleurType" value="sci">SCI</label>
-            <label class="rpill" onclick="setR('genBailleurType','indivision',this);toggleBailleur('indivision')"><input type="radio" name="genBailleurType" value="indivision">Indivision</label>
+            <label class="rpill active" onclick="setR('genBailleurType','physique',this);toggleBailleur('physique')">Personne physique</label>
+            <label class="rpill" onclick="setR('genBailleurType','sci',this);toggleBailleur('sci')">SCI</label>
+            <label class="rpill" onclick="setR('genBailleurType','indivision',this);toggleBailleur('indivision')">Indivision</label>
           </div>
         </div>
         <div id="bPhysiqueFields"><div class="fgrid"><div class="fg"><label for="genBailleurPrenom">Prénom</label><input type="text" id="genBailleurPrenom" class="fi" placeholder="Ex : Jean"></div><div class="fg"><label for="genBailleurNom">Nom <span style="color:var(--accent)">*</span></label><input type="text" id="genBailleurNom" class="fi" placeholder="Ex : Dupont"></div></div></div>
@@ -449,7 +449,7 @@ footer a:hover{color:var(--accent);}
           <div class="fgrid"><div class="fg" style="margin-bottom:0"><label for="genGarantNom">Nom complet</label><input type="text" id="genGarantNom" class="fi" placeholder="Ex : Paul Martin"></div><div class="fg" style="margin-bottom:0"><label for="genGarantAdresse">Adresse (rue, numéro)</label><input type="text" id="genGarantAdresse" class="fi" placeholder="Ex : 3 rue du Moulin"></div></div>
           <div class="fgrid" style="margin-top:10px"><div class="fg" style="margin-bottom:0"><label for="genGarantCp">Code postal</label><input type="text" id="genGarantCp" class="fi" placeholder="Ex : 75018" maxlength="5"></div><div class="fg" style="margin-bottom:0"><label for="genGarantVille">Ville</label><input type="text" id="genGarantVille" class="fi" placeholder="Ex : Paris"></div></div>
           <div class="fg" style="margin-top:10px;margin-bottom:0"><label>Type de cautionnement</label>
-            <div class="rpills"><label class="rpill active" onclick="setR('genCaution','solidaire',this)"><input type="radio" name="genCaution" value="solidaire" checked>Solidaire</label><label class="rpill" onclick="setR('genCaution','simple',this)"><input type="radio" name="genCaution" value="simple">Simple</label><label class="rpill" onclick="setR('genCaution','notarie',this)"><input type="radio" name="genCaution" value="notarie">Acte notarié</label></div>
+            <div class="rpills"><label class="rpill active" onclick="setR('genCaution','solidaire',this)">Solidaire</label><label class="rpill" onclick="setR('genCaution','simple',this)">Simple</label><label class="rpill" onclick="setR('genCaution','notarie',this)">Acte notarié</label></div>
           </div>
         </div>
       </div>
@@ -520,14 +520,14 @@ footer a:hover{color:var(--accent);}
         <div class="sh">🛡️ Assurances & garanties</div>
         <div class="fgrid">
           <div class="fg"><label>Assurance PNO bailleur</label>
-            <div class="rpills"><label class="rpill active" onclick="setR('genPno','oui',this)"><input type="radio" name="genPno" value="oui" checked>Oui</label><label class="rpill" onclick="setR('genPno','non',this)"><input type="radio" name="genPno" value="non">Non</label></div>
+            <div class="rpills"><label class="rpill active" onclick="setR('genPno','oui',this)">Oui</label><label class="rpill" onclick="setR('genPno','non',this)">Non</label></div>
           </div>
           <div class="fg"><label>Clause résolutoire expresse</label>
-            <div class="rpills"><label class="rpill active" onclick="setR('genResolutoire','oui',this)"><input type="radio" name="genResolutoire" value="oui" checked>Oui (recommandé)</label><label class="rpill" onclick="setR('genResolutoire','non',this)"><input type="radio" name="genResolutoire" value="non">Non</label></div>
+            <div class="rpills"><label class="rpill active" onclick="setR('genResolutoire','oui',this)">Oui (recommandé)</label><label class="rpill" onclick="setR('genResolutoire','non',this)">Non</label></div>
           </div>
         </div>
         <div class="fg"><label>Clause de solidarité <small>(colocation uniquement)</small></label>
-          <div class="rpills"><label class="rpill active" onclick="setR('genSolidarite','oui',this)"><input type="radio" name="genSolidarite" value="oui" checked>Oui</label><label class="rpill" onclick="setR('genSolidarite','non',this)"><input type="radio" name="genSolidarite" value="non">Non</label></div>
+          <div class="rpills"><label class="rpill active" onclick="setR('genSolidarite','oui',this)">Oui</label><label class="rpill" onclick="setR('genSolidarite','non',this)">Non</label></div>
         </div>
  
         <div class="sh">📎 Documents annexés au bail</div>
@@ -648,7 +648,7 @@ footer a:hover{color:var(--accent);}
 </footer>
  
 <script>
-var S={mode:null,isPaid:false,currentBail:null,pdf:null,pdfName:''};
+var S={mode:'generer',isPaid:false,currentBail:null,pdf:null,pdfName:''};
  
 function selectMode(mode){
   S.mode=mode;
@@ -687,11 +687,28 @@ function selectMode(mode){
   setTimeout(function(){document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'});},200);
 }
  
-function setR(name,val,el){
+function setR(name,val,el,e){
+  if(e&&e.stopPropagation)e.stopPropagation();
   document.querySelectorAll('.rpill').forEach(function(p){if(p.querySelector('input[name="'+name+'"]'))p.classList.remove('active');});
   if(el)el.classList.add('active');
+  // Cocher le radio correspondant
+  var inp=el?el.querySelector('input[type="radio"]'):null;
+  if(inp)inp.checked=true;
 }
-function rad(name){var el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:'';}
+function rad(name){
+  // Cherche le rpill actif dont l'onclick contient le nom du groupe
+  var active=null;
+  document.querySelectorAll('.rpill.active').forEach(function(p){
+    var oc=p.getAttribute('onclick')||'';
+    if(oc.indexOf("'"+name+"'")!==-1||oc.indexOf('"'+name+'"')!==-1){
+      // Extraire la valeur depuis onclick="setR('name','value',this)"
+      var m=oc.match(/setR\([^,]+,\s*'([^']+)'/);
+      if(!m)m=oc.match(/setR\([^,]+,\s*"([^"]+)"/);
+      if(m)active=m[1];
+    }
+  });
+  return active||'';
+}
 function v(id){var el=document.getElementById(id);return el?el.value:'';}
 function chk(id){var el=document.getElementById(id);return el&&el.checked;}
 function toggleBailleur(type){document.getElementById('bPhysiqueFields').style.display=type==='physique'?'block':'none';document.getElementById('bMoraleFields').style.display=type!=='physique'?'block':'none';}
@@ -760,7 +777,7 @@ document.addEventListener('DOMContentLoaded',function(){
 });
  
 function goStep(n){
-  if(n>=2&&!S.mode){selectMode('generer');setTimeout(function(){goStep(n);},300);return;}
+  if(n>=2&&!S.mode) S.mode='generer';
   // Si déjà payé et qu'on arrive à l'étape 5 depuis une modification → régénérer directement
   if(n===5&&S.isPaid&&S.mode==='generer'){
     var banner=document.getElementById('editBanner');if(banner)banner.remove();
@@ -1447,3 +1464,4 @@ checkPaymentReturn();
 </script>
 </body>
 </html>
+ 
