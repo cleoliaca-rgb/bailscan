@@ -2407,14 +2407,17 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
             </div>
             <div class="form-grid-pro">
-              <div class="form-group-pro">
-                <label class="form-label">Garant ?</label>
-                <select class="form-input-pro" id="locGarant" onchange="calcScore();toggleLocGarantFields()">
-                  <option value="non">Non</option>
-                  <option value="physique">Garant physique</option>
-                  <option value="visale">Visale</option>
-                  <option value="garantme">GarantMe / autre organisme</option>
-                </select>
+              <div class="form-group-pro" style="grid-column:1/-1">
+                <label class="form-label">Garantie</label>
+                <input type="hidden" id="locGarant" value="non">
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+                  <button type="button" class="loc-garant-pill active" data-val="non" onclick="setLocGarant('non')" style="padding:7px 14px;border:1.5px solid var(--pro-accent);border-radius:8px;background:var(--pro-light);color:var(--pro-accent);font-weight:700;font-size:.82rem;cursor:pointer">Aucune</button>
+                  <button type="button" class="loc-garant-pill" data-val="physique" onclick="setLocGarant('physique')" style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Garant physique</button>
+                  <button type="button" class="loc-garant-pill" data-val="caution_solidaire" onclick="setLocGarant('caution_solidaire')" style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Caution solidaire</button>
+                  <button type="button" class="loc-garant-pill" data-val="visale" onclick="setLocGarant('visale')" style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Visale</button>
+                  <button type="button" class="loc-garant-pill" data-val="garantme" onclick="setLocGarant('garantme')" style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">GarantMe</button>
+                  <button type="button" class="loc-garant-pill" data-val="autre_organisme" onclick="setLocGarant('autre_organisme')" style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Autre organisme</button>
+                </div>
               </div>
               <div class="form-group-pro">
                 <label class="form-label">Score solvabilité</label>
@@ -2427,12 +2430,25 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin:16px 0 10px;padding-bottom:6px;border-bottom:1.5px solid var(--pro-light)">🛡️ Garant</div>
               <div class="form-grid-pro">
                 <div class="form-group-pro">
-                  <label class="form-label">Nom complet du garant</label>
-                  <input type="text" class="form-input-pro" id="locGarantNom" placeholder="Jean Dupont">
+                  <label class="form-label">Prénom du garant</label>
+                  <input type="text" class="form-input-pro" id="locGarantPrenom" placeholder="Jean">
                 </div>
                 <div class="form-group-pro">
+                  <label class="form-label">Nom du garant</label>
+                  <input type="text" class="form-input-pro" id="locGarantNom" placeholder="Dupont">
+                </div>
+                <div class="form-group-pro" style="grid-column:1/-1">
                   <label class="form-label">Adresse du garant</label>
-                  <input type="text" class="form-input-pro" id="locGarantAdresse" placeholder="3 rue du Moulin, 75018 Paris">
+                  <input type="text" class="form-input-pro" id="locGarantAdresse" placeholder="3 rue du Moulin">
+                </div>
+                <div class="form-group-pro" style="position:relative">
+                  <label class="form-label">Code postal</label>
+                  <input type="text" class="form-input-pro" id="locGarantCp" placeholder="75018" maxlength="5" oninput="cpAutoGarant(this.value)" autocomplete="off">
+                  <div id="locGarantCpDrop" style="position:absolute;top:calc(100% + 2px);left:0;width:100%;background:white;border:1.5px solid #d8d0c4;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none;z-index:300;max-height:160px;overflow-y:auto"></div>
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Ville</label>
+                  <input type="text" class="form-input-pro" id="locGarantVille" placeholder="Paris">
                 </div>
                 <div class="form-group-pro">
                   <label class="form-label">Revenus nets du garant (€/mois)</label>
@@ -2466,7 +2482,8 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             <div class="form-group-pro" style="margin-top:12px">
               <label class="form-label">Rattacher à un mandat / bien</label>
-              <select class="form-input-pro" id="locMandatSel">
+              <input type="text" class="form-input-pro" id="locMandatSearch" placeholder="Rechercher par adresse..." oninput="filterLocMandats(this.value)" autocomplete="off" style="margin-bottom:6px">
+              <select class="form-input-pro" id="locMandatSel" onchange="autoFillFromMandat(this.value)">
                 <option value="">— Aucun mandat sélectionné —</option>
               </select>
             </div>
@@ -2540,13 +2557,16 @@ body.is-dashboard #marketingPage { display: none !important; }
                   </select>
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Garant ?</label>
-                  <select class="form-input-pro" id="dossierGarant" onchange="toggleDossierGarantFields()">
-                    <option value="non">Non</option>
-                    <option value="physique">Garant physique</option>
-                    <option value="visale">Visa Visale</option>
-                    <option value="garantme">GarantMe / Unkle</option>
-                  </select>
+                  <label class="form-label">Garantie</label>
+                  <input type="hidden" id="dossierGarant" value="non">
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+                    <button type="button" class="dos-garant-pill active" data-val="non" onclick="setDossierGarant('non')" style="padding:6px 12px;border:1.5px solid var(--pro-accent);border-radius:8px;background:var(--pro-light);color:var(--pro-accent);font-weight:700;font-size:.8rem;cursor:pointer">Aucune</button>
+                    <button type="button" class="dos-garant-pill" data-val="physique" onclick="setDossierGarant('physique')" style="padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Garant physique</button>
+                    <button type="button" class="dos-garant-pill" data-val="caution_solidaire" onclick="setDossierGarant('caution_solidaire')" style="padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Caution solidaire</button>
+                    <button type="button" class="dos-garant-pill" data-val="visale" onclick="setDossierGarant('visale')" style="padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Visale</button>
+                    <button type="button" class="dos-garant-pill" data-val="garantme" onclick="setDossierGarant('garantme')" style="padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">GarantMe</button>
+                    <button type="button" class="dos-garant-pill" data-val="autre_organisme" onclick="setDossierGarant('autre_organisme')" style="padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Autre organisme</button>
+                  </div>
                 </div>
               </div>
               <!-- Champs garant physique — s'affiche si "Garant physique" sélectionné -->
@@ -2568,8 +2588,33 @@ body.is-dashboard #marketingPage { display: none !important; }
                     </select>
                   </div>
                   <div class="form-group-pro">
+                    <label class="form-label">Prénom du garant</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantPrenom" placeholder="Jean">
+                  </div>
+                  <div class="form-group-pro">
                     <label class="form-label">Nom du garant</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantNom" placeholder="Jean Dupont">
+                    <input type="text" class="form-input-pro" id="dossierGarantNom" placeholder="Dupont">
+                  </div>
+                  <div class="form-group-pro" style="grid-column:1/-1">
+                    <label class="form-label">Adresse</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantAdresse" placeholder="3 rue du Moulin">
+                  </div>
+                  <div class="form-group-pro" style="position:relative">
+                    <label class="form-label">Code postal</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantCp" placeholder="75018" maxlength="5" oninput="cpAutoDossierGarant(this.value)" autocomplete="off">
+                    <div id="dossierGarantCpDrop" style="position:absolute;top:calc(100% + 2px);left:0;width:100%;background:white;border:1.5px solid #d8d0c4;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none;z-index:300;max-height:160px;overflow-y:auto"></div>
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label">Ville</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantVille" placeholder="Paris">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label">Email du garant</label>
+                    <input type="email" class="form-input-pro" id="dossierGarantEmail" placeholder="jean@email.com">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label">Téléphone du garant</label>
+                    <input type="tel" class="form-input-pro" id="dossierGarantTel" placeholder="06 12 34 56 78">
                   </div>
                   <div class="form-group-pro">
                     <label class="form-label">Ancienneté emploi garant</label>
@@ -7983,6 +8028,7 @@ function resetDossierAnalyse() {
   var contrat = document.getElementById('dossierContrat'); if (contrat) contrat.value = 'cdi';
   var anc = document.getElementById('dossierAnciennete'); if (anc) anc.value = 'plus3';
   var garant = document.getElementById('dossierGarant'); if (garant) garant.value = 'non';
+  setDossierGarant('non');
   var gf = document.getElementById('dossierGarantFields'); if (gf) gf.style.display = 'none';
   ['dossierGarantNom','dossierGarantRevenus'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   var gc = document.getElementById('dossierGarantContrat'); if (gc) gc.value = 'cdi';
@@ -9832,9 +9878,9 @@ function openNewLocataire() {
   ['locDateEntree','locDateFin'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('locStatut').value='actif';
   document.getElementById('locContrat').value='cdi';
-  document.getElementById('locGarant').value='non';
+  document.getElementById('locGarant').value='non'; setLocGarant('non');
   // Reset champs garant
-  ['locGarantNom','locGarantAdresse','locGarantEmail','locGarantTel','locGarantRevenus'].forEach(function(id){
+  ['locGarantPrenom','locGarantNom','locGarantAdresse','locGarantCp','locGarantVille','locGarantEmail','locGarantTel','locGarantRevenus'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.value='';
   });
   var gc = document.getElementById('locGarantContrat'); if(gc) gc.value='cdi';
@@ -9870,8 +9916,11 @@ function saveLocataire() {
     revenus: document.getElementById('locRevenus').value,
     contrat: document.getElementById('locContrat').value,
     garant: document.getElementById('locGarant').value,
+    garantPrenom: (document.getElementById('locGarantPrenom')||{value:''}).value.trim(),
     garantNom: (document.getElementById('locGarantNom')||{value:''}).value.trim(),
     garantAdresse: (document.getElementById('locGarantAdresse')||{value:''}).value.trim(),
+    garantCp: (document.getElementById('locGarantCp')||{value:''}).value.trim(),
+    garantVille: (document.getElementById('locGarantVille')||{value:''}).value.trim(),
     garantRevenus: (document.getElementById('locGarantRevenus')||{value:''}).value,
     garantContrat: (document.getElementById('locGarantContrat')||{value:''}).value,
     garantEmail: (document.getElementById('locGarantEmail')||{value:''}).value.trim(),
@@ -13860,6 +13909,116 @@ function obGo(tab, num) { closeOnboarding(); showDashTab(tab); }
 
 function updateObProgress() {}
 
+
+// ─── MANDAT SEARCH + AUTOFILL ────────────────────────────
+function filterLocMandats(q) {
+  var sel = document.getElementById('locMandatSel');
+  if (!sel) return;
+  var mandats = proState.mandats || [];
+  sel.innerHTML = '<option value="">— Aucun mandat sélectionné —</option>';
+  var filtered = q ? mandats.filter(function(m){
+    return (m.adresse||'').toLowerCase().includes(q.toLowerCase()) ||
+           (m.adresseFull||'').toLowerCase().includes(q.toLowerCase()) ||
+           (m.ville||'').toLowerCase().includes(q.toLowerCase());
+  }) : mandats;
+  filtered.forEach(function(m){
+    var opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = (m.adresseFull||m.adresse||'Bien sans adresse') + (m.loyer ? ' — ' + m.loyer + '€' : '');
+    sel.appendChild(opt);
+  });
+}
+
+function autoFillFromMandat(mandatId) {
+  if (!mandatId) return;
+  var m = (proState.mandats||[]).find(function(x){ return String(x.id)===String(mandatId); });
+  if (!m) return;
+  var f = function(id,v){ var el=document.getElementById(id); if(el&&v) el.value=v; };
+  f('locAdresse', m.adresseFull || m.adresse || '');
+  f('locLoyer', m.loyer || '');
+  f('locDateEntree', m.dateEntree || '');
+  f('locDateFin', m.dateFin || '');
+}
+
+// ─── AUTOCOMPLETE CP GARANT ──────────────────────────────
+var _cpGTimer = null;
+function cpAutoGarant(v) {
+  clearTimeout(_cpGTimer);
+  var b = document.getElementById('locGarantCpDrop');
+  if (!b) return;
+  if (!v || v.length < 4) { b.style.display='none'; return; }
+  _cpGTimer = setTimeout(function(){
+    fetch('https://api-adresse.data.gouv.fr/search/?type=municipality&q='+encodeURIComponent(v)+'&limit=6')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(!d.features||!d.features.length){b.style.display='none';return;}
+      b.innerHTML=d.features.map(function(f){
+        var cp=f.properties.postcode||v, city=f.properties.city||f.properties.label;
+        return '<div onclick="pickCpGarant(\''+cp+'\',\''+city+'\')" style="padding:9px 12px;cursor:pointer;font-size:.85rem;border-bottom:1px solid #f5f0e8" onmouseover="this.style.background=\'#eef2fb\'" onmouseout="this.style.background=\'white\'">'+cp+' — '+city+'</div>';
+      }).join('');
+      b.style.display='block';
+    }).catch(function(){b.style.display='none';});
+  }, 300);
+}
+function pickCpGarant(cp, city) {
+  var c=document.getElementById('locGarantCp'), v=document.getElementById('locGarantVille'), b=document.getElementById('locGarantCpDrop');
+  if(c) c.value=cp; if(v) v.value=city; if(b) b.style.display='none';
+}
+document.addEventListener('click', function(e){
+  var b=document.getElementById('locGarantCpDrop');
+  if(b&&!b.contains(e.target)&&e.target.id!=='locGarantCp') b.style.display='none';
+});
+
+// ─── GARANTIE PILLS ──────────────────────────────────────
+function setLocGarant(val) {
+  document.getElementById('locGarant').value = val;
+  document.querySelectorAll('.loc-garant-pill').forEach(function(btn) {
+    var active = btn.getAttribute('data-val') === val;
+    btn.style.border = active ? '1.5px solid var(--pro-accent)' : '1.5px solid var(--border)';
+    btn.style.background = active ? 'var(--pro-light)' : 'white';
+    btn.style.color = active ? 'var(--pro-accent)' : 'var(--gris)';
+    btn.style.fontWeight = active ? '700' : '600';
+  });
+  toggleLocGarantFields();
+  calcScore();
+}
+
+// ─── DOSSIER GARANTIE PILLS ──────────────────────────────
+function setDossierGarant(val) {
+  document.getElementById('dossierGarant').value = val;
+  document.querySelectorAll('.dos-garant-pill').forEach(function(btn) {
+    var active = btn.getAttribute('data-val') === val;
+    btn.style.border = active ? '1.5px solid var(--pro-accent)' : '1.5px solid var(--border)';
+    btn.style.background = active ? 'var(--pro-light)' : 'white';
+    btn.style.color = active ? 'var(--pro-accent)' : 'var(--gris)';
+    btn.style.fontWeight = active ? '700' : '600';
+  });
+  toggleDossierGarantFields();
+}
+
+var _cpDGTimer = null;
+function cpAutoDossierGarant(v) {
+  clearTimeout(_cpDGTimer);
+  var b = document.getElementById('dossierGarantCpDrop');
+  if (!b) return;
+  if (!v || v.length < 4) { b.style.display='none'; return; }
+  _cpDGTimer = setTimeout(function(){
+    fetch('https://api-adresse.data.gouv.fr/search/?type=municipality&q='+encodeURIComponent(v)+'&limit=6')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(!d.features||!d.features.length){b.style.display='none';return;}
+      b.innerHTML=d.features.map(function(f){
+        var cp=f.properties.postcode||v, city=f.properties.city||f.properties.label;
+        return '<div onclick="pickCpDossierGarant(\''+cp+'\',\''+city+'\')" style="padding:9px 12px;cursor:pointer;font-size:.85rem;border-bottom:1px solid #f5f0e8" onmouseover="this.style.background=\'#eef2fb\'" onmouseout="this.style.background=\'white\'">'+cp+' — '+city+'</div>';
+      }).join('');
+      b.style.display='block';
+    }).catch(function(){b.style.display='none';});
+  }, 300);
+}
+function pickCpDossierGarant(cp, city) {
+  var c=document.getElementById('dossierGarantCp'), v=document.getElementById('dossierGarantVille'), b=document.getElementById('dossierGarantCpDrop');
+  if(c) c.value=cp; if(v) v.value=city; if(b) b.style.display='none';
+}
 </script>
 <!-- ═══════════════════════════════════════════════════════════
   AGENT IA — POPUP FLOTTANT BAS DROITE (visible en mode dashboard)
