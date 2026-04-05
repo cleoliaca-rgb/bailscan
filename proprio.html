@@ -1232,18 +1232,16 @@ function showResults(bail,analyse){
  
 // ─── MODIFIER SANS REPAYER ─────────────────────────────────
 function editBail(){
-  // On garde S.isPaid=true, on réaffiche juste le formulaire
+  S.mode='generer';
+  S.isPaid=true;
   document.getElementById('resultsSection').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('modeSection').style.display='none';
-  // Remettre le mode
-  selectMode(S.mode||'generer');
-  // Les champs ont encore leurs valeurs (pas de reset), on va juste sur l'étape 1
+  selectMode('generer');
   goStep(1);
-  // Banner info
   var banner=document.createElement('div');
   banner.style.cssText='background:var(--vert-light);border:1px solid rgba(45,106,79,.25);border-radius:10px;padding:12px 16px;font-size:.83rem;color:var(--vert);margin-bottom:16px;display:flex;align-items:center;gap:10px';
-  banner.innerHTML='<span>✓</span><span><strong>Modification gratuite</strong> — Corrigez vos informations puis cliquez sur Continuer jusqu\'à l\'étape 5. Le bail sera régénéré sans frais.</span>';
+  banner.innerHTML='<span>✓</span><span><strong>Modification gratuite</strong> : corrigez vos informations puis continuez jusqu\'à l\'étape 5. Le bail sera régénéré sans frais.</span>';
   var appCard=document.querySelector('.app-card');
   if(appCard&&!document.getElementById('editBanner')){banner.id='editBanner';appCard.insertBefore(banner,appCard.firstChild);}
 }
@@ -1798,50 +1796,41 @@ function exportPDF(){
     });
  
     // SIGNATURES
-    if(y+60>pH-BOTTOM){doc.addPage();pageHeader();}
+    if(y+70>pH-BOTTOM){doc.addPage();pageHeader();}
     y+=10;
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(NOIR[0],NOIR[1],NOIR[2]);
     doc.text('SIGNATURES',mg,y);y+=8;
     doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-    doc.text('(Faire précéder chaque signature de la mention manuscrite "Lu et approuvé")',mg,y);y+=10;
+    doc.text('(Faire preceder chaque signature de la mention manuscrite "Lu et approuve")',mg,y);y+=10;
  
     var midX=pW/2;
     var sigBailleur=sp(S.genBailleurType==='physique'?(S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom:(S.genBailleurDenom||'')||'');
     var sigLocataire=sp((S.genLocPrenom?S.genLocPrenom+' ':'')+S.genLocNom||'');
-    var colW=(usableW-8)/2;
+    var eW=midX-mg-5;
  
-    // ─ Colonne BAILLEUR ─
-    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
-    doc.text('LE BAILLEUR',mg,y);
-    // Ligne de signature
-    doc.setDrawColor(NOIR[0],NOIR[1],NOIR[2]);doc.setLineWidth(0.5);
-    doc.line(mg,y+14,mg+colW,y+14);
-    // Nom sous la ligne
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-    doc.text(sigBailleur,mg,y+19);
+    function drawSigBox(bx,label,nom){
+      doc.setFillColor(CREME[0],CREME[1],CREME[2]);
+      doc.roundedRect(bx,y,eW,32,2,2,'F');
+      doc.setDrawColor(220,212,202);doc.setLineWidth(0.3);
+      doc.roundedRect(bx,y,eW,32,2,2,'S');
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+      doc.text(label,bx+5,y+7);
+      doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
+      doc.text(nom,bx+5,y+14);
+      doc.setFontSize(6);doc.setTextColor(180,170,160);
+      doc.text('Lu et approuve :',bx+5,y+22);
+    }
  
-    // ─ Colonne LOCATAIRE ─
-    var x2=mg+colW+8;
-    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
-    doc.text('LE(S) LOCATAIRE(S)',x2,y);
-    doc.setDrawColor(NOIR[0],NOIR[1],NOIR[2]);doc.setLineWidth(0.5);
-    doc.line(x2,y+14,x2+colW,y+14);
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-    doc.text(sigLocataire,x2,y+19);
-    y+=28;
+    drawSigBox(mg,'LE BAILLEUR',sigBailleur);
+    drawSigBox(midX+2,'LE(S) LOCATAIRE(S)',sigLocataire);
+    y+=38;
  
-    // ─ Garant si applicable ─
     if(S.genGarantNom){
       var sigGarant=sp((S.genGarantPrenom?S.genGarantPrenom+' ':'')+S.genGarantNom);
-      if(y+28>pH-BOTTOM){doc.addPage();pageHeader();}
-      y+=6;
-      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
-      doc.text('LE GARANT',mg,y);
-      doc.setDrawColor(NOIR[0],NOIR[1],NOIR[2]);doc.setLineWidth(0.5);
-      doc.line(mg,y+14,mg+colW,y+14);
-      doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-      doc.text(sigGarant,mg,y+19);
-      y+=28;
+      if(y+38>pH-BOTTOM){doc.addPage();pageHeader();}
+      y+=4;
+      drawSigBox(mg,'LE GARANT',sigGarant);
+      y+=38;
     }
  
     var pc=doc.internal.getNumberOfPages();
@@ -1896,4 +1885,3 @@ checkPaymentReturn();
 </script>
 </body>
 </html>
- 
