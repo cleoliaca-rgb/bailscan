@@ -450,21 +450,21 @@ select.form-input { cursor:pointer; }
 .pro-home { padding:60px 48px; background:var(--noir); border-top:1px solid #333; }
  
 /* Section Propriétaire particulier */
-.proprio-home { padding:60px 48px; background:var(--creme); border-top:1px solid var(--border); }
+.proprio-home { padding:60px 48px; background:var(--noir); border-top:1px solid #333; }
 .proprio-home-inner { max-width:1000px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
 .proprio-home-badge { display:inline-block; background:var(--accent); color:white; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; padding:4px 10px; border-radius:5px; margin-bottom:16px; }
-.proprio-home-title { font-family:'Instrument Serif',serif; font-size:2rem; color:var(--noir); margin-bottom:12px; line-height:1.2; }
-.proprio-home-desc { font-size:0.9rem; color:var(--gris); line-height:1.75; margin-bottom:24px; }
+.proprio-home-title { font-family:'Instrument Serif',serif; font-size:2rem; color:white; margin-bottom:12px; line-height:1.2; }
+.proprio-home-desc { font-size:0.9rem; color:rgba(255,255,255,0.65); line-height:1.75; margin-bottom:24px; }
 .proprio-home-features { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; }
-.proprio-home-feature { display:flex; align-items:center; gap:10px; font-size:0.85rem; color:var(--texte); }
-.proprio-home-feature::before { content:"✓"; color:var(--vert); font-weight:700; flex-shrink:0; }
-.proprio-price-card { background:var(--noir); border-radius:20px; padding:32px; text-align:center; }
-.proprio-price-badge { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent2); margin-bottom:12px; }
-.proprio-price-amount { font-family:'Instrument Serif',serif; font-size:3.5rem; color:white; line-height:1; margin-bottom:4px; }
-.proprio-price-sub { font-size:0.8rem; color:rgba(255,255,255,0.5); margin-bottom:24px; }
+.proprio-home-feature { display:flex; align-items:center; gap:10px; font-size:0.85rem; color:rgba(255,255,255,0.8); }
+.proprio-home-feature::before { content:"✓"; color:#4ade80; font-weight:700; flex-shrink:0; }
+.proprio-price-card { background:white; border-radius:20px; padding:32px; text-align:center; }
+.proprio-price-badge { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent); margin-bottom:12px; }
+.proprio-price-amount { font-family:'Instrument Serif',serif; font-size:3.5rem; color:var(--noir); line-height:1; margin-bottom:4px; }
+.proprio-price-sub { font-size:0.8rem; color:var(--gris); margin-bottom:24px; }
 .proprio-price-features { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; text-align:left; }
-.proprio-price-feature { display:flex; align-items:center; gap:10px; font-size:0.82rem; color:rgba(255,255,255,0.75); }
-.proprio-price-feature::before { content:"✓"; color:#4ade80; font-weight:700; flex-shrink:0; }
+.proprio-price-feature { display:flex; align-items:center; gap:10px; font-size:0.82rem; color:var(--texte); }
+.proprio-price-feature::before { content:"✓"; color:var(--vert); font-weight:700; flex-shrink:0; }
 .btn-proprio { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px 26px; background:var(--accent); color:white; border-radius:10px; font-size:0.9rem; font-weight:700; text-decoration:none; transition:all .2s; border:none; cursor:pointer; font-family:inherit; }
 .btn-proprio:hover { background:#a83a20; transform:translateY(-1px); }
 @media(max-width:640px){
@@ -1032,7 +1032,7 @@ select.form-input { cursor:pointer; }
         <div class="proprio-price-feature">Export PDF prêt à signer</div>
       </div>
       <a href="#app" class="btn-proprio">Obtenir mon bail conforme →</a>
-      <div style="margin-top:12px;font-size:0.72rem;color:rgba(255,255,255,0.35)">🔒 Paiement sécurisé · Sans abonnement</div>
+      <div style="margin-top:12px;font-size:0.72rem;color:var(--gris)">🔒 Paiement sécurisé · Sans abonnement</div>
     </div>
   </div>
 </section>
