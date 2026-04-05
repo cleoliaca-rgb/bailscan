@@ -46,7 +46,7 @@ h1.hero-title em{color:var(--accent);font-style:italic;}
 .price-tag{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:baseline;gap:8px;}
 .price-tag-amount{font-family:'Instrument Serif',serif;font-size:2.4rem;color:white;}
 .price-tag-sub{font-size:0.78rem;color:rgba(255,255,255,.45);}
-@media(max-width:768px){.hero{grid-template-columns:1fr;padding:100px 20px 40px;gap:28px;}.hero-card{display:none;}h1.hero-title{font-size:2rem;}}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:100px 20px 40px;gap:28px;}.hero-doc{display:none;}h1.hero-title{font-size:2rem;}}
 .mode-section{max-width:860px;margin:0 auto;padding:0 48px 48px;}
 .sec-title{font-family:'Instrument Serif',serif;font-size:1.7rem;color:var(--noir);text-align:center;margin-bottom:6px;}
 .sec-sub{text-align:center;color:var(--gris);font-size:0.88rem;margin-bottom:28px;}
@@ -126,6 +126,30 @@ textarea.fi{resize:vertical;min-height:90px;}
 .bail-preview-pages{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.75rem;color:var(--gris);margin-bottom:10px;}
 .bail-preview-page-dot{width:7px;height:7px;border-radius:50%;background:var(--border);}
 .bail-preview-page-dot.active{background:var(--accent);}
+/* DOC PREVIEW HERO */
+.hero-doc{position:relative;}
+.doc-preview{background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18),0 4px 16px rgba(0,0,0,.1);overflow:hidden;position:relative;font-family:'DM Sans',sans-serif;}
+.doc-header{background:var(--noir);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;}
+.doc-header-left{display:flex;flex-direction:column;}
+.doc-logo{font-family:'Instrument Serif',serif;font-size:.95rem;color:white;line-height:1;}
+.doc-logo-sub{font-size:.52rem;color:rgba(200,75,47,.8);margin-top:1px;}
+.doc-header-right{font-size:.55rem;font-weight:700;color:var(--accent);letter-spacing:.08em;}
+.doc-title-block{background:var(--creme);padding:14px 16px 12px;border-bottom:2px solid var(--accent);}
+.doc-title{font-size:.95rem;font-weight:800;color:var(--noir);letter-spacing:.04em;}
+.doc-subtitle{font-size:.55rem;color:var(--gris);margin-top:3px;}
+.doc-date{font-size:.52rem;color:var(--gris);margin-top:2px;}
+.doc-recap-title{font-size:.58rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;padding:10px 16px 4px;}
+.doc-recap{padding:0 16px 8px;display:flex;flex-direction:column;gap:3px;}
+.doc-recap-row{display:flex;align-items:center;background:var(--creme);border-radius:4px;padding:4px 8px;border-left:2px solid var(--accent);}
+.doc-recap-label{font-size:.52rem;font-weight:700;color:var(--gris);min-width:80px;text-transform:uppercase;letter-spacing:.05em;}
+.doc-recap-val{font-size:.62rem;font-weight:600;color:var(--noir);}
+.doc-article{background:var(--noir);padding:5px 16px;font-size:.62rem;font-weight:700;color:white;letter-spacing:.03em;border-left:3px solid var(--accent);margin-top:6px;}
+.doc-lines{padding:6px 16px 4px;}
+.doc-line{font-size:.6rem;color:var(--texte);line-height:1.7;}
+.doc-line-sub{font-weight:700;color:var(--accent);}
+.doc-fade{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to bottom,transparent,white 75%);}
+.doc-pages-badge{text-align:center;margin-top:10px;font-size:.75rem;color:var(--gris);font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;}
+@media(max-width:768px){.hero-doc{display:none;}}
 .paywall-title{font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;margin-bottom:6px;}
 .paywall-sub{font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:22px;}
 .paywall-feats{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;text-align:left;}
@@ -257,19 +281,47 @@ footer a:hover{color:var(--accent);}
       <div class="hero-trust-item">Conforme loi 1989 / ALUR / ELAN</div>
     </div>
   </div>
-  <div class="hero-card">
-    <div class="hero-card-title">Ce que vous obtenez</div>
-    <div class="hcf">
-      <div class="hcf-row"><div class="hcf-icon">📄</div><div class="hcf-text"><strong>Bail généré</strong> : conforme, toutes clauses légales incluses</div></div>
-      <div class="hcf-row"><div class="hcf-icon">🔍</div><div class="hcf-text"><strong>Bail analysé</strong> : clauses à risque détectées et corrigées</div></div>
-      <div class="hcf-row"><div class="hcf-icon">⚖️</div><div class="hcf-text"><strong>Références légales</strong> : loi 1989, ALUR, ELAN</div></div>
-      <div class="hcf-row"><div class="hcf-icon">🏠</div><div class="hcf-text"><strong>Adapté</strong> : vide ou meublé, colocation</div></div>
-      <div class="hcf-row"><div class="hcf-icon">📊</div><div class="hcf-text"><strong>Export PDF</strong> : prêt à signer et conserver</div></div>
+  <div class="hero-doc">
+    <div class="doc-preview">
+      <div class="doc-header">
+        <div class="doc-header-left">
+          <div class="doc-logo">BailScan</div>
+          <div class="doc-logo-sub">bailscan.app</div>
+        </div>
+        <div class="doc-header-right">BAIL DE LOCATION</div>
+      </div>
+      <div class="doc-title-block">
+        <div class="doc-title">BAIL DE LOCATION</div>
+        <div class="doc-subtitle">Conforme loi n°89-462 du 6 juillet 1989 · ALUR · ELAN 2018</div>
+        <div class="doc-date">Établi le 06 avril 2026</div>
+      </div>
+      <div class="doc-recap-title">RÉCAPITULATIF DU CONTRAT</div>
+      <div class="doc-recap">
+        <div class="doc-recap-row"><span class="doc-recap-label">BAILLEUR</span><span class="doc-recap-val">Jean-Pierre Dupont</span></div>
+        <div class="doc-recap-row"><span class="doc-recap-label">LOCATAIRE</span><span class="doc-recap-val">Marie Martin</span></div>
+        <div class="doc-recap-row"><span class="doc-recap-label">BIEN LOUÉ</span><span class="doc-recap-val">12 rue de la Paix, 75001 Paris</span></div>
+        <div class="doc-recap-row"><span class="doc-recap-label">LOYER HC</span><span class="doc-recap-val">850 EUR / mois</span></div>
+        <div class="doc-recap-row"><span class="doc-recap-label">DATE ENTRÉE</span><span class="doc-recap-val">01 mai 2026</span></div>
+        <div class="doc-recap-row"><span class="doc-recap-label">DURÉE</span><span class="doc-recap-val">3 ans (vide)</span></div>
+      </div>
+      <div class="doc-article">ARTICLE 1 - PARTIES AU CONTRAT</div>
+      <div class="doc-lines">
+        <div class="doc-line doc-line-sub">BAILLEUR :</div>
+        <div class="doc-line">Nom et prénom : Jean-Pierre Dupont</div>
+        <div class="doc-line">Adresse : 5 rue Victor Hugo, 75011 Paris</div>
+        <div class="doc-line">&nbsp;</div>
+        <div class="doc-line doc-line-sub">LOCATAIRE(S) :</div>
+        <div class="doc-line">Nom et prénom : Marie Martin</div>
+        <div class="doc-line">Adresse : 8 avenue des Fleurs, 69001 Lyon</div>
+      </div>
+      <div class="doc-article">ARTICLE 2 - DÉSIGNATION DU LOGEMENT</div>
+      <div class="doc-lines">
+        <div class="doc-line">Adresse : 12 rue de la Paix, 75001 Paris</div>
+        <div class="doc-line">Surface habitable : 45 m²  ·  Classe DPE : C  ·  GES : C</div>
+      </div>
+      <div class="doc-fade"></div>
     </div>
-    <div class="price-tag">
-      <div class="price-tag-amount">49€</div>
-      <div class="price-tag-sub">génération + analyse · accès à vie</div>
-    </div>
+    <div class="doc-pages-badge">📄 5 pages · PDF téléchargeable · Prêt à signer</div>
   </div>
 </section>
  
@@ -1507,3 +1559,4 @@ checkPaymentReturn();
 </script>
 </body>
 </html>
+ 
