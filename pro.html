@@ -4942,6 +4942,8 @@ function showDashboard(){
   if (proState._dashShown) return; proState._dashShown = true;
   document.body.classList.add('is-dashboard');
   var _mp=document.getElementById('marketingPage');if(_mp){_mp.style.cssText='display:none!important';}
+  var _sp=document.getElementById('particuliers');if(_sp){_sp.style.cssText='display:none!important';}
+  var _ft=document.querySelector('.footer-seo-pro');if(_ft){_ft.style.cssText='display:none!important';}
   document.getElementById('marketingFooter').style.display='none';
   document.getElementById('dashboardSection').style.display='block';
   document.querySelector('.btn-header-login').style.display='none';
@@ -13749,22 +13751,19 @@ document.addEventListener('click',function(e){
 
 
 async function showOnboarding() {
+  console.log('[Onboarding] called, user:', proState.user && proState.user.email);
   var uid = (proState.user && (proState.user.id || proState.user.email)) || null;
-  // Si uid pas encore dispo, retry dans 500ms
-  if (!uid) { setTimeout(showOnboarding, 500); return; }
-  // Verifier localStorage
-  if (localStorage.getItem('bs_ob2_' + uid)) return;
-  // Verifier Supabase (non-bloquant)
+  if (!uid) { console.log('[Onboarding] no uid, retry'); setTimeout(showOnboarding, 500); return; }
+  var k = 'bs_ob2_' + uid;
+  if (localStorage.getItem(k)) { console.log('[Onboarding] already seen'); return; }
   try {
     var sb=getSupabase(), agId=proState._agenceId;
     if(sb && agId) {
       var res = await sb.from('agences').select('onboarding_done').eq('id',agId).single();
-      if(res.data && res.data.onboarding_done) {
-        localStorage.setItem('bs_ob2_'+uid,'1'); return;
-      }
+      if(res.data && res.data.onboarding_done) { localStorage.setItem(k,'1'); return; }
     }
-  } catch(e) {}
-  // Afficher
+  } catch(e) { console.log('[Onboarding] supabase error:', e.message); }
+  console.log('[Onboarding] rendering step', _obStep);
   _obStep = 0; _obDone = [];
   renderObStep();
 }
