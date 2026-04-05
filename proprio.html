@@ -559,8 +559,12 @@ footer a:hover{color:var(--accent);}
           <div class="fg"><label for="analyseLoyer">Loyer mensuel HC (€)</label><input type="number" id="analyseLoyer" class="fi" placeholder="Ex : 850" min="0"></div>
         </div>
         <div class="fgrid">
+          <div class="fg"><label for="analyseComplement">Complément de loyer (€) <small style="font-weight:400;color:var(--gris)">si applicable</small></label><input type="number" id="analyseComplement" class="fi" placeholder="Ex : 150" min="0"></div>
           <div class="fg"><label for="analyseSurface">Surface (m²)</label><input type="number" id="analyseSurface" class="fi" placeholder="Ex : 45" min="1"></div>
+        </div>
+        <div class="fgrid">
           <div class="fg"><label for="analyseDepot">Dépôt de garantie (€)</label><input type="number" id="analyseDepot" class="fi" placeholder="Ex : 850" min="0"></div>
+          <div class="fg"><label for="analyseCharges">Charges mensuelles (€) <small style="font-weight:400;color:var(--gris)">optionnel</small></label><input type="number" id="analyseCharges" class="fi" placeholder="Ex : 80" min="0"></div>
         </div>
       </div>
  
@@ -869,6 +873,7 @@ function getColocs(){
 // ─── SWITCH VERS ANALYSE (après paiement, gratuit) ────────
 function switchToAnalyse(){
   S.mode='analyser';
+  S.isPaid=true; // déjà payé, pas de repaiement
   selectMode('analyser');
   document.getElementById('resultsSection').style.display='none';
   document.getElementById('app').style.display='block';
@@ -907,7 +912,7 @@ document.addEventListener('DOMContentLoaded',function(){
 function goStep(n){
   _currentStep=n;
   if(n>=2&&!S.mode) S.mode='generer';
-  // Si déjà payé et qu'on arrive à l'étape 5 depuis une modification → régénérer directement
+  // Si déjà payé + mode génération → régénérer directement
   if(n===5&&S.isPaid&&S.mode==='generer'){
     var banner=document.getElementById('editBanner');if(banner)banner.remove();
     document.getElementById('app').style.display='none';
@@ -920,6 +925,23 @@ function goStep(n){
       try{var bail=buildBailComplet();S.currentBail=bail;ov.classList.remove('active');showResults(bail,null);}
       catch(e){ov.classList.remove('active');document.getElementById('app').style.display='block';alert('Erreur : '+e.message);}
     },3000);
+    return;
+  }
+  // Si déjà payé + mode analyse → lancer l'analyse directement
+  if(n===5&&S.isPaid&&S.mode==='analyser'){
+    document.getElementById('app').style.display='none';
+    document.getElementById('modeSection').style.display='none';
+    var ov2=document.getElementById('loadingOverlay');ov2.classList.add('active');
+    var steps2=['ls1','ls2','ls3','ls4'];
+    [0,900,2000,3400].forEach(function(delay,i){setTimeout(function(){if(i>0)document.getElementById(steps2[i-1]).className='lstep done';document.getElementById(steps2[i]).className='lstep active';},delay);});
+    setTimeout(function(){
+      var g=saveAllState();
+      var body={context:{type_analyse:'bail',type_bien:g.genType||'vide',ville:g.analyseVille||'',surface:parseFloat(g.analyseSurface)||0,loyer_base:parseFloat(g.analyseLoyer)||0,complement:parseFloat(g.analyseComplement)||0,depot:parseFloat(g.analyseDepot)||0,type_location:'location'}};
+      if(S.pdf)body.pdf=S.pdf;else if(g.textBail)body.text=g.textBail;else{ov2.classList.remove('active');alert('Aucun document fourni.');return;}
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+      .then(function(r){return r.json();}).then(function(data){ov2.classList.remove('active');showResults(null,data);})
+      .catch(function(e){ov2.classList.remove('active');alert('Erreur analyse : '+e.message);});
+    },1000);
     return;
   }
   if(n===5)buildRecap();
@@ -1039,7 +1061,7 @@ function restoreState(){
       'genBailleurPrenom','genBailleurNom','genBailleurDenom','genBailleurAdresse','genBailleurCp','genBailleurVille','genBailleurEmail','genBailleurTel',
       'genLocPrenom','genLocNom','genLocAdresse','genLocCp','genLocVille','genLocEmail',
       'genGarantPrenom','genGarantNom','genGarantAdresse','genGarantCp','genGarantVille','genGarantEmail','genGarantTel',
-      'analyseVille','analyseLoyer','analyseSurface','analyseDepot','textBail','travAutres','clausesLibres'];
+      'analyseVille','analyseLoyer','analyseComplement','analyseCharges','analyseSurface','analyseDepot','textBail','travAutres','clausesLibres'];
     fields.forEach(function(id){
       var el=document.getElementById(id);
       if(el&&g[id]!==undefined)el.value=g[id];
@@ -1104,7 +1126,7 @@ function saveAllState(){
     genLoyer:v('genLoyer'),genCharges:v('genCharges'),genDepot:v('genDepot'),genDateEntree:v('genDateEntree'),genDuree:rad('genDuree'),genRevision:rad('genRevision'),genLoyerRef:v('genLoyerRef'),genLoyerMajore:v('genLoyerMajore'),genLoyerMinore:v('genLoyerMinore'),genComplement:v('genComplement'),genComplementJustif:v('genComplementJustif'),genIrl:v('genIrl'),
     genBailleurType:rad('genBailleurType'),genBailleurPrenom:v('genBailleurPrenom'),genBailleurNom:v('genBailleurNom'),genBailleurDenom:v('genBailleurDenom'),genBailleurAdresse:v('genBailleurAdresse'),genBailleurCp:v('genBailleurCp'),genBailleurVille:v('genBailleurVille'),genBailleurEmail:v('genBailleurEmail'),genBailleurTel:v('genBailleurTel'),
     genLocPrenom:v('genLocPrenom'),genLocNom:v('genLocNom'),genLocAdresse:v('genLocAdresse'),genLocCp:v('genLocCp'),genLocVille:v('genLocVille'),genLocEmail:v('genLocEmail'),genGarantPrenom:v('genGarantPrenom'),genGarantNom:v('genGarantNom'),genGarantAdresse:v('genGarantAdresse'),genGarantCp:v('genGarantCp'),genGarantVille:v('genGarantVille'),genGarantEmail:v('genGarantEmail'),genGarantTel:v('genGarantTel'),genCaution:rad('genCaution'),
-    analyseVille:v('analyseVille'),analyseLoyer:v('analyseLoyer'),analyseSurface:v('analyseSurface'),analyseDepot:v('analyseDepot'),textBail:v('textBail'),
+    analyseVille:v('analyseVille'),analyseLoyer:v('analyseLoyer'),analyseComplement:v('analyseComplement'),analyseCharges:v('analyseCharges'),analyseSurface:v('analyseSurface'),analyseDepot:v('analyseDepot'),textBail:v('textBail'),
     travChaudiere:chk('travChaudiere'),travClim:chk('travClim'),travJardin:chk('travJardin'),travGouttiere:chk('travGouttiere'),travPiscine:chk('travPiscine'),travRamonage:chk('travRamonage'),travRobinetterie:chk('travRobinetterie'),travDetartrage:chk('travDetartrage'),travAutres:v('travAutres'),
     clauseSousloc:chk('clauseSousloc'),clauseCession:chk('clauseCession'),clausePno:chk('clausePno'),clauseCompteur:chk('clauseCompteur'),clauseDpeTrav:chk('clauseDpeTrav'),clauseNum:chk('clauseNum'),clauseAnimaux:chk('clauseAnimaux'),clauseFumeur:chk('clauseFumeur'),clausesLibres:v('clausesLibres'),
     genPno:rad('genPno'),genResolutoire:rad('genResolutoire'),genSolidarite:rad('genSolidarite'),
@@ -1143,7 +1165,7 @@ function launchGeneration(){
     },4200);
   }else{
     setTimeout(function(){
-      var body={context:{type_analyse:'bail',type_bien:S.genType||'vide',ville:S.analyseVille||'',surface:S.analyseSurface||'',loyer_base:parseFloat(S.analyseLoyer)||0,depot:parseFloat(S.analyseDepot)||0,type_location:'location'}};
+      var body={context:{type_analyse:'bail',type_bien:S.genType||'vide',ville:S.analyseVille||'',surface:S.analyseSurface||'',loyer_base:parseFloat(S.analyseLoyer)||0,complement:parseFloat(S.analyseComplement)||0,charges:parseFloat(S.analyseCharges)||0,depot:parseFloat(S.analyseDepot)||0,type_location:'location'}};
       if(S.pdf)body.pdf=S.pdf;else if(S.textBail)body.text=S.textBail;else{ov.classList.remove('active');alert('Aucun document fourni.');return;}
       fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
       .then(function(r){return r.json();}).then(function(data){ov.classList.remove('active');showResults(null,data);})
@@ -1246,18 +1268,19 @@ function buildPdfBase64(){
     function exL(rx){var m=bt.match(rx);return m?m[1].trim():'';}
     // Page de garde
     doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.rect(0,0,pW,pH,'F');
-    doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,pH-85,pW,85,'F');
-    doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,pH-85,6,85,'F');
+    // Bloc noir EN HAUT
+    doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,0,pW,85,'F');
+    doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,0,6,85,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(22);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
-    doc.text('BailScan',mg+6,pH-67);
+    doc.text('BailScan',mg+6,18);
     doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(200,160,140);
-    doc.text('bailscan.app',mg+6,pH-61);
+    doc.text('bailscan.app',mg+6,24);
     doc.setFont('helvetica','bold');doc.setFontSize(30);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
-    doc.text('BAIL DE LOCATION',mg+6,pH-43);
+    doc.text('BAIL DE LOCATION',mg+6,52);
     doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(200,160,140);
-    doc.text('Conforme loi n°89-462 du 6 juillet 1989  |  ALUR  |  ELAN 2018',mg+6,pH-35);
+    doc.text('Conforme loi n°89-462 du 6 juillet 1989  |  ALUR  |  ELAN 2018',mg+6,62);
     doc.setFontSize(7.5);doc.setTextColor(120,100,90);
-    doc.text('Etabli le '+dateGen,pW-mg,pH-21,{align:'right'});
+    doc.text('Etabli le '+dateGen,pW-mg,76,{align:'right'});
     var rows=[
       {l:'BAILLEUR',v:exL(/Nom et pr.nom[^:]*:\s*([^\n]+)/i)||exL(/D.nomination sociale[^:]*:\s*([^\n]+)/i)},
       {l:'LOCATAIRE(S)',v:exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)},
@@ -1266,7 +1289,7 @@ function buildPdfBase64(){
       {l:'DATE ENTREE',v:exL(/Date de prise d.effet[^:]*:\s*([^\n]+)/i)},
       {l:'DUREE DU BAIL',v:exL(/Dur.e\s*:\s*([^\n]+)/i)},
     ];
-    var fy=20;
+    var fy=95;
     doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
     doc.text('RECAPITULATIF DU CONTRAT',mg+6,fy);
     doc.setDrawColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.setLineWidth(0.4);doc.line(mg+6,fy+1.5,mg+80,fy+1.5);fy+=8;
@@ -1648,20 +1671,20 @@ function exportPDF(){
     function sp(str){return sanitizePDF(str);}
     function exL(rx){var m=bt.match(rx);return m?m[1].trim():'';}
  
-    // PAGE DE GARDE
+    // PAGE DE GARDE — bloc noir EN HAUT
     doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.rect(0,0,pW,pH,'F');
-    doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,pH-85,pW,85,'F');
-    doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,pH-85,6,85,'F');
+    doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.rect(0,0,pW,85,'F');
+    doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.rect(0,0,6,85,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(22);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
-    doc.text('BailScan',mg+6,pH-67);
+    doc.text('BailScan',mg+6,18);
     doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(200,160,140);
-    doc.text('bailscan.app',mg+6,pH-61);
+    doc.text('bailscan.app',mg+6,24);
     doc.setFont('helvetica','bold');doc.setFontSize(30);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);
-    doc.text('BAIL DE LOCATION',mg+6,pH-43);
+    doc.text('BAIL DE LOCATION',mg+6,52);
     doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(200,160,140);
-    doc.text('Conforme loi n\u00b089-462 du 6 juillet 1989  |  ALUR  |  ELAN 2018',mg+6,pH-35);
+    doc.text('Conforme loi n\u00b089-462 du 6 juillet 1989  |  ALUR  |  ELAN 2018',mg+6,62);
     doc.setFontSize(7.5);doc.setTextColor(120,100,90);
-    doc.text('Etabli le '+dateGen,pW-mg,pH-21,{align:'right'});
+    doc.text('Etabli le '+dateGen,pW-mg,76,{align:'right'});
  
     var rows=[
       {l:'BAILLEUR',v:exL(/Nom et pr.nom[^:]*:\s*([^\n]+)/i)||exL(/D.nomination sociale[^:]*:\s*([^\n]+)/i)},
@@ -1671,7 +1694,7 @@ function exportPDF(){
       {l:'DATE ENTREE',v:exL(/Date de prise d.effet[^:]*:\s*([^\n]+)/i)},
       {l:'DUREE DU BAIL',v:exL(/Dur.e\s*:\s*([^\n]+)/i)},
     ];
-    var fy=20;
+    var fy=95;
     doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
     doc.text('RECAPITULATIF DU CONTRAT',mg+6,fy);
     doc.setDrawColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.setLineWidth(0.4);doc.line(mg+6,fy+1.5,mg+80,fy+1.5);
