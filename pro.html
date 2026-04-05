@@ -5024,9 +5024,9 @@ function checkPlanAccess() {
 
   if (plan === 'trial' && trialEnd) {
     var daysLeft = Math.max(0, Math.ceil((new Date(trialEnd) - Date.now()) / 864e5));
-    document.getElementById('trialDaysLeft').textContent = daysLeft;
-    document.getElementById('trialDaysLeftBanner').textContent = daysLeft;
-    document.getElementById('trialEndDate').textContent = new Date(trialEnd).toLocaleDateString('fr-FR');
+    var _tl=document.getElementById('trialDaysLeft'); if(_tl) _tl.textContent=daysLeft;
+    var _tb=document.getElementById('trialDaysLeftBanner'); if(_tb) _tb.textContent=daysLeft;
+    var _te=document.getElementById('trialEndDate'); if(_te) _te.textContent=new Date(trialEnd).toLocaleDateString('fr-FR');
     if (daysLeft <= 0) {
       showPaywall('Votre essai gratuit a expiré', 'Vos données sont conservées. Abonnez-vous pour reprendre votre activité.');
       return;
