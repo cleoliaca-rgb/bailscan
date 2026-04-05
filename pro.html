@@ -873,7 +873,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Adapté à votre bien — meublé ou vide</div>
             <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Zéro risque de litige</div>
           </div>
-          <button onclick="window.location.href='/'" style="width:100%;padding:13px;border-radius:10px;font-weight:700;font-size:.92rem;background:var(--accent);color:white;border:none;cursor:pointer">Obtenir mon bail conforme →</button>
+          <button onclick="window.location.href='/proprio.html'" style="width:100%;padding:13px;border-radius:10px;font-weight:700;font-size:.92rem;background:var(--accent);color:white;border:none;cursor:pointer">Obtenir mon bail conforme →</button>
           <p style="text-align:center;font-size:.74rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe</p>
         </div>
       </div>
@@ -4939,6 +4939,7 @@ async function handleGoogleLogin() {
 
 
 function showDashboard(){
+  if (proState._dashShown) return; proState._dashShown = true;
   document.body.classList.add('is-dashboard');
   document.getElementById('marketingPage').style.display='none';
   document.getElementById('marketingFooter').style.display='none';
@@ -5137,7 +5138,7 @@ async function subscribePro(plan) {
 }
 async function logout(){
   var sb = getSupabase(); if(sb) await sb.auth.signOut();
-  proState.isLoggedIn=false; proState.user=null; proState._agenceId=null;
+  proState.isLoggedIn=false; proState.user=null; proState._agenceId=null; proState._dashShown=false;
 
   document.body.classList.remove('is-dashboard');
   document.getElementById('marketingPage').style.display='block';
@@ -13749,15 +13750,21 @@ document.addEventListener('click',function(e){
 
 async function showOnboarding() {
   var uid = (proState.user && (proState.user.id || proState.user.email)) || null;
-  if (!uid) { setTimeout(showOnboarding, 500); return; } // Attendre que user soit charge
+  // Si uid pas encore dispo, retry dans 500ms
+  if (!uid) { setTimeout(showOnboarding, 500); return; }
+  // Verifier localStorage
   if (localStorage.getItem('bs_ob2_' + uid)) return;
+  // Verifier Supabase (non-bloquant)
   try {
     var sb=getSupabase(), agId=proState._agenceId;
     if(sb && agId) {
       var res = await sb.from('agences').select('onboarding_done').eq('id',agId).single();
-      if(res.data && res.data.onboarding_done) { localStorage.setItem('bs_ob2_'+uid,'1'); return; }
+      if(res.data && res.data.onboarding_done) {
+        localStorage.setItem('bs_ob2_'+uid,'1'); return;
+      }
     }
   } catch(e) {}
+  // Afficher
   _obStep = 0; _obDone = [];
   renderObStep();
 }
@@ -13924,3 +13931,4 @@ function updateObProgress() {}
         oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
       <button onclick="sendAgentMessage()" id="agentSendBtn"
         style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;border-radius:9px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;flex-shrink:0;height:36px;transition:opa
+
