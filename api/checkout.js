@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
             name: 'BailScan — Analyse complete',
             description: 'Toutes les clauses analysees + 5 lettres officielles personnalisees',
           },
-          unit_amount: 900,
+          unit_amount: 2900,
         },
         quantity: 1,
       }],
