@@ -66,6 +66,7 @@ function showAuthError(modalId, msg) {
 /* === DASHBOARD : cacher header marketing + footer === */
 body.is-dashboard header { display: none !important; }
 body.is-dashboard #marketingFooter { display: none !important; }
+body.is-dashboard #marketingPage { display: none !important; }
 
 /* === LAYOUT === */
 #dashboardSection { display:none; }
@@ -840,38 +841,45 @@ body.is-dashboard #marketingFooter { display: none !important; }
 </section>
 
 <section id="particuliers" style="padding:80px 48px;background:var(--creme);border-top:1px solid var(--border)">
-  <div style="max-width:860px;margin:0 auto">
-    <div style="text-align:center;margin-bottom:48px">
-      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:12px">Pour les propriétaires particuliers</div>
-      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,2.5vw,2.2rem);color:var(--noir);margin-bottom:14px">Vous louez à un locataire ?<br><em style="font-style:italic;color:var(--accent)">Sécurisez votre bail en une fois.</em></h2>
-      <p style="font-size:1rem;color:var(--gris);line-height:1.7;max-width:520px;margin:0 auto">Pas d'abonnement. Payez une seule fois et obtenez la vérification complète de votre bail + la rédaction d'un bail 100% conforme avant signature.</p>
-    </div>
-
-    <div style="max-width:480px;margin:0 auto">
-
-      <!-- Analyse + Rédaction bail -->
-      <div style="background:var(--noir);border:1.5px solid var(--noir);border-radius:18px;padding:32px;position:relative">
-        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;font-size:0.65rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap">Recommandé</div>
-        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:8px">Analyse + Bail conforme</div>
-        <div style="font-family:'Instrument Serif',serif;font-size:2.8rem;color:white;line-height:1"><sup style="font-size:1.1rem;font-family:'DM Sans',sans-serif;font-weight:600">€</sup>49</div>
-        <div style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin:6px 0 24px">Paiement unique · Accès à vie</div>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Analyse complète de toutes les clauses</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Détection des clauses illégales avant signature</div>
-          <div style="height:1px;background:rgba(255,255,255,0.1);margin:4px 0"></div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Bail conforme rédigé par IA en 30 sec</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Adapté à votre bien — meublé ou vide</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Zéro risque de litige avec votre locataire</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:rgba(255,255,255,0.75)"><span style="color:var(--pro-accent);font-weight:700;flex-shrink:0">✓</span>Économisez 300–500€ de notaire ou juriste</div>
-        </div>
-        <button onclick="window.location.href='/'" style="display:block;width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;text-align:center;background:var(--pro-accent);color:white;border:none;cursor:pointer;transition:all .2s" onmouseover="this.style.background='#2a5bbf'" onmouseout="this.style.background='var(--pro-accent)'">Obtenir mon bail conforme →</button>
-        <p style="text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.3);margin-top:14px">Résultat en moins de 2 minutes</p>
+  <div style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <div>
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px">Pour les propriétaires particuliers</div>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:var(--noir);line-height:1.15;margin-bottom:16px">Vous louez à un locataire ?<br><em style="color:var(--accent);font-style:italic">Sécurisez votre bail<br>en une fois.</em></h2>
+      <p style="font-size:.92rem;color:var(--gris);line-height:1.75;margin-bottom:28px">Pas d’abonnement. Payez une seule fois et obtenez la vérification complète de votre bail + la rédaction d’un bail 100 % conforme avant signature.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texte)"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-weight:700;font-size:.8rem">✓</div>Résultat en moins de 2 minutes</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texte)"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-weight:700;font-size:.8rem">✓</div>Sans abonnement ni engagement</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texte)"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-weight:700;font-size:.8rem">✓</div>Économisez 300–500€ de notaire</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texte)"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-weight:700;font-size:.8rem">✓</div>Conforme loi 1989 / ALUR / ELAN</div>
       </div>
-
     </div>
-
-    <p style="text-align:center;font-size:0.78rem;color:var(--gris);margin-top:24px">Paiement sécurisé par Stripe · Sans abonnement · Sans engagement</p>
+    <div>
+      <div style="background:white;border:1.5px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.06)">
+        <div style="background:var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:white;opacity:.9">Analyse + Bail conforme</div>
+          <div style="background:white;color:var(--accent);font-size:.68rem;font-weight:800;padding:3px 10px;border-radius:20px">Recommandé</div>
+        </div>
+        <div style="padding:28px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+            <div style="font-family:'Instrument Serif',serif;font-size:3.2rem;color:var(--noir);line-height:1"><sup style="font-size:1.1rem;font-family:'DM Sans';font-weight:600">€</sup>49</div>
+            <div style="font-size:.82rem;color:var(--gris)">paiement unique</div>
+          </div>
+          <div style="font-size:.8rem;color:var(--gris);margin-bottom:20px">Sans abonnement · Accès à vie</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+            <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Analyse complète de toutes les clauses</div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Détection des clauses illégales</div>
+            <div style="height:1px;background:var(--border);margin:4px 0"></div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Bail conforme rédigé par IA en 30 sec</div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Adapté à votre bien — meublé ou vide</div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Zéro risque de litige</div>
+          </div>
+          <button onclick="window.location.href='/'" style="width:100%;padding:13px;border-radius:10px;font-weight:700;font-size:.92rem;background:var(--accent);color:white;border:none;cursor:pointer">Obtenir mon bail conforme →</button>
+          <p style="text-align:center;font-size:.74rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe</p>
+        </div>
+      </div>
+    </div>
   </div>
+  <style>@media(max-width:768px){#particuliers .part-grid{grid-template-columns:1fr !important;}}</style>
 </section>
 
 </div><!-- /marketingPage -->
@@ -3231,6 +3239,390 @@ body.is-dashboard #marketingFooter { display: none !important; }
     <p style="text-align:center;font-size:.75rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe · Sans engagement · Résiliable à tout moment</p>
   </div>
 </div>
+
+<div id="tab-parametres" style="display:none">
+        <div class="dash-main-header"><div><div class="dash-page-title">Paramètres</div><div class="dash-page-sub">Votre compte et votre agence</div></div></div>
+
+        <!-- Logo agence -->
+        <div class="dash-card" style="margin-bottom:16px">
+          <div class="dash-section-title">Logo de votre agence</div>
+          <div style="font-size:.84rem;color:var(--gris);margin-bottom:14px">Votre logo sera automatiquement intégré à tous vos exports PDF (rapports, baux générés).</div>
+          <div id="logoPreviewWrap" style="display:none;margin-bottom:14px">
+            <img id="logoPreview" src="" alt="Logo agence" style="max-height:60px;max-width:240px;border-radius:6px;border:1.5px solid var(--border);padding:8px">
+            <button class="btn-sm" onclick="removeLogo()" style="margin-left:10px;color:var(--accent);border-color:var(--accent)">Supprimer</button>
+          </div>
+          <label style="cursor:pointer">
+            <input type="file" id="logoInput" accept="image/png,image/jpeg,image/svg+xml" onchange="uploadLogo(this)" style="display:none">
+            <div style="display:inline-flex;align-items:center;gap:8px;background:var(--pro-light);border:1.5px dashed var(--pro-accent);border-radius:10px;padding:12px 20px;font-size:.84rem;font-weight:600;color:var(--pro-accent);transition:all .2s">
+              📤 Uploader votre logo (PNG, JPG, SVG · max 2Mo)
+            </div>
+          </label>
+        </div>
+
+        <!-- Infos compte -->
+        <div class="dash-card" style="margin-bottom:16px">
+          <div class="dash-section-title">✍️ Signature pour les documents</div>
+          <div style="font-size:.83rem;color:var(--gris);margin-bottom:14px">Votre signature sera apposée automatiquement en bas de tous vos baux et courriers PDF.</div>
+          <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+            <div id="signaturePreviewBlock" style="display:none;border:1.5px solid var(--border);border-radius:10px;padding:12px;min-width:180px;background:#fafaf8">
+              <div style="font-size:.72rem;color:var(--gris);margin-bottom:6px">Aperçu signature</div>
+              <img id="signaturePreviewImg" style="max-height:60px;max-width:200px" alt="Signature">
+              <div style="margin-top:8px">
+                <button class="btn-sm" style="font-size:.73rem;color:var(--accent);border-color:var(--accent)" onclick="supprimerSignature()">✕ Supprimer</button>
+              </div>
+            </div>
+            <div>
+              <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:var(--pro-light);border:1.5px solid var(--pro-accent);border-radius:10px;padding:10px 18px;font-size:.85rem;font-weight:600;color:var(--pro-accent)">
+                📎 <span id="sigUploadLabel">Uploader ma signature</span>
+                <input type="file" id="inputSignature" accept=".png,.jpg,.jpeg" style="display:none" onchange="uploadSignature(this)">
+              </label>
+              <div style="font-size:.75rem;color:var(--gris);margin-top:6px">PNG transparent recommandé · fond blanc · 400×150px max</div>
+            </div>
+          </div>
+        </div>
+        <div class="dash-card" style="margin-bottom:16px">
+          <div class="dash-section-title">Informations du compte</div>
+          <div class="form-group-pro"><label class="form-label">Nom complet</label><input type="text" class="form-input-pro" id="settingsNom"></div>
+          <div class="form-group-pro"><label class="form-label">Agence</label><input type="text" class="form-input-pro" id="settingsAgence"></div>
+          <div class="form-group-pro"><label class="form-label">Email</label><input type="email" class="form-input-pro" id="settingsEmail"></div>
+          <button class="btn-primary-pro" style="margin-top:8px" onclick="saveSettings()">Enregistrer</button>
+        </div>
+
+
+        <!-- ══ INFORMATIONS ENTREPRISE POUR DOCUMENTS ══ -->
+        <div class="dash-card" style="margin-bottom:16px">
+          <div class="dash-section-title">🏢 Informations entreprise (baux, quittances, courriers)</div>
+          <div style="font-size:.8rem;color:var(--gris);margin-bottom:14px">Ces informations apparaissent sur tous les documents générés conformément à la loi.</div>
+          <div class="form-grid-pro">
+            <div class="form-group-pro">
+              <label class="form-label">Raison sociale / Dénomination *</label>
+              <input type="text" class="form-input-pro" id="aiNom" placeholder="Ex : SARL Immo Dupont / Agence Martin">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">SIRET *</label>
+              <input type="text" class="form-input-pro" id="aiSiret" placeholder="Ex : 123 456 789 00012" maxlength="17">
+            </div>
+            <div class="form-group-pro" style="grid-column:1/-1">
+              <label class="form-label">Adresse complète *</label>
+              <input type="text" class="form-input-pro" id="aiAdresse" placeholder="Ex : 12 rue de la Paix, 75001 Paris">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Téléphone</label>
+              <input type="text" class="form-input-pro" id="aiTel" placeholder="Ex : 01 23 45 67 89">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Email professionnel</label>
+              <input type="email" class="form-input-pro" id="aiEmail" placeholder="contact@agence.fr">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">N° carte professionnelle (si agent immo)</label>
+              <input type="text" class="form-input-pro" id="aiCarte" placeholder="Ex : CPI 75012023000012345">
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Caisse de garantie / Assurance RC</label>
+              <input type="text" class="form-input-pro" id="aiGarantie" placeholder="Ex : GALIAN - N° police 12345">
+            </div>
+          </div>
+          <button class="btn-primary-pro" style="margin-top:12px" onclick="saveAgencyInfo()">💾 Enregistrer les informations</button>
+          <div id="aiSaveMsg" style="display:none;color:var(--vert);font-size:.82rem;margin-top:8px">✓ Informations enregistrées avec succès</div>
+        </div>
+
+
+        <!-- Charte graphique documents -->
+        <div class="dash-card" style="margin-bottom:16px">
+          <div class="dash-section-title">🎨 Charte graphique — Baux, quittances & courriers</div>
+          <div style="font-size:.8rem;color:var(--gris);margin-bottom:20px">Ces couleurs sont appliquées sur tous vos documents PDF. Personnalisez pour correspondre à votre identité visuelle.</div>
+
+          <!-- Palettes prédéfinies -->
+          <div style="margin-bottom:20px">
+            <div class="form-label" style="margin-bottom:10px">Palettes prédéfinies</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px" id="chartePresets">
+              <button class="btn-sm" onclick="applyColorPreset('pro')" style="display:flex;align-items:center;gap:6px;padding:6px 12px">
+                <span style="width:14px;height:14px;background:#3b82f6;border-radius:3px;display:inline-block"></span>
+                <span style="width:14px;height:14px;background:#0f172a;border-radius:3px;display:inline-block"></span>
+                Professionnel
+              </button>
+              <button class="btn-sm" onclick="applyColorPreset('prestige')" style="display:flex;align-items:center;gap:6px;padding:6px 12px">
+                <span style="width:14px;height:14px;background:#7c3aed;border-radius:3px;display:inline-block"></span>
+                <span style="width:14px;height:14px;background:#1e1b4b;border-radius:3px;display:inline-block"></span>
+                Prestige
+              </button>
+              <button class="btn-sm" onclick="applyColorPreset('nature')" style="display:flex;align-items:center;gap:6px;padding:6px 12px">
+                <span style="width:14px;height:14px;background:#059669;border-radius:3px;display:inline-block"></span>
+                <span style="width:14px;height:14px;background:#064e3b;border-radius:3px;display:inline-block"></span>
+                Nature
+              </button>
+              <button class="btn-sm" onclick="applyColorPreset('soleil')" style="display:flex;align-items:center;gap:6px;padding:6px 12px">
+                <span style="width:14px;height:14px;background:#d97706;border-radius:3px;display:inline-block"></span>
+                <span style="width:14px;height:14px;background:#1c1917;border-radius:3px;display:inline-block"></span>
+                Soleil
+              </button>
+              <button class="btn-sm" onclick="applyColorPreset('rouge')" style="display:flex;align-items:center;gap:6px;padding:6px 12px">
+                <span style="width:14px;height:14px;background:#dc2626;border-radius:3px;display:inline-block"></span>
+                <span style="width:14px;height:14px;background:#1c0a0a;border-radius:3px;display:inline-block"></span>
+                Dynamique
+              </button>
+              <button class="btn-sm" onclick="applyColorPreset('ardoise')" style="display:flex;align-items:center;gap:6px;padding:6px 12px">
+                <span style="width:14px;height:14px;background:#475569;border-radius:3px;display:inline-block"></span>
+                <span style="width:14px;height:14px;background:#0f172a;border-radius:3px;display:inline-block"></span>
+                Ardoise
+              </button>
+              <button class="btn-sm" onclick="applyColorPreset('rose')" style="display:flex;align-items:center;gap:6px;padding:6px 12px">
+                <span style="width:14px;height:14px;background:#db2777;border-radius:3px;display:inline-block"></span>
+                <span style="width:14px;height:14px;background:#500724;border-radius:3px;display:inline-block"></span>
+                Moderne
+              </button>
+            </div>
+          </div>
+
+          <!-- Grille des couleurs -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+
+            <!-- Couleur principale -->
+            <div class="form-group-pro">
+              <label class="form-label">🎨 Couleur principale</label>
+              <div style="display:flex;align-items:center;gap:8px">
+                <input type="color" id="aiColorPrimary" value="#3b82f6"
+                  style="width:48px;height:40px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;background:#fff"
+                  oninput="updateColorPreview()">
+                <input type="text" id="aiColorPrimaryHex" class="form-input-pro"
+                  placeholder="#3b82f6" maxlength="7" style="font-family:monospace;font-size:.85rem"
+                  oninput="syncColorFromHex('aiColorPrimary','aiColorPrimaryHex')">
+              </div>
+              <div style="font-size:.72rem;color:var(--gris);margin-top:3px">En-têtes, bandes, boutons</div>
+            </div>
+
+            <!-- Couleur secondaire -->
+            <div class="form-group-pro">
+              <label class="form-label">🖤 Couleur secondaire</label>
+              <div style="display:flex;align-items:center;gap:8px">
+                <input type="color" id="aiColorSecondary" value="#0f172a"
+                  style="width:48px;height:40px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;background:#fff"
+                  oninput="updateColorPreview()">
+                <input type="text" id="aiColorSecondaryHex" class="form-input-pro"
+                  placeholder="#0f172a" maxlength="7" style="font-family:monospace;font-size:.85rem"
+                  oninput="syncColorFromHex('aiColorSecondary','aiColorSecondaryHex')">
+              </div>
+              <div style="font-size:.72rem;color:var(--gris);margin-top:3px">Fond header, titres principaux</div>
+            </div>
+
+            <!-- Couleur texte corps -->
+            <div class="form-group-pro">
+              <label class="form-label">📝 Texte du document</label>
+              <div style="display:flex;align-items:center;gap:8px">
+                <input type="color" id="aiColorBody" value="#1e293b"
+                  style="width:48px;height:40px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;background:#fff"
+                  oninput="updateColorPreview()">
+                <input type="text" id="aiColorBodyHex" class="form-input-pro"
+                  placeholder="#1e293b" maxlength="7" style="font-family:monospace;font-size:.85rem"
+                  oninput="syncColorFromHex('aiColorBody','aiColorBodyHex')">
+              </div>
+              <div style="font-size:.72rem;color:var(--gris);margin-top:3px">Corps du texte, clauses, articles</div>
+            </div>
+
+            <!-- Couleur signature / tampon -->
+            <div class="form-group-pro">
+              <label class="form-label">🖊 Bloc signature</label>
+              <div style="display:flex;align-items:center;gap:8px">
+                <input type="color" id="aiColorSign" value="#1d4ed8"
+                  style="width:48px;height:40px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;background:#fff"
+                  oninput="updateColorPreview()">
+                <input type="text" id="aiColorSignHex" class="form-input-pro"
+                  placeholder="#1d4ed8" maxlength="7" style="font-family:monospace;font-size:.85rem"
+                  oninput="syncColorFromHex('aiColorSign','aiColorSignHex')">
+              </div>
+              <div style="font-size:.72rem;color:var(--gris);margin-top:3px">Zone signature, cachet, paraphes</div>
+            </div>
+
+          </div>
+
+          <!-- Aperçu documents : onglets Bail / Quittance / Courrier -->
+          <div style="margin-bottom:18px">
+            <div class="form-label" style="margin-bottom:10px">Aperçu en temps réel</div>
+            <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:14px">
+              <button id="prevTabBail" onclick="switchPreviewTab('bail')" class="btn-sm" style="border-radius:8px 8px 0 0;border-bottom:none;background:var(--pro-accent);color:#fff;padding:6px 16px;font-weight:700">Bail</button>
+              <button id="prevTabQuittance" onclick="switchPreviewTab('quittance')" class="btn-sm" style="border-radius:8px 8px 0 0;border-bottom:none;padding:6px 16px">Quittance</button>
+              <button id="prevTabCourrier" onclick="switchPreviewTab('courrier')" class="btn-sm" style="border-radius:8px 8px 0 0;border-bottom:none;padding:6px 16px">Courrier</button>
+            </div>
+
+            <div id="colorPreviewDoc" style="border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.12);max-width:520px;border:1px solid var(--border)">
+
+              <!-- ═══ APERÇU BAIL ═══ -->
+              <div id="prevDocBail">
+                <div id="prevBandTop" style="height:6px;background:#3b82f6"></div>
+                <div id="prevHeader" style="background:#0f172a;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+                  <div>
+                    <div style="color:#fff;font-weight:800;font-size:1rem;letter-spacing:.5px" id="prevAgenceNom">Votre Agence</div>
+                    <div id="prevAccentLine" style="color:#93c5fd;font-size:.72rem;margin-top:2px">CONTRAT DE LOCATION — LOI N°89-462</div>
+                  </div>
+                  <div id="prevLogoBadge" style="background:#3b82f6;color:#fff;font-weight:800;font-size:.75rem;padding:6px 10px;border-radius:6px">PDF</div>
+                </div>
+                <div style="background:#fff;padding:14px 20px">
+                  <div id="prevBailTitle" style="font-size:.72rem;font-weight:800;color:#3b82f6;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">PARTIES AU CONTRAT</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+                    <div id="prevBox1" style="background:#eff6ff;border-radius:6px;padding:8px 10px;border-left:3px solid #3b82f6">
+                      <div style="font-size:.65rem;font-weight:700;color:#3b82f6;text-transform:uppercase;margin-bottom:2px">Bailleur</div>
+                      <div style="font-size:.72rem;color:#1e293b;font-weight:600">Martin Dupont</div>
+                      <div style="font-size:.67rem;color:#64748b">12 rue de la Paix, Paris</div>
+                    </div>
+                    <div id="prevBox2" style="background:#eff6ff;border-radius:6px;padding:8px 10px;border-left:3px solid #3b82f6">
+                      <div style="font-size:.65rem;font-weight:700;color:#3b82f6;text-transform:uppercase;margin-bottom:2px">Locataire</div>
+                      <div style="font-size:.72rem;color:#1e293b;font-weight:600">Sophie Bernard</div>
+                      <div style="font-size:.67rem;color:#64748b">Dossier solvable — Score A</div>
+                    </div>
+                  </div>
+                  <div id="prevBailSection" style="font-size:.72rem;font-weight:800;color:#3b82f6;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">ARTICLE 1 — OBJET DU CONTRAT</div>
+                  <div style="font-size:.68rem;color:#334155;line-height:1.5;margin-bottom:8px">Le présent contrat de location est consenti et accepté aux conditions suivantes. Le bien situé au <strong>5 avenue des Fleurs, 75008 Paris</strong>, surface habitable <strong>48 m²</strong>, est loué à usage d'habitation principale.</div>
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px">
+                    <div id="prevKpi1" style="background:#eff6ff;border-radius:5px;padding:6px;text-align:center">
+                      <div style="font-size:.65rem;color:#3b82f6;font-weight:700">Loyer CC</div>
+                      <div style="font-size:.82rem;font-weight:800;color:#1e293b">1 250 €</div>
+                    </div>
+                    <div id="prevKpi2" style="background:#eff6ff;border-radius:5px;padding:6px;text-align:center">
+                      <div style="font-size:.65rem;color:#3b82f6;font-weight:700">Dépôt garantie</div>
+                      <div style="font-size:.82rem;font-weight:800;color:#1e293b">1 100 €</div>
+                    </div>
+                    <div id="prevKpi3" style="background:#eff6ff;border-radius:5px;padding:6px;text-align:center">
+                      <div style="font-size:.65rem;color:#3b82f6;font-weight:700">Durée</div>
+                      <div style="font-size:.82rem;font-weight:800;color:#1e293b">3 ans</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;border-top:1px solid #e2e8f0;padding-top:8px">
+                    <div id="prevSignZone" style="text-align:center;padding:6px 12px;border:1.5px dashed #3b82f6;border-radius:6px;min-width:90px">
+                      <div style="font-size:.62rem;color:#3b82f6;font-weight:700">Signature Bailleur</div>
+                      <div style="height:16px"></div>
+                    </div>
+                    <div id="prevSignZone2" style="text-align:center;padding:6px 12px;border:1.5px dashed #3b82f6;border-radius:6px;min-width:90px">
+                      <div style="font-size:.62rem;color:#3b82f6;font-weight:700">Signature Locataire</div>
+                      <div style="height:16px"></div>
+                    </div>
+                  </div>
+                </div>
+                <div id="prevBandBottom" style="height:5px;background:#3b82f6"></div>
+              </div>
+
+              <!-- ═══ APERÇU QUITTANCE ═══ -->
+              <div id="prevDocQuittance" style="display:none">
+                <div id="prevQBandTop" style="height:6px;background:#3b82f6"></div>
+                <div id="prevQHeader" style="background:#0f172a;padding:12px 20px;display:flex;align-items:center;justify-content:space-between">
+                  <div>
+                    <div style="color:#fff;font-weight:800;font-size:.95rem" id="prevQAgence">Votre Agence</div>
+                    <div id="prevQSub" style="color:#93c5fd;font-size:.7rem;margin-top:1px">QUITTANCE DE LOYER</div>
+                  </div>
+                  <div id="prevQBadge" style="background:#3b82f6;color:#fff;font-weight:800;font-size:.7rem;padding:5px 9px;border-radius:5px">MARS 2026</div>
+                </div>
+                <div style="background:#fff;padding:14px 20px">
+                  <div id="prevQTitle" style="font-size:.72rem;font-weight:800;color:#3b82f6;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px">INFORMATIONS DE PAIEMENT</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+                    <div><div style="font-size:.67rem;color:#64748b">Locataire</div><div style="font-size:.78rem;font-weight:700;color:#1e293b">Sophie Bernard</div></div>
+                    <div><div style="font-size:.67rem;color:#64748b">Bien loué</div><div style="font-size:.78rem;font-weight:700;color:#1e293b">5 av. des Fleurs, Paris</div></div>
+                    <div><div style="font-size:.67rem;color:#64748b">Loyer HC</div><div id="prevQLoyerHC" style="font-size:.78rem;font-weight:700;color:#1e293b">1 150 €</div></div>
+                    <div><div style="font-size:.67rem;color:#64748b">Charges</div><div style="font-size:.78rem;font-weight:700;color:#1e293b">100 €</div></div>
+                  </div>
+                  <div id="prevQTotal" style="background:#eff6ff;border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div style="font-size:.78rem;font-weight:800;color:#1e293b">TOTAL PAYÉ</div>
+                    <div id="prevQTotalAmt" style="font-size:1.1rem;font-weight:900;color:#3b82f6">1 250 €</div>
+                  </div>
+                  <div id="prevQCertif" style="font-size:.67rem;color:#475569;font-style:italic;line-height:1.4;margin-bottom:8px">Je soussigné, gérant de l'agence, certifie avoir reçu de Mme Sophie Bernard la somme de 1 250 € au titre du loyer du mois de mars 2026.</div>
+                  <div style="display:flex;justify-content:flex-end">
+                    <div id="prevQSign" style="text-align:center;padding:6px 16px;border:1.5px dashed #3b82f6;border-radius:6px">
+                      <div style="font-size:.62rem;color:#3b82f6;font-weight:700">Signature du bailleur</div>
+                      <div style="height:16px"></div>
+                    </div>
+                  </div>
+                </div>
+                <div id="prevQBandBot" style="height:5px;background:#3b82f6"></div>
+              </div>
+
+              <!-- ═══ APERÇU COURRIER ═══ -->
+              <div id="prevDocCourrier" style="display:none">
+                <div id="prevCBandTop" style="height:6px;background:#3b82f6"></div>
+                <div id="prevCHeader" style="background:#0f172a;padding:10px 20px;display:flex;align-items:center;justify-content:space-between">
+                  <div style="color:#fff;font-weight:800;font-size:.9rem" id="prevCAgence">Votre Agence</div>
+                  <div id="prevCBadge" style="background:#3b82f6;color:#fff;font-size:.67rem;font-weight:700;padding:4px 8px;border-radius:4px">COURRIER OFFICIEL</div>
+                </div>
+                <div style="background:#fff;padding:14px 20px">
+                  <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+                    <div>
+                      <div style="font-size:.67rem;color:#64748b">Expéditeur</div>
+                      <div style="font-size:.73rem;font-weight:700;color:#1e293b">Votre Agence</div>
+                      <div style="font-size:.67rem;color:#64748b">12 rue de l'Agence, Paris</div>
+                    </div>
+                    <div style="text-align:right">
+                      <div style="font-size:.67rem;color:#64748b">Destinataire</div>
+                      <div style="font-size:.73rem;font-weight:700;color:#1e293b">M. Martin Dupont</div>
+                      <div style="font-size:.67rem;color:#64748b">5 av. des Fleurs, Paris</div>
+                    </div>
+                  </div>
+                  <div id="prevCLine" style="height:2px;background:#eff6ff;border-radius:2px;margin-bottom:10px"></div>
+                  <div id="prevCObjet" style="font-size:.7rem;font-weight:800;color:#3b82f6;margin-bottom:6px">OBJET : Congé donné au bailleur — Article 15 Loi n°89-462</div>
+                  <div style="font-size:.67rem;color:#334155;line-height:1.5;margin-bottom:8px">Madame, Monsieur, Par la présente, je vous informe de mon intention de quitter le logement sis au 5 avenue des Fleurs, 75008 Paris, à l'expiration du préavis légal.</div>
+                  <div style="display:flex;justify-content:flex-end;margin-top:8px">
+                    <div id="prevCSign" style="text-align:center;padding:6px 16px;border:1.5px dashed #3b82f6;border-radius:6px">
+                      <div style="font-size:.62rem;color:#3b82f6;font-weight:700">Signature</div>
+                      <div style="height:14px"></div>
+                    </div>
+                  </div>
+                </div>
+                <div id="prevCBandBot" style="height:5px;background:#3b82f6"></div>
+              </div>
+
+            </div><!-- /colorPreviewDoc -->
+          </div>
+
+          <button class="btn-primary-pro" onclick="saveAgencyInfo()" style="min-width:200px">💾 Enregistrer la charte</button>
+          <div id="charteMsg" style="display:none;margin-top:10px;padding:10px 14px;background:#f0fdf4;color:#166534;border-radius:8px;font-size:.83rem">✅ Charte graphique enregistrée — vos prochains PDF utiliseront ces couleurs.</div>
+        </div>
+
+        
+<!-- Changer mot de passe -->
+        <div class="dash-card" style="margin-bottom:16px">
+          <div class="dash-section-title">Changer le mot de passe</div>
+          <div class="form-group-pro"><label class="form-label">Mot de passe actuel</label><input type="password" class="form-input-pro" id="pwdActuel"></div>
+          <div class="form-group-pro"><label class="form-label">Nouveau mot de passe</label><input type="password" class="form-input-pro" id="pwdNew"></div>
+          <div class="form-group-pro"><label class="form-label">Confirmer le nouveau mot de passe</label><input type="password" class="form-input-pro" id="pwdConfirm"></div>
+          <div id="pwdMsg" style="font-size:.82rem;margin-top:6px;display:none"></div>
+          <button class="btn-primary-pro" style="margin-top:8px" onclick="changePassword()">Changer le mot de passe</button>
+        </div>
+
+        <!-- Clé API Anthropic pour l'agent IA -->
+        <div class="dash-card" style="border:1.5px solid rgba(99,102,241,.25);background:#fafaff">
+          <div class="dash-section-title">✨ Agent IA — Clé API Anthropic</div>
+          <p style="font-size:.84rem;color:var(--gris);margin-bottom:14px;line-height:1.6">
+            L'agent IA du dashboard utilise l'API Claude d'Anthropic. Renseignez votre clé API pour activer le chat.
+            <a href="https://console.anthropic.com/account/keys" target="_blank" style="color:var(--pro-accent);font-weight:600">Obtenir une clé →</a>
+          </p>
+          <div class="form-group-pro" style="margin-bottom:10px">
+            <label class="form-label">Clé API Anthropic</label>
+            <div style="display:flex;gap:8px">
+              <input type="password" class="form-input-pro" id="anthropicApiKey" placeholder="sk-ant-api03-…" style="flex:1;font-family:monospace;font-size:.85rem">
+              <button class="btn-sm" onclick="toggleAnthropicKeyVisibility()" id="btnToggleKey" style="flex-shrink:0">👁 Voir</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-primary-pro" style="padding:9px 18px;font-size:.84rem" onclick="saveAnthropicApiKey()">💾 Enregistrer la clé</button>
+            <button class="btn-sm" onclick="testAnthropicApiKey()" id="btnTestKey">🧪 Tester</button>
+            <button class="btn-sm" onclick="clearAnthropicApiKey()" style="color:var(--accent);border-color:var(--accent)">✕ Effacer</button>
+          </div>
+          <div id="anthropicKeyStatus" style="margin-top:10px;font-size:.8rem;display:none"></div>
+        </div>
+
+        <!-- Supprimer compte -->
+        <div class="dash-card" style="border:1.5px solid rgba(200,75,47,0.2);background:#fdf8f7">
+          <div class="dash-section-title" style="color:var(--accent)">Zone de danger</div>
+          <div style="font-size:.84rem;color:var(--gris);margin-bottom:12px">Réinitialiser ou supprimer les données.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-sm" onclick="resetDemoData()" style="color:#7e22ce;border-color:#d8b4fe">🧹 Effacer données de démo</button>
+            <button class="btn-sm" onclick="deleteAccount()" style="color:var(--accent);border-color:var(--accent)">Supprimer mon compte</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- /dash-main -->
+
+<!-- ═══════════════════════════════════════════════════════
+  TAB: LOYERS & IMPAYÉS
+═══════════════════════════════════════════════════════ -->
 
 <div id="tab-loyers-suivi" style="display:none">
   <div class="dash-main-header">
@@ -13356,21 +13748,16 @@ document.addEventListener('click',function(e){
 
 
 async function showOnboarding() {
-  // Verifier localStorage d'abord
-  var uid = proState.user && proState.user.id || 'guest';
+  var uid = (proState.user && (proState.user.id || proState.user.email)) || null;
+  if (!uid) { setTimeout(showOnboarding, 500); return; } // Attendre que user soit charge
   if (localStorage.getItem('bs_ob2_' + uid)) return;
-  // Verifier Supabase si agenceId dispo
   try {
     var sb=getSupabase(), agId=proState._agenceId;
     if(sb && agId) {
       var res = await sb.from('agences').select('onboarding_done').eq('id',agId).single();
-      if(res.data && res.data.onboarding_done) {
-        localStorage.setItem('bs_ob2_' + uid, '1');
-        return;
-      }
+      if(res.data && res.data.onboarding_done) { localStorage.setItem('bs_ob2_'+uid,'1'); return; }
     }
   } catch(e) {}
-  // Afficher l'onboarding
   _obStep = 0; _obDone = [];
   renderObStep();
 }
