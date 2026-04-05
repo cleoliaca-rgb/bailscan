@@ -818,55 +818,42 @@ body.is-dashboard #marketingFooter { display: none !important; }
       </div>
     </div>
 
-    <div class="pricing-grid">
-            <div class="pricing-card">
-        <div class="pricing-plan">Starter</div>
-        <div class="pricing-price"><sup>€</sup><span id="priceStarter">79</span></div>
-        <div class="pricing-period">/ mois · 1 agent</div>
-        <div class="pricing-note" id="noteStarter" style="font-size:0.75rem;color:var(--gris);margin-bottom:12px;min-height:20px"></div>
-        <div class="pricing-features">
-          <div class="pricing-feature">10 analyses / mois</div>
-          <div class="pricing-feature">1 agent</div>
-          <div class="pricing-feature">Rapport PDF export</div>
-          <div class="pricing-feature">Corrections de bail IA</div>
-          <div class="pricing-feature">Encadrement des loyers</div>
-          <div class="pricing-feature">Support email</div>
-        </div>
-        <button class="btn-pricing btn-pricing-outline" onclick="openModal('signup')">Essayer 3 jours gratuit</button>
-      </div>
-            <div class="pricing-card featured">
-        <div class="pricing-badge">Le plus populaire</div>
-        <div class="pricing-plan">Pro</div>
-        <div class="pricing-price"><sup>€</sup><span id="pricePro">199</span></div>
-        <div class="pricing-period">/ mois · par agence</div>
-        <div class="pricing-note" id="notePro" style="font-size:0.75rem;color:rgba(255,255,255,0.45);margin-bottom:12px;min-height:20px"></div>
-        <div class="pricing-features">
-          <div class="pricing-feature">Analyses illimitées</div>
-          <div class="pricing-feature">3 agents inclus</div>
-          <div class="pricing-feature">Rapport PDF a votre logo</div>
-          <div class="pricing-feature">Bail conforme IA (13 articles)</div>
-          <div class="pricing-feature">Fiches locataires + scoring</div>
-          <div class="pricing-feature">Quittances + Courriers IA</div>
-          <div class="pricing-feature">Alertes & echeances auto</div>
-          <div class="pricing-feature">Support prioritaire</div>
-        </div>
-        <button class="btn-pricing btn-pricing-pro" onclick="openModal('signup')">Démarrer l'essai gratuit →</button>
-      </div>
-            <div class="pricing-card">
-        <div class="pricing-plan">Entreprise</div>
-        <div class="pricing-price" style="font-size:2rem;padding-top:6px">Sur devis</div>
-        <div class="pricing-period">Réseau d'agences · API</div>
-        <div class="pricing-features">
-          <div class="pricing-feature">Utilisateurs illimités</div>
-          <div class="pricing-feature">API d'intégration REST</div>
-          <div class="pricing-feature">Rapport à votre charte graphique</div>
-          <div class="pricing-feature">Formation équipes</div>
-          <div class="pricing-feature">SLA garanti</div>
-          <div class="pricing-feature">Account manager dédié</div>
-        </div>
-        <button class="btn-pricing btn-pricing-outline" onclick="document.location='mailto:contact@bailscan.app?subject=Offre Entreprise'">Nous contacter →</button>
+    <!-- Toggle marketing -->
+    <div style="display:flex;justify-content:center;margin-bottom:28px">
+      <div style="background:#f0ede8;border-radius:10px;padding:4px;display:inline-flex;gap:4px">
+        <button onclick="setMktPeriode('mensuel')" id="mktTogMensuel" style="padding:7px 18px;border:none;border-radius:7px;font-weight:600;font-size:.84rem;cursor:pointer;background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,.1)">Mensuel</button>
+        <button onclick="setMktPeriode('6mois')" id="mktTog6mois" style="padding:7px 18px;border:none;border-radius:7px;font-weight:600;font-size:.84rem;cursor:pointer;background:transparent;color:var(--gris)">6 mois <span style="background:var(--vert);color:white;font-size:.6rem;padding:1px 5px;border-radius:4px">−10%</span></button>
+        <button onclick="setMktPeriode('12mois')" id="mktTog12mois" style="padding:7px 18px;border:none;border-radius:7px;font-weight:600;font-size:.84rem;cursor:pointer;background:transparent;color:var(--gris)">12 mois <span style="background:var(--accent);color:white;font-size:.6rem;padding:1px 5px;border-radius:4px">−20%</span></button>
       </div>
     </div>
+    <div style="max-width:900px;margin:0 auto">
+      <!-- Toggle mensuel / annuel -->
+      <div style="display:flex;justify-content:center;gap:8px;margin-bottom:28px">
+        <div style="display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px">
+          <button id="ptogMensuel" onclick="setPricingMode('mensuel')" class="ptoggle active">Mensuel</button>
+          <button id="ptog6mois" onclick="setPricingMode('6mois')" class="ptoggle">6 mois <span class="ptoggle-save">−10 %</span></button>
+          <button id="ptog12mois" onclick="setPricingMode('12mois')" class="ptoggle">12 mois <span class="ptoggle-save">−20 %</span></button>
+        </div>
+      </div>
+      <!-- Carte unique -->
+      <div class="pricing-card featured" style="max-width:480px;margin:0 auto;position:relative">
+        <div class="pricing-badge">Accès complet</div>
+        <div class="pricing-plan">BailScan Pro</div>
+        <div class="pricing-price"><sup>€</sup><span id="pgPrice">150</span></div>
+        <div class="pricing-period" id="pgPeriod">/ mois · sans engagement</div>
+        <div id="pgNote" style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:16px;min-height:18px"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature">Analyses illimitées</div>
+          <div class="pricing-feature">Génération de baux conformes</div>
+          <div class="pricing-feature">Gestion clients, mandats, locataires</div>
+          <div class="pricing-feature">Quittances — courriers juridiques IA</div>
+          <div class="pricing-feature">Alertes — échéances automatiques</div>
+          <div class="pricing-feature">Export CSV — PDF à votre logo</div>
+          <div class="pricing-feature">Support prioritaire</div>
+        </div>
+        <button class="btn-pricing btn-pricing-pro" onclick="openModal('signup')">Démarrer l’essai gratuit 3 jours →</button>
+      </div>
+    </div></div>
 
     <p style="text-align:center;font-size:0.78rem;color:var(--gris);margin-top:20px">Paiement sécurisé par Stripe · Facture mensuelle · Résiliable à tout moment après la période d'engagement</p>
   </div>
@@ -3243,84 +3230,29 @@ body.is-dashboard #marketingFooter { display: none !important; }
       </div>
 
       <div id="tab-abonnement" style="display:none">
-        <div class="dash-main-header">
-          <div><div class="dash-page-title">Abonnement</div><div class="dash-page-sub">Gérez votre offre BailScan Pro</div></div>
-        </div>
-        <div class="dash-card">
-          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
-            <div style="width:48px;height:48px;background:rgba(59,111,212,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem">🎁</div>
-            <div>
-              <div style="font-weight:700;font-size:1rem">Essai gratuit · 3 jours</div>
-              <div style="font-size:0.84rem;color:var(--gris);margin-top:3px">Accès illimité à toutes les fonctionnalités Pro jusqu'au <span id="trialEndDate">—</span></div>
-            </div>
-          </div>
-          <div style="background:var(--pro-light);border-radius:10px;padding:20px;margin-bottom:20px">
-            <div style="font-weight:700;font-size:0.95rem;color:var(--pro-accent);margin-bottom:12px">Passer en Pro après l'essai — 199€/mois</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;font-size:0.84rem;color:var(--texte)">
-              <div>✓ Analyses illimitées</div>
-              <div>✓ 5 utilisateurs</div>
-              <div>✓ Rapport PDF personnalisé</div>
-              <div>✓ Corrections de bail</div>
-              <div>✓ Génération de bail conforme</div>
-              <div>✓ Encadrement loyers auto</div>
-              <div>✓ Support prioritaire</div>
-            </div>
-            <div style="font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--noir);margin-bottom:14px"><sup style="font-size:1rem;font-family:'DM Sans'">€</sup>79<span style="font-size:0.9rem;font-family:'DM Sans';font-weight:400;color:var(--gris)"> / mois · Starter</span></div>
-            <!-- Stripe Checkout link — à remplacer par votre lien Stripe -->
-            <a href="https://buy.stripe.com/VOTRE_LIEN_STRIPE" target="_blank" class="btn-primary-pro" style="display:inline-flex;text-decoration:none;padding:13px 28px" id="btnPasserPro">💳 Passer en Pro →</a>
-            <div style="font-size:0.75rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe · Annulable à tout moment · Facture disponible</div>
-          </div>
-          <div style="font-size:0.82rem;color:var(--gris)">Une question ? <a href="/cdn-cgi/l/email-protection#482b27263c292b3c082a2921243b2b292666293838" style="color:var(--pro-accent)"><span class="__cf_email__" data-cfemail="23404c4d574240576341424a4f5040424d0d425353">[email&#160;protected]</span></a></div>
-        </div>
-      </div>
-
-      <div id="tab-parametres" style="display:none">
-        <div class="dash-main-header"><div><div class="dash-page-title">Paramètres</div><div class="dash-page-sub">Votre compte et votre agence</div></div></div>
-
-        <!-- Logo agence -->
-        <div class="dash-card" style="margin-bottom:16px">
-          <div class="dash-section-title">Logo de votre agence</div>
-          <div style="font-size:.84rem;color:var(--gris);margin-bottom:14px">Votre logo sera automatiquement intégré à tous vos exports PDF (rapports, baux générés).</div>
-          <div id="logoPreviewWrap" style="display:none;margin-bottom:14px">
-            <img id="logoPreview" src="" alt="Logo agence" style="max-height:60px;max-width:240px;border-radius:6px;border:1.5px solid var(--border);padding:8px">
-            <button class="btn-sm" onclick="removeLogo()" style="margin-left:10px;color:var(--accent);border-color:var(--accent)">Supprimer</button>
-          </div>
-          <label style="cursor:pointer">
-            <input type="file" id="logoInput" accept="image/png,image/jpeg,image/svg+xml" onchange="uploadLogo(this)" style="display:none">
-            <div style="display:inline-flex;align-items:center;gap:8px;background:var(--pro-light);border:1.5px dashed var(--pro-accent);border-radius:10px;padding:12px 20px;font-size:.84rem;font-weight:600;color:var(--pro-accent);transition:all .2s">
-              📤 Uploader votre logo (PNG, JPG, SVG · max 2Mo)
-            </div>
-          </label>
-        </div>
-
-        <!-- Infos compte -->
-        <div class="dash-card" style="margin-bottom:16px">
-          <div class="dash-section-title">✍️ Signature pour les documents</div>
-          <div style="font-size:.83rem;color:var(--gris);margin-bottom:14px">Votre signature sera apposée automatiquement en bas de tous vos baux et courriers PDF.</div>
-          <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
-            <div id="signaturePreviewBlock" style="display:none;border:1.5px solid var(--border);border-radius:10px;padding:12px;min-width:180px;background:#fafaf8">
-              <div style="font-size:.72rem;color:var(--gris);margin-bottom:6px">Aperçu signature</div>
-              <img id="signaturePreviewImg" style="max-height:60px;max-width:200px" alt="Signature">
-              <div style="margin-top:8px">
-                <button class="btn-sm" style="font-size:.73rem;color:var(--accent);border-color:var(--accent)" onclick="supprimerSignature()">✕ Supprimer</button>
-              </div>
-            </div>
-            <div>
-              <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:var(--pro-light);border:1.5px solid var(--pro-accent);border-radius:10px;padding:10px 18px;font-size:.85rem;font-weight:600;color:var(--pro-accent)">
-                📎 <span id="sigUploadLabel">Uploader ma signature</span>
-                <input type="file" id="inputSignature" accept=".png,.jpg,.jpeg" style="display:none" onchange="uploadSignature(this)">
-              </label>
-              <div style="font-size:.75rem;color:var(--gris);margin-top:6px">PNG transparent recommandé · fond blanc · 400×150px max</div>
-            </div>
-          </div>
-        </div>
-        <div class="dash-card" style="margin-bottom:16px">
-          <div class="dash-section-title">Informations du compte</div>
-          <div class="form-group-pro"><label class="form-label">Nom complet</label><input type="text" class="form-input-pro" id="settingsNom"></div>
-          <div class="form-group-pro"><label class="form-label">Agence</label><input type="text" class="form-input-pro" id="settingsAgence"></div>
-          <div class="form-group-pro"><label class="form-label">Email</label><input type="email" class="form-input-pro" id="settingsEmail"></div>
-          <button class="btn-primary-pro" style="margin-top:8px" onclick="saveSettings()">Enregistrer</button>
-        </div>
+  <div class="dash-main-header"><div><div class="dash-page-title">Abonnement</div><div class="dash-page-sub">Choisissez votre formule BailScan Pro</div></div></div>
+  <div class="dash-card" style="max-width:560px">
+    <!-- Toggle -->
+    <div style="display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;margin-bottom:24px;width:fit-content">
+      <button id="dashPtogMensuel" onclick="setDashPricing('mensuel')" style="padding:7px 18px;border:none;border-radius:7px;font-weight:600;font-size:.85rem;cursor:pointer;background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,.1)">Mensuel</button>
+      <button id="dashPtog6mois" onclick="setDashPricing('6mois')" style="padding:7px 18px;border:none;border-radius:7px;font-weight:600;font-size:.85rem;cursor:pointer;background:transparent;color:var(--gris)">6 mois <span style="background:var(--vert);color:white;font-size:.62rem;padding:1px 5px;border-radius:3px;margin-left:3px">−10%</span></button>
+      <button id="dashPtog12mois" onclick="setDashPricing('12mois')" style="padding:7px 18px;border:none;border-radius:7px;font-weight:600;font-size:.85rem;cursor:pointer;background:transparent;color:var(--gris)">12 mois <span style="background:var(--vert);color:white;font-size:.62rem;padding:1px 5px;border-radius:3px;margin-left:3px">−20%</span></button>
+    </div>
+    <!-- Prix -->
+    <div style="font-family:'Instrument Serif',serif;font-size:2.8rem;color:var(--noir);line-height:1;margin-bottom:4px"><sup style="font-size:1.1rem;font-family:'DM Sans'">€</sup><span id="dashPrice">150</span><span style="font-size:.9rem;font-family:'DM Sans';font-weight:400;color:var(--gris)"> / mois</span></div>
+    <div id="dashPriceNote" style="font-size:.82rem;color:var(--gris);margin-bottom:20px">Sans engagement — résiliable à tout moment</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">
+      <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Analyses illimitées</div>
+      <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Génération de baux conformes</div>
+      <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Clients, mandats, locataires</div>
+      <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Quittances, courriers IA, alertes</div>
+      <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Export CSV — PDF à votre logo</div>
+      <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Support prioritaire</div>
+    </div>
+    <button onclick="subscribePro('pro')" id="dashSubBtn" style="width:100%;padding:13px;background:var(--pro-accent);color:white;border:none;border-radius:10px;font-weight:700;font-size:.95rem;cursor:pointer">S’abonner maintenant →</button>
+    <p style="text-align:center;font-size:.75rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe · Facture mensuelle · Résiliable à tout moment</p>
+  </div>
+</div>
 
 
         <!-- ══ INFORMATIONS ENTREPRISE POUR DOCUMENTS ══ -->
@@ -5072,33 +5004,75 @@ function checkPlanAccess() {
 }
 
 function showPaywall(titre, msg) {
-  // Afficher un écran de blocage par-dessus le dashboard
-  var existing = document.getElementById('proPaywall');
-  if (existing) existing.remove();
+  var existing = document.getElementById('proPaywall'); if (existing) existing.remove();
   var el = document.createElement('div');
   el.id = 'proPaywall';
   el.style.cssText = 'position:fixed;inset:0;background:rgba(17,24,39,.96);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px';
-  el.innerHTML = '<div style="background:white;border-radius:20px;padding:40px;max-width:520px;width:100%;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,.4)">'
-    + '<div style="font-size:2.5rem;margin-bottom:16px">🔒</div>'
-    + '<div style="font-family:Instrument Serif,serif;font-size:1.6rem;color:#111;margin-bottom:10px">' + titre + '</div>'
-    + '<div style="color:#6b6b6b;font-size:.9rem;line-height:1.7;margin-bottom:28px">' + msg + '</div>'
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">'
-    + '<div style="background:#f8f7f4;border:1.5px solid #e0d8cc;border-radius:14px;padding:20px">'
-    + '<div style="font-weight:700;font-size:.85rem;color:#6b6b6b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Starter</div>'
-    + '<div style="font-family:Instrument Serif,serif;font-size:2.2rem;color:#111">79€<span style="font-size:.8rem;font-family:DM Sans;font-weight:400;color:#888">/mois</span></div>'
-    + '<div style="font-size:.78rem;color:#888;margin:8px 0 14px">50 analyses · tous outils</div>'
-    + '<button onclick="subscribePro(\'starter\')" style="width:100%;padding:10px;background:#111827;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem">Choisir Starter</button>'
+  el.innerHTML = '<div style="background:white;border-radius:20px;padding:36px;max-width:480px;width:100%;text-align:center">'
+    + '<div style="font-family:Instrument Serif,serif;font-size:1.5rem;color:#111;margin-bottom:8px">' + titre + '</div>'
+    + '<div style="color:#6b6b6b;font-size:.88rem;line-height:1.7;margin-bottom:24px">' + msg + '</div>'
+    + '<div style="display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;margin:0 auto 20px;width:fit-content">'
+    + '<button id="pwTog1" onclick="setPwMode(\'mensuel\')" style="padding:7px 16px;border:none;border-radius:7px;font-weight:600;font-size:.82rem;cursor:pointer;background:white;color:#111;box-shadow:0 1px 4px rgba(0,0,0,.1)">Mensuel</button>'
+    + '<button id="pwTog2" onclick="setPwMode(\'6mois\')" style="padding:7px 16px;border:none;border-radius:7px;font-weight:600;font-size:.82rem;cursor:pointer;background:transparent;color:#888">6 mois <span style="background:#2d6a4f;color:white;font-size:.6rem;padding:1px 5px;border-radius:3px">−10%</span></button>'
+    + '<button id="pwTog3" onclick="setPwMode(\'12mois\')" style="padding:7px 16px;border:none;border-radius:7px;font-weight:600;font-size:.82rem;cursor:pointer;background:transparent;color:#888">12 mois <span style="background:#2d6a4f;color:white;font-size:.6rem;padding:1px 5px;border-radius:3px">−20%</span></button>'
     + '</div>'
-    + '<div style="background:#111827;border:1.5px solid #3b6fd4;border-radius:14px;padding:20px">'
-    + '<div style="font-weight:700;font-size:.85rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Pro</div>'
-    + '<div style="font-family:Instrument Serif,serif;font-size:2.2rem;color:white">199€<span style="font-size:.8rem;font-family:DM Sans;font-weight:400;color:rgba(255,255,255,.4)">/mois</span></div>'
-    + '<div style="font-size:.78rem;color:rgba(255,255,255,.4);margin:8px 0 14px">Illimité · équipe · support</div>'
-    + '<button onclick="subscribePro(\'pro\')" style="width:100%;padding:10px;background:#3b6fd4;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem">Choisir Pro</button>'
+    + '<div style="background:#f8f7f4;border:1.5px solid #e0d8cc;border-radius:14px;padding:20px 24px;margin-bottom:16px">'
+    + '<div style="font-family:Instrument Serif,serif;font-size:2.4rem;color:#111;margin-bottom:2px">€<span id="pwPrice">150</span><span style="font-size:.85rem;font-family:DM Sans;font-weight:400;color:#888">/mois</span></div>'
+    + '<div id="pwNote" style="font-size:.78rem;color:#888;margin-bottom:14px">Sans engagement</div>'
+    + '<button onclick="subscribePro(\'pro\')" style="width:100%;padding:12px;background:#3b6fd4;color:white;border:none;border-radius:9px;font-weight:700;font-size:.9rem;cursor:pointer">S’abonner →</button>'
     + '</div>'
-    + '</div>'
-    + '<button onclick="logout()" style="background:none;border:none;color:#aaa;font-size:.8rem;cursor:pointer;text-decoration:underline">Se déconnecter</button>'
+    + '<button onclick="logout()" style="background:none;border:none;color:#aaa;font-size:.78rem;cursor:pointer;text-decoration:underline">Se déconnecter</button>'
     + '</div>';
   document.body.appendChild(el);
+  window._pwMode = 'mensuel';
+}
+
+var _PRICES = {mensuel:{price:150,note:'Sans engagement — résiliable à tout moment'},
+  '6mois':{price:135,note:'Engagement 6 mois — total 810€ — soit 810€/an'},
+  '12mois':{price:120,note:'Engagement 12 mois — total 1440€ — soit 1440€/an'}};
+
+function setPwMode(mode) {
+  window._pwMode = mode;
+  var p = _PRICES[mode];
+  var el = document.getElementById('pwPrice'); if(el) el.textContent = p.price;
+  var en = document.getElementById('pwNote'); if(en) en.textContent = p.note;
+  ['pwTog1','pwTog2','pwTog3'].forEach(function(id,i){
+    var b=document.getElementById(id); if(!b) return;
+    var modes=['mensuel','6mois','12mois'];
+    var active = modes[i]===mode;
+    b.style.background = active ? 'white' : 'transparent';
+    b.style.color = active ? '#111' : '#888';
+    b.style.boxShadow = active ? '0 1px 4px rgba(0,0,0,.1)' : 'none';
+  });
+}
+
+var _pricingMode = 'mensuel';
+function setPricingMode(mode) {
+  _pricingMode = mode;
+  var p = _PRICES[mode];
+  var el=document.getElementById('pgPrice'); if(el) el.textContent=p.price;
+  var ep=document.getElementById('pgPeriod'); if(ep) ep.textContent='/ mois · '+(mode==='mensuel'?'sans engagement':mode==='6mois'?'engagement 6 mois':'engagement 12 mois');
+  var en=document.getElementById('pgNote'); if(en) en.textContent=(mode!=='mensuel'?'Total: '+_PRICES[mode].note.split('—')[1].trim():'');
+  ['ptogMensuel','ptog6mois','ptog12mois'].forEach(function(id,i){
+    var b=document.getElementById(id); if(!b) return;
+    var modes=['mensuel','6mois','12mois'];
+    b.classList.toggle('active', modes[i]===mode);
+  });
+}
+
+function setDashPricing(mode) {
+  var p = _PRICES[mode];
+  var el=document.getElementById('dashPrice'); if(el) el.textContent=p.price;
+  var en=document.getElementById('dashPriceNote'); if(en) en.textContent=p.note;
+  ['dashPtogMensuel','dashPtog6mois','dashPtog12mois'].forEach(function(id,i){
+    var b=document.getElementById(id); if(!b) return;
+    var modes=['mensuel','6mois','12mois'];
+    var active=modes[i]===mode;
+    b.style.background=active?'white':'transparent';
+    b.style.color=active?'var(--noir)':'var(--gris)';
+    b.style.boxShadow=active?'0 1px 4px rgba(0,0,0,.1)':'none';
+  });
+  window._dashPricingMode = mode;
 }
 
 function showPlanSuccess(plan) {
@@ -5112,18 +5086,19 @@ function showPlanSuccess(plan) {
 async function subscribePro(plan) {
   var btn = event && event.target;
   if (btn) { btn.textContent = 'Redirection…'; btn.disabled = true; }
+  var mode = window._pwMode || window._dashPricingMode || 'mensuel';
   try {
     var agId = await getAgenceId();
     var email = proState.user && proState.user.email || '';
     var r = await fetch('/api/checkout-pro', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: plan, email: email, agence_id: agId })
+      body: JSON.stringify({ plan: 'pro', mode: mode, email: email, agence_id: agId })
     });
     var d = await r.json();
     if (d.url) window.location.href = d.url;
-    else { alert('Erreur : ' + (d.error || 'inconnue')); if (btn) { btn.textContent = 'Choisir ' + plan; btn.disabled = false; } }
-  } catch(e) { alert('Erreur : ' + e.message); if (btn) { btn.textContent = 'Choisir ' + plan; btn.disabled = false; } }
+    else { alert('Erreur : ' + (d.error || 'inconnue')); if (btn) { btn.textContent = 'S’abonner →'; btn.disabled = false; } }
+  } catch(e) { alert('Erreur : ' + e.message); if (btn) { btn.textContent = 'S’abonner →'; btn.disabled = false; } }
 }
 async function logout(){
   var sb = getSupabase(); if(sb) await sb.auth.signOut();
@@ -13572,49 +13547,7 @@ function initTravauxDemoData() {
   saveTickets(demos);
 }
 
-// Appeler init démo quand on ouvre le tab travaux
-var _origRefreshTravaux = refreshTravaux;
-refreshTravaux = function() {
-  // Injecter les démos si le tab est vraiment vide (pas de tickets du tout)
-  var existing = [];
-  try { existing = JSON.parse(localStorage.getItem('bailscan_tickets')||'[]'); } catch(e){}
-  if (!existing.length) {
-    var today = new Date();
-    var fmt = function(d){ return d.toISOString().split('T')[0]; };
-    var demos = [
-      { id: Date.now()-5000, titre:'Fuite robinet cuisine', mandatId:'', locId:'', categorie:'plomberie', prio:'urgente', statut:'en_cours',
-        date: fmt(new Date(today-3*864e5)), dateIntervention: fmt(new Date(today.getTime()+2*864e5)),
-        prestataire:'Plomberie Martin — 06 12 34 56 78', cout:'180',
-        desc:'Fuite au niveau du joint du robinet de cuisine. Dégâts potentiels sur le meuble sous l\'évier.', charge:'bailleur' },
-      { id: Date.now()-4000, titre:'Chaudière en panne — plus de chauffage', mandatId:'', locId:'', categorie:'chauffage', prio:'urgente', statut:'attente_devis',
-        date: fmt(new Date(today-7*864e5)), dateIntervention:'',
-        prestataire:'Thermique Pro — en attente de devis', cout:'450',
-        desc:'Chaudière Vaillant 2018 en panne totale. Locataire sans chauffage. Devis demandé à 2 entreprises.', charge:'bailleur' },
-      { id: Date.now()-3000, titre:'Serrure entrée défectueuse', mandatId:'', locId:'', categorie:'menuiserie', prio:'haute', statut:'planifie',
-        date: fmt(new Date(today-10*864e5)), dateIntervention: fmt(new Date(today.getTime()+5*864e5)),
-        prestataire:'Serrurier Express — 01 23 45 67 89', cout:'120',
-        desc:'Serrure difficile à tourner. Risque de blocage. Intervention planifiée.', charge:'locataire' },
-      { id: Date.now()-2000, titre:'Peinture couloir — usure normale', mandatId:'', locId:'', categorie:'peinture', prio:'basse', statut:'ouvert',
-        date: fmt(new Date(today-20*864e5)), dateIntervention:'', prestataire:'', cout:'350',
-        desc:'Peinture couloir à refaire lors du départ du locataire.', charge:'bailleur' },
-      { id: Date.now()-1000, titre:'Remplacement joint baignoire', mandatId:'', locId:'', categorie:'plomberie', prio:'normale', statut:'clos',
-        date: fmt(new Date(today-30*864e5)), dateIntervention: fmt(new Date(today-25*864e5)),
-        prestataire:'Plomberie Martin', cout:'80',
-        desc:'Joint baignoire remplacé. Intervention effectuée.', charge:'locataire' }
-    ];
-    // Essayer de rattacher aux vrais mandats/locataires si disponibles
-    try {
-      var mans = JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');
-      var locs = JSON.parse(localStorage.getItem('bailscan_locataires')||'[]');
-      if (mans.length) { demos[0].mandatId=String(mans[0].id); demos[1].mandatId=String(mans[0].id); demos[4].mandatId=String(mans[0].id); }
-      if (mans.length>1) { demos[2].mandatId=String(mans[1].id); demos[3].mandatId=String(mans[1].id); }
-      if (locs.length) { demos[0].locId=String(locs[0].id); demos[1].locId=String(locs[0].id); demos[4].locId=String(locs[0].id); }
-      if (locs.length>1) { demos[2].locId=String(locs[1].id); demos[3].locId=String(locs[1].id); }
-    } catch(e2){}
-    localStorage.setItem('bailscan_tickets', JSON.stringify(demos));
-  }
-  _origRefreshTravaux();
-};
+
 
 // ════════════════════════════════════════════════════════
 // GESTION CLÉ API ANTHROPIC
@@ -13780,18 +13713,76 @@ document.addEventListener('click',function(e){
 
 
 async function showOnboarding() {
-  var uid = proState.user && proState.user.id || 'x';
-  var k = 'bs_ob2_' + uid;
-  if (localStorage.getItem(k)) return;
+  // Verifier Supabase en priorite
   try {
     var sb=getSupabase(),agId=proState._agenceId;
-    if(sb&&agId){var res=await sb.from('agences').select('onboarding_done').eq('id',agId).single();if(res.data&&res.data.onboarding_done){localStorage.setItem(k,'1');return;}}
+    if(sb&&agId){
+      var res=await sb.from('agences').select('onboarding_done').eq('id',agId).single();
+      if(res.data&&res.data.onboarding_done) return; // Deja fait
+    }
   } catch(e){}
+  // Fallback localStorage
+  var uid = proState.user && proState.user.id || 'x';
+  if (localStorage.getItem('bs_ob2_' + uid)) return;
   _obStep = 0;
   _obDone = [];
   renderObStep();
 }
 
+
+// ─── TOGGLE ABONNEMENT ─────────────────────────────────
+var _aboPeriode = 'mensuel';
+var _aboPrix = {mensuel:150, '6mois':135, '12mois':120};
+var _aboMois = {mensuel:1, '6mois':6, '12mois':12};
+
+function setAboPeriode(p) {
+  _aboPeriode = p;
+  ['mensuel','6mois','12mois'].forEach(function(k){
+    var btn = document.getElementById('tog'+k.replace('mois','mois'));
+    var active = k === p;
+    if(btn){ btn.style.background = active ? 'white' : 'transparent'; btn.style.color = active ? 'var(--noir)' : 'var(--gris)'; btn.style.boxShadow = active ? '0 1px 4px rgba(0,0,0,.1)' : 'none'; }
+  });
+  var prix = _aboPrix[p];
+  var mois = _aboMois[p];
+  var el = document.getElementById('aboPrixAffiche');
+  if(el) el.textContent = prix;
+  var st = document.getElementById('aboSousTexte');
+  if(st) st.textContent = p==='mensuel' ? 'Sans engagement' : 'Engagement '+mois+' mois';
+  var tot = document.getElementById('aboTotalTexte');
+  if(tot) tot.textContent = p!=='mensuel' ? 'Soit '+(prix*mois)+'€ facturés en une fois' : '';
+}
+
+function setMktPeriode(p) {
+  var prix = _aboPrix[p];
+  var mois = _aboMois[p];
+  ['mensuel','6mois','12mois'].forEach(function(k){
+    var btn = document.getElementById('mktTog'+k.charAt(0).toUpperCase()+k.slice(1));
+    var active = k === p;
+    if(btn){ btn.style.background = active ? 'white' : 'transparent'; btn.style.color = active ? 'var(--noir)' : 'var(--gris)'; btn.style.boxShadow = active ? '0 1px 4px rgba(0,0,0,.1)' : 'none'; }
+  });
+  var el = document.getElementById('mktPrix'); if(el) el.textContent = prix;
+  var per = document.getElementById('mktPeriode');
+  if(per) per.textContent = p==='mensuel' ? '/ mois · sans engagement' : '/ mois · engagement '+mois+' mois';
+  var tot = document.getElementById('mktTotal');
+  if(tot) tot.textContent = p!=='mensuel' ? 'Soit '+(prix*mois)+'€ facturés en une fois' : '';
+}
+
+async function subscribeProPeriode() {
+  var btn = event && event.target;
+  if(btn){ btn.textContent = 'Redirection…'; btn.disabled = true; }
+  try {
+    var agId = await getAgenceId();
+    var email = proState.user && proState.user.email || '';
+    var r = await fetch('/api/checkout-pro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan: 'pro', periode: _aboPeriode, email: email, agence_id: agId })
+    });
+    var d = await r.json();
+    if(d.url) window.location.href = d.url;
+    else { alert('Erreur : '+(d.error||'inconnue')); if(btn){ btn.textContent = 'S’abonner maintenant →'; btn.disabled = false; } }
+  } catch(e) { alert('Erreur : '+e.message); if(btn){ btn.textContent = 'S’abonner maintenant →'; btn.disabled = false; } }
+}
 var _obStep = 0;
 var _obSteps = [
   {tab:'mandats', title:'Cr\u00e9ez votre premier mandat', desc:'Ajoutez un bien immobilier \u00e0 g\u00e9rer : adresse, loyer, type de bien.', cta:'Cr\u00e9er un mandat \u2192', action:'saveMandat'},
