@@ -11068,6 +11068,21 @@ function closeModal(name) {
   var el = document.getElementById(id);
   if (el) { el.style.display='none'; el.classList.remove('active'); }
 }
+
+// ─── MODALES ─────────────────────────────────────────────
+function openModal(name) {
+  var ids = {login:'modalLogin',signup:'modalSignup',invite:'modalInvite',forgot:'modalForgot'};
+  var id = ids[name] || ('modal'+name.charAt(0).toUpperCase()+name.slice(1));
+  document.querySelectorAll('.modal-overlay').forEach(function(m){m.style.display='none';m.classList.remove('active');});
+  var el = document.getElementById(id);
+  if (el) { el.style.display='flex'; el.classList.add('active'); }
+}
+function closeModal(name) {
+  if (!name) { document.querySelectorAll('.modal-overlay').forEach(function(m){m.style.display='none';m.classList.remove('active');}); return; }
+  var ids = {login:'modalLogin',signup:'modalSignup',invite:'modalInvite',forgot:'modalForgot',mandat:'modalMandat'};
+  var id = ids[name]||('modal'+name.charAt(0).toUpperCase()+name.slice(1));
+  var el=document.getElementById(id); if(el){el.style.display='none';el.classList.remove('active');}
+}
 </script>
 <!-- ═══════════════════════════════════════════════════════════
   AGENT IA — POPUP FLOTTANT BAS DROITE (visible en mode dashboard)
