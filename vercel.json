@@ -6,8 +6,29 @@
     "api/checkout.js": {
       "maxDuration": 10
     },
+    "api/checkout-proprio.js": {
+      "maxDuration": 10
+    },
+    "api/checkout-pro.js": {
+      "maxDuration": 10
+    },
     "api/webhook.js": {
       "maxDuration": 10
+    },
+    "api/webhook-pro.js": {
+      "maxDuration": 10
+    },
+    "api/send-mail.js": {
+      "maxDuration": 30
+    },
+    "api/trial-reminder.js": {
+      "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/trial-reminder",
+      "schedule": "0 9 * * *"
+    }
+  ]
 }
