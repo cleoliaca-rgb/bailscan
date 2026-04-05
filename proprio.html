@@ -161,6 +161,15 @@ textarea.fi{resize:vertical;min-height:90px;}
 .btn-pay{width:100%;background:var(--accent);color:white;padding:15px;border-radius:11px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:all .2s;}
 .btn-pay:hover{background:#a83a20;transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,75,47,.4);}
 .pay-secure{font-size:.72rem;color:rgba(255,255,255,.3);margin-top:10px;}
+/* AUTOCOMPLETE CP */
+.cp-wrapper{position:relative;}
+.cp-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border:1.5px solid var(--accent);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:500;max-height:200px;overflow-y:auto;}
+.cp-dropdown.open{display:block;}
+.cp-option{padding:10px 14px;font-size:.85rem;cursor:pointer;color:var(--texte);transition:background .15s;border-bottom:1px solid var(--border);}
+.cp-option:last-child{border-bottom:none;}
+.cp-option:hover{background:var(--rouge-light);color:var(--accent);}
+.cp-option strong{color:var(--noir);}
+.cp-option span{color:var(--gris);font-size:.78rem;margin-left:6px;}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:300;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.active{display:flex;}
 .modal{background:white;border-radius:18px;padding:36px;max-width:440px;width:100%;position:relative;}
@@ -384,15 +393,10 @@ footer a:hover{color:var(--accent);}
           <label class="rpill" data-group="genType" onclick="setR('genType','meuble',this);onTypeChange('meuble')">Meublé</label>
         </div>
       </div>
-      <div class="fg">
-        <label>
-          <input type="checkbox" id="chkColocation" onchange="toggleColocsSection()" style="accent-color:var(--accent);width:15px;height:15px;vertical-align:middle;margin-right:6px">
-          <span style="vertical-align:middle">C'est une colocation <small style="font-weight:400;color:var(--gris)">(plusieurs locataires sur le même bail)</small></span>
-        </label>
-      </div>
+ 
       <div class="fg"><label for="genAdresse">Adresse (rue, numéro) <span style="color:var(--accent)">*</span></label><input type="text" id="genAdresse" class="fi" placeholder="Ex : 12 rue de la Paix"></div>
       <div class="fgrid g3">
-        <div class="fg"><label for="genCp">Code postal <span style="color:var(--accent)">*</span></label><input type="text" id="genCp" class="fi" placeholder="Ex : 75001" maxlength="5"></div>
+        <div class="fg"><label for="genCp">Code postal <span style="color:var(--accent)">*</span></label><div class="cp-wrapper"><input type="text" id="genCp" class="fi" placeholder="Ex : 75001" maxlength="5" oninput="cpSearch(this,'genCp','genVille')" onblur="cpBlur('genCp')" autocomplete="off"><div class="cp-dropdown" id="drop_genCp"></div></div></div>
         <div class="fg" style="grid-column:span 2"><label for="genVille">Ville <span style="color:var(--accent)">*</span></label><input type="text" id="genVille" class="fi" placeholder="Ex : Paris"></div>
       </div>
       <div class="fgrid g3">
@@ -485,17 +489,24 @@ footer a:hover{color:var(--accent);}
         <div id="bMoraleFields" style="display:none"><div class="fg"><label for="genBailleurDenom">Dénomination sociale <span style="color:var(--accent)">*</span></label><input type="text" id="genBailleurDenom" class="fi" placeholder="Ex : SCI Les Lilas"></div></div>
         <div class="fg"><label for="genBailleurAdresse">Adresse (rue, numéro)</label><input type="text" id="genBailleurAdresse" class="fi" placeholder="Ex : 5 rue Victor Hugo"></div>
         <div class="fgrid g3">
-          <div class="fg"><label for="genBailleurCp">Code postal</label><input type="text" id="genBailleurCp" class="fi" placeholder="Ex : 75011" maxlength="5"></div>
+          <div class="fg"><label for="genBailleurCp">Code postal</label><div class="cp-wrapper"><input type="text" id="genBailleurCp" class="fi" placeholder="Ex : 75011" maxlength="5" oninput="cpSearch(this,'genBailleurCp','genBailleurVille')" onblur="cpBlur('genBailleurCp')" autocomplete="off"><div class="cp-dropdown" id="drop_genBailleurCp"></div></div></div>
           <div class="fg"><label for="genBailleurVille">Ville</label><input type="text" id="genBailleurVille" class="fi" placeholder="Ex : Paris"></div>
           <div class="fg"><label for="genBailleurEmail">Email</label><input type="email" id="genBailleurEmail" class="fi" placeholder="Ex : jean.dupont@email.com"></div>
         </div>
         <div class="fg"><label for="genBailleurTel">Téléphone</label><input type="text" id="genBailleurTel" class="fi" placeholder="Ex : 06 12 34 56 78"></div>
  
         <div class="sh">🏠 Locataire(s)</div>
+        <div class="fg" style="background:var(--creme);border-radius:10px;padding:12px 16px;border:1px solid var(--border);margin-bottom:16px">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.88rem;font-weight:600;color:var(--noir)">
+            <input type="checkbox" id="chkColocation" onchange="toggleColocsSection()" style="accent-color:var(--accent);width:16px;height:16px;flex-shrink:0">
+            C'est une colocation
+            <small style="font-weight:400;color:var(--gris);font-size:.78rem">plusieurs locataires sur le même bail</small>
+          </label>
+        </div>
         <div class="fgrid"><div class="fg"><label for="genLocPrenom">Prénom</label><input type="text" id="genLocPrenom" class="fi" placeholder="Ex : Marie"></div><div class="fg"><label for="genLocNom">Nom</label><input type="text" id="genLocNom" class="fi" placeholder="Ex : Martin"></div></div>
         <div class="fg"><label for="genLocAdresse">Adresse actuelle (rue, numéro)</label><input type="text" id="genLocAdresse" class="fi" placeholder="Ex : 5 avenue Victor Hugo"></div>
         <div class="fgrid g3">
-          <div class="fg"><label for="genLocCp">Code postal</label><input type="text" id="genLocCp" class="fi" placeholder="Ex : 69001" maxlength="5"></div>
+          <div class="fg"><label for="genLocCp">Code postal</label><div class="cp-wrapper"><input type="text" id="genLocCp" class="fi" placeholder="Ex : 69001" maxlength="5" oninput="cpSearch(this,'genLocCp','genLocVille')" onblur="cpBlur('genLocCp')" autocomplete="off"><div class="cp-dropdown" id="drop_genLocCp"></div></div></div>
           <div class="fg"><label for="genLocVille">Ville</label><input type="text" id="genLocVille" class="fi" placeholder="Ex : Lyon"></div>
           <div class="fg"><label for="genLocEmail">Email</label><input type="email" id="genLocEmail" class="fi" placeholder="Ex : marie.martin@email.com"></div>
         </div>
@@ -506,10 +517,21 @@ footer a:hover{color:var(--accent);}
           <button type="button" onclick="addColoc()" style="display:inline-flex;align-items:center;gap:8px;background:none;border:1.5px dashed var(--border);color:var(--gris);padding:10px 18px;border-radius:9px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gris)'">＋ Ajouter un colocataire</button>
         </div>
  
-        <div class="sh">🔐 Garant <small style="font-weight:400;font-size:.76rem;color:var(--gris)">— optionnel</small></div>
+        <div class="sh">🔐 Garant <small style="font-weight:400;font-size:.76rem;color:var(--gris)">optionnel</small></div>
         <div style="background:var(--creme);border-radius:10px;padding:16px;border:1px solid var(--border)">
-          <div class="fgrid"><div class="fg" style="margin-bottom:0"><label for="genGarantNom">Nom complet</label><input type="text" id="genGarantNom" class="fi" placeholder="Ex : Paul Martin"></div><div class="fg" style="margin-bottom:0"><label for="genGarantAdresse">Adresse (rue, numéro)</label><input type="text" id="genGarantAdresse" class="fi" placeholder="Ex : 3 rue du Moulin"></div></div>
-          <div class="fgrid" style="margin-top:10px"><div class="fg" style="margin-bottom:0"><label for="genGarantCp">Code postal</label><input type="text" id="genGarantCp" class="fi" placeholder="Ex : 75018" maxlength="5"></div><div class="fg" style="margin-bottom:0"><label for="genGarantVille">Ville</label><input type="text" id="genGarantVille" class="fi" placeholder="Ex : Paris"></div></div>
+          <div class="fgrid">
+            <div class="fg" style="margin-bottom:0"><label for="genGarantPrenom">Prénom</label><input type="text" id="genGarantPrenom" class="fi" placeholder="Ex : Paul"></div>
+            <div class="fg" style="margin-bottom:0"><label for="genGarantNom">Nom</label><input type="text" id="genGarantNom" class="fi" placeholder="Ex : Martin"></div>
+          </div>
+          <div class="fg" style="margin-top:10px;margin-bottom:0"><label for="genGarantAdresse">Adresse (rue, numéro)</label><input type="text" id="genGarantAdresse" class="fi" placeholder="Ex : 3 rue du Moulin"></div>
+          <div class="fgrid" style="margin-top:10px">
+            <div class="fg" style="margin-bottom:0"><label for="genGarantCp">Code postal</label><div class="cp-wrapper"><input type="text" id="genGarantCp" class="fi" placeholder="Ex : 75018" maxlength="5" oninput="cpSearch(this,'genGarantCp','genGarantVille')" onblur="cpBlur('genGarantCp')" autocomplete="off"><div class="cp-dropdown" id="drop_genGarantCp"></div></div></div>
+            <div class="fg" style="margin-bottom:0"><label for="genGarantVille">Ville</label><input type="text" id="genGarantVille" class="fi" placeholder="Ex : Paris"></div>
+          </div>
+          <div class="fgrid" style="margin-top:10px">
+            <div class="fg" style="margin-bottom:0"><label for="genGarantEmail">Email</label><input type="email" id="genGarantEmail" class="fi" placeholder="Ex : paul.martin@email.com"></div>
+            <div class="fg" style="margin-bottom:0"><label for="genGarantTel">Téléphone</label><input type="text" id="genGarantTel" class="fi" placeholder="Ex : 06 12 34 56 78"></div>
+          </div>
           <div class="fg" style="margin-top:10px;margin-bottom:0"><label>Type de cautionnement</label>
             <div class="rpills"><label class="rpill active" data-group="genCaution" onclick="setR('genCaution','solidaire',this)">Solidaire</label><label class="rpill" data-group="genCaution" onclick="setR('genCaution','simple',this)">Simple</label><label class="rpill" data-group="genCaution" onclick="setR('genCaution','notarie',this)">Acte notarié</label></div>
           </div>
@@ -813,7 +835,7 @@ function addColoc(){
   div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:.82rem;font-weight:700;color:var(--accent)">Colocataire '+n+'</div><button type="button" onclick="removeColoc('+n+')" style="background:none;border:none;color:var(--gris);font-size:1rem;cursor:pointer;padding:2px 6px" title="Supprimer">✕</button></div>'
   +'<div class="fgrid"><div class="fg"><label>Prénom</label><input type="text" id="coloc_prenom_'+n+'" class="fi" placeholder="Ex : Lucas"></div><div class="fg"><label>Nom</label><input type="text" id="coloc_nom_'+n+'" class="fi" placeholder="Ex : Petit"></div></div>'
   +'<div class="fg"><label>Adresse actuelle (rue, numéro)</label><input type="text" id="coloc_adresse_'+n+'" class="fi" placeholder="Ex : 8 rue des Lilas"></div>'
-  +'<div class="fgrid g3"><div class="fg"><label>Code postal</label><input type="text" id="coloc_cp_'+n+'" class="fi" placeholder="Ex : 75018" maxlength="5"></div><div class="fg"><label>Ville</label><input type="text" id="coloc_ville_'+n+'" class="fi" placeholder="Ex : Paris"></div><div class="fg"><label>Email</label><input type="email" id="coloc_email_'+n+'" class="fi" placeholder="Ex : lucas@email.com"></div></div>';
+  +'<div class="fgrid g3"><div class="fg"><label>Code postal</label><div class="cp-wrapper"><input type="text" id="coloc_cp_'+n+'" class="fi" placeholder="Ex : 75018" maxlength="5" oninput="cpSearch(this,\'coloc_cp_'+n+'\',\'coloc_ville_'+n+'\')" onblur="cpBlur(\'coloc_cp_'+n+'\')" autocomplete="off"><div class="cp-dropdown" id="drop_coloc_cp_'+n+'"></div></div></div><div class="fg"><label>Ville</label><input type="text" id="coloc_ville_'+n+'" class="fi" placeholder="Ex : Paris"></div><div class="fg"><label>Email</label><input type="email" id="coloc_email_'+n+'" class="fi" placeholder="Ex : lucas@email.com"></div></div>';
   document.getElementById('colocsList').appendChild(div);
 }
 function removeColoc(n){var el=document.getElementById('coloc_'+n);if(el)el.remove();}
@@ -925,7 +947,7 @@ function saveAllState(){
     chkColocation:chk('chkColocation'),chkJardin:chk('chkJardin'),chkTerrasse:chk('chkTerrasse'),chkParking:chk('chkParking'),chkCave:chk('chkCave'),chkGrenier:chk('chkGrenier'),chkPiscine:chk('chkPiscine'),genAnnexeNum:v('genAnnexeNum'),genCopro:rad('genCopro'),genSyndic:v('genSyndic'),
     genLoyer:v('genLoyer'),genCharges:v('genCharges'),genDepot:v('genDepot'),genDateEntree:v('genDateEntree'),genDuree:rad('genDuree'),genRevision:rad('genRevision'),genLoyerRef:v('genLoyerRef'),genLoyerMajore:v('genLoyerMajore'),genLoyerMinore:v('genLoyerMinore'),genComplement:v('genComplement'),genComplementJustif:v('genComplementJustif'),genIrl:v('genIrl'),
     genBailleurType:rad('genBailleurType'),genBailleurPrenom:v('genBailleurPrenom'),genBailleurNom:v('genBailleurNom'),genBailleurDenom:v('genBailleurDenom'),genBailleurAdresse:v('genBailleurAdresse'),genBailleurCp:v('genBailleurCp'),genBailleurVille:v('genBailleurVille'),genBailleurEmail:v('genBailleurEmail'),genBailleurTel:v('genBailleurTel'),
-    genLocPrenom:v('genLocPrenom'),genLocNom:v('genLocNom'),genLocAdresse:v('genLocAdresse'),genLocCp:v('genLocCp'),genLocVille:v('genLocVille'),genLocEmail:v('genLocEmail'),genGarantNom:v('genGarantNom'),genGarantAdresse:v('genGarantAdresse'),genGarantCp:v('genGarantCp'),genGarantVille:v('genGarantVille'),genCaution:rad('genCaution'),
+    genLocPrenom:v('genLocPrenom'),genLocNom:v('genLocNom'),genLocAdresse:v('genLocAdresse'),genLocCp:v('genLocCp'),genLocVille:v('genLocVille'),genLocEmail:v('genLocEmail'),genGarantPrenom:v('genGarantPrenom'),genGarantNom:v('genGarantNom'),genGarantAdresse:v('genGarantAdresse'),genGarantCp:v('genGarantCp'),genGarantVille:v('genGarantVille'),genGarantEmail:v('genGarantEmail'),genGarantTel:v('genGarantTel'),genCaution:rad('genCaution'),
     analyseVille:v('analyseVille'),analyseLoyer:v('analyseLoyer'),analyseSurface:v('analyseSurface'),analyseDepot:v('analyseDepot'),textBail:v('textBail'),
     travChaudiere:chk('travChaudiere'),travClim:chk('travClim'),travJardin:chk('travJardin'),travGouttiere:chk('travGouttiere'),travPiscine:chk('travPiscine'),travRamonage:chk('travRamonage'),travRobinetterie:chk('travRobinetterie'),travDetartrage:chk('travDetartrage'),travAutres:v('travAutres'),
     clauseSousloc:chk('clauseSousloc'),clauseCession:chk('clauseCession'),clausePno:chk('clausePno'),clauseCompteur:chk('clauseCompteur'),clauseDpeTrav:chk('clauseDpeTrav'),clauseNum:chk('clauseNum'),clauseAnimaux:chk('clauseAnimaux'),clauseFumeur:chk('clauseFumeur'),clausesLibres:v('clausesLibres'),
@@ -1160,6 +1182,7 @@ function buildBailComplet(){
   if(!bId)bId='[Nom bailleur]';
   var locAdresseFull=(g.genLocAdresse||'')+(g.genLocCp?' '+g.genLocCp:'')+(g.genLocVille?' '+g.genLocVille:'');
   var garantAdresseFull=(g.genGarantAdresse||'')+(g.genGarantCp?' '+g.genGarantCp:'')+(g.genGarantVille?' '+g.genGarantVille:'');
+  var garantId=(g.genGarantPrenom?g.genGarantPrenom+' ':'')+(g.genGarantNom||'');
   var bienAdresseFull=(g.genAdresse||'')+(g.genCp?' '+g.genCp:'')+(g.genVille?' '+g.genVille:'');
   var type=g.genType||'vide';
   var isColoc=g.chkColocation||false;
@@ -1220,7 +1243,7 @@ g.genBailleurTel?'Téléphone : '+g.genBailleurTel:'',
 locListText,
 isColoc?'Type : Colocation (solidarité entre colocataires)':'',
 '',
-g.genGarantNom?'GARANT :\nNom : '+g.genGarantNom+'\n'+(garantAdresseFull?'Adresse : '+garantAdresseFull+'\n':'')+'Type de cautionnement : '+(g.genCaution==='solidaire'?'Cautionnement solidaire':g.genCaution==='simple'?'Cautionnement simple':'Acte notarié')+'\nL\'acte de cautionnement est annexé au présent contrat (art. 22-1 loi 89).\n':'',
+g.genGarantNom?'GARANT :\nNom et prénom : '+garantId+'\n'+(garantAdresseFull?'Adresse : '+garantAdresseFull+'\n':'')+(g.genGarantEmail?'Email : '+g.genGarantEmail+'\n':'')+(g.genGarantTel?'Téléphone : '+g.genGarantTel+'\n':'')+'Type de cautionnement : '+(g.genCaution==='solidaire'?'Cautionnement solidaire':g.genCaution==='simple'?'Cautionnement simple':'Acte notarié')+'\nL\'acte de cautionnement est annexé au présent contrat (art. 22-1 loi 89).\n':'',
 '',
 '================================================================',
 'ARTICLE 2 - DÉSIGNATION DU LOGEMENT',
@@ -1556,7 +1579,50 @@ function exportPDF(){
   }catch(e){alert('Erreur PDF : '+e.message);console.error(e);}
 }
  
+// ─── AUTOCOMPLETE CODE POSTAL ──────────────────────────────
+function cpSearch(el, cpId, villeId){
+  var q=el.value.trim();
+  var drop=document.getElementById('drop_'+cpId);
+  if(!drop)return;
+  if(q.length<2){drop.classList.remove('open');return;}
+  clearTimeout(el._cpt);
+  el._cpt=setTimeout(function(){
+    fetch('https://api-adresse.data.gouv.fr/search/?q='+encodeURIComponent(q)+'&type=municipality&limit=8')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var features=data.features||[];
+      if(!features.length){drop.classList.remove('open');return;}
+      drop.innerHTML=features.map(function(f){
+        var cp=f.properties.postcode||'';
+        var ville=f.properties.city||f.properties.label||'';
+        var dept=f.properties.context?f.properties.context.split(',')[0]:'';
+        return '<div class="cp-option" onmousedown="cpSelect(\''+cp+'\',\''+ville.replace(/'/g,"\\'")+ '\',\''+cpId+'\',\''+villeId+'\')">'
+          +'<strong>'+cp+'</strong>'
+          +'<span>'+ville+(dept?' ('+dept+')':'')+'</span>'
+          +'</div>';
+      }).join('');
+      drop.classList.add('open');
+    })
+    .catch(function(){drop.classList.remove('open');});
+  },220);
+}
+function cpBlur(cpId){
+  setTimeout(function(){
+    var drop=document.getElementById('drop_'+cpId);
+    if(drop)drop.classList.remove('open');
+  },200);
+}
+function cpSelect(cp, ville, cpId, villeId){
+  var cpEl=document.getElementById(cpId);
+  var villeEl=document.getElementById(villeId);
+  if(cpEl)cpEl.value=cp;
+  if(villeEl)villeEl.value=ville;
+  var drop=document.getElementById('drop_'+cpId);
+  if(drop)drop.classList.remove('open');
+}
+ 
 checkPaymentReturn();
 </script>
 </body>
 </html>
+ 
