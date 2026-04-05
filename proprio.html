@@ -119,7 +119,13 @@ textarea.fi{resize:vertical;min-height:90px;}
 .recap-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:3px;}
 .recap-value{font-size:.88rem;font-weight:600;color:var(--noir);}
 @media(max-width:600px){.recap-grid{grid-template-columns:1fr 1fr;}}
-.paywall{background:var(--noir);border-radius:18px;padding:32px;text-align:center;}
+.bail-preview{position:relative;margin-bottom:24px;border-radius:14px;overflow:hidden;border:1.5px solid var(--border);}
+.bail-preview-content{background:var(--bg);padding:20px 24px;font-size:.8rem;line-height:1.8;color:var(--texte);font-family:'DM Sans',sans-serif;white-space:pre-wrap;max-height:220px;overflow:hidden;pointer-events:none;user-select:none;}
+.bail-preview-blur{position:absolute;bottom:0;left:0;right:0;height:140px;background:linear-gradient(to bottom,transparent,var(--creme) 80%);pointer-events:none;}
+.bail-preview-lock{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:16px 20px 20px;}
+.bail-preview-pages{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.75rem;color:var(--gris);margin-bottom:10px;}
+.bail-preview-page-dot{width:7px;height:7px;border-radius:50%;background:var(--border);}
+.bail-preview-page-dot.active{background:var(--accent);}
 .paywall-title{font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;margin-bottom:6px;}
 .paywall-sub{font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:22px;}
 .paywall-feats{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;text-align:left;}
@@ -212,18 +218,18 @@ footer a:hover{color:var(--accent);}
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-title" id="modalTitle">Bail conforme</div>
-    <div class="modal-sub">Votre document prêt à utiliser immédiatement</div>
+    <div class="modal-title" id="modalTitle">Accès complet BailScan</div>
+    <div class="modal-sub">Les deux fonctionnalités incluses dans un seul paiement</div>
     <div class="modal-feats" id="modalFeats">
-      <div class="modal-feat">Bail rédigé conforme loi 1989 / ALUR / ELAN</div>
-      <div class="modal-feat">Adapté à votre bien : meublé, vide, saisonnier</div>
-      <div class="modal-feat">Toutes les clauses légales incluses</div>
-      <div class="modal-feat">Export PDF professionnel</div>
+      <div class="modal-feat">✍️ <strong>Génération de bail</strong> : conforme loi 1989 / ALUR / ELAN</div>
+      <div class="modal-feat">🔍 <strong>Analyse de bail</strong> : clauses à risque, encadrement loyers</div>
+      <div class="modal-feat">📄 Export PDF prêt à signer</div>
+      <div class="modal-feat">✏️ Modifications illimitées sans repayer</div>
     </div>
     <div class="modal-price"><div class="modal-price-n">49€</div><div class="modal-price-sub">paiement unique</div></div>
-    <div class="modal-price-once">Accès à vie à votre document</div>
+    <div class="modal-price-once">Génération + Analyse · Accès à vie</div>
     <button class="btn-pay-modal" id="btnPayConfirm" onclick="payWithStripe()">Obtenir mon document →</button>
-    <div class="modal-secure">🔒 Paiement sécurisé · Sans abonnement</div>
+    <div class="modal-secure">🔒 Paiement unique · Génération + Analyse incluses · Sans abonnement</div>
   </div>
 </div>
  
@@ -246,9 +252,9 @@ footer a:hover{color:var(--accent);}
       <a href="#app" class="btn-hs" onclick="selectMode('analyser')">🔍 Analyser mon bail</a>
     </div>
     <div class="hero-trust">
+      <div class="hero-trust-item">Génération + Analyse de bail incluses</div>
+      <div class="hero-trust-item">49€ paiement unique, les deux accès</div>
       <div class="hero-trust-item">Conforme loi 1989 / ALUR / ELAN</div>
-      <div class="hero-trust-item">Résultat en 2 minutes</div>
-      <div class="hero-trust-item">49€ paiement unique</div>
     </div>
   </div>
   <div class="hero-card">
@@ -257,23 +263,22 @@ footer a:hover{color:var(--accent);}
       <div class="hcf-row"><div class="hcf-icon">📄</div><div class="hcf-text"><strong>Bail généré</strong> : conforme, toutes clauses légales incluses</div></div>
       <div class="hcf-row"><div class="hcf-icon">🔍</div><div class="hcf-text"><strong>Bail analysé</strong> : clauses à risque détectées et corrigées</div></div>
       <div class="hcf-row"><div class="hcf-icon">⚖️</div><div class="hcf-text"><strong>Références légales</strong> : loi 1989, ALUR, ELAN</div></div>
-      <div class="hcf-row"><div class="hcf-icon">🏠</div><div class="hcf-text"><strong>Adapté</strong> : meublé, vide, colocation, saisonnier</div></div>
+      <div class="hcf-row"><div class="hcf-icon">🏠</div><div class="hcf-text"><strong>Adapté</strong> : vide ou meublé, colocation</div></div>
       <div class="hcf-row"><div class="hcf-icon">📊</div><div class="hcf-text"><strong>Export PDF</strong> : prêt à signer et conserver</div></div>
     </div>
     <div class="price-tag">
       <div class="price-tag-amount">49€</div>
-      <div class="price-tag-sub">paiement unique · accès à vie</div>
+      <div class="price-tag-sub">génération + analyse · accès à vie</div>
     </div>
   </div>
 </section>
  
 <section class="mode-section" id="modeSection">
   <h2 class="sec-title">Que souhaitez-vous faire ?</h2>
-  <p class="sec-sub">Choisissez votre besoin pour démarrer</p>
+  <p class="sec-sub">Les deux sont inclus dans les 49€ — paiement unique, accès à vie</p>
   <div class="mode-cards">
     <div class="mode-card" id="modeGenerer" onclick="selectMode('generer')">
       <div class="mc-check" id="checkGenerer"></div>
-      <div class="mc-badge">49€</div>
       <div class="mc-icon">✍️</div>
       <div class="mc-title">Générer un bail</div>
       <div class="mc-desc">Vous mettez en location un bien et avez besoin d'un bail conforme prêt à signer.</div>
@@ -286,7 +291,7 @@ footer a:hover{color:var(--accent);}
     </div>
     <div class="mode-card" id="modeAnalyser" onclick="selectMode('analyser')">
       <div class="mc-check" id="checkAnalyser"></div>
-      <div class="mc-badge">49€</div>
+      <div class="mc-badge" style="background:var(--vert)">Inclus</div>
       <div class="mc-icon">🔍</div>
       <div class="mc-title">Analyser mon bail existant</div>
       <div class="mc-desc">Vous avez déjà un bail et souhaitez vérifier qu'il ne vous expose pas à des risques.</div>
@@ -322,11 +327,15 @@ footer a:hover{color:var(--accent);}
       <div class="fg">
         <label>Type de location <span style="color:var(--accent)">*</span></label>
         <div class="rpills">
-          <label class="rpill active" data-group="genType" onclick="setR('genType','vide',this)">Vide</label>
-          <label class="rpill" data-group="genType" onclick="setR('genType','meuble',this)">Meublé</label>
-          <label class="rpill" data-group="genType" onclick="setR('genType','colocation',this)">Colocation</label>
-          <label class="rpill" data-group="genType" onclick="setR('genType','saisonnier',this)">Saisonnier</label>
+          <label class="rpill active" data-group="genType" onclick="setR('genType','vide',this);onTypeChange('vide')">Vide</label>
+          <label class="rpill" data-group="genType" onclick="setR('genType','meuble',this);onTypeChange('meuble')">Meublé</label>
         </div>
+      </div>
+      <div class="fg">
+        <label>
+          <input type="checkbox" id="chkColocation" onchange="toggleColocsSection()" style="accent-color:var(--accent);width:15px;height:15px;vertical-align:middle;margin-right:6px">
+          <span style="vertical-align:middle">C'est une colocation <small style="font-weight:400;color:var(--gris)">(plusieurs locataires sur le même bail)</small></span>
+        </label>
       </div>
       <div class="fg"><label for="genAdresse">Adresse (rue, numéro) <span style="color:var(--accent)">*</span></label><input type="text" id="genAdresse" class="fi" placeholder="Ex : 12 rue de la Paix"></div>
       <div class="fgrid g3">
@@ -383,7 +392,7 @@ footer a:hover{color:var(--accent);}
         <div class="rpills">
           <label class="rpill active" data-group="genDuree" onclick="setR('genDuree','3 ans',this)">3 ans (vide)</label>
           <label class="rpill" data-group="genDuree" onclick="setR('genDuree','1 an',this)">1 an (meublé)</label>
-          <label class="rpill" data-group="genDuree" onclick="setR('genDuree','9 mois',this)">9 mois (étudiant)</label>
+          <label class="rpill" data-group="genDuree" onclick="setR('genDuree','9 mois',this)">9 mois (étudiant meublé)</label>
         </div>
       </div>
       <div class="fg"><label>Révision du loyer</label>
@@ -546,18 +555,44 @@ footer a:hover{color:var(--accent);}
  
     <!-- STEP 5 : RECAP + PAIEMENT -->
     <div class="wpanel" id="step5">
-      <div class="panel-title">Récapitulatif</div>
-      <div class="panel-sub">Vérifiez les informations avant de générer votre document</div>
-      <div class="recap-grid" id="recapGrid"></div>
-      <div class="paywall">
-        <div class="paywall-title" id="pwTitle">Bail conforme</div>
-        <div class="paywall-sub" id="pwSub">Votre document prêt à signer</div>
-        <div class="paywall-feats" id="pwFeats"></div>
-        <div class="paywall-price">49€</div>
-        <div class="paywall-price-sub">Paiement unique · Accès à vie</div>
-        <button class="btn-pay" onclick="openModal()">🔓 Obtenir mon document →</button>
-        <div class="pay-secure">🔒 Paiement sécurisé · Sans abonnement</div>
+      <div class="panel-title">Votre bail est prêt</div>
+      <div class="panel-sub">Aperçu du document généré selon vos informations</div>
+ 
+      <!-- PREVIEW DU BAIL -->
+      <div class="bail-preview">
+        <div class="bail-preview-content" id="bailPreviewContent">Chargement de l'aperçu…</div>
+        <div class="bail-preview-blur"></div>
+        <div class="bail-preview-lock">
+          <div class="bail-preview-pages">
+            <div class="bail-preview-page-dot active"></div>
+            <div class="bail-preview-page-dot"></div>
+            <div class="bail-preview-page-dot"></div>
+            <div class="bail-preview-page-dot"></div>
+            <div class="bail-preview-page-dot"></div>
+            <span style="margin-left:4px;font-size:.72rem;color:var(--gris)">5 pages · document complet</span>
+          </div>
+        </div>
       </div>
+ 
+      <!-- PAYWALL -->
+      <div class="paywall">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px">
+          <div style="font-size:1.1rem">🔒</div>
+          <div class="paywall-title" id="pwTitle" style="font-size:1.3rem;margin-bottom:0">Débloquer le document complet</div>
+        </div>
+        <div class="paywall-sub" id="pwSub">Génération + Analyse de bail incluses</div>
+        <div class="paywall-feats" id="pwFeats"></div>
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:4px">
+          <div class="paywall-price">49€</div>
+          <div style="font-size:.85rem;color:rgba(255,255,255,.5)">paiement unique</div>
+        </div>
+        <div class="paywall-price-sub">Génération + Analyse · Accès à vie · Modifications illimitées</div>
+        <button class="btn-pay" onclick="openModal()" style="font-size:1rem;padding:16px">
+          Obtenir mon bail complet →
+        </button>
+        <div class="pay-secure">🔒 Paiement sécurisé · Sans abonnement · Accès immédiat</div>
+      </div>
+ 
       <div class="wnav"><button class="btn-back" onclick="goStep(4)">← Retour</button><div></div></div>
     </div>
   </div>
@@ -664,11 +699,11 @@ function selectMode(mode){
     document.getElementById('step4Sub').textContent='Quelques précisions pour affiner l\'analyse';
     document.getElementById('panelClausesGenerer').style.display='none';
     document.getElementById('panelClausesAnalyser').style.display='block';
-    document.getElementById('pwTitle').textContent='Analyse complète';
-    document.getElementById('pwSub').textContent='Rapport détaillé de votre bail';
-    document.getElementById('pwFeats').innerHTML=['Toutes les clauses analysées avec références légales','Clauses à risque identifiées','Recommandations de correction','Vérification encadrement des loyers'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
-    document.getElementById('modalTitle').textContent='Analyse complète';
-    document.getElementById('modalFeats').innerHTML=['Toutes les clauses analysées','Clauses à risque identifiées','Recommandations de correction','Vérification encadrement loyers'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
+    document.getElementById('pwTitle').textContent='Accès complet — 49€';
+    document.getElementById('pwSub').textContent='Analyse + Génération de bail incluses';
+    document.getElementById('pwFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
+    document.getElementById('modalTitle').textContent='Accès complet BailScan';
+    document.getElementById('modalFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
   }else{
     document.getElementById('step3Title').textContent='Bailleur & locataire';
     document.getElementById('step3Sub').textContent='Renseignez les informations sur les parties au contrat';
@@ -678,11 +713,11 @@ function selectMode(mode){
     document.getElementById('step4Sub').textContent='Personnalisez les clauses de votre bail';
     document.getElementById('panelClausesGenerer').style.display='block';
     document.getElementById('panelClausesAnalyser').style.display='none';
-    document.getElementById('pwTitle').textContent='Bail conforme généré';
-    document.getElementById('pwSub').textContent='Votre bail prêt à signer';
-    document.getElementById('pwFeats').innerHTML=['Bail rédigé conforme loi 1989 / ALUR / ELAN','Adapté à votre bien et votre situation','Toutes les clauses légales incluses','Export PDF prêt à signer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
-    document.getElementById('modalTitle').textContent='Bail conforme';
-    document.getElementById('modalFeats').innerHTML=['Bail rédigé conforme loi 1989 / ALUR / ELAN','Adapté à votre bien','Toutes les clauses légales','Export PDF prêt à signer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
+    document.getElementById('pwTitle').textContent='Accès complet — 49€';
+    document.getElementById('pwSub').textContent='Génération + Analyse de bail incluses';
+    document.getElementById('pwFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
+    document.getElementById('modalTitle').textContent='Accès complet BailScan';
+    document.getElementById('modalFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
   }
   setTimeout(function(){document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'});},200);
 }
@@ -704,9 +739,17 @@ function toggleBailleur(type){document.getElementById('bPhysiqueFields').style.d
 // ─── COLOCATAIRES DYNAMIQUES ───────────────────────────────
 var colocCount=0;
 function toggleColocsSection(){
-  var type=rad('genType');
+  var isColoc=document.getElementById('chkColocation')&&document.getElementById('chkColocation').checked;
   var sec=document.getElementById('colocsSection');
-  if(sec)sec.style.display=(type==='colocation')?'block':'none';
+  if(sec)sec.style.display=isColoc?'block':'none';
+}
+function onTypeChange(type){
+  // Suggérer la durée selon le type
+  if(type==='meuble'){
+    setR('genDuree','1 an',document.querySelector('.rpill[data-group="genDuree"][onclick*="1 an"]'));
+  }else{
+    setR('genDuree','3 ans',document.querySelector('.rpill[data-group="genDuree"][onclick*="3 ans"]'));
+  }
 }
 function addColoc(){
   colocCount++;
@@ -758,10 +801,9 @@ document.addEventListener('DOMContentLoaded',function(){
   if(cpEl)cpEl.addEventListener('input',function(){document.getElementById('complementJustifGroup').style.display=parseFloat(this.value)>0?'block':'none';});
   var zone=document.getElementById('uploadZone');
   if(zone){zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('dragover');});zone.addEventListener('dragleave',function(){zone.classList.remove('dragover');});zone.addEventListener('drop',function(e){e.preventDefault();zone.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});}
-  // Écouter les changements de type pour afficher/cacher les colocataires
-  document.querySelectorAll('input[name="genType"]').forEach(function(radio){
-    radio.addEventListener('change',toggleColocsSection);
-  });
+  // Écouter la checkbox colocation
+  var chkCol=document.getElementById('chkColocation');
+  if(chkCol)chkCol.addEventListener('change',toggleColocsSection);
 });
  
 function goStep(n){
@@ -789,8 +831,31 @@ function goStep(n){
 }
  
 function buildRecap(){
-  var items=[{label:'Mode',value:S.mode==='generer'?'Génération de bail':'Analyse de bail'},{label:'Type',value:rad('genType')||'Vide'},{label:'Ville',value:v('genVille')||'—'},{label:'Surface',value:v('genSurface')?v('genSurface')+' m²':'—'},{label:'Loyer HC',value:v('genLoyer')?v('genLoyer')+' €/mois':'—'},{label:'Durée',value:rad('genDuree')||'3 ans'}];
-  document.getElementById('recapGrid').innerHTML=items.map(function(item){return'<div class="recap-item"><div class="recap-label">'+item.label+'</div><div class="recap-value">'+item.value+'</div></div>';}).join('');
+  // Générer un aperçu partiel du bail avec les vraies données
+  try{
+    var preview=buildBailComplet();
+    // Garder seulement les 60 premières lignes pour l'aperçu
+    var lines=preview.split('\n').slice(0,60).join('\n');
+    document.getElementById('bailPreviewContent').textContent=lines;
+  }catch(e){
+    document.getElementById('bailPreviewContent').textContent=
+      '================================================================\n'+
+      '         CONTRAT DE LOCATION - RESIDENCE PRINCIPALE\n'+
+      '================================================================\n\n'+
+      'ARTICLE 1 - PARTIES AU CONTRAT\n\n'+
+      'BAILLEUR :\nNom et prénom : '+(document.getElementById('genBailleurPrenom')&&document.getElementById('genBailleurPrenom').value?document.getElementById('genBailleurPrenom').value+' ':'')+
+      (document.getElementById('genBailleurNom')&&document.getElementById('genBailleurNom').value||'[Bailleur]')+'\n\n'+
+      'LOCATAIRE(S) :\nNom et prénom : '+(document.getElementById('genLocPrenom')&&document.getElementById('genLocPrenom').value?document.getElementById('genLocPrenom').value+' ':'')+
+      (document.getElementById('genLocNom')&&document.getElementById('genLocNom').value||'[Locataire]')+'\n\n'+
+      'ARTICLE 2 - DÉSIGNATION DU LOGEMENT\n\n'+
+      'Adresse : '+(document.getElementById('genAdresse')&&document.getElementById('genAdresse').value||'[Adresse]')+'\n'+
+      'Surface : '+(document.getElementById('genSurface')&&document.getElementById('genSurface').value||'—')+' m²\n\n'+
+      '[…]\n';
+  }
+  // Remplir les paywall feats si vides
+  if(!document.getElementById('pwFeats').innerHTML){
+    document.getElementById('pwFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
+  }
 }
  
 var _lock=false;
@@ -804,7 +869,7 @@ function closeModal(){document.getElementById('modalOverlay').classList.remove('
 function saveAllState(){
   return{mode:S.mode,pdf:S.pdf,pdfName:S.pdfName,
     genType:rad('genType'),genAdresse:v('genAdresse'),genCp:v('genCp'),genVille:v('genVille'),genSurface:v('genSurface'),genPieces:v('genPieces'),genEtage:v('genEtage'),genDpe:v('genDpe'),genGes:v('genGes'),genEquipements:v('genEquipements'),
-    chkJardin:chk('chkJardin'),chkTerrasse:chk('chkTerrasse'),chkParking:chk('chkParking'),chkCave:chk('chkCave'),chkGrenier:chk('chkGrenier'),chkPiscine:chk('chkPiscine'),genAnnexeNum:v('genAnnexeNum'),genCopro:rad('genCopro'),genSyndic:v('genSyndic'),
+    chkColocation:chk('chkColocation'),chkJardin:chk('chkJardin'),chkTerrasse:chk('chkTerrasse'),chkParking:chk('chkParking'),chkCave:chk('chkCave'),chkGrenier:chk('chkGrenier'),chkPiscine:chk('chkPiscine'),genAnnexeNum:v('genAnnexeNum'),genCopro:rad('genCopro'),genSyndic:v('genSyndic'),
     genLoyer:v('genLoyer'),genCharges:v('genCharges'),genDepot:v('genDepot'),genDateEntree:v('genDateEntree'),genDuree:rad('genDuree'),genRevision:rad('genRevision'),genLoyerRef:v('genLoyerRef'),genLoyerMajore:v('genLoyerMajore'),genLoyerMinore:v('genLoyerMinore'),genComplement:v('genComplement'),genComplementJustif:v('genComplementJustif'),genIrl:v('genIrl'),
     genBailleurType:rad('genBailleurType'),genBailleurPrenom:v('genBailleurPrenom'),genBailleurNom:v('genBailleurNom'),genBailleurDenom:v('genBailleurDenom'),genBailleurAdresse:v('genBailleurAdresse'),genBailleurCp:v('genBailleurCp'),genBailleurVille:v('genBailleurVille'),genBailleurEmail:v('genBailleurEmail'),genBailleurTel:v('genBailleurTel'),
     genLocPrenom:v('genLocPrenom'),genLocNom:v('genLocNom'),genLocAdresse:v('genLocAdresse'),genLocCp:v('genLocCp'),genLocVille:v('genLocVille'),genLocEmail:v('genLocEmail'),genGarantNom:v('genGarantNom'),genGarantAdresse:v('genGarantAdresse'),genGarantCp:v('genGarantCp'),genGarantVille:v('genGarantVille'),genCaution:rad('genCaution'),
@@ -1044,6 +1109,7 @@ function buildBailComplet(){
   var garantAdresseFull=(g.genGarantAdresse||'')+(g.genGarantCp?' '+g.genGarantCp:'')+(g.genGarantVille?' '+g.genGarantVille:'');
   var bienAdresseFull=(g.genAdresse||'')+(g.genCp?' '+g.genCp:'')+(g.genVille?' '+g.genVille:'');
   var type=g.genType||'vide';
+  var isColoc=g.chkColocation||false;
   // Colocataires supplémentaires
   var colocs=g.colocs||[];
   var tousLocataires=[{prenom:g.genLocPrenom||'',nom:g.genLocNom||'',adresse:g.genLocAdresse||'',cp:g.genLocCp||'',ville:g.genLocVille||'',email:g.genLocEmail||''}].concat(colocs);
@@ -1099,7 +1165,7 @@ g.genBailleurTel?'Téléphone : '+g.genBailleurTel:'',
 '',
 'LOCATAIRE(S) :',
 locListText,
-type==='colocation'?'Type : Colocation — solidarité entre colocataires':'',
+isColoc?'Type : Colocation (solidarité entre colocataires)':'',
 '',
 g.genGarantNom?'GARANT :\nNom : '+g.genGarantNom+'\n'+(garantAdresseFull?'Adresse : '+garantAdresseFull+'\n':'')+'Type de cautionnement : '+(g.genCaution==='solidaire'?'Cautionnement solidaire':g.genCaution==='simple'?'Cautionnement simple':'Acte notarié')+'\nL\'acte de cautionnement est annexé au présent contrat (art. 22-1 loi 89).\n':'',
 '',
@@ -1108,7 +1174,7 @@ g.genGarantNom?'GARANT :\nNom : '+g.genGarantNom+'\n'+(garantAdresseFull?'Adress
 '================================================================',
 '',
 'Adresse du logement : '+bienAdresseFull,
-'Type : Logement '+(type==='meuble'?'meublé':type==='colocation'?'en colocation':type==='saisonnier'?'saisonnier':'vide'),
+'Type : Logement '+(type==='meuble'?'meublé':'vide')+(isColoc?' en colocation':''),
 'Surface habitable (loi Boutin) : '+(g.genSurface||'')+' m²',
 g.genPieces?'Nombre de pièces principales : '+g.genPieces:'',
 g.genEtage?'Étage : '+g.genEtage:'',
@@ -1131,9 +1197,9 @@ annexes.length?'Annexes comprises : '+annexes.join(', ')+'.'+(g.genAnnexeNum?' (
 'ARTICLE 4 - DURÉE DU BAIL',
 '================================================================',
 '',
-'Durée : '+(g.genDuree||'3 ans')+(type==='saisonnier'?' (bail saisonnier)':''),
+'Durée : '+(g.genDuree||'3 ans'),
 'Date de prise d\'effet : '+(g.genDateEntree||today),
-type!=='saisonnier'?'À l\'échéance, le bail se renouvelle par tacite reconduction pour 1 an.':'',
+'À l\'échéance, le bail se renouvelle par tacite reconduction pour 1 an.',
 '',
 'Préavis locataire : 3 mois (réduit à 1 mois en zone tendue, mutation, perte d\'emploi, état de santé)',
 'Préavis bailleur : 6 mois avant l\'échéance (reprise, vente, motif légitime et sérieux)',
@@ -1246,7 +1312,7 @@ trav.length?'\nTravaux d\'entretien à la charge du locataire :\n'+trav.map(func
 '',
 isEnc?('La ville de '+(g.genVille||'')+' est soumise à l\'encadrement des loyers.\n'+(g.genLoyerMinore?'Loyer de référence minoré : '+g.genLoyerMinore+' EUR/m²/mois\n':'')+(g.genLoyerRef?'Loyer de référence : '+g.genLoyerRef+' EUR/m²/mois\n':'')+(g.genLoyerMajore?'Loyer de référence majoré : '+g.genLoyerMajore+' EUR/m²/mois\n':'')+'En cas de dépassement injustifié, le locataire peut saisir la CDC (art. 20 loi 89).'):('Zones encadrées 2025/2026 : Paris, Lyon/Villeurbanne, Bordeaux, Montpellier, Grenoble,\nLille/Roubaix/Tourcoing, Bayonne/Anglet/Biarritz, Plaine Commune (93), Est Ensemble (93).\nVérifier l\'applicabilité sur observatoire-loyers.adil.org'),
 '',
-type==='colocation'?'================================================================\nARTICLE 15 - SOLIDARITÉ ENTRE COLOCATAIRES\n================================================================\n\nLes colocataires sont solidaires et indivisibles pour le paiement du loyer et des charges.\nLe garant du colocataire partant reste engagé 6 mois après le congé (loi ALUR).\n':'',
+isColoc?'================================================================\nARTICLE 15 - SOLIDARITÉ ENTRE COLOCATAIRES\n================================================================\n\nLes colocataires sont solidaires et indivisibles pour le paiement du loyer et des charges.\nLe garant du colocataire partant reste engagé 6 mois après le congé (loi ALUR).\n':'',
 clauses.length?'================================================================\nCLAUSES PARTICULIÈRES\n================================================================\n\n'+clauses.join('\n')+'\n':'',
 '================================================================',
 'ARTICLE 15 - DOCUMENTS REMIS AU LOCATAIRE',
@@ -1262,7 +1328,7 @@ docs.length?'Documents annexés au présent bail :\n- '+docs.join('\n- '):'Docum
 '================================================================',
 '',
 'Fait à ______________________, le '+(g.genDateEntree||today),
-'En '+(tousLocataires.length>1?String(tousLocataires.length+1):type==='colocation'?'3':'2')+' exemplaires originaux',
+'En '+(tousLocataires.length>1?String(tousLocataires.length+1):isColoc?'3':'2')+' exemplaires originaux',
 '',
 'Le Bailleur :                          Le(s) Locataire(s) :',
 '',
@@ -1272,7 +1338,7 @@ docs.length?'Documents annexés au présent bail :\n- '+docs.join('\n- '):'Docum
 bId+'               '+tousLocataires.map(function(l){return((l.prenom?l.prenom+' ':'')+l.nom).trim();}).join(' / '),
 '',
 '================================================================',
-'Fin du contrat — '+today+' — BailScan',
+'Fin du contrat | '+today+' | BailScan',
 '================================================================',
   ];
   return lines.filter(function(l){return l!==null&&l!==undefined;}).join('\n');
