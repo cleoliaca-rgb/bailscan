@@ -4664,9 +4664,9 @@ var proState = {
 }
 
 // ═══ SUPABASE ═══════════════════════════════════════════════
-// _SB initialisé dans le head via getSupabase()
-if (!window._SB) getSupabase();
-var _SB = window._SB || { auth: { signUp: async function(){ return {data:null,error:{message:'Supabase non initialisé'}}; }, signInWithPassword: async function(){ return {data:null,error:{message:'Supabase non initialisé'}}; }, signOut: async function(){}, getSession: async function(){ return {data:{session:null}}; }, onAuthStateChange: function(){} }, from: function(){ return { select: function(){ return this; }, insert: function(){ return this; }, update: function(){ return this; }, upsert: function(){ return this; }, delete: function(){ return this; }, eq: function(){ return this; }, order: function(){ return this; }, single: async function(){ return {data:null,error:null}; }, then: function(fn){ return Promise.resolve({data:[],error:null}).then(fn); } }; } };
+// _SB sera initialisé par initAuth() au DOMContentLoaded
+// Utiliser toujours getSupabase() ou window._SB
+var _SB = null; // sera mis à jour par initAuth()
 
 // Helper : récupérer l'agence de l'utilisateur connecté
 async function getAgenceId() {
@@ -4795,43 +4795,63 @@ window.onerror = function(msg, src, line, col, err) {
 window.addEventListener('DOMContentLoaded', function() {
   console.log('[BailScan] DOM prêt');
   injectStyles();
-  // Vérifier session Supabase existante
-  _SB.auth.getSession().then(function(res) {
-    var session = res.data && res.data.session;
-    if (session && session.user) {
-      var u = session.user;
-      proState.user = {
+
+  // Attendre que Supabase soit chargé puis initialiser
+  function initAuth() {
+    var sb = getSupabase();
+    if (!sb) {
+      console.warn('[BailScan] Supabase pas encore chargé, retry...');
+      setTimeout(initAuth, 300);
+      return;
+    }
+    // Mettre à jour _SB global
+    window._SB = sb;
+
+    function buildUser(u) {
+      var meta = u.user_metadata || {};
+      var fullName = meta.full_name || meta.name || '';
+      var parts = fullName.split(' ');
+      return {
         id: u.id,
         email: u.email,
-        prenom: (u.user_metadata && u.user_metadata.prenom) || (u.user_metadata && u.user_metadata.full_name && u.user_metadata.full_name.split(' ')[0]) || u.email.split('@')[0],
-        nom: (u.user_metadata && u.user_metadata.nom) || (u.user_metadata && u.user_metadata.full_name && u.user_metadata.full_name.split(' ').slice(1).join(' ')) || '',
-        agence: (u.user_metadata && u.user_metadata.agence) || 'Mon agence',
+        prenom: meta.prenom || parts[0] || u.email.split('@')[0],
+        nom: meta.nom || parts.slice(1).join(' ') || '',
+        agence: meta.agence || 'Mon agence',
         trialEnd: new Date(Date.now() + 3*864e5).toISOString()
       };
-      proState.isLoggedIn = true;
-      showDashboard();
     }
-  });
-  // Écouter les changements d'auth (retour OAuth Google)
-  _SB.auth.onAuthStateChange(function(event, session) {
-    if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session && session.user && !proState.isLoggedIn) {
-      var u = session.user;
-      proState.user = {
-        id: u.id,
-        email: u.email,
-        prenom: (u.user_metadata && u.user_metadata.prenom) || (u.user_metadata && u.user_metadata.full_name && u.user_metadata.full_name.split(' ')[0]) || u.email.split('@')[0],
-        nom: (u.user_metadata && u.user_metadata.nom) || '',
-        agence: (u.user_metadata && u.user_metadata.agence) || 'Mon agence',
-        trialEnd: new Date(Date.now() + 3*864e5).toISOString()
-      };
-      proState.isLoggedIn = true;
-      closeModal('login'); closeModal('signup');
-      showDashboard();
-    }
-    if (event === 'SIGNED_OUT') {
-      proState.isLoggedIn = false; proState.user = null;
-    }
-  });
+
+    // 1. Vérifier session existante (retour OAuth ou session persistée)
+    sb.auth.getSession().then(function(res) {
+      var session = res.data && res.data.session;
+      if (session && session.user && !proState.isLoggedIn) {
+        proState.user = buildUser(session.user);
+        proState.isLoggedIn = true;
+        showDashboard();
+      }
+    });
+
+    // 2. Écouter tous les événements auth
+    sb.auth.onAuthStateChange(function(event, session) {
+      console.log('[BailScan] Auth event:', event, session && session.user && session.user.email);
+      if (event === 'SIGNED_IN' && session && session.user) {
+        if (!proState.isLoggedIn) {
+          proState.user = buildUser(session.user);
+          proState.isLoggedIn = true;
+          closeModal('login');
+          closeModal('signup');
+          showDashboard();
+        }
+      }
+      if (event === 'SIGNED_OUT') {
+        proState.isLoggedIn = false;
+        proState.user = null;
+        proState._agenceId = null;
+      }
+    });
+  }
+
+  initAuth();
 });
 
 function injectStyles(){}
@@ -4931,7 +4951,9 @@ function showLoginError(msg){var e=document.getElementById('loginMsg');if(e){e.t
 
 // ─── CONNEXION GOOGLE ────────────────────────────────────
 async function handleGoogleLogin() {
-  await _SB.auth.signInWithOAuth({
+  var sb = getSupabase();
+  if (!sb) { alert('Service indisponible, rechargez la page.'); return; }
+  await sb.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: 'https://bailscan.app/pro.html' }
   });
@@ -5082,7 +5104,7 @@ async function subscribePro(plan) {
   } catch(e) { alert('Erreur : ' + e.message); if (btn) { btn.textContent = 'Choisir ' + plan; btn.disabled = false; } }
 }
 async function logout(){
-  await _SB.auth.signOut();
+  var sb = getSupabase(); if(sb) await sb.auth.signOut();
   proState.isLoggedIn=false; proState.user=null; proState._agenceId=null;
 
   document.body.classList.remove('is-dashboard');
