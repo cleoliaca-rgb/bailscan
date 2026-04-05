@@ -1322,7 +1322,7 @@ function buildPdfBase64(){
     sp(S.currentBail).split('\n').forEach(function(rawLine){
       doc.splitTextToSize(rawLine,usableW).forEach(function(line){
         var isSep=/^={5,}/.test(line.trim()),isArt=/^ARTICLE\s+\d/i.test(line.trim());
-        var isSub=/^(BAILLEUR\s*:|LOCATAIRE|GARANT\s*:|CLAUSES PARTI|SIGNATURES|COPROPRI|Fait a|En \d)/i.test(line.trim());
+        var isSub=/^(BAILLEUR\s*:|LOCATAIRE|GARANT\s*:|CLAUSES PARTI|SIGNATURES|COPROPRI)/i.test(line.trim());
         var isBullet=/^[-]/.test(line.trim()),isEmpty=!line.trim();
         if(isArt){y+=7;if(y+ART_H>pH-BOTTOM){doc.addPage();pageHeader();}doc.setFillColor(NOIR[0],NOIR[1],NOIR[2]);doc.roundedRect(mg,y-1,usableW,ART_H,2,2,'F');doc.setFillColor(ROUGE[0],ROUGE[1],ROUGE[2]);doc.roundedRect(mg,y-1,4,ART_H,1.5,1.5,'F');doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(BLANC[0],BLANC[1],BLANC[2]);doc.text(line.trim(),mg+8,y+7.5);y+=ART_H+5;return;}
         if(isSep){if(y+3>pH-BOTTOM){doc.addPage();pageHeader();}doc.setDrawColor(210,200,190);doc.setLineWidth(0.25);doc.line(mg,y,pW-mg,y);y+=EMPTY_H;return;}
@@ -1650,14 +1650,8 @@ docs.length?'Documents annexés au présent bail :\n- '+docs.join('\n- '):'Docum
 '================================================================',
 '',
 'Fait à ______________________, le '+(g.genDateEntree||today),
+'',
 'En '+(tousLocataires.length>1?String(tousLocataires.length+1):isColoc?'3':'2')+' exemplaires originaux',
-'',
-'Le Bailleur :                          Le(s) Locataire(s) :',
-'',
-'(Signature précédée de "Lu et approuvé")    (Signature précédée de "Lu et approuvé")',
-'',
-'_______________________________        _______________________________',
-bId+'               '+tousLocataires.map(function(l){return((l.prenom?l.prenom+' ':'')+l.nom).trim();}).join(' / '),
 '',
 '================================================================',
  
@@ -1767,7 +1761,7 @@ function exportPDF(){
       doc.splitTextToSize(rawLine,usableW).forEach(function(line){
         var isSep=/^={5,}/.test(line.trim());
         var isArt=/^ARTICLE\s+\d/i.test(line.trim());
-        var isSub=/^(BAILLEUR\s*:|LOCATAIRE|GARANT\s*:|CLAUSES PARTI|SIGNATURES|COPROPRI|Fait a|En \d)/i.test(line.trim());
+        var isSub=/^(BAILLEUR\s*:|LOCATAIRE|GARANT\s*:|CLAUSES PARTI|SIGNATURES|COPROPRI)/i.test(line.trim());
         var isBullet=/^[-]/.test(line.trim());
         var isEmpty=!line.trim();
  
