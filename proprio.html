@@ -602,7 +602,6 @@ footer a:hover{color:var(--accent);}
           <label class="chk-item"><input type="checkbox" id="clauseCompteur"> 📊 Relevés compteurs contradictoires</label>
           <label class="chk-item"><input type="checkbox" id="clauseDpeTrav"> ⚡ Travaux rénovation énergétique prévus</label>
           <label class="chk-item"><input type="checkbox" id="clauseNum"> 📱 Signature électronique</label>
-          <label class="chk-item"><input type="checkbox" id="clauseFumeur"> 🚭 Logement non-fumeur</label>
         </div>
         <div class="fg" style="margin-top:10px"><label for="clausesLibres">Clauses libres supplémentaires</label><textarea id="clausesLibres" class="fi" rows="3" placeholder="Ex : parking n°12 inclus, local vélos accessible…"></textarea></div>
  
@@ -1070,7 +1069,7 @@ function restoreState(){
     // Checkboxes
     var checks=['chkColocation','chkJardin','chkTerrasse','chkParking','chkCave','chkGrenier','chkPiscine',
       'travChaudiere','travClim','travJardin','travGouttiere','travPiscine','travRamonage','travRobinetterie','travDetartrage',
-      'clauseSousloc','clauseCession','clausePno','clauseCompteur','clauseDpeTrav','clauseNum','clauseFumeur',
+      'clauseSousloc','clauseCession','clausePno','clauseCompteur','clauseDpeTrav','clauseNum',
       'annDpe','annEdl','annNotice','annRgl','annGarant','annInventaire'];
     checks.forEach(function(id){
       var el=document.getElementById(id);
@@ -1128,7 +1127,7 @@ function saveAllState(){
     genLocPrenom:v('genLocPrenom'),genLocNom:v('genLocNom'),genLocAdresse:v('genLocAdresse'),genLocCp:v('genLocCp'),genLocVille:v('genLocVille'),genLocEmail:v('genLocEmail'),genGarantPrenom:v('genGarantPrenom'),genGarantNom:v('genGarantNom'),genGarantAdresse:v('genGarantAdresse'),genGarantCp:v('genGarantCp'),genGarantVille:v('genGarantVille'),genGarantEmail:v('genGarantEmail'),genGarantTel:v('genGarantTel'),genCaution:rad('genCaution'),
     analyseVille:v('analyseVille'),analyseLoyer:v('analyseLoyer'),analyseComplement:v('analyseComplement'),analyseCharges:v('analyseCharges'),analyseSurface:v('analyseSurface'),analyseDepot:v('analyseDepot'),textBail:v('textBail'),
     travChaudiere:chk('travChaudiere'),travClim:chk('travClim'),travJardin:chk('travJardin'),travGouttiere:chk('travGouttiere'),travPiscine:chk('travPiscine'),travRamonage:chk('travRamonage'),travRobinetterie:chk('travRobinetterie'),travDetartrage:chk('travDetartrage'),travAutres:v('travAutres'),
-    clauseSousloc:chk('clauseSousloc'),clauseCession:chk('clauseCession'),clausePno:chk('clausePno'),clauseCompteur:chk('clauseCompteur'),clauseDpeTrav:chk('clauseDpeTrav'),clauseNum:chk('clauseNum'),clauseAnimaux:chk('clauseAnimaux'),clauseFumeur:chk('clauseFumeur'),clausesLibres:v('clausesLibres'),
+    clauseSousloc:chk('clauseSousloc'),clauseCession:chk('clauseCession'),clausePno:chk('clausePno'),clauseCompteur:chk('clauseCompteur'),clauseDpeTrav:chk('clauseDpeTrav'),clauseNum:chk('clauseNum'),clauseAnimaux:chk('clauseAnimaux'),clausesLibres:v('clausesLibres'),
     genPno:rad('genPno'),genResolutoire:rad('genResolutoire'),genSolidarite:rad('genSolidarite'),
     annDpe:chk('annDpe'),annEdl:chk('annEdl'),annNotice:chk('annNotice'),annRgl:chk('annRgl'),annGarant:chk('annGarant'),annInventaire:chk('annInventaire'),
     colocs:getColocs()
@@ -1225,7 +1224,7 @@ function showResults(bail,analyse){
     var html='';
     if(analyse.resume)html+='<p style="margin-bottom:18px;line-height:1.8;font-size:.9rem">'+analyse.resume+'</p>';
     if(analyse.clauses_abusives&&analyse.clauses_abusives.length){html+='<h3 style="margin-bottom:10px;font-family:\'Instrument Serif\',serif;font-size:1.1rem">Points à corriger</h3>';analyse.clauses_abusives.forEach(function(c){html+='<div style="background:var(--rouge-light);border-radius:8px;padding:14px;margin-bottom:10px"><strong>'+c.titre+'</strong><p style="margin-top:5px;font-size:.83rem;color:var(--gris)">'+c.description+'</p><p style="margin-top:4px;font-size:.78rem;color:var(--accent)">Base légale : '+(c.base_legale||[]).join(', ')+'</p></div>';});}
-    if(analyse.plan_action&&analyse.plan_action.length){html+='<h3 style="margin:20px 0 10px;font-family:\'Instrument Serif\',serif;font-size:1.1rem">Plan d\'action</h3>';analyse.plan_action.forEach(function(step,i){html+='<div style="display:flex;gap:10px;margin-bottom:8px"><div style="width:22px;height:22px;background:var(--accent);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0">'+(i+1)+'</div><div style="font-size:.85rem;line-height:1.6">'+step+'</div></div>';});}
+ 
     document.getElementById('resContent').innerHTML=html;
   }
   document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
@@ -1285,7 +1284,7 @@ function buildPdfBase64(){
       {l:'BAILLEUR',v:exL(/Nom et pr.nom[^:]*:\s*([^\n]+)/i)||exL(/D.nomination sociale[^:]*:\s*([^\n]+)/i)},
       {l:'LOCATAIRE(S)',v:exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)},
       {l:'BIEN LOUE',v:exL(/Adresse du logement[^:]*:\s*([^\n]+)/i)},
-      {l:'LOYER HORS CHARGES',v:exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},
+      {l:'LOYER TOTAL MENSUEL',v:exL(/TOTAL MENSUEL[^:]*:\s*([^\n]+)/i)||exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},
       {l:'DATE ENTREE',v:exL(/Date de prise d.effet[^:]*:\s*([^\n]+)/i)},
       {l:'DUREE DU BAIL',v:exL(/Dur.e\s*:\s*([^\n]+)/i)},
     ];
@@ -1372,7 +1371,10 @@ function sendMailNow(){
       date: dateGen
     })
   })
-  .then(function(r){return r.json();})
+  .then(function(r){
+    if(!r.ok&&r.status===404){throw new Error('Endpoint /api/send-mail introuvable — vérifiez le déploiement');}
+    return r.json();
+  })
   .then(function(d){
     if(d.ok){
       btn.textContent='✓ Email envoyé !';
@@ -1380,15 +1382,14 @@ function sendMailNow(){
       status.textContent='Email envoyé à '+to;
       setTimeout(function(){closeMailModal();btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;status.style.display='none';},3000);
     }else{
-      throw new Error(d.error||'Erreur envoi');
+      throw new Error(d.error||'Erreur inconnue');
     }
   })
   .catch(function(e){
-    // Fallback : télécharger le PDF et ouvrir le client mail
     btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;
-    status.style.cssText='display:block;color:var(--gris);font-size:.78rem';
-    status.textContent='Envoi automatique indisponible. Téléchargez le PDF puis joignez-le manuellement.';
-    exportPDF(); // on déclenche le téléchargement
+    status.style.cssText='display:block;color:var(--accent);font-size:.82rem;font-weight:600';
+    status.textContent='Erreur : '+e.message;
+    console.error('send-mail error:',e);
   });
 }
  
@@ -1444,7 +1445,6 @@ function buildBailComplet(){
   if(g.clauseCompteur)clauses.push('Des relevés contradictoires de tous les compteurs seront effectués lors de l\'état des lieux.');
   if(g.clauseDpeTrav)clauses.push('Des travaux de rénovation énergétique sont prévus pendant la durée du bail.');
   if(g.clauseNum)clauses.push('Le présent bail peut être signé par voie électronique (loi ELAN).');
-  if(g.clauseFumeur)clauses.push('Le logement est non-fumeur.');
   if(g.clausesLibres)clauses.push(g.clausesLibres);
   var annexes=[];
   if(g.chkJardin)annexes.push('jardin privatif');if(g.chkTerrasse)annexes.push('terrasse/balcon');if(g.chkParking)annexes.push('parking/garage');if(g.chkCave)annexes.push('cave/cellier');if(g.chkGrenier)annexes.push('grenier');if(g.chkPiscine)annexes.push('piscine');
@@ -1509,7 +1509,7 @@ annexes.length?'Annexes comprises : '+annexes.join(', ')+'.'+(g.genAnnexeNum?' (
 '',
 'Durée : '+(g.genDuree||'3 ans'),
 'Date de prise d\'effet : '+(g.genDateEntree||today),
-'À l\'échéance, le bail se renouvelle par tacite reconduction pour 1 an.',
+'À l\'échéance, le bail se renouvelle par tacite reconduction.',
 '',
 'Préavis locataire : 3 mois (réduit à 1 mois en zone tendue, mutation, perte d\'emploi, état de santé)',
 'Préavis bailleur : 6 mois avant l\'échéance (reprise, vente, motif légitime et sérieux)',
@@ -1648,7 +1648,7 @@ docs.length?'Documents annexés au présent bail :\n- '+docs.join('\n- '):'Docum
 bId+'               '+tousLocataires.map(function(l){return((l.prenom?l.prenom+' ':'')+l.nom).trim();}).join(' / '),
 '',
 '================================================================',
-'Fin du contrat | '+today+' | BailScan',
+ 
 '================================================================',
   ];
   return lines.filter(function(l){return l!==null&&l!==undefined;}).join('\n');
@@ -1690,7 +1690,7 @@ function exportPDF(){
       {l:'BAILLEUR',v:exL(/Nom et pr.nom[^:]*:\s*([^\n]+)/i)||exL(/D.nomination sociale[^:]*:\s*([^\n]+)/i)},
       {l:'LOCATAIRE(S)',v:exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)},
       {l:'BIEN LOUE',v:exL(/Adresse du logement[^:]*:\s*([^\n]+)/i)},
-      {l:'LOYER HORS CHARGES',v:exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},
+      {l:'LOYER TOTAL MENSUEL',v:exL(/TOTAL MENSUEL[^:]*:\s*([^\n]+)/i)||exL(/LOYER MENSUEL HORS CHARGES[^:]*:\s*([^\n]+)/i)},
       {l:'DATE ENTREE',v:exL(/Date de prise d.effet[^:]*:\s*([^\n]+)/i)},
       {l:'DUREE DU BAIL',v:exL(/Dur.e\s*:\s*([^\n]+)/i)},
     ];
@@ -1790,22 +1790,41 @@ function exportPDF(){
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(NOIR[0],NOIR[1],NOIR[2]);
     doc.text('SIGNATURES',mg,y);y+=12;
     var midX=pW/2;
-    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(mg,y,midX-mg-5,32,2,2,'F');
-    doc.setDrawColor(200,190,180);doc.setLineWidth(0.3);doc.roundedRect(mg,y,midX-mg-5,32,2,2,'S');
+    // Données directement depuis S
+    var sigBailleur=sp(S.genBailleurType==='physique'?(S.genBailleurPrenom?S.genBailleurPrenom+' ':'')+S.genBailleurNom:(S.genBailleurDenom||'')||'');
+    var sigLocataire=sp((S.genLocPrenom?S.genLocPrenom+' ':'')+S.genLocNom||'');
+    // Colonne BAILLEUR
+    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(mg,y,midX-mg-5,36,2,2,'F');
+    doc.setDrawColor(200,190,180);doc.setLineWidth(0.3);doc.roundedRect(mg,y,midX-mg-5,36,2,2,'S');
     doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
     doc.text('LE BAILLEUR',mg+5,y+7);
     doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-    doc.text(sp(exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)||exL(/D.nomination\s*:\s*([^\n]+)/i)||''),mg+5,y+13);
-    doc.text('Lu et approuve :',mg+5,y+20);
-    doc.setDrawColor(180,170,160);doc.line(mg+5,y+29,midX-mg-9,y+29);
-    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(midX+2,y,midX-mg-7,32,2,2,'F');
-    doc.setDrawColor(200,190,180);doc.roundedRect(midX+2,y,midX-mg-7,32,2,2,'S');
+    doc.text(sigBailleur,mg+5,y+13);
+    doc.text('Lu et approuve :',mg+5,y+21);
+    doc.setDrawColor(180,170,160);doc.line(mg+5,y+32,midX-mg-9,y+32);
+    // Colonne LOCATAIRE
+    doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(midX+2,y,midX-mg-7,36,2,2,'F');
+    doc.setDrawColor(200,190,180);doc.roundedRect(midX+2,y,midX-mg-7,36,2,2,'S');
     doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
     doc.text('LE(S) LOCATAIRE(S)',midX+7,y+7);
     doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
-    doc.text(sp(exL(/Nom et pr.nom\s*:\s*([^\n]+)/i)||''),midX+7,y+13);
-    doc.text('Lu et approuve :',midX+7,y+20);
-    doc.setDrawColor(180,170,160);doc.line(midX+7,y+29,pW-mg-5,y+29);
+    doc.text(sigLocataire,midX+7,y+13);
+    doc.text('Lu et approuve :',midX+7,y+21);
+    doc.setDrawColor(180,170,160);doc.line(midX+7,y+32,pW-mg-5,y+32);
+    y+=42;
+    // Garant si applicable
+    if(S.genGarantNom){
+      var sigGarant=sp((S.genGarantPrenom?S.genGarantPrenom+' ':'')+S.genGarantNom);
+      if(y+36>pH-BOTTOM){doc.addPage();pageHeader();}
+      doc.setFillColor(CREME[0],CREME[1],CREME[2]);doc.roundedRect(mg,y,midX-mg-5,36,2,2,'F');
+      doc.setDrawColor(200,190,180);doc.setLineWidth(0.3);doc.roundedRect(mg,y,midX-mg-5,36,2,2,'S');
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(ROUGE[0],ROUGE[1],ROUGE[2]);
+      doc.text('LE GARANT',mg+5,y+7);
+      doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(GRIS[0],GRIS[1],GRIS[2]);
+      doc.text(sigGarant,mg+5,y+13);
+      doc.text('Lu et approuve :',mg+5,y+21);
+      doc.setDrawColor(180,170,160);doc.line(mg+5,y+32,midX-mg-9,y+32);
+    }
  
     var pc=doc.internal.getNumberOfPages();
     for(var p=1;p<=pc;p++){doc.setPage(p);if(p>1)pageFooter(p,pc);}
@@ -1859,4 +1878,3 @@ checkPaymentReturn();
 </script>
 </body>
 </html>
- 
