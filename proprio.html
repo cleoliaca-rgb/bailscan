@@ -1030,16 +1030,6 @@ function fallbackMailto(to,nom,msg){
   );
   window.location.href='mailto:'+to+'?subject='+sujet+'&body='+corps;
 }
-    document.getElementById('resBadge').textContent='✓ Analyse terminée';
-    document.getElementById('resTitle').textContent='Rapport d\'analyse';
-    var html='';
-    if(analyse.resume)html+='<p style="margin-bottom:18px;line-height:1.8;font-size:.9rem">'+analyse.resume+'</p>';
-    if(analyse.clauses_abusives&&analyse.clauses_abusives.length){html+='<h3 style="margin-bottom:10px;font-family:\'Instrument Serif\',serif;font-size:1.1rem">Points à corriger</h3>';analyse.clauses_abusives.forEach(function(c){html+='<div style="background:var(--rouge-light);border-radius:8px;padding:14px;margin-bottom:10px"><strong>'+c.titre+'</strong><p style="margin-top:5px;font-size:.83rem;color:var(--gris)">'+c.description+'</p><p style="margin-top:4px;font-size:.78rem;color:var(--accent)">Base légale : '+(c.base_legale||[]).join(', ')+'</p></div>';});}
-    if(analyse.plan_action&&analyse.plan_action.length){html+='<h3 style="margin:20px 0 10px;font-family:\'Instrument Serif\',serif;font-size:1.1rem">Plan d\'action</h3>';analyse.plan_action.forEach(function(step,i){html+='<div style="display:flex;gap:10px;margin-bottom:8px"><div style="width:22px;height:22px;background:var(--accent);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0">'+(i+1)+'</div><div style="font-size:.85rem;line-height:1.6">'+step+'</div></div>';});}
-    document.getElementById('resContent').innerHTML=html;
-  }
-  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
-}
  
 function resetApp(){
   document.getElementById('resultsSection').style.display='none';
@@ -1457,7 +1447,6 @@ function exportPDF(){
     for(var p=1;p<=pc;p++){doc.setPage(p);if(p>1)pageFooter(p,pc);}
     doc.save('BailScan-Bail-'+dateGen.replace(/\//g,'-')+'.pdf');
   }catch(e){alert('Erreur PDF : '+e.message);console.error(e);}
-}
 }
  
 checkPaymentReturn();
