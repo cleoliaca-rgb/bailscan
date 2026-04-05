@@ -5011,7 +5011,13 @@ function showDashboard(){
   // Vérifier le plan et le trial
   checkPlanAccess();
   // Onboarding premier login
-  setTimeout(showOnboarding, 800);
+  setTimeout(function() {
+    // Nettoyer les anciennes clés onboarding orphelines
+    Object.keys(localStorage).forEach(function(k){
+      if (k.startsWith('bs_onboarding_done_')) localStorage.removeItem(k);
+    });
+    showOnboarding();
+  }, 1000);
 }
 
 // ─── GESTION PLAN / TRIAL ─────────────────────────────────
@@ -13732,20 +13738,37 @@ uploadDPEFile = function(mandatId, input) {
 // ═══ ONBOARDING ══════════════════════════════════════════════
 var _obDone = [];
 
-function showOnboarding() {
-  // Afficher seulement à la première connexion
-  var key = 'bs_onboarding_done_' + (proState.user && proState.user.id || 'x');
-  if (localStorage.getItem(key)) return;
+async function showOnboarding() {
+  var sb = getSupabase();
+  if (!sb) return;
+  // Vérifier dans Supabase si l'onboarding a déjà été fait
+  var agId = await getAgenceId();
+  if (!agId) return;
+  var res = await sb.from('agences').select('onboarding_done').eq('id', agId).single();
+  if (res.data && res.data.onboarding_done) return; // déjà fait
   var el = document.getElementById('modalOnboarding');
-  if (el) el.style.display = 'flex';
+  if (!el) return;
+  el.style.display = 'flex';
   updateObProgress();
 }
 
-function closeOnboarding() {
+async function closeOnboarding() {
   var el = document.getElementById('modalOnboarding');
   if (el) el.style.display = 'none';
-  var key = 'bs_onboarding_done_' + (proState.user && proState.user.id || 'x');
-  localStorage.setItem(key, '1');
+  // Marquer comme fait dans Supabase
+  var sb = getSupabase();
+  var agId = await getAgenceId();
+  if (sb && agId) {
+    await sb.from('agences').update({ onboarding_done: true }).eq('id', agId);
+  }
+}
+
+function resetOnboarding() {
+  _obDone = [];
+  document.querySelectorAll('.ob-step').forEach(function(s){ s.classList.remove('done'); });
+  updateObProgress();
+  var el = document.getElementById('modalOnboarding');
+  if (el) el.style.display = 'flex';
 }
 
 function obGo(tab, num) {
