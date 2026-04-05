@@ -84,15 +84,21 @@ h1 em { font-style:italic; color:var(--accent); }
  
 /* WIZARD STEPS */
 .wizard-progress { display:flex; align-items:center; gap:0; margin-bottom:40px; }
-.wizard-step-indicator { display:flex; align-items:center; gap:8px; flex:1; }
+.wizard-step-indicator { display:flex; align-items:center; gap:6px; flex:1; }
 .wizard-step-indicator:last-child { flex:0; }
 .step-dot { width:32px; height:32px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:700; color:var(--gris); background:white; flex-shrink:0; transition:all .3s; }
 .step-dot.active { border-color:var(--accent); background:var(--accent); color:white; }
 .step-dot.done { border-color:var(--vert); background:var(--vert); color:white; }
-.step-label { font-size:0.75rem; font-weight:600; color:var(--gris); }
+.step-label { font-size:0.75rem; font-weight:600; color:var(--gris); white-space:nowrap; }
 .step-label.active { color:var(--accent); }
-.step-line { flex:1; height:2px; background:var(--border); margin:0 8px; transition:background .3s; }
+.step-line { flex:1; height:2px; background:var(--border); margin:0 4px; transition:background .3s; }
 .step-line.done { background:var(--vert); }
+@media(max-width:400px) {
+  .step-label { display:none; }
+  .step-dot { width:28px; height:28px; font-size:0.72rem; }
+  .step-line { margin:0 3px; }
+  .wizard-progress { margin-bottom:24px; }
+}
  
 /* WIZARD PANELS */
 .wizard-panel { display:none; animation:fadeIn .3s ease; }
@@ -395,9 +401,11 @@ select.form-input { cursor:pointer; }
  
 /* RESPONSIVE */
 @media(max-width:768px) {
-  header { padding:16px 20px; }
-  nav a:not(.btn-nav):not([href="/pro.html"]) { display:none; }
-  nav a[href="/pro.html"] { font-size:0.78rem; padding:6px 12px; border:1px solid var(--border); border-radius:6px; }
+  header { padding:12px 16px; }
+  nav { gap:8px; }
+  nav a:not(.btn-nav):not(.nav-agences) { display:none; }
+  .nav-agences { font-size:0.75rem !important; padding:6px 10px; border:1px solid var(--border); border-radius:6px; white-space:nowrap; }
+  .btn-nav { font-size:0.78rem !important; padding:8px 12px !important; white-space:nowrap; }
   .hero { padding:100px 20px 60px; }
   .hero-inner { grid-template-columns:1fr; gap:40px; }
   .hero-card { display:none; }
@@ -478,6 +486,9 @@ select.form-input { cursor:pointer; }
 }
 @media(max-width:480px){
   .footer-top { grid-template-columns:1fr; }
+  .step-label { font-size:0.68rem; }
+  .step-dot { width:28px; height:28px; font-size:0.72rem; }
+  .step-line { margin:0 2px; }
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
