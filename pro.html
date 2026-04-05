@@ -13743,32 +13743,42 @@ uploadDPEFile = function(mandatId, input) {
 var _obDone = [];
 
 async function showOnboarding() {
-  // Vérifier d'abord dans localStorage (rapide, pas de réseau)
   var uid = proState.user && proState.user.id || 'x';
   var localKey = 'bs_ob2_' + uid;
   if (localStorage.getItem(localKey)) return;
-
-  // Afficher immédiatement sans attendre Supabase
-  var el = document.getElementById('modalOnboarding');
-  if (!el) { console.warn('modalOnboarding not found'); return; }
-  el.style.display = 'flex';
-  updateObProgress();
-
-  // Vérifier aussi Supabase en arrière-plan
   try {
-    var sb = getSupabase();
-    var agId = proState._agenceId;
+    var sb = getSupabase(); var agId = proState._agenceId;
     if (sb && agId) {
       var res = await sb.from('agences').select('onboarding_done').eq('id', agId).single();
-      if (res.data && res.data.onboarding_done) {
-        // Déjà fait côté serveur — cacher et mémoriser
-        el.style.display = 'none';
-        localStorage.setItem(localKey, '1');
-      }
+      if (res.data && res.data.onboarding_done) { localStorage.setItem(localKey,'1'); return; }
     }
-  } catch(e) { /* silencieux */ }
+  } catch(e) {}
+  var el = document.getElementById('modalOnboarding');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'modalOnboarding';
+    el.style.cssText = 'position:fixed;inset:0;background:rgba(17,24,39,.88);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+    var steps=[['mandats',1,'Creer mon premier mandat','Ajoutez un bien: adresse, loyer, type'],['locataires',2,'Ajouter un locataire','Fiche avec scoring de solvabilite'],['nouveau',3,'Analyser un bail existant','PDF - detection des clauses illegales en 30s'],['generer',4,'Generer un bail conforme','Bail loi 89/ALUR, export PDF']];
+    var h='<div style="background:white;border-radius:20px;width:100%;max-width:580px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4)">'
+      +'<div style="background:#111827;padding:26px 30px 20px">'
+      +'<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;color:#7fa8e8;margin-bottom:8px">Bienvenue sur BailScan Pro !</div>'
+      +'<div style="font-family:Instrument Serif,serif;font-size:1.4rem;color:white;line-height:1.3">Votre espace est pret. Par ou commencer ?</div>'
+      +'<div style="font-size:.8rem;color:rgba(255,255,255,.4);margin-top:6px">4 etapes pour bien demarrer.</div>'
+      +'</div><div style="padding:18px 26px 8px">';
+    steps.forEach(function(s){
+      h+='<div onclick="obGo(\''+s[0]+'\','+s[1]+')" style="display:flex;align-items:center;gap:13px;padding:12px 13px;border:1.5px solid #e0d8cc;border-radius:10px;cursor:pointer;margin-bottom:8px;background:white" onmouseover="this.style.borderColor=\'#3b6fd4\'" onmouseout="this.style.borderColor=\'#e0d8cc\'">'
+        +'<div style="width:34px;height:34px;border-radius:8px;background:#eef2fb;display:flex;align-items:center;justify-content:center;font-weight:700;color:#3b6fd4;flex-shrink:0">'+s[1]+'</div>'
+        +'<div style="flex:1"><div style="font-weight:700;font-size:.88rem">'+s[2]+'</div><div style="font-size:.75rem;color:#888">'+s[3]+'</div></div>'
+        +'<span style="color:#ccc">-&gt;</span></div>';
+    });
+    h+='</div><div style="padding:10px 26px 20px;display:flex;justify-content:space-between">'
+      +'<button onclick="closeOnboarding()" style="background:none;border:none;color:#aaa;font-size:.78rem;cursor:pointer;text-decoration:underline">Passer</button>'
+      +'<button onclick="closeOnboarding()" style="background:#3b6fd4;color:white;border:none;padding:10px 22px;border-radius:9px;font-weight:700;cursor:pointer">Commencer !</button>'
+      +'</div></div>';
+    el.innerHTML = h;
+    document.body.appendChild(el);
+  } else { el.style.display = 'flex'; }
 }
-
 async function closeOnboarding() {
   var el = document.getElementById('modalOnboarding');
   if (el) el.style.display = 'none';
