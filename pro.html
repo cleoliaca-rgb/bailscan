@@ -4974,17 +4974,20 @@ function showDashboard(){
   document.querySelector('.btn-header-login').style.display='none';
   document.querySelector('.btn-header-cta').style.display='none';
   var u=proState.user;
-  document.getElementById('dashUserName').textContent=u.prenom+' '+u.nom;
-  document.getElementById('dashUserAgence').textContent=u.agence;
-  document.getElementById('dashWelcome').textContent='Bonjour '+u.prenom+' ! Voici vos analyses.';
+  function setT(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  setT('dashUserName', u.prenom+' '+u.nom);
+  setT('dashUserAgence', u.agence);
+  setT('dashWelcome', 'Bonjour '+u.prenom+' ! Voici vos analyses.');
   var daysLeft=Math.max(0,Math.ceil((new Date(u.trialEnd)-Date.now())/864e5));
-  document.getElementById('trialDaysLeft').textContent=daysLeft;
-  document.getElementById('trialDaysLeftBanner').textContent=daysLeft;
-  document.getElementById('trialEndDate').textContent=new Date(u.trialEnd).toLocaleDateString('fr-FR');
-  if(daysLeft<=0) document.getElementById('trialBanner').style.background='#c84b2f';
-  document.getElementById('settingsNom').value=u.prenom+' '+u.nom;
-  document.getElementById('settingsAgence').value=u.agence;
-  document.getElementById('settingsEmail').value=u.email;
+  function setT2(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  function setV(id,v){var e=document.getElementById(id);if(e)e.value=v;}
+  setT2('trialDaysLeft',daysLeft);
+  setT2('trialDaysLeftBanner',daysLeft);
+  setT2('trialEndDate',new Date(u.trialEnd).toLocaleDateString('fr-FR'));
+  var tb=document.getElementById('trialBanner');if(tb&&daysLeft<=0)tb.style.background='#c84b2f';
+  setV('settingsNom',u.prenom+' '+u.nom);
+  setV('settingsAgence',u.agence);
+  setV('settingsEmail',u.email);
 
   var apiEl=document.getElementById('apiKeyDisplay');
   if(apiEl)apiEl.textContent='bs_live_••••••••••••••••••••••••••••••';
@@ -5401,12 +5404,13 @@ function refreshKPIs(){
   var risque=proState.analyses.filter(function(a){return a.score<60;}).length;
   var conformes=proState.analyses.filter(function(a){return a.score>=70;}).length;
   var avg=total?Math.round(proState.analyses.reduce(function(s,a){return s+a.score;},0)/total):0;
-  document.getElementById('kpiTotal').textContent=total;
-  document.getElementById('kpiRisque').textContent=risque;
-  document.getElementById('kpiConformes').textContent=conformes;
-  document.getElementById('kpiMoyenne').textContent=total?avg+'/100':'—';
-  document.getElementById('kpiTrend').textContent=total?total+' bail(s) analysé(s)':'Commencez votre première analyse';
-  document.getElementById('kpiRisqueSub').textContent=risque?risque+' bail(s) à corriger':'—';
+  function setText(id, val) { var el=document.getElementById(id); if(el) el.textContent=val; }
+  setText('kpiTotal', total);
+  setText('kpiRisque', risque);
+  setText('kpiConformes', conformes);
+  setText('kpiMoyenne', total?avg+'/100':'—');
+  setText('kpiTrend', total?total+' bail(s) analysé(s)':'Commencez votre première analyse');
+  setText('kpiRisqueSub', risque?risque+' bail(s) à corriger':'—');
 }
 function refreshHisto(){
   if(!proState.analyses.length){
@@ -13739,28 +13743,46 @@ uploadDPEFile = function(mandatId, input) {
 var _obDone = [];
 
 async function showOnboarding() {
-  var sb = getSupabase();
-  if (!sb) return;
-  // Vérifier dans Supabase si l'onboarding a déjà été fait
-  var agId = await getAgenceId();
-  if (!agId) return;
-  var res = await sb.from('agences').select('onboarding_done').eq('id', agId).single();
-  if (res.data && res.data.onboarding_done) return; // déjà fait
+  // Vérifier d'abord dans localStorage (rapide, pas de réseau)
+  var uid = proState.user && proState.user.id || 'x';
+  var localKey = 'bs_ob2_' + uid;
+  if (localStorage.getItem(localKey)) return;
+
+  // Afficher immédiatement sans attendre Supabase
   var el = document.getElementById('modalOnboarding');
-  if (!el) return;
+  if (!el) { console.warn('modalOnboarding not found'); return; }
   el.style.display = 'flex';
   updateObProgress();
+
+  // Vérifier aussi Supabase en arrière-plan
+  try {
+    var sb = getSupabase();
+    var agId = proState._agenceId;
+    if (sb && agId) {
+      var res = await sb.from('agences').select('onboarding_done').eq('id', agId).single();
+      if (res.data && res.data.onboarding_done) {
+        // Déjà fait côté serveur — cacher et mémoriser
+        el.style.display = 'none';
+        localStorage.setItem(localKey, '1');
+      }
+    }
+  } catch(e) { /* silencieux */ }
 }
 
 async function closeOnboarding() {
   var el = document.getElementById('modalOnboarding');
   if (el) el.style.display = 'none';
-  // Marquer comme fait dans Supabase
-  var sb = getSupabase();
-  var agId = await getAgenceId();
-  if (sb && agId) {
-    await sb.from('agences').update({ onboarding_done: true }).eq('id', agId);
-  }
+  // Mémoriser localement
+  var uid = proState.user && proState.user.id || 'x';
+  localStorage.setItem('bs_ob2_' + uid, '1');
+  // Marquer dans Supabase en arrière-plan
+  try {
+    var sb = getSupabase();
+    var agId = proState._agenceId || await getAgenceId();
+    if (sb && agId) {
+      await sb.from('agences').update({ onboarding_done: true }).eq('id', agId);
+    }
+  } catch(e) { /* silencieux */ }
 }
 
 function resetOnboarding() {
