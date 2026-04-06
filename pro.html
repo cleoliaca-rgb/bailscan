@@ -7647,6 +7647,14 @@ async function genererCourrier() {
     + new Date().toLocaleDateString('fr-FR')
     + '. Répondez UNIQUEMENT avec le texte de la lettre, sans explication.';
 
+  var apiKey = localStorage.getItem('bailscan_anthropic_key') || '';
+  if (!apiKey) {
+    loadEl.style.display = 'none';
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--accent)"><div style="font-size:1.5rem;margin-bottom:8px">⚠️</div><div style="font-weight:600">Clé API manquante</div><div style="font-size:.82rem;color:var(--gris);margin-top:6px">Renseignez votre clé Anthropic dans Paramètres → API</div></div>';
+    btn.disabled = false;
+    return;
+  }
   (async function() {
     var texte = '';
     try {
@@ -7658,11 +7666,11 @@ async function genererCourrier() {
         if(k) h['x-api-key']=k;
         return h;
       })(),
-        body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1400,messages:[{role:'user',content:prompt}]})
+        body: JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1400,messages:[{role:'user',content:prompt}]})
       });
       var data = await resp.json();
       texte = (data.content && data.content[0] && data.content[0].text) || '';
-    } catch(e) {}
+    } catch(e) { console.error('[Courriers] API error:', e); }
 
     if (!texte) {
       var bailleurAdresse = agenceAdresse;
@@ -10757,18 +10765,20 @@ document.addEventListener('click',function(e){
 
 
 async function showOnboarding() {
-  console.log('[Onboarding] called');
-  // Verifier Supabase uniquement
+  // Vérifier localStorage en premier
+  if (localStorage.getItem('bailscan_ob_done') === '1') return;
+  // Vérifier Supabase
   try {
     var sb=getSupabase(), agId=proState._agenceId;
     if(sb && agId) {
-      var res = await sb.from('agences').select('onboarding_done').eq('id',agId).single();
-      if(res.data && res.data.onboarding_done) { console.log('[Onboarding] done in DB'); return; }
+      sb.from('agences').select('onboarding_done').eq('id',agId).single().then(function(res){
+        if(res.data && res.data.onboarding_done) { localStorage.setItem('bailscan_ob_done','1'); return; }
+        _obStep = 0; _obDone = []; renderObStep();
+      }).catch(function(){ _obStep = 0; _obDone = []; renderObStep(); });
+      return;
     }
   } catch(e) {}
-  console.log('[Onboarding] showing');
-  _obStep = 0; _obDone = [];
-  renderObStep();
+  _obStep = 0; _obDone = []; renderObStep();
 }
 
 var _obStep = 0;
@@ -11014,8 +11024,8 @@ function setLocGarant(val) {
   });
   toggleLocGarantFields();
   calcScore();
+  toggleLocGarantFields();
 }
-
 // ─── DOSSIER GARANTIE PILLS ──────────────────────────────
 function setDossierGarant(val) {
   document.getElementById('dossierGarant').value = val;
