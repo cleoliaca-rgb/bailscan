@@ -2707,6 +2707,25 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
             </div>
 
+            <div class="form-group-pro" style="margin-top:12px;position:relative">
+              <label class="form-label">🏠 Bien loué <span style="font-weight:400;color:var(--gris);font-size:.76rem">— recherchez un mandat pour remplir automatiquement</span></label>
+              <input type="hidden" id="locMandatSel" value="">
+              <input type="text" class="form-input-pro" id="locMandatSearch"
+                placeholder="Tapez une adresse pour chercher un mandat..."
+                oninput="searchLocMandat(this.value)"
+                onfocus="if(!proState.mandats||!proState.mandats.length){try{proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');}catch(e){}}searchLocMandat(this.value)"
+                onblur="setTimeout(function(){var d=document.getElementById('locMandatDrop');if(d)d.style.display='none';},200)"
+                autocomplete="off">
+              <div id="locMandatDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--pro-accent);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:220px;overflow-y:auto"></div>
+              <div id="locMandatSelected" style="display:none;margin-top:8px;padding:10px 14px;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:8px;font-size:.84rem">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div id="locMandatSelectedLabel" style="font-weight:600;color:var(--pro-accent)"></div>
+                  <button type="button" onclick="clearLocMandat()" style="background:none;border:none;color:var(--gris);cursor:pointer;font-size:.8rem">✕ Retirer</button>
+                </div>
+                <div id="locMandatSelectedDetails" style="color:var(--gris);font-size:.78rem;margin-top:2px"></div>
+              </div>
+            </div>
+
             <!-- Section garant (affichée si garant physique) -->
             <div id="locGarantFields" style="display:none;margin-top:4px">
               <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">🛡️ <span id="locGarantFieldsTitle">Garant — Informations</span></div>
@@ -2773,24 +2792,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <textarea class="form-input-pro" id="locNotes" rows="3" placeholder="Observations, historique de paiement, remarques…" style="resize:vertical;font-size:.85rem"></textarea>
             </div>
 
-            <div class="form-group-pro" style="margin-top:12px;position:relative">
-              <label class="form-label">🏠 Bien loué <span style="font-weight:400;color:var(--gris);font-size:.76rem">— recherchez un mandat pour remplir automatiquement</span></label>
-              <input type="hidden" id="locMandatSel" value="">
-              <input type="text" class="form-input-pro" id="locMandatSearch"
-                placeholder="Tapez une adresse pour chercher un mandat..."
-                oninput="searchLocMandat(this.value)"
-                onfocus="if(!proState.mandats||!proState.mandats.length){try{proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');}catch(e){}}searchLocMandat(this.value)"
-                onblur="setTimeout(function(){var d=document.getElementById('locMandatDrop');if(d)d.style.display='none';},200)"
-                autocomplete="off">
-              <div id="locMandatDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--pro-accent);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:220px;overflow-y:auto"></div>
-              <div id="locMandatSelected" style="display:none;margin-top:8px;padding:10px 14px;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:8px;font-size:.84rem">
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                  <div id="locMandatSelectedLabel" style="font-weight:600;color:var(--pro-accent)"></div>
-                  <button type="button" onclick="clearLocMandat()" style="background:none;border:none;color:var(--gris);cursor:pointer;font-size:.8rem">✕ Retirer</button>
-                </div>
-                <div id="locMandatSelectedDetails" style="color:var(--gris);font-size:.78rem;margin-top:2px"></div>
-              </div>
-            </div>
+            
             <div class="form-group-pro" style="margin-top:10px">
               <label class="form-label">📄 Rattacher un bail généré</label>
               <select class="form-input-pro" id="locBailSel">
