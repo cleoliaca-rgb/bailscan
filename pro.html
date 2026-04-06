@@ -8231,11 +8231,20 @@ function preFillGenererFromLocataire(locId) {
   // Adresse actuelle du locataire (pas du bien)
   // On ne remplit pas l'adresse du bien ici — ça vient du mandat
   // Garant si physique
-  if (l.garant === 'physique') {
+  if (l.garant === 'physique' || l.garant === 'caution_solidaire') {
+    if (l.garantPrenom) f('genGarantPrenom', l.garantPrenom);
     if (l.garantNom) f('genGarantNom', l.garantNom);
     if (l.garantAdresse) f('genGarantAdresse', l.garantAdresse);
+    if (l.garantCp) f('genGarantCp', l.garantCp);
+    if (l.garantVille) f('genGarantVille', l.garantVille);
+    if (l.garantEmail) f('genGarantEmail', l.garantEmail);
+    if (l.garantTel) f('genGarantTel', l.garantTel);
     if (l.garantRevenus) f('genGarantRevenus', l.garantRevenus);
     if (l.garantContrat) f('genGarantSituation', l.garantContrat);
+  } else if (l.garant === 'visale' || l.garant === 'garantme') {
+    if (l.garantNumDossier) f('genGarantNumDossier', l.garantNumDossier);
+  } else if (l.garant === 'autre_organisme') {
+    if (l.garantOrganisme) f('genGarantOrganisme', l.garantOrganisme);
   }
   // Si locataire a un mandatId, pré-remplir aussi le bien
   if (l.mandatId) {
@@ -8285,11 +8294,25 @@ function preFillGenererFromMandat(mandatId) {
   s('genAdresse', m.adresseFull || m.adresse);
   s('genVille', m.ville || (m.adresse||'').split(',').pop().trim());
   s('genCodePostal', m.cp || '');
-  // Loyer / charges
+  // Loyer / charges / complément
   s('genLoyer', m.loyer);
+  var cEl=document.getElementById('genComplement'); if(cEl) cEl.value=(m.complement!==undefined&&m.complement!==null)?m.complement:0;
   s('genCharges', m.charges);
-  // Surface
+  s('genDepotGarantie', m.depot || (parseFloat(m.loyer||0)*2)||'');
+  // Surface + pièces
   s('genSurface', m.surface);
+  if (m.pieces) { var pcEl=document.getElementById('genPieces'); if(pcEl) pcEl.value=m.pieces; }
+  // DPE
+  if (m.dpe) { var dpeEl=document.getElementById('genDPE'); if(dpeEl) dpeEl.value=m.dpe; }
+  // Type bail (meublé/vide selon type bien)
+  if (m.type) {
+    var isMeuble = ['meuble','studio'].includes((m.type||'').toLowerCase());
+    var radios = document.querySelectorAll('input[name="genTypeBail"]');
+    radios.forEach(function(r){
+      r.checked = isMeuble ? r.value==='meuble' : r.value==='vide';
+      var pill = r.closest('.radio-pill-pro'); if(pill) pill.classList.toggle('active',r.checked);
+    });
+  }
   // Bailleur
   s('genBailleurNom', m.bailleur);
   s('genBailleurEmail', m.bailleurEmail);
@@ -10650,7 +10673,7 @@ function pickLocMandat(mandatId) {
   var f = function(id,v){ var el=document.getElementById(id); if(el&&(v||v===0)) el.value=v; };
   f('locAdresse', m.adresseFull || m.adresse || '');
   f('locLoyer', m.loyer || '');
-  if (document.getElementById('locComplement')) document.getElementById('locComplement').value = m.complement || 0;
+  var compEl = document.getElementById('locComplement'); if(compEl) compEl.value = (m.complement !== undefined && m.complement !== null && m.complement !== '') ? m.complement : 0;
   f('locDateEntree', m.dateEntree || '');
   f('locDateFin', m.dateFin || '');
 }
@@ -14718,4 +14741,3 @@ function showActiveSubSection() {
         oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
       <button onclick="sendAgentMessage()" id="agentSendBtn"
         style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;border-radius:9px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;flex-shrink:0;height:36px;transition:opa
-
