@@ -2707,23 +2707,11 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
             </div>
 
-            <div class="form-group-pro" style="margin-top:12px;position:relative">
-              <label class="form-label">🏠 Bien loué <span style="font-weight:400;color:var(--gris);font-size:.76rem">— recherchez un mandat pour remplir automatiquement</span></label>
-              <input type="hidden" id="locBienSel" value="">
-              <input type="text" class="form-input-pro" id="locBienSearch"
-                placeholder="Tapez une adresse pour chercher un mandat..."
-                oninput="searchLocBien(this.value)" onkeyup="searchLocBien(this.value)" onkeydown="searchLocBien(this.value)"
-                onfocus="if(!proState.mandats||!proState.mandats.length){try{proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');}catch(e){}}searchLocBien(this.value)"
-                onblur="setTimeout(function(){var d=document.getElementById('locBienDrop');if(d)d.style.display='none';},200)"
-                autocomplete="off">
-              <div id="locBienDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--pro-accent);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:220px;overflow-y:auto"></div>
-              <div id="locBienSelected" style="display:none;margin-top:8px;padding:10px 14px;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:8px;font-size:.84rem">
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                  <div id="locBienSelectedLabel" style="font-weight:600;color:var(--pro-accent)"></div>
-                  <button type="button" onclick="clearLocMandat()" style="background:none;border:none;color:var(--gris);cursor:pointer;font-size:.8rem">✕ Retirer</button>
-                </div>
-                <div id="locBienSelectedDetails" style="color:var(--gris);font-size:.78rem;margin-top:2px"></div>
-              </div>
+            <div class="form-group-pro" style="margin-top:12px">
+              <label class="form-label">🏠 Bien loué <span style="font-weight:400;color:var(--gris);font-size:.76rem">— sélectionnez un mandat pour remplir automatiquement</span></label>
+              <select class="form-input-pro" id="locBienSel" onchange="pickLocMandat(this.value)" style="cursor:pointer">
+                <option value="">— Choisir un bien —</option>
+              </select>
             </div>
 
             <!-- Section garant (affichée si garant physique) -->
@@ -8039,9 +8027,7 @@ function ajouterLocataireDepuisMandat(mandatId) {
     setTimeout(function() {
       var f = function(id, val) { var el=document.getElementById(id); if(el && val) el.value=val; };
       if (m) {
-        f('locAdresse', m.adresseFull || m.adresse);
-        f('locLoyer', m.loyer);
-        f('locMandatSel', mandatId);
+        pickLocMandat(mandatId);
         // Pré-remplir dateEntree si disponible
         if (m.dateEntree) f('locDateEntree', m.dateEntree);
         if (m.dateFin) f('locDateFin', m.dateFin);
@@ -11525,8 +11511,7 @@ function openNewLocataire() {
   });
   // Réinitialiser le champ mandat search
   var lms = document.getElementById('locBienSearch'); if(lms) lms.value='';
-  var lmh = document.getElementById('locBienSel'); if(lmh) lmh.value='';
-  var lmd = document.getElementById('locBienDrop'); if(lmd) lmd.style.display='none';
+  refreshMandatSelectForLoc(null,'');
   var lmsel = document.getElementById('locBienSelected'); if(lmsel) lmsel.style.display='none';
   ['locDateEntree','locDateFin'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('locStatut').value='actif';
@@ -11884,7 +11869,7 @@ function editLocataire(id) {
   document.getElementById('locGarant').value = l.garant||'non';
   document.getElementById('locataireForm').style.display='flex';
   // Remplir le champ mandat search
-  var lmh = document.getElementById('locBienSel'); if(lmh) lmh.value = l.mandatId||'';
+  refreshMandatSelectForLoc(null, l.mandatId||'');
   if (l.mandatId) {
     if (!proState.mandats||!proState.mandats.length) { try { proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]'); } catch(e){} }
     var mnd = (proState.mandats||[]).find(function(x){ return String(x.id)===String(l.mandatId); });
