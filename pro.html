@@ -6293,7 +6293,7 @@ function renderMandatsTbody(arr) {
     var locs = loadLocataires().filter(function(l){ return String(l.mandatId)===String(m.id) || String(m.locataireId)===String(l.id); });
     var candidats = m.candidats || [];
     var locName = locs.length ? (locs[0].prenom||'')+' '+(locs[0].nom||'') : '';
-    var totalCC = (parseInt(m.loyer||0)+parseInt(m.charges||0));
+    var totalCC = (parseFloat(m.loyer||0)+parseFloat(m.charges||0)+parseFloat(m.complement||0));
 
     // Hero : photo ou couleur
     var heroContent = photos.length
@@ -6323,8 +6323,8 @@ function renderMandatsTbody(arr) {
             + '<div style="font-size:.72rem;color:var(--gris)">'+(m.type||'')+(m.surface?' · '+m.surface+' m²':'')+'</div>'
           + '</div>'
           + '<div style="text-align:right">'
-            + '<div style="font-weight:800;font-size:1.1rem;color:var(--pro-accent)">'+(m.loyer?m.loyer+' €':'—')+'<span style="font-size:.65rem;font-weight:400;color:var(--gris)">/mois HC</span></div>'
-            + (m.charges ? '<div style="font-size:.7rem;color:var(--gris)">CC : '+totalCC+' €</div>' : '')
+            + '<div style="font-weight:800;font-size:1.1rem;color:var(--pro-accent)">'+((parseFloat(m.loyer||0)+parseFloat(m.complement||0))>0?(parseFloat(m.loyer||0)+parseFloat(m.complement||0))+' €':'—')+'<span style="font-size:.65rem;font-weight:400;color:var(--gris)">/mois HC</span></div>'
+            + '<div style="font-size:.7rem;color:var(--gris);margin-top:2px">'+ (m.charges ? 'Charges : '+m.charges+'€  ·  ' : '')+'Total CC : '+totalCC+'€</div>'
           + '</div>'
         + '</div>'
         // Locataire actuel
@@ -6593,9 +6593,9 @@ function openFicheMandat(id, activeTab) {
       {label:'Type', val:(m.type||'—')},
       {label:'Surface', val:(m.surface?m.surface+' m²':'—')},
       {label:'DPE', val:m.dpe||'—', color:dpeColors[m.dpe]||'var(--gris)'},
-      {label:'Loyer HC', val:(m.loyer?m.loyer+' €':'—'), color:'var(--pro-accent)'},
+      {label:'Loyer total HC', val:((parseFloat(m.loyer||0)+parseFloat(m.complement||0))>0?(parseFloat(m.loyer||0)+parseFloat(m.complement||0))+' €':'—'), color:'var(--pro-accent)'},
       {label:'Charges', val:(m.charges?m.charges+' €/mois':'—')},
-      {label:'Total CC', val:(m.loyer&&m.charges?(parseInt(m.loyer)+parseInt(m.charges))+' €':'—')},
+      {label:'Total CC', val:((parseFloat(m.loyer||0)+parseFloat(m.complement||0)+parseFloat(m.charges||0))>0?(parseFloat(m.loyer||0)+parseFloat(m.complement||0)+parseFloat(m.charges||0))+' €':'—')},
     ];
     if (m.dateEntree) kpis.push({label:'Entrée', val:new Date(m.dateEntree).toLocaleDateString('fr-FR')});
     if (m.dateFin) {
@@ -12437,7 +12437,7 @@ function openFicheLocataire(locId, event, tab) {
       +'<div><div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:3px">EMAIL</div><div style="font-size:.86rem">'+(l.email||'—')+'</div></div>'
       +'<div><div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:3px">TÉLÉPHONE</div><div style="font-size:.86rem">'+(l.tel||'—')+'</div></div>'
       +'<div><div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:3px">LOGEMENT</div><div style="font-size:.84rem">'+(l.adresse||'—')+'</div></div>'
-      +'<div><div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:3px">LOYER HC</div><div style="font-weight:700;font-size:.95rem">'+(l.loyer?l.loyer+' €/mois':'—')+'</div></div>'
+      +'<div><div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:3px">LOYER HC</div><div style="font-weight:700;font-size:.95rem">'+((parseFloat(l.loyer||0)+parseFloat(l.complement||0))>0?(parseFloat(l.loyer||0)+parseFloat(l.complement||0))+' €/mois':'—')+'</div></div>'
       +'<div><div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:3px">SOLVABILITÉ</div>'+(l.score!=null?'<div style="font-weight:700;color:'+scoreColor+'">'+l.scoreLabel+' ('+l.score+'/100)</div>':'<div style="color:var(--gris)">—</div>')+'</div>'
       +'<div><div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:3px">CONTRAT</div><div style="font-size:.84rem">'+(contratLabels[l.contrat]||l.contrat||'—')+'</div></div>'
       +'<div><div style="font-size:.68rem;font-weight:700;color:var(--gris);letter-spacing:.06em;margin-bottom:3px">REVENUS NETS/MOIS</div><div style="font-size:.86rem">'+(l.revenus?l.revenus+' €':'—')+'</div></div>'
