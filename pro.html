@@ -11506,9 +11506,14 @@ function openNewLocataire() {
   var mandatSel = document.getElementById('locMandatSel');
   if (mandatSel) refreshMandatSelectForLoc(mandatSel, '');
   refreshLocBailSel('');
-  ['locPrenom','locNom','locEmail','locTel','locAdresse','locLoyer','locComplement','locRevenus','locNotes','locAgent'].forEach(function(id){
+  ['locPrenom','locNom','locEmail','locTel','locAdresse','locLoyer','locComplement','locDepot','locRevenus','locNotes','locAgent'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.value='';
   });
+  // Réinitialiser le champ mandat search
+  var lms = document.getElementById('locMandatSearch'); if(lms) lms.value='';
+  var lmh = document.getElementById('locMandatSel'); if(lmh) lmh.value='';
+  var lmd = document.getElementById('locMandatDrop'); if(lmd) lmd.style.display='none';
+  var lmsel = document.getElementById('locMandatSelected'); if(lmsel) lmsel.style.display='none';
   ['locDateEntree','locDateFin'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('locStatut').value='actif';
   document.getElementById('locContrat').value='cdi';
@@ -11864,10 +11869,16 @@ function editLocataire(id) {
   document.getElementById('locContrat').value = l.contrat||'cdi';
   document.getElementById('locGarant').value = l.garant||'non';
   document.getElementById('locataireForm').style.display='flex';
-  // Remplir le select mandat
-  var mandatSel = document.getElementById('locMandatSel');
-  if (mandatSel) {
-    refreshMandatSelectForLoc(mandatSel, l.mandatId || '');
+  // Remplir le champ mandat search
+  var lmh = document.getElementById('locMandatSel'); if(lmh) lmh.value = l.mandatId||'';
+  if (l.mandatId) {
+    if (!proState.mandats||!proState.mandats.length) { try { proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]'); } catch(e){} }
+    var mnd = (proState.mandats||[]).find(function(x){ return String(x.id)===String(l.mandatId); });
+    if (mnd) {
+      var lms = document.getElementById('locMandatSearch'); if(lms) lms.value = mnd.adresseFull||mnd.adresse||'';
+    }
+  } else {
+    var lms2 = document.getElementById('locMandatSearch'); if(lms2) lms2.value='';
   }
   refreshLocBailSel(l.bailId || '');
   calcScore();
