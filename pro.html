@@ -8027,12 +8027,24 @@ function ajouterLocataireDepuisMandat(mandatId) {
     setTimeout(function() {
       var f = function(id, val) { var el=document.getElementById(id); if(el && val) el.value=val; };
       if (m) {
-        pickLocMandat(mandatId);
-        // Pré-remplir dateEntree si disponible
+        // Remplir loyer, complément, dépôt depuis le mandat
+        f('locAdresse', m.adresseFull || m.adresse || '');
+        f('locLoyer', m.loyer || '');
+        var compEl = document.getElementById('locComplement');
+        if (compEl) compEl.value = (m.complement !== undefined && m.complement !== null) ? m.complement : 0;
+        var depEl = document.getElementById('locDepot');
+        if (depEl) {
+          var dv = parseFloat(m.depot)||0;
+          if (!dv) dv = (parseFloat(m.loyer||0)+parseFloat(m.complement||0))*2;
+          depEl.value = dv || '';
+        }
+        // Sélectionner le bien dans le select
+        var selEl = document.getElementById('locBienSel');
+        if (selEl) { refreshMandatSelectForLoc(selEl, mandatId); }
         if (m.dateEntree) f('locDateEntree', m.dateEntree);
         if (m.dateFin) f('locDateFin', m.dateFin);
       }
-      showToast('Renseignez les informations du locataire (adresse et loyer pré-remplis).', 'blue');
+      showToast('Formulaire pré-rempli depuis le bien.', 'blue');
     }, 300);
   }, 150);
 }
