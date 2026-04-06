@@ -6568,7 +6568,14 @@ function loadMandats() {
     if (arr && arr.length) proState.mandats = arr;
   }
   arr = arr || [];
-  arr.forEach(function(m){ if(m.complement===undefined||m.complement===null||m.complement==="") m.complement=0; if(m.pieces===undefined) m.pieces=''; });
+  arr.forEach(function(m){
+    if(m.complement===undefined||m.complement===null||m.complement==="") m.complement=0;
+    if(m.pieces===undefined) m.pieces='';
+    // Corriger dépôt aberrant (valeur <10 sans loyer correspondant)
+    if(m.depot!==undefined && parseFloat(m.depot) > 0 && parseFloat(m.depot) < 10) {
+      m.depot = (parseFloat(m.loyer||0) + parseFloat(m.complement||0)) * 2;
+    }
+  });
   return arr;
 }
 
