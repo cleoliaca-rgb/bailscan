@@ -1175,12 +1175,18 @@ body.is-dashboard #marketingPage { display: none !important; }
         </div>
 
         <!-- Bandeau essai -->
-        <div class="trial-banner" id="trialBanner" style="margin-bottom:20px">
-          <div class="trial-banner-text">
-            <div class="trial-banner-title">🎁 Essai gratuit en cours — <span id="trialDaysLeftBanner">3</span> jours restants</div>
-            <div class="trial-banner-sub">Accès complet à toutes les fonctionnalités Pro. Sans engagement.</div>
+        <div id="trialBanner" style="margin-bottom:24px;background:linear-gradient(135deg,#1e3a6e,#3b6fd4);border-radius:16px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:16px">
+            <div style="background:rgba(255,255,255,.15);border-radius:12px;padding:10px 16px;text-align:center;flex-shrink:0">
+              <div style="font-family:'Instrument Serif',serif;font-size:2.2rem;color:white;line-height:1" id="trialDaysLeftBanner">3</div>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.08em;margin-top:2px">jours</div>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:1rem;color:white">🎁 Essai gratuit en cours</div>
+              <div style="font-size:.83rem;color:rgba(255,255,255,.6);margin-top:3px">Accès complet à toutes les fonctionnalités Pro. Sans engagement.</div>
+            </div>
           </div>
-          <button class="btn-trial-upgrade" onclick="showDashTab('abonnement')">Passer en Pro →</button>
+          <button onclick="showDashTab('abonnement')" style="background:white;color:#3b6fd4;padding:10px 20px;border-radius:9px;font-size:.88rem;font-weight:700;border:none;cursor:pointer;white-space:nowrap">Passer en Pro →</button>
         </div>
 
         <!-- KPIs principaux -->
@@ -6687,7 +6693,7 @@ function openFicheMandat(id, activeTab) {
           + '<div style="width:42px;height:42px;border-radius:50%;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0">'+initials+'</div>'
           + '<div style="flex:1;min-width:0">'
             + '<div style="font-weight:700;font-size:.9rem">'+(l.prenom||'')+' '+(l.nom||'')+'</div>'
-            + '<div style="font-size:.75rem;color:var(--gris);margin-top:2px">'+(l.email||'')+(l.loyer?' · '+l.loyer+' €/mois':'')+'</div>'
+            + '<div style="font-size:.75rem;color:var(--gris);margin-top:2px">'+(l.email||'')+((parseFloat(l.loyer||0)+parseFloat(l.complement||0))>0?' · '+(parseFloat(l.loyer||0)+parseFloat(l.complement||0))+' €/mois':'')+'</div>'
           + '</div>'
           + (l.dossierVerdict?'<span style="background:'+verdictBg+';color:'+verdictColor+';font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:6px;flex-shrink:0">'+l.dossierVerdict+'</span>':'')
           + '<button class="btn-sm" onclick="closeFicheMandat();setTimeout(function(){openFicheLocataire(\''+l.id+'\')},120)" style="flex-shrink:0">Voir →</button>'
@@ -7251,7 +7257,7 @@ async function autoUpdateVeille(forceUpdate) {
     var cached = localStorage.getItem('bailscan_veille_data');
     if (cached) { try { renderVeille(JSON.parse(cached)); } catch(ex){} }
   } finally {
-    if (btnEl) { btnEl.disabled=false; btnEl.textContent='?? Actualiser'; }
+    if (btnEl) { btnEl.disabled=false; btnEl.textContent='🔁 Actualiser'; }
   }
 }
 
@@ -7547,12 +7553,35 @@ function preFillWizardFromMandat(mandatId) {
   setVal('pVille', m.ville || (m.adresse||'').split(',').pop().trim());
   setVal('pSurface', m.surface);
   setVal('pLoyerBase', m.loyer);
+  setVal('pLoyerMajore', m.loyerMajore || '');
+  setVal('pComplement', m.complement || 0);
   setVal('pCharges', m.charges);
+  setVal('pDepot', m.depot || (parseFloat(m.loyer||0) * 2) || '');
+  // Nombre de pièces
+  if (m.pieces) { var pc = document.getElementById('pPieces'); if(pc) pc.value = m.pieces; }
+  // Zone encadrement
+  if (m.zone) {
+    var ze = document.getElementById('pZone'); if(ze) ze.value = m.zone;
+    var zs = document.getElementById('pZoneEncadrement'); if(zs) zs.value = m.zone;
+  }
+  // DPE
   if (m.dpe) {
     var dpeEl = document.getElementById('pDPE');
     if (dpeEl) dpeEl.value = m.dpe;
   }
-  showToast('📋 Informations du bien pré-remplies depuis le mandat.', 'blue');
+  // Type de bien
+  if (m.type) {
+    var radiosBien = document.querySelectorAll('input[name="p_bien_type"]');
+    var typeMap = {studio:'meuble', appartement:'vide', maison:'vide', meuble:'meuble'};
+    var bienVal = typeMap[m.type] || 'vide';
+    radiosBien.forEach(function(r){
+      r.checked = r.value === bienVal;
+      var pill = r.closest('.radio-pill-pro');
+      if(pill) pill.classList.toggle('active', r.value === bienVal);
+    });
+  }
+  calcProLoyer();
+  showToast('📋 Bien pré-rempli depuis le mandat.', 'blue');
 }
 
 // ── Rafraîchir le select mandat du wizard analyse ──
@@ -9236,7 +9265,7 @@ function refreshDashboard() {
   if (locsSub) locsSub.textContent = locs.filter(function(l){return l.statut==='preavis';}).length + ' en préavis';
 
   // KPI loyers
-  var totalLoyer = locsActifs.reduce(function(s,l){return s+(parseFloat(l.loyer)||0);},0);
+  var totalLoyer = locsActifs.reduce(function(s,l){return s+(parseFloat(l.loyer)||0)+(parseFloat(l.complement)||0);},0);
   f('dashKpiLoyer', totalLoyer.toLocaleString('fr-FR')+' €');
   // Impayés ce mois
   var moisActuel = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0');
@@ -10336,10 +10365,10 @@ async function showOnboarding() {
 
 var _obStep = 0;
 var _obSteps = [
-  {tab:'mandats', title:'Cr\u00e9ez votre premier mandat', desc:'Ajoutez un bien immobilier \u00e0 g\u00e9rer : adresse, loyer, type de bien.', cta:'Cr\u00e9er un mandat \u2192', action:'saveMandat'},
-  {tab:'locataires', title:'Ajoutez un locataire', desc:'Cr\u00e9ez la fiche de votre locataire avec scoring de solvabilit\u00e9 automatique.', cta:'Ajouter un locataire \u2192', action:'saveLocataire'},
-  {tab:'nouveau', title:'Analysez un bail existant', desc:'Uploadez un PDF de bail \u2014 l\u2019IA d\u00e9tecte les clauses ill\u00e9gales en 30 secondes.', cta:'Analyser un bail \u2192', action:'analyser'},
-  {tab:'generer', title:'G\u00e9n\u00e9rez un bail conforme', desc:'Cr\u00e9ez un bail loi 89/ALUR adapt\u00e9 \u00e0 votre bien en quelques minutes.', cta:'G\u00e9n\u00e9rer un bail \u2192', action:'generer'}
+  {tab:'parametres', n:1, title:'Configurer votre agence', desc:'Logo, coordonn\u00e9es, RIB \u2014 indispensable pour les documents'},
+  {tab:'mandats', n:2, title:'Cr\u00e9er un mandat', desc:'Ajoutez votre premier bien \u2014 adresse, loyer, type'},
+  {tab:'locataires', n:3, title:'Ajouter un locataire', desc:'Fiche locataire avec scoring de solvabilit\u00e9'},
+  {tab:'generer', n:4, title:'G\u00e9n\u00e9rer un bail', desc:'Bail conforme loi 89/ALUR, export PDF'}
 ];
 
 function renderObStep() {
@@ -11093,7 +11122,7 @@ function prefillQuittance() {
   if(!l) return;
   var n = document.getElementById('qLocNom'); if(n) n.value = l.prenom+' '+l.nom;
   var a = document.getElementById('qAdresse'); if(a) a.value = l.adresse||'';
-  var lo = document.getElementById('qLoyer'); if(lo) lo.value = l.loyer||'';
+  var lo = document.getElementById('qLoyer'); if(lo) lo.value = (parseFloat(l.loyer||0)+parseFloat(l.complement||0))||'';
   updateQuittancePreview();
 }
 
@@ -11247,7 +11276,7 @@ function refreshLocataires() {
       + '<span style="background:'+sc.bg+';color:'+sc.col+';font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap">'+sc.label+'</span>'
       + '</div>'
       + (l.adresse?'<div style="font-size:.8rem;font-weight:500;margin-bottom:4px">🏠 '+l.adresse+'</div>':'')
-      + (l.loyer?'<div style="font-size:.78rem;color:var(--gris)">Loyer: '+l.loyer+' €/mois HC</div>':'')
+      + (l.loyer?'<div style="font-size:.78rem;color:var(--gris)">Loyer: '+(parseFloat(l.loyer||0)+parseFloat(l.complement||0))+' €/mois HC</div>':'')
       + (l.garant && l.garant!=='non' ? '<div style="font-size:.75rem;color:#7e22ce;margin-top:3px">🛡️ Garant'+(l.garant==='physique'?' physique'+(l.garantNom?' : '+l.garantNom:''):l.garant==='visale'?' Visale':' organisme')+'</div>' : '')
       + finBail
       + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:6px">'
@@ -12401,7 +12430,7 @@ function openFicheLocataire(locId, event, tab) {
   header.style.cssText = 'padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;border-radius:16px 16px 0 0';
   var hl = document.createElement('div');
   hl.innerHTML = '<div style="font-weight:700;font-size:1.05rem">'+(l.prenom||'')+' '+(l.nom||'')+'</div>'
-    +'<div style="font-size:.78rem;color:var(--gris);margin-top:2px">'+(l.adresse||'')+(l.loyer?' · '+l.loyer+' €/mois HC':'')+'</div>';
+    +'<div style="font-size:.78rem;color:var(--gris);margin-top:2px">'+(l.adresse||'')+((parseFloat(l.loyer||0)+parseFloat(l.complement||0))>0?' · '+(parseFloat(l.loyer||0)+parseFloat(l.complement||0))+' €/mois HC':'')+'</div>';
   var hr2 = document.createElement('div');
   hr2.style.cssText = 'display:flex;align-items:center;gap:10px';
   var badge = document.createElement('span');
@@ -13619,7 +13648,7 @@ function selectDossierLoc(locId) {
     f('dossierRevenus', l.revenus);
     updateDossierCalc();
   }
-  if (l.loyer) f('dossierLoyer', l.loyer);
+  if (l.loyer) f('dossierLoyer', (parseFloat(l.loyer||0)+parseFloat(l.complement||0)) || l.loyer);
   updateDossierCalc();
 }
 
