@@ -1336,11 +1336,11 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div class="pro-wizard-panel active" id="pstep-1">
             <div class="panel-title">Contexte du logement</div>
             <div class="panel-sub">Ces informations permettent une analyse précise et personnalisée</div>
-            <div class="form-group-pro" style="margin-bottom:14px">
+            <div class="form-group-pro" style="margin-bottom:14px;position:relative">
               <label class="form-label">🔗 Rattacher à un bien / mandat <span style="font-weight:400;color:var(--gris);font-size:.78rem">— pré-remplit adresse, loyer, surface</span></label>
-              <select class="form-input-pro" id="pMandatSel" onchange="preFillWizardFromMandat(this.value)">
-                <option value="">— Saisie manuelle —</option>
-              </select>
+              <input type="hidden" id="pMandatSel" value="">
+              <input type="text" class="form-input-pro" id="pMandatSearch" placeholder="Tapez une adresse pour chercher un mandat..." oninput="searchPMandat(this.value)" onfocus="searchPMandat(this.value)" autocomplete="off">
+              <div id="pMandatDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1.5px solid var(--pro-accent);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:200px;overflow-y:auto"></div>
             </div>
             <div class="form-grid-pro">
               <div class="form-group-pro">
@@ -2964,7 +2964,9 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div id="qLocDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1.5px solid var(--pro-accent);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:200px;overflow-y:auto"></div>
             </div>
             <div class="form-grid-pro">
-              <div class="form-group-pro"><label class="form-label">Prénom Nom locataire</label><input type="text" class="form-input-pro" id="qLocNom" placeholder="Marie Martin"></div>
+              <div class="form-group-pro"><label class="form-label">Prénom locataire</label><input type="text" class="form-input-pro" id="qLocPrenom" placeholder="Marie" oninput="updateQLocNom()"></div>
+              <div class="form-group-pro"><label class="form-label">Nom locataire</label><input type="text" class="form-input-pro" id="qLocNomSep" placeholder="Martin" oninput="updateQLocNom()"></div>
+              <input type="hidden" id="qLocNom" value="">
               <div class="form-group-pro"><label class="form-label">Adresse du bien</label><input type="text" class="form-input-pro" id="qAdresse" placeholder="12 rue des Lilas, 75020 Paris"></div>
 
             </div>
@@ -6231,7 +6233,10 @@ function autoFillCourrierFromLocataire(locId) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function loadMandats() {
-  return proState.mandats || [];
+  var arr = proState.mandats || [];
+  // Normaliser complement à 0 si undefined
+  arr.forEach(function(m){ if(m.complement===undefined||m.complement===null||m.complement==="") m.complement=0; });
+  return arr;
 }
 
 function saveMandats() {
@@ -10619,6 +10624,9 @@ function pickQLocataire(id) {
   if (!l) return;
   var name = (l.prenom||'')+' '+(l.nom||'');
   var s = document.getElementById('qLocSearch'); if(s) s.value=name;
+  var qp=document.getElementById('qLocPrenom'); if(qp) qp.value=l.prenom||'';
+  var qn=document.getElementById('qLocNomSep'); if(qn) qn.value=l.nom||'';
+  updateQLocNom();
   // Stocker email pour envoi
   proState._qLocEmail = l.email || '';
   // Appeler prefillQuittance si dispo
@@ -14207,6 +14215,12 @@ function closeModal(name) {
   var ids = {login:'modalLogin',signup:'modalSignup',invite:'modalInvite',forgot:'modalForgot',mandat:'modalMandat'};
   var id = ids[name]||('modal'+name.charAt(0).toUpperCase()+name.slice(1));
   var el=document.getElementById(id); if(el){el.style.display='none';el.classList.remove('active');}
+}
+
+function updateQLocNom() {
+  var p = (document.getElementById('qLocPrenom')||{}).value||'';
+  var n = (document.getElementById('qLocNomSep')||{}).value||'';
+  var h = document.getElementById('qLocNom'); if(h) h.value = (p+' '+n).trim();
 }
 </script>
 <!-- ═══════════════════════════════════════════════════════════
