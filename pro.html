@@ -2384,7 +2384,8 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin:16px 0 10px;padding-bottom:6px;border-bottom:1.5px solid var(--pro-light)">🏠 Bail en cours</div>
             <div class="form-grid-pro">
               <div class="form-group-pro"><label class="form-label">Adresse du logement</label><input type="text" class="form-input-pro" id="locAdresse" placeholder="12 rue des Lilas, 75020 Paris"></div>
-              <div class="form-group-pro"><label class="form-label">Loyer mensuel HC (€)</label><input type="number" class="form-input-pro" id="locLoyer" placeholder="800"></div>
+              <div class="form-group-pro"><label class="form-label">Loyer HC (€)</label><input type="number" class="form-input-pro" id="locLoyer" placeholder="800"></div>
+              <div class="form-group-pro"><label class="form-label">Complément loyer (€) <small style="font-weight:400;color:var(--gris)">optionnel</small></label><input type="number" class="form-input-pro" id="locComplement" placeholder="0" min="0"></div>
             </div>
             <div class="form-grid-pro">
               <div class="form-group-pro"><label class="form-label">Date d'entrée</label><input type="date" class="form-input-pro" id="locDateEntree"></div>
@@ -10504,8 +10505,8 @@ function pickLocMandat(mandatId) {
   // Remplir automatiquement les champs
   var f = function(id,v){ var el=document.getElementById(id); if(el&&(v||v===0)) el.value=v; };
   f('locAdresse', m.adresseFull || m.adresse || '');
-  var totalLoyer = (parseFloat(m.loyer)||0) + (parseFloat(m.complement)||0);
-  f('locLoyer', totalLoyer || '');
+  f('locLoyer', m.loyer || '');
+  if (document.getElementById('locComplement')) document.getElementById('locComplement').value = m.complement || 0;
   f('locDateEntree', m.dateEntree || '');
   f('locDateFin', m.dateFin || '');
 }
@@ -11094,7 +11095,7 @@ function openNewLocataire() {
   var mandatSel = document.getElementById('locMandatSel');
   if (mandatSel) refreshMandatSelectForLoc(mandatSel, '');
   refreshLocBailSel('');
-  ['locPrenom','locNom','locEmail','locTel','locAdresse','locLoyer','locRevenus','locNotes','locAgent'].forEach(function(id){
+  ['locPrenom','locNom','locEmail','locTel','locAdresse','locLoyer','locComplement','locRevenus','locNotes','locAgent'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.value='';
   });
   ['locDateEntree','locDateFin'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
@@ -11160,6 +11161,7 @@ function saveLocataire() {
     tel: document.getElementById('locTel').value.trim(),
     adresse: document.getElementById('locAdresse').value.trim(),
     loyer: document.getElementById('locLoyer').value,
+    complement: (document.getElementById('locComplement')||{value:0}).value||0,
     revenus: document.getElementById('locRevenus').value,
     contrat: document.getElementById('locContrat').value,
     garant: document.getElementById('locGarant').value,
@@ -11427,6 +11429,7 @@ function editLocataire(id) {
     var el=document.getElementById(fid); if(el) el.value=l[key]||'';
   });
   document.getElementById('locLoyer').value = l.loyer||'';
+  if(document.getElementById('locComplement')) document.getElementById('locComplement').value = l.complement||0;
   document.getElementById('locRevenus').value = l.revenus||'';
   document.getElementById('locDateEntree').value = l.dateEntree||'';
   document.getElementById('locDateFin').value = l.dateFin||'';
