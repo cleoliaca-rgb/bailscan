@@ -10919,7 +10919,11 @@ function pickLocMandat(mandatId) {
   f('locDateFin', m.dateFin || '');
   // Dépôt de garantie
   var depotEl = document.getElementById('locDepot');
-  if (depotEl) depotEl.value = m.depot || (parseFloat(m.loyer||0)*2) || '';
+  if (depotEl) {
+    var depotVal = parseFloat(m.depot)||0;
+    if (!depotVal) { depotVal = (parseFloat(m.loyer||0) + parseFloat(m.complement||0)) * 2; }
+    depotEl.value = depotVal || '';
+  }
 }
 
 function clearLocMandat() {
