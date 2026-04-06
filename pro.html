@@ -2712,7 +2712,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <input type="hidden" id="locMandatSel" value="">
               <input type="text" class="form-input-pro" id="locMandatSearch"
                 placeholder="Tapez une adresse pour chercher un mandat..."
-                oninput="searchLocMandat(this.value)"
+                oninput="searchLocMandat(this.value)" onkeyup="searchLocMandat(this.value)" onkeydown="searchLocMandat(this.value)"
                 onfocus="if(!proState.mandats||!proState.mandats.length){try{proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');}catch(e){}}searchLocMandat(this.value)"
                 onblur="setTimeout(function(){var d=document.getElementById('locMandatDrop');if(d)d.style.display='none';},200)"
                 autocomplete="off">
