@@ -6721,8 +6721,10 @@ function refreshLocBailSel(currentBailId) {
 }
 
 function refreshMandatSelectForLoc(sel, selectedId) {
+  if (!sel) sel = document.getElementById('locBienSel');
+  if (!sel) return;
   var mandats = JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');
-  sel.innerHTML = '<option value="">— Aucun mandat sélectionné —</option>';
+  sel.innerHTML = '<option value="">— Choisir un bien —</option>';
   mandats.forEach(function(m) {
     var opt = document.createElement('option');
     opt.value = m.id;
@@ -8040,7 +8042,9 @@ function ajouterLocataireDepuisMandat(mandatId) {
         }
         // Sélectionner le bien dans le select
         var selEl = document.getElementById('locBienSel');
-        if (selEl) { refreshMandatSelectForLoc(selEl, mandatId); }
+        if (selEl) {
+          refreshMandatSelectForLoc(selEl, mandatId);
+        }
         if (m.dateEntree) f('locDateEntree', m.dateEntree);
         if (m.dateFin) f('locDateFin', m.dateFin);
       }
@@ -11515,8 +11519,7 @@ async function envoyerCourrierMail() {
 function openNewLocataire() {
   document.getElementById('locEditId').value = '';
   document.getElementById('locFormTitle').textContent = 'Nouveau locataire';
-  var mandatSel = document.getElementById('locBienSel');
-  if (mandatSel) refreshMandatSelectForLoc(mandatSel, '');
+  // locBienSel sera chargé après ouverture
   refreshLocBailSel('');
   ['locPrenom','locNom','locEmail','locTel','locAdresse','locLoyer','locComplement','locDepot','locRevenus','locNotes','locAgent'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.value='';
