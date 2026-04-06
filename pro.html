@@ -2709,20 +2709,20 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             <div class="form-group-pro" style="margin-top:12px;position:relative">
               <label class="form-label">🏠 Bien loué <span style="font-weight:400;color:var(--gris);font-size:.76rem">— recherchez un mandat pour remplir automatiquement</span></label>
-              <input type="hidden" id="locMandatSel" value="">
-              <input type="text" class="form-input-pro" id="locMandatSearch"
+              <input type="hidden" id="locBienSel" value="">
+              <input type="text" class="form-input-pro" id="locBienSearch"
                 placeholder="Tapez une adresse pour chercher un mandat..."
-                oninput="searchLocMandat(this.value)" onkeyup="searchLocMandat(this.value)" onkeydown="searchLocMandat(this.value)"
-                onfocus="if(!proState.mandats||!proState.mandats.length){try{proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');}catch(e){}}searchLocMandat(this.value)"
-                onblur="setTimeout(function(){var d=document.getElementById('locMandatDrop');if(d)d.style.display='none';},200)"
+                oninput="searchLocBien(this.value)" onkeyup="searchLocBien(this.value)" onkeydown="searchLocBien(this.value)"
+                onfocus="if(!proState.mandats||!proState.mandats.length){try{proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');}catch(e){}}searchLocBien(this.value)"
+                onblur="setTimeout(function(){var d=document.getElementById('locBienDrop');if(d)d.style.display='none';},200)"
                 autocomplete="off">
-              <div id="locMandatDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--pro-accent);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:220px;overflow-y:auto"></div>
-              <div id="locMandatSelected" style="display:none;margin-top:8px;padding:10px 14px;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:8px;font-size:.84rem">
+              <div id="locBienDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--pro-accent);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:220px;overflow-y:auto"></div>
+              <div id="locBienSelected" style="display:none;margin-top:8px;padding:10px 14px;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:8px;font-size:.84rem">
                 <div style="display:flex;justify-content:space-between;align-items:center">
-                  <div id="locMandatSelectedLabel" style="font-weight:600;color:var(--pro-accent)"></div>
+                  <div id="locBienSelectedLabel" style="font-weight:600;color:var(--pro-accent)"></div>
                   <button type="button" onclick="clearLocMandat()" style="background:none;border:none;color:var(--gris);cursor:pointer;font-size:.8rem">✕ Retirer</button>
                 </div>
-                <div id="locMandatSelectedDetails" style="color:var(--gris);font-size:.78rem;margin-top:2px"></div>
+                <div id="locBienSelectedDetails" style="color:var(--gris);font-size:.78rem;margin-top:2px"></div>
               </div>
             </div>
 
@@ -10866,8 +10866,8 @@ function updateObProgress() {}
 
 
 // ─── MANDAT SEARCH + AUTOFILL ────────────────────────────
-function searchLocMandat(q) {
-  var drop = document.getElementById('locMandatDrop');
+function searchLocBien(q) {
+  var drop = document.getElementById('locBienDrop');
   if (!drop) return;
   // Fallback localStorage si proState vide
   if (!proState.mandats || !proState.mandats.length) {
@@ -10893,7 +10893,7 @@ function searchLocMandat(q) {
 }
 
 function pickLocMandat(mandatId) {
-  var drop = document.getElementById('locMandatDrop');
+  var drop = document.getElementById('locBienDrop');
   if (drop) drop.style.display = 'none';
   var m = (proState.mandats||[]).find(function(x){ return String(x.id)===String(mandatId); });
   if (!m) {
@@ -10904,18 +10904,18 @@ function pickLocMandat(mandatId) {
   // Normaliser complement
   if (m.complement===undefined||m.complement===null||m.complement==='') m.complement=0;
   // Stocker l'id
-  var hiddenSel = document.getElementById('locMandatSel');
+  var hiddenSel = document.getElementById('locBienSel');
   if (hiddenSel) hiddenSel.value = mandatId;
   // Afficher le résumé
   var label = m.adresseFull || m.adresse || 'Bien sans adresse';
   var detail = [m.type, m.loyer ? m.loyer+'€/mois HC' : '', m.surface ? m.surface+'m²' : '', m.ville || ''].filter(Boolean).join(' · ');
-  var searchEl = document.getElementById('locMandatSearch');
+  var searchEl = document.getElementById('locBienSearch');
   if (searchEl) searchEl.value = label;
-  var selLabel = document.getElementById('locMandatSelectedLabel');
+  var selLabel = document.getElementById('locBienSelectedLabel');
   if (selLabel) selLabel.textContent = label;
-  var selDetail = document.getElementById('locMandatSelectedDetails');
+  var selDetail = document.getElementById('locBienSelectedDetails');
   if (selDetail) selDetail.textContent = detail;
-  var selDiv = document.getElementById('locMandatSelected');
+  var selDiv = document.getElementById('locBienSelected');
   if (selDiv) selDiv.style.display = 'block';
   // Remplir automatiquement les champs
   var f = function(id,v){ var el=document.getElementById(id); if(el&&(v||v===0)) el.value=v; };
@@ -10934,12 +10934,12 @@ function pickLocMandat(mandatId) {
 }
 
 function clearLocMandat() {
-  var h = document.getElementById('locMandatSel'); if(h) h.value='';
-  var s = document.getElementById('locMandatSearch'); if(s) s.value='';
-  var d = document.getElementById('locMandatSelected'); if(d) d.style.display='none';
+  var h = document.getElementById('locBienSel'); if(h) h.value='';
+  var s = document.getElementById('locBienSearch'); if(s) s.value='';
+  var d = document.getElementById('locBienSelected'); if(d) d.style.display='none';
 }
 
-function filterLocMandats(q) { searchLocMandat(q); }
+function filterLocMandats(q) { searchLocBien(q); }
 function autoFillFromMandat(id) { pickLocMandat(id); }
 
 // ─── AUTOCOMPLETE CP GARANT ──────────────────────────────
@@ -10969,8 +10969,8 @@ function pickCpGarant(cp, city) {
 document.addEventListener('click', function(e){
   var b=document.getElementById('locGarantCpDrop');
   if(b&&!b.contains(e.target)&&e.target.id!=='locGarantCp') b.style.display='none';
-  var d=document.getElementById('locMandatDrop');
-  if(d&&!d.contains(e.target)&&e.target.id!=='locMandatSearch') d.style.display='none';
+  var d=document.getElementById('locBienDrop');
+  if(d&&!d.contains(e.target)&&e.target.id!=='locBienSearch') d.style.display='none';
 });
 
 // ─── GARANTIE PILLS ──────────────────────────────────────
@@ -11517,17 +11517,17 @@ async function envoyerCourrierMail() {
 function openNewLocataire() {
   document.getElementById('locEditId').value = '';
   document.getElementById('locFormTitle').textContent = 'Nouveau locataire';
-  var mandatSel = document.getElementById('locMandatSel');
+  var mandatSel = document.getElementById('locBienSel');
   if (mandatSel) refreshMandatSelectForLoc(mandatSel, '');
   refreshLocBailSel('');
   ['locPrenom','locNom','locEmail','locTel','locAdresse','locLoyer','locComplement','locDepot','locRevenus','locNotes','locAgent'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.value='';
   });
   // Réinitialiser le champ mandat search
-  var lms = document.getElementById('locMandatSearch'); if(lms) lms.value='';
-  var lmh = document.getElementById('locMandatSel'); if(lmh) lmh.value='';
-  var lmd = document.getElementById('locMandatDrop'); if(lmd) lmd.style.display='none';
-  var lmsel = document.getElementById('locMandatSelected'); if(lmsel) lmsel.style.display='none';
+  var lms = document.getElementById('locBienSearch'); if(lms) lms.value='';
+  var lmh = document.getElementById('locBienSel'); if(lmh) lmh.value='';
+  var lmd = document.getElementById('locBienDrop'); if(lmd) lmd.style.display='none';
+  var lmsel = document.getElementById('locBienSelected'); if(lmsel) lmsel.style.display='none';
   ['locDateEntree','locDateFin'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('locStatut').value='actif';
   document.getElementById('locContrat').value='cdi';
@@ -11610,7 +11610,7 @@ function saveLocataire() {
     score: scoreData ? scoreData.score : null,
     scoreCls: scoreData ? scoreData.cls : null,
     scoreLabel: scoreData ? scoreData.label : null,
-    mandatId: document.getElementById('locMandatSel') ? document.getElementById('locMandatSel').value : '',
+    mandatId: document.getElementById('locBienSel') ? document.getElementById('locBienSel').value : '',
     bailId: document.getElementById('locBailSel') ? document.getElementById('locBailSel').value : '',
     createdAt: new Date().toLocaleDateString('fr-FR')
   };
@@ -11884,15 +11884,15 @@ function editLocataire(id) {
   document.getElementById('locGarant').value = l.garant||'non';
   document.getElementById('locataireForm').style.display='flex';
   // Remplir le champ mandat search
-  var lmh = document.getElementById('locMandatSel'); if(lmh) lmh.value = l.mandatId||'';
+  var lmh = document.getElementById('locBienSel'); if(lmh) lmh.value = l.mandatId||'';
   if (l.mandatId) {
     if (!proState.mandats||!proState.mandats.length) { try { proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]'); } catch(e){} }
     var mnd = (proState.mandats||[]).find(function(x){ return String(x.id)===String(l.mandatId); });
     if (mnd) {
-      var lms = document.getElementById('locMandatSearch'); if(lms) lms.value = mnd.adresseFull||mnd.adresse||'';
+      var lms = document.getElementById('locBienSearch'); if(lms) lms.value = mnd.adresseFull||mnd.adresse||'';
     }
   } else {
-    var lms2 = document.getElementById('locMandatSearch'); if(lms2) lms2.value='';
+    var lms2 = document.getElementById('locBienSearch'); if(lms2) lms2.value='';
   }
   refreshLocBailSel(l.bailId || '');
   calcScore();
