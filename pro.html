@@ -6421,7 +6421,7 @@ function editMandat(id) {
   document.getElementById('modalMandatTitle').textContent = '✏️ Modifier le bien';
   var f = function(fid, val){ var el=document.getElementById(fid); if(el&&val!==undefined) el.value=val; };
   f('mandatAdresse', m.adresse); f('mandatCp', m.cp||''); f('mandatVille', m.ville||'');
-  f('mandatSurface', m.surface); f('mandatLoyer', m.loyer);
+  f('mandatSurface', m.surface); f('mandatLoyer', m.loyer); if(document.getElementById('mandatComplement')) document.getElementById('mandatComplement').value = m.complement||0;
   f('mandatCharges', m.charges); f('mandatBailleur', m.bailleur);
   f('mandatBailleurEmail', m.bailleurEmail); f('mandatBailleurTel', m.bailleurTel);
   f('mandatType', m.type); f('mandatStatut', m.statut); f('mandatDpe', m.dpe||'');
@@ -6451,6 +6451,7 @@ function saveMandat() {
     type: document.getElementById('mandatType').value,
     surface: document.getElementById('mandatSurface').value,
     loyer: document.getElementById('mandatLoyer').value,
+    complement: (document.getElementById('mandatComplement')||{value:''}).value||0,
     charges: document.getElementById('mandatCharges').value,
     bailleur: document.getElementById('mandatBailleur').value,
     bailleurEmail: document.getElementById('mandatBailleurEmail').value,
