@@ -667,7 +667,7 @@ body.is-dashboard #marketingPage { display: none !important; }
     <div>
       <div class="hero-tag">Solution B2B · Pour agences &amp; gestionnaires immobiliers</div>
       <h1>Le dashboard IA<br>de vos <em>baux &amp; mandats.</em></h1>
-      <p class="hero-sub">Analyse de baux clause par clause, fiches locataires &amp; garants, états des lieux pro, alertes d'échéances, révision IRL, quittances PDF, courriers juridiques, diagnostics — tout ce qu'une agence gère au quotidien, centralisé et automatisé.</p>
+      <p class="hero-sub">Analyse de baux clause par clause, fiches locataires &amp; garants, états des lieux pro, alertes d'échéances, révision IRL, quittances PDF, courriers juridiques, diagnostics, tout ce qu'une agence gère au quotidien, centralisé et automatisé.</p>
       <div class="hero-ctas">
         <button class="btn-primary-pro" onclick="openModal('signup')">Démarrer l'essai gratuit →</button>
         <button class="btn-secondary-pro" onclick="openModal('login')">Se connecter</button>
@@ -709,61 +709,153 @@ body.is-dashboard #marketingPage { display: none !important; }
   <div class="section-inner">
     <div class="section-tag">Fonctionnalités Pro</div>
     <h2 class="section-title">Tout ce dont une agence a besoin</h2>
-    <p class="section-sub">Du bail à la quittance, de l'analyse à la mise en demeure — tout dans un seul dashboard. Conçu pour les équipes immobilières.</p>
+    <p class="section-sub">Du bail à la quittance, de l'analyse à la mise en demeure, tout dans un seul dashboard. Conçu pour les équipes immobilières.</p>
     <div class="features-grid">
 
       <div class="feat-card">
-        <div class="feat-icon">⚡</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Résultat analyse</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:44px;height:44px;border-radius:50%;border:3px solid #ef4444;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0"><div style="font-size:.85rem;font-weight:700;color:white;line-height:1">42</div><div style="font-size:.5rem;color:rgba(255,255,255,.4)">/100</div></div>
+            <div><div style="font-weight:600;font-size:.78rem;color:white">Score de conformité</div><div style="font-size:.68rem;color:#ef4444;margin-top:2px">3 clauses illégales détectées</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="background:rgba(200,75,47,.15);border-radius:5px;padding:5px 8px;font-size:.66rem;color:#e8806b;display:flex;align-items:center;gap:6px"><span style="font-weight:700">DANGER</span> Dépôt de garantie &gt; 2 mois</div>
+            <div style="background:rgba(200,75,47,.15);border-radius:5px;padding:5px 8px;font-size:.66rem;color:#e8806b;display:flex;align-items:center;gap:6px"><span style="font-weight:700">DANGER</span> Clause résiliation abusive</div>
+          </div>
+        </div>
         <div class="feat-title">Analyse de bail IA en 2 min</div>
-        <div class="feat-desc">Uploadez le PDF — l'IA détecte chaque clause illégale, vérifie l'encadrement des loyers et calcule le trop-perçu depuis le premier jour. Score de conformité /100 immédiat.</div>
+        <div class="feat-desc">Uploadez le PDF : l'IA détecte chaque clause illégale, vérifie l'encadrement des loyers et calcule le trop-perçu. Score de conformité /100 immédiat.</div>
       </div>
 
       <div class="feat-card">
-        <div class="feat-icon">👤</div>
-        <div class="feat-title">Fiches locataires & scoring</div>
-        <div class="feat-desc">Dossier complet par locataire : identité, bail en cours, dates d'entrée/sortie. Scoring solvabilité automatique — ratio revenus, type de contrat, garant — pour valider un candidat en 10 secondes.</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Fiche locataire</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:36px;height:36px;border-radius:50%;background:#3b6fd4;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:.85rem;flex-shrink:0">ML</div>
+            <div><div style="font-weight:600;font-size:.78rem;color:white">Marie Lefebvre</div><div style="font-size:.66rem;color:rgba(255,255,255,.4)">CDI · 3 200 €/mois</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px"><div style="font-size:.58rem;color:rgba(255,255,255,.4)">Score</div><div style="font-size:.85rem;font-weight:700;color:#6ee7b7">87</div></div>
+            <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px"><div style="font-size:.58rem;color:rgba(255,255,255,.4)">Taux effort</div><div style="font-size:.85rem;font-weight:700;color:#6ee7b7">28%</div></div>
+          </div>
+          <div style="margin-top:7px;background:rgba(45,106,79,.25);border-radius:6px;padding:5px 9px;font-size:.68rem;color:#6ee7b7;font-weight:600">✓ GO — Dossier validé</div>
+        </div>
+        <div class="feat-title">Fiches locataires &amp; scoring</div>
+        <div class="feat-desc">Dossier complet par locataire avec scoring solvabilité automatique, ratio revenus, type de contrat, garant. Valider un candidat en 10 secondes.</div>
       </div>
 
       <div class="feat-card">
-        <div class="feat-icon">🔔</div>
-        <div class="feat-title">Alertes & échéances automatiques</div>
-        <div class="feat-desc">Fin de bail dans 6 mois, révision IRL due, préavis en cours — les alertes se génèrent seules depuis vos fiches locataires. Plus jamais de deadline manquée.</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Alertes &amp; échéances</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="border-left:3px solid #ef4444;padding:6px 10px;background:rgba(255,255,255,.04);border-radius:0 6px 6px 0">
+              <div style="font-size:.68rem;font-weight:600;color:white">Fin de bail dans 23 jours</div>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.4)">Marie Lefebvre · 83 rue du Général</div>
+            </div>
+            <div style="border-left:3px solid #f59e0b;padding:6px 10px;background:rgba(255,255,255,.04);border-radius:0 6px 6px 0">
+              <div style="font-size:.68rem;font-weight:600;color:white">Révision IRL due en août</div>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.4)">3 baux concernés</div>
+            </div>
+            <div style="border-left:3px solid #f59e0b;padding:6px 10px;background:rgba(255,255,255,.04);border-radius:0 6px 6px 0">
+              <div style="font-size:.68rem;font-weight:600;color:white">Assurance non reçue</div>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.4)">Relance automatique envoyée</div>
+            </div>
+          </div>
+        </div>
+        <div class="feat-title">Alertes &amp; échéances automatiques</div>
+        <div class="feat-desc">Fin de bail, révision IRL, préavis en cours : les alertes se génèrent seules depuis vos fiches locataires. Plus jamais de deadline manquée.</div>
       </div>
 
       <div class="feat-card">
-        <div class="feat-icon">🧾</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Quittance générée</div>
+          <div style="background:white;border-radius:8px;padding:10px 12px">
+            <div style="text-align:center;font-weight:700;font-size:.7rem;margin-bottom:7px;color:#111827;font-family:Georgia,serif">QUITTANCE DE LOYER</div>
+            <div style="display:flex;justify-content:space-between;font-size:.64rem;color:#555;padding:3px 0;border-bottom:1px solid #f0ede8"><span>Loyer HC</span><span style="font-weight:600;color:#111">1 087 €</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.64rem;color:#555;padding:3px 0;border-bottom:1px solid #f0ede8"><span>Charges</span><span style="font-weight:600;color:#111">30 €</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.7rem;font-weight:700;color:#3b6fd4;padding-top:5px"><span>Total</span><span>1 117 €</span></div>
+          </div>
+          <div style="margin-top:7px;background:#3b6fd4;border-radius:6px;padding:5px 9px;font-size:.66rem;color:white;font-weight:600;text-align:center">PDF généré avec votre logo</div>
+        </div>
         <div class="feat-title">Quittances PDF en 1 clic</div>
-        <div class="feat-desc">Sélectionnez le locataire, la période, validez — la quittance est générée avec votre logo et mise en page professionnelle. Historique complet des quittances émises.</div>
+        <div class="feat-desc">Sélectionnez le locataire, la période, validez : la quittance est générée avec votre logo. Envoi automatique par email chaque mois.</div>
       </div>
 
       <div class="feat-card">
-        <div class="feat-icon">✉️</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:8px">Courrier généré par l'IA</div>
+          <div style="background:rgba(59,111,212,.15);border-radius:6px;padding:4px 8px;font-size:.62rem;color:#7fa8e8;font-weight:600;margin-bottom:8px;display:inline-block">Mise en demeure</div>
+          <div style="font-size:.68rem;color:rgba(255,255,255,.7);line-height:1.65;font-style:italic">Madame, Monsieur, Par la présente, nous vous mettons en demeure de régler sous 8 jours la somme de <span style="color:#7fa8e8;font-style:normal;font-weight:600">2 400 €</span> correspondant aux loyers impayés...</div>
+        </div>
         <div class="feat-title">Courriers juridiques rédigés par l'IA</div>
-        <div class="feat-desc">Congé bailleur, mise en demeure, révision IRL, régularisation des charges, restitution de dépôt… 8 modèles rédigés en 10 secondes, conformes loi 1989.</div>
+        <div class="feat-desc">Congé bailleur, mise en demeure, révision IRL, restitution de dépôt. 8 modèles rédigés en 10 secondes, conformes loi 1989.</div>
       </div>
 
       <div class="feat-card">
-        <div class="feat-icon">⚖️</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Bail généré</div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:7px;font-size:.68rem;color:rgba(255,255,255,.8)"><div style="width:14px;height:14px;border-radius:50%;background:#2d6a4f;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:white;flex-shrink:0">✓</div>Clauses loi 1989 + ALUR</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:.68rem;color:rgba(255,255,255,.8)"><div style="width:14px;height:14px;border-radius:50%;background:#2d6a4f;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:white;flex-shrink:0">✓</div>DPE, état des lieux, annexes</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:.68rem;color:rgba(255,255,255,.8)"><div style="width:14px;height:14px;border-radius:50%;background:#2d6a4f;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:white;flex-shrink:0">✓</div>Complément de loyer justifié</div>
+          </div>
+          <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:5px 9px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.62rem;color:rgba(255,255,255,.4)">Généré en</span><span style="font-size:.7rem;font-weight:700;color:#7fa8e8">2 min</span></div>
+        </div>
         <div class="feat-title">Génération de bail conforme</div>
-        <div class="feat-desc">Bail complet loi 1989 + ALUR avec toutes les clauses obligatoires — annexes, complément de loyer justifié, clause résolutoire, DPE, état des lieux. Économisez 300–500€ de juriste.</div>
+        <div class="feat-desc">Bail complet loi 1989 + ALUR avec toutes les clauses obligatoires. Économisez 300–500€ de juriste.</div>
       </div>
 
       <div class="feat-card">
-        <div class="feat-icon">📐</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Encadrement des loyers</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);border-radius:6px;padding:6px 9px"><span style="font-size:.64rem;color:rgba(255,255,255,.5)">Référence</span><span style="font-size:.72rem;font-weight:600;color:white">18,50 €/m²</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);border-radius:6px;padding:6px 9px"><span style="font-size:.64rem;color:rgba(255,255,255,.5)">Majoré</span><span style="font-size:.72rem;font-weight:600;color:white">22,20 €/m²</span></div>
+            <div style="background:rgba(200,75,47,.2);border-radius:6px;padding:6px 9px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.64rem;color:#e8806b">⚠ Dépassement</span><span style="font-size:.72rem;font-weight:700;color:#ef4444">+85 €/mois</span></div>
+          </div>
+        </div>
         <div class="feat-title">Encadrement des loyers</div>
-        <div class="feat-desc">Vérification automatique avant chaque mise en location — Paris, Lyon, Bordeaux, Montpellier et toutes les zones tendues. Complément de loyer calculé et justifié.</div>
+        <div class="feat-desc">Vérification automatique : Paris, Lyon, Bordeaux, Montpellier et toutes les zones tendues. Complément de loyer calculé et justifié.</div>
       </div>
 
       <div class="feat-card">
-        <div class="feat-icon">📄</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Vos documents</div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">🏢</div>
+            <div><div style="font-size:.7rem;font-weight:600;color:white">Agence Dupont</div><div style="font-size:.6rem;color:rgba(255,255,255,.35)">Logo · Charte graphique</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
+            <div style="background:rgba(59,111,212,.2);border-radius:5px;padding:5px;text-align:center;font-size:.6rem;color:#7fa8e8;font-weight:600">Bail<br>PDF</div>
+            <div style="background:rgba(59,111,212,.2);border-radius:5px;padding:5px;text-align:center;font-size:.6rem;color:#7fa8e8;font-weight:600">Quitt.<br>PDF</div>
+            <div style="background:rgba(59,111,212,.2);border-radius:5px;padding:5px;text-align:center;font-size:.6rem;color:#7fa8e8;font-weight:600">Analyse<br>PDF</div>
+          </div>
+        </div>
         <div class="feat-title">Exports PDF à votre logo</div>
-        <div class="feat-desc">Rapports d'analyse, baux, quittances et courriers générés avec votre charte graphique. Uploadez votre logo une fois, il apparaît partout automatiquement.</div>
+        <div class="feat-desc">Baux, quittances et courriers générés avec votre charte graphique. Uploadez votre logo une fois, il apparaît partout.</div>
       </div>
 
       <div class="feat-card">
-        <div class="feat-icon">👥</div>
-        <div class="feat-title">Multi-utilisateurs & API</div>
-        <div class="feat-desc">Admin, Manager, Agent — rôles distincts, permissions granulaires. API REST pour connecter BailScan à vos outils métier (Rentila, Immoware, Apimmo…).</div>
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Équipe</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.05);border-radius:7px;padding:6px 10px">
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:22px;height:22px;border-radius:50%;background:#3b6fd4;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:white">A</div><div style="font-size:.68rem;color:white">Admin</div></div>
+              <div style="font-size:.6rem;color:rgba(255,255,255,.35);background:rgba(255,255,255,.07);padding:2px 6px;border-radius:4px">Accès total</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.05);border-radius:7px;padding:6px 10px">
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:22px;height:22px;border-radius:50%;background:#8b5cf6;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:white">M</div><div style="font-size:.68rem;color:white">Manager</div></div>
+              <div style="font-size:.6rem;color:rgba(255,255,255,.35);background:rgba(255,255,255,.07);padding:2px 6px;border-radius:4px">Gestion</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.05);border-radius:7px;padding:6px 10px">
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:22px;height:22px;border-radius:50%;background:#06b6d4;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:white">A</div><div style="font-size:.68rem;color:white">Agent</div></div>
+              <div style="font-size:.6rem;color:rgba(255,255,255,.35);background:rgba(255,255,255,.07);padding:2px 6px;border-radius:4px">Lecture</div>
+            </div>
+          </div>
+        </div>
+        <div class="feat-title">Multi-utilisateurs &amp; API</div>
+        <div class="feat-desc">Admin, Manager, Agent avec rôles distincts, permissions granulaires. API REST pour connecter BailScan à vos outils métier.</div>
       </div>
 
     </div>
@@ -827,9 +919,9 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div class="pricing-feature">Analyses illimitées</div>
           <div class="pricing-feature">Génération de baux conformes</div>
           <div class="pricing-feature">Gestion clients, mandats, locataires</div>
-          <div class="pricing-feature">Quittances — courriers juridiques IA</div>
-          <div class="pricing-feature">Alertes — échéances automatiques</div>
-          <div class="pricing-feature">Export CSV — PDF à votre logo</div>
+          <div class="pricing-feature">Quittances, courriers juridiques IA</div>
+          <div class="pricing-feature">Alertes, échéances automatiques</div>
+          <div class="pricing-feature">Export CSV et PDF à votre logo</div>
           <div class="pricing-feature">Support prioritaire</div>
         </div>
         <button class="btn-pricing btn-pricing-pro" onclick="openModal('signup')">Démarrer l’essai gratuit 3 jours →</button>
@@ -870,7 +962,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Détection des clauses illégales</div>
             <div style="height:1px;background:var(--border);margin:4px 0"></div>
             <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Bail conforme rédigé par IA en 30 sec</div>
-            <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Adapté à votre bien — meublé ou vide</div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Adapté à votre bien, meublé ou vide</div>
             <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Zéro risque de litige</div>
           </div>
           <button onclick="window.location.href='/proprio.html'" style="width:100%;padding:13px;border-radius:10px;font-weight:700;font-size:.92rem;background:var(--accent);color:white;border:none;cursor:pointer">Obtenir mon bail conforme →</button>
@@ -3341,11 +3433,35 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Génération de baux conformes</div>
       <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Clients, mandats, locataires</div>
       <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Quittances, courriers IA, alertes</div>
-      <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Export CSV — PDF à votre logo</div>
+      <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Export CSV et PDF à votre logo</div>
       <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Support prioritaire</div>
     </div>
     <button onclick="subscribePro('pro')" style="width:100%;padding:13px;background:var(--pro-accent);color:white;border:none;border-radius:10px;font-weight:700;font-size:.95rem;cursor:pointer">S’abonner maintenant →</button>
     <p style="text-align:center;font-size:.75rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe · Sans engagement · Résiliable à tout moment</p>
+  </div>
+
+  <!-- Section abonnement actif (visible si plan=pro) -->
+  <div id="activeSubSection" style="display:none;margin-top:24px;max-width:560px">
+    <div class="dash-card">
+      <div class="dash-section-title">💳 Abonnement actif</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:.85rem;color:var(--gris)">Formule</span>
+        <span id="activeSubLabel" style="font-weight:700;font-size:.9rem">Pro mensuel</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:.85rem;color:var(--gris)">Prochain prélèvement</span>
+        <span id="activeSubNextDate" style="font-weight:600;font-size:.9rem">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:.85rem;color:var(--gris)">Statut</span>
+        <span id="activeSubStatus" style="font-weight:600;color:var(--vert)">✓ Actif</span>
+      </div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:.78rem;color:var(--gris);margin-bottom:12px">Votre abonnement se renouvelle automatiquement. Vous pouvez le résilier à tout moment ci-dessous.</div>
+        <button id="btnCancelSub" onclick="cancelSubscription()" style="padding:10px 20px;background:none;border:1.5px solid var(--accent);color:var(--accent);border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer">❌ Résilier mon abonnement</button>
+        <div id="cancelSubMsg" style="display:none;margin-top:10px;font-size:.78rem;color:var(--gris)"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3395,6 +3511,11 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div class="form-group-pro"><label class="form-label">Agence</label><input type="text" class="form-input-pro" id="settingsAgence"></div>
           <div class="form-group-pro"><label class="form-label">Email</label><input type="email" class="form-input-pro" id="settingsEmail"></div>
           <button class="btn-primary-pro" style="margin-top:8px" onclick="saveSettings()">Enregistrer</button>
+        </div>
+        <div style="margin-top:32px;padding:20px;background:#fdf0ed;border:1.5px solid rgba(200,75,47,.3);border-radius:12px">
+          <div style="font-size:.82rem;font-weight:700;color:var(--accent);margin-bottom:8px">⚠️ Zone dangereuse</div>
+          <p style="font-size:.8rem;color:var(--gris);margin-bottom:12px">La suppression de votre compte effacera définitivement toutes vos données (mandats, locataires, baux, analyses, quittances). Cette action est irréversible.</p>
+          <button id="btnDeleteAccount" onclick="deleteAccount()" style="padding:10px 20px;background:none;border:1.5px solid var(--accent);color:var(--accent);border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer">🗑️ Supprimer mon compte et mes données</button>
         </div>
 
 
@@ -4786,6 +4907,8 @@ async function loadAllData() {
   setTimeout(refreshAllMandatSelects, 400);
   setTimeout(loadAgencyInfoFields, 300);
   genAlertesAuto();
+  genAlertesAuto();
+  if ((!proState.mandats||proState.mandats.length===0) && localStorage.getItem('bailscan_mandats')) { syncLocalToSupabase().then(function(){ setTimeout(loadAllData,1000); }); }
 }
 
 // Sauvegarder analyse dans Supabase
@@ -6240,14 +6363,34 @@ function autoFillCourrierFromLocataire(locId) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function loadMandats() {
-  var arr = proState.mandats || [];
-  // Normaliser complement à 0 si undefined
+  var arr = proState.mandats;
+  if (!arr || !arr.length) {
+    try { arr = JSON.parse(localStorage.getItem('bailscan_mandats')||'[]'); } catch(e) { arr = []; }
+    if (arr && arr.length) proState.mandats = arr;
+  }
+  arr = arr || [];
   arr.forEach(function(m){ if(m.complement===undefined||m.complement===null||m.complement==="") m.complement=0; });
   return arr;
 }
 
 function saveMandats() {
-  // Mandats persistés via Supabase
+  // Sauvegarder en localStorage
+  localStorage.setItem('bailscan_mandats', JSON.stringify(proState.mandats||[]));
+  // Sauvegarder dans Supabase (async, non bloquant)
+  saveMandatsSupabase();
+}
+
+async function saveMandatsSupabase() {
+  try {
+    var sb = getSupabase();
+    var agId = proState._agenceId || await getAgenceId();
+    if (!sb || !agId) return;
+    var mandats = proState.mandats || [];
+    for (var i=0; i<mandats.length; i++) {
+      var m = Object.assign({}, mandats[i], {agence_id: agId});
+      await sb.from('mandats').upsert(m, {onConflict:'id'});
+    }
+  } catch(e) { console.warn('saveMandatsSupabase error:', e.message); }
 }
 
 function refreshMandatsKPIs() {
@@ -6492,6 +6635,7 @@ function saveMandat() {
   // Mettre à jour les sélecteurs
   refreshAllMandatSelects();
   obCompleteStep();
+  if (typeof saveMandatSupabase === 'function') saveMandatSupabase(mandat);
 }
 
 function deleteMandat(id) {
@@ -11300,6 +11444,18 @@ function loadLocataires() {
 
 function saveLocatairesDB(arr) {
   localStorage.setItem('bailscan_locataires', JSON.stringify(arr));
+  proState.locataires = arr;
+  // Sync Supabase async
+  (async function(){
+    try {
+      var sb=getSupabase(), agId=proState._agenceId||(await getAgenceId());
+      if(!sb||!agId) return;
+      for(var i=0;i<arr.length;i++){
+        var l=Object.assign({},arr[i],{agence_id:agId});
+        await sb.from('clients').upsert(l,{onConflict:'id'});
+      }
+    } catch(e){console.warn('saveLocatairesDB Supabase error:',e.message);}
+  })();
 }
 
 function refreshQuittancesHisto() {
@@ -12175,13 +12331,23 @@ function genererNouvelleAlerteIA() {
   })();
 }
 
-function handleForgot(){
+async function handleForgot(){
   var email=document.getElementById('forgotEmail').value.trim();
   if(!email||!email.includes('@')){showForgotMsg('Email invalide.','error');return;}
-  var saved=localStorage.getItem('bailscan_pro_user');
-  if(!saved||JSON.parse(saved).email!==email){showForgotMsg('Aucun compte trouve pour cet email.','error');return;}
-  showForgotMsg('Simulation: en production un email de reset serait envoye a '+email,'success');
-  setTimeout(function(){closeModal('forgot');},3000);
+  showForgotMsg('Envoi en cours...','');
+  try {
+    var sb = getSupabase();
+    if (sb) {
+      var {error} = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://bailscan.app/pro.html?reset=1'
+      });
+      if (error) { showForgotMsg('Erreur : '+error.message,'error'); return; }
+    }
+    showForgotMsg('✓ Email envoyé ! Vérifiez votre boîte de réception.','success');
+    setTimeout(function(){closeModal('forgot');},3000);
+  } catch(e) {
+    showForgotMsg('Erreur : '+e.message,'error');
+  }
 }
 
 function handleInvite() {
@@ -13018,7 +13184,7 @@ function afficherResultatDossier(result, nom, loyer, revenus, taux, skipSave) {
 }
 
 function applyFilters(){
-  var search=(document.getElementById('filterSearch').value||'').toLowerCase().trim();
+  var search=((document.getElementById('filterSearch')||{value:''}).value||'').toLowerCase().trim();
   var statut=(document.getElementById('filterStatut')||{}).value||'';
   var type=(document.getElementById('filterType')||{}).value||'';
   var ville=(document.getElementById('filterVille')||{}).value||'';
@@ -14254,6 +14420,237 @@ function updateQLocNom() {
   var n = (document.getElementById('qLocNomSep')||{}).value||'';
   var h = document.getElementById('qLocNom'); if(h) h.value = (p+' '+n).trim();
 }
+
+// ─── SUPPRESSION DE COMPTE ───────────────────────────────
+async function deleteAccount() {
+  if (!confirm('Supprimer définitivement votre compte et TOUTES vos données ? Cette action est irréversible.')) return;
+  if (!confirm('⚠️ Dernière confirmation : toutes vos données (mandats, locataires, baux, analyses...) seront effacées.')) return;
+
+  var btn = document.getElementById('btnDeleteAccount');
+  if (btn) { btn.textContent = 'Suppression...'; btn.disabled = true; }
+
+  try {
+    var sb = getSupabase();
+    var agId = proState._agenceId;
+    var userId = proState.user && proState.user.id;
+
+    if (sb && agId) {
+      // Supprimer toutes les données liées à l'agence
+      var tables = ['quittances','courriers','analyses','baux','clients','mandats','collaborateurs','agences'];
+      for (var i = 0; i < tables.length; i++) {
+        var t = tables[i];
+        var col = t === 'agences' ? 'id' : 'agence_id';
+        var val = t === 'agences' ? agId : agId;
+        await sb.from(t).delete().eq(col, val);
+      }
+    }
+
+    // Supprimer le compte Supabase Auth
+    if (sb && userId) {
+      await sb.auth.admin ? sb.auth.admin.deleteUser(userId) : sb.auth.signOut();
+    }
+
+    // Vider le localStorage
+    localStorage.clear();
+
+    // Envoyer email de confirmation suppression
+    try {
+      await fetch('/api/send-mail', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          to: proState.user && proState.user.email,
+          subject: 'Votre compte BailScan a été supprimé',
+          html: '<div style="font-family:DM Sans,sans-serif;max-width:560px;margin:0 auto"><div style="background:#111827;padding:24px 28px"><div style="font-size:20px;color:white;font-family:Georgia,serif">BailScan Pro</div></div><div style="padding:28px"><h2 style="font-size:18px;color:#111">Compte supprimé</h2><p style="color:#555;line-height:1.7">Votre compte et toutes vos données ont bien été supprimés conformément à votre demande. Nous espérons vous revoir bientôt.</p><p style="color:#aaa;font-size:12px;margin-top:24px">BailScan Pro · bailscan.app</p></div></div>'
+        })
+      });
+    } catch(e) {}
+    alert('✅ Votre compte et toutes vos données ont été supprimés.');
+    window.location.reload();
+  } catch(e) {
+    alert('Erreur lors de la suppression : ' + e.message);
+    if (btn) { btn.textContent = 'Supprimer mon compte'; btn.disabled = false; }
+  }
+}
+
+// ─── SYNC LOCALSTORAGE → SUPABASE ────────────────────────
+async function syncLocalToSupabase() {
+  var sb = getSupabase();
+  var agId = proState._agenceId;
+  if (!sb || !agId) return;
+
+  // Mandats
+  var localMandats = JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');
+  if (localMandats.length > 0) {
+    var mandatsToUpsert = localMandats.map(function(m) {
+      return {
+        id: String(m.id),
+        agence_id: agId,
+        adresse: m.adresse||'',
+        cp: m.cp||'',
+        ville: m.ville||'',
+        adresse_full: m.adresseFull||m.adresse||'',
+        type: m.type||'',
+        surface: m.surface||null,
+        loyer: parseFloat(m.loyer)||0,
+        complement: parseFloat(m.complement)||0,
+        charges: parseFloat(m.charges)||0,
+        bailleur: m.bailleur||'',
+        bailleur_email: m.bailleurEmail||'',
+        bailleur_tel: m.bailleurTel||'',
+        statut: m.statut||'vacant',
+        locataire_id: m.locataireId||null,
+        dpe: m.dpe||'',
+        zone: m.zone||'',
+        notes: m.notes||'',
+        date_signature: m.dateSignature||null,
+        lien_annonce: m.lienAnnonce||'',
+        date_creation: m.dateCreation||'',
+        candidats: m.candidats||[],
+        photos: m.photos||[]
+      };
+    });
+    var {error:eM} = await sb.from('mandats').upsert(mandatsToUpsert, {onConflict:'id'});
+    if (eM) console.warn('Sync mandats error:', eM.message);
+    else console.log('[Sync] ' + localMandats.length + ' mandats synchronisés');
+  }
+
+  // Locataires
+  var localLocs = JSON.parse(localStorage.getItem('bailscan_locataires')||'[]');
+  if (localLocs.length > 0) {
+    var locsToUpsert = localLocs.map(function(l) {
+      return {
+        id: String(l.id),
+        agence_id: agId,
+        prenom: l.prenom||'',
+        nom: l.nom||'',
+        email: l.email||'',
+        tel: l.tel||'',
+        adresse: l.adresse||'',
+        loyer: parseFloat(l.loyer)||0,
+        complement: parseFloat(l.complement)||0,
+        charges: parseFloat(l.charges)||0,
+        revenus: parseFloat(l.revenus)||0,
+        contrat: l.contrat||'',
+        statut: l.statut||'actif',
+        mandat_id: l.mandatId||null,
+        bail_id: l.bailId||null,
+        garant: l.garant||'non',
+        garant_prenom: l.garantPrenom||'',
+        garant_nom: l.garantNom||'',
+        garant_adresse: l.garantAdresse||'',
+        garant_cp: l.garantCp||'',
+        garant_ville: l.garantVille||'',
+        garant_email: l.garantEmail||'',
+        garant_tel: l.garantTel||'',
+        garant_revenus: parseFloat(l.garantRevenus)||0,
+        garant_contrat: l.garantContrat||'',
+        garant_organisme: l.garantOrganisme||'',
+        garant_num_dossier: l.garantNumDossier||'',
+        notes: l.notes||'',
+        agent: l.agent||'',
+        dossier_verdict: l.dossierVerdict||'',
+        dossier_score: parseInt(l.dossierScore)||0
+      };
+    });
+    var {error:eL} = await sb.from('clients').upsert(locsToUpsert, {onConflict:'id'});
+    if (eL) console.warn('Sync locataires error:', eL.message);
+    else console.log('[Sync] ' + localLocs.length + ' locataires synchronisés');
+  }
+}
+
+// ─── SAVE MANDAT VERS SUPABASE ────────────────────────────
+async function saveMandatSupabase(m) {
+  var sb = getSupabase(); var agId = proState._agenceId;
+  if (!sb || !agId) return;
+  try {
+    await sb.from('mandats').upsert({
+      id: String(m.id), agence_id: agId,
+      adresse: m.adresse||'', cp: m.cp||'', ville: m.ville||'',
+      adresse_full: m.adresseFull||m.adresse||'', type: m.type||'',
+      surface: m.surface||null, loyer: parseFloat(m.loyer)||0,
+      complement: parseFloat(m.complement)||0, charges: parseFloat(m.charges)||0,
+      bailleur: m.bailleur||'', bailleur_email: m.bailleurEmail||'',
+      bailleur_tel: m.bailleurTel||'', statut: m.statut||'vacant',
+      locataire_id: m.locataireId||null, dpe: m.dpe||'', zone: m.zone||'',
+      notes: m.notes||'', date_signature: m.dateSignature||null,
+      lien_annonce: m.lienAnnonce||'', date_creation: m.dateCreation||'',
+      candidats: m.candidats||[], updated_at: new Date().toISOString()
+    }, {onConflict:'id'});
+  } catch(e) { console.warn('saveMandatSupabase:', e.message); }
+}
+
+// ─── SAVE LOCATAIRE VERS SUPABASE ─────────────────────────
+async function saveLocataireSupabase(l) {
+  var sb = getSupabase(); var agId = proState._agenceId;
+  if (!sb || !agId) return;
+  try {
+    await sb.from('clients').upsert({
+      id: String(l.id), agence_id: agId,
+      prenom: l.prenom||'', nom: l.nom||'', email: l.email||'', tel: l.tel||'',
+      adresse: l.adresse||'', loyer: parseFloat(l.loyer)||0,
+      complement: parseFloat(l.complement)||0, charges: parseFloat(l.charges)||0,
+      revenus: parseFloat(l.revenus)||0, contrat: l.contrat||'',
+      statut: l.statut||'actif', mandat_id: l.mandatId||null, bail_id: l.bailId||null,
+      garant: l.garant||'non', garant_prenom: l.garantPrenom||'',
+      garant_nom: l.garantNom||'', garant_adresse: l.garantAdresse||'',
+      garant_cp: l.garantCp||'', garant_ville: l.garantVille||'',
+      garant_email: l.garantEmail||'', garant_tel: l.garantTel||'',
+      garant_revenus: parseFloat(l.garantRevenus)||0, garant_contrat: l.garantContrat||'',
+      garant_organisme: l.garantOrganisme||'', garant_num_dossier: l.garantNumDossier||'',
+      notes: l.notes||'', agent: l.agent||'',
+      dossier_verdict: l.dossierVerdict||'', dossier_score: parseInt(l.dossierScore)||0,
+      updated_at: new Date().toISOString()
+    }, {onConflict:'id'});
+  } catch(e) { console.warn('saveLocataireSupabase:', e.message); }
+}
+
+// ─── GESTION ABONNEMENT DASHBOARD ────────────────────────
+async function cancelSubscription() {
+  if (!confirm('Résilier votre abonnement BailScan Pro ? Vous garderez l\'accès jusqu\'à la fin de la période en cours.')) return;
+  var btn = document.getElementById('btnCancelSub');
+  if (btn) { btn.textContent = '⏳ Résiliation...'; btn.disabled = true; }
+  try {
+    var r = await fetch('/api/cancel-subscription', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ agence_id: proState._agenceId })
+    });
+    var d = await r.json();
+    if (d.ok) {
+      var msg = document.getElementById('cancelSubMsg');
+      if (msg) { msg.style.display='block'; msg.textContent = '✓ Résiliation confirmée. Votre accès reste actif jusqu\'à la fin de la période.'; }
+      var status = document.getElementById('activeSubStatus');
+      if (status) { status.textContent = '⚠ Résiliation en cours'; status.style.color = 'var(--warn)'; }
+      if (btn) btn.style.display = 'none';
+      showToast('✓ Résiliation confirmée', 'blue');
+    } else {
+      alert('Erreur : ' + (d.error || 'inconnue'));
+      if (btn) { btn.textContent = '❌ Résilier mon abonnement'; btn.disabled = false; }
+    }
+  } catch(e) {
+    alert('Erreur : ' + e.message);
+    if (btn) { btn.textContent = '❌ Résilier mon abonnement'; btn.disabled = false; }
+  }
+}
+
+function showActiveSubSection() {
+  var plan = proState.agencyInfo && proState.agencyInfo.plan;
+  var section = document.getElementById('activeSubSection');
+  var pricingCard = document.querySelector('#tab-abonnement .dash-card');
+  if (!section) return;
+  if (plan === 'pro' || plan === 'canceling') {
+    section.style.display = 'block';
+    if (pricingCard) pricingCard.style.display = 'none';
+    // Label formule
+    var lbl = document.getElementById('activeSubLabel');
+    if (lbl) lbl.textContent = plan === 'canceling' ? 'Pro (résiliation en cours)' : 'Pro';
+    var status = document.getElementById('activeSubStatus');
+    if (status && plan === 'canceling') { status.textContent = '⚠ Résiliation en cours'; status.style.color = 'var(--warn)'; }
+    if (status && plan === 'pro') { status.textContent = '✓ Actif'; status.style.color = 'var(--vert)'; }
+  } else {
+    section.style.display = 'none';
+    if (pricingCard) pricingCard.style.display = 'block';
+  }
+}
 </script>
 <!-- ═══════════════════════════════════════════════════════════
   AGENT IA — POPUP FLOTTANT BAS DROITE (visible en mode dashboard)
@@ -14321,3 +14718,4 @@ function updateQLocNom() {
         oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
       <button onclick="sendAgentMessage()" id="agentSendBtn"
         style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;border-radius:9px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;flex-shrink:0;height:36px;transition:opa
+
