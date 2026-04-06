@@ -2780,6 +2780,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 placeholder="Tapez une adresse pour chercher un mandat..."
                 oninput="searchLocMandat(this.value)"
                 onfocus="if(!proState.mandats||!proState.mandats.length){try{proState.mandats=JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');}catch(e){}}searchLocMandat(this.value)"
+                onblur="setTimeout(function(){var d=document.getElementById('locMandatDrop');if(d)d.style.display='none';},200)"
                 autocomplete="off">
               <div id="locMandatDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--pro-accent);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:220px;overflow-y:auto"></div>
               <div id="locMandatSelected" style="display:none;margin-top:8px;padding:10px 14px;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:8px;font-size:.84rem">
@@ -5022,7 +5023,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <textarea class="form-input-pro" id="mandatNotes" rows="2" placeholder="Informations complémentaires…" style="resize:vertical"></textarea>
       </div>
     </div>
-    <button class="btn-submit" onclick="saveMandat()" style="width:100%;margin-top:18px">💾 Enregistrer le bien</button>
+    <button class="btn-submit" onclick="saveMandat()" style="width:100%;margin-top:18px;background:var(--pro-accent);color:white;border:none">💾 Enregistrer le bien</button>
   </div>
 </div>
 
@@ -10874,7 +10875,7 @@ function searchLocMandat(q) {
   drop.innerHTML = filtered.slice(0,8).map(function(m){
     var label = m.adresseFull || m.adresse || 'Bien sans adresse';
     var detail = [m.type, m.loyer ? m.loyer+'€/mois' : '', m.surface ? m.surface+'m²' : ''].filter(Boolean).join(' · ');
-    return '<div onclick="pickLocMandat(\''+m.id+'\')" style="padding:11px 14px;cursor:pointer;border-bottom:1px solid #f0ede8" onmouseover="this.style.background=\'#eef2fb\'" onmouseout="this.style.background=\'white\'">'
+    return '<div onmousedown="event.preventDefault();pickLocMandat(\''+m.id+'\')" style="padding:11px 14px;cursor:pointer;border-bottom:1px solid #f0ede8" onmouseover="this.style.background=\'#eef2fb\'" onmouseout="this.style.background=\'white\'">'
       +'<div style="font-weight:600;font-size:.87rem;color:var(--noir)">'+label+'</div>'
       +(detail ? '<div style="font-size:.75rem;color:var(--gris);margin-top:2px">'+detail+'</div>' : '')
       +'</div>';
