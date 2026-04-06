@@ -4682,12 +4682,8 @@ body.is-dashboard #marketingPage { display: none !important; }
         <input type="tel" class="form-input-pro" id="mandatBailleurTel" placeholder="06 12 34 56 78">
       </div>
       <div class="form-group-pro">
-        <label class="form-label">Date d'entrée</label>
-        <input type="date" class="form-input-pro" id="mandatDateEntree">
-      </div>
-      <div class="form-group-pro">
-        <label class="form-label">Date de fin de bail</label>
-        <input type="date" class="form-input-pro" id="mandatDateFin">
+        <label class="form-label">Date de signature du mandat</label>
+        <input type="date" class="form-input-pro" id="mandatDateSignature">
       </div>
       <div class="form-group-pro" style="grid-column:1/-1">
         <label class="form-label">🔗 Lien annonce (SeLoger, LeBonCoin…)</label>
@@ -6246,7 +6242,7 @@ function refreshMandatsKPIs() {
   var arr = loadMandats();
   var loues = arr.filter(function(m){ return m.statut === 'loue'; }).length;
   var vacants = arr.filter(function(m){ return m.statut === 'vacant'; }).length;
-  var totalLoyer = arr.reduce(function(sum, m){ return sum + (parseFloat(m.loyer)||0); }, 0);
+  var totalLoyer = arr.reduce(function(sum, m){ return sum + (parseFloat(m.loyer)||0) + (parseFloat(m.complement)||0); }, 0);
   var el = function(id, v){ var e=document.getElementById(id); if(e) e.textContent=v; };
   el('kpiBiensTotal', arr.length);
   el('kpiBiensLoues', loues);
@@ -6464,8 +6460,9 @@ function saveMandat() {
     dpe: document.getElementById('mandatDpe').value,
     zone: document.getElementById('mandatZone').value,
     notes: document.getElementById('mandatNotes').value,
-    dateEntree: (document.getElementById('mandatDateEntree')||{}).value||'',
-    dateFin: (document.getElementById('mandatDateFin')||{}).value||'',
+    dateSignature: (document.getElementById('mandatDateSignature')||{}).value||'',
+    dateEntree: (document.getElementById('mandatDateEntree')||{value:''}).value||'',
+    dateFin: (document.getElementById('mandatDateFin')||{value:''}).value||'',
     lienAnnonce: (document.getElementById('mandatLienAnnonce')||{}).value||'',
     dateCreation: editId ? undefined : new Date().toLocaleDateString('fr-FR')
   };
