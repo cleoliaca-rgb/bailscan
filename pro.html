@@ -1429,7 +1429,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="dash-page-sub">Vue d'ensemble de votre activité · <span id="dashDateToday"></span></div>
           </div>
           <div style="display:flex;gap:8px">
-            <button class="btn-sm" onclick="showDashTab('nouveau')">🔍 Analyser un bail</button>
+            <button class="btn-sm" onclick="showDashTab('nouveau')">Analyser un bail</button>
             <button class="btn-primary-pro" onclick="showDashTab('mandats')">+ Ajouter un bien</button>
           </div>
         </div>
@@ -1672,6 +1672,26 @@ body.is-dashboard #marketingPage { display: none !important; }
                 </div>
               </div>
             </div>
+            <!-- Champs garant nouvelle analyse -->
+            <div id="pGarantFields" style="display:none;margin-top:12px">
+              <div id="pGarantPhysRow" style="display:none">
+                <div class="form-grid-pro">
+                  <div class="form-group-pro"><label class="form-label">Prénom garant</label><input type="text" class="form-input-pro" id="pGarantPrenom" placeholder="Jean"></div>
+                  <div class="form-group-pro"><label class="form-label">Nom garant</label><input type="text" class="form-input-pro" id="pGarantNom" placeholder="Martin"></div>
+                  <div class="form-group-pro" style="grid-column:1/-1"><label class="form-label">Adresse garant</label><input type="text" class="form-input-pro" id="pGarantAdresse" placeholder="3 rue du Moulin"></div>
+                  <div class="form-group-pro"><label class="form-label">Revenus nets/mois (€)</label><input type="number" class="form-input-pro" id="pGarantRevenus" placeholder="2500"></div>
+                  <div class="form-group-pro"><label class="form-label">Contrat</label>
+                    <select class="form-input-pro" id="pGarantContrat"><option value="cdi">CDI</option><option value="cdd">CDD</option><option value="independant">Indépendant</option><option value="retraite">Retraité</option></select>
+                  </div>
+                </div>
+              </div>
+              <div id="pGarantNumRow" style="display:none">
+                <div class="form-group-pro"><label class="form-label">Numéro de dossier</label><input type="text" class="form-input-pro" id="pGarantNumDossier" placeholder="Référence"></div>
+              </div>
+              <div id="pGarantOrgRow" style="display:none">
+                <div class="form-group-pro"><label class="form-label">Organisme garant</label><input type="text" class="form-input-pro" id="pGarantOrganisme" placeholder="Action Logement..."></div>
+              </div>
+            </div>
             <div class="wizard-nav-pro">
               <div></div>
               <button class="btn-wizard-next-pro" onclick="goProStep(2)">Continuer → Loyer</button>
@@ -1733,7 +1753,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="panel-title">Votre bail</div>
             <div class="panel-sub">Uploadez le PDF ou collez le texte du bail à analyser</div>
             <div style="display:flex;gap:8px;margin-bottom:20px">
-              <button class="upload-tab-pro active" id="ptab-upload" onclick="switchProTab('upload')">📎 Upload PDF</button>
+              <button class="upload-tab-pro active" id="ptab-upload" onclick="switchProTab('upload')">Upload PDF</button>
               <button class="upload-tab-pro" id="ptab-text" onclick="switchProTab('text')">Coller le texte</button>
             </div>
             <div id="pUploadPanel">
@@ -1777,7 +1797,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
             <div class="wizard-nav-pro">
               <button class="btn-wizard-back-pro" onclick="goProStep(3)">← Retour</button>
-              <button class="btn-primary-pro" onclick="launchProAnalysis()" id="pBtnAnalyze" style="font-size:1rem;padding:14px 32px">🔍 Lancer l'analyse Pro</button>
+              <button class="btn-primary-pro" onclick="launchProAnalysis()" id="pBtnAnalyze" style="font-size:1rem;padding:14px 32px">Lancer l'analyse Pro</button>
             </div>
           </div>
 
@@ -1807,7 +1827,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div class="result-pro-body" id="resultClausesList"></div>
               <div class="result-actions">
                 <button class="btn-result-action primary" onclick="exportResultPDF()">Exporter PDF</button>
-                <button class="btn-result-action" onclick="showDashTab('corrections')">✏️ Voir les corrections</button>
+                <button class="btn-result-action" onclick="showDashTab('corrections')">Voir les corrections</button>
                 <button class="btn-result-action" onclick="corrigerBailDepuisAnalyse()" style="background:var(--pro-accent);color:#fff;border-color:var(--pro-accent)">Corriger le bail</button>
                 <button class="btn-result-action" onclick="resetProWizard()">+ Nouvelle analyse</button>
               </div>
@@ -2161,7 +2181,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:6px;margin-bottom:8px">
                 <label class="annex-check"><input type="checkbox" id="clause_sousloc"> 🔒 Sous-location interdite</label>
                 <label class="annex-check"><input type="checkbox" id="clause_cession"> Cession du bail interdite</label>
-                <label class="annex-check"><input type="checkbox" id="clause_assurance_pno"> 🛡️ Bailleur couvert par assurance PNO</label>
+                <label class="annex-check"><input type="checkbox" id="clause_assurance_pno"> Bailleur couvert par assurance PNO</label>
                 <label class="annex-check"><input type="checkbox" id="clause_releve_compteur"> Relevés compteurs contradictoires à l'entrée/sortie</label>
                 <label class="annex-check"><input type="checkbox" id="clause_dpe_travaux"> ⚡ Travaux de rénovation énergétique prévus</label>
                 <label class="annex-check"><input type="checkbox" id="clause_bail_num"> 📱 Bail numérique — signature électronique</label>
@@ -2269,7 +2289,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div style="display:flex;gap:8px;flex-wrap:wrap">
                 <button class="btn-result-action" onclick="downloadBailTxt()">⬇ .txt</button>
                 <button class="btn-result-action primary" onclick="exportBailPDF()">PDF</button>
-                <button class="btn-result-action" onclick="analyserBailGenere()" style="background:var(--pro-accent);color:#fff;border-color:var(--pro-accent)">🔍 Analyser</button>
+                <button class="btn-result-action" onclick="analyserBailGenere()" style="background:var(--pro-accent);color:#fff;border-color:var(--pro-accent)">Analyser</button>
                 <button class="btn-result-action" onclick="envoyerBailEmail()" style="background:#0ea5e9;color:#fff;border-color:#0ea5e9">Envoyer</button>
                 <button class="btn-result-action" onclick="demanderSignatureElectronique()" style="background:var(--vert);color:#fff;border-color:var(--vert)">Signature</button>
               </div>
@@ -2330,7 +2350,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
             </div>
           </div>
-          <button class="btn-primary-pro" onclick="verifierEncadrement()" style="width:100%;padding:13px;font-size:0.95rem">🔍 Vérifier le loyer</button>
+          <button class="btn-primary-pro" onclick="verifierEncadrement()" style="width:100%;padding:13px;font-size:0.95rem">Vérifier le loyer</button>
           <div id="elResult" style="display:none;margin-top:20px"></div>
 
           <!-- Villes encadrées -->
@@ -2707,7 +2727,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             <!-- Section garant (affichée si garant physique) -->
             <div id="locGarantFields" style="display:none;margin-top:4px">
-              <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">🛡️ <span id="locGarantFieldsTitle">Garant — Informations</span></div>
+              <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)"><span id="locGarantFieldsTitle">Garant — Informations</span></div>
               <!-- Champ organisme (Autre organisme) -->
               <div id="locGarantOrganismeRow" class="form-group-pro" style="display:none;grid-column:1/-1;margin-bottom:10px">
                 <label class="form-label">Nom de l'organisme</label>
@@ -2858,7 +2878,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
               <!-- Champs garant physique — s'affiche si "Garant physique" sélectionné -->
               <div id="dossierGarantFields" style="display:none;margin-top:8px;background:#f5f3ff;border:1px solid #d8b4fe;border-radius:10px;padding:14px">
-                <div style="font-size:.76rem;font-weight:700;color:#7e22ce;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">🛡️ <span id="dosGarantFieldsTitle">Garant — Informations</span></div>
+                <div style="font-size:.76rem;font-weight:700;color:#7e22ce;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em"><span id="dosGarantFieldsTitle">Garant — Informations</span></div>
                 <div class="form-grid-pro">
                   <!-- Nom organisme (Autre organisme) -->
                   <div id="dosGarantOrganismeRow" class="form-group-pro" style="display:none;grid-column:1/-1">
@@ -2974,7 +2994,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             <!-- Upload des pièces -->
             <div class="dash-card">
-              <div class="dash-section-title">📎 Pièces justificatives</div>
+              <div class="dash-section-title">Pièces justificatives</div>
               <div style="font-size:.78rem;color:var(--gris);margin-bottom:14px">Formats : PDF, JPG, PNG. L'IA analyse le contenu pour détecter incohérences et documents suspects.</div>
 
               <div id="dossierPiecesGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -3389,7 +3409,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
           <div style="display:flex;gap:8px;align-items:center">
           <button class="btn-sm" onclick="autoUpdateVeille(true)" id="btnRefreshVeille" style="padding:7px 16px">Actualiser</button>
-          <button class="btn-sm" onclick="lancerAuditConformite()" style="padding:7px 16px;border-color:var(--pro-accent);color:var(--pro-accent)">🔍 Audit portefeuille</button>
+          <button class="btn-sm" onclick="lancerAuditConformite()" style="padding:7px 16px;border-color:var(--pro-accent);color:var(--pro-accent)">Audit portefeuille</button>
           </div>
         </div>
 
@@ -3526,7 +3546,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="dash-card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
             <div class="dash-section-title" style="margin-bottom:0">Membres de l'agence</div>
-            <input type="text" id="teamSearch" class="filter-search" placeholder="🔍 Rechercher un membre…" oninput="filterTeam()" style="max-width:220px;padding:7px 12px 7px 28px;font-size:.8rem">
+            <input type="text" id="teamSearch" class="filter-search" placeholder="Rechercher un membre…" oninput="filterTeam()" style="max-width:220px;padding:7px 12px 7px 28px;font-size:.8rem">
           </div>
           <div id="teamList"></div>
         </div>
@@ -3655,7 +3675,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
             <div>
               <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:10px;padding:10px 18px;font-size:.85rem;font-weight:600;color:var(--pro-accent)">
-                📎 <span id="sigUploadLabel">Uploader ma signature</span>
+                <span id="sigUploadLabel">Uploader ma signature</span>
                 <input type="file" id="inputSignature" accept=".png,.jpg,.jpeg" style="display:none" onchange="uploadSignature(this)">
               </label>
               <div style="font-size:.75rem;color:var(--gris);margin-top:6px">PNG transparent recommandé · fond blanc · 400×150px max</div>
@@ -3672,7 +3692,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div style="margin-top:32px;padding:20px;background:#fdf0ed;border:1px solid rgba(200,75,47,.3);border-radius:12px">
           <div style="font-size:.82rem;font-weight:700;color:var(--accent);margin-bottom:8px">Zone dangereuse</div>
           <p style="font-size:.8rem;color:var(--gris);margin-bottom:12px">La suppression de votre compte effacera définitivement toutes vos données (mandats, locataires, baux, analyses, quittances). Cette action est irréversible.</p>
-          <button id="btnDeleteAccount" onclick="deleteAccount()" style="padding:10px 20px;background:none;border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer">🗑️ Supprimer mon compte et mes données</button>
+          <button id="btnDeleteAccount" onclick="deleteAccount()" style="padding:10px 20px;background:none;border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer">Supprimer mon compte et mes données</button>
         </div>
 
 
@@ -3999,7 +4019,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div class="dash-section-title" style="color:var(--accent)">Zone de danger</div>
           <div style="font-size:.84rem;color:var(--gris);margin-bottom:12px">Réinitialiser ou supprimer les données.</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn-sm" onclick="resetDemoData()" style="color:#7e22ce;border-color:#d8b4fe">🧹 Effacer données de démo</button>
+            <button class="btn-sm" onclick="resetDemoData()" style="color:#7e22ce;border-color:#d8b4fe">Effacer données de démo</button>
             <button class="btn-sm" onclick="deleteAccount()" style="color:var(--accent);border-color:var(--accent)">Supprimer mon compte</button>
           </div>
         </div>
@@ -4816,7 +4836,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <option value="menuiserie">🚪 Menuiserie / Serrurerie</option>
               <option value="peinture">🎨 Peinture / Revêtements</option>
               <option value="toiture">Toiture / Étanchéité</option>
-              <option value="nettoyage">🧹 Nettoyage</option>
+              <option value="nettoyage">Nettoyage</option>
               <option value="autre">📦 Autre</option>
             </select>
           </div>
@@ -5605,6 +5625,17 @@ function setProRadio(k,v,el){
   proWizardData[k]=v;
   el.closest('.radio-group-pro').querySelectorAll('.radio-pill-pro').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');
+  // Afficher les champs garant si nécessaire
+  if (k === 'garant') {
+    var gf = document.getElementById('pGarantFields');
+    var pr = document.getElementById('pGarantPhysRow');
+    var nr = document.getElementById('pGarantNumRow');
+    var or_ = document.getElementById('pGarantOrgRow');
+    if (gf) gf.style.display = (v !== 'non') ? 'block' : 'none';
+    if (pr) pr.style.display = (v==='physique'||v==='caution_solidaire') ? 'block' : 'none';
+    if (nr) nr.style.display = (v==='visale'||v==='garantme') ? 'block' : 'none';
+    if (or_) or_.style.display = (v==='autre_organisme') ? 'block' : 'none';
+  }
 }
 function setGenRadio(k,v,el){proWizardData[k]=v;el.closest('.radio-group-pro').querySelectorAll('.radio-pill-pro').forEach(function(p){p.classList.remove('active');});el.classList.add('active');}
 function setElRadio(v,el){proWizardData.el_type=v;el.closest('.radio-group-pro').querySelectorAll('.radio-pill-pro').forEach(function(p){p.classList.remove('active');});el.classList.add('active');}
@@ -5704,7 +5735,7 @@ function launchProAnalysis(){
       var userContent = v.fileB64
         ? [{type:'document',source:{type:'base64',media_type:'application/pdf',data:v.fileB64}},{type:'text',text:'Analyse ce bail locatif. Contexte: ville='+v.ville+', surface='+v.surface+'m², loyer='+v.loyer_base+'€, charges='+v.charges+'€, dépôt='+v.depot+'€. Type: '+v.bien_type+' '+v.location_type}]
         : 'Analyse ce bail locatif:\n\n'+v.bailText+'\n\nContexte: ville='+v.ville+', surface='+v.surface+'m², loyer='+v.loyer_base+'€, charges='+v.charges+'€.';
-      var resp = await fetch('https://api.anthropic.com/v1/messages',{
+      var resp = await fetch('/api/ai', {
         method:'POST',
         headers:(function(){
         var k=localStorage.getItem('bailscan_anthropic_key')||'';
@@ -6853,7 +6884,7 @@ function buildMandatAgenceHtml(m) {
     html += '</div>';
   } else {
     html += '<label style="display:flex;align-items:center;gap:8px;background:white;border:1px dashed var(--border);border-radius:8px;padding:10px;cursor:pointer;font-size:.82rem;color:var(--gris)">';
-    html += '📎 <span>Uploader le mandat agence (PDF)</span>';
+    html += '<span>Uploader le mandat agence (PDF)</span>';
     html += '<input type="file" accept=".pdf" style="display:none" data-mid="' + m.id + '" onchange="uploadMandatAgence(this.dataset.mid,this)">';
     html += '</label>';
   }
@@ -7048,7 +7079,7 @@ function openFicheMandat(id, activeTab) {
       + '<div style="font-size:2.5rem;margin-bottom:10px">🔍</div>'
       + '<div style="font-weight:600;margin-bottom:4px">Aucun candidat</div>'
       + '<div style="font-size:.82rem">Analysez des dossiers et rattachez-les à ce bien</div></div>';
-    content += '<button class="btn-primary-pro" style="width:100%;margin-top:10px;font-size:.83rem" onclick="closeFicheMandat();setTimeout(function(){showDashTab(\'dossier\')},120)">🔍 Analyser un dossier</button>';
+    content += '<button class="btn-primary-pro" style="width:100%;margin-top:10px;font-size:.83rem" onclick="closeFicheMandat();setTimeout(function(){showDashTab(\'dossier\')},120)">Analyser un dossier</button>';
 
   } else if (activeTab === 'baux') {
     if (!baux.length) {
@@ -7078,7 +7109,7 @@ function openFicheMandat(id, activeTab) {
     + '<button class="btn-sm" data-action="editmandat" data-mid="'+id+'" style="font-size:.78rem">Modifier le bien</button>'
     + '<button class="btn-sm" onclick="genererCourrierMandat(\''+id+'\');closeModalFicheBien()" style="font-size:.78rem">Courrier</button>'
     + '<button class="btn-sm" onclick="exportFicheMandat(\''+id+'\')" style="font-size:.78rem">⬇️ Exporter PDF</button>'
-    + '<button class="btn-sm" style="margin-left:auto;color:var(--accent);border-color:var(--accent);font-size:.78rem" onclick="if(confirm(\'Supprimer ce bien ?\'))deleteMandat(\''+id+'\')">🗑 Supprimer</button>'
+    + '<button class="btn-sm" style="margin-left:auto;color:var(--accent);border-color:var(--accent);font-size:.78rem" onclick="if(confirm(\'Supprimer ce bien ?\'))deleteMandat(\''+id+'\')">Supprimer</button>'
     + '</div>';
 
   el.innerHTML = heroHtml + tabBar
@@ -7647,26 +7678,13 @@ async function genererCourrier() {
     + new Date().toLocaleDateString('fr-FR')
     + '. Répondez UNIQUEMENT avec le texte de la lettre, sans explication.';
 
-  var apiKey = localStorage.getItem('bailscan_anthropic_key') || '';
-  if (!apiKey) {
-    loadEl.style.display = 'none';
-    resultEl.style.display = 'block';
-    resultEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--accent)"><div style="font-size:1.5rem;margin-bottom:8px">⚠️</div><div style="font-weight:600">Clé API manquante</div><div style="font-size:.82rem;color:var(--gris);margin-top:6px">Renseignez votre clé Anthropic dans Paramètres → API</div></div>';
-    btn.disabled = false;
-    return;
-  }
   (async function() {
     var texte = '';
     try {
-      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      var resp = await fetch('/api/ai', {
         method:'POST',
-        headers:(function(){
-        var k=localStorage.getItem('bailscan_anthropic_key')||'';
-        var h={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
-        if(k) h['x-api-key']=k;
-        return h;
-      })(),
-        body: JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1400,messages:[{role:'user',content:prompt}]})
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({prompt:prompt,max_tokens:1400})
       });
       var data = await resp.json();
       texte = (data.content && data.content[0] && data.content[0].text) || '';
@@ -7985,12 +8003,9 @@ function corrigerBailDepuisAnalyse() {
 
     (async function() {
       try {
-        var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        var resp = await fetch('/api/ai', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'anthropic-dangerous-direct-browser-access': 'true'
-          },
+          headers:{'Content-Type':'application/json'},
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 4000,
@@ -10153,14 +10168,9 @@ function sendAgentMessage() {
     return;
   }
 
-  fetch('https://api.anthropic.com/v1/messages', {
+  fetch('/api/ai', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': anthropicKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
+    headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1000,
@@ -10648,9 +10658,9 @@ function testAnthropicApiKey() {
   if (btn) { btn.textContent = '⏳ Test…'; btn.disabled = true; }
   if (st) { st.style.display='block'; st.style.color='var(--gris)'; st.textContent='Test en cours…'; }
 
-  fetch('https://api.anthropic.com/v1/messages', {
+  fetch('/api/ai', {
     method: 'POST',
-    headers: { 'Content-Type':'application/json', 'x-api-key':key, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
+    headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:10, messages:[{role:'user',content:'OK'}] })
   })
   .then(function(r){ return r.json(); })
@@ -11591,6 +11601,7 @@ function prefillQuittance() {
   var n = document.getElementById('qLocNom'); if(n) n.value = l.prenom+' '+l.nom;
   var a = document.getElementById('qAdresse'); if(a) a.value = l.adresse||'';
   var lo = document.getElementById('qLoyer'); if(lo) lo.value = (parseFloat(l.loyer||0)+parseFloat(l.complement||0))||'';
+  var ch = document.getElementById('qCharges'); if(ch) ch.value = parseFloat(l.charges||0)||'';
   updateQuittancePreview();
 }
 
@@ -11752,7 +11763,7 @@ function refreshLocataires() {
       + '</div>'
       + (l.adresse?'<div style="font-size:.8rem;font-weight:500;margin-bottom:4px">'+l.adresse+'</div>':'')
       + (l.loyer?'<div style="font-size:.78rem;color:var(--gris)">Loyer: '+(parseFloat(l.loyer||0)+parseFloat(l.complement||0))+' €/mois HC</div>':'')
-      + (l.garant && l.garant!=='non' ? '<div style="font-size:.75rem;color:#7e22ce;margin-top:3px">🛡️ Garant'+(l.garant==='physique'?' physique'+(l.garantNom?' : '+l.garantNom:''):l.garant==='visale'?' Visale':' organisme')+'</div>' : '')
+      + (l.garant && l.garant!=='non' ? '<div style="font-size:.75rem;color:#7e22ce;margin-top:3px">Garant'+(l.garant==='physique'?' physique'+(l.garantNom?' : '+l.garantNom:''):l.garant==='visale'?' Visale':' organisme')+'</div>' : '')
       + finBail
       + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:6px">'
       + '<div style="display:flex;gap:6px;align-items:center">'+scoreHtml+(scoreHtml&&qBadge?' ':'')+qBadge+'</div>'
@@ -12656,7 +12667,7 @@ function genererNouvelleAlerteIA() {
 
   (async function() {
     try {
-      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      var resp = await fetch('/api/ai', {
         method: 'POST',
         headers: (function(){var k=localStorage.getItem('bailscan_anthropic_key')||'';var h={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};if(k)h['x-api-key']=k;return h;})(),
         body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, messages: [{ role: 'user', content: prompt }] })
@@ -12852,7 +12863,7 @@ function lancerAnalyseDossier() {
   (async function() {
     var result = null;
     try {
-      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      var resp = await fetch('/api/ai', {
         method: 'POST',
         headers: (function(){var k=localStorage.getItem('bailscan_anthropic_key')||'';var h={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};if(k)h['x-api-key']=k;return h;})(),
         body: JSON.stringify({
@@ -12969,7 +12980,7 @@ function openFicheLocataire(locId, event, tab) {
     {id:'baux', label:'Baux ('+locBaux.length+')'},
     {id:'quittances', label:'Quittances ('+locQ.length+')'},
     {id:'courriers', label:'📨 Courriers ('+locCourriers.length+')'},
-    {id:'documents', label:'📎 Documents ('+docs.length+')'}
+    {id:'documents', label:'Documents ('+docs.length+')'}
   ].forEach(function(t){
     var btn = document.createElement('button');
     btn.style.cssText = 'background:none;border:none;border-bottom:2px solid '+(activeTab===t.id?'var(--pro-accent)':'transparent')+';padding:10px 14px;cursor:pointer;font-size:.84rem;font-weight:'+(activeTab===t.id?'700':'500')+';color:'+(activeTab===t.id?'var(--pro-accent)':'var(--gris)')+';margin-bottom:-2px;white-space:nowrap';
@@ -13177,7 +13188,7 @@ function resetDemoData() {
   if (!confirm('Effacer toutes les données de démo (tickets travaux, etc.) ? Vos vraies données ne seront pas supprimées.')) return;
   // Effacer uniquement les clés démo
   ['bailscan_tickets'].forEach(function(k) { localStorage.removeItem(k); });
-  showToast('🧹 Données de démo effacées. Rechargez les onglets concernés.', 'blue');
+  showToast('Données de démo effacées. Rechargez les onglets concernés.', 'blue');
   // Forcer rechargement travaux
   if (typeof refreshTravaux === 'function') refreshTravaux();
 }
