@@ -1887,10 +1887,6 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <label class="radio-pill-pro" onclick="setGenRadio('gen_bailleur_type','sci',this);toggleBailleurType('sci')"><input type="radio" name="gen_bailleur_type" value="sci"> SCI</label>
                 <label class="radio-pill-pro" onclick="setGenRadio('gen_bailleur_type','morale',this);toggleBailleurType('morale')"><input type="radio" name="gen_bailleur_type" value="morale"> Personne morale</label>
               </div>
-              <div class="form-group-pro">
-                <label class="form-label">Code postal</label>
-                <input type="text" class="form-input-pro" id="genCodePostal" placeholder="Ex : 75011" maxlength="5">
-              </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0" id="bailleurPrenomRow">
               <div class="form-group-pro">
@@ -5022,6 +5018,18 @@ body.is-dashboard #marketingPage { display: none !important; }
         <label class="form-label">Téléphone bailleur</label>
         <input type="tel" class="form-input-pro" id="mandatBailleurTel" placeholder="06 12 34 56 78">
       </div>
+      <div class="form-group-pro" style="grid-column:1/-1">
+        <label class="form-label">Adresse du bailleur</label>
+        <input type="text" class="form-input-pro" id="mandatBailleurAdresse" placeholder="12 rue de la Paix">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Code postal bailleur</label>
+        <input type="text" class="form-input-pro" id="mandatBailleurCp" placeholder="75001" maxlength="5">
+      </div>
+      <div class="form-group-pro">
+        <label class="form-label">Ville bailleur</label>
+        <input type="text" class="form-input-pro" id="mandatBailleurVille" placeholder="Paris">
+      </div>
       <div class="form-group-pro">
         <label class="form-label">Date de signature du mandat</label>
         <input type="date" class="form-input-pro" id="mandatDateSignature">
@@ -6862,6 +6870,9 @@ function saveMandat() {
     depot: (document.getElementById('mandatDepot')||{value:''}).value||0,
     bailleur: document.getElementById('mandatBailleur').value,
     bailleurEmail: document.getElementById('mandatBailleurEmail').value,
+    bailleurAdresse: (document.getElementById('mandatBailleurAdresse')||{value:''}).value||'',
+    bailleurCp: (document.getElementById('mandatBailleurCp')||{value:''}).value||'',
+    bailleurVille: (document.getElementById('mandatBailleurVille')||{value:''}).value||'',
     bailleurTel: document.getElementById('mandatBailleurTel').value,
     statut: document.getElementById('mandatStatut').value,
     locataireId: document.getElementById('mandatLocataire').value || null,
@@ -8576,7 +8587,7 @@ function preFillGenererFromMandat(mandatId) {
   s('genSurface', m.surface);
   if (m.pieces) { var pcEl=document.getElementById('genPieces'); if(pcEl) pcEl.value=m.pieces; }
   // DPE
-  if (m.dpe) { var dpeEl=document.getElementById('genDPE'); if(dpeEl) dpeEl.value=m.dpe; }
+  if (m.dpe) { var dpeEl=document.getElementById('genDpe')||document.getElementById('genDPE'); if(dpeEl) dpeEl.value=m.dpe; }
   // Type bail (meublé/vide selon type bien)
   if (m.type) {
     var isMeuble = ['meuble','studio'].includes((m.type||'').toLowerCase());
@@ -8708,7 +8719,12 @@ function refreshLoyersSuivi() {
     var moisListe = moisFil ? [moisFil] : [moisActuel];
     moisListe.forEach(function(m) {
       var entry = suivi.find(function(s){ return String(s.locId)===String(l.id) && s.mois===m; });
-      var attendu = (parseFloat(l.loyer)||0) + (parseFloat(l.complement)||0) + (parseFloat(l.charges)||0);
+      var lCharges = parseFloat(l.charges||0);
+      if (!lCharges && l.mandatId && mandats) {
+        var mLnk = mandats.find(function(x){ return String(x.id)===String(l.mandatId); });
+        if (mLnk) lCharges = parseFloat(mLnk.charges||0);
+      }
+      var attendu = (parseFloat(l.loyer)||0) + (parseFloat(l.complement)||0) + lCharges;
       var percu = entry ? parseFloat(entry.percu) || 0 : 0;
       var statut = !entry ? 'impaye' : percu >= attendu ? 'paye' : percu > 0 ? 'partiel' : 'impaye';
       if (statutFil && statut !== statutFil) return;
@@ -11656,7 +11672,14 @@ function prefillQuittance() {
   var n = document.getElementById('qLocNom'); if(n) n.value = l.prenom+' '+l.nom;
   var a = document.getElementById('qAdresse'); if(a) a.value = l.adresse||'';
   var lo = document.getElementById('qLoyer'); if(lo) lo.value = (parseFloat(l.loyer||0)+parseFloat(l.complement||0))||'';
-  var ch = document.getElementById('qCharges'); if(ch) ch.value = parseFloat(l.charges||0)||'';
+  // Charges : depuis fiche locataire, sinon depuis le mandat lié
+  var chVal = parseFloat(l.charges||0);
+  if (!chVal && l.mandatId) {
+    var mans = loadMandats ? loadMandats() : [];
+    var mLinked = mans.find(function(x){ return String(x.id)===String(l.mandatId); });
+    if (mLinked) chVal = parseFloat(mLinked.charges||0);
+  }
+  var ch = document.getElementById('qCharges'); if(ch) ch.value = chVal||'';
   updateQuittancePreview();
 }
 
