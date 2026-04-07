@@ -1425,7 +1425,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-analyses">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em" id="dashWelcome">Tableau de bord</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em" id="dashWelcome">📊 Tableau de bord</div>
             <div class="dash-page-sub">Vue d'ensemble de votre activité · <span id="dashDateToday"></span></div>
           </div>
           <div style="display:flex;gap:8px">
@@ -1526,7 +1526,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="dash-section-title" style="margin-bottom:14px">À traiter maintenant</div>
             <div id="dashAlertesList" style="display:flex;flex-direction:column;gap:8px">
               <div style="text-align:center;padding:20px;color:var(--gris);font-size:.84rem">
-                <div style="font-size:1.8rem;margin-bottom:8px">✅</div>
+                <div style="font-size:1.8rem;margin-bottom:8px"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="2 8 6 12 14 4"/></svg></div>
                 Aucune alerte urgente
               </div>
             </div>
@@ -1584,7 +1584,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-nouveau" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Nouvelle analyse</div><div class="dash-page-sub">Suivez les 4 étapes pour une analyse complète</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🔎 Nouvelle analyse</div><div class="dash-page-sub">Suivez les 4 étapes pour une analyse complète</div></div>
         </div>
         <div class="dash-card">
           <!-- Progress -->
@@ -1838,10 +1838,10 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-corrections" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Corrections à apporter au bail</div><div class="dash-page-sub">Clauses à modifier avant signature pour être en conformité avec la loi</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">✏ Corrections à apporter au bail</div><div class="dash-page-sub">Clauses à modifier avant signature pour être en conformité avec la loi</div></div>
         </div>
         <div id="correctionsEmpty" class="dash-card" style="text-align:center;padding:60px 0;color:var(--gris)">
-          <div style="font-size:2.5rem;margin-bottom:12px">✏️</div>
+          <div style="font-size:2.5rem;margin-bottom:12px"><svg width="36" height="36" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".35"><path d="M11 2l3 3-8 8H3v-3L11 2z"/></svg></div>
           Les corrections apparaissent après une analyse.<br>
           <a href="#" onclick="showDashTab('nouveau')" style="color:var(--pro-accent);font-weight:600">Lancer une analyse →</a>
         </div>
@@ -1864,7 +1864,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-generer" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Générer un bail conforme</div><div class="dash-page-sub">L'IA rédige un bail complet conforme à la loi 1989 + ALUR selon votre situation</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">📋 Générer un bail conforme</div><div class="dash-page-sub">L'IA rédige un bail complet conforme à la loi 1989 + ALUR selon votre situation</div></div>
         </div>
         <div class="dash-card">
           <div id="genererForm">
@@ -2219,13 +2219,13 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="form-group-pro" style="margin-bottom:12px">
               <label class="form-label">Travaux d'entretien à la charge du locataire <span style="font-weight:400;color:var(--gris);font-size:.78rem">— cochez ce qui s'applique</span></label>
               <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:6px">
-                <label class="annex-check"><input type="checkbox" id="trav_chaudiere"> Entretien annuel chaudière individuelle</label>
+                <label class="annex-check"><input type="checkbox" id="trav_chaudiere"> Entretien annuel chaudière</label>
                 <label class="annex-check"><input type="checkbox" id="trav_climatisation"> Entretien climatisation</label>
                 <label class="annex-check"><input type="checkbox" id="trav_jardinage"> Entretien jardin / tonte pelouse</label>
                 <label class="annex-check"><input type="checkbox" id="trav_gouttières"> Nettoyage gouttières (pavillon)</label>
                 <label class="annex-check"><input type="checkbox" id="trav_piscine"> Entretien piscine</label>
                 <label class="annex-check"><input type="checkbox" id="trav_ramonage"> Ramonage cheminée</label>
-                <label class="annex-check"><input type="checkbox" id="trav_robinetterie"> Remplacement joints / robinetterie courante</label>
+                <label class="annex-check"><input type="checkbox" id="trav_robinetterie"> Remplacement joints / robinetterie</label>
                 <label class="annex-check"><input type="checkbox" id="trav_detartrage"> Détartrage équipements</label>
               </div>
               <div style="margin-top:8px">
@@ -2240,9 +2240,9 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <label class="annex-check"><input type="checkbox" id="clause_sousloc"> Sous-location interdite</label>
                 <label class="annex-check"><input type="checkbox" id="clause_cession"> Cession du bail interdite</label>
                 <label class="annex-check"><input type="checkbox" id="clause_assurance_pno"> Bailleur couvert par assurance PNO</label>
-                <label class="annex-check"><input type="checkbox" id="clause_releve_compteur"> Relevés compteurs contradictoires à l'entrée/sortie</label>
-                <label class="annex-check"><input type="checkbox" id="clause_dpe_travaux"> Travaux de rénovation énergétique prévus</label>
-                <label class="annex-check"><input type="checkbox" id="clause_bail_num"> Bail numérique — signature électronique</label>
+                <label class="annex-check"><input type="checkbox" id="clause_releve_compteur"> Relevés compteurs contradictoires</label>
+                <label class="annex-check"><input type="checkbox" id="clause_dpe_travaux"> Travaux de rénovation prévus</label>
+                <label class="annex-check"><input type="checkbox" id="clause_bail_num"> Signature électronique</label>
               </div>
               <div>
                 <label class="form-label" style="font-size:.78rem">Clauses libres supplémentaires</label>
@@ -2382,7 +2382,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-loyers" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Vérification encadrement loyers</div><div class="dash-page-sub">Vérifiez si un loyer respecte le plafond légal dans votre ville</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">⚖️ Vérification encadrement loyers</div><div class="dash-page-sub">Vérifiez si un loyer respecte le plafond légal dans votre ville</div></div>
         </div>
         <div class="dash-card">
           <div class="form-grid-pro" style="margin-bottom:16px">
@@ -2531,7 +2531,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-alertes" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Alertes & Échéances</div><div class="dash-page-sub">Suivez les deadlines légales de votre parc locatif</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🔔 Alertes & Échéances</div><div class="dash-page-sub">Suivez les deadlines légales de votre parc locatif</div></div>
           <button class="btn-primary-pro" onclick="refreshAlertes()">↻ Actualiser</button>
         </div>
 
@@ -2573,7 +2573,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <label class="form-label">Type d'échéance</label>
               <select class="form-input-pro" id="newAlertType">
                 <option value="fin_bail">Fin de bail</option>
-                <option value="revision_irl">Révision IRL</option>
+                <option value="revision_irl">📈 Révision IRL</option>
                 <option value="preavis">Préavis en cours</option>
                 <option value="renouvellement">Renouvellement</option>
                 <option value="travaux">Travaux planifiés</option>
@@ -2603,7 +2603,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-mandats" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Mandats & Biens</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🏠 Mandats & Biens</div>
             <div class="dash-page-sub">Portefeuille de biens · Référentiel pour analyses, dossiers et courriers</div>
           </div>
           <button class="btn-primary-pro" onclick="openNewMandat()">+ Ajouter un bien</button>
@@ -2650,7 +2650,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-locataires" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Fiches Locataires</div><div class="dash-page-sub">Dossiers complets et scoring de solvabilité</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">👤 Fiches Locataires</div><div class="dash-page-sub">Dossiers complets et scoring de solvabilité</div></div>
           <button class="btn-primary-pro" onclick="openNewLocataire()">+ Nouveau locataire</button>
         </div>
 
@@ -2875,7 +2875,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-dossier" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Analyse de Dossier Locataire</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🔍 Analyse de Dossier Locataire</div>
             <div class="dash-page-sub">Scoring IA · Taux d'effort · Cohérence des pièces · Détection documents suspects</div>
           </div>
           <div style="display:flex;gap:10px;align-items:center">
@@ -3068,7 +3068,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- CNI -->
                 <label class="dossier-piece-card" id="piece-cni-card" for="piece-cni">
-                  <div class="dossier-piece-icon">🪪</div>
+                  <div class="dossier-piece-icon"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="3" width="14" height="10" rx="1"/><circle cx="5" cy="8" r="2"/><path d="M9 6h4M9 10h3"/></svg></div>
                   <div class="dossier-piece-label">Pièce d'identité</div>
                   <div class="dossier-piece-status" id="piece-cni-status">Non fournie</div>
                   <input type="file" id="piece-cni" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('cni',this)">
@@ -3108,7 +3108,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Quittances de loyer -->
                 <label class="dossier-piece-card" id="piece-quittances-card" for="piece-quittances">
-                  <div class="dossier-piece-icon">🏠</div>
+                  <div class="dossier-piece-icon"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 1L2 5v9h4v-4h4v4h4V5L8 1z"/></svg></div>
                   <div class="dossier-piece-label">Quittances loyer précédent</div>
                   <div class="dossier-piece-status" id="piece-quittances-status">Optionnel</div>
                   <input type="file" id="piece-quittances" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('quittances',this)">
@@ -3163,7 +3163,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <!-- Zone loading -->
             <div id="dossierLoading" style="display:none">
               <div class="dash-card" style="text-align:center;padding:40px 20px">
-                <div style="font-size:2rem;margin-bottom:16px;animation:spin 1s linear infinite">🔍</div>
+                <div style="font-size:2rem;margin-bottom:16px;animation:spin 1s linear infinite"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" style="animation:spin 1s linear infinite"><circle cx="6" cy="6" r="4"/><path d="M10 10l3 3"/></svg></div>
                 <div style="font-weight:700;font-size:.95rem;margin-bottom:8px">Analyse IA en cours…</div>
                 <div style="font-size:.82rem;color:var(--gris)" id="dossierLoadingMsg">Lecture des documents…</div>
                 <div style="background:var(--border);height:4px;border-radius:4px;margin-top:16px;overflow:hidden">
@@ -3249,15 +3249,15 @@ body.is-dashboard #marketingPage { display: none !important; }
                   Résultat en 15s
                 </div>
                 <div style="font-size:.78rem;color:var(--gris);text-align:center">
-                  <div style="font-size:1.4rem">🔒</div>
+                  <div style="font-size:1.4rem"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="7" width="10" height="8" rx="1"/><path d="M5 7V5a3 3 0 016 0v2"/></svg></div>
                   Données locales
                 </div>
                 <div style="font-size:.78rem;color:var(--gris);text-align:center">
-                  <div style="font-size:1.4rem">📊</div>
+                  <div style="font-size:1.4rem"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="9" width="3" height="6" rx="1"/><rect x="6" y="5" width="3" height="10" rx="1"/><rect x="11" y="1" width="3" height="14" rx="1"/></svg></div>
                   Score 0-100
                 </div>
                 <div style="font-size:.78rem;color:var(--gris);text-align:center">
-                  <div style="font-size:1.4rem">🔍</div>
+                  <div style="margin-bottom:4px;opacity:.5"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l3 3"/></svg></div>
                   Détection fraude
                 </div>
               </div>
@@ -3293,7 +3293,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-quittances" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Quittances de loyer</div><div class="dash-page-sub">Génération automatique en un clic</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">📄 Quittances de loyer</div><div class="dash-page-sub">Génération automatique en un clic</div></div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
@@ -3371,7 +3371,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       
       <div id="tab-courriers" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Courriers & Lettres types</div><div class="dash-page-sub">Rédigés par l'IA en 10 secondes, conformes au droit locatif</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">✉️ Courriers & Lettres types</div><div class="dash-page-sub">Rédigés par l'IA en 10 secondes, conformes au droit locatif</div></div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
@@ -3470,9 +3470,9 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-veille" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Veille réglementaire</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">📡 Veille réglementaire</div>
             <div class="dash-page-sub">Alertes automatiques · Score de conformité portefeuille · Newsletter personnalisée</div>
-            <div id="veilleUpdateStatus" style="font-size:.76rem;color:var(--gris);margin-top:4px">⏳ Vérification des mises à jour…</div>
+            <div id="veilleUpdateStatus" style="font-size:.76rem;color:var(--gris);margin-top:4px">Vérification des mises à jour…</div>
           </div>
           <div style="display:flex;gap:8px;align-items:center">
           <button class="btn-sm" onclick="autoUpdateVeille(true)" id="btnRefreshVeille" style="padding:7px 16px">Actualiser</button>
@@ -3580,7 +3580,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-equipe" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Gestion des utilisateurs</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">👥 Gestion des utilisateurs</div>
             <div class="dash-page-sub">Gérez votre équipe et leurs permissions d'accès</div>
           </div>
           <button class="btn-primary-pro" onclick="openInviteModal()">+ Inviter un utilisateur</button>
@@ -3620,7 +3620,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       </div>
 
       <div id="tab-api" style="display:none">
-        <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">API d'intégration</div><div class="dash-page-sub">Connectez BailScan à votre logiciel de gestion locative</div></div></div>
+        <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">⚡ API d'intégration</div><div class="dash-page-sub">Connectez BailScan à votre logiciel de gestion locative</div></div></div>
         <div class="dash-card" style="margin-bottom:16px">
           <div class="dash-section-title">Votre clé API</div>
           <div style="background:#1a1a2e;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:12px">
@@ -3663,7 +3663,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       </div>
 
       <div id="tab-abonnement" style="display:none">
-  <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Abonnement</div><div class="dash-page-sub">Choisissez votre formule BailScan Pro</div></div></div>
+  <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">💳 Abonnement</div><div class="dash-page-sub">Choisissez votre formule BailScan Pro</div></div></div>
   <div class="dash-card" style="max-width:560px">
     <div style="display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;margin-bottom:24px;width:fit-content">
       <button id="dashPtogMensuel" onclick="setDashPricing('mensuel')" style="padding:7px 18px;border:none;border-radius:7px;font-weight:600;font-size:.85rem;cursor:pointer;background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,.1)">Mensuel</button>
@@ -3710,7 +3710,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 </div>
 
 <div id="tab-parametres" style="display:none">
-        <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Paramètres</div><div class="dash-page-sub">Votre compte et votre agence</div></div></div>
+        <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">⚙️ Paramètres</div><div class="dash-page-sub">Votre compte et votre agence</div></div></div>
 
         <!-- Logo agence -->
         <div class="dash-card" style="margin-bottom:16px">
@@ -4079,7 +4079,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
 <div id="tab-loyers-suivi" style="display:none">
   <div class="dash-main-header">
-    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Loyers & Impayés</div><div class="dash-page-sub">Suivi mensuel des encaissements · Relances automatiques</div></div>
+    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">💰 Loyers & Impayés</div><div class="dash-page-sub">Suivi mensuel des encaissements · Relances automatiques</div></div>
     <div style="display:flex;gap:8px">
       <button class="btn-sm" onclick="exportLoyersPDF()">Exporter</button>
       <button class="btn-primary-pro" onclick="openSaisieLoyer()">+ Enregistrer un paiement</button>
@@ -4179,7 +4179,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 ═══════════════════════════════════════════════════════ -->
 <div id="tab-etat-lieux" style="display:none">
   <div class="dash-main-header">
-    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">État des lieux</div><div class="dash-page-sub">Entrée & Sortie · Style tablette agence · Rapport PDF professionnel</div></div>
+    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">📝 État des lieux</div><div class="dash-page-sub">Entrée & Sortie · Style tablette agence · Rapport PDF professionnel</div></div>
     <button class="btn-primary-pro" onclick="openNouvelEDL()">+ Nouvel état des lieux</button>
   </div>
 
@@ -4390,7 +4390,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div id="edlStep3" class="edl-step" style="display:none">
           <div class="edl-section-title" style="display:flex;justify-content:space-between;align-items:center">
             Pièces — état par surface
-            <button class="btn-sm" onclick="ajouterPieceEDL()" style="font-size:.75rem">+ Ajouter une pièce</button>
+            <button class="btn-sm" id="edlAddPieceBtn" onclick="showAddPieceMenu()" style="font-size:.75rem">+ Ajouter une pièce une pièce</button>
           </div>
           <div id="edlPiecesContainer"></div>
         </div>
@@ -4810,7 +4810,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 ═══════════════════════════════════════════════════════ -->
 <div id="tab-travaux" style="display:none">
   <div class="dash-main-header">
-    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Travaux & Interventions</div><div class="dash-page-sub">Tickets de maintenance · Suivi des prestataires · Devis et factures</div></div>
+    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🔧 Travaux & Interventions</div><div class="dash-page-sub">Tickets de maintenance · Suivi des prestataires · Devis et factures</div></div>
     <button class="btn-primary-pro" onclick="openNouvelTicket()">+ Nouveau ticket</button>
   </div>
   <!-- KPIs -->
@@ -4827,7 +4827,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <option value="">Tous les statuts</option>
         <option value="ouvert">Ouvert</option>
         <option value="en_cours">En cours</option>
-        <option value="attente_devis">⏳ Attente devis</option>
+        <option value="attente_devis">Attente devis</option>
         <option value="planifie">Planifié</option>
         <option value="clos">Clôturé</option>
       </select>
@@ -4900,7 +4900,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <select class="form-input-pro" id="ticketStatut">
               <option value="ouvert">Ouvert</option>
               <option value="en_cours">En cours</option>
-              <option value="attente_devis">⏳ Attente devis</option>
+              <option value="attente_devis">Attente devis</option>
               <option value="planifie">Planifié</option>
               <option value="clos">Clôturé</option>
             </select>
@@ -5291,7 +5291,7 @@ window.addEventListener('DOMContentLoaded', function() {
         prenom: meta.prenom || parts[0] || u.email.split('@')[0],
         nom: meta.nom || parts.slice(1).join(' ') || '',
         agence: meta.agence || 'Mon agence',
-        trialEnd: new Date(Date.now() + 3*864e5).toISOString()
+        trialEnd: (localStorage.getItem('bailscan_trial_end') || (localStorage.setItem('bailscan_trial_end', new Date(Date.now() + 3*864e5).toISOString()), localStorage.getItem('bailscan_trial_end')))
       };
     }
 
@@ -5375,7 +5375,7 @@ async function handleSignup() {
     document.getElementById('signupForm').style.display='none';
     document.getElementById('signupSuccess').style.display='block';
     if (data && data.user) {
-      proState.user = { id:data.user.id, email:email, prenom:prenom, nom:nom, agence:agence||'Mon agence', trialEnd:new Date(Date.now()+3*864e5).toISOString() };
+      proState.user = { id:data.user.id, email:email, prenom:prenom, nom:nom, agence:agence||'Mon agence', trialEnd:(localStorage.getItem('bailscan_trial_end')||(localStorage.setItem('bailscan_trial_end',new Date(Date.now()+3*864e5).toISOString()),localStorage.getItem('bailscan_trial_end'))) };
       proState.isLoggedIn = true;
       window._SB = sb;
       setTimeout(function(){closeModal('signup');showDashboard();},2000);
@@ -5484,6 +5484,8 @@ function showDashboard(){
   loadAllData();
   // Vérifier le plan et le trial
   checkPlanAccess();
+  // Re-vérifier le trial toutes les heures
+  setInterval(function() { checkPlanAccess(); }, 36e5);
   // Onboarding premier login
   setTimeout(function() {
     if (localStorage.getItem('bailscan_ob_done') === '1') return;
@@ -5495,7 +5497,10 @@ function showDashboard(){
 function checkPlanAccess() {
   var info = proState.agencyInfo;
   var plan = info && info.plan || proState.user && proState.user.plan || 'trial';
-  var trialEnd = info && info.trial_end || proState.user && proState.user.trialEnd;
+  // Utiliser localStorage comme source de vérité pour le trial
+  var storedTrialEnd = localStorage.getItem('bailscan_trial_end');
+  var trialEnd = (info && info.trial_end) || (proState.user && proState.user.trialEnd) || storedTrialEnd;
+  if (trialEnd && !storedTrialEnd) localStorage.setItem('bailscan_trial_end', trialEnd);
 
   // Retour après abonnement Stripe
   var params = new URLSearchParams(window.location.search);
@@ -5516,11 +5521,14 @@ function checkPlanAccess() {
   }
 
   if (plan === 'trial' && trialEnd) {
-    var daysLeft = Math.max(0, Math.ceil((new Date(trialEnd) - Date.now()) / 864e5));
+    var msLeft = new Date(trialEnd) - Date.now();
+    var daysLeft = Math.max(0, Math.ceil(msLeft / 864e5));
+    var hoursLeft = Math.max(0, Math.ceil(msLeft / 36e5));
+    var displayLeft = daysLeft > 1 ? daysLeft + 'j' : daysLeft === 1 ? '1j' : (hoursLeft > 0 ? hoursLeft + 'h' : '0');
     var _tl=document.getElementById('trialDaysLeft'); if(_tl) _tl.textContent=daysLeft;
-    var _tb=document.getElementById('trialDaysLeftBanner'); if(_tb) _tb.textContent=daysLeft;
+    var _tb=document.getElementById('trialDaysLeftBanner'); if(_tb) _tb.textContent=displayLeft;
     var _te=document.getElementById('trialEndDate'); if(_te) _te.textContent=new Date(trialEnd).toLocaleDateString('fr-FR');
-    if (daysLeft <= 0) {
+    if (msLeft <= 0) {
       showPaywall('Votre essai gratuit a expiré', 'Vos données sont conservées. Abonnez-vous pour reprendre votre activité.');
       return;
     }
@@ -6870,6 +6878,10 @@ function editMandat(id) {
   if(document.getElementById('mandatPieces')) document.getElementById('mandatPieces').value = m.pieces||'';
   f('mandatCharges', m.charges); f('mandatBailleur', m.bailleur);
   f('mandatBailleurEmail', m.bailleurEmail); f('mandatBailleurTel', m.bailleurTel);
+  if(document.getElementById('mandatBailleurAdresse')) document.getElementById('mandatBailleurAdresse').value = m.bailleurAdresse||'';
+  if(document.getElementById('mandatBailleurCp')) document.getElementById('mandatBailleurCp').value = m.bailleurCp||'';
+  if(document.getElementById('mandatBailleurVille')) document.getElementById('mandatBailleurVille').value = m.bailleurVille||'';
+  if(document.getElementById('mandatDepot')) document.getElementById('mandatDepot').value = m.depot||0;
   f('mandatType', m.type); f('mandatStatut', m.statut); f('mandatDpe', m.dpe||'');
   f('mandatZone', m.zone||''); f('mandatNotes', m.notes||'');
   f('mandatLocataire', m.locataireId||'');
@@ -9020,13 +9032,62 @@ function goEDLStep(n) {
 function edlStepNav(dir) { goEDLStep(edlCurrentStep + dir); }
 
 // ── ÉTAPE 3 : Pièces pro ──
-function ajouterPieceEDL() {
+// Catalogue de pièces prédéfinies
+var EDL_PIECES_CATALOGUE = [
+  { nom: 'Entrée / Hall', surfaces: ['Sol','Murs','Plafond','Porte d\'entrée','Interphone','Sonnette','Boîtes aux lettres'] },
+  { nom: 'Séjour / Salon', surfaces: ['Sol','Murs','Plafond','Fenêtres','Volets','Prises électriques','Éclairage'] },
+  { nom: 'Salle à manger', surfaces: ['Sol','Murs','Plafond','Fenêtres','Volets','Prises électriques'] },
+  { nom: 'Cuisine', surfaces: ['Sol','Murs','Plafond','Plan de travail','Évier','Robinetterie','Plaques de cuisson','Four','Hotte','Réfrigérateur','Lave-vaisselle','Placards','Prises électriques'] },
+  { nom: 'Chambre principale', surfaces: ['Sol','Murs','Plafond','Fenêtres','Volets','Placards','Prises électriques','Éclairage'] },
+  { nom: 'Chambre 2', surfaces: ['Sol','Murs','Plafond','Fenêtres','Volets','Placards','Prises électriques'] },
+  { nom: 'Chambre 3', surfaces: ['Sol','Murs','Plafond','Fenêtres','Volets','Prises électriques'] },
+  { nom: 'Bureau', surfaces: ['Sol','Murs','Plafond','Fenêtres','Prises électriques','Prises réseau'] },
+  { nom: 'Salle de bain', surfaces: ['Sol','Murs','Plafond','Baignoire / Douche','Robinetterie','Lavabo','WC','Miroir','Placards','Ventilation'] },
+  { nom: 'Salle de douche', surfaces: ['Sol','Murs','Plafond','Douche','Robinetterie','Lavabo','Ventilation'] },
+  { nom: 'WC séparé', surfaces: ['Sol','Murs','Plafond','WC','Chasse d\'eau','Robinetterie'] },
+  { nom: 'Couloir / Dégagement', surfaces: ['Sol','Murs','Plafond','Éclairage','Prises électriques'] },
+  { nom: 'Garage', surfaces: ['Sol','Murs','Plafond','Porte de garage','Éclairage','Prises électriques'] },
+  { nom: 'Cave / Cellier', surfaces: ['Sol','Murs','Plafond','Porte','Éclairage'] },
+  { nom: 'Buanderie', surfaces: ['Sol','Murs','Plafond','Lave-linge','Sèche-linge','Évier','Robinetterie','Ventilation'] },
+  { nom: 'Terrasse', surfaces: ['Sol','Garde-corps / Balustrade','Éclairage','Prises extérieures','Robinet extérieur'] },
+  { nom: 'Balcon', surfaces: ['Sol','Garde-corps','Fenêtres / Baies vitrées','Éclairage'] },
+  { nom: 'Jardin', surfaces: ['Pelouse','Haies / Clôture','Portail','Allées','Arrosage','Abri de jardin','Éclairage extérieur'] },
+  { nom: 'Grenier / Combles', surfaces: ['Sol','Murs','Plafond','Fenêtre de toit','Isolation','Trappe d\'accès'] },
+  { nom: 'Véranda', surfaces: ['Sol','Vitrage','Structure','Éclairage','Chauffage'] },
+  { nom: 'Débarras / Rangement', surfaces: ['Sol','Murs','Plafond','Porte','Éclairage'] },
+  { nom: 'Pièce personnalisée', surfaces: ['Sol','Murs','Plafond'] },
+];
+
+function ajouterPieceEDL(nomPiece) {
+  var catalogue = nomPiece
+    ? EDL_PIECES_CATALOGUE.find(function(p){ return p.nom === nomPiece; })
+    : null;
+  var surfaces = catalogue
+    ? catalogue.surfaces
+    : ['Sol','Murs','Plafond'];
   edlPieces.push({
-    nom: 'Nouvelle pièce',
-    surfaces: ['Sol','Murs','Plafond'].map(function(s){ return {nom:s,etat:'Bon état',obs:''}; }),
+    nom: nomPiece || 'Nouvelle pièce',
+    surfaces: surfaces.map(function(s){ return {nom:s,etat:'Bon état',obs:''}; }),
+    photos: [],
     observations: ''
   });
   renderEDLPieces();
+}
+
+function showAddPieceMenu() {
+  var existing = document.getElementById('edlAddPieceMenu');
+  if (existing) { existing.remove(); return; }
+  var menu = document.createElement('div');
+  menu.id = 'edlAddPieceMenu';
+  menu.style.cssText = 'position:absolute;z-index:9999;background:white;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:8px 0;max-height:320px;overflow-y:auto;min-width:220px;right:0;top:calc(100% + 4px)';
+  menu.innerHTML = EDL_PIECES_CATALOGUE.map(function(p){
+    return '<div onclick="ajouterPieceEDL(\''+p.nom.replace(/\'/g,"\\'")+'\');document.getElementById(\'edlAddPieceMenu\').remove()" style="padding:8px 16px;cursor:pointer;font-size:.83rem;color:var(--texte)" onmouseover="this.style.background=\'#f5f7ff\'" onmouseout="this.style.background=\'white\'">'+p.nom+'</div>';
+  }).join('');
+  document.addEventListener('click', function handler(e){
+    if(!menu.contains(e.target)&&e.target.id!=='edlAddPieceBtn'){menu.remove();document.removeEventListener('click',handler);}
+  },true);
+  var btn = document.getElementById('edlAddPieceBtn');
+  if(btn){ btn.parentElement.style.position='relative'; btn.parentElement.appendChild(menu); }
 }
 
 function renderEDLPieces() {
@@ -9037,30 +9098,50 @@ function renderEDLPieces() {
       + p.surfaces.map(function(s, si) {
           var cls = ETATS_CLASS[s.etat] || 'bon';
           return '<div class="edl-surface-item">'
-            + '<div class="edl-surface-label">'+s.nom+'</div>'
-            + '<select class="edl-etat-select '+cls+'" onchange="edlSurfaceChange('+pi+','+si+',this)">'
-            + ETATS_EDL.map(function(e){ return '<option'+(s.etat===e?' selected':'')+'>'+e+'</option>'; }).join('')
+            + '<div class="edl-surface-label">' + s.nom + '</div>'
+            + '<select class="edl-etat-select ' + cls + '" onchange="edlSurfaceChange(' + pi + ',' + si + ',this)">'
+            + ETATS_EDL.map(function(e){ return '<option' + (s.etat===e?' selected':'') + '>' + e + '</option>'; }).join('')
             + '</select>'
-            + '<input class="edl-obs-input" type="text" placeholder="Obs…" value="'+s.obs.replace(/"/g,'&quot;')+'" onchange="edlSurfaceObs('+pi+','+si+',this.value)">'
+            + '<input class="edl-obs-input" type="text" placeholder="Obs…" value="' + s.obs.replace(/"/g,'&quot;') + '" onchange="edlSurfaceObs(' + pi + ',' + si + ',this.value)">'
             + '</div>';
         }).join('')
       + '</div>';
+
+    // Photos
+    var photosHtml = '<div style="margin:10px 0 6px;padding:10px;background:#f8f9ff;border-radius:8px;border:1px solid #e0e7ff">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'
+      + '<span style="font-size:.72rem;font-weight:700;color:var(--pro-accent);text-transform:uppercase;letter-spacing:.05em">Photos</span>'
+      + '<label style="background:var(--pro-accent);color:white;border-radius:6px;padding:5px 12px;font-size:.75rem;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600">'
+      + '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2"><rect x="1" y="4" width="14" height="10" rx="1"/><circle cx="8" cy="9" r="3"/><path d="M5 4l1-2h4l1 2"/></svg>'
+      + 'Prendre une photo'
+      + '<input type="file" accept="image/*" capture="environment" style="display:none" onchange="edlAjouterPhoto(' + pi + ',this)">'
+      + '</label></div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:6px;min-height:24px">'
+      + (p.photos && p.photos.length
+          ? p.photos.map(function(ph, phi){
+              return '<div style="position:relative">'
+                + '<img src="' + ph + '" style="width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid #c7d7f8;cursor:pointer" onclick="edlVoirPhoto(\'' + pi + '-' + phi + '\')">'
+                + '<button onclick="edlSupprimerPhoto(' + pi + ',' + phi + ')" title="Supprimer" style="position:absolute;top:-5px;right:-5px;background:#ef4444;color:white;border:none;border-radius:50%;width:17px;height:17px;font-size:.6rem;cursor:pointer;line-height:1;padding:0;font-weight:700">×</button>'
+                + '</div>';
+            }).join('')
+          : '<span style="font-size:.76rem;color:var(--gris);font-style:italic">Aucune photo — cliquez sur le bouton pour en ajouter</span>')
+      + '</div></div>';
+
     return '<div class="edl-piece-card">'
       + '<div class="edl-piece-header">'
-        + '<span style="font-size:1.1rem">🚪</span>'
-        + '<input class="edl-piece-nom" type="text" value="'+p.nom.replace(/"/g,'&quot;')+'" onchange="edlPieces['+pi+'].nom=this.value">'
-        + '<button onclick="edlAjouterSurface('+pi+')" style="background:#eef2fb;border:1px solid #c7d7f8;color:var(--pro-accent);border-radius:6px;padding:3px 8px;font-size:.7rem;cursor:pointer">+ Surface</button>'
-        + '<button onclick="supprimerPieceEDL('+pi+')" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:3px 8px;font-size:.7rem;cursor:pointer">✕</button>'
+        + '<input class="edl-piece-nom" type="text" value="' + p.nom.replace(/"/g,'&quot;') + '" onchange="edlPieces[' + pi + '].nom=this.value">'
+        + '<button onclick="edlAjouterSurface(' + pi + ')" style="background:#eef2fb;border:1px solid #c7d7f8;color:var(--pro-accent);border-radius:6px;padding:3px 8px;font-size:.7rem;cursor:pointer">+ Surface</button>'
+        + '<button onclick="supprimerPieceEDL(' + pi + ')" style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:6px;padding:3px 8px;font-size:.7rem;cursor:pointer">✕</button>'
       + '</div>'
       + '<div class="edl-piece-body">'
         + surfacesHtml
-        + '<div style="margin-top:8px">'
-          + '<input type="text" class="form-input-pro" placeholder="Observations générales de la pièce…" value="'+p.observations.replace(/"/g,'&quot;')+'" onchange="edlPieces['+pi+'].observations=this.value" style="font-size:.8rem">'
-        + '</div>'
+        + photosHtml
+        + '<input type="text" class="form-input-pro" placeholder="Observations générales…" value="' + p.observations.replace(/"/g,'&quot;') + '" onchange="edlPieces[' + pi + '].observations=this.value" style="font-size:.8rem;margin-top:4px">'
       + '</div>'
     + '</div>';
   }).join('');
 }
+
 
 function edlSurfaceChange(pi, si, sel) {
   edlPieces[pi].surfaces[si].etat = sel.value;
@@ -9171,7 +9252,7 @@ function saveEDL() {
     // Observations
     observations: getV('edlObservations'),
     // Pièces
-    pieces: edlPieces.map(function(p){ return {nom:p.nom, surfaces:p.surfaces.slice(), observations:p.observations}; }),
+    pieces: edlPieces.map(function(p){ return {nom:p.nom, surfaces:JSON.parse(JSON.stringify(p.surfaces)), observations:p.observations, photos:p.photos||[]}; }),
     // Signataires
     sig1Nom: getV('edlSig1Nom'), sig1Date: getV('edlSig1Date'),
     sig2Nom: getV('edlSig2Nom'), sig2Date: getV('edlSig2Date'),
@@ -9559,7 +9640,7 @@ function refreshRegistre() {
       +'<td style="font-size:.8rem">'+(r.honoraires||'—')+'</td>'
       +'<td style="font-size:.78rem">'+(r.fin?'Exp. '+new Date(r.fin).toLocaleDateString('fr-FR'):'—')+'</td>'
       +'<td><span style="background:'+statut.bg+';color:'+statut.color+';font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px">'+statut.label+'</span></td>'
-      +'<td style="white-space:nowrap"><button class="btn-sm" style="font-size:.7rem" onclick="editRegistre(\''+r.id+'\')">✏️</button> <button class="btn-sm" style="font-size:.7rem;color:var(--danger);border-color:var(--danger)" onclick="supprimerRegistre(\''+r.id+'\')">✕</button></td>'
+      +'<td style="white-space:nowrap"><button class="btn-sm" style="font-size:.7rem" onclick="editRegistre(\''+r.id+'\')">Modifier</button> <button class="btn-sm" style="font-size:.7rem;color:var(--danger);border-color:var(--danger)" onclick="supprimerRegistre(\''+r.id+'\')">✕</button></td>'
     +'</tr>';
   }).join('');
 }
@@ -9678,7 +9759,7 @@ function refreshDiagnostics() {
     var exp = d.dateExp ? new Date(d.dateExp) : null;
     var expired = exp && exp < today;
     var soon = exp && !expired && (exp - today) < 90*24*3600*1000;
-    var statut = !exp ? {bg:'#f0f9ff',color:'#0369a1',label:'Non daté'} : expired ? {bg:'#fef2f2',color:'#991b1b',label:'Expiré'} : soon ? {bg:'#fffbeb',color:'#92400e',label:'⏳ Bientôt'} : {bg:'#f0fdf4',color:'#166534',label:'Valide'};
+    var statut = !exp ? {bg:'#f0f9ff',color:'#0369a1',label:'Non daté'} : expired ? {bg:'#fef2f2',color:'#991b1b',label:'Expiré'} : soon ? {bg:'#fffbeb',color:'#92400e',label:'Bientôt'} : {bg:'#f0fdf4',color:'#166534',label:'Valide'};
     var typeInfo = DIAG_DUREES[d.type] || {label:d.type};
     return '<tr>'
       +'<td style="font-size:.8rem;font-weight:600">'+(m?m.adresse||'—':'—')+'</td>'
@@ -9688,7 +9769,7 @@ function refreshDiagnostics() {
       +'<td style="font-size:.8rem;font-weight:'+(expired?'700':'400')+';color:'+(expired?'var(--danger)':'inherit')+'">'+(d.dateExp?new Date(d.dateExp).toLocaleDateString('fr-FR'):'—')+'</td>'
       +'<td style="font-size:.78rem;color:var(--gris)">'+(d.organisme||'—')+'</td>'
       +'<td><span style="background:'+statut.bg+';color:'+statut.color+';font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px">'+statut.label+'</span></td>'
-      +'<td style="white-space:nowrap"><button class="btn-sm" style="font-size:.7rem" onclick="editDiag(\''+d.id+'\')">✏️</button> <button class="btn-sm" style="font-size:.7rem;color:var(--danger);border-color:var(--danger)" onclick="supprimerDiag(\''+d.id+'\')">✕</button></td>'
+      +'<td style="white-space:nowrap"><button class="btn-sm" style="font-size:.7rem" onclick="editDiag(\''+d.id+'\')">Modifier</button> <button class="btn-sm" style="font-size:.7rem;color:var(--danger);border-color:var(--danger)" onclick="supprimerDiag(\''+d.id+'\')">✕</button></td>'
     +'</tr>';
   }).join('');
   // Select mandat dans modale
@@ -9747,7 +9828,7 @@ function saveDiag() {
   if (entry.dateExp) {
     var today = new Date(); var exp = new Date(entry.dateExp);
     if (exp < today) showToast('Ce diagnostic est déjà expiré — à renouveler.','orange');
-    else if ((exp-today) < 90*24*3600*1000) showToast('⏳ Ce diagnostic expire dans moins de 90 jours.','orange');
+    else if ((exp-today) < 90*24*3600*1000) showToast('Ce diagnostic expire dans moins de 90 jours.','orange');
     else showToast('Diagnostic enregistré.','green');
   } else showToast('Diagnostic enregistré.','green');
 }
@@ -10265,7 +10346,7 @@ function sendAgentMessage() {
   var btn = document.getElementById('agentSendBtn');
   if (btn) { btn.disabled = true; btn.style.opacity = '.5'; }
 
-  addAgentBubble('assistant', '⏳ Envoi en cours…');
+  addAgentBubble('assistant', 'Envoi en cours…');
 
 
   fetch('/api/ai', {
@@ -10755,7 +10836,7 @@ function testAnthropicApiKey() {
   if (!key) { showToast('Renseignez d\'abord une clé.', 'orange'); return; }
   var btn = document.getElementById('btnTestKey');
   var st = document.getElementById('anthropicKeyStatus');
-  if (btn) { btn.textContent = '⏳ Test…'; btn.disabled = true; }
+  if (btn) { btn.textContent = 'Test…'; btn.disabled = true; }
   if (st) { st.style.display='block'; st.style.color='var(--gris)'; st.textContent='Test en cours…'; }
 
   fetch('/api/ai', {
@@ -10796,10 +10877,7 @@ initAgentChat = function() {
   if (msgs && msgs.children.length > 0) return;
   var ctx = buildPortfolioContext();
   agentHistory = [{ role:'user', content: ctx }];
-  addAgentBubble('assistant',
-    'Bonjour ! Je suis votre assistant BailScan, connecté à votre portefeuille en temps réel.\n\n'
-    + 'J\'ai chargé **'+(loadMandats?loadMandats().length:0)+'** bien(s) et **'+(loadLocataires?loadLocataires().filter(function(l){return l.statut==='actif';}).length:0)+'** locataire(s) actif(s).\n\nPosez votre question.'
-  );
+  addAgentBubble('assistant', 'Bonjour ! Je suis votre assistant BailScan, en quoi puis-je vous aider ?');
 };
 
 // FIX DPE PDF — pas de base64 pour les PDF (trop lourd pour localStorage)
@@ -11242,7 +11320,7 @@ async function envoyerQuittanceMail() {
     email = userEmail;
   }
   var btn = document.getElementById('btnEnvoyerQuittance');
-  if (btn) { btn.textContent = '⏳ Envoi...'; btn.disabled=true; }
+  if (btn) { btn.textContent = 'Envoi...'; btn.disabled=true; }
   try {
     var mois = (document.getElementById('qMois')||{}).value||'';
     var annee = (document.getElementById('qAnnee')||{}).value||'';
@@ -11399,7 +11477,7 @@ function refreshAlertes() {
   var liste = document.getElementById('alertesList');
   if (!liste) return;
   if (!arr.length) {
-    liste.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gris)"><div style="font-size:2rem;margin-bottom:12px">✅</div>Aucune alerte active. Tout est à jour !</div>';
+    liste.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gris)"><div style="font-size:2rem;margin-bottom:12px"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="2 8 6 12 14 4"/></svg></div>Aucune alerte active. Tout est à jour !</div>';
     return;
   }
 
@@ -11851,7 +11929,7 @@ function refreshLocataires() {
     var allQ = JSON.parse(localStorage.getItem('bailscan_quittances')||'[]');
     var locQ = allQ.filter(function(q){ return q.locNom && l.prenom && l.nom && q.locNom.toLowerCase().includes(l.nom.toLowerCase()); });
     var qBadge = locQ.length
-      ? '<span style="background:var(--pro-light);color:var(--pro-accent);font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:6px;cursor:pointer" onclick="viewQuittancesLocataire('+JSON.stringify(l.id)+')">'+locQ.length+' quittance'+(locQ.length>1?'s':'')+'</span>'
+      ? '<span style="background:var(--pro-light);color:var(--pro-accent);font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:6px;cursor:pointer" onclick="viewQuittancesLocataire('+l.id+')">'+locQ.length+' quittance'+(locQ.length>1?'s':'')+'</span>'
       : '';
 
     return '<div class="loc-card" data-statut="'+l.statut+'" data-score="'+(l.scoreCls||'')+'" style="cursor:pointer" onclick="openFicheLocataire('+l.id+',event)">'
@@ -11869,9 +11947,9 @@ function refreshLocataires() {
       + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:6px">'
       + '<div style="display:flex;gap:6px;align-items:center">'+scoreHtml+(scoreHtml&&qBadge?' ':'')+qBadge+'</div>'
       + '<div style="display:flex;gap:6px">'
-      + '<button class="btn-sm" onclick="genQuittanceDepuis('+JSON.stringify(l.id)+')" style="font-size:.72rem">🧾</button>'
-      + '<button class="btn-sm" onclick="editLocataire('+JSON.stringify(l.id)+')" style="font-size:.72rem">✏️</button>'
-      + '<button class="btn-sm" onclick="deleteLocataire('+JSON.stringify(l.id)+')" style="color:var(--accent);border-color:var(--accent);font-size:.72rem">✕</button>'
+      + '<button class="btn-sm" onclick="genQuittanceDepuis('+l.id+')" style="font-size:.72rem">🧾</button>'
+      + '<button class="btn-sm" onclick="editLocataire('+l.id+')" style="font-size:.72rem">Modifier</button>'
+      + '<button class="btn-sm" onclick="deleteLocataire('+l.id+')" style="color:var(--accent);border-color:var(--accent);font-size:.72rem">✕</button>'
       + '</div></div>'
       + '</div>';
   }).join('');
@@ -12640,7 +12718,7 @@ function genererBailConforme() {
 
   // Travaux cochés
   var travCochesList = [];
-  if(chk('trav_chaudiere')) travCochesList.push('entretien annuel de la chaudière individuelle');
+  if(chk('trav_chaudiere')) travCochesList.push('entretien annuel de la chaudière');
   if(chk('trav_climatisation')) travCochesList.push('entretien de la climatisation');
   if(chk('trav_jardinage')) travCochesList.push('entretien du jardin et tonte de la pelouse');
   if(chk('trav_gouttières')) travCochesList.push('nettoyage des gouttières');
@@ -12657,7 +12735,7 @@ function genererBailConforme() {
   if(chk('clause_cession')) clausesCochesList.push('La cession du bail est interdite sans accord écrit du bailleur.');
   if(chk('clause_assurance_pno')) clausesCochesList.push('Le bailleur déclare être couvert par une assurance propriétaire non-occupant (PNO).');
   if(chk('clause_releve_compteur')) clausesCochesList.push('Des relevés contradictoires de tous les compteurs (eau, gaz, électricité) seront effectués lors de l\'état des lieux d\'entrée et de sortie.');
-  if(chk('clause_dpe_travaux')) clausesCochesList.push('Des travaux de rénovation énergétique sont prévus pendant la durée du bail ; le bailleur en informera le locataire avec un préavis raisonnable.');
+  if(chk('clause_dpe_travaux')) clausesCochesList.push('Des travaux de rénovation sont prévus pendant la durée du bail ; le bailleur en informera le locataire avec un préavis raisonnable.');
   if(chk('clause_bail_num')) clausesCochesList.push('Le présent bail peut être signé par voie électronique conformément à la loi ELAN.');
   if(val('genSpecificites').trim()) clausesCochesList.push(val('genSpecificites').trim());
   var clausesText = clausesCochesList.join('\n');
@@ -13628,7 +13706,7 @@ function afficherResultatDossier(result, nom, loyer, revenus, taux, skipSave) {
   if (alertesEl && result.alertes && result.alertes.length) {
     alertesEl.innerHTML = result.alertes.map(function(a) {
       return '<div class="alerte-item ' + (a.niveau||'bleu') + '">'
-        + '<span style="font-size:1.2rem">' + (a.icone||'ℹ') + '</span>'
+        + '<span style="display:inline-flex;align-items:center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.5v.5"/></svg></span>'
         + '<div><div style="font-weight:700;margin-bottom:2px">' + a.titre + '</div>'
         + '<div style="font-size:.78rem;color:var(--gris)">' + a.detail + '</div></div>'
         + '</div>';
@@ -14198,7 +14276,7 @@ function refreshTeam() {
     var isAdmin = i === 0;
     var statusHtml = m.status === 'actif'
       ? '<span style="font-size:.72rem;font-weight:600;color:#166534;background:#f0fdf4;padding:2px 8px;border-radius:20px;border:1px solid #86efac">● Actif</span>'
-      : '<span style="font-size:.72rem;font-weight:600;color:#92400e;background:#fffbeb;padding:2px 8px;border-radius:20px;border:1px solid #fcd34d">⏳ En attente</span>';
+      : '<span style="font-size:.72rem;font-weight:600;color:#92400e;background:#fffbeb;padding:2px 8px;border-radius:20px;border:1px solid #fcd34d">En attente</span>';
     var actions = isAdmin ? '' :
       '<div style="display:flex;gap:6px;align-items:center">'
       + '<select class="filter-select" style="font-size:.75rem;padding:4px 8px" onchange="changeTeamRole(' + i + ',this.value)">'
@@ -14290,7 +14368,8 @@ function selectDossierLoc(locId) {
   var l = arr.find(function(x){ return String(x.id)===String(locId); });
   if (!l) return;
   var f = function(id, val){ var el=document.getElementById(id); if(el && val) el.value=val; };
-  f('dossierNom', (l.prenom||'')+' '+(l.nom||''));
+  var fEl = document.getElementById('dossierPrenom'); if(fEl) fEl.value = l.prenom||'';
+  f('dossierNom', l.nom||'');
   if (l.contrat) {
     var sel = document.getElementById('dossierContrat');
     if (sel) sel.value = l.contrat;
@@ -14300,6 +14379,10 @@ function selectDossierLoc(locId) {
     updateDossierCalc();
   }
   if (l.loyer) { f('dossierLoyer', l.loyer); var dcEl2=document.getElementById('dossierComplement'); if(dcEl2) dcEl2.value=(l.complement!==undefined&&l.complement!==null)?l.complement:0; }
+  // Charges depuis locataire ou mandat lié
+  var chDos = parseFloat(l.charges||0);
+  if (!chDos && l.mandatId) { try { var mLoc=(loadMandats?loadMandats():[]).find(function(x){return String(x.id)===String(l.mandatId);}); if(mLoc) chDos=parseFloat(mLoc.charges||0); } catch(e){} }
+  var chEl = document.getElementById('dossierCharges'); if(chEl) chEl.value = chDos||'';
   updateDossierCalc();
 }
 
@@ -15085,7 +15168,7 @@ async function saveLocataireSupabase(l) {
 async function cancelSubscription() {
   if (!confirm('Résilier votre abonnement BailScan Pro ? Vous garderez l\'accès jusqu\'à la fin de la période en cours.')) return;
   var btn = document.getElementById('btnCancelSub');
-  if (btn) { btn.textContent = '⏳ Résiliation...'; btn.disabled = true; }
+  if (btn) { btn.textContent = 'Résiliation...'; btn.disabled = true; }
   try {
     var r = await fetch('/api/cancel-subscription', {
       method: 'POST', headers: {'Content-Type':'application/json'},
@@ -15224,6 +15307,21 @@ document.addEventListener('click', function(e){
   var b=document.getElementById('locGarantCpDrop');
   if(b&&!b.contains(e.target)&&e.target.id!=='locGarantCp') b.style.display='none';
 });
+
+
+
+function edlVoirPhoto(id) {
+  var parts = id.split('-');
+  var pi = parseInt(parts[0]), phi = parseInt(parts[1]);
+  var src = edlPieces[pi] && edlPieces[pi].photos && edlPieces[pi].photos[phi];
+  if (!src) return;
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out';
+  overlay.onclick = function(){ overlay.remove(); };
+  overlay.innerHTML = '<img src="' + src + '" style="max-width:90vw;max-height:90vh;border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,.5)">';
+  document.body.appendChild(overlay);
+}
+
 </script>
 <!-- ═══════════════════════════════════════════════════════════
   AGENT IA — POPUP FLOTTANT BAS DROITE (visible en mode dashboard)
@@ -15270,7 +15368,7 @@ document.addEventListener('click', function(e){
       <button onclick="sendAgentPrompt(this.textContent)" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.28);color:#a5b4fc;border-radius:20px;padding:3px 10px;font-size:.68rem;cursor:pointer;white-space:nowrap">Résumé</button>
       <button onclick="sendAgentPrompt(this.textContent)" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.28);color:#a5b4fc;border-radius:20px;padding:3px 10px;font-size:.68rem;cursor:pointer;white-space:nowrap">Impayés</button>
       <button onclick="sendAgentPrompt(this.textContent)" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.28);color:#a5b4fc;border-radius:20px;padding:3px 10px;font-size:.68rem;cursor:pointer;white-space:nowrap">Baux expirant</button>
-      <button onclick="sendAgentPrompt(this.textContent)" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.28);color:#a5b4fc;border-radius:20px;padding:3px 10px;font-size:.68rem;cursor:pointer;white-space:nowrap">Diagnostics</button>
+      <button onclick="sendAgentPrompt(this.textContent)" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.28);color:#a5b4fc;border-radius:20px;padding:3px 10px;font-size:.68rem;cursor:pointer;white-space:nowrap">🔬 Diagnostics</button>
       <button onclick="sendAgentPrompt(this.textContent)" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.28);color:#a5b4fc;border-radius:20px;padding:3px 10px;font-size:.68rem;cursor:pointer;white-space:nowrap">Taux remplissage</button>
     </div>
 
