@@ -1477,7 +1477,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div class="kpi-val" id="dashKpiLoyer" style="color:var(--pro)">0 €</div>
                 <div class="kpi-label">Loyers / mois</div>
               </div>
-              <div style="font-size:1.6rem;opacity:.3">💰</div>
+              <div style="font-size:1.6rem;opacity:.3"></div>
             </div>
             <div class="kpi-trend warn" id="dashKpiLoyerImpaye"></div>
           </div>
@@ -1547,7 +1547,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
           <!-- Impayés en cours -->
           <div class="dash-card" style="padding:18px">
-            <div class="dash-section-title" style="margin-bottom:12px">❌ Impayés en cours</div>
+            <div class="dash-section-title" style="margin-bottom:12px">Impayés en cours</div>
             <div id="dashImpayesList">
               <div style="text-align:center;padding:16px;color:var(--gris);font-size:.82rem">Aucun impayé</div>
             </div>
@@ -1568,7 +1568,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <button class="btn-sm" onclick="showDashTab('nouveau')" style="font-weight:600">+ Analyser</button>
           </div>
           <div id="histoEmpty" style="text-align:center;padding:20px;color:var(--gris);font-size:.88rem">
-            <div style="font-size:2rem;margin-bottom:10px">📋</div>
+            <div style="font-size:2rem;margin-bottom:10px"></div>
             Aucune analyse.<br>
             <a href="#" onclick="showDashTab('nouveau')" style="color:var(--pro-accent);font-weight:600">Lancer la première →</a>
           </div>
@@ -1603,7 +1603,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="panel-title">Contexte du logement</div>
             <div class="panel-sub">Ces informations permettent une analyse précise et personnalisée</div>
             <div class="form-group-pro" style="margin-bottom:14px;position:relative">
-              <label class="form-label">🔗 Rattacher à un bien / mandat <span style="font-weight:400;color:var(--gris);font-size:.78rem">— pré-remplit adresse, loyer, surface</span></label>
+              <label class="form-label">Rattacher à un bien / mandat <span style="font-weight:400;color:var(--gris);font-size:.78rem">— pré-remplit adresse, loyer, surface</span></label>
               <input type="hidden" id="pMandatSel" value="">
               <input type="text" class="form-input-pro" id="pMandatSearch" placeholder="Tapez une adresse pour chercher un mandat..." oninput="searchPMandat(this.value)" onfocus="searchPMandat(this.value)" autocomplete="off">
               <div id="pMandatDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--pro-accent);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:200px;overflow-y:auto"></div>
@@ -1759,7 +1759,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div id="pUploadPanel">
               <div class="upload-zone-pro" id="uploadZonePro" onclick="document.getElementById('fileInputPro').click()">
                 <input type="file" id="fileInputPro" accept=".pdf" onchange="handleProFile(this.files[0])">
-                <div class="upload-icon">📄</div>
+                <div class="upload-icon"></div>
                 <div class="upload-title">Glissez le bail PDF ici ou cliquez</div>
                 <div class="upload-sub">PDF uniquement · Max 20 Mo</div>
               </div>
@@ -1785,7 +1785,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div id="pRecapBlock" style="background:#f1f5f9;border-radius:8px;padding:20px 24px;margin-bottom:24px;border:1px solid var(--border)"></div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
               <div style="background:var(--pro-light);border:1px solid rgba(59,111,212,0.2);border-radius:12px;padding:16px">
-                <div style="font-size:1.2rem;margin-bottom:8px">📋</div>
+                <div style="font-size:1.2rem;margin-bottom:8px"></div>
                 <div style="font-weight:700;font-size:0.9rem;color:var(--pro-accent);margin-bottom:4px">Analyse des clauses</div>
                 <div style="font-size:0.8rem;color:var(--gris)">Détection des clauses illégales, dépôt, résiliation, conditions — avec références légales</div>
               </div>
@@ -2061,7 +2061,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
 
             <!-- Section bien loué -->
-            <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">🏢 Bien loué</div>
+            <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Bien loué</div>
             <div class="form-grid-pro" style="margin-bottom:0">
               <div class="form-group-pro">
                 <label class="form-label">Adresse du bien</label>
@@ -2220,13 +2220,13 @@ body.is-dashboard #marketingPage { display: none !important; }
               <label class="form-label">Travaux d'entretien à la charge du locataire <span style="font-weight:400;color:var(--gris);font-size:.78rem">— cochez ce qui s'applique</span></label>
               <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:6px">
                 <label class="annex-check"><input type="checkbox" id="trav_chaudiere"> Entretien annuel chaudière individuelle</label>
-                <label class="annex-check"><input type="checkbox" id="trav_climatisation"> ❄️ Entretien climatisation</label>
-                <label class="annex-check"><input type="checkbox" id="trav_jardinage"> 🌿 Entretien jardin / tonte pelouse</label>
+                <label class="annex-check"><input type="checkbox" id="trav_climatisation"> Entretien climatisation</label>
+                <label class="annex-check"><input type="checkbox" id="trav_jardinage"> Entretien jardin / tonte pelouse</label>
                 <label class="annex-check"><input type="checkbox" id="trav_gouttières"> Nettoyage gouttières (pavillon)</label>
-                <label class="annex-check"><input type="checkbox" id="trav_piscine"> 🏊 Entretien piscine</label>
-                <label class="annex-check"><input type="checkbox" id="trav_ramonage"> 🔥 Ramonage cheminée</label>
-                <label class="annex-check"><input type="checkbox" id="trav_robinetterie"> 🚿 Remplacement joints / robinetterie courante</label>
-                <label class="annex-check"><input type="checkbox" id="trav_detartrage"> 💧 Détartrage équipements</label>
+                <label class="annex-check"><input type="checkbox" id="trav_piscine"> Entretien piscine</label>
+                <label class="annex-check"><input type="checkbox" id="trav_ramonage"> Ramonage cheminée</label>
+                <label class="annex-check"><input type="checkbox" id="trav_robinetterie"> Remplacement joints / robinetterie courante</label>
+                <label class="annex-check"><input type="checkbox" id="trav_detartrage"> Détartrage équipements</label>
               </div>
               <div style="margin-top:8px">
                 <label class="form-label" style="font-size:.78rem">Autres travaux à préciser</label>
@@ -2237,12 +2237,12 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="form-group-pro" style="margin-bottom:0">
               <label class="form-label">Clauses particulières <span style="font-weight:400;color:var(--gris);font-size:.78rem">— cochez + complétez si besoin</span></label>
               <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:6px;margin-bottom:8px">
-                <label class="annex-check"><input type="checkbox" id="clause_sousloc"> 🔒 Sous-location interdite</label>
+                <label class="annex-check"><input type="checkbox" id="clause_sousloc"> Sous-location interdite</label>
                 <label class="annex-check"><input type="checkbox" id="clause_cession"> Cession du bail interdite</label>
                 <label class="annex-check"><input type="checkbox" id="clause_assurance_pno"> Bailleur couvert par assurance PNO</label>
                 <label class="annex-check"><input type="checkbox" id="clause_releve_compteur"> Relevés compteurs contradictoires à l'entrée/sortie</label>
                 <label class="annex-check"><input type="checkbox" id="clause_dpe_travaux"> Travaux de rénovation énergétique prévus</label>
-                <label class="annex-check"><input type="checkbox" id="clause_bail_num"> 📱 Bail numérique — signature électronique</label>
+                <label class="annex-check"><input type="checkbox" id="clause_bail_num"> Bail numérique — signature électronique</label>
               </div>
               <div>
                 <label class="form-label" style="font-size:.78rem">Clauses libres supplémentaires</label>
@@ -2259,15 +2259,15 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             
             <!-- Annexes et dépendances -->
-            <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">🏡 Annexes & dépendances</div>
+            <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Annexes & dépendances</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px" id="annexesGrid">
               <label class="annex-check"><input type="checkbox" id="genJardin"> 🌿 Jardin privatif</label>
-              <label class="annex-check"><input type="checkbox" id="genTerrace"> ☀️ Terrasse / Balcon</label>
-              <label class="annex-check"><input type="checkbox" id="genParking"> 🚗 Parking / Garage</label>
-              <label class="annex-check"><input type="checkbox" id="genCave"> 📦 Cave / Cellier</label>
+              <label class="annex-check"><input type="checkbox" id="genTerrace"> Terrasse / Balcon</label>
+              <label class="annex-check"><input type="checkbox" id="genParking"> Parking / Garage</label>
+              <label class="annex-check"><input type="checkbox" id="genCave"> Cave / Cellier</label>
               <label class="annex-check"><input type="checkbox" id="genGrenier"> Grenier / Combles</label>
               <label class="annex-check"><input type="checkbox" id="genPiscine"> 🏊 Piscine</label>
-              <label class="annex-check"><input type="checkbox" id="genSousloc"> 🔒 Sous-location interdite</label>
+              <label class="annex-check"><input type="checkbox" id="genSousloc"> Sous-location interdite</label>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
               <div class="form-group-pro">
@@ -2323,10 +2323,10 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:6px">
                 <label class="annex-check"><input type="checkbox" id="genAnnDpe" checked> Diagnostic DPE</label>
                 <label class="annex-check"><input type="checkbox" id="genAnnEtat" checked> État des lieux d'entrée</label>
-                <label class="annex-check"><input type="checkbox" id="genAnnNotice" checked> 📘 Notice d'information locataire</label>
-                <label class="annex-check"><input type="checkbox" id="genAnnRgl"> 📜 Règlement de copropriété</label>
-                <label class="annex-check"><input type="checkbox" id="genAnnGarant"> 🔐 Acte de cautionnement</label>
-                <label class="annex-check"><input type="checkbox" id="genAnnInventaire"> 🛋️ Inventaire du mobilier (meublé)</label>
+                <label class="annex-check"><input type="checkbox" id="genAnnNotice" checked> Notice d'information locataire</label>
+                <label class="annex-check"><input type="checkbox" id="genAnnRgl"> Règlement de copropriété</label>
+                <label class="annex-check"><input type="checkbox" id="genAnnGarant"> Acte de cautionnement</label>
+                <label class="annex-check"><input type="checkbox" id="genAnnInventaire"> Inventaire du mobilier (meublé)</label>
               </div>
             </div>
 
@@ -2367,7 +2367,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 </select>
               </div>
               <div>
-                <label class="form-label" style="font-size:.76rem">📧 Email destinataire</label>
+                <label class="form-label" style="font-size:.76rem">Email destinataire</label>
                 <input type="email" class="form-input-pro" id="bailEmailDestinataire" placeholder="locataire@email.com" style="font-size:.83rem">
               </div>
             </div>
@@ -2559,7 +2559,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="dash-card" style="margin-bottom:16px">
           <div class="dash-section-title">Échéances à venir</div>
           <div id="alertesListEmpty" style="text-align:center;padding:40px 0;color:var(--gris)">
-            <div style="font-size:2rem;margin-bottom:10px">📅</div>
+            <div style="font-size:2rem;margin-bottom:10px"></div>
             Aucune alerte — ajoutez des baux dans les fiches locataires pour activer le suivi.
           </div>
           <div id="alertesList" style="display:none"></div>
@@ -2574,11 +2574,11 @@ body.is-dashboard #marketingPage { display: none !important; }
               <select class="form-input-pro" id="newAlertType">
                 <option value="fin_bail">Fin de bail</option>
                 <option value="revision_irl">Révision IRL</option>
-                <option value="preavis">📨 Préavis en cours</option>
-                <option value="renouvellement">🔄 Renouvellement</option>
+                <option value="preavis">Préavis en cours</option>
+                <option value="renouvellement">Renouvellement</option>
                 <option value="travaux">Travaux planifiés</option>
                 <option value="assurance">Vérification assurance</option>
-                <option value="autre">📌 Autre</option>
+                <option value="autre">Autre</option>
               </select>
             </div>
             <div class="form-group-pro">
@@ -2620,7 +2620,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <!-- Filtres -->
         <div class="dash-filters-bar" style="margin-bottom:16px">
           <div class="filter-search-wrap">
-            <span class="filter-search-icon">🔍</span>
+            <span class="filter-search-icon"></span>
             <input type="text" class="filter-search" id="mandatSearch" placeholder="Adresse, ville, bailleur…" oninput="applyMandatFilters()">
           </div>
           <select class="filter-select" id="mandatFilterStatut" onchange="applyMandatFilters()">
@@ -2657,15 +2657,15 @@ body.is-dashboard #marketingPage { display: none !important; }
         <!-- Barre recherche -->
         <div class="dash-filters-bar" style="margin-bottom:16px">
           <div class="filter-search-wrap">
-            <span class="filter-search-icon">🔍</span>
+            <span class="filter-search-icon"></span>
             <input type="text" class="filter-search" id="locSearch" placeholder="Nom, adresse, email…" oninput="filterLocataires()">
           </div>
           <select class="filter-select" id="locFilterStatut" onchange="filterLocataires()">
             <option value="">Tous les statuts</option>
             <option value="actif">En cours</option>
             <option value="preavis">Préavis</option>
-            <option value="sorti">⚫ Sorti</option>
-            <option value="prospect">🔵 Prospect</option>
+            <option value="sorti">Sorti</option>
+            <option value="prospect">Prospect</option>
           </select>
           <select class="filter-select" id="locFilterScore" onchange="filterLocataires()">
             <option value="">Tous les scores</option>
@@ -2732,8 +2732,8 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <select class="form-input-pro" id="locStatut">
                   <option value="actif">En cours</option>
                   <option value="preavis">Préavis</option>
-                  <option value="sorti">⚫ Sorti</option>
-                  <option value="prospect">🔵 Prospect</option>
+                  <option value="sorti">Sorti</option>
+                  <option value="prospect">Prospect</option>
                 </select>
               </div>
               <div class="form-group-pro"><label class="form-label">Agent responsable</label><input type="text" class="form-input-pro" id="locAgent" placeholder="Nom de l'agent"></div>
@@ -2879,7 +2879,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="dash-page-sub">Scoring IA · Taux d'effort · Cohérence des pièces · Détection documents suspects</div>
           </div>
           <div style="display:flex;gap:10px;align-items:center">
-            <span style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.04em">✨ PRO FEATURE</span>
+            <span style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.04em">PRO</span>
           </div>
         </div>
 
@@ -2889,12 +2889,12 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div>
             <!-- Sélection locataire -->
             <div class="dash-card" style="margin-bottom:16px">
-              <div class="dash-section-title">🔗 Rattacher à un mandat (bien) et un locataire</div>
+              <div class="dash-section-title">Rattacher à un mandat (bien) et un locataire</div>
               <div style="margin-bottom:10px">
                 <label class="form-label" style="font-size:.76rem;margin-bottom:4px;display:block">Bien (mandat)</label>
                 <div style="position:relative">
                   <input type="text" class="form-input-pro" id="dossierMandatSearch" placeholder="Rechercher un bien…" autocomplete="off" style="padding-right:30px" oninput="filterDossierMandats(this.value)" onfocus="showDossierMandatDropdown()">
-                  <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gris);font-size:.85rem;pointer-events:none">🔍</span>
+                  <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gris);font-size:.85rem;pointer-events:none"></span>
                   <div id="dossierMandatDropdown" style="display:none;position:absolute;top:100%;left:0;width:100%;z-index:300;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.14);max-height:200px;overflow-y:auto;margin-top:2px"></div>
                 </div>
                 <select style="display:none" id="dossierMandatSel"></select>
@@ -3084,7 +3084,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Avis d'imposition -->
                 <label class="dossier-piece-card" id="piece-impots-card" for="piece-impots">
-                  <div class="dossier-piece-icon">📋</div>
+                  <div class="dossier-piece-icon"></div>
                   <div class="dossier-piece-label">Avis d'imposition</div>
                   <div class="dossier-piece-status" id="piece-impots-status">Non fourni</div>
                   <input type="file" id="piece-impots" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('impots',this)">
@@ -3092,7 +3092,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Contrat de travail -->
                 <label class="dossier-piece-card" id="piece-contrat-card" for="piece-contrat">
-                  <div class="dossier-piece-icon">📄</div>
+                  <div class="dossier-piece-icon"></div>
                   <div class="dossier-piece-label">Contrat de travail</div>
                   <div class="dossier-piece-status" id="piece-contrat-status">Optionnel</div>
                   <input type="file" id="piece-contrat" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('contrat',this)">
@@ -3224,7 +3224,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <button class="btn-primary-pro" onclick="validerDossier(false)" style="flex:1;min-width:140px;background:var(--accent);border-color:var(--accent)">❌ NO GO — Refuser</button>
               </div>
               <div id="dossierPostValidation" style="display:none;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:10px;padding:12px;margin-bottom:10px">
-                <div style="font-size:.82rem;font-weight:700;color:var(--pro-accent);margin-bottom:8px">➡ Suite du dossier</div>
+                <div style="font-size:.82rem;font-weight:700;color:var(--pro-accent);margin-bottom:8px">Suite du dossier</div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap">
                   <button class="btn-primary-pro" onclick="creerFicheLocataireDepuisDossier()" style="flex:1;min-width:160px;font-size:.82rem">Créer / mettre à jour la fiche locataire</button>
                   <button class="btn-sm" onclick="refuserDefinitivementDossier()" style="flex:1;min-width:140px;font-size:.8rem;color:var(--accent);border-color:var(--accent)">🚫 Refus définitif</button>
@@ -3237,7 +3237,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             <!-- Placeholder initial -->
             <div id="dossierPlaceholder" class="dash-card" style="text-align:center;padding:50px 30px">
-              <div style="font-size:3rem;margin-bottom:16px">🎯</div>
+              <div style="font-size:3rem;margin-bottom:16px"></div>
               <div style="font-weight:700;font-size:1rem;margin-bottom:8px">Analyse IA de dossier locataire</div>
               <div style="font-size:.84rem;color:var(--gris);max-width:320px;margin:0 auto;line-height:1.7">
                 Remplissez le formulaire et uploadez les pièces justificatives.<br>
@@ -3268,7 +3268,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
         <!-- ── HISTORIQUE DES ANALYSES DE DOSSIERS ── -->
         <div class="dash-card" style="margin-top:20px">
-          <div class="dash-section-title">📁 Historique des dossiers analysés</div>
+          <div class="dash-section-title">Historique des dossiers analysés</div>
           <div style="overflow-x:auto;margin-top:12px">
             <table style="width:100%;border-collapse:collapse;font-size:.84rem">
               <thead>
@@ -3353,7 +3353,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="dash-section-title">Aperçu</div>
             <div id="quittancePreview" style="background:#f1f5f9;border:1px solid var(--border);border-radius:10px;padding:24px;font-size:.82rem;line-height:1.9;min-height:400px;font-family:Georgia,serif">
               <div style="text-align:center;color:var(--gris);padding-top:80px;font-family:'DM Sans',sans-serif">
-                <div style="font-size:2rem;margin-bottom:12px">🧾</div>
+                <div style="font-size:2rem;margin-bottom:12px"></div>
                 Remplissez le formulaire pour voir l'aperçu
               </div>
             </div>
@@ -3723,7 +3723,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           <label style="cursor:pointer">
             <input type="file" id="logoInput" accept="image/png,image/jpeg,image/svg+xml" onchange="uploadLogo(this)" style="display:none">
             <div style="display:inline-flex;align-items:center;gap:8px;background:var(--pro-light);border:1px dashed var(--pro-accent);border-radius:10px;padding:12px 20px;font-size:.84rem;font-weight:600;color:var(--pro-accent);transition:all .2s">
-              📤 Uploader votre logo (PNG, JPG, SVG · max 2Mo)
+              Uploader votre logo (PNG, JPG, SVG · max 2Mo)
             </div>
           </label>
         </div>
@@ -3765,7 +3765,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
         <!-- ══ INFORMATIONS ENTREPRISE POUR DOCUMENTS ══ -->
         <div class="dash-card" style="margin-bottom:16px">
-          <div class="dash-section-title">🏢 Informations entreprise (baux, quittances, courriers)</div>
+          <div class="dash-section-title">Informations entreprise (baux, quittances, courriers)</div>
           <div style="font-size:.8rem;color:var(--gris);margin-bottom:14px">Ces informations apparaissent sur tous les documents générés conformément à la loi.</div>
           <div class="form-grid-pro">
             <div class="form-group-pro">
@@ -3804,7 +3804,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
         <!-- Charte graphique documents -->
         <div class="dash-card" style="margin-bottom:16px">
-          <div class="dash-section-title">🎨 Charte graphique — Baux, quittances & courriers</div>
+          <div class="dash-section-title">Charte graphique — Baux, quittances & courriers</div>
           <div style="font-size:.8rem;color:var(--gris);margin-bottom:20px">Ces couleurs sont appliquées sur tous vos documents PDF. Personnalisez pour correspondre à votre identité visuelle.</div>
 
           <!-- Palettes prédéfinies -->
@@ -3868,7 +3868,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             <!-- Couleur secondaire -->
             <div class="form-group-pro">
-              <label class="form-label">🖤 Couleur secondaire</label>
+              <label class="form-label">Couleur secondaire</label>
               <div style="display:flex;align-items:center;gap:8px">
                 <input type="color" id="aiColorSecondary" value="#0f172a"
                   style="width:48px;height:40px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;background:#fff"
@@ -3896,7 +3896,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             <!-- Couleur signature / tampon -->
             <div class="form-group-pro">
-              <label class="form-label">🖊 Bloc signature</label>
+              <label class="form-label">Bloc signature</label>
               <div style="display:flex;align-items:center;gap:8px">
                 <input type="color" id="aiColorSign" value="#1d4ed8"
                   style="width:48px;height:40px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;background:#fff"
@@ -4115,7 +4115,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       </tr></thead>
       <tbody id="loyersTbody">
         <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gris)">
-          <div style="font-size:2rem;margin-bottom:10px">💰</div>
+          <div style="font-size:2rem;margin-bottom:10px"></div>
           <div style="font-weight:600;margin-bottom:4px">Aucun suivi de loyer</div>
           <div style="font-size:.82rem">Enregistrez vos paiements reçus pour suivre vos encaissements</div>
         </td></tr>
@@ -4194,7 +4194,7 @@ body.is-dashboard #marketingPage { display: none !important; }
   <!-- Liste EDL -->
   <div id="edlListeContainer">
     <div id="edlListeVide" class="dash-card" style="text-align:center;padding:48px;color:var(--gris)">
-      <div style="font-size:2.5rem;margin-bottom:12px">📋</div>
+      <div style="font-size:2.5rem;margin-bottom:12px"></div>
       <div style="font-weight:600;margin-bottom:4px">Aucun état des lieux</div>
       <div style="font-size:.82rem;margin-bottom:16px">Créez votre premier EDL — formulaire complet style tablette agence</div>
       <button class="btn-primary-pro" onclick="openNouvelEDL()">+ Créer un état des lieux</button>
@@ -4363,7 +4363,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
           <!-- Fenêtres / Isolation -->
           <div class="edl-equip-bloc">
-            <div class="edl-equip-titre">🪟 Menuiseries & Isolation</div>
+            <div class="edl-equip-titre">Menuiseries & Isolation</div>
             <div class="form-grid-pro">
               <div class="form-group-pro">
                 <label class="form-label">Type de vitrage</label>
@@ -4401,7 +4401,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
           <!-- Compteurs -->
           <div class="edl-equip-bloc">
-            <div class="edl-equip-titre">🔢 Relevés de compteurs</div>
+            <div class="edl-equip-titre">Relevés de compteurs</div>
             <div class="form-grid-pro">
               <div class="form-group-pro">
                 <label class="form-label">Compteur électricité (kWh)</label>
@@ -4539,7 +4539,7 @@ body.is-dashboard #marketingPage { display: none !important; }
   </div>
   <!-- Calculateur -->
   <div class="dash-card" style="margin-bottom:16px">
-    <div class="dash-section-title">🧮 Calculateur de révision</div>
+    <div class="dash-section-title">Calculateur de révision</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
       <div>
         <div class="form-grid-pro">
@@ -4843,7 +4843,7 @@ body.is-dashboard #marketingPage { display: none !important; }
   <!-- Liste tickets -->
   <div id="travauxListe" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px">
     <div class="dash-card" style="text-align:center;padding:48px;grid-column:1/-1;color:var(--gris)">
-      <div style="font-size:2.5rem;margin-bottom:12px">🔧</div>
+      <div style="font-size:2.5rem;margin-bottom:12px"></div>
       <div style="font-weight:600;margin-bottom:4px">Aucun ticket</div>
       <div style="font-size:.82rem;margin-bottom:16px">Créez des tickets pour suivre les travaux et interventions</div>
       <button class="btn-primary-pro" onclick="openNouvelTicket()">+ Créer un ticket</button>
@@ -5985,7 +5985,7 @@ function refreshHisto(){
       +'<td><span class="score-badge '+sc+'">'+a.score+'/100</span></td>'
       +'<td><span class="status-badge '+stc+'">'+stl+'</span></td>'
       +'<td style="font-size:.82rem;color:var(--accent)">'+(a.clauses>0?a.clauses+' pt'+(a.clauses>1?'s':''):'✓')+'</td>'
-      +'<td style="white-space:nowrap"><button class="btn-sm" onclick="viewAnalysisDetail('+a.id+')">👁 Voir</button> <button class="btn-sm" onclick="exportHistoPDF('+a.id+')">PDF</button> <button class="btn-sm" style="'+(a.traite?'background:var(--vert);color:#fff;border-color:var(--vert)':'')+'" onclick="toggleAnalyseTraitee('+a.id+')">'+(a.traite?'✓ Traité':'○ Traiter')+'</button></td>';
+      +'<td style="white-space:nowrap"><button class="btn-sm" onclick="viewAnalysisDetail('+a.id+')">Voir</button> <button class="btn-sm" onclick="exportHistoPDF('+a.id+')">PDF</button> <button class="btn-sm" style="'+(a.traite?'background:var(--vert);color:#fff;border-color:var(--vert)':'')+'" onclick="toggleAnalyseTraitee('+a.id+')">'+(a.traite?'✓ Traité':'○ Traiter')+'</button></td>';
     tbody.appendChild(tr);
   });
   applyFilters();
@@ -6484,7 +6484,7 @@ function refreshCourrierHisto() {
       + '<td style="font-size:.82rem">' + (co.locataire || '—') + '</td>'
       + '<td style="font-size:.82rem;color:var(--gris)">' + (co.adresse || '—') + '</td>'
       + '<td style="text-align:right">'
-      + '<button class="btn-sm" onclick="voirCourrier(' + i + ')">👁 Voir</button>'
+      + '<button class="btn-sm" onclick="voirCourrier(' + i + ')">Voir</button>'
       + ' <button class="btn-sm" onclick="retelechargerCourrier(' + i + ')">⬇ PDF</button>'
       + ' <button class="btn-sm" style="color:var(--accent);border-color:var(--accent)" onclick="supprimerCourrier(' + i + ')">✕</button>'
       + '</td></tr>';
@@ -6503,7 +6503,7 @@ function refreshCourrierHistoFiche(locId, container) {
       + '<td style="padding:7px 6px;font-size:.8rem">' + co.date + '</td>'
       + '<td style="font-weight:600;font-size:.82rem">' + (co.typeLabel || co.type || '—') + '</td>'
       + '<td style="text-align:right">'
-      + '<button class="btn-sm" onclick="voirCourrier(' + globalIdx + ')">👁 Voir</button>'
+      + '<button class="btn-sm" onclick="voirCourrier(' + globalIdx + ')">Voir</button>'
       + ' <button class="btn-sm" onclick="retelechargerCourrier(' + globalIdx + ')">⬇ PDF</button>'
       + '</td></tr>';
   }).join('');
@@ -6776,7 +6776,7 @@ function renderMandatsTbody(arr) {
               + '<span style="font-size:.78rem;font-weight:600;color:#166534">'+locName+'</span>'
               + '</div>'
             : '<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#fef9ec;border-radius:8px;margin-bottom:8px">'
-              + '<span style="font-size:.9rem">🔍</span>'
+              + '<span style="font-size:.9rem"></span>'
               + '<span style="font-size:.78rem;color:#92400e;font-weight:500">'+(candidats.length?candidats.length+' candidat'+(candidats.length>1?'s':'')+' en cours':'Bien vacant · cherche locataire')+'</span>'
               + '</div>'
           )
@@ -7153,7 +7153,7 @@ function openFicheMandat(id, activeTab) {
   } else if (activeTab === 'baux') {
     if (!baux.length) {
       content = '<div style="text-align:center;padding:20px;color:var(--gris)">'
-        + '<div style="font-size:2.5rem;margin-bottom:10px">📄</div>'
+        + '<div style="font-size:2.5rem;margin-bottom:10px"></div>'
         + '<div style="font-weight:600;margin-bottom:4px">Aucun bail</div>'
         + '<div style="font-size:.82rem">Générez un bail conforme depuis l\'onglet dédié</div></div>';
     } else {
@@ -7253,7 +7253,7 @@ function uploadMandatAgence(mandatId, input) {
     m.mandatAgenceNom = file.name;
     localStorage.setItem('bailscan_mandats', JSON.stringify(mans));
     proState.mandats = mans;
-    showToast('✅ Mandat agence enregistré : '+file.name, 'green');
+    showToast('Mandat agence enregistré : '+file.name, 'green');
     openFicheMandat(mandatId, 'infos'); // Refresh sur l'onglet infos
   };
   reader.readAsArrayBuffer(file);
@@ -7299,7 +7299,7 @@ function creerFicheLocataireDepuisDossier() {
     if (!existing.mandatId && mandatId) existing.mandatId = mandatId;
     existing.dossierVerdict = proState.dossierHisto[0] && proState.dossierHisto[0].decisionManuelle || 'GO';
     // Clients persistés via Supabase
-    showToast('✅ Fiche locataire mise à jour.', 'green');
+    showToast('Fiche locataire mise à jour.', 'green');
     showDashTab('locataires');
     setTimeout(function(){ openFicheLocataire(existing.id); }, 200);
     return;
@@ -7351,7 +7351,7 @@ function refuserDefinitivementDossier() {
     }
   }
   document.getElementById('dossierPostValidation').style.display = 'none';
-  showToast('🚫 Dossier refusé définitivement.', 'orange');
+  showToast('Dossier refusé définitivement.', 'orange');
 }
 
 function telechargerBailTxt(bailId) {
@@ -7679,7 +7679,7 @@ async function autoUpdateVeille(forceUpdate) {
   if (!forceUpdate && lastUpdate === today) {
     var cached = localStorage.getItem('bailscan_veille_data');
     if (cached) { try { renderVeille(JSON.parse(cached)); } catch(e){} }
-    if (statusEl) statusEl.textContent = '✅ À jour — ' + new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+    if (statusEl) statusEl.textContent = 'À jour — ' + new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
     return;
   }
 
@@ -7693,7 +7693,7 @@ async function autoUpdateVeille(forceUpdate) {
     localStorage.setItem('bailscan_veille_data', JSON.stringify(data.items));
     localStorage.setItem('bailscan_veille_lastupdate', today);
     renderVeille(data.items);
-    if (statusEl) statusEl.textContent = '✅ Mis à jour — ' + new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+    if (statusEl) statusEl.textContent = 'Mis à jour — ' + new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
   } catch(e) {
     if (statusEl) statusEl.innerHTML = '<span style="color:var(--gris);font-size:.85rem">Données non disponibles. Cliquez sur Actualiser pour réessayer.</span>';
     var cached = localStorage.getItem('bailscan_veille_data');
@@ -7851,7 +7851,7 @@ function copierCourrier() {
   if(!proState.currentCourrier) return;
   navigator.clipboard.writeText(proState.currentCourrier).then(function(){
     var btn = document.querySelector('[onclick="copierCourrier()"]');
-    if(btn){ btn.textContent='✅ Copié'; setTimeout(function(){ btn.textContent='Copier'; },2000); }
+    if(btn){ btn.textContent='Copié'; setTimeout(function(){ btn.textContent='Copier'; },2000); }
   });
 }
 
@@ -8103,7 +8103,7 @@ function corrigerBailDepuisAnalyse() {
         proState._currentBailEntryId = entry.id;
         // Données baux — persisté via Supabase à la génération
         setTimeout(peuplerSelectsRattachementBail, 100);
-        showToast('✅ Bail corrigé généré — ' + corrections.length + ' correction(s) appliquée(s).', 'green');
+        showToast('Bail corrigé généré — ' + corrections.length + ' correction(s) appliquée(s).', 'green');
       } catch(e) {
         console.error('corrigerBail:', e);
         if (loadEl) loadEl.style.display = 'none';
@@ -8174,7 +8174,7 @@ function uploadMandatPhoto(mandatId, input) {
       if (photos.length >= 8) { showToast('Maximum 8 photos par bien.', 'orange'); return; }
       photos.push({ id: Date.now(), data: dataUrl, name: file.name });
       localStorage.setItem(key, JSON.stringify(photos));
-      showToast('📸 Photo ajoutée.', 'green');
+      showToast('Photo ajoutée.', 'green');
       openFicheMandat(mandatId);
     };
     img.src = e.target.result;
@@ -8321,7 +8321,7 @@ function uploadMultiplePhotos(mandatId, input) {
         processed++;
         if (processed === files.length) {
           localStorage.setItem(key, JSON.stringify(photos));
-          showToast('📸 ' + files.length + ' photo(s) ajoutée(s).', 'green');
+          showToast('' + files.length + ' photo(s) ajoutée(s).', 'green');
           openFicheMandat(mandatId, 'photos');
         }
       };
@@ -8390,7 +8390,7 @@ function buildCandidatsHtml(mandatId) {
     var isMitige = ca.verdict === 'MITIGE';
     var borderColor = isGo ? '#86efac' : isMitige ? '#fcd34d' : '#fca5a5';
     var bgColor = isGo ? '#f0fdf4' : isMitige ? '#fffbeb' : '#fef2f2';
-    var verdictIcon = isGo ? '✅ GO' : isMitige ? 'Mitigé' : '❌ NO GO';
+    var verdictIcon = isGo ? 'GO' : isMitige ? 'Mitigé' : '❌ NO GO';
     var verdictColor = isGo ? '#166534' : isMitige ? '#92400e' : '#991b1b';
     var caId = ca.id ? String(ca.id) : '';
     html += '<div style="border:1px solid '+borderColor+';background:'+bgColor+';border-radius:10px;padding:10px 12px;margin-bottom:8px">'
@@ -8473,7 +8473,7 @@ function rendreLocataireDepuisMandat(candidatId, candidatNom, mandatId) {
       }
       if (mandatId) f('locMandatSel', mandatId);
       f('locStatut', 'actif');
-      showToast('✅ Fiche locataire pré-remplie — complétez et enregistrez.', 'blue');
+      showToast('Fiche locataire pré-remplie — complétez et enregistrez.', 'blue');
     }, 300);
   }, 200);
 }
@@ -8773,10 +8773,10 @@ function refreshLoyersSuivi() {
   var tbodyEl = document.getElementById('loyersTbody');
   if (!tbodyEl) return;
   if (!rows.length) {
-    tbodyEl.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--gris)"><div style="font-size:1.8rem;margin-bottom:8px">💰</div><div>Aucun locataire actif ou aucun loyer enregistré</div></td></tr>';
+    tbodyEl.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--gris)"><div style="font-size:1.8rem;margin-bottom:8px"></div><div>Aucun locataire actif ou aucun loyer enregistré</div></td></tr>';
     return;
   }
-  var statutStyle = { paye: {bg:'#f0fdf4',color:'#166534',label:'✅ Payé'}, partiel:{bg:'#fffbeb',color:'#92400e',label:'Partiel'}, impaye:{bg:'#fef2f2',color:'#991b1b',label:'❌ Impayé'} };
+  var statutStyle = { paye: {bg:'#f0fdf4',color:'#166534',label:'Payé'}, partiel:{bg:'#fffbeb',color:'#92400e',label:'Partiel'}, impaye:{bg:'#fef2f2',color:'#991b1b',label:'❌ Impayé'} };
   tbodyEl.innerHTML = rows.map(function(r) {
     var st = statutStyle[r.statut] || statutStyle.impaye;
     var moisLabel = new Date(r.m+'-01').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
@@ -8842,7 +8842,7 @@ function updateSaisieStatut() {
   var percu = parseFloat((document.getElementById('saisiePercu')||{}).value)||0;
   var prev = document.getElementById('saisieStatutPreview');
   if (!prev || !attendu) { if(prev) prev.style.display='none'; return; }
-  var statut = percu >= attendu ? {bg:'#f0fdf4',color:'#166534',label:'✅ Payé intégralement'} : percu > 0 ? {bg:'#fffbeb',color:'#92400e',label:'Paiement partiel — reste '+(attendu-percu)+' €'} : {bg:'#fef2f2',color:'#991b1b',label:'❌ Impayé — '+attendu+' €'};
+  var statut = percu >= attendu ? {bg:'#f0fdf4',color:'#166534',label:'Payé intégralement'} : percu > 0 ? {bg:'#fffbeb',color:'#92400e',label:'Paiement partiel — reste '+(attendu-percu)+' €'} : {bg:'#fef2f2',color:'#991b1b',label:'❌ Impayé — '+attendu+' €'};
   prev.style.display='block'; prev.style.background=statut.bg; prev.style.color=statut.color; prev.textContent=statut.label;
 }
 
@@ -8866,7 +8866,7 @@ function saveSaisieLoyer() {
   saveLoyersSuivi(suivi);
   closeSaisieLoyer();
   refreshLoyersSuivi();
-  showToast('✅ Paiement enregistré.','green');
+  showToast('Paiement enregistré.','green');
 }
 
 function genererRelanceImpaye(locId) {
@@ -9608,7 +9608,7 @@ function saveEntreeRegistre() {
   };
   arr.push(entry); saveRegistre(arr);
   closeModalRegistre(); refreshRegistre();
-  showToast('✅ Entrée enregistrée au registre — N°'+entry.numero, 'green');
+  showToast('Entrée enregistrée au registre — N°'+entry.numero, 'green');
 }
 
 function editRegistre(id) { showToast('Édition bientôt disponible.','blue'); }
@@ -9678,7 +9678,7 @@ function refreshDiagnostics() {
     var exp = d.dateExp ? new Date(d.dateExp) : null;
     var expired = exp && exp < today;
     var soon = exp && !expired && (exp - today) < 90*24*3600*1000;
-    var statut = !exp ? {bg:'#f0f9ff',color:'#0369a1',label:'Non daté'} : expired ? {bg:'#fef2f2',color:'#991b1b',label:'Expiré'} : soon ? {bg:'#fffbeb',color:'#92400e',label:'⏳ Bientôt'} : {bg:'#f0fdf4',color:'#166534',label:'✅ Valide'};
+    var statut = !exp ? {bg:'#f0f9ff',color:'#0369a1',label:'Non daté'} : expired ? {bg:'#fef2f2',color:'#991b1b',label:'Expiré'} : soon ? {bg:'#fffbeb',color:'#92400e',label:'⏳ Bientôt'} : {bg:'#f0fdf4',color:'#166534',label:'Valide'};
     var typeInfo = DIAG_DUREES[d.type] || {label:d.type};
     return '<tr>'
       +'<td style="font-size:.8rem;font-weight:600">'+(m?m.adresse||'—':'—')+'</td>'
@@ -9748,8 +9748,8 @@ function saveDiag() {
     var today = new Date(); var exp = new Date(entry.dateExp);
     if (exp < today) showToast('Ce diagnostic est déjà expiré — à renouveler.','orange');
     else if ((exp-today) < 90*24*3600*1000) showToast('⏳ Ce diagnostic expire dans moins de 90 jours.','orange');
-    else showToast('✅ Diagnostic enregistré.','green');
-  } else showToast('✅ Diagnostic enregistré.','green');
+    else showToast('Diagnostic enregistré.','green');
+  } else showToast('Diagnostic enregistré.','green');
 }
 
 function editDiag(id) {
@@ -9818,7 +9818,7 @@ function refreshDashboard() {
   });
   var loyerImpayeEl = document.getElementById('dashKpiLoyerImpaye');
   if (loyerImpayeEl) {
-    loyerImpayeEl.textContent = impayesMois.length ? impayesMois.length+' impayé'+(impayesMois.length>1?'s':'')+' ce mois' : '✅ Tout encaissé';
+    loyerImpayeEl.textContent = impayesMois.length ? impayesMois.length+' impayé'+(impayesMois.length>1?'s':'')+' ce mois' : 'Tout encaissé';
     loyerImpayeEl.className = 'kpi-trend ' + (impayesMois.length ? 'warn' : 'up');
   }
 
@@ -9931,7 +9931,7 @@ function refreshTravaux() {
   var liste = document.getElementById('travauxListe');
   if (!liste) return;
   if (!filtered.length) {
-    liste.innerHTML = '<div class="dash-card" style="text-align:center;padding:48px;grid-column:1/-1;color:var(--gris)"><div style="font-size:2.5rem;margin-bottom:12px">🔧</div><div style="font-weight:600;margin-bottom:4px">Aucun ticket</div><div style="font-size:.82rem;margin-bottom:16px">Créez des tickets pour suivre vos interventions</div><button class="btn-primary-pro" onclick="openNouvelTicket()">+ Créer un ticket</button></div>';
+    liste.innerHTML = '<div class="dash-card" style="text-align:center;padding:48px;grid-column:1/-1;color:var(--gris)"><div style="font-size:2.5rem;margin-bottom:12px"></div><div style="font-weight:600;margin-bottom:4px">Aucun ticket</div><div style="font-size:.82rem;margin-bottom:16px">Créez des tickets pour suivre vos interventions</div><button class="btn-primary-pro" onclick="openNouvelTicket()">+ Créer un ticket</button></div>';
     return;
   }
   var mandats = loadMandats(); var locs = loadLocataires();
@@ -10026,7 +10026,7 @@ function cloturerTicket(id) {
   var t = arr.find(function(x){return String(x.id)===String(id);});
   if (!t) return;
   t.statut = 'clos'; saveTickets(arr); refreshTravaux();
-  showToast('✅ Ticket clôturé.','green');
+  showToast('Ticket clôturé.','green');
 }
 
 function supprimerTicket(id) {
@@ -10156,7 +10156,7 @@ function buildPortfolioContext() {
 
 function injectPortfolioContext() {
   agentHistory = [{ role:'user', content: buildPortfolioContext() }];
-  addAgentBubble('assistant', '✅ Contexte portefeuille rechargé. Je connais maintenant tous vos biens, locataires, impayés et alertes en temps réel. Que souhaitez-vous savoir ?');
+  addAgentBubble('assistant', 'Contexte portefeuille rechargé. Je connais maintenant tous vos biens, locataires, impayés et alertes en temps réel. Que souhaitez-vous savoir ?');
   showToast('Contexte IA mis à jour.', 'blue');
 }
 
@@ -10318,7 +10318,7 @@ function saveAgentQuickKey() {
   if (!key || !key.startsWith('sk-')) { showToast('Clé invalide (doit commencer par sk-)', 'orange'); return; }
   localStorage.setItem('bailscan_anthropic_key', key);
   document.getElementById('agentSetupKey').style.display = 'none';
-  showToast('✅ Clé enregistrée !', 'green');
+  showToast('Clé enregistrée !', 'green');
   // Réinitialiser le chat pour afficher statut mis à jour
   clearAgentChat();
 }
@@ -10433,7 +10433,7 @@ buildCandidatsHtml = function(mandatId) {
     var estLocataire = ca.estLocataireActuel === true;
     var borderColor = estLocataire ? '#86efac' : isGo ? '#86efac' : isMitige ? '#fcd34d' : '#fca5a5';
     var bgColor = estLocataire ? '#f0fdf4' : isGo ? '#f0fdf4' : isMitige ? '#fffbeb' : '#fef2f2';
-    var verdictIcon = estLocataire ? 'Locataire actuel' : isGo ? '✅ GO' : isMitige ? 'Mitigé' : '❌ NO GO';
+    var verdictIcon = estLocataire ? 'Locataire actuel' : isGo ? 'GO' : isMitige ? 'Mitigé' : '❌ NO GO';
     var verdictColor = estLocataire ? '#166534' : isGo ? '#166534' : isMitige ? '#92400e' : '#991b1b';
     var caId = ca.id ? String(ca.id) : '';
 
@@ -10544,7 +10544,7 @@ function uploadDPEFile(mandatId, input) {
     else diags.unshift(dpeEntry);
     saveDiags(diags);
 
-    showToast('✅ DPE uploadé et synchronisé avec les diagnostics.', 'green');
+    showToast('DPE uploadé et synchronisé avec les diagnostics.', 'green');
 
     // Rafraîchir l'aperçu dans la fiche mandat
     var preview = document.getElementById('dpePreview_' + mandatId);
@@ -10719,7 +10719,7 @@ function loadAnthropicKeyField() {
   var el = document.getElementById('anthropicApiKey');
   if (el) el.value = key;
   var st = document.getElementById('anthropicKeyStatus');
-  if (st && key) { st.style.display='block'; st.style.color='var(--vert)'; st.textContent='✅ Clé enregistrée.'; }
+  if (st && key) { st.style.display='block'; st.style.color='var(--vert)'; st.textContent='Clé enregistrée.'; }
 }
 
 function saveAnthropicApiKey() {
@@ -10728,9 +10728,9 @@ function saveAnthropicApiKey() {
   // Validation souple — accepte sk-ant- et sk-
   if (!key.startsWith('sk-')) { showToast('Format invalide. La clé doit commencer par sk-…', 'orange'); return; }
   localStorage.setItem('bailscan_anthropic_key', key);
-  showToast('✅ Clé API enregistrée.', 'green');
+  showToast('Clé API enregistrée.', 'green');
   var st = document.getElementById('anthropicKeyStatus');
-  if (st) { st.style.display='block'; st.style.color='var(--vert)'; st.textContent='✅ Clé enregistrée — l\'agent IA est prêt.'; }
+  if (st) { st.style.display='block'; st.style.color='var(--vert)'; st.textContent='Clé enregistrée — l\'agent IA est prêt.'; }
 }
 
 function clearAnthropicApiKey() {
@@ -10766,8 +10766,8 @@ function testAnthropicApiKey() {
   .then(function(r){ return r.json(); })
   .then(function(data){
     var ok = data.content && data.content[0] && data.content[0].text;
-    if (st) { st.style.color = ok ? 'var(--vert)' : 'var(--accent)'; st.textContent = ok ? '✅ Clé valide !' : '❌ ' + (data.error ? data.error.message : 'Erreur inconnue'); }
-    showToast(ok ? '✅ Clé API valide !' : '❌ Clé invalide.', ok ? 'green' : 'red');
+    if (st) { st.style.color = ok ? 'var(--vert)' : 'var(--accent)'; st.textContent = ok ? 'Clé valide !' : '❌ ' + (data.error ? data.error.message : 'Erreur inconnue'); }
+    showToast(ok ? 'Clé API valide !' : '❌ Clé invalide.', ok ? 'green' : 'red');
   })
   .catch(function(err){ 
     var errMsg = err && err.message ? err.message : '';
@@ -10794,16 +10794,11 @@ var _origInitAgentChat = initAgentChat;
 initAgentChat = function() {
   var msgs = document.getElementById('agentChatMessages');
   if (msgs && msgs.children.length > 0) return;
-  var key = localStorage.getItem('bailscan_anthropic_key') || '';
-  var keyStatus = key
-    ? '\n\n✅ Clé API configurée — posez votre question.'
-    : '\n\nClé API manquante. Allez dans **Paramètres → Agent IA** pour la configurer.';
   var ctx = buildPortfolioContext();
   agentHistory = [{ role:'user', content: ctx }];
   addAgentBubble('assistant',
-    '👋 Bonjour ! Je suis votre assistant IA BailScan, connecté à votre portefeuille en temps réel.\n\n'
-    + 'J\'ai chargé **'+(loadMandats?loadMandats().length:0)+'** bien(s) et **'+(loadLocataires?loadLocataires().filter(function(l){return l.statut==='actif';}).length:0)+'** locataire(s) actif(s).'
-    + keyStatus
+    'Bonjour ! Je suis votre assistant BailScan, connecté à votre portefeuille en temps réel.\n\n'
+    + 'J\'ai chargé **'+(loadMandats?loadMandats().length:0)+'** bien(s) et **'+(loadLocataires?loadLocataires().filter(function(l){return l.statut==='actif';}).length:0)+'** locataire(s) actif(s).\n\nPosez votre question.'
   );
 };
 
@@ -10834,7 +10829,7 @@ uploadDPEFile = function(mandatId, input) {
         + '<a href="'+objectUrl+'" target="_blank" style="font-size:.72rem;color:var(--pro-accent);font-weight:600;text-decoration:none;flex-shrink:0">📖 Ouvrir</a>'
         + '</div>';
     }
-    showToast('✅ DPE PDF chargé. Disponible pour cette session.', 'green');
+    showToast('DPE PDF chargé. Disponible pour cette session.', 'green');
     return;
   }
   _origUploadDPEFile2(mandatId, input);
@@ -11268,7 +11263,7 @@ async function envoyerQuittanceMail() {
       body: JSON.stringify({ to: email, subject: 'Quittance de loyer — '+mois+' '+annee, html: html })
     });
     var d = await r.json();
-    if (d.ok || d.id) { alert('✅ Quittance envoyée à '+email); }
+    if (d.ok || d.id) { alert('Quittance envoyée à '+email); }
     else { alert('Erreur envoi : '+(d.error||'inconnue')); }
   } catch(e) { alert('Erreur : '+e.message); }
   finally { if(btn) { btn.textContent='Envoyer par email au locataire'; btn.disabled=false; } }
@@ -11652,7 +11647,7 @@ async function envoyerCourrierMail() {
       })
     });
     var d = await r.json();
-    if (d.ok||d.id) alert('✅ Courrier envoyé à ' + locEmail);
+    if (d.ok||d.id) alert('Courrier envoyé à ' + locEmail);
     else alert('Erreur : ' + (d.error||'inconnue'));
   } catch(e) { alert('Erreur : '+e.message); }
   finally { if(btn) { btn.textContent='Envoyer'; btn.disabled=false; } }
@@ -11962,7 +11957,7 @@ function calcScore() {
   score += garantScores[garant] || 0;
 
   var cls = score >= 70 ? 'loc-score-vert' : score >= 45 ? 'loc-score-orange' : 'loc-score-rouge';
-  var label = score >= 70 ? '✅ Solvable' : score >= 45 ? 'À vérifier' : '❌ Insuffisant';
+  var label = score >= 70 ? 'Solvable' : score >= 45 ? 'À vérifier' : '❌ Insuffisant';
   var detail = 'Ratio x' + ratio.toFixed(1) + ' — Score ' + score + '/100';
   if(el) el.className = cls; if(el) el.innerHTML = label + '<br><span style="font-size:.72rem;font-weight:400">' + detail + '</span>';
   return { score: score, cls: cls.replace('loc-score-',''), label: label };
@@ -12207,7 +12202,7 @@ function envoyerBailEmail() {
     window.location.href = 'mailto:'+email+'?subject='+sujet+'&body='+corps;
   }
   sauvegarderRattachementBail();
-  showToast('📧 Ouverture de votre client mail…', 'blue');
+  showToast('Ouverture de votre client mail…', 'blue');
 }
 
 function exportBailPDF() {
@@ -13030,6 +13025,10 @@ function lancerAuditConformite() {
 
 function openFicheLocataire(locId, event, tab) {
   if (event && (event.target.tagName === 'BUTTON' || event.target.closest('button'))) return;
+  // Supprimer modal existant si présent
+  var existingModal = document.getElementById('modalFicheLocataire');
+  if (existingModal) existingModal.remove();
+  console.log('[FicheLocataire] ouverture:', locId);
   var arr = loadLocataires();
   var l = arr.find(function(x){ return String(x.id) === String(locId); });
   if (!l) return;
@@ -13200,7 +13199,7 @@ function openFicheLocataire(locId, event, tab) {
       div.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gris)"><div style="font-size:2rem;margin-bottom:8px">🏠</div><div>Aucun état des lieux enregistré pour ce locataire</div></div>';
     } else {
       div.innerHTML = edlList.map(function(e) {
-        var typeLabel = e.type === 'entree' ? 'Entrée' : e.type === 'sortie' ? '🚪 Sortie' : '🔄 '+e.type;
+        var typeLabel = e.type === 'entree' ? 'Entrée' : e.type === 'sortie' ? 'Sortie' : '🔄 '+e.type;
         var statusColor = e.type === 'entree' ? '#15803d' : '#c84b2f';
         return '<div style="border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">'
           + '<div>'
@@ -13244,7 +13243,7 @@ function openFicheLocataire(locId, event, tab) {
           +'<div style="font-size:.74rem;font-weight:700;margin-bottom:4px;color:var(--noir)">'+dt.label+'</div>'
           +'<div style="font-size:.68rem;color:var(--pro-accent);margin-bottom:8px">✓ '+existing.name.substring(0,20)+(existing.name.length>20?'…':'')+'</div>'
           +'<div style="display:flex;gap:4px;justify-content:center">'
-          +'<button class="btn-sm" style="font-size:.68rem" data-action="view" data-type="'+dt.val+'">👁 Voir</button>'
+          +'<button class="btn-sm" style="font-size:.68rem" data-action="view" data-type="'+dt.val+'">Voir</button>'
           +'<button class="btn-sm" style="font-size:.68rem;color:var(--accent);border-color:var(--accent)" data-action="del" data-type="'+dt.val+'">✕</button>'
           +'</div>';
         card.querySelector('[data-action="view"]').onclick = function(){ viewLocDoc(locId, dt.val); };
@@ -13331,7 +13330,7 @@ function resetDossierAnalyse() {
     if (input) input.value = '';
   });
 
-  showToast('✓ Prêt pour un nouveau dossier.', 'green');
+  showToast('Prêt pour un nouveau dossier.', 'green');
 }
 
 function retelechargerQuittance(idx) {
@@ -13369,7 +13368,7 @@ function sauvegarderVeille() {
     encadrement: document.getElementById('veilleChkEncadrement').checked
   };
   localStorage.setItem('bailscan_veille_prefs', JSON.stringify(prefs));
-  alert('✅ Newsletter activée pour ' + email + '\n\nVous recevrez les alertes personnalisées selon vos préférences.');
+  alert('Newsletter activée pour ' + email + '\n\nVous recevrez les alertes personnalisées selon vos préférences.');
 }
 
 function selectInviteRole(role, el) {
@@ -13450,7 +13449,7 @@ function validerDossier(goDecision) {
   // ── Mettre à jour le badge verdict EN DIRECT ──
   var badge = document.getElementById('dossierVerdictBadge');
   if (badge) {
-    badge.textContent = goDecision ? '✅ GO — Dossier validé' : '❌ NO GO — Dossier refusé';
+    badge.textContent = goDecision ? 'GO — Dossier validé' : '❌ NO GO — Dossier refusé';
     badge.style.background = goDecision ? '#f0fdf4' : '#fef2f2';
     badge.style.color = goDecision ? '#166534' : '#991b1b';
     badge.style.border = '2px solid ' + (goDecision ? '#86efac' : '#fca5a5');
@@ -13489,7 +13488,7 @@ function validerDossier(goDecision) {
     }
   }
 
-  showToast(goDecision ? '✅ Dossier validé — GO' : '❌ Dossier refusé — NO GO', goDecision ? 'green' : 'red');
+  showToast(goDecision ? 'Dossier validé — GO' : '❌ Dossier refusé — NO GO', goDecision ? 'green' : 'red');
   // Afficher le panneau de suite
   var postVal = document.getElementById('dossierPostValidation');
   if (postVal) postVal.style.display = 'block';
@@ -13502,7 +13501,7 @@ function verifierImpactDecret() {
   var biensG = mandats.filter(function(m){ return m.dpe === 'G'; });
   var biensF = mandats.filter(function(m){ return m.dpe === 'F'; });
   if (!biensG.length && !biensF.length) {
-    alert('✅ Aucun bien classé F ou G dans votre portefeuille.\n\nVous n\'êtes pas impacté par cette obligation.');
+    alert('Aucun bien classé F ou G dans votre portefeuille.\n\nVous n\'êtes pas impacté par cette obligation.');
   } else {
     var msg = 'Biens potentiellement impactés :\n\n';
     if (biensG.length) msg += '' + biensG.length + ' bien(s) classé(s) G (interdiction immédiate) :\n' + biensG.map(function(m){ return ' • '+m.adresse; }).join('\n') + '\n\n';
@@ -14040,7 +14039,7 @@ function buildDossierFallback(loyer, revenus, contrat, anciennete, garant, piece
   return {
     score: score,
     verdict: verdict,
-    verdict_label: verdict === 'GO' ? '✅ Dossier recevable' : verdict === 'NO_GO' ? '❌ Dossier refusé' : 'Dossier à étudier',
+    verdict_label: verdict === 'GO' ? 'Dossier recevable' : verdict === 'NO_GO' ? '❌ Dossier refusé' : 'Dossier à étudier',
     verdict_texte: verdict === 'GO'
       ? 'Le profil financier du candidat est compatible avec le logement visé. Les indicateurs principaux sont dans les normes attendues.'
       : verdict === 'NO_GO'
@@ -14154,7 +14153,7 @@ function refreshDossierHisto() {
       + '<td><span class="score-badge '+(d.score>=70?'high':d.score>=50?'mid':'low')+'">' + d.score + '/100</span></td>'
       + '<td><span style="background:'+vBg+';color:'+vColor+';font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:5px">' + (d.verdict_label||d.verdict) + '</span></td>'
       + '<td style="text-align:right">'
-      + '<button class="btn-sm" onclick="revoirDossier(' + i + ')">👁 Voir</button>'
+      + '<button class="btn-sm" onclick="revoirDossier(' + i + ')">Voir</button>'
       + ' <button class="btn-sm" onclick="exportDossierPDFIdx(' + i + ')">PDF</button>'
       + ' <button class="btn-sm" style="color:var(--accent);border-color:var(--accent)" onclick="supprimerDossierHisto(' + i + ')">✕</button>'
       + '</td></tr>';
@@ -14471,7 +14470,7 @@ function updateVeilleActions() {
   actions.push({ niveau:'bleu', texte: 'Vérifiez les révisions IRL dues ce trimestre (IRL T4 2025 : 145,62).', action:'loyers' });
 
   if (!actions.length) {
-    el.innerHTML = '<div style="color:var(--vert);font-size:.82rem;font-weight:600">✓ Aucune action urgente détectée.</div>';
+    el.innerHTML = '<div style="color:var(--vert);font-size:.82rem;font-weight:600">Aucune action urgente détectée.</div>';
     return;
   }
   var nColors = { rouge:'var(--accent)', orange:'#d97706', bleu:'var(--pro-accent)' };
@@ -14582,7 +14581,7 @@ function _storeLocDoc(locId, type, name, data) {
     if (existing >= 0) docs[existing] = entry; else docs.push(entry);
     localStorage.setItem(docsKey, JSON.stringify(docs));
     openFicheLocataire(locId, null, 'documents');
-    showToast('✅ Document enregistré', 'vert');
+    showToast('Document enregistré', 'vert');
   } catch(err) {
     // Stockage plein: supprimer les données et stocker uniquement les métadonnées
     try {
@@ -14594,7 +14593,7 @@ function _storeLocDoc(locId, type, name, data) {
       showToast('Stockage limité: métadonnées seules sauvegardées. Conseil: passez à Supabase pour stocker les fichiers.', 'orange');
       openFicheLocataire(locId, null, 'documents');
     } catch(err2) {
-      showToast('❌ Stockage navigateur saturé. Videz le cache ou utilisez une base de données.', 'rouge');
+      showToast('Stockage navigateur saturé. Videz le cache ou utilisez une base de données.', 'rouge');
     }
   }
 }
@@ -14942,7 +14941,7 @@ async function deleteAccount() {
         })
       });
     } catch(e) {}
-    alert('✅ Votre compte et toutes vos données ont été supprimés.');
+    alert('Votre compte et toutes vos données ont été supprimés.');
     window.location.reload();
   } catch(e) {
     alert('Erreur lors de la suppression : ' + e.message);
@@ -15099,7 +15098,7 @@ async function cancelSubscription() {
       var status = document.getElementById('activeSubStatus');
       if (status) { status.textContent = 'Résiliation en cours'; status.style.color = 'var(--warn)'; }
       if (btn) btn.style.display = 'none';
-      showToast('✓ Résiliation confirmée', 'blue');
+      showToast('Résiliation confirmée', 'blue');
     } else {
       alert('Erreur : ' + (d.error || 'inconnue'));
       if (btn) { btn.textContent = '❌ Résilier mon abonnement'; btn.disabled = false; }
@@ -15147,7 +15146,7 @@ function uploadLogo(input) {
     if (wrap) wrap.style.display = 'block';
     // Mettre à jour sidebar
     updateSidebarLogo(dataUrl);
-    showToast('✓ Logo enregistré', 'blue');
+    showToast('Logo enregistré', 'blue');
   };
   reader.readAsDataURL(file);
 }
