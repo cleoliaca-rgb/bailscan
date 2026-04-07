@@ -7656,11 +7656,10 @@ async function autoUpdateVeille(forceUpdate) {
     if (cached) { try { renderVeille(JSON.parse(cached)); } catch(ex){} }
   } finally {
     if (btnEl) { btnEl.disabled=false; btnEl.textContent='Actualiser'; }
-  
+  }
 }
 
-async 
-function genererCourrier() {
+async function genererCourrier() {
   var type = proState.currentCourrierType || 'conge_bailleur';
   var bailleur = document.getElementById('coBailleur').value.trim();
   var locataire = document.getElementById('coLocataire').value.trim();
@@ -13232,15 +13231,6 @@ function openInviteModal(){openModal('invite');}
 
 function regenerateApiKey(){if(!confirm('Regenerer la cle ?'))return;var key='bs_live_'+Math.random().toString(36).substr(2,16)+Math.random().toString(36).substr(2,16);localStorage.setItem('bailscan_pro_apikey',key);document.getElementById('apiKeyDisplay').textContent=key;alert('Nouvelle cle generee.');}
 
-function removeLogo() {
-  proState.agencyLogo = null;
-  localStorage.removeItem('bailscan_pro_logo');
-  var wrap = document.getElementById('logoPreviewWrap');
-  var input = document.getElementById('logoInput');
-  if (wrap) wrap.style.display = 'none';
-  if (input) input.value = '';
-  updateSidebarLogo(null);
-}
 
 function resetDemoData() {
   if (!confirm('Effacer toutes les données de démo (tickets travaux, etc.) ? Vos vraies données ne seront pas supprimées.')) return;
@@ -14822,23 +14812,6 @@ function exportDossierPDFCore(result, nom, loyer, revenus) {
 }
 
 // ─── MODALES ─────────────────────────────────────────────
-function openModal(name) {
-  var ids = { login:'modalLogin', signup:'modalSignup', invite:'modalInvite', forgot:'modalForgot' };
-  var id = ids[name] || ('modal' + name.charAt(0).toUpperCase() + name.slice(1));
-  document.querySelectorAll('.modal-overlay').forEach(function(m){ m.style.display='none'; });
-  var el = document.getElementById(id);
-  if (el) { el.style.display='flex'; el.classList.add('active'); }
-}
-function closeModal(name) {
-  if (!name) {
-    document.querySelectorAll('.modal-overlay').forEach(function(m){ m.style.display='none'; m.classList.remove('active'); });
-    return;
-  }
-  var ids = { login:'modalLogin', signup:'modalSignup', invite:'modalInvite', forgot:'modalForgot', mandat:'modalMandat' };
-  var id = ids[name] || ('modal' + name.charAt(0).toUpperCase() + name.slice(1));
-  var el = document.getElementById(id);
-  if (el) { el.style.display='none'; el.classList.remove('active'); }
-}
 
 // ─── MODALES ─────────────────────────────────────────────
 function openModal(name) {
@@ -15163,8 +15136,6 @@ function setGenGarant(val) {
   if (physRow) physRow.style.display = (val==='physique'||val==='caution_solidaire') ? 'block' : 'none';
   if (numRow) numRow.style.display = (val==='visale'||val==='garantme') ? 'block' : 'none';
   if (orgRow) orgRow.style.display = (val==='autre_organisme') ? 'block' : 'none';
-}
-
 }
 </script>
 <!-- ═══════════════════════════════════════════════════════════
