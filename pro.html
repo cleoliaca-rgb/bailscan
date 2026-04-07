@@ -1912,6 +1912,14 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <input type="text" class="form-input-pro" id="genBailleurAdresse" placeholder="Ex : 12 rue de la Paix, 75001 Paris">
               </div>
               <div class="form-group-pro">
+                <label class="form-label">Code postal</label>
+                <input type="text" class="form-input-pro" id="genCodePostal" placeholder="Ex : 75011" maxlength="5">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Ville</label>
+                <input type="text" class="form-input-pro" id="genBailleurVille" placeholder="Ex : Paris">
+              </div>
+              <div class="form-group-pro">
                 <label class="form-label">Email</label>
                 <input type="email" class="form-input-pro" id="genBailleurEmail" placeholder="Ex : jean.dupont@email.com">
               </div>
@@ -2669,6 +2677,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div class="form-group-pro"><label class="form-label">Adresse du logement</label><input type="text" class="form-input-pro" id="locAdresse" placeholder="12 rue des Lilas, 75020 Paris"></div>
               <div class="form-group-pro"><label class="form-label">Loyer HC (€)</label><input type="number" class="form-input-pro" id="locLoyer" placeholder="800"></div>
               <div class="form-group-pro"><label class="form-label">Complément loyer (€) <small style="font-weight:400;color:var(--gris)">optionnel</small></label><input type="number" class="form-input-pro" id="locComplement" placeholder="0" min="0"></div>
+              <div class="form-group-pro"><label class="form-label">Charges (€/mois)</label><input type="number" class="form-input-pro" id="locCharges" placeholder="80" min="0"></div>
               <div class="form-group-pro"><label class="form-label">Dépôt de garantie (€)</label><input type="number" class="form-input-pro" id="locDepot" placeholder="Ex : 2 174"></div>
             </div>
             <div class="form-grid-pro">
@@ -5053,6 +5062,22 @@ body.is-dashboard #marketingPage { display: none !important; }
 
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+var COURRIER_PROMPTS = {
+  conge_bailleur: "Rédigez un congé donné par le bailleur au locataire pour reprise personnelle ou vente, conforme à la loi du 6 juillet 1989. Respectez le préavis légal de 6 mois.",
+  conge_locataire: "Rédigez un congé donné par le locataire au bailleur pour quitter le logement, conforme à la loi du 6 juillet 1989. Rappeler le préavis de 3 mois (1 mois en zone tendue).",
+  mise_en_demeure: "Rédigez une mise en demeure de payer les loyers impayés, avec rappel des obligations légales et délai de régularisation de 8 jours.",
+  relance_loyer: "Rédigez une lettre de relance amiable pour loyers impayés, ton cordial mais ferme, avec mention du montant dû et demande de régularisation rapide.",
+  restitution_depot: "Rédigez une lettre de restitution du dépôt de garantie avec détail des retenues éventuelles, conforme à l'article 22 de la loi du 6 juillet 1989.",
+  etat_lieux_sortie: "Rédigez une convocation pour état des lieux de sortie avec date, heure, adresse et rappel des obligations du locataire.",
+  travaux_notification: "Rédigez une notification de travaux au locataire avec description des travaux, durée estimée et conditions d'accès au logement.",
+  augmentation_loyer: "Rédigez une lettre de révision annuelle du loyer selon l'indice IRL, avec calcul du nouveau loyer et date d'effet.",
+  regularisation_charges: "Rédigez une lettre de régularisation annuelle des charges locatives avec décompte détaillé et solde à payer ou à rembourser.",
+  impaye_commandement: "Rédigez un commandement de payer les loyers arriérés, avec mention que le défaut de paiement sous 2 mois peut entraîner la résiliation du bail.",
+  renouvellement_bail: "Rédigez une proposition de renouvellement du bail avec nouvelles conditions éventuelles.",
+  autre: "Rédigez un courrier professionnel et juridiquement conforme entre bailleur et locataire."
+};
+
 console.log("[BailScan] Script chargé v2026-03-12-fix");
 var proState = {
   isLoggedIn:false, user:null,
@@ -7631,26 +7656,10 @@ async function autoUpdateVeille(forceUpdate) {
     if (cached) { try { renderVeille(JSON.parse(cached)); } catch(ex){} }
   } finally {
     if (btnEl) { btnEl.disabled=false; btnEl.textContent='Actualiser'; }
-  }
+  
 }
 
-
 async 
-var COURRIER_PROMPTS = {
-  conge_bailleur: "Rédigez un congé donné par le bailleur au locataire pour reprise personnelle ou vente, conforme à la loi du 6 juillet 1989. Respectez le préavis légal de 6 mois.",
-  conge_locataire: "Rédigez un congé donné par le locataire au bailleur pour quitter le logement, conforme à la loi du 6 juillet 1989. Rappeler le préavis de 3 mois (1 mois en zone tendue).",
-  mise_en_demeure: "Rédigez une mise en demeure de payer les loyers impayés, avec rappel des obligations légales et délai de régularisation de 8 jours.",
-  relance_loyer: "Rédigez une lettre de relance amiable pour loyers impayés, ton cordial mais ferme, avec mention du montant dû et demande de régularisation rapide.",
-  restitution_depot: "Rédigez une lettre de restitution du dépôt de garantie avec détail des retenues éventuelles, conforme à l'article 22 de la loi du 6 juillet 1989.",
-  etat_lieux_sortie: "Rédigez une convocation pour état des lieux de sortie avec date, heure, adresse et rappel des obligations du locataire.",
-  travaux_notification: "Rédigez une notification de travaux au locataire avec description des travaux, durée estimée et conditions d'accès au logement.",
-  augmentation_loyer: "Rédigez une lettre de révision annuelle du loyer selon l'indice IRL, avec calcul du nouveau loyer et date d'effet.",
-  regularisation_charges: "Rédigez une lettre de régularisation annuelle des charges locatives avec décompte détaillé et solde à payer ou à rembourser.",
-  impaye_commandement: "Rédigez un commandement de payer les loyers arriérés, avec mention que le défaut de paiement sous 2 mois peut entraîner la résiliation du bail.",
-  renouvellement_bail: "Rédigez une proposition de renouvellement du bail avec nouvelles conditions éventuelles.",
-  autre: "Rédigez un courrier professionnel et juridiquement conforme entre bailleur et locataire."
-};
-
 function genererCourrier() {
   var type = proState.currentCourrierType || 'conge_bailleur';
   var bailleur = document.getElementById('coBailleur').value.trim();
@@ -8682,7 +8691,7 @@ function refreshLoyersSuivi() {
 
   // KPIs
   var moisActuel = new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
-  var loyersAttenduTotal = locs.reduce(function(s,l){ return s + (parseFloat(l.loyer)||0); }, 0);
+  var loyersAttenduTotal = locs.reduce(function(s,l){ return s + (parseFloat(l.loyer)||0) + (parseFloat(l.complement)||0) + (parseFloat(l.charges)||0); }, 0);
   var moisSuivi = suivi.filter(function(s){ return s.mois === moisActuel; });
   var percuTotal = moisSuivi.reduce(function(s,e){ return s + (parseFloat(e.percu)||0); }, 0);
   var impayeTotal = moisSuivi.reduce(function(s,e){ return s + Math.max(0, (parseFloat(e.attendu)||0) - (parseFloat(e.percu)||0)); }, 0);
@@ -11017,6 +11026,7 @@ function pickLocMandat(mandatId) {
   f('locAdresse', m.adresseFull || m.adresse || '');
   f('locLoyer', m.loyer || '');
   var compEl = document.getElementById('locComplement'); if(compEl) compEl.value = (m.complement !== undefined && m.complement !== null && m.complement !== '') ? m.complement : 0;
+  var chEl = document.getElementById('locCharges'); if(chEl) chEl.value = m.charges||0;
   f('locDateEntree', m.dateEntree || '');
   f('locDateFin', m.dateFin || '');
   // Dépôt de garantie
@@ -11686,6 +11696,7 @@ function saveLocataire() {
     adresse: document.getElementById('locAdresse').value.trim(),
     loyer: document.getElementById('locLoyer').value,
     complement: (document.getElementById('locComplement')||{value:0}).value||0,
+    charges: (document.getElementById('locCharges')||{value:0}).value||0,
     depot: (document.getElementById('locDepot')||{value:0}).value||0,
     revenus: document.getElementById('locRevenus').value,
     contrat: document.getElementById('locContrat').value,
@@ -11974,6 +11985,7 @@ function editLocataire(id) {
   });
   document.getElementById('locLoyer').value = l.loyer||'';
   if(document.getElementById('locComplement')) document.getElementById('locComplement').value = l.complement||0;
+  if(document.getElementById('locCharges')) document.getElementById('locCharges').value = l.charges||0;
   if(document.getElementById('locDepot')) document.getElementById('locDepot').value = l.depot||0;
   document.getElementById('locRevenus').value = l.revenus||'';
   document.getElementById('locDateEntree').value = l.dateEntree||'';
@@ -15151,6 +15163,8 @@ function setGenGarant(val) {
   if (physRow) physRow.style.display = (val==='physique'||val==='caution_solidaire') ? 'block' : 'none';
   if (numRow) numRow.style.display = (val==='visale'||val==='garantme') ? 'block' : 'none';
   if (orgRow) orgRow.style.display = (val==='autre_organisme') ? 'block' : 'none';
+}
+
 }
 </script>
 <!-- ═══════════════════════════════════════════════════════════
