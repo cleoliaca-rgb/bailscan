@@ -46,7 +46,7 @@ function showAuthError(modalId, msg) {
   }
 }
 </script>
-<style>:root{--noir:#0d0d0d;--creme:#f7f8fa;--accent:#c84b2f;--vert:#16a34a;--vert-light:#dcfce7;--texte:#0f172a;--gris:#64748b;--border:#e2e8f0;--pro:#0f172a;--pro-mid:#1e293b;--pro-accent:#3b6fd4;--pro-light:#eff6ff;--warn:#f59e0b;--danger:#ef4444;}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;scroll-padding-top:80px;}body{background:#f8fafc;color:var(--texte);font-family:'DM Sans',sans-serif;overflow-x:hidden;}header{position:fixed;top:0;left:0;right:0;z-index:200;padding:7px 48px;min-height:50px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);background:rgba(17,24,39,0.97);backdrop-filter:blur(12px);}.logo{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;text-decoration:none;}.logo-badge{font-size:0.6rem;font-weight:700;background:var(--pro-accent);color:white !important;padding:2px 7px;border-radius:4px;margin-left:7px;letter-spacing:0.06em;vertical-align:middle;font-family:'DM Sans',sans-serif;}nav{display:flex;gap:20px;align-items:center;}nav a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;transition:color .2s;}nav a:hover{color:white;}.btn-header-login{background:transparent;border:1.5px solid rgba(255,255,255,0.2);color:white !important;padding:8px 18px;border-radius:8px;font-weight:600;font-size:0.85rem !important;transition:all .2s !important;}.btn-header-login:hover{border-color:rgba(255,255,255,0.5) !important;}.btn-header-cta{background:var(--pro-accent);color:white !important;padding:9px 20px;border-radius:8px;font-weight:700;font-size:0.88rem !important;transition:all .2s !important;}.btn-header-cta:hover{background:#2a5bbf !important;}.hero{background:#0f172a;display:flex;align-items:center;padding:110px 48px 80px;position:relative;overflow:hidden;}.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:900px;height:900px;background:radial-gradient(circle,rgba(59,111,212,0.12) 0%,transparent 60%);}.hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(200,75,47,0.08) 0%,transparent 60%);}.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;position:relative;z-index:1;}.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(59,111,212,0.15);color:#7fa8e8;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:22px;border:1px solid rgba(59,111,212,0.25);}.hero-tag::before{content:'';width:6px;height:6px;background:#7fa8e8;border-radius:50%;animation:pulse 2s infinite;}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2rem,3.2vw,3rem);line-height:1.1;letter-spacing:-0.03em;color:white;margin-bottom:20px;}.hero h1 em{font-style:italic;color:#7fa8e8;}.hero-sub{font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.75;margin-bottom:36px;max-width:460px;}.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}.btn-primary-pro{background:var(--pro-accent);color:white;padding:11px 22px;border-radius:8px;font-weight:600;font-size:0.88rem;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;}.btn-primary-pro:hover{background:#2a5bbf;transform:translateY(-1px);}.btn-secondary-pro{background:transparent;color:rgba(255,255,255,0.75);padding:13px 22px;border-radius:10px;font-weight:600;font-size:0.95rem;text-decoration:none;border:1.5px solid rgba(255,255,255,0.18);transition:all .2s;display:inline-flex;align-items:center;gap:8px;cursor:pointer;}.btn-secondary-pro:hover{border-color:rgba(255,255,255,0.45);color:white;}.hero-stats{display:flex;gap:28px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}.stat-n{font-family:'Instrument Serif',serif;font-size:2rem;color:white;}.stat-l{font-size:0.75rem;color:rgba(255,255,255,0.38);margin-top:2px;line-height:1.4;}.dash-preview{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;overflow:hidden;}.dash-topbar{background:rgba(255,255,255,0.05);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.07);}.dash-dots{display:flex;gap:5px;}.dash-dot{width:9px;height:9px;border-radius:50%;}.dash-url{font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:10px;}.dash-body{padding:16px;}.dash-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}.dash-kpi{background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;}.dash-kpi-n{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;}.dash-kpi-l{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}.dash-table{width:100%;border-collapse:collapse;}.dash-table th{font-size:0.64rem;color:rgba(255,255,255,0.3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;padding:6px 8px;text-align:left;}.dash-table td{font-size:0.72rem;color:rgba(255,255,255,0.65);padding:7px 8px;border-top:1px solid rgba(255,255,255,0.05);}.dash-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.62rem;font-weight:700;}.badge-ok{background:rgba(45,106,79,0.25);color:#7ec8a0;}.badge-warn{background:rgba(200,75,47,0.25);color:#e8806b;}.badge-check{background:rgba(59,111,212,0.25);color:#7fa8e8;}.section-inner{max-width:1100px;margin:0 auto;}.section-tag{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pro-accent);margin-bottom:12px;}.section-title{font-family:'Instrument Serif',serif;font-size:2.4rem;color:var(--noir);line-height:1.15;margin-bottom:16px;}.section-sub{font-size:0.95rem;color:var(--gris);line-height:1.75;max-width:520px;}.features{padding:80px 48px;background:white;}.particulier-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;}@media(max-width:900px){.footer-top-pro{grid-template-columns:1fr 1fr;gap:28px;}}@media(max-width:560px){.features-grid{grid-template-columns:1fr;}}.feat-card{background:#f8fafc;border:1.5px solid var(--border);border-radius:16px;padding:28px;transition:all .25s;}.feat-card:hover{border-color:var(--pro-accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(59,111,212,0.1);}.feat-icon{font-size:1.8rem;margin-bottom:16px;}.feat-title{font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:8px;}.feat-desc{font-size:0.85rem;color:var(--gris);line-height:1.65;}.how{padding:80px 48px;background:#f8fafc;border-top:1px solid var(--border);}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;position:relative;}.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--border);z-index:0;}.step{text-align:center;position:relative;z-index:1;padding:0 16px;}.step-num{width:56px;height:56px;border-radius:50%;background:white;border:2px solid var(--pro-accent);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:1.4rem;color:var(--pro-accent);margin:0 auto 20px;}.step-title{font-weight:700;font-size:0.92rem;color:var(--noir);margin-bottom:8px;}.step-desc{font-size:0.8rem;color:var(--gris);line-height:1.6;}.pricing{padding:80px 48px;background:white;border-top:1px solid var(--border);}.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px;align-items:start;}.pricing-toggle-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin:32px 0 8px;}.pricing-toggle{display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;}.ptoggle{padding:7px 22px;border:none;border-radius:7px;font-weight:600;font-size:0.85rem;cursor:pointer;background:transparent;color:var(--gris);transition:all .2s;}.ptoggle.active{background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,0.1);}.ptoggle-save{background:var(--vert);color:white;font-size:0.65rem;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px;}.pricing-engage-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}.engage-label{font-size:0.82rem;color:var(--gris);font-weight:600;}.engage-btn{padding:5px 16px;border:1.5px solid var(--border);border-radius:7px;font-size:0.82rem;font-weight:600;cursor:pointer;background:white;color:var(--gris);transition:all .2s;}.engage-btn.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.pricing-card{background:#f8fafc;border:1.5px solid var(--border);border-radius:18px;padding:32px;position:relative;}.pricing-card.featured{background:#0f172a;border-color:var(--pro-accent);}.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;font-size:0.65rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;}.pricing-plan{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);margin-bottom:8px;}.pricing-card.featured .pricing-plan{color:rgba(255,255,255,0.45);}.pricing-price{font-family:'Instrument Serif',serif;font-size:3rem;color:var(--noir);line-height:1;}.pricing-card.featured .pricing-price{color:white;}.pricing-price sup{font-size:1.2rem;vertical-align:super;font-family:'DM Sans',sans-serif;font-weight:600;}.pricing-period{font-size:0.8rem;color:var(--gris);margin:6px 0 24px;}.pricing-card.featured .pricing-period{color:rgba(255,255,255,0.4);}.pricing-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}.pricing-feature{display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte);}.pricing-card.featured .pricing-feature{color:rgba(255,255,255,0.75);}.pricing-feature::before{content:'✓';color:var(--pro-accent);font-weight:700;flex-shrink:0;}.pricing-divider{height:1px;background:var(--border);margin:16px 0;}.pricing-card.featured .pricing-divider{background:rgba(255,255,255,0.1);}.btn-pricing{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;border:none;cursor:pointer;transition:all .2s;}.btn-pricing-outline{background:white;color:var(--noir);border:1.5px solid var(--border) !important;}.btn-pricing-outline:hover{border-color:var(--pro-accent) !important;color:var(--pro-accent);}.btn-pricing-pro{background:var(--pro-accent);color:white;}.btn-pricing-pro:hover{background:#2a5bbf;}.btn-pricing-contact{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2) !important;}.btn-pricing-contact:hover{border-color:rgba(255,255,255,0.5) !important;color:white;}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:500;align-items:center;justify-content:center;padding:20px;}.modal-overlay.active{display:flex;}.modal{background:#fff;border-radius:16px;padding:0;width:100%;max-width:560px;position:relative;animation:slideUp .3s ease;box-shadow:0 25px 80px rgba(0,0,0,.25);overflow:hidden;}.modal .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--gris);z-index:2;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s;}.modal .modal-close:hover{background:#f3f4f6;}.modal .modal-title{font-family:"Instrument Serif",serif;font-size:1.35rem;font-weight:700;color:var(--texte);padding:24px 28px 4px;}.modal .modal-sub{font-size:.83rem;color:var(--gris);padding:0 28px 16px;border-bottom:1px solid var(--border);margin-bottom:16px;}.modal .form-group,.modal .form-group-pro{padding:0 28px;margin-bottom:14px;}.modal .btn-submit{display:block;width:calc(100% - 56px);margin:8px 28px 24px;padding:13px;border-radius:10px;background:var(--pro-accent);color:#fff;border:none;font-size:.95rem;font-weight:700;cursor:pointer;transition:opacity .2s;}.modal .btn-submit:hover{opacity:.88;}.modal .trial-badge{margin:16px 28px 0;}@keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(0.98)}to{opacity:1;transform:translateY(0)}}.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.4rem;color:var(--gris);cursor:pointer;line-height:1;}.modal-title{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--noir);margin-bottom:6px;}.modal-sub{font-size:0.85rem;color:var(--gris);margin-bottom:28px;line-height:1.6;}.trial-badge{display:inline-flex;align-items:center;gap:6px;background:var(--vert-light);color:var(--vert);font-size:0.78rem;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(45,106,79,0.2);}.form-group{margin-bottom:16px;}.form-label{font-size:0.82rem;font-weight:600;color:var(--texte);margin-bottom:6px;display:block;}.form-input-pro{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.875rem;font-family:'DM Sans',sans-serif;color:var(--texte);background:white;transition:border-color .2s;}.form-input-pro:focus{outline:none;border-color:var(--pro-accent);box-shadow:0 0 0 3px rgba(59,111,212,.08);}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}.btn-submit{width:100%;padding:13px;background:var(--pro-accent);color:white;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all .2s;margin-top:8px;}.btn-submit:hover{background:#2a5bbf;}.btn-submit.loading{opacity:0.7;cursor:not-allowed;}.modal-switch{text-align:center;margin-top:18px;font-size:0.83rem;color:var(--gris);}.modal-switch a{color:var(--pro-accent);cursor:pointer;font-weight:600;text-decoration:none;}.modal-switch a:hover{text-decoration:underline;}.form-legal{font-size:0.74rem;color:var(--gris);margin-top:12px;line-height:1.5;}.success-box{display:none;background:var(--vert-light);border:1.5px solid rgba(45,106,79,0.25);border-radius:12px;padding:24px;text-align:center;}.success-box.active{display:block;}.success-icon{font-size:2.5rem;margin-bottom:12px;}.success-title{font-weight:700;font-size:1.1rem;color:var(--vert);margin-bottom:6px;}.success-text{font-size:0.85rem;color:var(--gris);line-height:1.65;}
+<style>:root{--noir:#0d0d0d;--creme:#f7f8fa;--accent:#c84b2f;--vert:#16a34a;--vert-light:#dcfce7;--texte:#0f172a;--gris:#64748b;--border:#e2e8f0;--pro:#0f172a;--pro-mid:#1e293b;--pro-accent:#3b6fd4;--pro-light:#eff6ff;--warn:#f59e0b;--danger:#ef4444;}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;scroll-padding-top:80px;}body{background:#f8fafc;color:var(--texte);font-family:'DM Sans',sans-serif;overflow-x:hidden;}header{position:fixed;top:0;left:0;right:0;z-index:200;padding:7px 48px;min-height:50px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);background:rgba(17,24,39,0.97);backdrop-filter:blur(12px);}.logo{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;text-decoration:none;}.logo-badge{font-size:0.6rem;font-weight:700;background:var(--pro-accent);color:white !important;padding:2px 7px;border-radius:4px;margin-left:7px;letter-spacing:0.06em;vertical-align:middle;font-family:'DM Sans',sans-serif;}nav{display:flex;gap:20px;align-items:center;}nav a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;transition:color .2s;}nav a:hover{color:white;}.btn-header-login{background:transparent;border:1.5px solid rgba(255,255,255,0.2);color:white !important;padding:8px 18px;border-radius:8px;font-weight:600;font-size:0.85rem !important;transition:all .2s !important;}.btn-header-login:hover{border-color:rgba(255,255,255,0.5) !important;}.btn-header-cta{background:var(--pro-accent);color:white !important;padding:9px 20px;border-radius:8px;font-weight:700;font-size:0.88rem !important;transition:all .2s !important;}.btn-header-cta:hover{background:#2a5bbf !important;}.hero{background:#0f172a;display:flex;align-items:center;padding:110px 48px 80px;position:relative;overflow:hidden;}.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:900px;height:900px;background:radial-gradient(circle,rgba(59,111,212,0.12) 0%,transparent 60%);}.hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(200,75,47,0.08) 0%,transparent 60%);}.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;position:relative;z-index:1;}.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(59,111,212,0.15);color:#7fa8e8;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:22px;border:1px solid rgba(59,111,212,0.25);}.hero-tag::before{content:'';width:6px;height:6px;background:#7fa8e8;border-radius:50%;animation:pulse 2s infinite;}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2rem,3.2vw,3rem);line-height:1.1;letter-spacing:-0.03em;color:white;margin-bottom:20px;}.hero h1 em{font-style:italic;color:#7fa8e8;}.hero-sub{font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.75;margin-bottom:36px;max-width:460px;}.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}.btn-primary-pro{background:var(--pro-accent);color:white;padding:11px 22px;border-radius:8px;font-weight:600;font-size:0.88rem;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;}.btn-primary-pro:hover{background:#2a5bbf;transform:translateY(-1px);}.btn-secondary-pro{background:transparent;color:rgba(255,255,255,0.75);padding:13px 22px;border-radius:10px;font-weight:600;font-size:0.95rem;text-decoration:none;border:1.5px solid rgba(255,255,255,0.18);transition:all .2s;display:inline-flex;align-items:center;gap:8px;cursor:pointer;}.btn-secondary-pro:hover{border-color:rgba(255,255,255,0.45);color:white;}.hero-stats{display:flex;gap:28px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}.stat-n{font-family:'Instrument Serif',serif;font-size:2rem;color:white;}.stat-l{font-size:0.75rem;color:rgba(255,255,255,0.38);margin-top:2px;line-height:1.4;}.dash-preview{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;overflow:hidden;}.dash-topbar{background:rgba(255,255,255,0.05);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.07);}.dash-dots{display:flex;gap:5px;}.dash-dot{width:9px;height:9px;border-radius:50%;}.dash-url{font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:10px;}.dash-body{padding:16px;}.dash-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}.dash-kpi{background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;}.dash-kpi-n{font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;}.dash-kpi-l{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}.dash-table{width:100%;border-collapse:collapse;}.dash-table th{font-size:0.64rem;color:rgba(255,255,255,0.3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;padding:6px 8px;text-align:left;}.dash-table td{font-size:0.72rem;color:rgba(255,255,255,0.65);padding:7px 8px;border-top:1px solid rgba(255,255,255,0.05);}.dash-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.62rem;font-weight:700;}.badge-ok{background:rgba(45,106,79,0.25);color:#7ec8a0;}.badge-warn{background:rgba(200,75,47,0.25);color:#e8806b;}.badge-check{background:rgba(59,111,212,0.25);color:#7fa8e8;}.section-inner{max-width:1100px;margin:0 auto;}.section-tag{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pro-accent);margin-bottom:12px;}.section-title{font-family:'Instrument Serif',serif;font-size:2.4rem;color:var(--noir);line-height:1.15;margin-bottom:16px;}.section-sub{font-size:0.95rem;color:var(--gris);line-height:1.75;max-width:520px;}.features{padding:80px 48px;background:white;}.particulier-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;align-items:stretch;}@media(max-width:900px){.footer-top-pro{grid-template-columns:1fr 1fr;gap:28px;}}@media(max-width:560px){.features-grid{grid-template-columns:1fr;}}.feat-card{background:#f8fafc;border:1.5px solid var(--border);border-radius:16px;padding:28px;transition:all .25s;display:flex;flex-direction:column;height:100%;box-sizing:border-box;}.feat-card:hover{border-color:var(--pro-accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(59,111,212,0.1);}.feat-icon{font-size:1.8rem;margin-bottom:16px;}.feat-title{font-weight:700;font-size:1rem;color:var(--noir);margin-bottom:8px;}.feat-desc{flex:1;font-size:0.85rem;color:var(--gris);line-height:1.65;}.how{padding:80px 48px;background:#f8fafc;border-top:1px solid var(--border);}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;position:relative;}.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--border);z-index:0;}.step{text-align:center;position:relative;z-index:1;padding:0 16px;}.step-num{width:56px;height:56px;border-radius:50%;background:white;border:2px solid var(--pro-accent);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:1.4rem;color:var(--pro-accent);margin:0 auto 20px;}.step-title{font-weight:700;font-size:0.92rem;color:var(--noir);margin-bottom:8px;}.step-desc{font-size:0.8rem;color:var(--gris);line-height:1.6;}.pricing{padding:80px 48px;background:white;border-top:1px solid var(--border);}.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px;align-items:start;}.pricing-toggle-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin:32px 0 8px;}.pricing-toggle{display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;}.ptoggle{padding:7px 22px;border:none;border-radius:7px;font-weight:600;font-size:0.85rem;cursor:pointer;background:transparent;color:var(--gris);transition:all .2s;}.ptoggle.active{background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,0.1);}.ptoggle-save{background:var(--vert);color:white;font-size:0.65rem;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px;}.pricing-engage-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}.engage-label{font-size:0.82rem;color:var(--gris);font-weight:600;}.engage-btn{padding:5px 16px;border:1.5px solid var(--border);border-radius:7px;font-size:0.82rem;font-weight:600;cursor:pointer;background:white;color:var(--gris);transition:all .2s;}.engage-btn.active{border-color:var(--pro-accent);background:var(--pro-light);color:var(--pro-accent);}.pricing-card{background:#f8fafc;border:1.5px solid var(--border);border-radius:18px;padding:32px;position:relative;}.pricing-card.featured{background:#0f172a;border-color:var(--pro-accent);}.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;font-size:0.65rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;}.pricing-plan{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);margin-bottom:8px;}.pricing-card.featured .pricing-plan{color:rgba(255,255,255,0.45);}.pricing-price{font-family:'Instrument Serif',serif;font-size:3rem;color:var(--noir);line-height:1;}.pricing-card.featured .pricing-price{color:white;}.pricing-price sup{font-size:1.2rem;vertical-align:super;font-family:'DM Sans',sans-serif;font-weight:600;}.pricing-period{font-size:0.8rem;color:var(--gris);margin:6px 0 24px;}.pricing-card.featured .pricing-period{color:rgba(255,255,255,0.4);}.pricing-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}.pricing-feature{display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--texte);}.pricing-card.featured .pricing-feature{color:rgba(255,255,255,0.75);}.pricing-feature::before{content:'✓';color:var(--pro-accent);font-weight:700;flex-shrink:0;}.pricing-divider{height:1px;background:var(--border);margin:16px 0;}.pricing-card.featured .pricing-divider{background:rgba(255,255,255,0.1);}.btn-pricing{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;border:none;cursor:pointer;transition:all .2s;}.btn-pricing-outline{background:white;color:var(--noir);border:1.5px solid var(--border) !important;}.btn-pricing-outline:hover{border-color:var(--pro-accent) !important;color:var(--pro-accent);}.btn-pricing-pro{background:var(--pro-accent);color:white;}.btn-pricing-pro:hover{background:#2a5bbf;}.btn-pricing-contact{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2) !important;}.btn-pricing-contact:hover{border-color:rgba(255,255,255,0.5) !important;color:white;}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:500;align-items:center;justify-content:center;padding:20px;}.modal-overlay.active{display:flex;}.modal{background:#fff;border-radius:16px;padding:0;width:100%;max-width:560px;position:relative;animation:slideUp .3s ease;box-shadow:0 25px 80px rgba(0,0,0,.25);overflow:hidden;}.modal .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--gris);z-index:2;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s;}.modal .modal-close:hover{background:#f3f4f6;}.modal .modal-title{font-family:"Instrument Serif",serif;font-size:1.35rem;font-weight:700;color:var(--texte);padding:24px 28px 4px;}.modal .modal-sub{font-size:.83rem;color:var(--gris);padding:0 28px 16px;border-bottom:1px solid var(--border);margin-bottom:16px;}.modal .form-group,.modal .form-group-pro{padding:0 28px;margin-bottom:14px;}.modal .btn-submit{display:block;width:calc(100% - 56px);margin:8px 28px 24px;padding:13px;border-radius:10px;background:var(--pro-accent);color:#fff;border:none;font-size:.95rem;font-weight:700;cursor:pointer;transition:opacity .2s;}.modal .btn-submit:hover{opacity:.88;}.modal .trial-badge{margin:16px 28px 0;}@keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(0.98)}to{opacity:1;transform:translateY(0)}}.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.4rem;color:var(--gris);cursor:pointer;line-height:1;}.modal-title{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--noir);margin-bottom:6px;}.modal-sub{font-size:0.85rem;color:var(--gris);margin-bottom:28px;line-height:1.6;}.trial-badge{display:inline-flex;align-items:center;gap:6px;background:var(--vert-light);color:var(--vert);font-size:0.78rem;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(45,106,79,0.2);}.form-group{margin-bottom:16px;}.form-label{font-size:0.82rem;font-weight:600;color:var(--texte);margin-bottom:6px;display:block;}.form-input-pro{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.875rem;font-family:'DM Sans',sans-serif;color:var(--texte);background:white;transition:border-color .2s;}.form-input-pro:focus{outline:none;border-color:var(--pro-accent);box-shadow:0 0 0 3px rgba(59,111,212,.08);}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}.btn-submit{width:100%;padding:13px;background:var(--pro-accent);color:white;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all .2s;margin-top:8px;}.btn-submit:hover{background:#2a5bbf;}.btn-submit.loading{opacity:0.7;cursor:not-allowed;}.modal-switch{text-align:center;margin-top:18px;font-size:0.83rem;color:var(--gris);}.modal-switch a{color:var(--pro-accent);cursor:pointer;font-weight:600;text-decoration:none;}.modal-switch a:hover{text-decoration:underline;}.form-legal{font-size:0.74rem;color:var(--gris);margin-top:12px;line-height:1.5;}.success-box{display:none;background:var(--vert-light);border:1.5px solid rgba(45,106,79,0.25);border-radius:12px;padding:24px;text-align:center;}.success-box.active{display:block;}.success-icon{font-size:2.5rem;margin-bottom:12px;}.success-title{font-weight:700;font-size:1.1rem;color:var(--vert);margin-bottom:6px;}.success-text{font-size:0.85rem;color:var(--gris);line-height:1.65;}
 /* ═══ LAYOUT ═══════════════════════════════════════════ */
 #dashboardSection{display:none;padding:0;}
 .dash-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px);margin-top:56px;}
@@ -898,8 +898,9 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="background:rgba(200,75,47,.15);border-radius:5px;padding:5px 8px;font-size:.66rem;color:#e8806b;display:flex;align-items:center;gap:6px"><span style="font-weight:700">DANGER</span> Clause résiliation abusive</div>
           </div>
         </div>
+        <div <div class="feat-num">01</div>
         <div class="feat-title">Analyse de bail IA en 2 min</div>
-        <div class="feat-desc">Uploadez le PDF : l'IA détecte chaque clause illégale, vérifie l'encadrement des loyers et calcule le trop-perçu. Score de conformité /100 immédiat.</div>
+        <div class="feat-desc">Uploadez votre bail en PDF. L'IA détecte chaque clause illégale, vérifie l'encadrement des loyers et calcule le trop-perçu. Score /100 immédiat.</div>
       </div>
 
       <div class="feat-card">
@@ -915,8 +916,9 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
           <div style="margin-top:7px;background:rgba(45,106,79,.25);border-radius:6px;padding:5px 9px;font-size:.68rem;color:#6ee7b7;font-weight:600">✓ GO — Dossier validé</div>
         </div>
+        <div <div class="feat-num">02</div>
         <div class="feat-title">Fiches locataires &amp; scoring</div>
-        <div class="feat-desc">Dossier complet par locataire avec scoring solvabilité automatique, ratio revenus, type de contrat, garant. Valider un candidat en 10 secondes.</div>
+        <div class="feat-desc">Scoring solvabilité automatique, ratio revenus, type de contrat, garant. Validez ou refusez un dossier en 10 secondes.</div>
       </div>
 
       <div class="feat-card">
@@ -937,8 +939,9 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
           </div>
         </div>
+        <div <div class="feat-num">03</div>
         <div class="feat-title">Alertes &amp; échéances automatiques</div>
-        <div class="feat-desc">Fin de bail, révision IRL, préavis en cours : les alertes se génèrent seules depuis vos fiches locataires. Plus jamais de deadline manquée.</div>
+        <div class="feat-desc">Fin de bail, révision IRL, préavis en cours : les alertes se génèrent seules depuis vos fiches. Plus jamais de deadline manquée.</div>
       </div>
 
       <div class="feat-card">
@@ -952,8 +955,9 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
           <div style="margin-top:7px;background:#3b6fd4;border-radius:6px;padding:5px 9px;font-size:.66rem;color:white;font-weight:600;text-align:center">PDF généré avec votre logo</div>
         </div>
+        <div <div class="feat-num">04</div>
         <div class="feat-title">Quittances PDF en 1 clic</div>
-        <div class="feat-desc">Sélectionnez le locataire, la période, validez : la quittance est générée avec votre logo. Envoi automatique par email chaque mois.</div>
+        <div class="feat-desc">Sélectionnez le locataire et la période : la quittance PDF est générée avec votre logo et envoyée automatiquement par email.</div>
       </div>
 
       <div class="feat-card">
@@ -962,8 +966,9 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div style="background:rgba(59,111,212,.15);border-radius:6px;padding:4px 8px;font-size:.62rem;color:#7fa8e8;font-weight:600;margin-bottom:8px;display:inline-block">Mise en demeure</div>
           <div style="font-size:.68rem;color:rgba(255,255,255,.7);line-height:1.65;font-style:italic">Madame, Monsieur, Par la présente, nous vous mettons en demeure de régler sous 8 jours la somme de <span style="color:#7fa8e8;font-style:normal;font-weight:600">2 400 €</span> correspondant aux loyers impayés...</div>
         </div>
+        <div <div class="feat-num">05</div>
         <div class="feat-title">Courriers juridiques rédigés par l'IA</div>
-        <div class="feat-desc">Congé bailleur, mise en demeure, révision IRL, restitution de dépôt. 8 modèles rédigés en 10 secondes, conformes loi 1989.</div>
+        <div class="feat-desc">Congé bailleur, mise en demeure, révision IRL, restitution de dépôt. 8 modèles rédigés par l'IA en 10 secondes, conformes loi 1989.</div>
       </div>
 
       <div class="feat-card">
@@ -976,8 +981,9 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
           <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:5px 9px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.62rem;color:rgba(255,255,255,.4)">Généré en</span><span style="font-size:.7rem;font-weight:700;color:#7fa8e8">2 min</span></div>
         </div>
+        <div <div class="feat-num">06</div>
         <div class="feat-title">Génération de bail conforme</div>
-        <div class="feat-desc">Bail complet loi 1989 + ALUR avec toutes les clauses obligatoires. Économisez 300–500€ de juriste.</div>
+        <div class="feat-desc">Bail complet loi 1989 + ALUR avec toutes les clauses obligatoires. Économisez 300 à 500€ de frais de juriste.</div>
       </div>
 
       <div class="feat-card">
@@ -989,6 +995,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="background:rgba(200,75,47,.2);border-radius:6px;padding:6px 9px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.64rem;color:#e8806b">⚠ Dépassement</span><span style="font-size:.72rem;font-weight:700;color:#ef4444">+85 €/mois</span></div>
           </div>
         </div>
+        <div <div class="feat-num">07</div>
         <div class="feat-title">Encadrement des loyers</div>
         <div class="feat-desc">Vérification automatique : Paris, Lyon, Bordeaux, Montpellier et toutes les zones tendues. Complément de loyer calculé et justifié.</div>
       </div>
@@ -1006,6 +1013,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="background:rgba(59,111,212,.2);border-radius:5px;padding:5px;text-align:center;font-size:.6rem;color:#7fa8e8;font-weight:600">Analyse<br>PDF</div>
           </div>
         </div>
+        <div <div class="feat-num">08</div>
         <div class="feat-title">Exports PDF à votre logo</div>
         <div class="feat-desc">Baux, quittances et courriers générés avec votre charte graphique. Uploadez votre logo une fois, il apparaît partout.</div>
       </div>
@@ -1028,6 +1036,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
           </div>
         </div>
+        <div <div class="feat-num">09</div>
         <div class="feat-title">Multi-utilisateurs &amp; API</div>
         <div class="feat-desc">Admin, Manager, Agent avec rôles distincts, permissions granulaires. API REST pour connecter BailScan à vos outils métier.</div>
       </div>
@@ -1284,7 +1293,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <label class="form-label">Rôle *</label>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px" id="inviteRoleCards">
         <div class="invite-role-card active" onclick="selectInviteRole('agent',this)" style="border:2px solid #86efac;background:#f0fdf4;border-radius:10px;padding:12px;cursor:pointer;text-align:center;transition:all .2s">
-          <div style="font-size:1.2rem;margin-bottom:4px">🏠</div>
+          <div style="font-size:1.2rem;margin-bottom:4px"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5"><path d="M8 1L2 5v9h4v-4h4v4h4V5L8 1z"/></svg></div>
           <div style="font-weight:700;font-size:.78rem;color:#166534">Agent</div>
           <div style="font-size:.7rem;color:var(--gris);margin-top:2px">Ses baux uniquement</div>
         </div>
@@ -1764,7 +1773,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div class="upload-sub">PDF uniquement · Max 20 Mo</div>
               </div>
               <div id="pUploadSuccess" style="display:none;background:var(--vert-light);border:1px solid rgba(45,106,79,0.25);border-radius:10px;padding:14px 18px;display:none;align-items:center;gap:12px;margin-top:12px">
-                <span style="font-size:1.5rem">✅</span>
+                <span style="font-size:1.5rem;color:#16a34a">✓</span>
                 <div><div id="pUploadFileName" style="font-weight:600;font-size:0.88rem"></div><div id="pUploadFileSize" style="font-size:0.78rem;color:var(--gris)"></div></div>
                 <button style="margin-left:auto;background:none;border:none;color:var(--gris);cursor:pointer;font-size:1.2rem" onclick="clearProFile()">×</button>
               </div>
@@ -1864,7 +1873,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-generer" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">📋 Générer un bail conforme</div><div class="dash-page-sub">L'IA rédige un bail complet conforme à la loi 1989 + ALUR selon votre situation</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Générer un bail conforme</div><div class="dash-page-sub">L'IA rédige un bail complet conforme à la loi 1989 + ALUR selon votre situation</div></div>
         </div>
         <div class="dash-card">
           <div id="genererForm">
@@ -2382,7 +2391,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-loyers" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">⚖️ Vérification encadrement loyers</div><div class="dash-page-sub">Vérifiez si un loyer respecte le plafond légal dans votre ville</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Vérification encadrement loyers</div><div class="dash-page-sub">Vérifiez si un loyer respecte le plafond légal dans votre ville</div></div>
         </div>
         <div class="dash-card">
           <div class="form-grid-pro" style="margin-bottom:16px">
@@ -2531,7 +2540,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-alertes" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🔔 Alertes & Échéances</div><div class="dash-page-sub">Suivez les deadlines légales de votre parc locatif</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Alertes & Échéances</div><div class="dash-page-sub">Suivez les deadlines légales de votre parc locatif</div></div>
           <button class="btn-primary-pro" onclick="refreshAlertes()">↻ Actualiser</button>
         </div>
 
@@ -2603,7 +2612,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-mandats" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🏠 Mandats & Biens</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Mandats & Biens</div>
             <div class="dash-page-sub">Portefeuille de biens · Référentiel pour analyses, dossiers et courriers</div>
           </div>
           <button class="btn-primary-pro" onclick="openNewMandat()">+ Ajouter un bien</button>
@@ -2650,7 +2659,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-locataires" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">👤 Fiches Locataires</div><div class="dash-page-sub">Dossiers complets et scoring de solvabilité</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Fiches Locataires</div><div class="dash-page-sub">Dossiers complets et scoring de solvabilité</div></div>
           <button class="btn-primary-pro" onclick="openNewLocataire()">+ Nouveau locataire</button>
         </div>
 
@@ -2875,7 +2884,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-dossier" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🔍 Analyse de Dossier Locataire</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Analyse de Dossier Locataire</div>
             <div class="dash-page-sub">Scoring IA · Taux d'effort · Cohérence des pièces · Détection documents suspects</div>
           </div>
           <div style="display:flex;gap:10px;align-items:center">
@@ -3293,7 +3302,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
       <div id="tab-quittances" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">📄 Quittances de loyer</div><div class="dash-page-sub">Génération automatique en un clic</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Quittances de loyer</div><div class="dash-page-sub">Génération automatique en un clic</div></div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
@@ -3371,7 +3380,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       
       <div id="tab-courriers" style="display:none">
         <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">✉️ Courriers & Lettres types</div><div class="dash-page-sub">Rédigés par l'IA en 10 secondes, conformes au droit locatif</div></div>
+          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Courriers & Lettres types</div><div class="dash-page-sub">Rédigés par l'IA en 10 secondes, conformes au droit locatif</div></div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
@@ -3470,7 +3479,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-veille" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">📡 Veille réglementaire</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Veille réglementaire</div>
             <div class="dash-page-sub">Alertes automatiques · Score de conformité portefeuille · Newsletter personnalisée</div>
             <div id="veilleUpdateStatus" style="font-size:.76rem;color:var(--gris);margin-top:4px">Vérification des mises à jour…</div>
           </div>
@@ -3580,7 +3589,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div id="tab-equipe" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">👥 Gestion des utilisateurs</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Gestion des utilisateurs</div>
             <div class="dash-page-sub">Gérez votre équipe et leurs permissions d'accès</div>
           </div>
           <button class="btn-primary-pro" onclick="openInviteModal()">+ Inviter un utilisateur</button>
@@ -3663,7 +3672,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       </div>
 
       <div id="tab-abonnement" style="display:none">
-  <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">💳 Abonnement</div><div class="dash-page-sub">Choisissez votre formule BailScan Pro</div></div></div>
+  <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Abonnement</div><div class="dash-page-sub">Choisissez votre formule BailScan Pro</div></div></div>
   <div class="dash-card" style="max-width:560px">
     <div style="display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:4px;margin-bottom:24px;width:fit-content">
       <button id="dashPtogMensuel" onclick="setDashPricing('mensuel')" style="padding:7px 18px;border:none;border-radius:7px;font-weight:600;font-size:.85rem;cursor:pointer;background:white;color:var(--noir);box-shadow:0 1px 4px rgba(0,0,0,.1)">Mensuel</button>
@@ -3710,7 +3719,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 </div>
 
 <div id="tab-parametres" style="display:none">
-        <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">⚙️ Paramètres</div><div class="dash-page-sub">Votre compte et votre agence</div></div></div>
+        <div class="dash-main-header"><div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Paramètres</div><div class="dash-page-sub">Votre compte et votre agence</div></div></div>
 
         <!-- Logo agence -->
         <div class="dash-card" style="margin-bottom:16px">
@@ -4079,7 +4088,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
 <div id="tab-loyers-suivi" style="display:none">
   <div class="dash-main-header">
-    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">💰 Loyers & Impayés</div><div class="dash-page-sub">Suivi mensuel des encaissements · Relances automatiques</div></div>
+    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Loyers & Impayés</div><div class="dash-page-sub">Suivi mensuel des encaissements · Relances automatiques</div></div>
     <div style="display:flex;gap:8px">
       <button class="btn-sm" onclick="exportLoyersPDF()">Exporter</button>
       <button class="btn-primary-pro" onclick="openSaisieLoyer()">+ Enregistrer un paiement</button>
@@ -4179,7 +4188,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 ═══════════════════════════════════════════════════════ -->
 <div id="tab-etat-lieux" style="display:none">
   <div class="dash-main-header">
-    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">📝 État des lieux</div><div class="dash-page-sub">Entrée & Sortie · Style tablette agence · Rapport PDF professionnel</div></div>
+    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> État des lieux</div><div class="dash-page-sub">Entrée & Sortie · Style tablette agence · Rapport PDF professionnel</div></div>
     <button class="btn-primary-pro" onclick="openNouvelEDL()">+ Nouvel état des lieux</button>
   </div>
 
@@ -4810,7 +4819,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 ═══════════════════════════════════════════════════════ -->
 <div id="tab-travaux" style="display:none">
   <div class="dash-main-header">
-    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🔧 Travaux & Interventions</div><div class="dash-page-sub">Tickets de maintenance · Suivi des prestataires · Devis et factures</div></div>
+    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Travaux & Interventions</div><div class="dash-page-sub">Tickets de maintenance · Suivi des prestataires · Devis et factures</div></div>
     <button class="btn-primary-pro" onclick="openNouvelTicket()">+ Nouveau ticket</button>
   </div>
   <!-- KPIs -->
@@ -4975,11 +4984,16 @@ body.is-dashboard #marketingPage { display: none !important; }
       </div>
       <div class="form-group-pro">
         <label class="form-label">Statut</label>
-        <select class="form-input-pro" id="mandatStatut">
+        <select class="form-input-pro" id="mandatStatut" onchange="toggleRevocationDate()">
           <option value="loue">Loué</option>
           <option value="vacant">Vacant</option>
           <option value="travaux">En travaux</option>
+          <option value="revoque">Révoqué / Archivé</option>
         </select>
+      </div>
+      <div class="form-group-pro" id="mandatRevocationRow" style="display:none">
+        <label class="form-label">Date de révocation</label>
+        <input type="date" class="form-input-pro" id="mandatDateRevocation">
       </div>
       <div class="form-group-pro">
         <label class="form-label">Surface (m²)</label>
@@ -5169,7 +5183,19 @@ async function loadAllData() {
   if (clients) proState.locataires = clients;
   // Agence
   var {data:agence} = await _SB.from('agences').select('*').eq('id',agId).single();
-  if (agence) { proState.agencyInfo = {nom:agence.nom,email:agence.email,telephone:agence.telephone,adresse:agence.adresse,siret:agence.siret,logo_url:agence.logo_url,plan:agence.plan,trial_end:agence.trial_end}; }
+  if (agence) {
+    // Merger données Supabase + localStorage (pour les champs non stockés en DB)
+    var localAI = {};
+    try { var ls=localStorage.getItem('bailscan_agency_info'); if(ls) localAI=JSON.parse(ls); } catch(e){}
+    proState.agencyInfo = Object.assign({}, localAI, {
+      nom:agence.nom, email:agence.email, telephone:agence.telephone,
+      adresse:agence.adresse, siret:agence.siret, logo_url:agence.logo_url,
+      plan:agence.plan, trial_end:agence.trial_end
+    });
+  } else {
+    // Pas de données Supabase → charger depuis localStorage
+    try { var ls2=localStorage.getItem('bailscan_agency_info'); if(ls2) proState.agencyInfo=JSON.parse(ls2); } catch(e){}
+  }
   // Rafraîchir l'UI
   refreshKPIs(); refreshHisto(); refreshBailsHisto(); refreshCourrierHisto(); refreshMandatsKPIs();
   setTimeout(refreshAllMandatSelects, 400);
@@ -5484,8 +5510,8 @@ function showDashboard(){
   loadAllData();
   // Vérifier le plan et le trial
   checkPlanAccess();
-  // Re-vérifier le trial toutes les heures
-  setInterval(function() { checkPlanAccess(); }, 36e5);
+  // Re-vérifier le trial toutes les minutes
+  setInterval(function() { checkPlanAccess(); }, 6e4);
   // Onboarding premier login
   setTimeout(function() {
     if (localStorage.getItem('bailscan_ob_done') === '1') return;
@@ -5522,9 +5548,19 @@ function checkPlanAccess() {
 
   if (plan === 'trial' && trialEnd) {
     var msLeft = new Date(trialEnd) - Date.now();
-    var daysLeft = Math.max(0, Math.ceil(msLeft / 864e5));
-    var hoursLeft = Math.max(0, Math.ceil(msLeft / 36e5));
-    var displayLeft = daysLeft > 1 ? daysLeft + 'j' : daysLeft === 1 ? '1j' : (hoursLeft > 0 ? hoursLeft + 'h' : '0');
+    var daysLeft = Math.max(0, Math.floor(msLeft / 864e5));
+    var hoursLeft = Math.max(0, Math.floor((msLeft % 864e5) / 36e5));
+    var minsLeft = Math.max(0, Math.floor((msLeft % 36e5) / 6e4));
+    var displayLeft;
+    if (daysLeft >= 2) {
+      displayLeft = daysLeft + 'j ' + hoursLeft + 'h';
+    } else if (daysLeft === 1) {
+      displayLeft = '1j ' + hoursLeft + 'h ' + minsLeft + 'min';
+    } else if (hoursLeft > 0) {
+      displayLeft = hoursLeft + 'h ' + minsLeft + 'min';
+    } else {
+      displayLeft = minsLeft > 0 ? minsLeft + 'min' : 'Expiré';
+    }
     var _tl=document.getElementById('trialDaysLeft'); if(_tl) _tl.textContent=daysLeft;
     var _tb=document.getElementById('trialDaysLeftBanner'); if(_tb) _tb.textContent=displayLeft;
     var _te=document.getElementById('trialEndDate'); if(_te) _te.textContent=new Date(trialEnd).toLocaleDateString('fr-FR');
@@ -6735,7 +6771,7 @@ function renderMandatsTbody(arr) {
     loue:   {label:'Loué',       color:'#166534', bg:'#dcfce7'},
     vacant: {label:'Vacant',     color:'#92400e', bg:'#fef3c7'},
     travaux:{label:'En travaux', color:'#1e40af', bg:'#dbeafe'}
-  };
+  , revoque:{label:'Révoqué',color:'#9a3412',bg:'#fff7ed'} };
   var dpeColors = { A:'#059669',B:'#10b981',C:'#84cc16',D:'#f59e0b',E:'#f97316',F:'#ef4444',G:'#991b1b' };
   el.innerHTML = arr.map(function(m) {
     var st = statutDefs[m.statut] || {label:m.statut||'—', color:'var(--gris)', bg:'#f3f4f6'};
@@ -6760,7 +6796,7 @@ function renderMandatsTbody(arr) {
         + '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5) 0%,transparent 55%)">'
         + '</div>'
         + '<span style="position:absolute;top:10px;right:10px;background:'+st.bg+';color:'+st.color+';font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:20px">'+st.label+'</span>'
-        + (m.dpe ? '<span style="position:absolute;top:10px;left:10px;background:'+(dpeColors[m.dpe]||'#6b7280')+';color:#fff;font-size:.72rem;font-weight:800;padding:3px 8px;border-radius:6px">DPE '+m.dpe+'</span>' : '')
+        + (m.statut==='revoque' && m.dateRevocation ? '<div style="font-size:.65rem;color:#9a3412;padding:2px 4px">Rév. '+new Date(m.dateRevocation).toLocaleDateString('fr-FR')+'</div>' : '')
         + '<div style="position:absolute;bottom:10px;left:12px;right:12px">'
           + '<div style="color:#fff;font-weight:700;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,0,.6)">'+(m.adresse||'—')+'</div>'
           + '<div style="color:rgba(255,255,255,.75);font-size:.72rem;margin-top:1px">'+(m.ville||'')+(m.cp?' '+m.cp:'')+'</div>'
@@ -6887,8 +6923,17 @@ function editMandat(id) {
   f('mandatLocataire', m.locataireId||'');
   f('mandatDateEntree', m.dateEntree||''); f('mandatDateFin', m.dateFin||'');
   f('mandatLienAnnonce', m.lienAnnonce||'');
+  if(document.getElementById('mandatDateRevocation')) document.getElementById('mandatDateRevocation').value = m.dateRevocation||'';
+  toggleRevocationDate();
 }
 
+
+function toggleRevocationDate() {
+  var sel = document.getElementById('mandatStatut');
+  var row = document.getElementById('mandatRevocationRow');
+  if (!sel || !row) return;
+  row.style.display = sel.value === 'revoque' ? 'block' : 'none';
+}
 function closeModalMandat() {
   document.getElementById('modalMandat').style.display = 'none';
 }
@@ -6924,6 +6969,7 @@ function saveMandat() {
     dpe: document.getElementById('mandatDpe').value,
     zone: document.getElementById('mandatZone').value,
     notes: document.getElementById('mandatNotes').value,
+    dateRevocation: (document.getElementById('mandatDateRevocation')||{value:''}).value||'',
     dateSignature: (document.getElementById('mandatDateSignature')||{}).value||'',
     dateEntree: (document.getElementById('mandatDateEntree')||{value:''}).value||'',
     dateFin: (document.getElementById('mandatDateFin')||{value:''}).value||'',
@@ -6998,7 +7044,7 @@ function openFicheMandat(id, activeTab) {
   var m = loadMandats().find(function(x){ return String(x.id)===String(id); });
   if (!m) return;
   activeTab = activeTab || 'infos';
-  var statutDefs = { loue:{label:'Loué',color:'#166534',bg:'#dcfce7'}, vacant:{label:'Vacant',color:'#92400e',bg:'#fef3c7'}, travaux:{label:'En travaux',color:'#1e40af',bg:'#dbeafe'} };
+  var statutDefs = { loue:{label:'Loué',color:'#166534',bg:'#dcfce7'}, vacant:{label:'Vacant',color:'#92400e',bg:'#fef3c7'}, travaux:{label:'En travaux',color:'#1e40af',bg:'#dbeafe'} , revoque:{label:'Révoqué',color:'#9a3412',bg:'#fff7ed'} };
   var st = statutDefs[m.statut] || {label:m.statut||'—',color:'var(--gris)',bg:'#f3f4f6'};
   var dpeColors = { A:'#059669',B:'#10b981',C:'#84cc16',D:'#f59e0b',E:'#f97316',F:'#ef4444',G:'#991b1b' };
   var baux = proState.bailsHisto.filter(function(b){ return String(b.mandatId)===String(id); });
@@ -7035,17 +7081,17 @@ function openFicheMandat(id, activeTab) {
 
   // ── Tab bar ──
   var tabs = [
-    {id:'infos',    icon:'📋', label:'Infos',       count:null},
+    {id:'infos',    icon:'', label:'Infos',       count:null},
     {id:'locataires',icon:'', label:'Locataires',  count:locs.length},
-    {id:'candidats',icon:'🔍', label:'Candidats',    count:candidats.length},
-    {id:'baux',     icon:'📄', label:'Baux',         count:baux.length},
-    {id:'photos',   icon:'📷', label:'Photos',       count:photos.length},
+    {id:'candidats',icon:'', label:'Candidats',    count:candidats.length},
+    {id:'baux',     icon:'', label:'Baux',         count:baux.length},
+    {id:'photos',   icon:'', label:'Photos',       count:photos.length},
   ];
   var tabBar = '<div style="display:flex;gap:2px;padding:8px 16px;border-bottom:1px solid var(--border);background:#fafaf8;overflow-x:auto">'
     + tabs.map(function(t) {
         var active = t.id === activeTab;
         var countBadge = (t.count !== null && t.count > 0) ? '<span style="background:'+(active?'rgba(59,111,212,.2)':'var(--border)')+';color:'+(active?'var(--pro-accent)':'var(--gris)')+';border-radius:8px;padding:0 5px;font-size:.68rem;margin-left:4px;font-weight:700">'+t.count+'</span>' : '';
-        return '<button data-tab="'+t.id+'" style="border:none;background:'+(active?'white':'transparent')+';color:'+(active?'var(--pro-accent)':'var(--gris)')+';font-weight:'+(active?'700':'500')+';font-size:.78rem;padding:6px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;'+(active?'box-shadow:0 1px 4px rgba(0,0,0,.1)':'')+';transition:all .15s;display:flex;align-items:center;gap:4px">'+t.icon+' '+t.label+countBadge+'</button>';
+        return '<button data-tab="'+t.id+'" style="border:none;background:'+(active?'white':'transparent')+';color:'+(active?'var(--pro-accent)':'var(--gris)')+';font-weight:'+(active?'700':'500')+';font-size:.78rem;padding:6px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;'+(active?'box-shadow:0 1px 4px rgba(0,0,0,.1)':'')+';transition:all .15s;display:flex;align-items:center;gap:4px">'+(t.icon ? t.icon+' ' : '')+t.label+countBadge+'</button>';
       }).join('')
     + '</div>';
 
@@ -7655,7 +7701,7 @@ var VEILLE_ALERTES_INITIALES = [
     id: 'encadrement_extension_2025',
     date: '01/11/2025',
     niveau: 'orange',
-    icone: '🗺',
+    icone: '◎',
     titre: 'Extension encadrement des loyers : 3 nouvelles communes',
     detail: 'Le gouvernement a étendu le dispositif d\'encadrement des loyers à Bordeaux Métropole, Montpellier et Pays Basque. Les baux conclus ou renouvelés depuis cette date doivent respecter les loyers de référence préfectoraux.',
     loi: 'Décret du 30/10/2025',
@@ -7665,7 +7711,7 @@ var VEILLE_ALERTES_INITIALES = [
     id: 'quittance_obligation_2025',
     date: '01/09/2025',
     niveau: 'bleu',
-    icone: '🧾',
+    icone: '◻',
     titre: 'Rappel : quittance de loyer obligatoire si demandée par le locataire',
     detail: 'Le bailleur est légalement tenu de délivrer gratuitement une quittance au locataire qui en fait la demande. Le refus peut constituer une infraction. BailScan génère vos quittances en 1 clic.',
     loi: 'Art. 21 loi n°89-462 du 6/07/1989',
@@ -9971,7 +10017,7 @@ function refreshDashboard() {
     locsFinBail.slice(0,2).forEach(function(l){ items.push({icon:'📄',label:'Bail expire bientôt',sub:(l.prenom||'')+' '+(l.nom||''),color:'#fffbeb',border:'#fde68a',action:function(){showDashTab('alertes');}}); });
     diagsExpires.slice(0,2).forEach(function(d){ var ti=DIAG_DUREES[d.type]||{label:d.type}; items.push({icon:'',label:ti.label+' expiré',sub:d.dateExp?'Depuis '+new Date(d.dateExp).toLocaleDateString('fr-FR'):'—',color:'#fef2f2',border:'#fca5a5',action:function(){showDashTab('diagnostics');}}); });
     if (!items.length) {
-      dashAlertes.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gris);font-size:.84rem"><div style="font-size:1.8rem;margin-bottom:8px">✅</div>Aucune alerte urgente</div>';
+      dashAlertes.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gris);font-size:.84rem"><div style="font-size:1.8rem;margin-bottom:8px"><span style="color:#16a34a;font-size:1.2rem">✓</span></div>Aucune alerte urgente</div>';
     } else {
       dashAlertes.innerHTML = items.map(function(it,i){
         return '<div style="background:'+it.color+';border:1px solid '+it.border+';border-radius:9px;padding:9px 12px;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'.8\'" onmouseout="this.style.opacity=\'1\'" onclick="('+it.action.toString()+'())">'
@@ -11585,11 +11631,11 @@ function exportDossierPDF() {
     +'</div></div>'
     // Règles solvabilité
     +'<div class="section"><div class="section-title">Analyse règles de solvabilité</div>'
-    +(taux !== null ? (taux<=33 ? '<div class="rule-ok"><span class="rule-icon">✅</span><div><strong>Taux d’effort conforme</strong> — '+taux+'% (seuil recommandé : 33%)</div></div>'
+    +(taux !== null ? (taux<=33 ? '<div class="rule-ok"><span class="rule-icon" style="color:#16a34a;font-size:1rem">✓</span><div><strong>Taux d’effort conforme</strong> — '+taux+'% (seuil recommandé : 33%)</div></div>'
       : taux<=40 ? '<div class="rule-warn"><span class="rule-icon">️</span><div><strong>Taux d’effort élevé</strong> — '+taux+'% (seuil dépassé de '+(taux-33)+'%)</div></div>'
       : '<div class="rule-ko"><span class="rule-icon">❌</span><div><strong>Taux d’effort trop élevé</strong> — '+taux+'% (seuil dépassé de '+(taux-33)+'%)</div></div>') : '')
     +(revenus && parseFloat(revenus) >= parseFloat(loyer)*3 
-      ? '<div class="rule-ok"><span class="rule-icon">✅</span><div><strong>Règle 3x loyer validée</strong> — revenus = '+(Math.round(parseFloat(revenus)/parseFloat(loyer)*10)/10)+'x le loyer</div></div>'
+      ? '<div class="rule-ok"><span class="rule-icon" style="color:#16a34a;font-size:1rem">✓</span><div><strong>Règle 3x loyer validée</strong> — revenus = '+(Math.round(parseFloat(revenus)/parseFloat(loyer)*10)/10)+'x le loyer</div></div>'
       : revenus && loyer ? '<div class="rule-ko"><span class="rule-icon">❌</span><div><strong>Règle 3x loyer non validée</strong> — revenus insuffisants</div></div>' : '')
     +(garant !== 'non' ? '<div class="rule-ok"><span class="rule-icon">??️</span><div><strong>Garantie présente</strong> — '+(garantLabels[garant]||garant)+'</div></div>' : '')
     +'</div>'
@@ -13274,7 +13320,7 @@ function openFicheLocataire(locId, event, tab) {
     try { edlList = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return String(e.locId)===String(locId) || (l.mandatId && String(e.mandatId)===String(l.mandatId)); }); } catch(eEdl) {}
     var div = document.createElement('div');
     if (!edlList.length) {
-      div.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gris)"><div style="font-size:2rem;margin-bottom:8px">🏠</div><div>Aucun état des lieux enregistré pour ce locataire</div></div>';
+      div.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gris)"><div style="font-size:2rem;margin-bottom:8px"><svg width="28" height="28" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".25"><path d="M8 1L2 5v9h4v-4h4v4h4V5L8 1z"/></svg></div><div>Aucun état des lieux enregistré pour ce locataire</div></div>';
     } else {
       div.innerHTML = edlList.map(function(e) {
         var typeLabel = e.type === 'entree' ? 'Entrée' : e.type === 'sortie' ? 'Sortie' : '🔄 '+e.type;
@@ -14107,12 +14153,12 @@ function buildDossierFallback(loyer, revenus, contrat, anciennete, garant, piece
   var verdict = score >= 65 ? 'GO' : score >= 45 ? 'MITIGE' : 'NO_GO';
   var alertes = [];
   if (!ok3x) alertes.push({niveau:'rouge',icone:'',titre:'Revenus insuffisants',detail:'Les revenus ne respectent pas la règle des 3× le loyer (minimum requis : '+(loyer*3)+' €).'});
-  if (tauxNum > 40) alertes.push({niveau:'rouge',icone:'📊',titre:'Taux d\'effort excessif',detail:'Le taux d\'effort de '+taux+'% dépasse le seuil acceptable de 40%.'});
-  if (contrat === 'cdd') alertes.push({niveau:'orange',icone:'📄',titre:'CDD — durée à vérifier',detail:'Un CDD implique une incertitude sur la pérennité des revenus. Vérifier la durée restante.'});
-  if (anciennete === 'moins6') alertes.push({niveau:'orange',icone:'⏱',titre:'Poste récent',detail:'Moins de 6 mois à ce poste. Risque de période d\'essai non encore terminée.'});
-  if (!piecesList.length) alertes.push({niveau:'orange',icone:'📎',titre:'Aucune pièce justificative',detail:'Aucun document n\'a été fourni. L\'analyse est basée sur les informations déclaratives uniquement.'});
+  if (tauxNum > 40) alertes.push({niveau:'rouge',icone:'◈',titre:'Taux d\'effort excessif',detail:'Le taux d\'effort de '+taux+'% dépasse le seuil acceptable de 40%.'});
+  if (contrat === 'cdd') alertes.push({niveau:'orange',icone:'◻',titre:'CDD — durée à vérifier',detail:'Un CDD implique une incertitude sur la pérennité des revenus. Vérifier la durée restante.'});
+  if (anciennete === 'moins6') alertes.push({niveau:'orange',icone:'◎',titre:'Poste récent',detail:'Moins de 6 mois à ce poste. Risque de période d\'essai non encore terminée.'});
+  if (!piecesList.length) alertes.push({niveau:'orange',icone:'◆',titre:'Aucune pièce justificative',detail:'Aucun document n\'a été fourni. L\'analyse est basée sur les informations déclaratives uniquement.'});
   if (garant !== 'non') alertes.push({niveau:'vert',icone:'',titre:'Garant prévu',detail:'Un garant est prévu, ce qui réduit le risque pour le bailleur.'});
-  if (score >= 70) alertes.push({niveau:'vert',icone:'✅',titre:'Dossier recevable',detail:'Le profil du candidat est globalement cohérent avec les exigences locatives standard.'});
+  if (score >= 70) alertes.push({niveau:'vert',icone:'✓',titre:'Dossier recevable',detail:'Le profil du candidat est globalement cohérent avec les exigences locatives standard.'});
 
   return {
     score: score,
