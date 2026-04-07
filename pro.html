@@ -1887,6 +1887,10 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <label class="radio-pill-pro" onclick="setGenRadio('gen_bailleur_type','sci',this);toggleBailleurType('sci')"><input type="radio" name="gen_bailleur_type" value="sci"> SCI</label>
                 <label class="radio-pill-pro" onclick="setGenRadio('gen_bailleur_type','morale',this);toggleBailleurType('morale')"><input type="radio" name="gen_bailleur_type" value="morale"> Personne morale</label>
               </div>
+              <div class="form-group-pro">
+                <label class="form-label">Code postal</label>
+                <input type="text" class="form-input-pro" id="genCodePostal" placeholder="Ex : 75011" maxlength="5">
+              </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0" id="bailleurPrenomRow">
               <div class="form-group-pro">
@@ -2075,6 +2079,10 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div class="form-group-pro">
                 <label class="form-label">Charges (€/mois)</label>
                 <input type="number" class="form-input-pro" id="genCharges" placeholder="Ex : 80" min="0">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Dépôt de garantie (€)</label>
+                <input type="number" class="form-input-pro" id="genDepotGarantie" placeholder="Ex : 2 174" min="0">
               </div>
             </div>
             <!-- Complément de loyer -->
@@ -5412,10 +5420,7 @@ function showDashboard(){
   checkPlanAccess();
   // Onboarding premier login
   setTimeout(function() {
-    // Nettoyer les anciennes clés onboarding orphelines
-    Object.keys(localStorage).forEach(function(k){
-      if (k.startsWith('bs_onboarding_done_')) localStorage.removeItem(k);
-    });
+    if (localStorage.getItem('bailscan_ob_done') === '1') return;
     showOnboarding();
   }, 1000);
 }
@@ -5736,14 +5741,9 @@ function launchProAnalysis(){
         ? [{type:'document',source:{type:'base64',media_type:'application/pdf',data:v.fileB64}},{type:'text',text:'Analyse ce bail locatif. Contexte: ville='+v.ville+', surface='+v.surface+'m², loyer='+v.loyer_base+'€, charges='+v.charges+'€, dépôt='+v.depot+'€. Type: '+v.bien_type+' '+v.location_type}]
         : 'Analyse ce bail locatif:\n\n'+v.bailText+'\n\nContexte: ville='+v.ville+', surface='+v.surface+'m², loyer='+v.loyer_base+'€, charges='+v.charges+'€.';
       var resp = await fetch('/api/ai', {
-        method:'POST',
-        headers:(function(){
-        var k=localStorage.getItem('bailscan_anthropic_key')||'';
-        var h={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
-        if(k) h['x-api-key']=k;
-        return h;
-      })(),
-        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,system:sysPrompt,messages:[{role:'user',content:userContent}]})
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({prompt: prompt, max_tokens: 1500})
       });
       var apiData = await resp.json();
       var rawText = (apiData.content && apiData.content[0] && apiData.content[0].text) || '';
@@ -7635,7 +7635,23 @@ async function autoUpdateVeille(forceUpdate) {
 }
 
 
-async function genererCourrier() {
+async 
+var COURRIER_PROMPTS = {
+  conge_bailleur: "Rédigez un congé donné par le bailleur au locataire pour reprise personnelle ou vente, conforme à la loi du 6 juillet 1989. Respectez le préavis légal de 6 mois.",
+  conge_locataire: "Rédigez un congé donné par le locataire au bailleur pour quitter le logement, conforme à la loi du 6 juillet 1989. Rappeler le préavis de 3 mois (1 mois en zone tendue).",
+  mise_en_demeure: "Rédigez une mise en demeure de payer les loyers impayés, avec rappel des obligations légales et délai de régularisation de 8 jours.",
+  relance_loyer: "Rédigez une lettre de relance amiable pour loyers impayés, ton cordial mais ferme, avec mention du montant dû et demande de régularisation rapide.",
+  restitution_depot: "Rédigez une lettre de restitution du dépôt de garantie avec détail des retenues éventuelles, conforme à l'article 22 de la loi du 6 juillet 1989.",
+  etat_lieux_sortie: "Rédigez une convocation pour état des lieux de sortie avec date, heure, adresse et rappel des obligations du locataire.",
+  travaux_notification: "Rédigez une notification de travaux au locataire avec description des travaux, durée estimée et conditions d'accès au logement.",
+  augmentation_loyer: "Rédigez une lettre de révision annuelle du loyer selon l'indice IRL, avec calcul du nouveau loyer et date d'effet.",
+  regularisation_charges: "Rédigez une lettre de régularisation annuelle des charges locatives avec décompte détaillé et solde à payer ou à rembourser.",
+  impaye_commandement: "Rédigez un commandement de payer les loyers arriérés, avec mention que le défaut de paiement sous 2 mois peut entraîner la résiliation du bail.",
+  renouvellement_bail: "Rédigez une proposition de renouvellement du bail avec nouvelles conditions éventuelles.",
+  autre: "Rédigez un courrier professionnel et juridiquement conforme entre bailleur et locataire."
+};
+
+function genererCourrier() {
   var type = proState.currentCourrierType || 'conge_bailleur';
   var bailleur = document.getElementById('coBailleur').value.trim();
   var locataire = document.getElementById('coLocataire').value.trim();
@@ -7688,7 +7704,13 @@ async function genererCourrier() {
       });
       var data = await resp.json();
       texte = (data.content && data.content[0] && data.content[0].text) || '';
-    } catch(e) { console.error('[Courriers] API error:', e); }
+    } catch(e) {
+      console.error('[Courriers] API error:', e);
+      loadEl.style.display = 'none';
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = '<div style="padding:20px;color:var(--accent);text-align:center"><strong>Erreur de connexion</strong><br><small style="color:var(--gris)">'+(e.message||'Vérifiez /api/ai.js sur Vercel')+'</small></div>';
+      btn.disabled = false; return;
+    }
 
     if (!texte) {
       var bailleurAdresse = agenceAdresse;
@@ -8478,6 +8500,8 @@ function preFillGenererFromLocataire(locId) {
     if (l.garantAdresse) f('genGarantAdresse', l.garantAdresse);
     if (l.garantCp) f('genGarantCp', l.garantCp);
     if (l.garantVille) f('genGarantVille', l.garantVille);
+    if (l.garantCp) f('genGarantCp', l.garantCp);
+    if (l.garantVille) f('genGarantVille', l.garantVille);
     if (l.garantEmail) f('genGarantEmail', l.garantEmail);
     if (l.garantTel) f('genGarantTel', l.garantTel);
     if (l.garantRevenus) f('genGarantRevenus', l.garantRevenus);
@@ -8532,14 +8556,14 @@ function preFillGenererFromMandat(mandatId) {
   if (!m) return;
   var s = function(id, val) { var el=document.getElementById(id); if(el && val !== undefined && val !== '') el.value = val; };
   // Adresse du logement
-  s('genAdresse', m.adresseFull || m.adresse);
+  s('genBienAdresse', m.adresseFull || m.adresse);
   s('genVille', m.ville || (m.adresse||'').split(',').pop().trim());
   s('genCodePostal', m.cp || '');
   // Loyer / charges / complément
   s('genLoyer', m.loyer);
   var cEl=document.getElementById('genComplement'); if(cEl) cEl.value=(m.complement!==undefined&&m.complement!==null)?m.complement:0;
   s('genCharges', m.charges);
-  s('genDepotGarantie', m.depot || (parseFloat(m.loyer||0)*2)||'');
+  s('genDepotGarantie', m.depot || ((parseFloat(m.loyer||0)+parseFloat(m.complement||0))*2)||'');
   // Surface + pièces
   s('genSurface', m.surface);
   if (m.pieces) { var pcEl=document.getElementById('genPieces'); if(pcEl) pcEl.value=m.pieces; }
@@ -8556,6 +8580,7 @@ function preFillGenererFromMandat(mandatId) {
   }
   // Bailleur
   s('genBailleurNom', m.bailleur);
+  s('genBailleur', m.bailleur);
   s('genBailleurEmail', m.bailleurEmail);
   s('genBailleurTel', m.bailleurTel);
   // Zone encadrement
@@ -8568,6 +8593,31 @@ function preFillGenererFromMandat(mandatId) {
   if (rattEl) rattEl.value = mandatId;
   // Sauvegarder le lien
   sauvegarderRattachementBail && sauvegarderRattachementBail();
+  // Si le mandat a un locataire → remplir locataire + garant
+  if (m.locataireId) {
+    var locs = loadLocataires ? loadLocataires() : [];
+    var loc = locs.find(function(x){ return String(x.id)===String(m.locataireId); });
+    if (loc) {
+      var sf = function(id,v){ var el=document.getElementById(id); if(el&&(v||v===0)) el.value=v; };
+      sf('genLocatairePrenom', loc.prenom||'');
+      sf('genLocataireNom', loc.nom||'');
+      sf('genLocataireEmail', loc.email||'');
+      if (loc.dateEntree) sf('genDateEntree', loc.dateEntree);
+      if (loc.garant && loc.garant !== 'non') {
+        if (typeof setGenGarant === 'function') setGenGarant(loc.garant);
+        sf('genGarantPrenom', loc.garantPrenom||'');
+        sf('genGarantNom', loc.garantNom||'');
+        sf('genGarantAdresse', loc.garantAdresse||'');
+        sf('genGarantCp', loc.garantCp||'');
+        sf('genGarantVille', loc.garantVille||'');
+        sf('genGarantEmail', loc.garantEmail||'');
+        sf('genGarantRevenus', loc.garantRevenus||'');
+        if (loc.garantContrat) sf('genGarantSituation', loc.garantContrat);
+        sf('genGarantNumDossier', loc.garantNumDossier||'');
+        sf('genGarantOrganisme', loc.garantOrganisme||'');
+      }
+    }
+  }
   showToast('Formulaire pré-rempli depuis le bien.', 'blue');
 }
 
@@ -10774,20 +10824,16 @@ document.addEventListener('click',function(e){
 });
 
 
-async function showOnboarding() {
-  // Vérifier localStorage en premier
+function showOnboarding() {
+  // Vérifier localStorage
   if (localStorage.getItem('bailscan_ob_done') === '1') return;
-  // Vérifier Supabase
+  // Si données existantes → onboarding inutile
   try {
-    var sb=getSupabase(), agId=proState._agenceId;
-    if(sb && agId) {
-      sb.from('agences').select('onboarding_done').eq('id',agId).single().then(function(res){
-        if(res.data && res.data.onboarding_done) { localStorage.setItem('bailscan_ob_done','1'); return; }
-        _obStep = 0; _obDone = []; renderObStep();
-      }).catch(function(){ _obStep = 0; _obDone = []; renderObStep(); });
-      return;
-    }
+    var ms = JSON.parse(localStorage.getItem('bailscan_mandats')||'[]');
+    var ls = JSON.parse(localStorage.getItem('bailscan_locataires')||'[]');
+    if (ms.length > 0 || ls.length > 0) { localStorage.setItem('bailscan_ob_done','1'); return; }
   } catch(e) {}
+  // Nouvel utilisateur → afficher onboarding
   _obStep = 0; _obDone = []; renderObStep();
 }
 
