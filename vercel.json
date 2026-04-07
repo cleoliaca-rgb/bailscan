@@ -26,9 +26,6 @@
     },
     "api/quittances-auto.js": {
       "maxDuration": 60
-    },
-    "api/newsletter-veille.js": {
-      "maxDuration": 60
     }
   },
   "crons": [
@@ -39,10 +36,6 @@
     {
       "path": "/api/quittances-auto",
       "schedule": "0 8 1 * *"
-    },
-    {
-      "path": "/api/newsletter-veille",
-      "schedule": "0 9 1 * *"
     }
   ]
 }
