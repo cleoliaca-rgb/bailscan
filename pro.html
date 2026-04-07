@@ -1875,7 +1875,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               </select>
             </div>
             <div style="font-size:0.88rem;color:var(--gris);margin-bottom:20px;background:var(--pro-light);padding:14px 16px;border-radius:10px;border-left:3px solid var(--pro-accent)">
-              ℹ️ BailScan génère un bail complet conforme loi du 6 juillet 1989 + ALUR. Ce document est fourni à titre indicatif — relecture conseillée pour les situations complexes.
+              BailScan génère un bail complet conforme loi du 6 juillet 1989 + ALUR. Ce document est fourni à titre indicatif — relecture conseillée pour les situations complexes.
             </div>
 
             <!-- Section bailleur -->
@@ -2261,12 +2261,12 @@ body.is-dashboard #marketingPage { display: none !important; }
             <!-- Annexes et dépendances -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Annexes & dépendances</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px" id="annexesGrid">
-              <label class="annex-check"><input type="checkbox" id="genJardin"> 🌿 Jardin privatif</label>
+              <label class="annex-check"><input type="checkbox" id="genJardin">Jardin privatif</label>
               <label class="annex-check"><input type="checkbox" id="genTerrace"> Terrasse / Balcon</label>
               <label class="annex-check"><input type="checkbox" id="genParking"> Parking / Garage</label>
               <label class="annex-check"><input type="checkbox" id="genCave"> Cave / Cellier</label>
               <label class="annex-check"><input type="checkbox" id="genGrenier"> Grenier / Combles</label>
-              <label class="annex-check"><input type="checkbox" id="genPiscine"> 🏊 Piscine</label>
+              <label class="annex-check"><input type="checkbox" id="genPiscine">Piscine</label>
               <label class="annex-check"><input type="checkbox" id="genSousloc"> Sous-location interdite</label>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
@@ -2343,7 +2343,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
           <div id="genererResult" style="display:none">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-              <div style="font-weight:700;font-size:1rem;color:var(--vert)">✅ Bail généré avec succès</div>
+              <div style="font-weight:700;font-size:1rem;color:var(--vert)">Bail généré avec succès</div>
               <div style="display:flex;gap:8px;flex-wrap:wrap">
                 <button class="btn-result-action" onclick="downloadBailTxt()">⬇ .txt</button>
                 <button class="btn-result-action primary" onclick="exportBailPDF()">PDF</button>
@@ -2355,7 +2355,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <!-- Rattachement locataire & mandat -->
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;padding:14px;background:var(--pro-light);border-radius:10px;border:1px solid rgba(59,111,212,.15)">
               <div>
-                <label class="form-label" style="font-size:.76rem">🔗 Rattacher à un locataire</label>
+                <label class="form-label" style="font-size:.76rem">Rattacher à un locataire</label>
                 <select class="form-input-pro" id="bailRattachLocataire" style="font-size:.83rem" onchange="sauvegarderRattachementBail()">
                   <option value="">— Aucun —</option>
                 </select>
@@ -2372,7 +2372,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
             </div>
             <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-              <button class="btn-primary-pro" onclick="sauvegarderRattachementBail();showToast('✅ Rattachements enregistrés.','green')" style="font-size:.84rem;padding:8px 20px">Enregistrer le rattachement</button>
+              <button class="btn-primary-pro" onclick="sauvegarderRattachementBail();showToast('Rattachements enregistrés.','green')" style="font-size:.84rem;padding:8px 20px">Enregistrer le rattachement</button>
             </div>
             <div style="background:#f1f5f9;border:1px solid var(--border);border-radius:10px;padding:20px;font-size:0.82rem;line-height:1.9;white-space:pre-wrap;max-height:500px;overflow-y:auto;font-family:monospace" id="genererResultText"></div>
             <button class="btn-sm" onclick="document.getElementById('genererResult').style.display='none';document.getElementById('genererForm').style.display='block'" style="margin-top:12px">← Générer un nouveau bail</button>
@@ -2419,61 +2419,61 @@ body.is-dashboard #marketingPage { display: none !important; }
 
               <!-- ─── PARIS ─── -->
               <a href="https://www.paris.fr/encadrementloyers" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">🗼 Paris (75)</div>
+                <div class="ville-encad-nom">Paris (75)</div>
                 <div class="ville-encad-info">Depuis juillet 2019 · 80 quartiers · Simulateur officiel Paris.fr</div>
               </a>
 
               <!-- ─── LILLE ─── -->
               <a href="https://encadrement-loyers.lille.fr/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">🌹 Lille + Hellemmes + Lomme</div>
+                <div class="ville-encad-nom">Lille + Hellemmes + Lomme</div>
                 <div class="ville-encad-info">Depuis mars 2020 · Simulateur officiel Ville de Lille</div>
               </a>
 
               <!-- ─── PLAINE COMMUNE (93) ─── -->
               <a href="https://www.referenceloyer.drihl.ile-de-france.developpement-durable.gouv.fr/plaine-commune/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">🏙️ Plaine Commune (93)</div>
+                <div class="ville-encad-nom">Plaine Commune (93)</div>
                 <div class="ville-encad-info">Aubervilliers · Épinay · Pierrefitte · Saint-Denis · Stains · Villetaneuse · L'Île-Saint-Denis · La Courneuve · Saint-Ouen · Depuis juin 2021</div>
               </a>
 
               <!-- ─── EST ENSEMBLE (93) ─── -->
               <a href="https://www.referenceloyer.drihl.ile-de-france.developpement-durable.gouv.fr/est-ensemble/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">🏙️ Est Ensemble (93)</div>
+                <div class="ville-encad-nom">️ Est Ensemble (93)</div>
                 <div class="ville-encad-info">Bagnolet · Bobigny · Bondy · Le Pré-Saint-Gervais · Les Lilas · Montreuil · Noisy-le-Sec · Pantin · Romainville · Depuis déc. 2021</div>
               </a>
 
               <!-- ─── LYON ─── -->
               <a href="https://demarches.toodego.com/logement/encadrement-des-loyers-v2/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">🦁 Lyon + Villeurbanne</div>
+                <div class="ville-encad-nom">Lyon + Villeurbanne</div>
                 <div class="ville-encad-info">Depuis nov. 2021 · Simulateur Toodego (Métropole de Lyon)</div>
               </a>
 
               <!-- ─── MONTPELLIER ─── -->
               <a href="https://eservices.montpellier3m.fr/habitat/encadrement-des-loyers/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">🌞 Montpellier</div>
+                <div class="ville-encad-nom">Montpellier</div>
                 <div class="ville-encad-info">Depuis juillet 2022 · Simulateur officiel Montpellier Méditerranée Métropole</div>
               </a>
 
               <!-- ─── BORDEAUX ─── -->
               <a href="https://simulateur-loyer.bordeaux-metropole.fr/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">🍷 Bordeaux</div>
+                <div class="ville-encad-nom">Bordeaux</div>
                 <div class="ville-encad-info">Depuis juillet 2022 · Simulateur officiel Bordeaux Métropole</div>
               </a>
 
               <!-- ─── PAYS BASQUE ─── -->
               <a href="https://www.communaute-paysbasque.fr/logement-et-urbanisme/lencadrement-des-loyers" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">🌊 Pays Basque (24 communes)</div>
+                <div class="ville-encad-nom">Pays Basque (24 communes)</div>
                 <div class="ville-encad-info">Ahetze · Anglet · Arbonne · Arcangues · Ascain · Bassussarry · Bayonne · Biarritz · Bidart · Biriatou · Boucau · Ciboure · Guéthary · Hendaye · Jatxou · Lahonce · Larressore · Mouguerre · Saint-Jean-de-Luz · Saint-Pierre-d'Irube · Urcuit · Urrugne · Ustaritz · Villefranque · Depuis nov. 2024</div>
               </a>
 
               <!-- ─── GRENOBLE ─── -->
               <a href="https://www.grenoblealpesmetropole.fr/loyers" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">⛰️ Grenoble-Alpes Métropole (21 communes)</div>
+                <div class="ville-encad-nom">Grenoble-Alpes Métropole (21 communes)</div>
                 <div class="ville-encad-info">Grenoble · Échirolles · Fontaine · Saint-Martin-d'Hères · Seyssinet-Pariset · Meylan · La Tronche · Domène · Gières · Eybens · Seyssins · Poisat · Bresson · Claix · Varces · Le Fontanil-Cornillon · Murianette · Venon · Saint-Egrève · Sassenage · Le Pont-de-Claix · Depuis janv. 2025</div>
               </a>
 
             </div>
             <div style="margin-top:14px;font-size:0.78rem;color:var(--gris);background:var(--bg);border-radius:8px;padding:10px 14px">
-              ℹ️ <strong>69 villes concernées</strong> au 1er janvier 2025, représentant 9 territoires. ·
+              <strong>69 villes concernées</strong> au 1er janvier 2025, représentant 9 territoires. ·
               <a href="https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers" target="_blank" style="color:var(--pro-accent)">Vérifier ma commune →</a> ·
               Sources : <a href="https://www.anil.org" target="_blank" style="color:var(--pro-accent)">ANIL</a> ·
               <a href="https://www.ecologie.gouv.fr/politiques-publiques/encadrement-loyers" target="_blank" style="color:var(--pro-accent)">Ministère de la Transition écologique</a> ·
@@ -2551,7 +2551,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
           <div class="kpi-card" style="border-left:3px solid var(--vert)">
             <div class="kpi-val" id="alertKpiOk" style="color:var(--vert)">0</div>
-            <div class="kpi-label">✅ RAS</div>
+            <div class="kpi-label">RAS</div>
           </div>
         </div>
 
@@ -2669,9 +2669,9 @@ body.is-dashboard #marketingPage { display: none !important; }
           </select>
           <select class="filter-select" id="locFilterScore" onchange="filterLocataires()">
             <option value="">Tous les scores</option>
-            <option value="vert">✅ Solvable</option>
+            <option value="vert">Solvable</option>
             <option value="orange">À vérifier</option>
-            <option value="rouge">❌ Insuffisant</option>
+            <option value="rouge">Insuffisant</option>
           </select>
         </div>
 
@@ -2680,7 +2680,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div class="kpi-card"><div class="kpi-val" id="locKpiTotal">0</div><div class="kpi-label">Total locataires</div></div>
           <div class="kpi-card"><div class="kpi-val" id="locKpiActifs" style="color:var(--vert)">0</div><div class="kpi-label">En cours</div></div>
           <div class="kpi-card"><div class="kpi-val" id="locKpiPreavis" style="color:#f59e0b">0</div><div class="kpi-label">Préavis</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="locKpiProspects" style="color:var(--pro-accent)">0</div><div class="kpi-label">🔵 Prospects</div></div>
+          <div class="kpi-card"><div class="kpi-val" id="locKpiProspects" style="color:var(--pro-accent)">0</div><div class="kpi-label">Prospects</div></div>
         </div>
 
         <!-- Liste fiches -->
@@ -3100,7 +3100,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Relevés bancaires -->
                 <label class="dossier-piece-card" id="piece-banque-card" for="piece-banque">
-                  <div class="dossier-piece-icon">🏦</div>
+                  <div class="dossier-piece-icon"></div>
                   <div class="dossier-piece-label">Relevés bancaires (3 mois)</div>
                   <div class="dossier-piece-status" id="piece-banque-status">Optionnel</div>
                   <input type="file" id="piece-banque" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('banque',this)">
@@ -3220,14 +3220,14 @@ body.is-dashboard #marketingPage { display: none !important; }
 
               <!-- Actions -->
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
-                <button class="btn-primary-pro" onclick="validerDossier(true)" style="flex:1;min-width:140px">✅ GO — Valider</button>
-                <button class="btn-primary-pro" onclick="validerDossier(false)" style="flex:1;min-width:140px;background:var(--accent);border-color:var(--accent)">❌ NO GO — Refuser</button>
+                <button class="btn-primary-pro" onclick="validerDossier(true)" style="flex:1;min-width:140px">GO — Valider</button>
+                <button class="btn-primary-pro" onclick="validerDossier(false)" style="flex:1;min-width:140px;background:var(--accent);border-color:var(--accent)">NO GO — Refuser</button>
               </div>
               <div id="dossierPostValidation" style="display:none;background:var(--pro-light);border:1px solid var(--pro-accent);border-radius:10px;padding:12px;margin-bottom:10px">
                 <div style="font-size:.82rem;font-weight:700;color:var(--pro-accent);margin-bottom:8px">Suite du dossier</div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap">
                   <button class="btn-primary-pro" onclick="creerFicheLocataireDepuisDossier()" style="flex:1;min-width:160px;font-size:.82rem">Créer / mettre à jour la fiche locataire</button>
-                  <button class="btn-sm" onclick="refuserDefinitivementDossier()" style="flex:1;min-width:140px;font-size:.8rem;color:var(--accent);border-color:var(--accent)">🚫 Refus définitif</button>
+                  <button class="btn-sm" onclick="refuserDefinitivementDossier()" style="flex:1;min-width:140px;font-size:.8rem;color:var(--accent);border-color:var(--accent)">Refus définitif</button>
                 </div>
               </div>
               <div>
@@ -3698,11 +3698,11 @@ body.is-dashboard #marketingPage { display: none !important; }
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
         <span style="font-size:.85rem;color:var(--gris)">Statut</span>
-        <span id="activeSubStatus" style="font-weight:600;color:var(--vert)">✓ Actif</span>
+        <span id="activeSubStatus" style="font-weight:600;color:var(--vert)">Actif</span>
       </div>
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
         <div style="font-size:.78rem;color:var(--gris);margin-bottom:12px">Votre abonnement se renouvelle automatiquement. Vous pouvez le résilier à tout moment ci-dessous.</div>
-        <button id="btnCancelSub" onclick="cancelSubscription()" style="padding:10px 20px;background:none;border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer">❌ Résilier mon abonnement</button>
+        <button id="btnCancelSub" onclick="cancelSubscription()" style="padding:10px 20px;background:none;border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer">Résilier mon abonnement</button>
         <div id="cancelSubMsg" style="display:none;margin-top:10px;font-size:.78rem;color:var(--gris)"></div>
       </div>
     </div>
@@ -3737,7 +3737,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div style="font-size:.72rem;color:var(--gris);margin-bottom:6px">Aperçu signature</div>
               <img id="signaturePreviewImg" style="max-height:60px;max-width:200px" alt="Signature">
               <div style="margin-top:8px">
-                <button class="btn-sm" style="font-size:.73rem;color:var(--accent);border-color:var(--accent)" onclick="supprimerSignature()">✕ Supprimer</button>
+                <button class="btn-sm" style="font-size:.73rem;color:var(--accent);border-color:var(--accent)" onclick="supprimerSignature()">Supprimer</button>
               </div>
             </div>
             <div>
@@ -3798,7 +3798,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
           </div>
           <button class="btn-primary-pro" style="margin-top:12px" onclick="saveAgencyInfo()">Enregistrer les informations</button>
-          <div id="aiSaveMsg" style="display:none;color:var(--vert);font-size:.82rem;margin-top:8px">✓ Informations enregistrées avec succès</div>
+          <div id="aiSaveMsg" style="display:none;color:var(--vert);font-size:.82rem;margin-top:8px">Informations enregistrées avec succès</div>
         </div>
 
 
@@ -3854,7 +3854,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
             <!-- Couleur principale -->
             <div class="form-group-pro">
-              <label class="form-label">🎨 Couleur principale</label>
+              <label class="form-label">Couleur principale</label>
               <div style="display:flex;align-items:center;gap:8px">
                 <input type="color" id="aiColorPrimary" value="#3b82f6"
                   style="width:48px;height:40px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;background:#fff"
@@ -4045,7 +4045,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
 
           <button class="btn-primary-pro" onclick="saveAgencyInfo()" style="min-width:200px">Enregistrer la charte</button>
-          <div id="charteMsg" style="display:none;margin-top:10px;padding:10px 14px;background:#f0fdf4;color:#166534;border-radius:8px;font-size:.83rem">✅ Charte graphique enregistrée — vos prochains PDF utiliseront ces couleurs.</div>
+          <div id="charteMsg" style="display:none;margin-top:10px;padding:10px 14px;background:#f0fdf4;color:#166534;border-radius:8px;font-size:.83rem">Charte graphique enregistrée — vos prochains PDF utiliseront ces couleurs.</div>
         </div>
 
         
@@ -4100,9 +4100,9 @@ body.is-dashboard #marketingPage { display: none !important; }
       </select>
       <select id="loyerStatutFil" class="filter-select" onchange="refreshLoyersSuivi()">
         <option value="">Tous les statuts</option>
-        <option value="paye">✅ Payé</option>
+        <option value="paye">Payé</option>
         <option value="partiel">Partiel</option>
-        <option value="impaye">❌ Impayé</option>
+        <option value="impaye">Impayé</option>
       </select>
       <span id="loyerFilterCount" style="font-size:.78rem;color:var(--gris);margin-left:auto"></span>
     </div>
@@ -4292,7 +4292,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
           <!-- Chauffage -->
           <div class="edl-equip-bloc">
-            <div class="edl-equip-titre">🔥 Chauffage</div>
+            <div class="edl-equip-titre">Chauffage</div>
             <div class="form-grid-pro">
               <div class="form-group-pro">
                 <label class="form-label">Type de chauffage</label>
@@ -4319,7 +4319,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
           <!-- Eau chaude -->
           <div class="edl-equip-bloc">
-            <div class="edl-equip-titre">💧 Eau chaude sanitaire</div>
+            <div class="edl-equip-titre">Eau chaude sanitaire</div>
             <div class="form-grid-pro">
               <div class="form-group-pro">
                 <label class="form-label">Type</label>
@@ -4455,7 +4455,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div class="edl-section-title">Signatures & Validation</div>
 
           <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:16px;margin-bottom:16px;font-size:.84rem;color:#166534">
-            ✅ L'état des lieux est <strong>prêt à être signé</strong>. Récapitulatif ci-dessous avant validation.
+            L'état des lieux est <strong>prêt à être signé</strong>. Récapitulatif ci-dessous avant validation.
           </div>
 
           <!-- Récap avant signature -->
@@ -4484,7 +4484,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
             </div>
             <div class="edl-equip-bloc" style="margin:0">
-              <div class="edl-equip-titre">🏢 Agent / Bailleur</div>
+              <div class="edl-equip-titre">Agent / Bailleur</div>
               <div class="form-group-pro">
                 <label class="form-label">Nom et prénom</label>
                 <input type="text" class="form-input-pro" id="edlSig2Nom" placeholder="Jean Martin — Agence">
@@ -4828,13 +4828,13 @@ body.is-dashboard #marketingPage { display: none !important; }
         <option value="ouvert">Ouvert</option>
         <option value="en_cours">En cours</option>
         <option value="attente_devis">⏳ Attente devis</option>
-        <option value="planifie">📅 Planifié</option>
-        <option value="clos">✅ Clôturé</option>
+        <option value="planifie">Planifié</option>
+        <option value="clos">Clôturé</option>
       </select>
       <select id="travFilPrio" class="filter-select" onchange="refreshTravaux()">
         <option value="">Toutes priorités</option>
         <option value="urgente">Urgente</option>
-        <option value="haute">🟠 Haute</option>
+        <option value="haute">Haute</option>
         <option value="normale">Normale</option>
         <option value="basse">Basse</option>
       </select>
@@ -4878,19 +4878,19 @@ body.is-dashboard #marketingPage { display: none !important; }
             <select class="form-input-pro" id="ticketCategorie">
               <option value="plomberie">Plomberie</option>
               <option value="electricite">Électricité</option>
-              <option value="chauffage">🔥 Chauffage / Chaudière</option>
-              <option value="menuiserie">🚪 Menuiserie / Serrurerie</option>
-              <option value="peinture">🎨 Peinture / Revêtements</option>
+              <option value="chauffage">Chauffage / Chaudière</option>
+              <option value="menuiserie">Menuiserie / Serrurerie</option>
+              <option value="peinture">Peinture / Revêtements</option>
               <option value="toiture">Toiture / Étanchéité</option>
               <option value="nettoyage">Nettoyage</option>
-              <option value="autre">📦 Autre</option>
+              <option value="autre">Autre</option>
             </select>
           </div>
           <div class="form-group-pro">
             <label class="form-label">Priorité</label>
             <select class="form-input-pro" id="ticketPrio">
               <option value="normale">Normale</option>
-              <option value="haute">🟠 Haute</option>
+              <option value="haute">Haute</option>
               <option value="urgente">Urgente</option>
               <option value="basse">Basse</option>
             </select>
@@ -4901,8 +4901,8 @@ body.is-dashboard #marketingPage { display: none !important; }
               <option value="ouvert">Ouvert</option>
               <option value="en_cours">En cours</option>
               <option value="attente_devis">⏳ Attente devis</option>
-              <option value="planifie">📅 Planifié</option>
-              <option value="clos">✅ Clôturé</option>
+              <option value="planifie">Planifié</option>
+              <option value="clos">Clôturé</option>
             </select>
           </div>
           <div class="form-group-pro">
@@ -5068,7 +5068,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <input type="date" class="form-input-pro" id="mandatDateSignature">
       </div>
       <div class="form-group-pro" style="grid-column:1/-1">
-        <label class="form-label">🔗 Lien annonce (SeLoger, LeBonCoin…)</label>
+        <label class="form-label">Lien annonce (SeLoger, LeBonCoin…)</label>
         <input type="url" class="form-input-pro" id="mandatLienAnnonce" placeholder="https://www.seloger.com/...">
       </div>
       <div class="form-group-pro" style="grid-column:1/-1">
@@ -6199,7 +6199,7 @@ function verifierEncadrement(){
 
   if(!zone){
     res.innerHTML = '<div style="background:var(--vert-light);border:1px solid rgba(45,106,79,.25);border-radius:12px;padding:20px">'
-      + '<div style="font-weight:700;color:var(--vert);margin-bottom:6px;font-size:1rem">✓ Ville non soumise à l\'encadrement expérimental</div>'
+      + '<div style="font-weight:700;color:var(--vert);margin-bottom:6px;font-size:1rem">Ville non soumise à l\'encadrement expérimental</div>'
       + '<div style="font-size:.86rem;color:var(--gris);margin-bottom:10px">'
       + '<strong>' + ville.charAt(0).toUpperCase() + ville.slice(1) + '</strong> ne figure pas dans les 9 territoires actuellement soumis au plafonnement expérimental (loi ELAN).</div>'
       + '<div style="background:#fff;border-radius:8px;padding:12px;font-size:.86rem;margin-bottom:12px">'
@@ -6220,7 +6220,7 @@ function verifierEncadrement(){
   var couleur = depasse ? '#c0392b' : bas ? '#2980b9' : '#27ae60';
   var bgColor = depasse ? '#fdf2f2' : bas ? '#eef4fb' : '#f0fdf4';
   var borderColor = depasse ? 'rgba(192,57,43,.25)' : bas ? 'rgba(41,128,185,.25)' : 'rgba(39,174,96,.25)';
-  var verdict = depasse ? 'Loyer supérieur au plafond légal' : bas ? 'ℹ️ Loyer inférieur au loyer minoré' : '✓ Loyer dans la fourchette légale';
+  var verdict = depasse ? 'Loyer supérieur au plafond légal' : bas ? 'Loyer inférieur au loyer minoré' : '✓ Loyer dans la fourchette légale';
 
   res.innerHTML = '<div style="background:' + bgColor + ';border:1px solid ' + borderColor + ';border-radius:12px;padding:20px">'
     + '<div style="font-weight:700;color:' + couleur + ';margin-bottom:4px;font-size:1rem">' + verdict + '</div>'
@@ -6945,10 +6945,10 @@ function deleteMandat(id) {
 }
 
 function buildMandatAgenceHtml(m) {
-  var html = '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">📜 MANDAT AGENCE</div>';
+  var html = '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">MANDAT AGENCE</div>';
   if (m.mandatAgencePdf) {
     html += '<div style="display:flex;justify-content:space-between;align-items:center;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 10px">';
-    html += '<span style="font-size:.82rem;color:#166534">✅ Mandat uploadé' + (m.mandatAgenceNom ? ' : '+m.mandatAgenceNom : '') + '</span>';
+    html += '<span style="font-size:.82rem;color:#166534">Mandat uploadé' + (m.mandatAgenceNom ? ' : '+m.mandatAgenceNom : '') + '</span>';
     html += '<button class="btn-sm" style="font-size:.72rem;border-color:var(--accent);color:var(--accent)" data-mid="' + m.id + '" onclick="supprimerMandatAgence(this.dataset.mid)">Supprimer</button>';
     html += '</div>';
   } else {
@@ -7074,7 +7074,7 @@ function openFicheMandat(id, activeTab) {
           + (m.bailleurEmail?'<div style="font-size:.75rem;color:var(--gris);margin-top:2px"><a href="mailto:'+m.bailleurEmail+'" style="color:var(--pro-accent)">'+m.bailleurEmail+'</a></div>':'')
           + (m.bailleurTel?'<div style="font-size:.75rem;color:var(--gris);margin-top:1px">'+m.bailleurTel+'</div>':'')
         + '</div>'
-        + (m.bailleurEmail?'<a href="mailto:'+m.bailleurEmail+'" style="flex-shrink:0;background:var(--pro-light);color:var(--pro-accent);border:none;border-radius:8px;padding:7px 12px;font-size:.75rem;font-weight:600;text-decoration:none">✉ Email</a>':'')
+        + (m.bailleurEmail?'<a href="mailto:'+m.bailleurEmail+'" style="flex-shrink:0;background:var(--pro-light);color:var(--pro-accent);border:none;border-radius:8px;padding:7px 12px;font-size:.75rem;font-weight:600;text-decoration:none">Email</a>':'')
         + '</div>';
     }
 
@@ -7177,7 +7177,7 @@ function openFicheMandat(id, activeTab) {
   var footerHtml = '<div style="display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px;border-top:1px solid var(--border);background:#fafaf8">'
     + '<button class="btn-sm" data-action="editmandat" data-mid="'+id+'" style="font-size:.78rem">Modifier le bien</button>'
     + '<button class="btn-sm" onclick="genererCourrierMandat(\''+id+'\');closeModalFicheBien()" style="font-size:.78rem">Courrier</button>'
-    + '<button class="btn-sm" onclick="exportFicheMandat(\''+id+'\')" style="font-size:.78rem">⬇️ Exporter PDF</button>'
+    + '<button class="btn-sm" onclick="exportFicheMandat(\''+id+'\')" style="font-size:.78rem">Exporter PDF</button>'
     + '<button class="btn-sm" style="margin-left:auto;color:var(--accent);border-color:var(--accent);font-size:.78rem" onclick="if(confirm(\'Supprimer ce bien ?\'))deleteMandat(\''+id+'\')">Supprimer</button>'
     + '</div>';
 
@@ -8251,7 +8251,7 @@ function buildPhotosHtml(mandatId) {
     + '<a href="'+main.data+'" download="photo-bien.jpg" onclick="event.stopPropagation()" style="background:rgba(255,255,255,.95);color:#111;border:none;border-radius:7px;font-size:.72rem;padding:6px 11px;cursor:pointer;text-decoration:none;font-weight:600">⬇</a>'
     + '<button style="background:rgba(220,38,38,.88);color:#fff;border:none;border-radius:7px;font-size:.72rem;padding:6px 10px;cursor:pointer;font-weight:600" data-mid="'+mandatId+'" data-pid="'+main.id+'" data-action="delphoto" onclick="event.stopPropagation()">✕</button>'
     + '</div>'
-    + '<div class="gal-hero-badge">📷 Photo principale · cliquer pour agrandir</div>'
+    + '<div class="gal-hero-badge">Photo principale · cliquer pour agrandir</div>'
     + '</div>';
 
   // Grille miniatures
@@ -8334,7 +8334,7 @@ function uploadMultiplePhotos(mandatId, input) {
 function buildLienAnnonceHtml(m) {
   var mid = String(m.id);
   var liens = m.liensAnnonces || (m.lienAnnonce ? [m.lienAnnonce] : []);
-  var html = '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">🔗 ANNONCES</div>';
+  var html = '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">ANNONCES</div>';
   if (liens.length) {
     liens.forEach(function(url, idx) {
       var shortUrl = url.length > 50 ? url.substring(0, 50) + '…' : url;
@@ -9452,7 +9452,7 @@ function refreshIRL() {
   if (tbody) tbody.innerHTML = IRL_DATA.map(function(d){
     var isLatest = d === IRL_DATA[0];
     return '<tr style="'+(isLatest?'background:#f0fdf4':'')+'">'
-      + '<td style="font-weight:'+(isLatest?'700':'400')+'">'+(isLatest?'⭐ ':'')+d.trim+'</td>'
+      + '<td style="font-weight:'+(isLatest?'700':'400')+'">'+(isLatest?'':'')+d.trim+'</td>'
       + '<td style="font-weight:600;color:var(--pro-accent)">'+d.indice.toFixed(2)+'</td>'
       + '<td style="color:'+(d.variation>3?'#dc2626':d.variation>2?'#d97706':'#059669')+'">+'+(d.variation.toFixed(2))+'%</td>'
     +'</tr>';
@@ -9835,7 +9835,7 @@ function refreshDashboard() {
   var biensVacantsEl = document.getElementById('dashBiensVacants');
   if (biensVacantsEl) {
     if (!vacants.length) {
-      biensVacantsEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--gris);font-size:.82rem">✅ Aucun bien vacant</div>';
+      biensVacantsEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--gris);font-size:.82rem">Aucun bien vacant</div>';
     } else {
       biensVacantsEl.innerHTML = vacants.slice(0,4).map(function(m){
         return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f1f3f8;font-size:.8rem">'
@@ -9850,7 +9850,7 @@ function refreshDashboard() {
   var impayesEl = document.getElementById('dashImpayesList');
   if (impayesEl) {
     if (!impayesMois.length) {
-      impayesEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--gris);font-size:.82rem">✅ Aucun impayé</div>';
+      impayesEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--gris);font-size:.82rem">Aucun impayé</div>';
     } else {
       impayesEl.innerHTML = impayesMois.slice(0,4).map(function(l){
         return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f1f3f8">'
@@ -9866,7 +9866,7 @@ function refreshDashboard() {
   var allDiagAlert = diagsExpires.concat(diagsSoon);
   if (diagsEl) {
     if (!allDiagAlert.length) {
-      diagsEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--gris);font-size:.82rem">✅ Tous à jour</div>';
+      diagsEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--gris);font-size:.82rem">Tous à jour</div>';
     } else {
       var diagMandats = loadMandats();
       diagsEl.innerHTML = allDiagAlert.slice(0,4).map(function(d){
@@ -9959,7 +9959,7 @@ function refreshTravaux() {
         +(t.desc?'<div style="font-size:.75rem;color:var(--gris);margin-bottom:8px;line-height:1.5">'+t.desc.substring(0,80)+(t.desc.length>80?'…':'')+'</div>':'')
         +'<div style="display:flex;gap:6px">'
           +'<button class="btn-sm" style="font-size:.72rem;flex:1" onclick="editTicket(\''+t.id+'\')">Modifier</button>'
-          +(t.statut!=='clos'?'<button class="btn-sm" style="font-size:.72rem;color:var(--success);border-color:var(--success)" onclick="cloturerTicket(\''+t.id+'\')">✅ Clôturer</button>':'')
+          +(t.statut!=='clos'?'<button class="btn-sm" style="font-size:.72rem;color:var(--success);border-color:var(--success)" onclick="cloturerTicket(\''+t.id+'\')">Clôturer</button>':'')
           +'<button class="btn-sm" style="font-size:.72rem;color:var(--danger);border-color:var(--danger)" onclick="supprimerTicket(\''+t.id+'\')">✕</button>'
         +'</div>'
       +'</div></div>';
@@ -10484,7 +10484,7 @@ validerDossier = function(goDecision) {
       if (garantRevenus) locs[locIdx].garantRevenus = garantRevenus;
       if (garantContrat) locs[locIdx].garantContrat = garantContrat;
       // Clients persistés via Supabase
-      if (garantNom) showToast('ℹ️ Informations garant synchronisées vers la fiche locataire.', 'blue');
+      if (garantNom) showToast('Informations garant synchronisées vers la fiche locataire.', 'blue');
     }
   }
 
@@ -10826,7 +10826,7 @@ uploadDPEFile = function(mandatId, input) {
         + '<span style="font-size:1.2rem">📄</span>'
         + '<div style="flex:1;min-width:0"><div style="font-weight:600;font-size:.78rem;color:#166534">'+file.name+'</div>'
         + '<div style="font-size:.7rem;color:var(--gris)">Chargé le '+new Date().toLocaleDateString('fr-FR')+' (session)</div></div>'
-        + '<a href="'+objectUrl+'" target="_blank" style="font-size:.72rem;color:var(--pro-accent);font-weight:600;text-decoration:none;flex-shrink:0">📖 Ouvrir</a>'
+        + '<a href="'+objectUrl+'" target="_blank" style="font-size:.72rem;color:var(--pro-accent);font-weight:600;text-decoration:none;flex-shrink:0">Ouvrir</a>'
         + '</div>';
     }
     showToast('DPE PDF chargé. Disponible pour cette session.', 'green');
@@ -11846,7 +11846,7 @@ function refreshLocataires() {
     var scoreHtml = l.score != null
       ? '<span class="loc-score-'+l.scoreCls+'" style="font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:6px">'+l.scoreLabel+'</span>'
       : '';
-    var finBail = l.dateFin ? '<div style="font-size:.75rem;color:var(--gris);margin-top:4px">📅 Fin: '+new Date(l.dateFin).toLocaleDateString('fr-FR')+'</div>' : '';
+    var finBail = l.dateFin ? '<div style="font-size:.75rem;color:var(--gris);margin-top:4px">Fin: '+new Date(l.dateFin).toLocaleDateString('fr-FR')+'</div>' : '';
     // Quittances liées à ce locataire
     var allQ = JSON.parse(localStorage.getItem('bailscan_quittances')||'[]');
     var locQ = allQ.filter(function(q){ return q.locNom && l.prenom && l.nom && q.locNom.toLowerCase().includes(l.nom.toLowerCase()); });
@@ -12000,8 +12000,8 @@ function updateDossierCalc() {
   // Règle 3x
   var ok3x = revenus >= loyer * 3;
   document.getElementById('regle3xBadge').innerHTML = ok3x
-    ? '<span style="background:#f0fdf4;color:var(--vert);font-weight:700;font-size:.74rem;padding:2px 8px;border-radius:5px">✓ OK</span>'
-    : '<span style="background:#fdf2f2;color:var(--accent);font-weight:700;font-size:.74rem;padding:2px 8px;border-radius:5px">✗ Insuffisant</span>';
+    ? '<span style="background:#f0fdf4;color:var(--vert);font-weight:700;font-size:.74rem;padding:2px 8px;border-radius:5px">OK</span>'
+    : '<span style="background:#fdf2f2;color:var(--accent);font-weight:700;font-size:.74rem;padding:2px 8px;border-radius:5px">Insuffisant</span>';
 }
 
 function filterLocataires() {
@@ -14245,7 +14245,7 @@ function renderVeilleAlertes() {
       + '<div style="font-size:.75rem;color:var(--gris);margin-bottom:6px">' + a.date + ' · ' + (a.loi||'') + '</div>'
       + '<div style="font-size:.8rem;color:var(--texte);line-height:1.6">' + a.detail + '</div>'
       + (a.action ? '<div style="margin-top:8px;display:flex;gap:6px">'
-        + '<button class="btn-sm" onclick="genCourrierDepuisAlerte('+i+')">✉ Générer courrier</button>'
+        + '<button class="btn-sm" onclick="genCourrierDepuisAlerte('+i+')">Générer courrier</button>'
         + '<button class="btn-sm" onclick="voirBiensImpactes('+i+')">Biens impactés</button>'
         + '</div>' : '')
       + '</div></div>'
@@ -15292,4 +15292,5 @@ document.addEventListener('click', function(e){
 </div>
 
 </body>
+</html>y>
 </html>
