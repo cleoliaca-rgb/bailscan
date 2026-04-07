@@ -1976,31 +1976,77 @@ body.is-dashboard #marketingPage { display: none !important; }
                   <button type="button" class="gen-garant-pill" data-val="autre_organisme" onclick="setGenGarant('autre_organisme')" style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Autre organisme</button>
                 </div>
                 <!-- Champs selon le type -->
-                <div id="genGarantFields" style="display:none">
-                  <!-- Physique / Caution solidaire -->
-                  <div id="genGarantPhysRow" style="display:none">
-                    <div class="form-grid-pro">
-                      <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">Prénom du garant</label><input type="text" class="form-input-pro" id="genGarantPrenom" placeholder="Jean" style="font-size:.88rem"></div>
-                      <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">Nom du garant</label><input type="text" class="form-input-pro" id="genGarantNom" placeholder="Martin" style="font-size:.88rem"></div>
-                      <div class="form-group-pro" style="grid-column:1/-1"><label class="form-label" style="font-size:.78rem">Adresse du garant</label><input type="text" class="form-input-pro" id="genGarantAdresse" placeholder="3 rue du Moulin" style="font-size:.88rem"></div>
-                      <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">CP</label><input type="text" class="form-input-pro" id="genGarantCp" placeholder="75001" style="font-size:.88rem"></div>
-                      <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">Ville</label><input type="text" class="form-input-pro" id="genGarantVille" placeholder="Paris" style="font-size:.88rem"></div>
-                      <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">Revenus nets/mois (€)</label><input type="number" class="form-input-pro" id="genGarantRevenus" placeholder="2500" style="font-size:.88rem"></div>
-                      <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">Type de contrat</label>
-                        <select class="form-input-pro" id="genGarantSituation" style="font-size:.88rem">
-                          <option value="cdi">CDI</option><option value="cdd">CDD</option><option value="independant">Indépendant</option><option value="retraite">Retraité</option><option value="autre">Autre</option>
-                        </select>
-                      </div>
-                      <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">Email</label><input type="email" class="form-input-pro" id="genGarantEmail" placeholder="garant@email.com" style="font-size:.88rem"></div>
+                <div id="genGarantFields" style="display:none;margin-top:10px">
+                  <!-- Organisme -->
+                  <div id="genGarantOrgRow" style="display:none">
+                    <div class="form-group-pro" style="grid-column:1/-1">
+                      <label class="form-label" style="font-size:.78rem">Nom de l'organisme</label>
+                      <input type="text" class="form-input-pro" id="genGarantOrganisme" placeholder="Action Logement, GarantMe..." style="font-size:.88rem">
                     </div>
                   </div>
                   <!-- Visale / GarantMe -->
                   <div id="genGarantNumRow" style="display:none">
-                    <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">Numéro de dossier / référence</label><input type="text" class="form-input-pro" id="genGarantNumDossier" placeholder="Référence dossier" style="font-size:.88rem"></div>
+                    <div class="form-group-pro">
+                      <label class="form-label" style="font-size:.78rem">Numéro de dossier / référence</label>
+                      <input type="text" class="form-input-pro" id="genGarantNumDossier" placeholder="Référence dossier" style="font-size:.88rem">
+                    </div>
                   </div>
-                  <!-- Autre organisme -->
-                  <div id="genGarantOrgRow" style="display:none">
-                    <div class="form-group-pro"><label class="form-label" style="font-size:.78rem">Nom de l'organisme</label><input type="text" class="form-input-pro" id="genGarantOrganisme" placeholder="Action Logement, GarantMe..." style="font-size:.88rem"></div>
+                  <!-- Physique / Caution solidaire -->
+                  <div id="genGarantPhysRow" style="display:none">
+                    <div class="form-grid-pro">
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Prénom</label>
+                        <input type="text" class="form-input-pro" id="genGarantPrenom" placeholder="Jean" style="font-size:.88rem">
+                      </div>
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Nom</label>
+                        <input type="text" class="form-input-pro" id="genGarantNom" placeholder="Dupont" style="font-size:.88rem">
+                      </div>
+                      <div class="form-group-pro" style="grid-column:1/-1">
+                        <label class="form-label" style="font-size:.78rem">Adresse complète</label>
+                        <input type="text" class="form-input-pro" id="genGarantAdresse" placeholder="3 rue du Moulin" style="font-size:.88rem">
+                      </div>
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Code postal</label>
+                        <input type="text" class="form-input-pro" id="genGarantCp" placeholder="75018" maxlength="5" style="font-size:.88rem">
+                      </div>
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Ville</label>
+                        <input type="text" class="form-input-pro" id="genGarantVille" placeholder="Paris" style="font-size:.88rem">
+                      </div>
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Email</label>
+                        <input type="email" class="form-input-pro" id="genGarantEmail" placeholder="garant@email.com" style="font-size:.88rem">
+                      </div>
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Téléphone</label>
+                        <input type="tel" class="form-input-pro" id="genGarantTel" placeholder="06 12 34 56 78" style="font-size:.88rem">
+                      </div>
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Revenus nets/mois (€)</label>
+                        <input type="number" class="form-input-pro" id="genGarantRevenus" placeholder="3500" style="font-size:.88rem">
+                      </div>
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Situation professionnelle</label>
+                        <select class="form-input-pro" id="genGarantSituation" style="font-size:.88rem">
+                          <option value="cdi">CDI</option>
+                          <option value="fonctionnaire">Fonctionnaire</option>
+                          <option value="retraite">Retraité</option>
+                          <option value="independant">Indépendant / TNS</option>
+                          <option value="cdd">CDD</option>
+                          <option value="autre">Autre</option>
+                        </select>
+                      </div>
+                      <div class="form-group-pro">
+                        <label class="form-label" style="font-size:.78rem">Ancienneté dans l'emploi</label>
+                        <select class="form-input-pro" id="genGarantAnciennete" style="font-size:.88rem">
+                          <option value="plus3">Plus de 3 ans</option>
+                          <option value="un3">1 à 3 ans</option>
+                          <option value="moinsd1">Moins d'1 an</option>
+                          <option value="na">N/A</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2739,19 +2785,20 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
 
             <!-- Section garant (affichée si garant physique) -->
-            <div id="locGarantFields" style="display:none;margin-top:4px">
-              <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)"><span id="locGarantFieldsTitle">Garant — Informations</span></div>
-              <!-- Champ organisme (Autre organisme) -->
+            <div id="locGarantFields" style="display:none;margin-top:8px">
+              <div style="font-size:.76rem;font-weight:700;color:var(--pro-accent);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;padding-bottom:6px;border-bottom:1px solid var(--pro-light)"><span id="locGarantFieldsTitle">Garant — Informations</span></div>
+              <!-- Organisme (Autre organisme) -->
               <div id="locGarantOrganismeRow" class="form-group-pro" style="display:none;grid-column:1/-1;margin-bottom:10px">
                 <label class="form-label">Nom de l'organisme</label>
-                <input type="text" class="form-input-pro" id="locGarantOrganisme" placeholder="Ex : Action Logement, Garantme, Visale...">
+                <input type="text" class="form-input-pro" id="locGarantOrganisme" placeholder="Ex : Action Logement, GarantMe...">
               </div>
-              <!-- Pour Visale / GarantMe : numéro de dossier -->
-              <div id="locGarantNumRow" style="display:none;margin-bottom:10px" class="form-group-pro">
-                <label class="form-label">Numéro de dossier</label>
+              <!-- Numéro dossier Visale/GarantMe -->
+              <div id="locGarantNumRow" class="form-group-pro" style="display:none;grid-column:1/-1;margin-bottom:10px">
+                <label class="form-label">Numéro de dossier / référence</label>
                 <input type="text" class="form-input-pro" id="locGarantNumDossier" placeholder="N° de dossier ou référence">
               </div>
-              <div id="locGarantPhysRow" style="display:contents">
+              <!-- Champs physique/caution solidaire -->
+              <div id="locGarantPhysRow" style="display:none">
               <div class="form-grid-pro">
                 <div class="form-group-pro">
                   <label class="form-label">Prénom du garant</label>
@@ -2767,55 +2814,58 @@ body.is-dashboard #marketingPage { display: none !important; }
                 </div>
                 <div class="form-group-pro" style="position:relative">
                   <label class="form-label">Code postal</label>
-                  <input type="text" class="form-input-pro" id="locGarantCp" placeholder="75018" maxlength="5" oninput="cpAutoGarant(this.value)" autocomplete="off">
-                  <div id="locGarantCpDrop" style="position:absolute;top:calc(100% + 2px);left:0;width:100%;background:white;border:1px solid #d8d0c4;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none;z-index:300;max-height:160px;overflow-y:auto"></div>
+                  <input type="text" class="form-input-pro" id="locGarantCp" placeholder="75018" maxlength="5"
+                    oninput="searchLocGarantCp(this.value)" autocomplete="off">
+                  <div id="locGarantCpDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none;z-index:9999;max-height:160px;overflow-y:auto"></div>
                 </div>
                 <div class="form-group-pro">
                   <label class="form-label">Ville</label>
                   <input type="text" class="form-input-pro" id="locGarantVille" placeholder="Paris">
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Revenus nets du garant (€/mois)</label>
-                  <input type="number" class="form-input-pro" id="locGarantRevenus" placeholder="3500" oninput="calcScore()">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-input-pro" id="locGarantEmail" placeholder="garant@email.com">
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Situation professionnelle garant</label>
+                  <label class="form-label">Téléphone</label>
+                  <input type="tel" class="form-input-pro" id="locGarantTel" placeholder="06 12 34 56 78">
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Revenus nets/mois (€)</label>
+                  <input type="number" class="form-input-pro" id="locGarantRevenus" placeholder="3500" min="0">
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Situation professionnelle</label>
                   <select class="form-input-pro" id="locGarantContrat">
                     <option value="cdi">CDI</option>
                     <option value="fonctionnaire">Fonctionnaire</option>
                     <option value="retraite">Retraité</option>
                     <option value="independant">Indépendant / TNS</option>
+                    <option value="cdd">CDD</option>
                     <option value="autre">Autre</option>
                   </select>
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Email du garant</label>
-                  <input type="email" class="form-input-pro" id="locGarantEmail" placeholder="jean.dupont@email.com">
+                  <label class="form-label">Ancienneté dans l'emploi</label>
+                  <select class="form-input-pro" id="locGarantAnciennete">
+                    <option value="plus3">Plus de 3 ans</option>
+                    <option value="un3">1 à 3 ans</option>
+                    <option value="moinsd1">Moins d'1 an</option>
+                    <option value="na">N/A</option>
+                  </select>
                 </div>
-                <div class="form-group-pro">
-                  <label class="form-label">Téléphone du garant</label>
-                  <input type="tel" class="form-input-pro" id="locGarantTel" placeholder="06 12 34 56 78">
+              </div>
+              </div>
+              <!-- Revenus pour Visale/GarantMe -->
+              <div id="locGarantRevenusRow" style="display:none">
+                <div class="form-grid-pro">
+                  <div class="form-group-pro">
+                    <label class="form-label">Revenus mensuels nets (€)</label>
+                    <input type="number" class="form-input-pro" id="locGarantRevenusOrg" placeholder="3500" min="0">
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div class="form-group-pro" style="margin-top:8px">
-              <label class="form-label">Notes internes</label>
-              <textarea class="form-input-pro" id="locNotes" rows="3" placeholder="Observations, historique de paiement, remarques…" style="resize:vertical;font-size:.85rem"></textarea>
-            </div>
-
-            
-            <div class="form-group-pro" style="margin-top:10px">
-              <label class="form-label">Rattacher un bail généré</label>
-              <select class="form-input-pro" id="locBailSel">
-                <option value="">— Aucun bail sélectionné —</option>
-              </select>
-            </div>
-            <div style="display:flex;gap:10px;margin-top:16px">
-              <button class="btn-primary-pro" onclick="saveLocataire()" style="flex:1">Enregistrer la fiche</button>
-              <button class="btn-sm" onclick="closeLocataireForm()">Annuler</button>
-            </div>
-          </div>
     </div><!-- /scroll -->
   </div><!-- /modal -->
   </div><!-- /modal-content -->
@@ -2863,6 +2913,10 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div class="form-group-pro">
                   <label class="form-label">Loyer mensuel HC (€) *</label>
                   <input type="number" class="form-input-pro" id="dossierLoyer" placeholder="Ex : 900" min="0" step="10" oninput="updateDossierCalc()">
+                </div>
+                <div class="form-group-pro">
+                  <label class="form-label">Complément loyer (€) <small style="font-weight:400;color:var(--gris)">optionnel</small></label>
+                  <input type="number" class="form-input-pro" id="dossierComplement" placeholder="0" min="0" step="1" oninput="updateDossierCalc()">
                 </div>
                 <div class="form-group-pro">
                   <label class="form-label">Charges forfaitaires (€)</label>
@@ -3326,7 +3380,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="dash-card" style="margin-bottom:16px">
               <div class="dash-section-title">Choisir le type de courrier <span id="coTypeLabel" style="font-weight:400;color:var(--pro-accent);font-size:.82rem"></span></div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="courrierTypes">
-                <div class="courrier-type-card active" onclick="selectCourrier('conge_bailleur',this)">📨 Congé bailleur<br><span>Pour reprise / vente</span></div>
+                <div class="courrier-type-card active" onclick="selectCourrier('conge_bailleur',this)">Congé bailleur<br><span>Pour reprise / vente</span></div>
                 <div class="courrier-type-card" onclick="selectCourrier('mise_demeure',this)">Mise en demeure<br><span>Loyers impayés</span></div>
                 <div class="courrier-type-card" onclick="selectCourrier('regularisation',this)">Régularisation charges<br><span>Bilan annuel</span></div>
                 <div class="courrier-type-card" onclick="selectCourrier('revision_loyer',this)">Révision de loyer IRL<br><span>Revalorisation annuelle</span></div>
@@ -3335,9 +3389,9 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div class="courrier-type-card" onclick="selectCourrier('etat_lieux_sortie',this)">Convocation état des lieux<br><span>Sortie du locataire</span></div>
                 <div class="courrier-type-card" onclick="selectCourrier('restitution_depot',this)">Restitution dépôt<br><span>Avec/sans retenues</span></div>
                 <div class="courrier-type-card" onclick="selectCourrier('clause_illegale',this)">Clause illégale<br><span>Mise en demeure bailleur</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('trop_percu',this)">💸 Trop-perçu loyer<br><span>Info locataire + remboursement</span></div>
+                <div class="courrier-type-card" onclick="selectCourrier('trop_percu',this)">Trop-perçu loyer<br><span>Info locataire + remboursement</span></div>
                 <div class="courrier-type-card" onclick="selectCourrier('notif_encadrement',this)">Notif. encadrement<br><span>Loyer hors plafond légal</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('reclamation_remboursement',this)">📩 Réclamation remboursement<br><span>Charges indues / dépôt tardif</span></div>
+                <div class="courrier-type-card" onclick="selectCourrier('reclamation_remboursement',this)">Réclamation remboursement<br><span>Charges indues / dépôt tardif</span></div>
               </div>
             </div>
 
@@ -3350,7 +3404,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div id="coMandatDrop" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--pro-accent);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:400;max-height:180px;overflow-y:auto"></div>
               </div>
               <div class="form-group-pro" style="margin-bottom:14px">
-                <label class="form-label">🔗 Choisir un locataire (auto-remplit les champs)</label>
+                <label class="form-label">Choisir un locataire (auto-remplit les champs)</label>
                 <select class="form-input-pro" id="coLocataireSel" onchange="selectCourrierLocataire(this.value)" style="cursor:pointer">
                   <option value="">— Saisie manuelle —</option>
                 </select>
@@ -3379,12 +3433,12 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
             </div>
             <div id="courrierLoading" style="display:none;text-align:center;padding:40px 0;color:var(--gris)">
-              <div style="font-size:1.5rem;margin-bottom:12px;animation:spin 1s linear infinite">⚙️</div>
+              <div style="font-size:1.5rem;margin-bottom:12px;animation:spin 1s linear infinite"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="animation:spin 1s linear infinite"><circle cx="8" cy="8" r="5" stroke-dasharray="20 10"/></svg></div>
               <div style="font-size:.85rem">L'IA rédige votre courrier…</div>
             </div>
             <div id="courrierResult" style="background:#f1f5f9;border:1px solid var(--border);border-radius:10px;padding:20px;font-size:.82rem;line-height:1.9;min-height:420px;white-space:pre-wrap;font-family:Georgia,serif;overflow-y:auto;max-height:600px">
               <div style="text-align:center;color:var(--gris);padding-top:100px;font-family:'DM Sans',sans-serif">
-                <div style="font-size:2rem;margin-bottom:12px">✉️</div>
+                <div style="font-size:2rem;margin-bottom:12px"></div>
                 Sélectionnez un type de courrier et remplissez les informations
               </div>
             </div>
@@ -3461,7 +3515,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
             <!-- Dernier décret impactant -->
             <div class="dash-card" style="margin:0;padding:14px 18px;border-left:4px solid var(--pro-accent)">
-              <div style="font-size:.72rem;font-weight:700;color:var(--pro-accent);letter-spacing:.06em;margin-bottom:6px">🆕 DERNIER DÉCRET IMPACTANT</div>
+              <div style="font-size:.72rem;font-weight:700;color:var(--pro-accent);letter-spacing:.06em;margin-bottom:6px">DERNIER DÉCRET IMPACTANT</div>
               <div style="font-weight:700;font-size:.9rem;margin-bottom:4px" id="veilleLastDecret">Décret n°2025-1247 du 12/03/2026 — Encadrement DPE logements classés F et G</div>
               <div style="font-size:.78rem;color:var(--gris);line-height:1.6" id="veilleLastDecretDetail">Interdiction de mise en location des logements classés G+ dès le 1er janvier 2026. Obligation de travaux ou dérogation préfectorale. Vérifiez vos biens classés F ou G.</div>
               <div style="margin-top:8px;display:flex;gap:8px">
@@ -3510,7 +3564,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                   <input type="checkbox" id="veilleChkEncadrement"> Révision zones encadrement des loyers
                 </label>
               </div>
-              <button class="btn-primary-pro" onclick="sauvegarderVeille()" style="width:100%">✉ Activer la newsletter</button>
+              <button class="btn-primary-pro" onclick="sauvegarderVeille()" style="width:100%">Activer la newsletter</button>
             </div>
 
             <div class="dash-card">
@@ -3535,7 +3589,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <!-- Rôles -->
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
           <div style="background:linear-gradient(135deg,#fff9ed,#fffdf5);border-radius:12px;padding:16px;border:1px solid #f0d080">
-            <div style="font-weight:700;font-size:.9rem;margin-bottom:6px;color:#92400e">👑 Admin</div>
+            <div style="font-weight:700;font-size:.9rem;margin-bottom:6px;color:#92400e">Admin</div>
             <div style="font-size:.76rem;color:var(--gris);line-height:1.5">Accès complet — analyses, paramètres, utilisateurs, facturation, API.</div>
           </div>
           <div style="background:linear-gradient(135deg,#eff6ff,#f0f7ff);border-radius:12px;padding:16px;border:1px solid #bfdbfe">
@@ -8634,6 +8688,7 @@ function preFillGenererFromMandat(mandatId) {
         if (loc.garantContrat) sf('genGarantSituation', loc.garantContrat);
         sf('genGarantNumDossier', loc.garantNumDossier||'');
         sf('genGarantOrganisme', loc.garantOrganisme||'');
+        if (loc.garantAnciennete) { var gaEl=document.getElementById('genGarantAnciennete'); if(gaEl) gaEl.value=loc.garantAnciennete; }
       }
     }
   }
@@ -11734,6 +11789,7 @@ function saveLocataire() {
     garantVille: (document.getElementById('locGarantVille')||{value:''}).value.trim(),
     garantOrganisme: (document.getElementById('locGarantOrganisme')||{value:''}).value.trim(),
     garantNumDossier: (document.getElementById('locGarantNumDossier')||{value:''}).value.trim(),
+    garantAnciennete: (document.getElementById('locGarantAnciennete')||{value:''}).value||'plus3',
     dateEntree: document.getElementById('locDateEntree').value,
     dateFin: document.getElementById('locDateFin').value,
     statut: document.getElementById('locStatut').value,
@@ -12027,6 +12083,7 @@ function editLocataire(id) {
   if(document.getElementById('locGarantContrat')) document.getElementById('locGarantContrat').value=l.garantContrat||'cdi';
   if(document.getElementById('locGarantOrganisme')) document.getElementById('locGarantOrganisme').value=l.garantOrganisme||'';
   if(document.getElementById('locGarantNumDossier')) document.getElementById('locGarantNumDossier').value=l.garantNumDossier||'';
+  if(document.getElementById('locGarantAnciennete')) document.getElementById('locGarantAnciennete').value=l.garantAnciennete||'plus3';
   document.getElementById('locataireForm').style.display='flex';
   // Remplir le champ mandat search
   refreshMandatSelectForLoc(null, l.mandatId||'');
@@ -15160,6 +15217,29 @@ function setGenGarant(val) {
   if (numRow) numRow.style.display = (val==='visale'||val==='garantme') ? 'block' : 'none';
   if (orgRow) orgRow.style.display = (val==='autre_organisme') ? 'block' : 'none';
 }
+
+function searchLocGarantCp(q) {
+  var drop = document.getElementById('locGarantCpDrop');
+  if (!drop || !q || q.length < 2) { if(drop) drop.style.display='none'; return; }
+  fetch('https://geo.api.gouv.fr/communes?codePostal='+q+'&fields=nom,codesPostaux&limit=8')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data||!data.length){drop.style.display='none';return;}
+      drop.innerHTML = data.map(function(com){
+        var cp = com.codesPostaux[0], ville = com.nom;
+        return '<div onmousedown="event.preventDefault();pickLocGarantCp(\'' + cp + '\',\'' + ville + '\')" style="padding:9px 14px;cursor:pointer;font-size:.85rem;border-bottom:1px solid #f0ede8" onmouseover="this.style.background=\'#eef2fb\';" onmouseout="this.style.background=\'white\';">' + cp + ' — ' + ville + '</div>';
+      }).join('');
+      drop.style.display='block';
+    }).catch(function(){drop.style.display='none';});
+}function pickLocGarantCp(cp, ville) {
+  var cpEl = document.getElementById('locGarantCp'); if(cpEl) cpEl.value=cp;
+  var vEl = document.getElementById('locGarantVille'); if(vEl) vEl.value=ville;
+  var drop = document.getElementById('locGarantCpDrop'); if(drop) drop.style.display='none';
+}
+document.addEventListener('click', function(e){
+  var b=document.getElementById('locGarantCpDrop');
+  if(b&&!b.contains(e.target)&&e.target.id!=='locGarantCp') b.style.display='none';
+});
 </script>
 <!-- ═══════════════════════════════════════════════════════════
   AGENT IA — POPUP FLOTTANT BAS DROITE (visible en mode dashboard)
