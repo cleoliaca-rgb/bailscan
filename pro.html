@@ -8635,6 +8635,9 @@ function preFillGenererFromMandat(mandatId) {
   s('genBailleur', m.bailleur);
   s('genBailleurEmail', m.bailleurEmail);
   s('genBailleurTel', m.bailleurTel);
+  s('genBailleurAdresse', m.bailleurAdresse||'');
+  if (m.bailleurCp) { var bcpEl=document.getElementById('genCodePostal'); if(bcpEl) bcpEl.value=m.bailleurCp; }
+  if (m.bailleurVille) { var bvilEl=document.getElementById('genBailleurVille'); if(bvilEl) bvilEl.value=m.bailleurVille; }
   // Zone encadrement
   if (m.zone) {
     var zEl = document.getElementById('genZone');
@@ -15272,6 +15275,9 @@ document.addEventListener('click', function(e){
       <button onclick="sendAgentPrompt(this.textContent)" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.28);color:#a5b4fc;border-radius:20px;padding:3px 10px;font-size:.68rem;cursor:pointer;white-space:nowrap">Taux remplissage</button>
     </div>
 
+    <!-- Zone messages -->
+    <div id="agentChatMessages" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-height:120px;max-height:340px"></div>
+
     <!-- Input -->
     <div style="padding:8px 12px 12px;display:flex;gap:7px;align-items:flex-end;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0">
       <textarea id="agentInput" rows="1" placeholder="Posez une question… (Entrée pour envoyer)"
@@ -15280,4 +15286,11 @@ document.addEventListener('click', function(e){
         onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAgentMessage()}"
         oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
       <button onclick="sendAgentMessage()" id="agentSendBtn"
-        style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;border-radius:9px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;flex-shrink:0;height:36px;transition:opa
+        style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;border-radius:9px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;flex-shrink:0;height:36px;opacity:.85">▶</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
