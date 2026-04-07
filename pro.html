@@ -1185,7 +1185,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <a href="/legal.html">Mentions légales</a>
         <a href="/legal.html">CGV</a>
         <a href="/legal.html">Politique de confidentialité</a>
-        <a href="/cdn-cgi/l/email-protection#d1b2bebfa5b0b2a591b3b0b8bda2b2b0bfffb0a1a1">Contact</a>
+        <a href="mailto:hello@bailscan.app">Contact</a>
       </div>
     </div>
     <div class="footer-bottom-pro">
@@ -2876,6 +2876,11 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
             </div>
     </div><!-- /scroll -->
+    <!-- Footer boutons -->
+    <div style="padding:16px 24px;border-top:1px solid var(--border);background:#fff;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;border-radius:0 0 16px 16px">
+      <button class="btn-sm" onclick="closeLocataireForm()">Annuler</button>
+      <button class="btn-primary-pro" onclick="saveLocataire()">Enregistrer</button>
+    </div>
   </div><!-- /modal -->
   </div><!-- /modal-content -->
 </div><!-- /modalLocataire -->
@@ -2941,7 +2946,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 </div>
                 <div class="form-group-pro">
                   <label class="form-label">Garantie</label>
-                  <input type="hidden" id="dossierGarant" value="non">
+                  <input type="hidden" id="dossierGarant" value="non" onchange="toggleDossierGarantFields()">
                   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
                     <button type="button" class="dos-garant-pill active" data-val="non" onclick="setDossierGarant('non')" style="padding:6px 12px;border:1px solid var(--pro-accent);border-radius:8px;background:var(--pro-light);color:var(--pro-accent);font-weight:700;font-size:.8rem;cursor:pointer">Aucune</button>
                     <button type="button" class="dos-garant-pill" data-val="physique" onclick="setDossierGarant('physique')" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Garant physique</button>
@@ -5116,7 +5121,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 <!-- MODALE MOT DE PASSE OUBLIÉ -->
 
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- script cloudflare retiré --></script><script>
 
 var COURRIER_PROMPTS = {
   conge_bailleur: "Rédigez un congé donné par le bailleur au locataire pour reprise personnelle ou vente, conforme à la loi du 6 juillet 1989. Respectez le préavis légal de 6 mois.",
@@ -6978,7 +6983,11 @@ function saveMandat() {
   };
   if (editId) {
     var idx = proState.mandats.findIndex(function(x){ return String(x.id)===String(editId); });
-    if (idx !== -1) { mandat.dateCreation = proState.mandats[idx].dateCreation; proState.mandats[idx] = mandat; }
+    if (idx !== -1) { mandat.dateCreation = proState.mandats[idx].dateCreation;
+    // Préserver les candidats, photos et données non-formulaire
+    if (proState.mandats[idx].candidats) mandat.candidats = proState.mandats[idx].candidats;
+    if (proState.mandats[idx].photos) mandat.photos = proState.mandats[idx].photos;
+    proState.mandats[idx] = mandat; }
     else proState.mandats.unshift(mandat);
   } else {
     proState.mandats.unshift(mandat);
@@ -7443,110 +7452,224 @@ function exportFicheMandat(mandatId) {
   var ai = proState.agencyInfo || {};
   var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
   var agence = ai.nom || 'BailScan Pro';
-  var PR = [45,106,79], SEC = [240,247,240];
+  var PR = [59,111,212], SEC = [240,244,255];
   var pW = 210, pH = 297, mg = 14, contentW = pW - mg*2;
-  var y = 0;
+  var y = 20;
 
-  // ── Bande supérieure ──
-  doc.setFillColor(PR[0],PR[1],PR[2]); doc.rect(0, 0, pW, 14, 'F');
-  if (logo) {
-    try {
-      var lf = logo.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-      doc.addImage(logo, lf, mg, 2, 32, 10);
-    } catch(e) {}
-  } else {
+  function checkPage(needed) {
+    if (y + needed > pH - 16) { doc.addPage(); y = 20; }
+  }
+
+  function sectionTitle(title) {
+    checkPage(12);
+    doc.setFillColor(PR[0],PR[1],PR[2]);
+    doc.rect(mg, y-4, contentW, 8, 'F');
     doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
-    doc.text(agence, mg, 9);
+    doc.text(title.toUpperCase(), mg+3, y+1);
+    y += 9;
+    doc.setTextColor(40,40,40);
   }
-  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(220,255,220);
-  doc.text('FICHE BIEN · bailscan.app', pW - mg, 9, {align:'right'});
-  y = 22;
 
-  // ── Titre adresse ──
-  var adresseAff = m.adresseFull || (m.adresse + (m.cp?' '+m.cp:'') + (m.ville?' '+m.ville:''));
+  function row(label, value, x, rowY) {
+    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(100,100,100);
+    doc.text(label, x, rowY);
+    doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30);
+    doc.text(String(value||'—'), x, rowY+4);
+  }
+
+  // ── En-tête ──
+  doc.setFillColor(PR[0],PR[1],PR[2]);
+  doc.rect(0, 0, pW, 16, 'F');
+  if (logo) {
+    try { var lf=logo.startsWith('data:image/png')?'PNG':'JPEG'; doc.addImage(logo,lf,mg,2,30,11); }
+    catch(e) {}
+  } else {
+    doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+    doc.text(agence, mg, 10);
+  }
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(200,220,255);
+  doc.text('FICHE BIEN · BailScan Pro · ' + new Date().toLocaleDateString('fr-FR'), pW-mg, 10, {align:'right'});
+  y = 24;
+
+  // ── Titre ──
+  var adresseAff = m.adresseFull || ((m.adresse||'') + (m.cp?' '+m.cp:'') + (m.ville?' '+m.ville:''));
   doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
-  doc.text(adresseAff || 'Fiche bien', mg, y); y += 7;
-  if (m.bailleur) {
-    doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
-    doc.text('Bailleur : ' + m.bailleur, mg, y); y += 5;
+  doc.text(adresseAff || 'Fiche bien', mg, y); y += 6;
+  if (m.statut) {
+    var statColors = {loue:[22,101,52], vacant:[146,64,14], travaux:[30,64,175], revoque:[154,52,18]};
+    var sc = statColors[m.statut] || [100,100,100];
+    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(sc[0],sc[1],sc[2]);
+    var statLabels = {loue:'Loué', vacant:'Vacant', travaux:'En travaux', revoque:'Révoqué'};
+    doc.text('Statut : ' + (statLabels[m.statut]||m.statut), mg, y); y += 7;
   }
-  doc.setDrawColor(PR[0],PR[1],PR[2]); doc.setLineWidth(0.4);
-  doc.line(mg, y, pW-mg, y); y += 6;
 
-  // ── Infos clés ──
-  var infos = [
-    ['Type', m.type || '—'], ['Surface', (m.surface||'—') + ' m²'], ['Loyer HC', (m.loyer||'—') + ' €/mois'],
-    ['Charges', (m.charges||'—') + ' €/mois'], ['DPE', m.dpe||'—'], ['Statut', m.statut||'—'],
-    ['Zone', m.zone||'Non concerné'], ['Bailleur', m.bailleur||'—'],
-    ['Email bailleur', m.bailleurEmail||'—'], ['Tél. bailleur', m.bailleurTel||'—'],
-    ['Date entrée', m.dateEntree||'—'], ['Fin de bail', m.dateFin||'—'],
+  // ── Photos du bien ──
+  var photos = getMandatPhotos ? getMandatPhotos(m.id) : [];
+  if (photos && photos.length) {
+    checkPage(60);
+    sectionTitle('Photos du bien');
+    var photoX = mg, photoY = y, photoW = 55, photoH = 42, perRow = 3, gap = 3;
+    photos.forEach(function(ph, pi) {
+      if (pi > 0 && pi % perRow === 0) { photoX = mg; photoY += photoH + gap; checkPage(photoH + gap); }
+      else if (pi > 0) { photoX += photoW + gap; }
+      try {
+        var fmt = ph.startsWith('data:image/png') ? 'PNG' : 'JPEG';
+        doc.addImage(ph, fmt, photoX, photoY, photoW, photoH);
+      } catch(e) {}
+    });
+    y = photoY + photoH + 8;
+  }
+
+  // ── Caractéristiques ──
+  checkPage(50);
+  sectionTitle('Caractéristiques du bien');
+  var col1 = mg+2, col2 = mg+contentW/2+2, rowH = 10;
+  var carac = [
+    ['Type de bien', m.type||'—'], ['Surface', (m.surface||'—')+' m²'],
+    ['Nombre de pièces', m.pieces||'—'], ['DPE', m.dpe||'—'],
+    ['Zone encadrement', m.zone||'Non concerné'], ['Lien annonce', m.lienAnnonce||'—'],
   ];
-
-  doc.setFillColor(SEC[0],SEC[1],SEC[2]); doc.roundedRect(mg, y, contentW, 8 * Math.ceil(infos.length/2), 2, 2, 'F');
-  var col1X = mg + 4, col2X = mg + contentW/2 + 4, rowH = 7;
-  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
-  infos.forEach(function(row, i) {
-    var xi = i % 2 === 0 ? col1X : col2X;
-    var yi = y + 5 + Math.floor(i/2) * rowH;
-    doc.setFont('helvetica','bold'); doc.text(row[0] + ' :', xi, yi);
-    doc.setFont('helvetica','normal'); doc.text(String(row[1]), xi + 25, yi);
+  doc.setFillColor(SEC[0],SEC[1],SEC[2]);
+  doc.roundedRect(mg, y, contentW, Math.ceil(carac.length/2)*rowH+4, 2,2,'F');
+  carac.forEach(function(r, i) {
+    var xi = i%2===0 ? col1 : col2;
+    var yi = y + 7 + Math.floor(i/2)*rowH;
+    row(r[0], r[1], xi, yi);
   });
-  y += 8 * Math.ceil(infos.length/2) + 8;
+  y += Math.ceil(carac.length/2)*rowH + 8;
 
-  // ── Locataires ──
+  // ── Financier ──
+  checkPage(40);
+  sectionTitle('Informations financières');
+  var loyer = parseFloat(m.loyer||0);
+  var complement = parseFloat(m.complement||0);
+  var charges = parseFloat(m.charges||0);
+  var depot = parseFloat(m.depot||0);
+  var fin = [
+    ['Loyer HC', (m.loyer||'—')+' €/mois'], ['Complément', complement ? complement+' €/mois' : '—'],
+    ['Charges', (m.charges||'—')+' €/mois'], ['Total CC', (loyer+complement+charges)+' €/mois'],
+    ['Dépôt de garantie', depot ? depot+' €' : '—'], [''],
+  ];
+  doc.setFillColor(SEC[0],SEC[1],SEC[2]);
+  doc.roundedRect(mg, y, contentW, Math.ceil(fin.length/2)*rowH+4, 2,2,'F');
+  fin.forEach(function(r, i) {
+    if (!r[0]) return;
+    var xi = i%2===0 ? col1 : col2;
+    var yi = y + 7 + Math.floor(i/2)*rowH;
+    row(r[0], r[1], xi, yi);
+  });
+  y += Math.ceil(fin.length/2)*rowH + 8;
+
+  // ── Bailleur ──
+  checkPage(40);
+  sectionTitle('Propriétaire bailleur');
+  var bail = [
+    ['Nom / Société', m.bailleur||'—'], ['Email', m.bailleurEmail||'—'],
+    ['Téléphone', m.bailleurTel||'—'], ['Adresse', m.bailleurAdresse||'—'],
+    ['CP', m.bailleurCp||'—'], ['Ville', m.bailleurVille||'—'],
+  ];
+  doc.setFillColor(SEC[0],SEC[1],SEC[2]);
+  doc.roundedRect(mg, y, contentW, Math.ceil(bail.length/2)*rowH+4, 2,2,'F');
+  bail.forEach(function(r, i) {
+    var xi = i%2===0 ? col1 : col2;
+    var yi = y + 7 + Math.floor(i/2)*rowH;
+    row(r[0], r[1], xi, yi);
+  });
+  y += Math.ceil(bail.length/2)*rowH + 8;
+
+  // ── Bail & dates ──
+  checkPage(35);
+  sectionTitle('Bail & occupation');
+  var dates = [
+    ["Date d'entrée", m.dateEntree||"—"], ["Fin de bail", m.dateFin||"—"],
+    ['Locataire rattaché', ''],[''],
+  ];
   var locs = loadLocataires ? loadLocataires() : [];
-  var locataires = locs.filter(function(l){ return String(l.mandatId) === String(mandatId); });
-  if (locataires.length) {
-    doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
-    doc.text('Locataire(s)', mg, y); y += 5;
-    locataires.forEach(function(l) {
-      doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
-      doc.text('• ' + (l.prenom||'') + ' ' + (l.nom||'') + (l.email ? ' — ' + l.email : ''), mg+2, y); y += 5;
-    });
-    y += 3;
+  var locatairesFiche = locs.filter(function(l){ return String(l.mandatId)===String(mandatId); });
+  locatairesFiche.forEach(function(l) {
+    checkPage(8);
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
+    doc.text('• '+(l.prenom||'')+' '+(l.nom||'')+(l.email?' — '+l.email:'')+(l.tel?' — '+l.tel:''), mg+3, y); y+=5;
+  });
+  if (!locatairesFiche.length) {
+    doc.setFontSize(8); doc.setFont('helvetica','italic'); doc.setTextColor(150,150,150);
+    doc.text('Aucun locataire rattaché', mg+3, y); y+=5;
   }
-
-  // ── Baux ──
-  var baux = (proState.bailsHisto||[]).filter(function(b){ return String(b.mandatId) === String(mandatId); });
-  if (baux.length) {
-    doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
-    doc.text('Bail(s)', mg, y); y += 5;
-    baux.forEach(function(b) {
-      doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
-      doc.text('• Bail généré le ' + b.date, mg+2, y); y += 5;
-    });
-    y += 3;
-  }
+  y += 4;
 
   // ── Candidats ──
   var candidats = m.candidats || [];
   if (candidats.length) {
-    doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
-    doc.text('Candidats', mg, y); y += 5;
+    checkPage(20);
+    sectionTitle('Candidats analysés');
     candidats.forEach(function(ca) {
-      var icon = ca.verdict === 'GO' ? '✓' : '✗';
-      doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(ca.verdict === 'GO' ? 22 : 153, ca.verdict === 'GO' ? 101 : 27, ca.verdict === 'GO' ? 52 : 27);
-      doc.text(icon + ' ' + ca.nom + ' — Score ' + ca.score + '/100 — ' + ca.verdict + ' (' + ca.date + ')', mg+2, y); y += 5;
+      checkPage(7);
+      var ok = ca.verdict === 'GO';
+      doc.setFontSize(8); doc.setFont('helvetica','normal');
+      doc.setTextColor(ok?22:153, ok?101:27, ok?52:27);
+      doc.text((ok?'✓ ':' ✗ ')+ca.nom+' — Score '+ca.score+'/100 — '+ca.verdict+' ('+ca.date+')', mg+3, y); y+=5;
+    });
+    y += 3;
+  }
+
+  // ── EDL ──
+  var edlList = [];
+  try { edlList = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return String(e.mandatId)===String(mandatId); }); } catch(e){}
+  if (edlList.length) {
+    checkPage(20);
+    sectionTitle('États des lieux');
+    edlList.forEach(function(e) {
+      checkPage(7);
+      doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
+      var typeL = e.type==='entree'?'Entrée':'Sortie';
+      doc.text('• EDL '+typeL+' — '+(e.date||'')+(e.locataire?' — '+e.locataire:''), mg+3, y); y+=5;
+    });
+    y += 3;
+  }
+
+  // ── Travaux ──
+  var tickets = [];
+  try { tickets = JSON.parse(localStorage.getItem('bailscan_tickets')||'[]').filter(function(t){ return String(t.mandatId)===String(mandatId); }); } catch(e){}
+  if (tickets.length) {
+    checkPage(20);
+    sectionTitle('Travaux & interventions');
+    tickets.forEach(function(t) {
+      checkPage(7);
+      doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
+      doc.text('• '+(t.titre||t.type||'Intervention')+' — '+(t.statut||'')+(t.date?' — '+t.date:''), mg+3, y); y+=5;
     });
     y += 3;
   }
 
   // ── Notes ──
   if (m.notes) {
-    doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
-    doc.text('Notes', mg, y); y += 5;
-    var noteLines = doc.splitTextToSize(m.notes, contentW - 4);
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
-    noteLines.forEach(function(l) { doc.text(l, mg+2, y); y += 4.5; });
-    y += 3;
+    checkPage(20);
+    sectionTitle('Notes');
+    var noteLines = doc.splitTextToSize(m.notes, contentW-4);
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
+    noteLines.forEach(function(l) { checkPage(5); doc.text(l, mg+3, y); y+=4.5; });
+    y += 4;
+  }
+
+  // ── Révocation ──
+  if (m.statut === 'revoque' && m.dateRevocation) {
+    checkPage(15);
+    sectionTitle('Révocation du mandat');
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(154,52,18);
+    doc.text('Date de révocation : ' + new Date(m.dateRevocation).toLocaleDateString('fr-FR'), mg+3, y); y+=6;
   }
 
   // ── Pied de page ──
-  doc.setFillColor(245,245,245); doc.rect(0, pH-10, pW, 10, 'F');
-  doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
-  doc.text(agence + ' · BailScan Pro · ' + new Date().toLocaleDateString('fr-FR'), mg, pH-4);
+  var totalPages = doc.internal.getNumberOfPages();
+  for (var p=1; p<=totalPages; p++) {
+    doc.setPage(p);
+    doc.setFillColor(245,245,245); doc.rect(0, pH-8, pW, 8, 'F');
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
+    doc.text(agence+' · BailScan Pro · Exporté le '+new Date().toLocaleDateString('fr-FR'), mg, pH-3);
+    doc.text('Page '+p+'/'+totalPages, pW-mg, pH-3, {align:'right'});
+  }
 
-  doc.save('fiche-mandat-' + (m.adresse||'bien').replace(/[^a-zA-Z0-9]/g,'-').substring(0,30) + '.pdf');
+  doc.save('fiche-mandat-'+(m.adresse||'bien').replace(/[^a-zA-Z0-9]/g,'-').substring(0,30)+'.pdf');
   showToast('Fiche téléchargée.', 'green');
 }
 
@@ -14425,10 +14548,34 @@ function selectDossierLoc(locId) {
     updateDossierCalc();
   }
   if (l.loyer) { f('dossierLoyer', l.loyer); var dcEl2=document.getElementById('dossierComplement'); if(dcEl2) dcEl2.value=(l.complement!==undefined&&l.complement!==null)?l.complement:0; }
+  // Auto-sélectionner le mandat lié
+  if (l.mandatId) {
+    var mLie = (loadMandats ? loadMandats() : []).find(function(x){ return String(x.id)===String(l.mandatId); });
+    if (mLie) selectDossierMandatFromSearch(mLie.id, mLie.adresseFull || mLie.adresse || '');
+  }
   // Charges depuis locataire ou mandat lié
   var chDos = parseFloat(l.charges||0);
   if (!chDos && l.mandatId) { try { var mLoc=(loadMandats?loadMandats():[]).find(function(x){return String(x.id)===String(l.mandatId);}); if(mLoc) chDos=parseFloat(mLoc.charges||0); } catch(e){} }
   var chEl = document.getElementById('dossierCharges'); if(chEl) chEl.value = chDos||'';
+  // Garant depuis la fiche locataire
+  if (l.garant && l.garant !== 'non') {
+    var gSel = document.getElementById('dossierGarant');
+    if (gSel) { gSel.value = l.garant; toggleDossierGarantFields(); }
+    var g = function(id, val){ var el=document.getElementById(id); if(el && (val||val===0)) el.value=val; };
+    g('dossierGarantPrenom', l.garantPrenom||'');
+    g('dossierGarantNom', l.garantNom||'');
+    g('dossierGarantAdresse', l.garantAdresse||'');
+    g('dossierGarantCp', l.garantCp||'');
+    g('dossierGarantVille', l.garantVille||'');
+    g('dossierGarantEmail', l.garantEmail||'');
+    g('dossierGarantTel', l.garantTel||'');
+    g('dossierGarantRevenus', l.garantRevenus||'');
+    g('dossierGarantOrganisme', l.garantOrganisme||'');
+    g('dossierGarantNumDossier', l.garantNumDossier||'');
+    if (l.garantContrat) { var gcSel=document.getElementById('dossierGarantContrat'); if(gcSel) gcSel.value=l.garantContrat; }
+    if (l.garantAnciennete) { var gaSel=document.getElementById('dossierGarantAnciennete'); if(gaSel) gaSel.value=l.garantAnciennete; }
+    updateDossierCalc();
+  }
   updateDossierCalc();
 }
 
@@ -15436,5 +15583,4 @@ function edlVoirPhoto(id) {
 </div>
 
 </body>
-</html>y>
 </html>
