@@ -10269,10 +10269,9 @@ function sendAgentMessage() {
     method: 'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: buildPortfolioContext(),
-      messages: [{ role: 'user', content: text }]
+      messages: agentHistory.slice(-10),
+      max_tokens: 800,
+      model: 'claude-haiku-4-5-20251001'
     })
   })
   .then(function(r) {
@@ -10304,6 +10303,7 @@ function sendAgentMessage() {
   });
   } catch(e) {
     agentTyping = false;
+    console.error("[Agent] catch externe:", e);
     addAgentBubble('assistant', '❌ Erreur JS : ' + e.message);
     console.error('[Agent] erreur:', e);
   }
@@ -13080,11 +13080,14 @@ function openFicheLocataire(locId, event, tab) {
 
   var locCourriers = (proState.courrierHisto||[]).filter(function(co){ return String(co.locId)===String(locId); });
   var locBaux = (proState.bailsHisto||[]).filter(function(b){ return String(b.locataireId)===String(locId); });
+  var locEDLCount = 0;
+  try { locEDLCount = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return String(e.locId)===String(locId)||(l.mandatId&&String(e.mandatId)===String(l.mandatId)); }).length; } catch(eEdl2) {}
   [
     {id:'infos', label:'Infos'},
     {id:'baux', label:'Baux ('+locBaux.length+')'},
     {id:'quittances', label:'Quittances ('+locQ.length+')'},
-    {id:'courriers', label:'📨 Courriers ('+locCourriers.length+')'},
+    {id:'edl', label:'États des lieux ('+locEDLCount+')'},
+    {id:'courriers', label:'Courriers ('+locCourriers.length+')'},
     {id:'documents', label:'Documents ('+docs.length+')'}
   ].forEach(function(t){
     var btn = document.createElement('button');
@@ -13187,9 +13190,8 @@ function openFicheLocataire(locId, event, tab) {
   }
 
   if (activeTab === 'edl') {
-    var edlList = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){
-      return String(e.locId)===String(locId) || (l.mandatId && String(e.mandatId)===String(l.mandatId));
-    });
+    var edlList = [];
+    try { edlList = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return String(e.locId)===String(locId) || (l.mandatId && String(e.mandatId)===String(l.mandatId)); }); } catch(eEdl) {}
     var div = document.createElement('div');
     if (!edlList.length) {
       div.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gris)"><div style="font-size:2rem;margin-bottom:8px">🏠</div><div>Aucun état des lieux enregistré pour ce locataire</div></div>';
@@ -14306,9 +14308,21 @@ function showInviteMsg(txt,type){var el=document.getElementById('inviteMsg');el.
 function showPwdMsg(txt,type){var el=document.getElementById('pwdMsg');el.textContent=txt;el.style.display='block';el.style.color=type==='error'?'var(--accent)':'var(--vert)';}
 
 function toggleLocGarantFields() {
-  var garant = (document.getElementById('locGarant')||{}).value;
+  var garant = (document.getElementById('locGarant')||{value:'non'}).value;
   var fields = document.getElementById('locGarantFields');
-  if (fields) fields.style.display = (garant === 'physique') ? 'block' : 'none';
+  var hasFields = ['physique','caution_solidaire','visale','garantme','autre_organisme'].includes(garant);
+  if (fields) fields.style.display = hasFields ? 'block' : 'none';
+  var titleEl = document.getElementById('locGarantFieldsTitle');
+  var titles = {physique:'Garant physique',caution_solidaire:'Caution solidaire',visale:'Visale',garantme:'GarantMe',autre_organisme:'Organisme garant'};
+  if (titleEl) titleEl.textContent = (titles[garant] || 'Garant') + ' — Informations';
+  var physRow = document.getElementById('locGarantPhysRow');
+  var numRow = document.getElementById('locGarantNumRow');
+  var orgRow = document.getElementById('locGarantOrganismeRow');
+  var revRow = document.getElementById('locGarantRevenusRow');
+  if (physRow) physRow.style.display = (garant==='physique'||garant==='caution_solidaire') ? 'block' : 'none';
+  if (numRow) numRow.style.display = (garant==='visale'||garant==='garantme') ? 'block' : 'none';
+  if (orgRow) orgRow.style.display = (garant==='autre_organisme') ? 'block' : 'none';
+  if (revRow) revRow.style.display = (garant==='visale'||garant==='garantme') ? 'block' : 'none';
 }
 
 function updateColorPreview() {
