@@ -819,18 +819,301 @@ body.is-dashboard #marketingPage { display: none !important; }
 .ob-step.done { border-color: rgba(45,106,79,.3) !important; background: #f0fdf4 !important; }
 .ob-step.done > div:last-child::before { content: '✓'; color: var(--vert); font-weight:700; }
 </style>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE COMPLET — Landing + Dashboard + EDL
+   Breakpoints: 1024px (laptop) | 768px (tablette) | 480px (mobile)
+═══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────
+   LAPTOP / TABLETTE LARGE (≤1024px)
+───────────────────────────────────────────────*/
+@media (max-width: 1024px) {
+  /* Landing */
+  .hero-inner { gap: 40px !important; }
+  .hero h1 { font-size: 2.4rem !important; }
+  .features-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .pricing-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
+
+  /* Dashboard KPIs */
+  .dash-kpi-row { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Zones encadrement */
+  .zones-grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ─────────────────────────────────────────────
+   TABLETTE (≤768px)
+───────────────────────────────────────────────*/
+@media (max-width: 768px) {
+
+  /* ── HEADER LANDING ── */
+  header {
+    padding: 8px 16px !important;
+    position: fixed; top:0; left:0; right:0; z-index:200;
+  }
+  header nav { display: none !important; }
+  header .logo { font-size: .95rem; }
+  .nav-hamburger {
+    display: flex !important;
+    flex-direction: column;
+    gap: 5px; cursor: pointer;
+    padding: 6px; background: none; border: none;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: white; border-radius: 2px; transition: all .2s;
+  }
+  .nav-mobile-open {
+    display: flex !important; flex-direction: column;
+    position: fixed; top: 50px; left: 0; right: 0;
+    background: rgba(17,24,39,0.98); backdrop-filter: blur(12px);
+    padding: 20px 24px; gap: 16px; z-index: 199;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .nav-mobile-open a, .nav-mobile-open button {
+    width: 100% !important; text-align: center !important;
+    padding: 12px !important; font-size: .9rem !important;
+  }
+
+  /* ── HERO LANDING ── */
+  .hero { padding: 80px 20px 48px !important; }
+  .hero-inner { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .hero h1 { font-size: 1.9rem !important; line-height: 1.2 !important; }
+  .hero-sub { font-size: .85rem !important; }
+  .hero-right { display: none !important; }
+  .hero-stats { flex-wrap: wrap; gap: 14px !important; }
+  .hero-ctas { flex-direction: column; gap: 10px !important; }
+  .hero-ctas button, .hero-ctas a { width: 100% !important; text-align: center !important; }
+
+  /* ── FEATURES ── */
+  .features-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .feat-card { min-height: auto !important; }
+  .feat-card > div[style*="height:220px"] { height: 140px !important; }
+
+  /* ── PRICING ── */
+  .pricing-grid { grid-template-columns: 1fr !important; gap: 16px !important; max-width: 420px; margin: 0 auto !important; }
+
+  /* ── HOW IT WORKS / STEPS ── */
+  .steps-grid, .how-grid, .step-grid { grid-template-columns: 1fr !important; }
+
+  /* ── FOOTER ── */
+  .footer-top-pro { grid-template-columns: 1fr !important; gap: 20px !important; }
+  .footer-inner-pro { padding: 28px 16px !important; }
+  .footer-bottom-pro { flex-direction: column !important; gap: 8px !important; text-align: center !important; }
+
+  /* ── DASHBOARD TOPBAR MOBILE ── */
+  .dash-hamburger {
+    display: flex !important;
+    align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,.08);
+    border: none; border-radius: 8px; cursor: pointer; flex-shrink: 0;
+  }
+  .dash-hamburger svg { stroke: white; }
+  .dash-topbar-mobile {
+    display: flex !important;
+    align-items: center; justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--sidebar-bg);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .dash-topbar-mobile .logo-text {
+    font-size: .95rem; font-weight: 700; color: white; letter-spacing: -.02em;
+  }
+
+  /* ── SIDEBAR DRAWER ── */
+  .dash-sidebar {
+    position: fixed !important;
+    top: 0 !important; left: -260px !important;
+    width: 240px !important; height: 100vh !important;
+    z-index: 300 !important;
+    transition: left .25s ease !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,.4) !important;
+  }
+  .dash-sidebar.open { left: 0 !important; }
+  .dash-sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.5); z-index: 299;
+  }
+  .dash-sidebar-overlay.open { display: block; }
+
+  /* ── LAYOUT DASHBOARD ── */
+  .dash-layout { display: block !important; margin-top: 0 !important; }
+  .dash-main {
+    margin-left: 0 !important; width: 100% !important;
+    padding: 16px !important; min-height: 100vh;
+  }
+
+  /* ── KPIs ── */
+  .dash-kpi-row { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .kpi-card { padding: 14px !important; }
+
+  /* ── TABLEAUX ── */
+  .dash-card { overflow-x: auto; }
+  .dash-table-full { min-width: 600px; }
+
+  /* ── FORMULAIRES ── */
+  .form-grid-pro, .form-grid-pro.cols3 { grid-template-columns: 1fr !important; }
+  .form-row { flex-direction: column !important; }
+
+  /* ── HEADERS DE PAGES ── */
+  .dash-main-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+  .dash-main-header > div:last-child { width: 100%; display: flex; flex-wrap: wrap; gap: 8px; }
+  .dash-main-header button { flex: 1; min-width: 120px; }
+
+  /* ── ACTIONS RAPIDES ── */
+  .actions-rapides-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* ── CARDS LOCATAIRES / MANDATS ── */
+  .loc-card, .mandat-card { width: 100% !important; }
+
+  /* ── ZONES ENCADREMENT ── */
+  div[style*="grid-template-columns:repeat(3,1fr)"],
+  .zones-grid-3 { grid-template-columns: 1fr 1fr !important; }
+
+  /* ── IRL / RÉVISION ── */
+  .irl-grid { grid-template-columns: 1fr !important; }
+
+  /* ── MODALE GÉNÉRALE ── */
+  .modal { width: 96% !important; max-height: 92vh !important; margin: 4vh auto !important; }
+  .modal-overlay { padding: 0 !important; align-items: flex-end !important; }
+  .modal {
+    border-radius: 16px 16px 0 0 !important;
+    max-height: 90vh !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* ── FICHE BIEN / LOCATAIRE ── */
+  #modalFicheBienContent { padding: 0 !important; }
+
+  /* ── BANDEAU TRIAL ── */
+  #trialBanner { flex-direction: column !important; gap: 12px !important; padding: 16px !important; }
+  #trialBanner button { width: 100% !important; }
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE (≤480px)
+───────────────────────────────────────────────*/
+@media (max-width: 480px) {
+  /* Typography */
+  .hero h1 { font-size: 1.6rem !important; }
+  .hero-sub { font-size: .82rem !important; }
+
+  /* KPIs 2 par ligne */
+  .dash-kpi-row { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .kpi-card { padding: 12px !important; }
+  .kpi-val { font-size: 1.4rem !important; }
+  .kpi-label { font-size: .68rem !important; }
+
+  /* Actions rapides 2 colonnes */
+  .actions-rapides-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+
+  /* Boutons */
+  .btn-primary-pro, .btn-sm { font-size: .82rem !important; padding: 9px 14px !important; }
+
+  /* Tables : garder seulement colonnes essentielles */
+  .dash-table-full th:nth-child(n+4),
+  .dash-table-full td:nth-child(n+4) { display: none !important; }
+
+  /* Dashboard header */
+  .dash-main-header button { width: 100% !important; font-size: .8rem !important; }
+
+  /* Page title */
+  .dash-page-title { font-size: 1rem !important; }
+  .dash-page-sub { font-size: .72rem !important; }
+
+  /* Pricing */
+  .pricing-card { padding: 20px 16px !important; }
+
+  /* Features landing */
+  .features-grid { grid-template-columns: 1fr !important; }
+  .feat-card > div[style*="height:220px"] { height: 120px !important; }
+
+  /* Formulaires */
+  .form-input-pro, .form-label { font-size: .85rem !important; }
+
+  /* Zones encadrement → 1 colonne sur mobile */
+  div[style*="grid-template-columns:repeat(3,1fr)"],
+  .zones-grid-3 { grid-template-columns: 1fr !important; }
+
+  /* Loyers groupés */
+  .loyer-group-header { flex-direction: column !important; align-items: flex-start !important; }
+
+  /* Candidats dans fiche mandat */
+  .candidat-card { flex-direction: column !important; }
+
+  /* Trial pill dans sidebar */
+  .dash-trial-pill { display: none !important; }
+
+  /* Scrollbar cachée sur mobile */
+  .dash-main { scrollbar-width: none; }
+  .dash-main::-webkit-scrollbar { display: none; }
+
+  /* Footer landing */
+  .footer-top-pro { grid-template-columns: 1fr !important; }
+  .footer-brand-pro { margin-bottom: 8px !important; }
+
+  /* Modales plein écran sur mobile */
+  .modal-overlay { align-items: flex-end !important; }
+  .modal {
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 95vh !important;
+    width: 100% !important;
+  }
+}
+
+/* ── EDL TABLETTE / MOBILE ── */
+@media (max-width: 900px) {
+  #edlModalInner {
+    width: 100% !important; max-width: 100% !important;
+    height: 100vh !important; max-height: 100vh !important;
+    border-radius: 0 !important;
+    display: flex; flex-direction: column;
+  }
+  #modalEDL { padding: 0 !important; align-items: flex-start !important; }
+  .edl-step-nav-bottom {
+    display: flex !important; position: sticky; bottom: 0;
+    background: white; border-top: 1px solid var(--border);
+    padding: 12px 16px; gap: 10px; z-index: 10;
+  }
+  .edl-step-nav-bottom button { flex: 1; }
+  .edl-piece-grid { grid-template-columns: 1fr !important; }
+  .edl-sigs-row { flex-direction: column !important; gap: 24px !important; }
+  .edl-sig-box { width: 100% !important; }
+}
+
+/* ── RESPONSIVE DASH LAYOUT ── */
+@media (max-width: 900px) {
+  .dash-layout { grid-template-columns: 1fr; }
+  .dash-sidebar { display: none; }
+  .dash-main { margin-left: 0; padding: 20px 16px; }
+  .dash-kpi-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── RESPONSIVE FORMS ── */
+@media (max-width: 768px) {
+  .form-grid-pro { grid-template-columns: 1fr; }
+}
+</style>
+
 </head>
 <body>
 
 <header>
   <a href="/" class="logo">Bail<em style="font-style:italic;color:#f97316">Scan</em><span class="logo-badge">PRO</span></a>
-  <nav>
+  <nav id="mainNav">
     <a href="#" onclick="history.back();return false;" style="display:none" id="navRetour">← Retour</a>
     <a href="#fonctionnalites">Fonctionnalités</a>
     <a href="#tarifs">Tarifs</a>
     <button class="btn-header-login" onclick="openModal('login')">Connexion</button>
     <button class="btn-header-cta" onclick="openModal('signup')">Essai gratuit 3 jours →</button>
   </nav>
+  <button class="nav-hamburger" id="navHamburger" style="display:none" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <!-- PAGE MARKETING (visible si non connecté) -->
@@ -1332,6 +1615,18 @@ body.is-dashboard #marketingPage { display: none !important; }
 </div>
 
 <div id="dashboardSection">
+  <!-- Topbar mobile -->
+  <div class="dash-topbar-mobile" style="display:none" id="dashTopbarMobile">
+    <button class="dash-hamburger" onclick="toggleDashSidebar()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="1.8">
+        <line x1="3" y1="6" x2="17" y2="6"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="14" x2="17" y2="14"/>
+      </svg>
+    </button>
+    <span class="logo-text">Bail<em style="font-style:italic;color:#f97316">Scan</em> <span style="font-size:.55em;font-weight:700;background:var(--pro-accent);color:white;padding:1px 6px;border-radius:4px">PRO</span></span>
+    <div style="width:36px"></div>
+  </div>
+  <!-- Overlay sidebar mobile -->
+  <div class="dash-sidebar-overlay" id="dashSidebarOverlay" onclick="closeDashSidebar()"></div>
   <div class="dash-layout">
     <!-- Sidebar -->
     <div class="dash-sidebar">
@@ -3808,25 +4103,24 @@ body.is-dashboard #marketingPage { display: none !important; }
         </div>
       </div>
 
+      <!-- Export données -->
+      <div class="dash-card" style="margin-bottom:16px">
+        <div class="dash-section-title">Export & sauvegarde des données</div>
+        <p style="font-size:.84rem;color:var(--gris);margin-bottom:16px;line-height:1.6">
+          Exportez toutes vos données BailScan en CSV compatibles Excel : mandats, locataires, loyers, quittances, états des lieux, travaux, courriers.
+        </p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn-primary-pro" onclick="exportToutesLesDonnees()">Exporter toutes mes données</button>
+          <button class="btn-sm" onclick="exportRegistreExcel()">Registre mandats (Excel)</button>
+        </div>
+        <div style="margin-top:10px;font-size:.75rem;color:var(--gris)">Fichiers CSV séparés · Séparateur point-virgule · Compatible Excel FR</div>
+      </div>
+
       <!-- /dash-main -->
 
 <!-- ═══════════════════════════════════════════════════════
   TAB: LOYERS & IMPAYÉS
 ═══════════════════════════════════════════════════════ -->
-
-        <!-- Section Export -->
-        <div class="dash-card" style="margin-bottom:16px">
-          <div class="dash-section-title">Export & sauvegarde des données</div>
-          <p style="font-size:.84rem;color:var(--gris);margin-bottom:16px;line-height:1.6">
-            Exportez toutes vos données BailScan en CSV compatibles Excel.
-            Mandats, locataires, loyers, quittances, états des lieux, travaux, courriers.
-          </p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn-primary-pro" onclick="exportToutesLesDonnees()">Exporter toutes mes données</button>
-            <button class="btn-sm" onclick="exportRegistreExcel()">Registre mandats (Excel)</button>
-          </div>
-          <div style="margin-top:10px;font-size:.75rem;color:var(--gris)">Fichiers CSV séparés par catégorie · Séparateur point-virgule · Compatible Excel FR</div>
-        </div>
 
 
 
@@ -8959,6 +9253,51 @@ document.addEventListener('click', function(e) {
   var d = document.getElementById('edlMandatDropdown');
   if (d && !d.contains(e.target) && e.target.id !== 'edlMandatSearch') d.style.display = 'none';
 });
+
+
+// ── Responsive : menu mobile landing ──
+function toggleMobileNav() {
+  var nav = document.getElementById('mainNav');
+  var btn = document.getElementById('navHamburger');
+  if (!nav) return;
+  nav.classList.toggle('nav-mobile-open');
+  nav.style.display = nav.classList.contains('nav-mobile-open') ? 'flex' : '';
+}
+
+// ── Responsive : sidebar dashboard ──
+function toggleDashSidebar() {
+  var sidebar = document.querySelector('.dash-sidebar');
+  var overlay = document.getElementById('dashSidebarOverlay');
+  if (!sidebar) return;
+  sidebar.classList.toggle('open');
+  if (overlay) overlay.classList.toggle('open');
+}
+function closeDashSidebar() {
+  var sidebar = document.querySelector('.dash-sidebar');
+  var overlay = document.getElementById('dashSidebarOverlay');
+  if (sidebar) sidebar.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+}
+
+// ── Détection mobile : afficher/cacher éléments ──
+function applyResponsiveLayout() {
+  var isMobile = window.innerWidth <= 768;
+  var hamburger = document.getElementById('navHamburger');
+  var topbarMobile = document.getElementById('dashTopbarMobile');
+  var mainNav = document.getElementById('mainNav');
+  if (hamburger) hamburger.style.display = isMobile ? 'flex' : 'none';
+  if (topbarMobile) topbarMobile.style.display = isMobile ? 'flex' : 'none';
+  if (mainNav && !isMobile) {
+    mainNav.classList.remove('nav-mobile-open');
+    mainNav.style.display = '';
+  }
+  // Fermer sidebar si on passe en desktop
+  if (!isMobile) closeDashSidebar();
+}
+window.addEventListener('resize', applyResponsiveLayout);
+window.addEventListener('DOMContentLoaded', applyResponsiveLayout);
+// Fermer sidebar quand on change de tab
+var _origShowDashTab = typeof showDashTab === 'function' ? showDashTab : null;
 
 function openNouvelEDL() {
   edlEditId = null;
