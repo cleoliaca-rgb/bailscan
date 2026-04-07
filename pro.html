@@ -1457,7 +1457,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div class="kpi-val" id="dashKpiBiens" style="color:var(--pro-accent)">0</div>
                 <div class="kpi-label">Biens gérés</div>
               </div>
-              <div style="font-size:1.6rem;opacity:.3">🏘</div>
+              <div style="font-size:1.6rem;opacity:.3"></div>
             </div>
             <div class="kpi-trend up" id="dashKpiBiensSub">Dont <span id="dashKpiLoues">0</span> loués</div>
           </div>
@@ -1467,7 +1467,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div class="kpi-val" id="dashKpiLocs" style="color:var(--success)">0</div>
                 <div class="kpi-label">Locataires actifs</div>
               </div>
-              <div style="font-size:1.6rem;opacity:.3">👤</div>
+              <div style="font-size:1.6rem;opacity:.3"></div>
             </div>
             <div class="kpi-trend" id="dashKpiLocsSub" style="color:var(--gris)"></div>
           </div>
@@ -1487,7 +1487,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div class="kpi-val" id="dashKpiAlertes" style="color:var(--danger)">0</div>
                 <div class="kpi-label">Alertes actives</div>
               </div>
-              <div style="font-size:1.6rem;opacity:.3">🔔</div>
+              <div style="font-size:1.6rem;opacity:.3"></div>
             </div>
             <div class="kpi-trend warn" id="dashKpiAlertesSub"></div>
           </div>
@@ -1498,25 +1498,25 @@ body.is-dashboard #marketingPage { display: none !important; }
 
           <!-- Actions rapides -->
           <div class="dash-card" style="padding:18px">
-            <div class="dash-section-title" style="margin-bottom:14px">⚡ Actions rapides</div>
+            <div class="dash-section-title" style="margin-bottom:14px">Actions rapides</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
               <button onclick="showDashTab('nouveau')" style="background:#eef2fb;border:1px solid #c7d7f8;color:var(--pro-accent);border-radius:10px;padding:12px;font-size:.8rem;font-weight:600;cursor:pointer;text-align:left;transition:all .15s" onmouseover="this.style.background='#dde9ff'" onmouseout="this.style.background='#eef2fb'">
-                <div style="font-size:1.3rem;margin-bottom:4px">🔍</div>Analyser un bail
+                <div style="margin-bottom:4px;opacity:.8"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l3 3"/></svg></div>Analyser un bail
               </button>
               <button onclick="showDashTab('dossier')" style="background:#f0fdf4;border:1px solid #86efac;color:#166534;border-radius:10px;padding:12px;font-size:.8rem;font-weight:600;cursor:pointer;text-align:left;transition:all .15s" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
-                <div style="font-size:1.3rem;margin-bottom:4px">🎯</div>Analyser un dossier
+                <div style="margin-bottom:4px;opacity:.8"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="3"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/></svg></div>Analyser un dossier
               </button>
               <button onclick="showDashTab('etat-lieux')" style="background:#fff7ed;border:1px solid #fdba74;color:#c2410c;border-radius:10px;padding:12px;font-size:.8rem;font-weight:600;cursor:pointer;text-align:left;transition:all .15s" onmouseover="this.style.background='#ffedd5'" onmouseout="this.style.background='#fff7ed'">
-                <div style="font-size:1.3rem;margin-bottom:4px">📝</div>Nouvel état des lieux
+                <div style="margin-bottom:4px;opacity:.8"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 1H3a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-6z"/><path d="M5 9h6M5 12h4"/></svg></div>Nouvel état des lieux
               </button>
               <button onclick="showDashTab('generer')" style="background:#fdf4ff;border:1px solid #d8b4fe;color:#7e22ce;border-radius:10px;padding:12px;font-size:.8rem;font-weight:600;cursor:pointer;text-align:left;transition:all .15s" onmouseover="this.style.background='#f3e8ff'" onmouseout="this.style.background='#fdf4ff'">
-                <div style="font-size:1.3rem;margin-bottom:4px">⚖️</div>Générer un bail
+                <div style="margin-bottom:4px;opacity:.8"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12m-5-9l3 6m4-6l3 6M3 11h5m0 0h5M5 5h6"/></svg></div>Générer un bail
               </button>
               <button onclick="showDashTab('loyers-suivi')" style="background:#f0fdf4;border:1px solid #86efac;color:#166534;border-radius:10px;padding:12px;font-size:.8rem;font-weight:600;cursor:pointer;text-align:left;transition:all .15s" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
-                <div style="font-size:1.3rem;margin-bottom:4px">💰</div>Saisir un paiement
+                <div style="margin-bottom:4px;opacity:.8"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v8M6 6h3a1 1 0 010 2H7a1 1 0 000 2h3"/></svg></div>Saisir un paiement
               </button>
               <button onclick="showDashTab('courriers')" style="background:#eff6ff;border:1px solid #93c5fd;color:#1d4ed8;border-radius:10px;padding:12px;font-size:.8rem;font-weight:600;cursor:pointer;text-align:left;transition:all .15s" onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'">
-                <div style="font-size:1.3rem;margin-bottom:4px">✉️</div>Rédiger un courrier
+                <div style="margin-bottom:4px;opacity:.8"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 4l7 5 7-5"/></svg></div>Rédiger un courrier
               </button>
             </div>
           </div>
@@ -1790,7 +1790,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <div style="font-size:0.8rem;color:var(--gris)">Détection des clauses illégales, dépôt, résiliation, conditions — avec références légales</div>
               </div>
               <div style="background:var(--pro-light);border:1px solid rgba(59,111,212,0.2);border-radius:12px;padding:16px">
-                <div style="font-size:1.2rem;margin-bottom:8px">💶</div>
+                <div style="font-size:1.2rem;margin-bottom:8px"></div>
                 <div style="font-weight:700;font-size:0.9rem;color:var(--pro-accent);margin-bottom:4px">Encadrement des loyers</div>
                 <div style="font-size:0.8rem;color:var(--gris)">Vérification automatique si votre ville est encadrée et calcul du trop-perçu éventuel</div>
               </div>
@@ -2199,7 +2199,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <label class="annex-check"><input type="checkbox" id="clause_cession"> Cession du bail interdite</label>
                 <label class="annex-check"><input type="checkbox" id="clause_assurance_pno"> Bailleur couvert par assurance PNO</label>
                 <label class="annex-check"><input type="checkbox" id="clause_releve_compteur"> Relevés compteurs contradictoires à l'entrée/sortie</label>
-                <label class="annex-check"><input type="checkbox" id="clause_dpe_travaux"> ⚡ Travaux de rénovation énergétique prévus</label>
+                <label class="annex-check"><input type="checkbox" id="clause_dpe_travaux"> Travaux de rénovation énergétique prévus</label>
                 <label class="annex-check"><input type="checkbox" id="clause_bail_num"> 📱 Bail numérique — signature électronique</label>
               </div>
               <div>
@@ -2497,11 +2497,11 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
           <div class="kpi-card" style="border-left:3px solid var(--accent)">
             <div class="kpi-val" id="alertKpiUrgent" style="color:var(--accent)">0</div>
-            <div class="kpi-label">🔴 Urgentes (&lt;30j)</div>
+            <div class="kpi-label">Urgentes (&lt;30j)</div>
           </div>
           <div class="kpi-card" style="border-left:3px solid #f59e0b">
             <div class="kpi-val" id="alertKpiWarning" style="color:#f59e0b">0</div>
-            <div class="kpi-label">🟡 À surveiller</div>
+            <div class="kpi-label">À surveiller</div>
           </div>
           <div class="kpi-card" style="border-left:3px solid var(--pro-accent)">
             <div class="kpi-val" id="alertKpiRevision">0</div>
@@ -2599,7 +2599,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <!-- Grille biens -->
         <div id="mandatsTbody" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
           <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gris)">
-            <div style="font-size:2.5rem;margin-bottom:12px">🏘</div>
+            <div style="font-size:2.5rem;margin-bottom:12px"></div>
             <div style="font-weight:600;margin-bottom:6px">Aucun bien enregistré</div>
             <div style="font-size:.82rem">Ajoutez vos biens pour rattacher analyses, dossiers et courriers.</div>
           </div>
@@ -2620,8 +2620,8 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
           <select class="filter-select" id="locFilterStatut" onchange="filterLocataires()">
             <option value="">Tous les statuts</option>
-            <option value="actif">🟢 En cours</option>
-            <option value="preavis">🟡 Préavis</option>
+            <option value="actif">En cours</option>
+            <option value="preavis">Préavis</option>
             <option value="sorti">⚫ Sorti</option>
             <option value="prospect">🔵 Prospect</option>
           </select>
@@ -2636,14 +2636,14 @@ body.is-dashboard #marketingPage { display: none !important; }
         <!-- Stats -->
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
           <div class="kpi-card"><div class="kpi-val" id="locKpiTotal">0</div><div class="kpi-label">Total locataires</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="locKpiActifs" style="color:var(--vert)">0</div><div class="kpi-label">🟢 En cours</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="locKpiPreavis" style="color:#f59e0b">0</div><div class="kpi-label">🟡 Préavis</div></div>
+          <div class="kpi-card"><div class="kpi-val" id="locKpiActifs" style="color:var(--vert)">0</div><div class="kpi-label">En cours</div></div>
+          <div class="kpi-card"><div class="kpi-val" id="locKpiPreavis" style="color:#f59e0b">0</div><div class="kpi-label">Préavis</div></div>
           <div class="kpi-card"><div class="kpi-val" id="locKpiProspects" style="color:var(--pro-accent)">0</div><div class="kpi-label">🔵 Prospects</div></div>
         </div>
 
         <!-- Liste fiches -->
         <div id="locatairesEmpty" class="dash-card" style="text-align:center;padding:60px 0;color:var(--gris)">
-          <div style="font-size:2.5rem;margin-bottom:12px">👤</div>
+          <div style="font-size:2.5rem;margin-bottom:12px"></div>
           Aucun locataire enregistré.<br>
           <a href="#" onclick="openNewLocataire()" style="color:var(--pro-accent);font-weight:600">Créer la première fiche →</a>
         </div>
@@ -2688,8 +2688,8 @@ body.is-dashboard #marketingPage { display: none !important; }
               <div class="form-group-pro">
                 <label class="form-label">Statut</label>
                 <select class="form-input-pro" id="locStatut">
-                  <option value="actif">🟢 En cours</option>
-                  <option value="preavis">🟡 Préavis</option>
+                  <option value="actif">En cours</option>
+                  <option value="preavis">Préavis</option>
                   <option value="sorti">⚫ Sorti</option>
                   <option value="prospect">🔵 Prospect</option>
                 </select>
@@ -3026,7 +3026,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Bulletins de salaire -->
                 <label class="dossier-piece-card" id="piece-paie-card" for="piece-paie">
-                  <div class="dossier-piece-icon">💶</div>
+                  <div class="dossier-piece-icon"></div>
                   <div class="dossier-piece-label">3 bulletins de salaire</div>
                   <div class="dossier-piece-status" id="piece-paie-status">Non fournis</div>
                   <input type="file" id="piece-paie" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('paie',this)">
@@ -3195,7 +3195,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
               <div style="margin-top:20px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
                 <div style="font-size:.78rem;color:var(--gris);text-align:center">
-                  <div style="font-size:1.4rem">⚡</div>
+                  <div style="font-size:1.4rem"></div>
                   Résultat en 15s
                 </div>
                 <div style="font-size:.78rem;color:var(--gris);text-align:center">
@@ -3518,7 +3518,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
 
             <div class="dash-card">
-              <div class="dash-section-title">⚡ Actions recommandées</div>
+              <div class="dash-section-title">Actions recommandées</div>
               <div id="veilleActions" style="display:flex;flex-direction:column;gap:8px;font-size:.82rem">
                 <div style="color:var(--gris);font-style:italic">Lancez un audit pour voir les actions prioritaires.</div>
               </div>
@@ -4208,8 +4208,8 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="form-group-pro">
               <label class="form-label">Type d'état des lieux *</label>
               <div style="display:flex;gap:8px">
-                <button class="edl-type-btn active" id="edlBtnEntree" onclick="setEDLType('entree',this)">🟢 Entrée</button>
-                <button class="edl-type-btn" id="edlBtnSortie" onclick="setEDLType('sortie',this)">🔴 Sortie</button>
+                <button class="edl-type-btn active" id="edlBtnEntree" onclick="setEDLType('entree',this)">Entrée</button>
+                <button class="edl-type-btn" id="edlBtnSortie" onclick="setEDLType('sortie',this)">Sortie</button>
               </div>
               <input type="hidden" id="edlType" value="entree">
             </div>
@@ -4259,7 +4259,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
         <!-- ÉTAPE 2 : Équipements généraux -->
         <div id="edlStep2" class="edl-step" style="display:none">
-          <div class="edl-section-title">⚡ Équipements & État général</div>
+          <div class="edl-section-title">Équipements & État général</div>
 
           <!-- Chauffage -->
           <div class="edl-equip-bloc">
@@ -4311,7 +4311,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
           <!-- Électricité -->
           <div class="edl-equip-bloc">
-            <div class="edl-equip-titre">⚡ Installation électrique</div>
+            <div class="edl-equip-titre">Installation électrique</div>
             <div class="form-grid-pro">
               <div class="form-group-pro">
                 <label class="form-label">Tableau électrique</label>
@@ -4607,7 +4607,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         </tr></thead>
         <tbody id="registreTbody">
           <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--gris)">
-            <div style="font-size:2rem;margin-bottom:10px">📒</div>
+            <div style="font-size:2rem;margin-bottom:10px"></div>
             <div style="font-weight:600;margin-bottom:4px">Registre vide</div>
             <div style="font-size:.82rem">Les mandats sont enregistrés automatiquement depuis vos fiches mandats ou manuellement</div>
           </td></tr>
@@ -4709,7 +4709,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         </tr></thead>
         <tbody id="diagTbody">
           <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--gris)">
-            <div style="font-size:2rem;margin-bottom:10px">🔬</div>
+            <div style="font-size:2rem;margin-bottom:10px"></div>
             <div style="font-weight:600;margin-bottom:4px">Aucun diagnostic enregistré</div>
             <div style="font-size:.82rem">Ajoutez vos diagnostics pour être alerté avant leur expiration</div>
           </td></tr>
@@ -4796,18 +4796,18 @@ body.is-dashboard #marketingPage { display: none !important; }
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <select id="travFilStatut" class="filter-select" onchange="refreshTravaux()">
         <option value="">Tous les statuts</option>
-        <option value="ouvert">🔴 Ouvert</option>
-        <option value="en_cours">🟡 En cours</option>
+        <option value="ouvert">Ouvert</option>
+        <option value="en_cours">En cours</option>
         <option value="attente_devis">⏳ Attente devis</option>
         <option value="planifie">📅 Planifié</option>
         <option value="clos">✅ Clôturé</option>
       </select>
       <select id="travFilPrio" class="filter-select" onchange="refreshTravaux()">
         <option value="">Toutes priorités</option>
-        <option value="urgente">🔴 Urgente</option>
+        <option value="urgente">Urgente</option>
         <option value="haute">🟠 Haute</option>
-        <option value="normale">🟡 Normale</option>
-        <option value="basse">🟢 Basse</option>
+        <option value="normale">Normale</option>
+        <option value="basse">Basse</option>
       </select>
     </div>
   </div>
@@ -4848,7 +4848,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <label class="form-label">Catégorie</label>
             <select class="form-input-pro" id="ticketCategorie">
               <option value="plomberie">Plomberie</option>
-              <option value="electricite">⚡ Électricité</option>
+              <option value="electricite">Électricité</option>
               <option value="chauffage">🔥 Chauffage / Chaudière</option>
               <option value="menuiserie">🚪 Menuiserie / Serrurerie</option>
               <option value="peinture">🎨 Peinture / Revêtements</option>
@@ -4860,17 +4860,17 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div class="form-group-pro">
             <label class="form-label">Priorité</label>
             <select class="form-input-pro" id="ticketPrio">
-              <option value="normale">🟡 Normale</option>
+              <option value="normale">Normale</option>
               <option value="haute">🟠 Haute</option>
-              <option value="urgente">🔴 Urgente</option>
-              <option value="basse">🟢 Basse</option>
+              <option value="urgente">Urgente</option>
+              <option value="basse">Basse</option>
             </select>
           </div>
           <div class="form-group-pro">
             <label class="form-label">Statut</label>
             <select class="form-input-pro" id="ticketStatut">
-              <option value="ouvert">🔴 Ouvert</option>
-              <option value="en_cours">🟡 En cours</option>
+              <option value="ouvert">Ouvert</option>
+              <option value="en_cours">En cours</option>
               <option value="attente_devis">⏳ Attente devis</option>
               <option value="planifie">📅 Planifié</option>
               <option value="clos">✅ Clôturé</option>
@@ -6676,7 +6676,7 @@ function renderMandatsTbody(arr) {
   if (!el) return;
   if (!arr.length) {
     el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gris)">'
-      + '<div style="font-size:2.5rem;margin-bottom:12px">🏘</div>'
+      + '<div style="font-size:2.5rem;margin-bottom:12px"></div>'
       + '<div style="font-weight:600;margin-bottom:6px">Aucun bien enregistré</div>'
       + '<div style="font-size:.82rem">Ajoutez vos biens pour rattacher analyses, dossiers et courriers.</div>'
       + '</div>';
@@ -6731,7 +6731,7 @@ function renderMandatsTbody(arr) {
         // Locataire actuel
         + (locName
             ? '<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f0fdf4;border-radius:8px;margin-bottom:8px">'
-              + '<span style="font-size:.9rem">👤</span>'
+              + '<span style="font-size:.9rem"></span>'
               + '<span style="font-size:.78rem;font-weight:600;color:#166534">'+locName+'</span>'
               + '</div>'
             : '<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#fef9ec;border-radius:8px;margin-bottom:8px">'
@@ -6980,7 +6980,7 @@ function openFicheMandat(id, activeTab) {
   // ── Tab bar ──
   var tabs = [
     {id:'infos',    icon:'📋', label:'Infos',       count:null},
-    {id:'locataires',icon:'👤', label:'Locataires',  count:locs.length},
+    {id:'locataires',icon:'', label:'Locataires',  count:locs.length},
     {id:'candidats',icon:'🔍', label:'Candidats',    count:candidats.length},
     {id:'baux',     icon:'📄', label:'Baux',         count:baux.length},
     {id:'photos',   icon:'📷', label:'Photos',       count:photos.length},
@@ -7023,7 +7023,7 @@ function openFicheMandat(id, activeTab) {
     // Bailleur
     if (m.bailleur) {
       content += '<div style="background:white;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px">'
-        + '<div style="width:40px;height:40px;border-radius:50%;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">👤</div>'
+        + '<div style="width:40px;height:40px;border-radius:50%;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0"></div>'
         + '<div style="flex:1;min-width:0">'
           + '<div style="font-size:.64rem;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;font-weight:600;margin-bottom:3px">Propriétaire bailleur</div>'
           + '<div style="font-weight:700;font-size:.9rem">'+m.bailleur+'</div>'
@@ -7577,7 +7577,7 @@ var VEILLE_ALERTES_INITIALES = [
     id: 'dpe_g_2026',
     date: '01/01/2026',
     niveau: 'rouge',
-    icone: '⚡',
+    icone: '',
     titre: 'Interdiction location logements classés G+ (>420 kWh/m²/an)',
     detail: 'Les logements consommant plus de 420 kWh/m²/an (sous-classe G) ne peuvent plus être proposés à la location depuis le 1er janvier 2026. Un DPE est obligatoire. Les baux en cours sont maintenus mais non renouvelables.',
     loi: 'Loi Climat & Résilience 2021 + Décret n°2021-1930',
@@ -7589,7 +7589,7 @@ var VEILLE_ALERTES_INITIALES = [
     id: 'irl_t4_2025',
     date: '15/01/2026',
     niveau: 'bleu',
-    icone: '📈',
+    icone: '',
     titre: 'IRL T4 2025 publié : +1,82 % sur 1 an',
     detail: 'L\'Indice de Référence des Loyers du 4ème trimestre 2025 est fixé à 145,62. Hausse de +1,82 % sur 12 mois. Les révisions de loyer peuvent être appliquées pour les baux dont l\'échéance annuelle tombe ce trimestre.',
     loi: 'INSEE — Série 001515333',
@@ -9157,7 +9157,7 @@ function refreshEDLListe() {
   liste.innerHTML = arr.map(function(e) {
     var m = e.mandatId ? mandats.find(function(x){return String(x.id)===String(e.mandatId);}) : null;
     var l = e.locId ? locs.find(function(x){return String(x.id)===String(e.locId);}) : null;
-    var typeColor = e.type==='entree' ? {bg:'#f0fdf4',color:'#166534',label:'🟢 Entrée'} : {bg:'#fef2f2',color:'#991b1b',label:'🔴 Sortie'};
+    var typeColor = e.type==='entree' ? {bg:'#f0fdf4',color:'#166534',label:'Entrée'} : {bg:'#fef2f2',color:'#991b1b',label:'Sortie'};
     var nbPieces = (e.pieces||[]).length;
     var hasSigs = e.sig1 || e.sig2;
     return '<div style="background:white;border:1px solid var(--card-border);border-radius:8px;overflow:hidden;box-shadow:var(--card-shadow)">'
@@ -9491,7 +9491,7 @@ function refreshRegistre() {
   var today = new Date();
   f('regKpiExpires', arr.filter(function(r){ return r.fin && new Date(r.fin) < today; }).length);
   var tbody = document.getElementById('registreTbody'); if(!tbody) return;
-  if (!arr.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--gris)"><div style="font-size:1.8rem;margin-bottom:8px">📒</div><div style="font-weight:600">Registre vide</div></td></tr>'; return; }
+  if (!arr.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--gris)"><div style="font-size:1.8rem;margin-bottom:8px"></div><div style="font-weight:600">Registre vide</div></td></tr>'; return; }
   var typeLabels = {gestion:'Gestion locative',location:'Recherche locataire',transaction:'Transaction',autre:'Autre'};
   tbody.innerHTML = arr.map(function(r) {
     var expire = r.fin && new Date(r.fin) < today;
@@ -9609,7 +9609,7 @@ function refreshDiagnostics() {
       var m = d.mandatId ? mans.find(function(x){ return String(x.id)===String(d.mandatId); }) : null;
       var expired = new Date(d.dateExp) < today;
       return '<div style="background:'+(expired?'#fef2f2':'#fffbeb')+';border:1px solid '+(expired?'#fca5a5':'#fde68a')+';border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px">'
-        +'<span style="font-size:1.3rem">'+(expired?'🔴':'⚠️')+'</span>'
+        +'<span style="font-size:1.3rem">'+(expired?'🔴':'️')+'</span>'
         +'<div><div style="font-weight:700;font-size:.84rem">'+(DIAG_DUREES[d.type]?DIAG_DUREES[d.type].label:d.type)+' — '+(m?m.adresse:'Bien')+'</div>'
         +'<div style="font-size:.76rem;color:var(--gris)">'+(expired?'Expiré le':'Expire le')+' '+new Date(d.dateExp).toLocaleDateString('fr-FR')+'</div></div>'
         +'<button class="btn-sm" style="margin-left:auto;font-size:.72rem" onclick="openNouvelDiag(\''+d.mandatId+'\')">Renouveler</button>'
@@ -9618,7 +9618,7 @@ function refreshDiagnostics() {
   } else if (urgDiv) urgDiv.style.display='none';
   // Tableau
   var tbody = document.getElementById('diagTbody'); if(!tbody) return;
-  if (!arr.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--gris)"><div style="font-size:1.8rem;margin-bottom:8px">🔬</div><div style="font-weight:600">Aucun diagnostic</div></td></tr>'; return; }
+  if (!arr.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--gris)"><div style="font-size:1.8rem;margin-bottom:8px"></div><div style="font-weight:600">Aucun diagnostic</div></td></tr>'; return; }
   var mans = loadMandats();
   tbody.innerHTML = arr.map(function(d) {
     var m = d.mandatId ? mans.find(function(x){ return String(x.id)===String(d.mandatId); }) : null;
@@ -9823,7 +9823,7 @@ function refreshDashboard() {
         return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f1f3f8">'
           +'<div><div style="font-weight:600;font-size:.8rem">'+(typeInfo.label)+' · '+(m?m.adresse||'—':'—').substring(0,20)+'</div>'
           +'<div style="font-size:.72rem;color:'+(expired?'var(--danger)':'var(--warn)')+'">'+(expired?'Expiré':'Expire')+' '+(d.dateExp?new Date(d.dateExp).toLocaleDateString('fr-FR'):'—')+'</div></div>'
-          +'<span style="font-size:.7rem;font-weight:700;color:'+(expired?'var(--danger)':'var(--warn)')+'">'+(expired?'❌':'⚠️')+'</span>'
+          +'<span style="font-size:.7rem;font-weight:700;color:'+(expired?'var(--danger)':'var(--warn)')+'">'+(expired?'❌':'️')+'</span>'
           +'</div>';
       }).join('');
     }
@@ -9835,7 +9835,7 @@ function refreshDashboard() {
     var items = [];
     impayesMois.slice(0,2).forEach(function(l){ items.push({icon:'💰',label:'Impayé : '+(l.prenom||'')+' '+(l.nom||''),sub:(l.loyer||'—')+' €',color:'#fef2f2',border:'#fca5a5',action:function(){showDashTab('loyers-suivi');}}); });
     locsFinBail.slice(0,2).forEach(function(l){ items.push({icon:'📄',label:'Bail expire bientôt',sub:(l.prenom||'')+' '+(l.nom||''),color:'#fffbeb',border:'#fde68a',action:function(){showDashTab('alertes');}}); });
-    diagsExpires.slice(0,2).forEach(function(d){ var ti=DIAG_DUREES[d.type]||{label:d.type}; items.push({icon:'🔬',label:ti.label+' expiré',sub:d.dateExp?'Depuis '+new Date(d.dateExp).toLocaleDateString('fr-FR'):'—',color:'#fef2f2',border:'#fca5a5',action:function(){showDashTab('diagnostics');}}); });
+    diagsExpires.slice(0,2).forEach(function(d){ var ti=DIAG_DUREES[d.type]||{label:d.type}; items.push({icon:'',label:ti.label+' expiré',sub:d.dateExp?'Depuis '+new Date(d.dateExp).toLocaleDateString('fr-FR'):'—',color:'#fef2f2',border:'#fca5a5',action:function(){showDashTab('diagnostics');}}); });
     if (!items.length) {
       dashAlertes.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gris);font-size:.84rem"><div style="font-size:1.8rem;margin-bottom:8px">✅</div>Aucune alerte urgente</div>';
     } else {
@@ -9858,7 +9858,7 @@ function saveTickets(arr) { localStorage.setItem('bailscan_tickets', JSON.string
 
 var TICKET_STATUTS = { ouvert:{label:'Ouvert',bg:'#fef2f2',color:'#991b1b'}, en_cours:{label:'En cours',bg:'#fffbeb',color:'#92400e'}, attente_devis:{label:'Attente devis',bg:'#f0f9ff',color:'#0369a1'}, planifie:{label:'Planifié',bg:'#f5f3ff',color:'#7e22ce'}, clos:{label:'Clôturé',bg:'#f0fdf4',color:'#166534'} };
 var TICKET_PRIOS = { urgente:{label:'Urgente',color:'#dc2626'}, haute:{label:'Haute',color:'#ea580c'}, normale:{label:'Normale',color:'#d97706'}, basse:{label:'Basse',color:'#059669'} };
-var TICKET_CATS = { plomberie:'🔧',electricite:'⚡',chauffage:'🔥',menuiserie:'🚪',peinture:'🎨',toiture:'🏠',nettoyage:'🧹',autre:'📦' };
+var TICKET_CATS = { plomberie:'🔧',electricite:'',chauffage:'🔥',menuiserie:'🚪',peinture:'🎨',toiture:'🏠',nettoyage:'🧹',autre:'📦' };
 
 function refreshTravaux() {
   var arr = loadTickets();
@@ -11471,7 +11471,7 @@ function exportDossierPDF() {
     // Règles solvabilité
     +'<div class="section"><div class="section-title">Analyse règles de solvabilité</div>'
     +(taux !== null ? (taux<=33 ? '<div class="rule-ok"><span class="rule-icon">✅</span><div><strong>Taux d’effort conforme</strong> — '+taux+'% (seuil recommandé : 33%)</div></div>'
-      : taux<=40 ? '<div class="rule-warn"><span class="rule-icon">⚠️</span><div><strong>Taux d’effort élevé</strong> — '+taux+'% (seuil dépassé de '+(taux-33)+'%)</div></div>'
+      : taux<=40 ? '<div class="rule-warn"><span class="rule-icon">️</span><div><strong>Taux d’effort élevé</strong> — '+taux+'% (seuil dépassé de '+(taux-33)+'%)</div></div>'
       : '<div class="rule-ko"><span class="rule-icon">❌</span><div><strong>Taux d’effort trop élevé</strong> — '+taux+'% (seuil dépassé de '+(taux-33)+'%)</div></div>') : '')
     +(revenus && parseFloat(revenus) >= parseFloat(loyer)*3 
       ? '<div class="rule-ok"><span class="rule-icon">✅</span><div><strong>Règle 3x loyer validée</strong> — revenus = '+(Math.round(parseFloat(revenus)/parseFloat(loyer)*10)/10)+'x le loyer</div></div>'
@@ -11790,8 +11790,8 @@ function refreshLocataires() {
   if(list) { list.style.display='grid'; }
 
   var statutColors = {
-    actif:{bg:'#f0fdf4',col:'#166534',label:'🟢 En cours'},
-    preavis:{bg:'#fffbeb',col:'#92400e',label:'🟡 Préavis'},
+    actif:{bg:'#f0fdf4',col:'#166534',label:'En cours'},
+    preavis:{bg:'#fffbeb',col:'#92400e',label:'Préavis'},
     sorti:{bg:'#f1f5f9',col:'#475569',label:'⚫ Sorti'},
     prospect:{bg:'#eff6ff',col:'#1e40af',label:'🔵 Prospect'}
   };
@@ -11942,7 +11942,7 @@ function updateDossierCalc() {
   var tauxStr = taux.toFixed(1) + ' %';
   var couleur = taux <= 30 ? 'var(--vert)' : taux <= 40 ? '#f59e0b' : 'var(--accent)';
   var msg = taux <= 30 ? '✓ Taux d\'effort acceptable (≤ 30 %). Dossier recevable selon la règle standard.'
-    : taux <= 40 ? '⚠ Taux d\'effort élevé (30–40 %). Exiger un garant ou vérifier les charges.'
+    : taux <= 40 ? 'Taux d\'effort élevé (30–40 %). Exiger un garant ou vérifier les charges.'
     : '⛔ Taux d\'effort excessif (> 40 %). Risque de défaut de paiement significatif.';
 
   document.getElementById('effortTaux').textContent = tauxStr;
@@ -12968,10 +12968,10 @@ function lancerAuditConformite() {
 
   var msg = '🔄 Audit de conformité lancé.\n\n';
   msg += mandats.length + ' bien(s) dans le portefeuille\n';
-  if (sansAnalyse.length) msg += '⚠ ' + sansAnalyse.length + ' bien(s) sans analyse de bail récente\n';
+  if (sansAnalyse.length) msg += '' + sansAnalyse.length + ' bien(s) sans analyse de bail récente\n';
   var biensG = mandats.filter(function(m){ return m.dpe==='G'; }).length;
   var biensF = mandats.filter(function(m){ return m.dpe==='F'; }).length;
-  if (biensG) msg += '🔴 ' + biensG + ' bien(s) classé(s) G — action urgente\n';
+  if (biensG) msg += '' + biensG + ' bien(s) classé(s) G — action urgente\n';
   if (biensF) msg += '🟠 ' + biensF + ' bien(s) classé(s) F — travaux à planifier\n';
   msg += '\nLe score de conformité a été mis à jour.';
   alert(msg);
@@ -13167,14 +13167,14 @@ function openFicheLocataire(locId, event, tab) {
     var docTypes = [
       {val:'cni',label:"Pièce d'identité",icon:'🪪'},
       {val:'passeport',label:'Passeport',icon:'📘'},
-      {val:'paie1',label:'Fiche de paie M-1',icon:'💶'},
-      {val:'paie2',label:'Fiche de paie M-2',icon:'💶'},
-      {val:'paie3',label:'Fiche de paie M-3',icon:'💶'},
+      {val:'paie1',label:'Fiche de paie M-1',icon:''},
+      {val:'paie2',label:'Fiche de paie M-2',icon:''},
+      {val:'paie3',label:'Fiche de paie M-3',icon:''},
       {val:'avis_impots',label:"Avis d'imposition",icon:'📋'},
       {val:'contrat_travail',label:'Contrat de travail',icon:'📄'},
       {val:'quittances_loc',label:'Quittances ancien bailleur',icon:'🧾'},
       {val:'garant_id',label:'Pièce identité garant',icon:'🪪'},
-      {val:'garant_paie',label:'Justificatif revenus garant',icon:'💶'},
+      {val:'garant_paie',label:'Justificatif revenus garant',icon:''},
       {val:'relevé_banque',label:'Relevé bancaire',icon:'🏦'},
       {val:'autre',label:'Autre document',icon:'📎'}
     ];
@@ -13451,8 +13451,8 @@ function verifierImpactDecret() {
   if (!biensG.length && !biensF.length) {
     alert('✅ Aucun bien classé F ou G dans votre portefeuille.\n\nVous n\'êtes pas impacté par cette obligation.');
   } else {
-    var msg = '⚠ Biens potentiellement impactés :\n\n';
-    if (biensG.length) msg += '🔴 ' + biensG.length + ' bien(s) classé(s) G (interdiction immédiate) :\n' + biensG.map(function(m){ return ' • '+m.adresse; }).join('\n') + '\n\n';
+    var msg = 'Biens potentiellement impactés :\n\n';
+    if (biensG.length) msg += '' + biensG.length + ' bien(s) classé(s) G (interdiction immédiate) :\n' + biensG.map(function(m){ return ' • '+m.adresse; }).join('\n') + '\n\n';
     if (biensF.length) msg += '🟠 ' + biensF.length + ' bien(s) classé(s) F (interdiction en 2028) :\n' + biensF.map(function(m){ return ' • '+m.adresse; }).join('\n');
     alert(msg);
     showDashTab('mandats');
@@ -13976,18 +13976,18 @@ function buildDossierFallback(loyer, revenus, contrat, anciennete, garant, piece
 
   var verdict = score >= 65 ? 'GO' : score >= 45 ? 'MITIGE' : 'NO_GO';
   var alertes = [];
-  if (!ok3x) alertes.push({niveau:'rouge',icone:'⚠',titre:'Revenus insuffisants',detail:'Les revenus ne respectent pas la règle des 3× le loyer (minimum requis : '+(loyer*3)+' €).'});
+  if (!ok3x) alertes.push({niveau:'rouge',icone:'',titre:'Revenus insuffisants',detail:'Les revenus ne respectent pas la règle des 3× le loyer (minimum requis : '+(loyer*3)+' €).'});
   if (tauxNum > 40) alertes.push({niveau:'rouge',icone:'📊',titre:'Taux d\'effort excessif',detail:'Le taux d\'effort de '+taux+'% dépasse le seuil acceptable de 40%.'});
   if (contrat === 'cdd') alertes.push({niveau:'orange',icone:'📄',titre:'CDD — durée à vérifier',detail:'Un CDD implique une incertitude sur la pérennité des revenus. Vérifier la durée restante.'});
   if (anciennete === 'moins6') alertes.push({niveau:'orange',icone:'⏱',titre:'Poste récent',detail:'Moins de 6 mois à ce poste. Risque de période d\'essai non encore terminée.'});
   if (!piecesList.length) alertes.push({niveau:'orange',icone:'📎',titre:'Aucune pièce justificative',detail:'Aucun document n\'a été fourni. L\'analyse est basée sur les informations déclaratives uniquement.'});
-  if (garant !== 'non') alertes.push({niveau:'vert',icone:'🛡',titre:'Garant prévu',detail:'Un garant est prévu, ce qui réduit le risque pour le bailleur.'});
+  if (garant !== 'non') alertes.push({niveau:'vert',icone:'',titre:'Garant prévu',detail:'Un garant est prévu, ce qui réduit le risque pour le bailleur.'});
   if (score >= 70) alertes.push({niveau:'vert',icone:'✅',titre:'Dossier recevable',detail:'Le profil du candidat est globalement cohérent avec les exigences locatives standard.'});
 
   return {
     score: score,
     verdict: verdict,
-    verdict_label: verdict === 'GO' ? '✅ Dossier recevable' : verdict === 'NO_GO' ? '❌ Dossier refusé' : '⚠ Dossier à étudier',
+    verdict_label: verdict === 'GO' ? '✅ Dossier recevable' : verdict === 'NO_GO' ? '❌ Dossier refusé' : 'Dossier à étudier',
     verdict_texte: verdict === 'GO'
       ? 'Le profil financier du candidat est compatible avec le logement visé. Les indicateurs principaux sont dans les normes attendues.'
       : verdict === 'NO_GO'
@@ -15032,7 +15032,7 @@ async function cancelSubscription() {
       var msg = document.getElementById('cancelSubMsg');
       if (msg) { msg.style.display='block'; msg.textContent = '✓ Résiliation confirmée. Votre accès reste actif jusqu\'à la fin de la période.'; }
       var status = document.getElementById('activeSubStatus');
-      if (status) { status.textContent = '⚠ Résiliation en cours'; status.style.color = 'var(--warn)'; }
+      if (status) { status.textContent = 'Résiliation en cours'; status.style.color = 'var(--warn)'; }
       if (btn) btn.style.display = 'none';
       showToast('✓ Résiliation confirmée', 'blue');
     } else {
@@ -15057,7 +15057,7 @@ function showActiveSubSection() {
     var lbl = document.getElementById('activeSubLabel');
     if (lbl) lbl.textContent = plan === 'canceling' ? 'Pro (résiliation en cours)' : 'Pro';
     var status = document.getElementById('activeSubStatus');
-    if (status && plan === 'canceling') { status.textContent = '⚠ Résiliation en cours'; status.style.color = 'var(--warn)'; }
+    if (status && plan === 'canceling') { status.textContent = 'Résiliation en cours'; status.style.color = 'var(--warn)'; }
     if (status && plan === 'pro') { status.textContent = '✓ Actif'; status.style.color = 'var(--vert)'; }
   } else {
     section.style.display = 'none';
