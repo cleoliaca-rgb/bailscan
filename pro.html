@@ -2424,373 +2424,98 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border)">
             <div style="font-weight:700;font-size:0.92rem;margin-bottom:4px">Zones actuellement soumises à l'encadrement</div>
             <div style="font-size:.78rem;color:var(--gris);margin-bottom:14px">Cliquez sur une ville pour accéder au simulateur officiel — données 2024/2025</div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
 
               <!-- ─── PARIS ─── -->
-              <a href="https://www.paris.fr/encadrementloyers" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">Paris (75)</div>
-                <div class="ville-encad-info">Depuis juillet 2019 · 80 quartiers · Simulateur officiel Paris.fr</div>
+              <a href="https://www.paris.fr/encadrementloyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #3b6fd4">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#3b6fd4;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">IDF</span>
+                  <div class="ville-encad-nom">Paris (75)</div>
+                </div>
+                <div class="ville-encad-info">Depuis juillet 2019 · 80 quartiers</div>
+                <div class="ville-encad-info" style="color:var(--pro-accent);margin-top:3px">→ Simulateur Paris.fr</div>
               </a>
 
               <!-- ─── LILLE ─── -->
-              <a href="https://encadrement-loyers.lille.fr/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">Lille + Hellemmes + Lomme</div>
-                <div class="ville-encad-info">Depuis mars 2020 · Simulateur officiel Ville de Lille</div>
+              <a href="https://www.lille.fr/Grands-projets/L-encadrement-des-loyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #7c3aed">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#7c3aed;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">NORD</span>
+                  <div class="ville-encad-nom">Lille + Hellemmes + Lomme</div>
+                </div>
+                <div class="ville-encad-info">Depuis mars 2020</div>
+                <div class="ville-encad-info" style="color:var(--pro-accent);margin-top:3px">→ Simulateur Ville de Lille</div>
               </a>
 
-              <!-- ─── PLAINE COMMUNE (93) ─── -->
-              <a href="https://www.referenceloyer.drihl.ile-de-france.developpement-durable.gouv.fr/plaine-commune/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">Plaine Commune (93)</div>
-                <div class="ville-encad-info">Aubervilliers · Épinay · Pierrefitte · Saint-Denis · Stains · Villetaneuse · L'Île-Saint-Denis · La Courneuve · Saint-Ouen · Depuis juin 2021</div>
+              <!-- ─── PLAINE COMMUNE ─── -->
+              <a href="https://www.plainecommune.fr/encadrementdesloyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #dc2626">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#dc2626;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">93</span>
+                  <div class="ville-encad-nom">Plaine Commune (93)</div>
+                </div>
+                <div class="ville-encad-info" style="line-height:1.5">Aubervilliers · Épinay · Pierrefitte · Saint-Denis · Stains · Villetaneuse · L'Île-Saint-Denis · La Courneuve · Saint-Ouen</div>
+                <div class="ville-encad-info" style="color:var(--gris);margin-top:3px">Depuis juin 2021</div>
               </a>
 
-              <!-- ─── EST ENSEMBLE (93) ─── -->
-              <a href="https://www.referenceloyer.drihl.ile-de-france.developpement-durable.gouv.fr/est-ensemble/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">️ Est Ensemble (93)</div>
-                <div class="ville-encad-info">Bagnolet · Bobigny · Bondy · Le Pré-Saint-Gervais · Les Lilas · Montreuil · Noisy-le-Sec · Pantin · Romainville · Depuis déc. 2021</div>
+              <!-- ─── EST ENSEMBLE ─── -->
+              <a href="https://www.est-ensemble.fr/encadrement-loyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #ea580c">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#ea580c;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">93</span>
+                  <div class="ville-encad-nom">Est Ensemble (93)</div>
+                </div>
+                <div class="ville-encad-info" style="line-height:1.5">Bagnolet · Bobigny · Bondy · Le Pré-Saint-Gervais · Les Lilas · Montreuil · Noisy-le-Sec · Pantin · Romainville</div>
+                <div class="ville-encad-info" style="color:var(--gris);margin-top:3px">Depuis déc. 2021</div>
               </a>
 
               <!-- ─── LYON ─── -->
-              <a href="https://demarches.toodego.com/logement/encadrement-des-loyers-v2/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">Lyon + Villeurbanne</div>
-                <div class="ville-encad-info">Depuis nov. 2021 · Simulateur Toodego (Métropole de Lyon)</div>
+              <a href="https://www.toodego.com/encadrement-loyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #ca8a04">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#ca8a04;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">69</span>
+                  <div class="ville-encad-nom">Lyon + Villeurbanne</div>
+                </div>
+                <div class="ville-encad-info">Depuis nov. 2021</div>
+                <div class="ville-encad-info" style="color:var(--pro-accent);margin-top:3px">→ Simulateur Toodego</div>
               </a>
 
               <!-- ─── MONTPELLIER ─── -->
-              <a href="https://eservices.montpellier3m.fr/habitat/encadrement-des-loyers/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">Montpellier</div>
-                <div class="ville-encad-info">Depuis juillet 2022 · Simulateur officiel Montpellier Méditerranée Métropole</div>
+              <a href="https://www.montpellier.fr/3882-l-encadrement-des-loyers.htm" target="_blank" class="ville-encad-card" style="border-left:3px solid #0891b2">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#0891b2;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">34</span>
+                  <div class="ville-encad-nom">Montpellier</div>
+                </div>
+                <div class="ville-encad-info">Depuis juillet 2022</div>
+                <div class="ville-encad-info" style="color:var(--pro-accent);margin-top:3px">→ Simulateur Montpellier Méditerranée</div>
               </a>
 
               <!-- ─── BORDEAUX ─── -->
-              <a href="https://simulateur-loyer.bordeaux-metropole.fr/" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">Bordeaux</div>
-                <div class="ville-encad-info">Depuis juillet 2022 · Simulateur officiel Bordeaux Métropole</div>
+              <a href="https://www.bordeaux-metropole.fr/encadrement-loyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #7c2d12">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#7c2d12;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">33</span>
+                  <div class="ville-encad-nom">Bordeaux</div>
+                </div>
+                <div class="ville-encad-info">Depuis juillet 2022</div>
+                <div class="ville-encad-info" style="color:var(--pro-accent);margin-top:3px">→ Simulateur Bordeaux Métropole</div>
               </a>
 
               <!-- ─── PAYS BASQUE ─── -->
-              <a href="https://www.communaute-paysbasque.fr/logement-et-urbanisme/lencadrement-des-loyers" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">Pays Basque (24 communes)</div>
-                <div class="ville-encad-info">Ahetze · Anglet · Arbonne · Arcangues · Ascain · Bassussarry · Bayonne · Biarritz · Bidart · Biriatou · Boucau · Ciboure · Guéthary · Hendaye · Jatxou · Lahonce · Larressore · Mouguerre · Saint-Jean-de-Luz · Saint-Pierre-d'Irube · Urcuit · Urrugne · Ustaritz · Villefranque · Depuis nov. 2024</div>
+              <a href="https://www.communaute-paysbasque.fr/encadrement-loyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #166534">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#166534;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">64</span>
+                  <div class="ville-encad-nom">Pays Basque (24 communes)</div>
+                </div>
+                <div class="ville-encad-info" style="line-height:1.5">Bayonne · Biarritz · Anglet · Bidart · Hendaye · Saint-Jean-de-Luz · Boucau · Ciboure · Guéthary · <em>+15 communes</em></div>
+                <div class="ville-encad-info" style="color:var(--gris);margin-top:3px">Depuis nov. 2024</div>
               </a>
 
               <!-- ─── GRENOBLE ─── -->
-              <a href="https://www.grenoblealpesmetropole.fr/loyers" target="_blank" class="ville-encad-card">
-                <div class="ville-encad-nom">Grenoble-Alpes Métropole (21 communes)</div>
-                <div class="ville-encad-info">Grenoble · Échirolles · Fontaine · Saint-Martin-d'Hères · Seyssinet-Pariset · Meylan · La Tronche · Domène · Gières · Eybens · Seyssins · Poisat · Bresson · Claix · Varces · Le Fontanil-Cornillon · Murianette · Venon · Saint-Egrève · Sassenage · Le Pont-de-Claix · Depuis janv. 2025</div>
+              <a href="https://www.grenoblealpesmetropole.fr/encadrement-loyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #4338ca">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#4338ca;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">38</span>
+                  <div class="ville-encad-nom">Grenoble-Alpes Métropole</div>
+                </div>
+                <div class="ville-encad-info" style="line-height:1.5">Grenoble · Échirolles · Fontaine · Saint-Martin-d'Hères · Seyssinet-Pariset · Meylan · <em>+15 communes</em></div>
+                <div class="ville-encad-info" style="color:var(--gris);margin-top:3px">Depuis janv. 2025 · 21 communes</div>
               </a>
 
-            </div>
-            <div style="margin-top:14px;font-size:0.78rem;color:var(--gris);background:var(--bg);border-radius:8px;padding:10px 14px">
-              <strong>69 villes concernées</strong> au 1er janvier 2025, représentant 9 territoires. ·
-              <a href="https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers" target="_blank" style="color:var(--pro-accent)">Vérifier ma commune →</a> ·
-              Sources : <a href="https://www.anil.org" target="_blank" style="color:var(--pro-accent)">ANIL</a> ·
-              <a href="https://www.ecologie.gouv.fr/politiques-publiques/encadrement-loyers" target="_blank" style="color:var(--pro-accent)">Ministère de la Transition écologique</a> ·
-              <a href="https://www.pap.fr/bailleur/encadrement-loyers" target="_blank" style="color:var(--pro-accent)">PAP.fr</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- ═══ RÉVISION IRL ═══ -->
-        <div class="dash-card" style="margin-top:20px">
-          <div style="font-weight:700;font-size:1rem;margin-bottom:4px">Calculateur de révision IRL</div>
-          <div style="font-size:.82rem;color:var(--gris);margin-bottom:18px">Calculez le nouveau loyer après révision annuelle selon l'Indice de Référence des Loyers (art. 17-1 loi 89)</div>
-          <div class="form-grid-pro" style="margin-bottom:12px">
-            <div class="form-group-pro">
-              <label class="form-label">Loyer actuel HC (€)</label>
-              <input type="number" class="form-input-pro" id="irlLoyerActuel" placeholder="Ex : 800" min="0" step="0.01" oninput="calcRevisionIRL()">
-            </div>
-            <div class="form-group-pro">
-              <label class="form-label">IRL de référence <span style="font-weight:400;color:var(--gris);font-size:.76rem">— au moment de la signature du bail</span></label>
-              <input type="number" class="form-input-pro" id="irlRef" placeholder="Ex : 136.27" min="0" step="0.01" oninput="calcRevisionIRL()">
-            </div>
-          </div>
-          <div class="form-grid-pro" style="margin-bottom:16px">
-            <div class="form-group-pro">
-              <label class="form-label">IRL du nouveau trimestre <span style="font-weight:400;color:var(--gris);font-size:.76rem">— à la date de révision</span></label>
-              <input type="number" class="form-input-pro" id="irlNouveau" placeholder="Ex : 143.05" min="0" step="0.01" oninput="calcRevisionIRL()">
-            </div>
-            <div class="form-group-pro">
-              <label class="form-label">Trimestre IRL utilisé</label>
-              <select class="form-input-pro" id="irlTrimestre" onchange="calcRevisionIRL()">
-                <option value="">Sélectionner…</option>
-                <option value="T1-2025">T1 2025 — 143.78</option>
-                <option value="T2-2025">T2 2025 — 144.51</option>
-                <option value="T3-2025">T3 2025 — 145.06</option>
-                <option value="T4-2025">T4 2025 — 145.62 (prévision)</option>
-                <option value="T1-2024">T1 2024 — 141.43</option>
-                <option value="T2-2024">T2 2024 — 142.06</option>
-                <option value="T3-2024">T3 2024 — 142.69</option>
-                <option value="T4-2024">T4 2024 — 143.16</option>
-                <option value="T1-2023">T1 2023 — 138.41</option>
-                <option value="T2-2023">T2 2023 — 140.59</option>
-                <option value="T3-2023">T3 2023 — 141.03</option>
-                <option value="T4-2023">T4 2023 — 141.03</option>
-              </select>
-            </div>
-          </div>
-          <button class="btn-primary-pro" onclick="calcRevisionIRL()" style="width:100%;padding:12px;font-size:.92rem;margin-bottom:14px">Calculer la révision</button>
-          <div id="irlResult" style="display:none"></div>
-          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:.76rem;color:var(--gris)">
-            L'IRL est publié chaque trimestre par l'INSEE. Le bail doit préciser le trimestre de référence. Hausse plafonnée : loyer × (IRL nouveau ÷ IRL référence).
-            <a href="https://www.insee.fr/fr/statistiques/serie/001515333" target="_blank" style="color:var(--pro-accent)">Indices INSEE →</a>
-          </div>
-        </div>
-      </div>
-
-      <div id="tab-alertes" style="display:none">
-        <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Alertes & Échéances</div><div class="dash-page-sub">Suivez les deadlines légales de votre parc locatif</div></div>
-          <button class="btn-primary-pro" onclick="refreshAlertes()">↻ Actualiser</button>
-        </div>
-
-        <!-- Compteurs alertes -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
-          <div class="kpi-card" style="border-left:3px solid var(--accent)">
-            <div class="kpi-val" id="alertKpiUrgent" style="color:var(--accent)">0</div>
-            <div class="kpi-label">Urgentes (&lt;30j)</div>
-          </div>
-          <div class="kpi-card" style="border-left:3px solid #f59e0b">
-            <div class="kpi-val" id="alertKpiWarning" style="color:#f59e0b">0</div>
-            <div class="kpi-label">À surveiller</div>
-          </div>
-          <div class="kpi-card" style="border-left:3px solid var(--pro-accent)">
-            <div class="kpi-val" id="alertKpiRevision">0</div>
-            <div class="kpi-label">Révisions IRL dues</div>
-          </div>
-          <div class="kpi-card" style="border-left:3px solid var(--vert)">
-            <div class="kpi-val" id="alertKpiOk" style="color:var(--vert)">0</div>
-            <div class="kpi-label">RAS</div>
-          </div>
-        </div>
-
-        <!-- Liste alertes -->
-        <div class="dash-card" style="margin-bottom:16px">
-          <div class="dash-section-title">Échéances à venir</div>
-          <div id="alertesListEmpty" style="text-align:center;padding:40px 0;color:var(--gris)">
-            <div style="font-size:2rem;margin-bottom:10px"></div>
-            Aucune alerte — ajoutez des baux dans les fiches locataires pour activer le suivi.
-          </div>
-          <div id="alertesList" style="display:none"></div>
-        </div>
-
-        <!-- Ajouter alerte manuelle -->
-        <div class="dash-card">
-          <div class="dash-section-title">Ajouter une échéance manuelle</div>
-          <div class="form-grid-pro">
-            <div class="form-group-pro">
-              <label class="form-label">Type d'échéance</label>
-              <select class="form-input-pro" id="newAlertType">
-                <option value="fin_bail">Fin de bail</option>
-                <option value="revision_irl">📈 Révision IRL</option>
-                <option value="preavis">Préavis en cours</option>
-                <option value="renouvellement">Renouvellement</option>
-                <option value="travaux">Travaux planifiés</option>
-                <option value="assurance">Vérification assurance</option>
-                <option value="autre">Autre</option>
-              </select>
-            </div>
-            <div class="form-group-pro">
-              <label class="form-label">Bien / Locataire</label>
-              <input type="text" class="form-input-pro" id="newAlertBien" placeholder="Ex : 12 rue des Lilas — Martin">
-            </div>
-          </div>
-          <div class="form-grid-pro">
-            <div class="form-group-pro">
-              <label class="form-label">Date d'échéance</label>
-              <input type="date" class="form-input-pro" id="newAlertDate">
-            </div>
-            <div class="form-group-pro">
-              <label class="form-label">Note</label>
-              <input type="text" class="form-input-pro" id="newAlertNote" placeholder="Ex : Renouveler ou donner congé avant le 01/09">
-            </div>
-          </div>
-          <button class="btn-primary-pro" onclick="addAlerte()" style="margin-top:4px">+ Ajouter l'échéance</button>
-        </div>
-      </div>
-
-      <div id="tab-mandats" style="display:none">
-        <div class="dash-main-header">
-          <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Mandats & Biens</div>
-            <div class="dash-page-sub">Portefeuille de biens · Référentiel pour analyses, dossiers et courriers</div>
-          </div>
-          <button class="btn-primary-pro" onclick="openNewMandat()">+ Ajouter un bien</button>
-        </div>
-
-        <!-- KPIs mandats -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
-          <div class="kpi-card"><div class="kpi-val" id="kpiBiensTotal">0</div><div class="kpi-label">Biens gérés</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="kpiBiensLoues">0</div><div class="kpi-label">Loués</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="kpiBiensVacants">0</div><div class="kpi-label">Vacants</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="kpiLoyerTotal">0 €</div><div class="kpi-label">Loyers /mois</div></div>
-        </div>
-
-        <!-- Filtres -->
-        <div class="dash-filters-bar" style="margin-bottom:16px">
-          <div class="filter-search-wrap">
-            <span class="filter-search-icon"></span>
-            <input type="text" class="filter-search" id="mandatSearch" placeholder="Adresse, ville, bailleur…" oninput="applyMandatFilters()">
-          </div>
-          <select class="filter-select" id="mandatFilterStatut" onchange="applyMandatFilters()">
-            <option value="">Tous statuts</option>
-            <option value="loue">Loué</option>
-            <option value="vacant">Vacant</option>
-            <option value="travaux">En travaux</option>
-          </select>
-          <select class="filter-select" id="mandatFilterType" onchange="applyMandatFilters()">
-            <option value="">Tous types</option>
-            <option value="appartement">Appartement</option>
-            <option value="maison">Maison</option>
-            <option value="studio">Studio</option>
-            <option value="commercial">Local commercial</option>
-          </select>
-        </div>
-
-        <!-- Grille biens -->
-        <div id="mandatsTbody" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
-          <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gris)">
-            <div style="font-size:2.5rem;margin-bottom:12px"></div>
-            <div style="font-weight:600;margin-bottom:6px">Aucun bien enregistré</div>
-            <div style="font-size:.82rem">Ajoutez vos biens pour rattacher analyses, dossiers et courriers.</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="tab-locataires" style="display:none">
-        <div class="dash-main-header">
-          <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Fiches Locataires</div><div class="dash-page-sub">Dossiers complets et scoring de solvabilité</div></div>
-          <button class="btn-primary-pro" onclick="openNewLocataire()">+ Nouveau locataire</button>
-        </div>
-
-        <!-- Barre recherche -->
-        <div class="dash-filters-bar" style="margin-bottom:16px">
-          <div class="filter-search-wrap">
-            <span class="filter-search-icon"></span>
-            <input type="text" class="filter-search" id="locSearch" placeholder="Nom, adresse, email…" oninput="filterLocataires()">
-          </div>
-          <select class="filter-select" id="locFilterStatut" onchange="filterLocataires()">
-            <option value="">Tous les statuts</option>
-            <option value="actif">En cours</option>
-            <option value="preavis">Préavis</option>
-            <option value="sorti">Sorti</option>
-            <option value="prospect">Prospect</option>
-          </select>
-          <select class="filter-select" id="locFilterScore" onchange="filterLocataires()">
-            <option value="">Tous les scores</option>
-            <option value="vert">Solvable</option>
-            <option value="orange">À vérifier</option>
-            <option value="rouge">Insuffisant</option>
-          </select>
-        </div>
-
-        <!-- Stats -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
-          <div class="kpi-card"><div class="kpi-val" id="locKpiTotal">0</div><div class="kpi-label">Total locataires</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="locKpiActifs" style="color:var(--vert)">0</div><div class="kpi-label">En cours</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="locKpiPreavis" style="color:#f59e0b">0</div><div class="kpi-label">Préavis</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="locKpiProspects" style="color:var(--pro-accent)">0</div><div class="kpi-label">Prospects</div></div>
-        </div>
-
-        <!-- Liste fiches -->
-        <div id="locatairesEmpty" class="dash-card" style="text-align:center;padding:60px 0;color:var(--gris)">
-          <div style="font-size:2.5rem;margin-bottom:12px"></div>
-          Aucun locataire enregistré.<br>
-          <a href="#" onclick="openNewLocataire()" style="color:var(--pro-accent);font-weight:600">Créer la première fiche →</a>
-        </div>
-        <div id="locatairesList" style="display:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px"></div>
-
-        <!-- Formulaire nouvelle fiche (panneau latéral simulé) -->
-        <div id="locataireForm" class="modal-overlay" style="display:none">
-  <div class="modal" style="max-width:680px;width:95%;max-height:92vh;display:flex;flex-direction:column;overflow:visible">
-    <!-- Header fixe -->
-    <div style="padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:white">
-      <div id="locFormTitle" style="font-size:1.1rem;font-weight:700;color:var(--pro-accent)">Nouvelle fiche locataire</div>
-      <button onclick="closeLocataireForm()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--gris);line-height:1;padding:2px 6px">×</button>
-    </div>
-    <input type="hidden" id="locEditId">
-    <!-- Contenu scrollable -->
-    <div style="overflow-y:auto;overflow-x:visible;flex:1;padding:0 4px">
-          <div class="dash-card" style="margin-top:16px;border:2px solid var(--pro-accent)">
-            
-            <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Identité</div>
-            <div class="form-grid-pro">
-              <div class="form-group-pro"><label class="form-label">Prénom *</label><input type="text" class="form-input-pro" id="locPrenom" placeholder="Marie"></div>
-              <div class="form-group-pro"><label class="form-label">Nom *</label><input type="text" class="form-input-pro" id="locNom" placeholder="Martin"></div>
-            </div>
-            <div class="form-grid-pro">
-              <div class="form-group-pro"><label class="form-label">Email</label><input type="email" class="form-input-pro" id="locEmail" placeholder="marie@email.com"></div>
-              <div class="form-group-pro"><label class="form-label">Téléphone</label><input type="tel" class="form-input-pro" id="locTel" placeholder="06 12 34 56 78"></div>
-            </div>
-
-            <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Bail en cours</div>
-            <div class="form-grid-pro">
-              <div class="form-group-pro"><label class="form-label">Adresse du logement</label><input type="text" class="form-input-pro" id="locAdresse" placeholder="12 rue des Lilas, 75020 Paris"></div>
-              <div class="form-group-pro"><label class="form-label">Loyer HC (€)</label><input type="number" class="form-input-pro" id="locLoyer" placeholder="800"></div>
-              <div class="form-group-pro"><label class="form-label">Complément loyer (€) <small style="font-weight:400;color:var(--gris)">optionnel</small></label><input type="number" class="form-input-pro" id="locComplement" placeholder="0" min="0"></div>
-              <div class="form-group-pro"><label class="form-label">Charges (€/mois)</label><input type="number" class="form-input-pro" id="locCharges" placeholder="80" min="0"></div>
-              <div class="form-group-pro"><label class="form-label">Dépôt de garantie (€)</label><input type="number" class="form-input-pro" id="locDepot" placeholder="Ex : 2 174"></div>
-            </div>
-            <div class="form-grid-pro">
-              <div class="form-group-pro"><label class="form-label">Date d'entrée</label><input type="date" class="form-input-pro" id="locDateEntree"></div>
-              <div class="form-group-pro"><label class="form-label">Date de fin de bail</label><input type="date" class="form-input-pro" id="locDateFin"></div>
-            </div>
-            <div class="form-grid-pro">
-              <div class="form-group-pro">
-                <label class="form-label">Statut</label>
-                <select class="form-input-pro" id="locStatut">
-                  <option value="actif">En cours</option>
-                  <option value="preavis">Préavis</option>
-                  <option value="sorti">Sorti</option>
-                  <option value="prospect">Prospect</option>
-                </select>
-              </div>
-              <div class="form-group-pro"><label class="form-label">Agent responsable</label><input type="text" class="form-input-pro" id="locAgent" placeholder="Nom de l'agent"></div>
-            </div>
-
-            <div style="font-weight:700;font-size:.85rem;color:var(--pro-accent);margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Scoring solvabilité</div>
-            <div class="form-grid-pro">
-              <div class="form-group-pro"><label class="form-label">Revenus nets mensuels (€)</label><input type="number" class="form-input-pro" id="locRevenus" placeholder="2500" oninput="calcScore()"></div>
-              <div class="form-group-pro">
-                <label class="form-label">Type de contrat</label>
-                <select class="form-input-pro" id="locContrat" onchange="calcScore()">
-                  <option value="cdi">CDI</option>
-                  <option value="cdi_periode">CDI période d'essai</option>
-                  <option value="cdd">CDD</option>
-                  <option value="independant">Indépendant / Auto-entrepreneur</option>
-                  <option value="fonctionnaire">Fonctionnaire</option>
-                  <option value="retraite">Retraité</option>
-                  <option value="etudiant">Étudiant</option>
-                  <option value="autre">Autre</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-grid-pro">
-              <div class="form-group-pro" style="grid-column:1/-1">
-                <label class="form-label">Garantie</label>
-                <input type="hidden" id="locGarant" value="non">
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-                  <button type="button" class="loc-garant-pill active" data-val="non" onclick="setLocGarant('non')" style="padding:7px 14px;border:1px solid var(--pro-accent);border-radius:8px;background:var(--pro-light);color:var(--pro-accent);font-weight:700;font-size:.82rem;cursor:pointer">Aucune</button>
-                  <button type="button" class="loc-garant-pill" data-val="physique" onclick="setLocGarant('physique')" style="padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Garant physique</button>
-                  <button type="button" class="loc-garant-pill" data-val="caution_solidaire" onclick="setLocGarant('caution_solidaire')" style="padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Caution solidaire</button>
-                  <button type="button" class="loc-garant-pill" data-val="visale" onclick="setLocGarant('visale')" style="padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Visale</button>
-                  <button type="button" class="loc-garant-pill" data-val="garantme" onclick="setLocGarant('garantme')" style="padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">GarantMe</button>
-                  <button type="button" class="loc-garant-pill" data-val="autre_organisme" onclick="setLocGarant('autre_organisme')" style="padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Autre organisme</button>
-                  <button type="button" class="loc-garant-pill" data-val="garantme" onclick="setLocGarant('garantme')" style="padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">GarantMe</button>
-                  <button type="button" class="loc-garant-pill" data-val="autre_organisme" onclick="setLocGarant('autre_organisme')" style="padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.82rem;cursor:pointer">Autre organisme</button>
-                </div>
-              </div>
-              <div class="form-group-pro">
-                <label class="form-label">Score solvabilité</label>
-                <div id="locScoreDisplay" style="margin-top:8px;padding:10px 14px;border-radius:8px;font-weight:700;font-size:.9rem;background:#f1f5f9;color:var(--gris)">— Renseignez les revenus</div>
-              </div>
-            </div>
-
-            <div class="form-group-pro" style="margin-top:12px">
-              <label class="form-label">Bien loué <span style="font-weight:400;color:var(--gris);font-size:.76rem">— sélectionnez un mandat pour remplir automatiquement</span></label>
-              <select class="form-input-pro" id="locBienSel" onchange="pickLocMandat(this.value)" style="cursor:pointer">
-                <option value="">— Choisir un bien —</option>
-              </select>
             </div>
 
             <!-- Section garant (affichée si garant physique) -->
@@ -3259,7 +2984,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               </div>
               <div style="margin-top:20px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
                 <div style="font-size:.78rem;color:var(--gris);text-align:center">
-                  <div style="font-size:1.4rem"></div>
+                  <div style="font-size:1.4rem"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 1 4 9 8 9 7 15 13 7 9 7 9 1"/></svg></div>
                   Résultat en 15s
                 </div>
                 <div style="font-size:.78rem;color:var(--gris);text-align:center">
@@ -3394,18 +3119,18 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="dash-card" style="margin-bottom:16px">
               <div class="dash-section-title">Choisir le type de courrier <span id="coTypeLabel" style="font-weight:400;color:var(--pro-accent);font-size:.82rem"></span></div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="courrierTypes">
-                <div class="courrier-type-card active" onclick="selectCourrier('conge_bailleur',this)">Congé bailleur<br><span>Pour reprise / vente</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('mise_demeure',this)">Mise en demeure<br><span>Loyers impayés</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('regularisation',this)">Régularisation charges<br><span>Bilan annuel</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('revision_loyer',this)">Révision de loyer IRL<br><span>Revalorisation annuelle</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('travaux_locataire',this)">Autorisation travaux<br><span>Réponse locataire</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('assurance_relance',this)">Relance assurance<br><span>Justificatif non reçu</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('etat_lieux_sortie',this)">Convocation état des lieux<br><span>Sortie du locataire</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('restitution_depot',this)">Restitution dépôt<br><span>Avec/sans retenues</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('clause_illegale',this)">Clause illégale<br><span>Mise en demeure bailleur</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('trop_percu',this)">Trop-perçu loyer<br><span>Info locataire + remboursement</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('notif_encadrement',this)">Notif. encadrement<br><span>Loyer hors plafond légal</span></div>
-                <div class="courrier-type-card" onclick="selectCourrier('reclamation_remboursement',this)">Réclamation remboursement<br><span>Charges indues / dépôt tardif</span></div>
+                <div class="courrier-type-card active" onclick="selectCourrier('conge_bailleur',this)">Congé bailleur</div>
+                <div class="courrier-type-card" onclick="selectCourrier('mise_demeure',this)">Mise en demeure</div>
+                <div class="courrier-type-card" onclick="selectCourrier('regularisation',this)">Régularisation charges</div>
+                <div class="courrier-type-card" onclick="selectCourrier('revision_loyer',this)">Révision de loyer IRL</div>
+                <div class="courrier-type-card" onclick="selectCourrier('travaux_locataire',this)">Autorisation travaux</div>
+                <div class="courrier-type-card" onclick="selectCourrier('assurance_relance',this)">Relance assurance</div>
+                <div class="courrier-type-card" onclick="selectCourrier('etat_lieux_sortie',this)">Convocation état des lieux</div>
+                <div class="courrier-type-card" onclick="selectCourrier('restitution_depot',this)">Restitution dépôt</div>
+                <div class="courrier-type-card" onclick="selectCourrier('clause_illegale',this)">Clause illégale</div>
+                <div class="courrier-type-card" onclick="selectCourrier('trop_percu',this)">Trop-perçu loyer</div>
+                <div class="courrier-type-card" onclick="selectCourrier('notif_encadrement',this)">Notif. encadrement</div>
+                <div class="courrier-type-card" onclick="selectCourrier('reclamation_remboursement',this)">Réclamation remboursement</div>
               </div>
             </div>
 
@@ -4091,6 +3816,22 @@ body.is-dashboard #marketingPage { display: none !important; }
   TAB: LOYERS & IMPAYÉS
 ═══════════════════════════════════════════════════════ -->
 
+        <!-- Section Export -->
+        <div class="dash-card" style="margin-bottom:16px">
+          <div class="dash-section-title">Export & sauvegarde des données</div>
+          <p style="font-size:.84rem;color:var(--gris);margin-bottom:16px;line-height:1.6">
+            Exportez toutes vos données BailScan en CSV compatibles Excel.
+            Mandats, locataires, loyers, quittances, états des lieux, travaux, courriers.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn-primary-pro" onclick="exportToutesLesDonnees()">Exporter toutes mes données</button>
+            <button class="btn-sm" onclick="exportRegistreExcel()">Registre mandats (Excel)</button>
+          </div>
+          <div style="margin-top:10px;font-size:.75rem;color:var(--gris)">Fichiers CSV séparés par catégorie · Séparateur point-virgule · Compatible Excel FR</div>
+        </div>
+
+
+
 <div id="tab-loyers-suivi" style="display:none">
   <div class="dash-main-header">
     <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Loyers & Impayés</div><div class="dash-page-sub">Suivi mensuel des encaissements · Relances automatiques</div></div>
@@ -4205,7 +3946,20 @@ body.is-dashboard #marketingPage { display: none !important; }
     <div class="kpi-card"><div class="kpi-val" id="edlKpiMoisDernier" style="color:var(--pro-accent)">0</div><div class="kpi-label">Ce mois-ci</div></div>
   </div>
 
-  <!-- Liste EDL -->
+  <!-- Historique EDL -->
+  <div class="dash-main-header" style="margin-top:8px;margin-bottom:12px">
+    <div style="font-weight:700;font-size:.95rem;color:var(--texte)">Historique des états des lieux</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <select id="edlFilterType" class="filter-select" onchange="refreshEDLListe()">
+        <option value="">Tous types</option>
+        <option value="entree">Entrée</option>
+        <option value="sortie">Sortie</option>
+      </select>
+      <select id="edlFilterBien" class="filter-select" onchange="refreshEDLListe()" style="max-width:200px">
+        <option value="">Tous les biens</option>
+      </select>
+    </div>
+  </div>
   <div id="edlListeContainer">
     <div id="edlListeVide" class="dash-card" style="text-align:center;padding:48px;color:var(--gris)">
       <div style="font-size:2.5rem;margin-bottom:12px"></div>
@@ -4262,9 +4016,14 @@ body.is-dashboard #marketingPage { display: none !important; }
             </div>
             <div class="form-group-pro">
               <label class="form-label">Bien concerné</label>
-              <select class="form-input-pro" id="edlMandatId" onchange="prefillEDLFromMandat()">
-                <option value="">— Sélectionner —</option>
-              </select>
+              <div style="position:relative">
+                <input type="text" class="form-input-pro" id="edlMandatSearch"
+                  placeholder="Rechercher un bien (adresse, ville…)"
+                  oninput="searchEDLMandat(this.value)" autocomplete="off"
+                  onfocus="searchEDLMandat(this.value)">
+                <input type="hidden" id="edlMandatId">
+                <div id="edlMandatDropdown" style="position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none;z-index:9999;max-height:200px;overflow-y:auto"></div>
+              </div>
             </div>
             <div class="form-group-pro">
               <label class="form-label">Locataire</label>
@@ -4625,6 +4384,7 @@ body.is-dashboard #marketingPage { display: none !important; }
     </div>
     <div style="display:flex;gap:8px">
       <button class="btn-sm" onclick="exportRegistrePDF()">Exporter PDF</button>
+      <button class="btn-sm" onclick="exportRegistreExcel()">Exporter Excel</button>
       <button class="btn-primary-pro" onclick="openNouvelEntreeRegistre()">+ Nouvelle entrée</button>
     </div>
   </div>
@@ -6612,6 +6372,10 @@ function saveAgencyInfo() {
 }
 
 function loadAgencyInfoFields() {
+  // Fallback localStorage si proState.agencyInfo vide
+  if (!proState.agencyInfo || !proState.agencyInfo.nom) {
+    try { var s=localStorage.getItem('bailscan_agency_info'); if(s) proState.agencyInfo=JSON.parse(s); } catch(e){}
+  }
   var ai = proState.agencyInfo || {};
   var fields = {aiNom:'nom',aiSiret:'siret',aiAdresse:'adresse',aiTel:'tel',aiEmail:'email',aiCarte:'carte',aiGarantie:'garantie'};
   Object.keys(fields).forEach(function(id){
@@ -7513,9 +7277,10 @@ function exportFicheMandat(mandatId) {
       if (pi > 0 && pi % perRow === 0) { photoX = mg; photoY += photoH + gap; checkPage(photoH + gap); }
       else if (pi > 0) { photoX += photoW + gap; }
       try {
-        var fmt = ph.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-        doc.addImage(ph, fmt, photoX, photoY, photoW, photoH);
-      } catch(e) {}
+        var photoData = (typeof ph === 'object' && ph.data) ? ph.data : ph;
+        var fmt = photoData.startsWith('data:image/png') ? 'PNG' : 'JPEG';
+        doc.addImage(photoData, fmt, photoX, photoY, photoW, photoH);
+      } catch(e) { console.warn('Photo PDF err:', e); }
     });
     y = photoY + photoH + 8;
   }
@@ -7588,8 +7353,19 @@ function exportFicheMandat(mandatId) {
   var locatairesFiche = locs.filter(function(l){ return String(l.mandatId)===String(mandatId); });
   locatairesFiche.forEach(function(l) {
     checkPage(8);
+    var lName = ((l.prenom||'')+' '+(l.nom||'')).trim();
+    var lLine1 = '• '+lName+(l.email?' — '+l.email:'')+(l.tel?' — '+l.tel:'');
+    var lInfos = [];
+    if (l.loyer) lInfos.push('Loyer: '+(parseFloat(l.loyer||0)+parseFloat(l.complement||0)+parseFloat(l.charges||0))+' €/mois');
+    if (l.depot) lInfos.push('Dépôt: '+l.depot+' €');
+    if (l.dateEntree) lInfos.push('Entrée: '+l.dateEntree);
+    if (l.dateFin) lInfos.push('Fin bail: '+l.dateFin);
+    if (l.garant && l.garant!=='non') lInfos.push('Garant: '+((l.garantPrenom||'')+' '+(l.garantNom||'')).trim());
     doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
-    doc.text('• '+(l.prenom||'')+' '+(l.nom||'')+(l.email?' — '+l.email:'')+(l.tel?' — '+l.tel:''), mg+3, y); y+=5;
+    checkPage(10);
+    doc.text(lLine1, mg+3, y); y+=4.5;
+    if (lInfos.length) { checkPage(6); doc.setFontSize(7.5); doc.setTextColor(100,100,100); var lInfosText=doc.splitTextToSize(lInfos.join(' · '),contentW-8); lInfosText.forEach(function(lt){doc.text(lt,mg+5,y);y+=4;}); }
+    doc.setTextColor(40,40,40); y+=2;
   });
   if (!locatairesFiche.length) {
     doc.setFontSize(8); doc.setFont('helvetica','italic'); doc.setTextColor(150,150,150);
@@ -7733,7 +7509,11 @@ function selectCourrierMandat(mandatId) {
     var selLoc = document.getElementById('coLocataireSel');
     if (selLoc) { selLoc.value = m.locataireId; selectCourrierLocataire(m.locataireId); }
   }
-  if (m.bailleur) f('coBailleurNom', m.bailleur);
+  if (m.bailleur) f('coBailleur', m.bailleur);
+  // Adresse bailleur depuis le mandat
+  var bailleurAdr = [m.bailleurAdresse, m.bailleurCp, m.bailleurVille].filter(Boolean).join(' ');
+  if (bailleurAdr) f('coBailleurAdresse', bailleurAdr);
+  else if (m.bailleurEmail) f('coBailleurEmail', m.bailleurEmail);
 }
 
 function selectDossierMandat(mandatId) {
@@ -8796,7 +8576,10 @@ function preFillGenererFromMandat(mandatId) {
   s('genLoyer', m.loyer);
   var cEl=document.getElementById('genComplement'); if(cEl) cEl.value=(m.complement!==undefined&&m.complement!==null)?m.complement:0;
   s('genCharges', m.charges);
-  s('genDepotGarantie', m.depot || ((parseFloat(m.loyer||0)+parseFloat(m.complement||0))*2)||'');
+  var depotVal = m.depot !== undefined && m.depot !== '' && m.depot !== null && parseFloat(m.depot) > 0
+    ? m.depot
+    : ((parseFloat(m.loyer||0)+parseFloat(m.complement||0))*2) || '';
+  s('genDepotGarantie', depotVal);
   // Surface + pièces
   s('genSurface', m.surface);
   if (m.pieces) { var pcEl=document.getElementById('genPieces'); if(pcEl) pcEl.value=m.pieces; }
@@ -8904,37 +8687,54 @@ function refreshLoyersSuivi() {
   var moisSel = document.getElementById('loyerMoisFil');
   if (moisSel && moisSel.options.length <= 1) {
     var moisSet = new Set(suivi.map(function(s){ return s.mois; }));
-    var now = new Date();
+    var now2 = new Date();
     for (var i = 0; i < 12; i++) {
-      var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      var val = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
-      if (!moisSet.has(val)) moisSet.add(val);
+      var d2 = new Date(now2.getFullYear(), now2.getMonth() - i, 1);
+      var val2 = d2.getFullYear()+'-'+String(d2.getMonth()+1).padStart(2,'0');
+      if (!moisSet.has(val2)) moisSet.add(val2);
     }
-    Array.from(moisSet).sort().reverse().forEach(function(m) {
+    Array.from(moisSet).sort().reverse().forEach(function(mv) {
       var opt = document.createElement('option');
-      opt.value = m; opt.textContent = new Date(m+'-01').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+      opt.value = mv; opt.textContent = new Date(mv+'-01').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
       moisSel.appendChild(opt);
     });
   }
 
-  // KPIs
   var moisActuel = new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
-  var loyersAttenduTotal = locs.reduce(function(s,l){ return s + (parseFloat(l.loyer)||0) + (parseFloat(l.complement)||0) + (parseFloat(l.charges)||0); }, 0);
-  var moisSuivi = suivi.filter(function(s){ return s.mois === moisActuel; });
-  var percuTotal = moisSuivi.reduce(function(s,e){ return s + (parseFloat(e.percu)||0); }, 0);
-  var impayeTotal = moisSuivi.reduce(function(s,e){ return s + Math.max(0, (parseFloat(e.attendu)||0) - (parseFloat(e.percu)||0)); }, 0);
-  var taux = loyersAttenduTotal > 0 ? Math.round((percuTotal / loyersAttenduTotal) * 100) : 0;
+  var moisAffiche = moisFil || moisActuel;
 
-  var f = function(id, v){ var el=document.getElementById(id); if(el) el.textContent=v; };
-  f('loyerKpiAttendu', loyersAttenduTotal.toLocaleString('fr-FR')+ ' €');
-  f('loyerKpiPercu', percuTotal.toLocaleString('fr-FR') + ' €');
-  f('loyerKpiImpaye', impayeTotal.toLocaleString('fr-FR') + ' €');
-  f('loyerKpiTaux', taux + ' %');
+  // KPIs globaux
+  var loyersAttenduTotal = locs.filter(function(l){return l.statut==='actif'&&l.loyer;}).reduce(function(s,l){
+    return s + (parseFloat(l.loyer)||0) + (parseFloat(l.complement)||0) + (parseFloat(l.charges||0));
+  }, 0);
+  var moisSuiviActuel = suivi.filter(function(s){ return s.mois === moisActuel; });
+  var percuTotal = moisSuiviActuel.reduce(function(s,e){ return s+(parseFloat(e.percu)||0); }, 0);
+  var impayeTotal = moisSuiviActuel.reduce(function(s,e){ return s+Math.max(0,(parseFloat(e.attendu)||0)-(parseFloat(e.percu)||0)); }, 0);
+  var taux = loyersAttenduTotal > 0 ? Math.round((percuTotal/loyersAttenduTotal)*100) : 0;
 
-  // Tableau : générer une ligne par locataire actif pour le mois sélectionné ou tous
+  var f2 = function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+  f2('loyerKpiAttendu', loyersAttenduTotal.toLocaleString('fr-FR')+' €');
+  f2('loyerKpiPercu', percuTotal.toLocaleString('fr-FR')+' €');
+  f2('loyerKpiImpaye', impayeTotal.toLocaleString('fr-FR')+' €');
+  f2('loyerKpiTaux', taux+' %');
+
+  var tbodyEl = document.getElementById('loyersTbody');
+  if (!tbodyEl) return;
+
+  var statutStyle = {
+    paye:   {bg:'#f0fdf4', color:'#166534', label:'Payé'},
+    partiel:{bg:'#fffbeb', color:'#92400e', label:'Partiel'},
+    impaye: {bg:'#fef2f2', color:'#991b1b', label:'Impayé'}
+  };
+
+  // Grouper les locataires actifs par mandat (bien)
+  var locatairesActifs = locs.filter(function(l){ return l.statut==='actif' && l.loyer; });
+  
+  // Construire les lignes
   var rows = [];
-  locs.filter(function(l){ return l.statut === 'actif' && l.loyer; }).forEach(function(l) {
-    var moisListe = moisFil ? [moisFil] : [moisActuel];
+  var moisListe = moisFil ? [moisFil] : [moisActuel];
+
+  locatairesActifs.forEach(function(l) {
     moisListe.forEach(function(m) {
       var entry = suivi.find(function(s){ return String(s.locId)===String(l.id) && s.mois===m; });
       var lCharges = parseFloat(l.charges||0);
@@ -8943,38 +8743,80 @@ function refreshLoyersSuivi() {
         if (mLnk) lCharges = parseFloat(mLnk.charges||0);
       }
       var attendu = (parseFloat(l.loyer)||0) + (parseFloat(l.complement)||0) + lCharges;
-      var percu = entry ? parseFloat(entry.percu) || 0 : 0;
-      var statut = !entry ? 'impaye' : percu >= attendu ? 'paye' : percu > 0 ? 'partiel' : 'impaye';
+      var percu = entry ? parseFloat(entry.percu)||0 : 0;
+      var statut = !entry ? 'impaye' : percu>=attendu ? 'paye' : percu>0 ? 'partiel' : 'impaye';
       if (statutFil && statut !== statutFil) return;
       var mandat = l.mandatId ? mandats.find(function(m2){ return String(m2.id)===String(l.mandatId); }) : null;
-      rows.push({ l: l, m: m, attendu: attendu, percu: percu, statut: statut, entry: entry, mandat: mandat });
+      rows.push({ l:l, m:m, attendu:attendu, percu:percu, statut:statut, entry:entry, mandat:mandat });
     });
   });
 
-  var tbodyEl = document.getElementById('loyersTbody');
-  if (!tbodyEl) return;
   if (!rows.length) {
-    tbodyEl.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--gris)"><div style="font-size:1.8rem;margin-bottom:8px"></div><div>Aucun locataire actif ou aucun loyer enregistré</div></td></tr>';
+    tbodyEl.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--gris)"><div>Aucun locataire actif ou aucun loyer enregistré</div></td></tr>';
     return;
   }
-  var statutStyle = { paye: {bg:'#f0fdf4',color:'#166534',label:'Payé'}, partiel:{bg:'#fffbeb',color:'#92400e',label:'Partiel'}, impaye:{bg:'#fef2f2',color:'#991b1b',label:'❌ Impayé'} };
-  tbodyEl.innerHTML = rows.map(function(r) {
-    var st = statutStyle[r.statut] || statutStyle.impaye;
-    var moisLabel = new Date(r.m+'-01').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
-    return '<tr>'
-      + '<td style="font-weight:600">'+(r.l.prenom||'')+' '+(r.l.nom||'')+'</td>'
-      + '<td style="font-size:.8rem;color:var(--gris)">'+(r.mandat ? (r.mandat.adresse||'—').substring(0,30) : '—')+'</td>'
-      + '<td>'+moisLabel+'</td>'
-      + '<td style="font-weight:600">'+(r.attendu.toLocaleString('fr-FR'))+' €</td>'
-      + '<td style="font-weight:600;color:'+(r.percu>=r.attendu?'var(--success)':r.percu>0?'var(--warn)':'var(--danger)')+'">'+( r.percu ? r.percu.toLocaleString('fr-FR')+' €' : '—' )+'</td>'
-      + '<td><span style="background:'+st.bg+';color:'+st.color+';font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px">'+st.label+'</span></td>'
-      + '<td style="white-space:nowrap">'
-        + '<button class="btn-sm" style="font-size:.72rem" onclick="ouvrirSaisieLoyer(\''+r.l.id+'\',\''+r.m+'\','+r.attendu+')">'+( r.entry ? 'Modifier' : '+ Saisir' )+'</button>'
-        + (r.statut==='impaye'?'<button class="btn-sm" style="font-size:.72rem;margin-left:4px;color:var(--danger);border-color:var(--danger)" onclick="genererRelanceImpaye(\''+r.l.id+'\')">Relance</button>':'')
+
+  // Grouper par mandat pour afficher un séparateur de bien
+  var grouped = {};
+  var groupOrder = [];
+  rows.forEach(function(r) {
+    var mandatKey = r.mandat ? String(r.mandat.id) : 'sans_bien';
+    if (!grouped[mandatKey]) {
+      grouped[mandatKey] = { mandat: r.mandat, rows: [] };
+      groupOrder.push(mandatKey);
+    }
+    grouped[mandatKey].rows.push(r);
+  });
+
+  var moisLabel = new Date(moisAffiche+'-01').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+
+  var html = '';
+  groupOrder.forEach(function(key) {
+    var group = grouped[key];
+    var adresse = group.mandat ? (group.mandat.adresseFull || group.mandat.adresse || 'Bien') : 'Sans bien rattaché';
+    var totalAttendu = group.rows.reduce(function(s,r){ return s+r.attendu; }, 0);
+    var totalPercu = group.rows.reduce(function(s,r){ return s+r.percu; }, 0);
+    var toutPaye = group.rows.every(function(r){ return r.statut==='paye'; });
+    var unImpaye = group.rows.some(function(r){ return r.statut==='impaye'; });
+    var headerColor = toutPaye ? '#166534' : unImpaye ? '#991b1b' : '#92400e';
+    var headerBg = toutPaye ? '#f0fdf4' : unImpaye ? '#fef2f2' : '#fffbeb';
+
+    // En-tête du bien
+    html += '<tr style="background:'+headerBg+';border-bottom:2px solid #e5e7eb">'
+      + '<td colspan="7" style="padding:10px 14px;font-weight:700;font-size:.88rem;color:'+headerColor+'">'
+      + '<span style="font-size:.95rem">'+adresse+'</span>'
+      + '<span style="font-size:.75rem;font-weight:400;color:#6b7280;margin-left:12px">'+moisLabel+'</span>'
+      + '<span style="float:right;font-size:.8rem">Attendu&nbsp;<strong>'+totalAttendu.toLocaleString('fr-FR')+' €</strong>'
+      + '&nbsp;·&nbsp;Encaissé&nbsp;<strong style="color:'+headerColor+'">'+totalPercu.toLocaleString('fr-FR')+' €</strong></span>'
       + '</td></tr>';
-  }).join('');
-  var count = document.getElementById('loyerFilterCount');
-  if (count) count.textContent = rows.length + ' ligne'+(rows.length>1?'s':'');
+
+    // Lignes des locataires du bien
+    group.rows.forEach(function(r) {
+      var st = statutStyle[r.statut] || statutStyle.impaye;
+      html += '<tr style="border-bottom:1px solid #f3f4f6">'
+        + '<td style="font-weight:600;padding-left:24px">'+(r.l.prenom||'')+' '+(r.l.nom||'')+'</td>'
+        + '<td style="font-size:.8rem;color:var(--gris)">'+(r.l.tel||r.l.email||'—')+'</td>'
+        + '<td style="font-size:.82rem">'+moisLabel+'</td>'
+        + '<td style="font-weight:600">'+(r.attendu.toLocaleString('fr-FR'))+' €</td>'
+        + '<td style="font-weight:600;color:'+(r.percu>=r.attendu?'var(--success)':r.percu>0?'var(--warn)':'var(--danger)')+'">'+( r.percu ? r.percu.toLocaleString('fr-FR')+' €' : '—' )+'</td>'
+        + '<td><span style="background:'+st.bg+';color:'+st.color+';font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px">'+st.label+'</span></td>'
+        + '<td style="white-space:nowrap">'
+        + '<button class="btn-sm" style="font-size:.72rem" onclick="ouvrirSaisieLoyer(\''+r.l.id+'\',\''+r.m+'\','+r.attendu+')">'+(r.entry ? 'Modifier' : '+ Saisir')+'</button>'
+        + (r.statut==='impaye' ? '<button class="btn-sm" style="font-size:.72rem;margin-left:4px;color:var(--danger);border-color:var(--danger)" onclick="genererRelance(\''+r.l.id+'\')">Relance</button>' : '')
+        + '</td></tr>';
+    });
+
+    // Ligne de sous-total si plusieurs locataires dans le bien
+    if (group.rows.length > 1) {
+      html += '<tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb">'
+        + '<td colspan="3" style="padding:6px 14px;font-size:.75rem;color:#9ca3af">'+group.rows.length+' locataire(s)</td>'
+        + '<td style="font-size:.8rem;font-weight:600">'+totalAttendu.toLocaleString('fr-FR')+' €</td>'
+        + '<td style="font-size:.8rem;font-weight:600;color:'+(toutPaye?'var(--success)':unImpaye?'var(--danger)':'var(--warn)')+'">'+totalPercu.toLocaleString('fr-FR')+' €</td>'
+        + '<td colspan="2"></td></tr>';
+    }
+  });
+
+  tbodyEl.innerHTML = html;
 }
 
 function openSaisieLoyer() {
@@ -9089,6 +8931,37 @@ var ETATS_CLASS = {'Neuf':'neuf','Très bon état':'bon','Bon état':'bon','Éta
 function loadEDL() { try { return JSON.parse(localStorage.getItem('bailscan_edl')||'[]'); } catch(e){ return []; } }
 function saveEDL_store(arr) { localStorage.setItem('bailscan_edl', JSON.stringify(arr)); }
 
+
+function searchEDLMandat(q) {
+  var drop = document.getElementById('edlMandatDropdown');
+  if (!drop) return;
+  var mans = loadMandats ? loadMandats() : [];
+  var filtered = q ? mans.filter(function(m) {
+    var txt = ((m.adresse||'')+' '+(m.ville||'')+' '+(m.cp||'')+' '+(m.bailleur||'')).toLowerCase();
+    return txt.includes(q.toLowerCase());
+  }) : mans;
+  if (!filtered.length) { drop.style.display='none'; return; }
+  drop.innerHTML = filtered.slice(0,10).map(function(m) {
+    var label = (m.adresseFull||m.adresse||'Bien')+(m.ville?', '+m.ville:'');
+    var safeId = String(m.id);
+    var safeLabel = label.replace(/\\/g,'').replace(/'/g,'');
+    return '<div onmousedown="event.preventDefault();pickEDLMandat(\'' + safeId + '\',\'' + safeLabel + '\')" style="padding:9px 14px;cursor:pointer;font-size:.84rem;border-bottom:1px solid #f5f5f5" onmouseover="this.style.background=\'#f0f4ff\'" onmouseout="this.style.background=\'white\'">' + label + '</div>';
+  }).join('');
+  drop.style.display = 'block';
+}
+
+function pickEDLMandat(id, label) {
+  var inp = document.getElementById('edlMandatSearch'); if (inp) inp.value = label;
+  var hid = document.getElementById('edlMandatId'); if (hid) hid.value = id;
+  var drop = document.getElementById('edlMandatDropdown'); if (drop) drop.style.display = 'none';
+  prefillEDLFromMandat();
+}
+
+document.addEventListener('click', function(e) {
+  var d = document.getElementById('edlMandatDropdown');
+  if (d && !d.contains(e.target) && e.target.id !== 'edlMandatSearch') d.style.display = 'none';
+});
+
 function openNouvelEDL() {
   edlEditId = null;
   edlCurrentStep = 1;
@@ -9135,8 +9008,15 @@ function setEDLType(type, btn) {
   if (title) title.textContent = type === 'entree' ? "État des lieux d'entrée" : "État des lieux de sortie";
 }
 
-function closeModalEDL() {
+function closeModalEDL(force) {
+  // Si EDL en cours (step > 1 ou données saisies) et pas de force → confirmation
+  if (!force && edlCurrentStep > 1) {
+    if (!confirm('Abandonner cet état des lieux ? Les données non enregistrées seront perdues.')) return;
+  }
   document.getElementById('modalEDL').style.display = 'none';
+  // Réinitialiser pour éviter les données fantômes
+  edlEditId = null;
+  edlCurrentStep = 1;
 }
 
 function prefillEDLFromMandat() {
@@ -9433,7 +9313,7 @@ function saveEDL() {
   if (edlEditId) { var idx=arr.findIndex(function(x){return String(x.id)===String(edlEditId);}); if(idx>=0) arr[idx]=entry; else arr.unshift(entry); }
   else arr.unshift(entry);
   saveEDL_store(arr);
-  closeModalEDL();
+  closeModalEDL(true);
   refreshEDLListe();
   showToast('État des lieux enregistré.', 'green');
 }
@@ -9457,7 +9337,30 @@ function refreshEDLListe() {
   if(vide) vide.style.display='none';
   if(liste) liste.style.display='grid';
   var mandats = loadMandats(); var locs = loadLocataires();
-  liste.innerHTML = arr.map(function(e) {
+  // Remplir filtre bien
+  var filterBien = document.getElementById('edlFilterBien');
+  if (filterBien && filterBien.options.length <= 1) {
+    mandats.forEach(function(m) {
+      var opt = document.createElement('option');
+      opt.value = String(m.id); opt.textContent = (m.adresse||'Bien').substring(0,35);
+      filterBien.appendChild(opt);
+    });
+  }
+  // Appliquer filtres
+  var fType = (document.getElementById('edlFilterType')||{value:''}).value;
+  var fBien = (document.getElementById('edlFilterBien')||{value:''}).value;
+  var arrF = arr.filter(function(e) {
+    if (fType && e.type !== fType) return false;
+    if (fBien && String(e.mandatId) !== fBien) return false;
+    return true;
+  });
+  // Trier par date décroissante
+  arrF.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
+  if (!arrF.length) {
+    liste.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gris)">Aucun état des lieux pour ces critères.</div>';
+    return;
+  }
+  liste.innerHTML = arrF.map(function(e) {
     var m = e.mandatId ? mandats.find(function(x){return String(x.id)===String(e.mandatId);}) : null;
     var l = e.locId ? locs.find(function(x){return String(x.id)===String(e.locId);}) : null;
     var typeColor = e.type==='entree' ? {bg:'#f0fdf4',color:'#166534',label:'Entrée'} : {bg:'#fef2f2',color:'#991b1b',label:'Sortie'};
@@ -9864,6 +9767,99 @@ function saveEntreeRegistre() {
 function editRegistre(id) { showToast('Édition bientôt disponible.','blue'); }
 function supprimerRegistre(id) { if(!confirm('Supprimer cette entrée ?')) return; saveRegistre(loadRegistre().filter(function(r){return String(r.id)!==String(id);})); refreshRegistre(); }
 function closeModalRegistre() { document.getElementById('modalRegistre').style.display='none'; }
+
+// ═══════════════════════════════════════════════════════════
+// EXPORTS EXCEL / CSV
+// ═══════════════════════════════════════════════════════════
+
+function exportRegistreExcel() {
+  var arr = loadRegistre ? loadRegistre() : [];
+  if (!arr.length) { showToast('Aucune entrée dans le registre.', 'orange'); return; }
+  var headers = ['N° Mandat','Date','Type','Mandant','Bien','Honoraires','Durée','Date expiration','Statut','Notes'];
+  var rows = arr.map(function(r) {
+    return [
+      r.numero||'', r.date||'', r.type||'',
+      r.mandant||'', r.bien||'',
+      r.honoraires||'', r.duree||'',
+      r.dateExpiration||'', r.statut||'', r.notes||''
+    ];
+  });
+  downloadCSV('registre-mandats.csv', headers, rows);
+  showToast('Registre exporté.', 'green');
+}
+
+function exportToutesLesDonnees() {
+  var data = {
+    mandats: loadMandats ? loadMandats() : [],
+    locataires: loadLocataires ? loadLocataires() : [],
+    registre: (function(){ try { return JSON.parse(localStorage.getItem('bailscan_registre')||'[]'); } catch(e){ return []; } })(),
+    loyers: (function(){ try { return JSON.parse(localStorage.getItem('bailscan_loyers_suivi')||'[]'); } catch(e){ return []; } })(),
+    quittances: (function(){ try { return JSON.parse(localStorage.getItem('bailscan_quittances')||'[]'); } catch(e){ return []; } })(),
+    alertes: (function(){ try { return JSON.parse(localStorage.getItem('bailscan_alertes_custom')||'[]'); } catch(e){ return []; } })(),
+    courriers: (function(){ try { return JSON.parse(localStorage.getItem('bailscan_courriers')||'[]'); } catch(e){ return []; } })(),
+    edl: (function(){ try { return JSON.parse(localStorage.getItem('bailscan_edl')||'[]'); } catch(e){ return []; } })(),
+    tickets: (function(){ try { return JSON.parse(localStorage.getItem('bailscan_tickets')||'[]'); } catch(e){ return []; } })(),
+  };
+  var agInfo = proState.agencyInfo || {};
+  var exportDate = new Date().toLocaleDateString('fr-FR');
+
+  // Créer un fichier Excel multi-feuilles via CSV zipé
+  // (Plusieurs CSV dans un ZIP)
+  var sheets = [
+    { name: 'Mandats', headers: ['ID','Adresse','CP','Ville','Type','Surface','Loyer','Charges','Complement','Dépôt','DPE','Zone','Statut','Bailleur','Email bailleur','Tél bailleur','Adresse bailleur','Date entrée','Fin bail','Locataire ID','Notes'],
+      rows: data.mandats.map(function(m){ return [m.id,m.adresse,m.cp,m.ville,m.type,m.surface,m.loyer,m.charges,m.complement,m.depot,m.dpe,m.zone,m.statut,m.bailleur,m.bailleurEmail,m.bailleurTel,(m.bailleurAdresse||'')+(m.bailleurCp?' '+m.bailleurCp:'')+(m.bailleurVille?' '+m.bailleurVille:''),m.dateEntree,m.dateFin,m.locataireId,m.notes]; })
+    },
+    { name: 'Locataires', headers: ['ID','Prénom','Nom','Email','Tél','Adresse','Loyer','Charges','Complément','Dépôt','Statut','Contrat','Revenus','Date entrée','Fin bail','Bien rattaché','Type garant','Garant nom','Garant prénom','Garant revenus'],
+      rows: data.locataires.map(function(l){ return [l.id,l.prenom,l.nom,l.email,l.tel,l.adresse,l.loyer,l.charges,l.complement,l.depot,l.statut,l.contrat,l.revenus,l.dateEntree,l.dateFin,l.mandatId,l.garant,(l.garantNom||''),(l.garantPrenom||''),l.garantRevenus]; })
+    },
+    { name: 'Loyers & Paiements', headers: ['Locataire ID','Mois','Attendu','Perçu','Date paiement','Mode','Notes'],
+      rows: data.loyers.map(function(p){ return [p.locId,p.mois,p.attendu,p.percu,p.datePaiement,p.mode,p.notes]; })
+    },
+    { name: 'Quittances', headers: ['Locataire','Bien','Période','Loyer','Charges','Total','Date émission'],
+      rows: data.quittances.map(function(q){ return [q.locNom,q.adresse,q.periode,q.loyer,q.charges,q.total,q.date]; })
+    },
+    { name: 'États des lieux', headers: ['ID','Type','Date','Adresse','Locataire','Surface','Nb pièces','Signé'],
+      rows: data.edl.map(function(e){ return [e.id,e.type,e.date,e.adresse,e.locataire,e.surface,(e.pieces||[]).length,e.sig1||e.sig2?'Oui':'Non']; })
+    },
+    { name: 'Travaux', headers: ['ID','Titre','Type','Statut','Priorité','Bien','Locataire','Date','Montant','Notes'],
+      rows: data.tickets.map(function(t){ return [t.id,t.titre,t.type,t.statut,t.priorite,t.mandatId,t.locataire,t.date,t.montant,t.notes]; })
+    },
+    { name: 'Courriers', headers: ['Type','Date','Bailleur','Locataire','Bien','Extrait'],
+      rows: data.courriers.map(function(co){ return [co.type,co.date,co.bailleur,co.locataire,co.bien,(co.contenu||'').substring(0,100)]; })
+    },
+  ];
+
+  // Télécharger chaque sheet comme CSV séparé
+  sheets.forEach(function(sheet) {
+    if (sheet.rows.length) {
+      downloadCSV('BailScan-'+sheet.name.replace(/ /g,'-')+'-'+exportDate+'.csv', sheet.headers, sheet.rows);
+    }
+  });
+
+  showToast(sheets.filter(function(s){return s.rows.length;}).length + ' fichiers CSV téléchargés.', 'green');
+}
+
+function downloadCSV(filename, headers, rows) {
+  var BOM = '\uFEFF'; // BOM UTF-8 pour Excel
+  var csv = BOM + [headers].concat(rows).map(function(row) {
+    return row.map(function(cell) {
+      var v = (cell === null || cell === undefined) ? '' : String(cell);
+      // Échapper les guillemets et envelopper si virgule/retour
+      if (v.includes(',') || v.includes('"') || v.includes('\n') || v.includes(';')) {
+        v = '"' + v.replace(/"/g, '""') + '"';
+      }
+      return v;
+    }).join(';'); // Séparateur ; pour Excel FR
+  }).join('\n');
+
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename; a.style.display = 'none';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 500);
+}
+
 function exportRegistrePDF() { showToast('Export PDF du registre en cours…','blue'); }
 
 // Auto-sync mandats → registre
@@ -10137,7 +10133,7 @@ function refreshDashboard() {
   if (dashAlertes) {
     var items = [];
     impayesMois.slice(0,2).forEach(function(l){ items.push({icon:'💰',label:'Impayé : '+(l.prenom||'')+' '+(l.nom||''),sub:(l.loyer||'—')+' €',color:'#fef2f2',border:'#fca5a5',action:function(){showDashTab('loyers-suivi');}}); });
-    locsFinBail.slice(0,2).forEach(function(l){ items.push({icon:'📄',label:'Bail expire bientôt',sub:(l.prenom||'')+' '+(l.nom||''),color:'#fffbeb',border:'#fde68a',action:function(){showDashTab('alertes');}}); });
+    locsFinBail.slice(0,2).forEach(function(l){ items.push({icon:'',label:'Bail expire bientôt',sub:(l.prenom||'')+' '+(l.nom||''),color:'#fffbeb',border:'#fde68a',action:function(){showDashTab('alertes');}}); });
     diagsExpires.slice(0,2).forEach(function(d){ var ti=DIAG_DUREES[d.type]||{label:d.type}; items.push({icon:'',label:ti.label+' expiré',sub:d.dateExp?'Depuis '+new Date(d.dateExp).toLocaleDateString('fr-FR'):'—',color:'#fef2f2',border:'#fca5a5',action:function(){showDashTab('diagnostics');}}); });
     if (!items.length) {
       dashAlertes.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gris);font-size:.84rem"><div style="font-size:1.8rem;margin-bottom:8px"><span style="color:#16a34a;font-size:1.2rem">✓</span></div>Aucune alerte urgente</div>';
@@ -11628,6 +11624,126 @@ function deleteAlerte(id) {
   var arr = loadAlertes().filter(function(a){ return a.id !== id; });
   saveAlertes(arr);
   refreshAlertes();
+}
+
+
+function searchAlerteBien(q) {
+  var drop = document.getElementById('newAlertBienDrop');
+  var hidden = document.getElementById('newAlertBien');
+  if (!drop) return;
+  var mans = loadMandats ? loadMandats() : [];
+  var locs = loadLocataires ? loadLocataires() : [];
+  var results = [];
+
+  // Recherche dans les mandats
+  mans.forEach(function(m) {
+    var txt = ((m.adresse||'')+' '+(m.ville||'')+' '+(m.bailleur||'')).toLowerCase();
+    if (!q || txt.includes(q.toLowerCase())) {
+      results.push({ label: (m.adresseFull||m.adresse||'Bien')+(m.ville?', '+m.ville:''), value: (m.adresseFull||m.adresse||'Bien') });
+    }
+  });
+
+  // Recherche dans les locataires
+  locs.forEach(function(l) {
+    var nom = ((l.prenom||'')+' '+(l.nom||'')).trim();
+    var txt = (nom+' '+(l.adresse||'')).toLowerCase();
+    if (!q || txt.includes(q.toLowerCase())) {
+      var man = l.mandatId ? (loadMandats?loadMandats():[]).find(function(m){return String(m.id)===String(l.mandatId);}) : null;
+      results.push({ label: nom+(man?' — '+(man.adresse||''):''), value: nom+(man?' — '+(man.adresse||''):'') });
+    }
+  });
+
+  results = results.slice(0, 10);
+  if (!results.length) { drop.style.display='none'; return; }
+  drop.innerHTML = results.map(function(r) {
+    var safeVal = r.value.replace(/'/g,'');
+    return '<div onmousedown="event.preventDefault();pickAlerteBien(\'' + safeVal + '\')" style="padding:9px 14px;cursor:pointer;font-size:.84rem;border-bottom:1px solid #f5f5f5" onmouseover="this.style.background=\'#f0f4ff\'" onmouseout="this.style.background=\'white\'">' + r.label + '</div>';
+  }).join('');
+  drop.style.display = 'block';
+}
+
+function pickAlerteBien(value) {
+  var inp = document.getElementById('newAlertBienSearch'); if(inp) inp.value = value;
+  var hid = document.getElementById('newAlertBien'); if(hid) hid.value = value;
+  var drop = document.getElementById('newAlertBienDrop'); if(drop) drop.style.display = 'none';
+}
+
+document.addEventListener('click', function(e) {
+  var d = document.getElementById('newAlertBienDrop');
+  if (d && !d.contains(e.target) && e.target.id !== 'newAlertBienSearch') d.style.display = 'none';
+});
+
+function autoGenererEcheances() {
+  var mans = loadMandats ? loadMandats() : [];
+  var locs = loadLocataires ? loadLocataires() : [];
+  var today = new Date();
+  var added = 0;
+
+  mans.forEach(function(m) {
+    var adresse = m.adresseFull || m.adresse || 'Bien';
+    var loc = m.locataireId ? locs.find(function(l){ return String(l.id)===String(m.locataireId); }) : null;
+    var locNom = loc ? ((loc.prenom||'')+' '+(loc.nom||'')).trim() : '';
+    var bien = adresse + (locNom ? ' — '+locNom : '');
+
+    // 1. Fin de bail
+    if (m.dateFin) {
+      var df = new Date(m.dateFin);
+      if (df > today) {
+        tryAddAlerte('fin_bail', m.dateFin, bien, 'Fin de bail — penser à renouveler ou donner congé 3 mois avant');
+        added++;
+        // Préavis 3 mois avant fin de bail
+        var dPreavis = new Date(df);
+        dPreavis.setMonth(dPreavis.getMonth() - 3);
+        if (dPreavis > today) {
+          tryAddAlerte('preavis', dPreavis.toISOString().split('T')[0], bien, 'Date limite pour donner congé (3 mois avant fin de bail)');
+          added++;
+        }
+      }
+    }
+
+    // 2. Révision IRL (chaque année à la date d'entrée)
+    if (m.dateEntree) {
+      var de = new Date(m.dateEntree);
+      var revDate = new Date(de);
+      // Calculer la prochaine révision annuelle
+      while (revDate <= today) revDate.setFullYear(revDate.getFullYear() + 1);
+      tryAddAlerte('revision_irl', revDate.toISOString().split('T')[0], bien, 'Révision annuelle IRL — indexation du loyer');
+      added++;
+    }
+
+    // 3. Renouvellement bail (3 ans pour vide, 1 an meublé)
+    if (m.dateEntree) {
+      var duree = m.type === 'meuble' ? 1 : 3;
+      var de2 = new Date(m.dateEntree);
+      var renDate = new Date(de2);
+      while (renDate <= today) renDate.setFullYear(renDate.getFullYear() + duree);
+      tryAddAlerte('renouvellement', renDate.toISOString().split('T')[0], bien, 'Renouvellement du bail ('+(m.type==='meuble'?'1 an meublé':'3 ans vide')+')');
+      added++;
+    }
+  });
+
+  // 4. Courriers de congé générés → créer alerte fin de bail correspondante
+  var courriers = [];
+  try { courriers = JSON.parse(localStorage.getItem('bailscan_courriers')||'[]'); } catch(e) {}
+  courriers.filter(function(co){ return co.type==='conge_bailleur' || co.type==='preavis_depart'; }).forEach(function(co) {
+    if (co.dateEcheance) {
+      tryAddAlerte('fin_bail', co.dateEcheance, co.bien||co.locataire||'', 'Suite courrier congé — '+new Date(co.date||Date.now()).toLocaleDateString("fr-FR"));
+      added++;
+    }
+  });
+
+  refreshAlertes();
+  showToast(added + ' échéance(s) générée(s) depuis vos mandats.', 'green');
+}
+
+function tryAddAlerte(type, date, bien, note) {
+  // Éviter les doublons
+  var existing = [];
+  try { existing = JSON.parse(localStorage.getItem('bailscan_alertes_custom')||'[]'); } catch(e) {}
+  var alreadyExists = existing.some(function(a){ return a.type===type && a.date===date && a.bien===bien; });
+  if (alreadyExists) return;
+  existing.push({ id: String(Date.now()+Math.random()), type:type, date:date, bien:bien, note:note, createdAt: new Date().toISOString() });
+  localStorage.setItem('bailscan_alertes_custom', JSON.stringify(existing));
 }
 
 function refreshAlertes() {
@@ -13464,18 +13580,18 @@ function openFicheLocataire(locId, event, tab) {
 
   if (activeTab === 'documents') {
     var docTypes = [
-      {val:'cni',label:"Pièce d'identité",icon:'🪪'},
-      {val:'passeport',label:'Passeport',icon:'📘'},
+      {val:'cni',label:"Pièce d'identité",icon:''},
+      {val:'passeport',label:'Passeport',icon:''},
       {val:'paie1',label:'Fiche de paie M-1',icon:''},
       {val:'paie2',label:'Fiche de paie M-2',icon:''},
       {val:'paie3',label:'Fiche de paie M-3',icon:''},
-      {val:'avis_impots',label:"Avis d'imposition",icon:'📋'},
-      {val:'contrat_travail',label:'Contrat de travail',icon:'📄'},
-      {val:'quittances_loc',label:'Quittances ancien bailleur',icon:'🧾'},
-      {val:'garant_id',label:'Pièce identité garant',icon:'🪪'},
+      {val:'avis_impots',label:"Avis d'imposition",icon:''},
+      {val:'contrat_travail',label:'Contrat de travail',icon:''},
+      {val:'quittances_loc',label:'Quittances ancien bailleur',icon:''},
+      {val:'garant_id',label:'Pièce identité garant',icon:''},
       {val:'garant_paie',label:'Justificatif revenus garant',icon:''},
-      {val:'relevé_banque',label:'Relevé bancaire',icon:'🏦'},
-      {val:'autre',label:'Autre document',icon:'📎'}
+      {val:'relevé_banque',label:'Relevé bancaire',icon:''},
+      {val:'autre',label:'Autre document',icon:''}
     ];
 
     var docsGrid = document.createElement('div');
@@ -13486,8 +13602,7 @@ function openFicheLocataire(locId, event, tab) {
       var card = document.createElement('div');
       card.style.cssText = 'border:1px solid '+(existing?'var(--pro-accent)':'var(--border)')+';border-radius:10px;padding:14px;text-align:center;background:'+(existing?'#f0f4ff':'#fff');
       if (existing) {
-        card.innerHTML = '<div style="font-size:1.4rem;margin-bottom:6px">'+dt.icon+'</div>'
-          +'<div style="font-size:.74rem;font-weight:700;margin-bottom:4px;color:var(--noir)">'+dt.label+'</div>'
+        card.innerHTML = '<div style="font-size:.74rem;font-weight:700;margin-bottom:4px;color:var(--noir)">'+dt.label+'</div>'
           +'<div style="font-size:.68rem;color:var(--pro-accent);margin-bottom:8px">✓ '+existing.name.substring(0,20)+(existing.name.length>20?'…':'')+'</div>'
           +'<div style="display:flex;gap:4px;justify-content:center">'
           +'<button class="btn-sm" style="font-size:.68rem" data-action="view" data-type="'+dt.val+'">Voir</button>'
@@ -13498,8 +13613,7 @@ function openFicheLocataire(locId, event, tab) {
       } else {
         var lbl = document.createElement('label');
         lbl.style.cssText = 'cursor:pointer;display:block';
-        lbl.innerHTML = '<div style="font-size:1.4rem;margin-bottom:6px">'+dt.icon+'</div>'
-          +'<div style="font-size:.74rem;font-weight:700;margin-bottom:8px;color:var(--gris)">'+dt.label+'</div>';
+        lbl.innerHTML = '<div style="font-size:.74rem;font-weight:700;margin-bottom:8px;color:var(--gris)">'+dt.label+'</div>';
         var inp = document.createElement('input');
         inp.type = 'file'; inp.accept = '.pdf,.jpg,.jpeg,.png'; inp.style.display = 'none';
         inp.onchange = (function(dval){ return function(){ uploadLocDoc(locId, dval, inp); }; })(dt.val);
@@ -13606,7 +13720,7 @@ function sauvegarderRattachementBail() {
 
 function sauvegarderVeille() {
   var email = document.getElementById('veilleEmail').value.trim();
-  if (!email) { alert('Veuillez saisir un email de réception.'); return; }
+  if (!email) { showToast('Veuillez saisir un email de réception.', 'orange'); return; }
   var prefs = {
     email: email,
     decrets: document.getElementById('veilleChkDecrets').checked,
@@ -13615,7 +13729,24 @@ function sauvegarderVeille() {
     encadrement: document.getElementById('veilleChkEncadrement').checked
   };
   localStorage.setItem('bailscan_veille_prefs', JSON.stringify(prefs));
-  alert('Newsletter activée pour ' + email + '\n\nVous recevrez les alertes personnalisées selon vos préférences.');
+  // Sauvegarder en Supabase
+  (async function() {
+    var sb = getSupabase();
+    if (!sb || !proState.user) { showToast('Newsletter enregistrée localement.', 'green'); return; }
+    try {
+      var agId = await getAgenceId();
+      if (agId) {
+        await sb.from('agences').update({
+          veille_newsletter: true,
+          veille_email: email,
+          veille_prefs: prefs
+        }).eq('id', agId);
+      }
+      showToast('Newsletter activée pour ' + email, 'green');
+    } catch(e) {
+      showToast('Newsletter enregistrée (sync Supabase échouée).', 'green');
+    }
+  })();
 }
 
 function selectInviteRole(role, el) {
@@ -13719,7 +13850,9 @@ function validerDossier(goDecision) {
     var man = mans.find(function(m){ return String(m.id) === String(mandatId); });
     if (man) {
       if (!man.candidats) man.candidats = [];
-      var nom = (document.getElementById('dossierNom')||{}).value || (locId || 'Candidat');
+      var prenomD = (document.getElementById('dossierPrenom')||{value:''}).value.trim();
+      var nomD = (document.getElementById('dossierNom')||{value:''}).value.trim();
+      var nom = (prenomD+' '+nomD).trim() || (locId || 'Candidat');
       var candidatEntry = {
         id: Date.now(),
         locId: locId,
@@ -14433,7 +14566,7 @@ function refreshTeam() {
 
   var roleConfig = {
     admin: { icon:'👑', label:'Admin', color:'#92400e', bg:'#fffbeb', border:'#fcd34d' },
-    manager: { icon:'📋', label:'Manager', color:'#1e40af', bg:'#eff6ff', border:'#bfdbfe' },
+    manager: { icon:'', label:'Manager', color:'#1e40af', bg:'#eff6ff', border:'#bfdbfe' },
     agent: { icon:'🏠', label:'Agent', color:'#166534', bg:'#f0fdf4', border:'#86efac' }
   };
   var avatarColors = ['#3b6fd4','#7c3aed','#059669','#d97706','#dc2626','#0891b2'];
@@ -14551,7 +14684,12 @@ function selectDossierLoc(locId) {
   // Auto-sélectionner le mandat lié
   if (l.mandatId) {
     var mLie = (loadMandats ? loadMandats() : []).find(function(x){ return String(x.id)===String(l.mandatId); });
-    if (mLie) selectDossierMandatFromSearch(mLie.id, mLie.adresseFull || mLie.adresse || '');
+    if (mLie) {
+      // Remplir les champs mandat directement (sans rappel selectDossierMandat pour éviter récursion)
+      var inp2=document.getElementById('dossierMandatSearch'); if(inp2) inp2.value=mLie.adresseFull||mLie.adresse||'';
+      var hid2=document.getElementById('dossierMandatSel'); if(hid2) hid2.value=mLie.id;
+      var dd2=document.getElementById('dossierMandatDropdown'); if(dd2) dd2.style.display='none';
+    }
   }
   // Charges depuis locataire ou mandat lié
   var chDos = parseFloat(l.charges||0);
@@ -14559,8 +14697,8 @@ function selectDossierLoc(locId) {
   var chEl = document.getElementById('dossierCharges'); if(chEl) chEl.value = chDos||'';
   // Garant depuis la fiche locataire
   if (l.garant && l.garant !== 'non') {
-    var gSel = document.getElementById('dossierGarant');
-    if (gSel) { gSel.value = l.garant; toggleDossierGarantFields(); }
+    if (typeof setDossierGarant === 'function') { setDossierGarant(l.garant); }
+    else { var gSel = document.getElementById('dossierGarant'); if (gSel) { gSel.value = l.garant; toggleDossierGarantFields(); } }
     var g = function(id, val){ var el=document.getElementById(id); if(el && (val||val===0)) el.value=val; };
     g('dossierGarantPrenom', l.garantPrenom||'');
     g('dossierGarantNom', l.garantNom||'');
