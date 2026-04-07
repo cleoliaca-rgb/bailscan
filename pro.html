@@ -4059,27 +4059,6 @@ body.is-dashboard #marketingPage { display: none !important; }
           <button class="btn-primary-pro" style="margin-top:8px" onclick="changePassword()">Changer le mot de passe</button>
         </div>
 
-        <!-- Clé API Anthropic pour l'agent IA -->
-        <div class="dash-card" style="border:1px solid rgba(99,102,241,.25);background:#fafaff">
-          <div class="dash-section-title">✨ Agent IA — Clé API Anthropic</div>
-          <p style="font-size:.84rem;color:var(--gris);margin-bottom:14px;line-height:1.6">
-            L'agent IA du dashboard utilise l'API Claude d'Anthropic. Renseignez votre clé API pour activer le chat.
-            <a href="https://console.anthropic.com/account/keys" target="_blank" style="color:var(--pro-accent);font-weight:600">Obtenir une clé →</a>
-          </p>
-          <div class="form-group-pro" style="margin-bottom:10px">
-            <label class="form-label">Clé API Anthropic</label>
-            <div style="display:flex;gap:8px">
-              <input type="password" class="form-input-pro" id="anthropicApiKey" placeholder="sk-ant-api03-…" style="flex:1;font-family:monospace;font-size:.85rem">
-              <button class="btn-sm" onclick="toggleAnthropicKeyVisibility()" id="btnToggleKey" style="flex-shrink:0">👁 Voir</button>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn-primary-pro" style="padding:9px 18px;font-size:.84rem" onclick="saveAnthropicApiKey()">Enregistrer la clé</button>
-            <button class="btn-sm" onclick="testAnthropicApiKey()" id="btnTestKey">🧪 Tester</button>
-            <button class="btn-sm" onclick="clearAnthropicApiKey()" style="color:var(--accent);border-color:var(--accent)">✕ Effacer</button>
-          </div>
-          <div id="anthropicKeyStatus" style="margin-top:10px;font-size:.8rem;display:none"></div>
-        </div>
 
         <!-- Supprimer compte -->
         <div class="dash-card" style="border:1px solid rgba(200,75,47,0.2);background:#fdf8f7">
@@ -10283,19 +10262,8 @@ function sendAgentMessage() {
   var btn = document.getElementById('agentSendBtn');
   if (btn) { btn.disabled = true; btn.style.opacity = '.5'; }
 
-  var anthropicKey = localStorage.getItem('bailscan_anthropic_key') || '';
+  addAgentBubble('assistant', '⏳ Envoi en cours…');
 
-  // Diagnostic immédiat visible dans le chat
-  var debugInfo = 'Clé: ' + (anthropicKey ? anthropicKey.substring(0,10)+'…('+anthropicKey.length+'car)' : 'VIDE');
-  addAgentBubble('assistant', '🔄 Envoi en cours… ' + debugInfo);
-
-  if (!anthropicKey) {
-    agentTyping = false;
-    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
-    var setup = document.getElementById('agentSetupKey');
-    if (setup) setup.style.display = 'block';
-    return;
-  }
 
   fetch('/api/ai', {
     method: 'POST',
@@ -10328,7 +10296,7 @@ function sendAgentMessage() {
     var isCors = msg === 'Failed to fetch' || msg.includes('NetworkError') || msg.includes('CORS') || msg.includes('network');
     addAgentBubble('assistant', isCors
       ? '🔒 **Erreur CORS** — fichier ouvert en `file://`.\n\nIl faut le servir via HTTP. Déploie sur **bailscan.app** via Vercel ou lance :\n`npx serve .`'
-      : '❌ **Erreur ' + msg + '**\n\nClé utilisée : ' + anthropicKey.substring(0,12) + '…');
+      : '❌ **Erreur ' + msg + '**')
   })
   .finally(function() {
     agentTyping = false;
@@ -15279,15 +15247,7 @@ document.addEventListener('click', function(e){
     </div>
 
     <!-- Setup clé API si absente -->
-    <div id="agentSetupKey" style="display:none;padding:14px 16px;background:rgba(249,115,22,.08);border-bottom:1px solid rgba(249,115,22,.2)">
-      <div style="font-size:.75rem;color:#fb923c;font-weight:700;margin-bottom:8px">Clé API Anthropic requise</div>
-      <div style="display:flex;gap:6px">
-        <input type="password" id="agentQuickApiKey" placeholder="sk-ant-api03-…"
-          style="flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:7px;color:#fff;font-size:.78rem;font-family:monospace;padding:6px 10px;outline:none"
-          onkeydown="if(event.key==='Enter')saveAgentQuickKey()">
-        <button onclick="saveAgentQuickKey()" style="background:#f97316;border:none;color:#fff;border-radius:7px;padding:6px 12px;font-size:.75rem;font-weight:700;cursor:pointer;flex-shrink:0">Enregistrer</button>
-      </div>
-    </div>
+    
 
     <!-- Suggestions -->
     <div id="agentSuggestions" style="padding:0 12px 8px;display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0">
