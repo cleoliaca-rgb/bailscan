@@ -96,18 +96,38 @@ function buildReminderEmail(agence, daysLeft) {
     <p style="font-size:1rem;font-weight:700;color:#c84b2f;margin:0 0 12px">Votre essai gratuit a expiré</p>
     <p style="color:#444;margin:0 0 16px;line-height:1.6">L'accès au dashboard BailScan Pro de <strong>${agence}</strong> est temporairement suspendu.</p>
     <p style="color:#444;margin:0 0 24px;line-height:1.6">Pour continuer à analyser vos baux et gérer vos dossiers, choisissez votre formule :</p>
-    <table width="100%" style="margin-bottom:20px">
+    <table width="100%" style="margin-bottom:20px;border-collapse:separate;border-spacing:0 8px">
       <tr>
-        <td style="padding:16px;background:#f8f7f4;border-radius:8px;border:1px solid #e0d8cc;width:48%">
-          <div style="font-weight:700;margin-bottom:4px">Starter</div>
-          <div style="font-size:1.6rem;font-weight:700;color:#111827">79€<span style="font-size:.8rem;font-weight:400;color:#888">/mois</span></div>
-          <div style="font-size:.8rem;color:#666;margin-top:6px">Jusqu'à 50 analyses/mois</div>
+        <td style="padding:14px 16px;background:#f8f7f4;border-radius:8px;border:1px solid #e0d8cc">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;font-size:.85rem;color:#111">Mensuel</div>
+              <div style="font-size:.78rem;color:#888;margin-top:2px">Sans engagement</div>
+            </div>
+            <div style="font-size:1.4rem;font-weight:700;color:#111827">150€<span style="font-size:.75rem;font-weight:400;color:#888">/mois</span></div>
+          </div>
         </td>
-        <td style="width:4%"></td>
-        <td style="padding:16px;background:#111827;border-radius:8px;border:1px solid #3b6fd4;width:48%">
-          <div style="font-weight:700;color:rgba(255,255,255,.7);margin-bottom:4px">Pro</div>
-          <div style="font-size:1.6rem;font-weight:700;color:white">199€<span style="font-size:.8rem;font-weight:400;color:rgba(255,255,255,.5)">/mois</span></div>
-          <div style="font-size:.8rem;color:rgba(255,255,255,.5);margin-top:6px">Analyses illimitées</div>
+      </tr>
+      <tr>
+        <td style="padding:14px 16px;background:#f8f7f4;border-radius:8px;border:1px solid #e0d8cc">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;font-size:.85rem;color:#111">6 mois</div>
+              <div style="font-size:.78rem;color:#2d6a4f;margin-top:2px">Économisez 90€/an</div>
+            </div>
+            <div style="font-size:1.4rem;font-weight:700;color:#111827">135€<span style="font-size:.75rem;font-weight:400;color:#888">/mois</span></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:14px 16px;background:#111827;border-radius:8px;border:2px solid #3b6fd4">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;font-size:.85rem;color:white">Annuel <span style="background:#3b6fd4;color:white;font-size:.6rem;padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle">MEILLEUR PRIX</span></div>
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5);margin-top:2px">Économisez 360€/an</div>
+            </div>
+            <div style="font-size:1.4rem;font-weight:700;color:white">120€<span style="font-size:.75rem;font-weight:400;color:rgba(255,255,255,.5)">/mois</span></div>
+          </div>
         </td>
       </tr>
     </table>
@@ -132,9 +152,10 @@ function buildReminderEmail(agence, daysLeft) {
     <div style="display:inline-block;background:${urgencyColor};color:white;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:700;margin-bottom:14px">${urgencyText}</div>
     <p style="font-size:1rem;font-weight:700;color:#111;margin:0 0 12px">Votre essai se termine dans ${daysLeft} jour${daysLeft > 1 ? 's' : ''}</p>
     <p style="color:#444;margin:0 0 20px;line-height:1.6">Bonjour, votre essai gratuit BailScan Pro pour <strong>${agence}</strong> expire bientôt. Toutes vos données sont conservées.</p>
-    <a href="${upgradeUrl}" style="display:block;text-align:center;background:#3b6fd4;color:white;padding:13px;border-radius:10px;font-weight:700;text-decoration:none;font-size:.95rem;margin-bottom:12px">S'abonner maintenant — à partir de 79€/mois →</a>
+    <a href="${upgradeUrl}" style="display:block;text-align:center;background:#3b6fd4;color:white;padding:13px;border-radius:10px;font-weight:700;text-decoration:none;font-size:.95rem;margin-bottom:12px">S'abonner maintenant — à partir de 120€/mois →</a>
     <p style="font-size:.75rem;color:#aaa;text-align:center">Sans engagement · Résiliation à tout moment · Support dédié</p>
   </td></tr>
 </table>
 </body></html>`;
 }
+ 
