@@ -7305,7 +7305,7 @@ function buildMandatAgenceHtml(m) {
     html += '</div>';
   } else {
     // Bouton principal générer
-    html += '<button style="width:100%;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#f0f4ff 0%,#e8edff 100%);border:1.5px dashed var(--pro-accent);border-radius:10px;padding:13px 16px;cursor:pointer;transition:all .15s;text-align:left" onmouseover="this.style.background='#e4ecff'" onmouseout="this.style.background='linear-gradient(135deg,#f0f4ff 0%,#e8edff 100%)'" data-mid="' + m.id + '" onclick="openMandatGestion(this.dataset.mid)">';
+    html += '<button style="width:100%;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#f0f4ff 0%,#e8edff 100%);border:1.5px dashed var(--pro-accent);border-radius:10px;padding:13px 16px;cursor:pointer;transition:all .15s;text-align:left" onmouseover="this.style.background=\"#e4ecff\"" onmouseout="this.style.background=\"linear-gradient(135deg,#f0f4ff 0%,#e8edff 100%)\"" data-mid="' + m.id + '" onclick="openMandatGestion(this.dataset.mid)">';
     html += '<div style="font-size:1.4rem">📋</div>';
     html += '<div><div style="font-size:.85rem;font-weight:700;color:var(--pro-accent)">Générer le mandat de gestion</div><div style="font-size:.74rem;color:var(--gris);margin-top:2px">Rédigez et signez le mandat agence–bailleur</div></div>';
     html += '</button>';
@@ -16711,33 +16711,17 @@ function openMandatGestion(mandatId) {
   document.getElementById('mgEmailDest').value = m.bailleurEmail || '';
   document.getElementById('mgEmailObjet').value = 'Mandat de gestion — ' + adresseAff;
   document.getElementById('mgEmailBody').value =
-    'Madame, Monsieur ' + (m.bailleur||'') + ',
-
-' +
-    'Suite à notre entretien, veuillez trouver ci-joint le mandat de gestion concernant votre bien situé au :
-' +
-    adresseAff + '
-
-' +
+    'Madame, Monsieur ' + (m.bailleur||'') + ',\n\n' +
+    'Suite à notre entretien, veuillez trouver ci-joint le mandat de gestion concernant votre bien situé au :\n' +
+    adresseAff + '\n\n' +
     'Ce document formalise notre mission de gestion locative dans les conditions convenues. ' +
-    'Nous vous invitons à en prendre connaissance attentivement.
-
-' +
-    'Pour toute question, n'hésitez pas à nous contacter directement.
-
-' +
-    'Nous vous souhaitons bonne réception et restons à votre disposition.
-
-' +
-    'Bien cordialement,
-
-' +
-    agenceNom + (agenceAddr ? '
-' + agenceAddr : '') +
-    (ai.tel ? '
-' + ai.tel : '') +
-    (ai.email ? '
-' + ai.email : '');
+    'Nous vous invitons à en prendre connaissance attentivement.\n\n' +
+    'Pour toute question, n\'hésitez pas à nous contacter directement.\n\n' +
+    'Nous vous souhaitons bonne réception et restons à votre disposition.\n\n' +
+    'Bien cordialement,\n\n' +
+    agenceNom + (agenceAddr ? '\n' + agenceAddr : '') +
+    (ai.tel ? '\n' + ai.tel : '') +
+    (ai.email ? '\n' + ai.email : '');
 
   // Pré-remplir nom agent
   document.getElementById('mgSig2Nom').value = (proState.user ? (proState.user.prenom||'')+' '+(proState.user.nom||'') : ai.nom||'').trim();
@@ -16768,7 +16752,7 @@ function mgGoStep(n, force) {
   if (n === 2 && !force) {
     // Validation step 1
     if (!document.getElementById('mgDateDebut').value) {
-      showToast('Renseignez la date de prise d'effet.', 'orange'); return;
+      showToast('Renseignez la date de prise d\'effet.', 'orange'); return;
     }
   }
   var isStep1 = n === 1;
@@ -16835,7 +16819,7 @@ function mgGetData() {
   var missions = [];
   if (getCb('mgMission1')) missions.push('Encaissement des loyers et gestion des quittances');
   if (getCb('mgMission2')) missions.push('Gestion des congés, renouvellements et révisions de loyer');
-  if (getCb('mgMission3')) missions.push('États des lieux d'entrée et de sortie');
+  if (getCb('mgMission3')) missions.push('États des lieux d\'entrée et de sortie');
   if (getCb('mgMission4')) missions.push('Suivi travaux, sinistres et relations avec les entreprises');
   if (getCb('mgMission5')) missions.push('Assurance loyers impayés (GLI)');
   if (getCb('mgMission6')) missions.push('Organisation des visites et sélection des locataires');
@@ -16924,7 +16908,7 @@ function generateMandatGestionPDF(data, sig1b64, sig2b64) {
   var rows2 = [
     ['Type de mandat', data.type==='exclusif'?'Exclusif':'Simple (non exclusif)'],
     ['Durée', data.duree],
-    ['Prise d'effet', data.dateDebut ? new Date(data.dateDebut).toLocaleDateString('fr-FR') : '—'],
+    ['Prise d\'effet', data.dateDebut ? new Date(data.dateDebut).toLocaleDateString('fr-FR') : '—'],
     ['Honoraires de gestion', data.honoGestion + ' % du loyer charges comprises'],
     ['Honoraires de relocation', data.honoReloc + ' mois de loyer HC'],
     ['Honoraires états des lieux', data.honoEDL + ' € HT'],
@@ -16961,7 +16945,7 @@ function generateMandatGestionPDF(data, sig1b64, sig2b64) {
   doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
   doc.text('Article 3 — Dispositions légales', ML, y); y+=7;
   var clauses = [
-    'Le présent mandat est établi conformément à la loi n° 70-9 du 2 janvier 1970 (loi Hoguet) et à son décret d'application n° 72-678 du 20 juillet 1972.',
+    'Le présent mandat est établi conformément à la loi n° 70-9 du 2 janvier 1970 (loi Hoguet) et à son décret d\'application n° 72-678 du 20 juillet 1972.',
     'Le mandataire est titulaire de la carte professionnelle délivrée par la CCI compétente.',
     'Le mandant autorise expressément le mandataire à percevoir les loyers, charges et dépôts de garantie en son nom.',
     'En cas de résiliation anticipée, un préavis de 3 mois devra être respecté par la partie résiliante, sauf faute grave.',
@@ -17099,7 +17083,7 @@ function sendMandatGestionEmail() {
   var email = (document.getElementById('mgEmailDest')||{value:''}).value.trim();
   var objet = (document.getElementById('mgEmailObjet')||{value:''}).value.trim();
   var body  = (document.getElementById('mgEmailBody')||{value:''}).value.trim();
-  if (!email) { showToast('Renseignez l'email du bailleur.','orange'); return; }
+  if (!email) { showToast('Renseignez l\'email du bailleur.','orange'); return; }
 
   var btn = document.getElementById('mgBtnSend');
   if (btn) { btn.textContent = 'Envoi…'; btn.disabled = true; }
@@ -17119,13 +17103,12 @@ function sendMandatGestionEmail() {
       to: email,
       subject: objet,
       text: body,
-      html: '<div style="font-family:'DM Sans',Arial,sans-serif;max-width:600px;margin:0 auto">'
+      html: '<div style="font-family:\"DM Sans\",Arial,sans-serif;max-width:600px;margin:0 auto">'
         + '<div style="background:#1e3a6e;padding:20px 24px;border-radius:12px 12px 0 0">'
         + '<div style="font-size:1.1rem;font-weight:700;color:white">' + data.agenceNom + '</div>'
         + '<div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-top:4px">Mandat de gestion locative</div></div>'
         + '<div style="background:white;padding:28px 24px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">'
-        + '<p style="font-size:.95rem;color:#111;margin-bottom:16px">' + body.replace(/
-/g,'<br>') + '</p>'
+        + '<p style="font-size:.95rem;color:#111;margin-bottom:16px">' + body.replace(/\n/g,'<br>') + '</p>'
         + '<div style="background:#f0f4ff;border:1px solid #c7d6ff;border-radius:8px;padding:14px;margin-top:20px;font-size:.82rem;color:#374151">'
         + '📎 Le mandat de gestion est joint à cet email en format PDF. Veuillez le signer et nous le retourner.</div>'
         + '<p style="font-size:.75rem;color:#9ca3af;margin-top:20px">Document généré par BailScan Pro · ' + new Date().toLocaleDateString('fr-FR') + '</p>'
