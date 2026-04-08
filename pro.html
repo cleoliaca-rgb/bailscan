@@ -10044,7 +10044,7 @@ function sendEDLByEmail() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: email,
-        subject: typeLabel + ' — ' + (edl.adresse||'') + ' — ' + (edl.date||''),
+        subject: 'Votre ' + typeLabel.toLowerCase() + ' — ' + ((proState.agencyInfo||{}).nom || 'Votre agence'),
         text: msg,
         html: '<p style="font-family:sans-serif">' + msg.replace(/\n/g,'<br>') + '</p><p style="color:#888;font-size:12px">Document généré par BailScan Pro</p>',
         pdfBase64: pdfBase64,
@@ -13361,7 +13361,7 @@ function envoyerBailEmail() {
   }
   var ai = proState.agencyInfo || {};
   var expediteur = ai.email || (proState.user ? proState.user.email : '');
-  var sujet = encodeURIComponent('Bail de location — ' + new Date().toLocaleDateString('fr-FR'));
+  var sujet = encodeURIComponent('Votre bail de location — ' + (ai.nom || 'Votre agence'));
   var corps = encodeURIComponent('Bonjour,%0A%0AVeuillez trouver ci-joint le bail de location genere par BailScan Pro.%0A%0ACordialement,%0A' + (ai.nom || 'BailScan Pro'));
   if (expediteur) {
     window.location.href = 'mailto:'+email+'?from='+encodeURIComponent(expediteur)+'&subject='+sujet+'&body='+corps;
@@ -16783,7 +16783,7 @@ function openMandatGestion(mandatId) {
   var agenceNom = ai.nom || 'Notre agence';
   var agenceAddr = (ai.adresse||'') + (ai.cp?' '+ai.cp:'') + (ai.ville?' '+ai.ville:'');
   document.getElementById('mgEmailDest').value = m.bailleurEmail || '';
-  document.getElementById('mgEmailObjet').value = 'Mandat de gestion — ' + adresseAff;
+  document.getElementById('mgEmailObjet').value = 'Votre mandat de gestion — ' + (ai.nom || 'Votre agence');
   document.getElementById('mgEmailBody').value =
     'Madame, Monsieur ' + (m.bailleur||'') + ',\n\n' +
     'Suite à notre entretien, veuillez trouver ci-joint le mandat de gestion concernant votre bien situé au :\n' +
