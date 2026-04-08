@@ -1324,6 +1324,26 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Admin, Manager, Agent avec rôles distincts, permissions granulaires. API REST pour connecter BailScan à vos outils métier.</div>
       </div>
 
+
+      <div class="feat-card">
+        <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
+          <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Mandat de gestion</div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:7px;font-size:.68rem;color:rgba(255,255,255,.8)"><div style="width:14px;height:14px;border-radius:50%;background:#2d6a4f;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:white;flex-shrink:0">✓</div>Type exclusif ou simple</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:.68rem;color:rgba(255,255,255,.8)"><div style="width:14px;height:14px;border-radius:50%;background:#2d6a4f;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:white;flex-shrink:0">✓</div>Honoraires &amp; missions paramétrables</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:.68rem;color:rgba(255,255,255,.8)"><div style="width:14px;height:14px;border-radius:50%;background:#2d6a4f;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:white;flex-shrink:0">✓</div>Signature directe ou envoi bailleur</div>
+          </div>
+          <div style="display:flex;gap:4px">
+            <div style="flex:1;background:rgba(59,111,212,.2);border-radius:5px;padding:5px;text-align:center;font-size:.6rem;color:#7fa8e8;font-weight:600">Mandat<br>PDF</div>
+            <div style="flex:1;background:rgba(45,106,79,.2);border-radius:5px;padding:5px;text-align:center;font-size:.6rem;color:#6ee7b7;font-weight:600">Signé<br>✓</div>
+            <div style="flex:1;background:rgba(255,255,255,.07);border-radius:5px;padding:5px;text-align:center;font-size:.6rem;color:rgba(255,255,255,.4);font-weight:600">Loi<br>Hoguet</div>
+          </div>
+        </div>
+        <div <div class="feat-num">10</div>
+        <div class="feat-title">Mandat de gestion signable</div>
+        <div class="feat-desc">Rédigez le mandat agence–bailleur en 2 minutes. Paramétrez honoraires et missions, signez directement sur tablette ou envoyez au bailleur par mail avec le PDF en pièce jointe.</div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1385,6 +1405,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           <div class="pricing-feature">Analyses illimitées</div>
           <div class="pricing-feature">Génération de baux conformes</div>
           <div class="pricing-feature">Gestion clients, mandats, locataires</div>
+          <div class="pricing-feature">Mandat de gestion signable (bailleur)</div>
           <div class="pricing-feature">Quittances, courriers juridiques IA</div>
           <div class="pricing-feature">Alertes, échéances automatiques</div>
           <div class="pricing-feature">Export CSV et PDF à votre logo</div>
@@ -1394,7 +1415,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       </div>
     </div></div>
 
-    <p style="text-align:center;font-size:0.78rem;color:var(--gris);margin-top:20px">Paiement sécurisé par Stripe · Facture mensuelle · Résiliable à tout moment après la période d'engagement</p>
+    <p style="text-align:center;font-size:0.78rem;color:var(--gris);margin-top:20px">Paiement sécurisé · Facture mensuelle · Résiliable à tout moment après la période d'engagement</p>
   </div>
 </section>
 
@@ -1432,7 +1453,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Zéro risque de litige</div>
           </div>
           <button onclick="window.location.href='/proprio.html'" style="width:100%;padding:13px;border-radius:10px;font-weight:700;font-size:.92rem;background:var(--accent);color:white;border:none;cursor:pointer">Obtenir mon bail conforme →</button>
-          <p style="text-align:center;font-size:.74rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe</p>
+          <p style="text-align:center;font-size:.74rem;color:var(--gris);margin-top:10px">Paiement sécurisé</p>
         </div>
       </div>
     </div>
@@ -3934,7 +3955,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div style="font-size:.84rem;display:flex;align-items:center;gap:8px"><span style="color:var(--vert);font-weight:700">✓</span> Support prioritaire</div>
     </div>
     <button onclick="subscribePro('pro')" style="width:100%;padding:13px;background:var(--pro-accent);color:white;border:none;border-radius:10px;font-weight:700;font-size:.95rem;cursor:pointer">S’abonner maintenant →</button>
-    <p style="text-align:center;font-size:.75rem;color:var(--gris);margin-top:10px">Paiement sécurisé par Stripe · Sans engagement · Résiliable à tout moment</p>
+    <p style="text-align:center;font-size:.75rem;color:var(--gris);margin-top:10px">Paiement sécurisé · Sans engagement · Résiliable à tout moment</p>
   </div>
 
   <!-- Section abonnement actif (visible si plan=pro) -->
@@ -8142,6 +8163,58 @@ function initVeilleData() {
   autoUpdateVeille(false);
 }
 
+// ── Icônes minimalistes par niveau (jamais d'emoji décoratif) ──
+var VEILLE_ICONES_MINI = {
+  rouge:  '▲',
+  orange: '◆',
+  bleu:   '●',
+  vert:   '◎',
+  default:'–'
+};
+
+// ── Retire les emojis et caractères décoratifs d'une chaîne ──
+function stripEmojis(str) {
+  if (!str) return str;
+  return str
+    // Emojis larges (pictogrammes, symboles, drapeaux, etc.)
+    .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
+    .replace(/[\u{2600}-\u{27BF}]/gu, '')
+    .replace(/[\u{FE00}-\u{FEFF}]/gu, '')
+    // Emojis combinés (modificateurs, ZWJ, variation selectors)
+    .replace(/[\u200D\uFE0E\uFE0F]/g, '')
+    // Espaces multiples laissés par la suppression
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+// ── Sanitise un item venant de l'IA ──
+function sanitizeVeilleItem(item) {
+  var out = Object.assign({}, item);
+  // Icône : toujours un symbole minimaliste selon le niveau
+  out.icone = VEILLE_ICONES_MINI[out.niveau] || VEILLE_ICONES_MINI.default;
+  // Titre et détail : retirer les emojis
+  out.titre  = stripEmojis(out.titre  || '');
+  out.detail = stripEmojis(out.detail || '');
+  out.action = out.action ? stripEmojis(out.action) : null;
+  return out;
+}
+
+// ── Reçoit les items de /api/veille, les sanitise et les affiche ──
+function renderVeille(items) {
+  if (!items || !items.length) return;
+  var clean = items.map(sanitizeVeilleItem);
+  // Mettre à jour proState.veille pour que renderVeilleAlertes() les affiche
+  proState.veille = clean;
+  localStorage.setItem('bailscan_veille', JSON.stringify(clean));
+  renderVeilleAlertes();
+  // Mettre à jour le dernier décret affiché en haut du widget
+  var first = clean[0];
+  var lastDecretEl = document.getElementById('veilleLastDecret');
+  var lastDecretDetailEl = document.getElementById('veilleLastDecretDetail');
+  if (lastDecretEl && first) lastDecretEl.textContent = first.titre || '';
+  if (lastDecretDetailEl && first) lastDecretDetailEl.textContent = first.detail || '';
+}
+
 async function autoUpdateVeille(forceUpdate) {
   var statusEl = document.getElementById('veilleUpdateStatus');
   var btnEl = document.getElementById('btnRefreshVeille');
@@ -9974,7 +10047,8 @@ function sendEDLByEmail() {
         subject: typeLabel + ' — ' + (edl.adresse||'') + ' — ' + (edl.date||''),
         text: msg,
         html: '<p style="font-family:sans-serif">' + msg.replace(/\n/g,'<br>') + '</p><p style="color:#888;font-size:12px">Document généré par BailScan Pro</p>',
-        attachments: [{ filename: 'etat-des-lieux-'+(edl.type||'')+'_'+(edl.date||'').replace(/\//g,'-')+'.pdf', content: pdfBase64, encoding: 'base64', contentType: 'application/pdf' }]
+        pdfBase64: pdfBase64,
+        filename: 'etat-des-lieux-'+(edl.type||'')+'_'+(edl.date||'').replace(/\//g,'-')+'.pdf'
       })
     }).then(function(r){ return r.json(); }).then(function(data) {
       if (data.error) throw new Error(data.error);
@@ -17103,17 +17177,18 @@ function sendMandatGestionEmail() {
       to: email,
       subject: objet,
       text: body,
-      html: '<div style="font-family:\"DM Sans\",Arial,sans-serif;max-width:600px;margin:0 auto">'
+      html: '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">'
         + '<div style="background:#1e3a6e;padding:20px 24px;border-radius:12px 12px 0 0">'
         + '<div style="font-size:1.1rem;font-weight:700;color:white">' + data.agenceNom + '</div>'
         + '<div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-top:4px">Mandat de gestion locative</div></div>'
         + '<div style="background:white;padding:28px 24px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">'
         + '<p style="font-size:.95rem;color:#111;margin-bottom:16px">' + body.replace(/\n/g,'<br>') + '</p>'
         + '<div style="background:#f0f4ff;border:1px solid #c7d6ff;border-radius:8px;padding:14px;margin-top:20px;font-size:.82rem;color:#374151">'
-        + '📎 Le mandat de gestion est joint à cet email en format PDF. Veuillez le signer et nous le retourner.</div>'
-        + '<p style="font-size:.75rem;color:#9ca3af;margin-top:20px">Document généré par BailScan Pro · ' + new Date().toLocaleDateString('fr-FR') + '</p>'
+        + 'Le mandat de gestion est joint a cet email en format PDF.</div>'
+        + '<p style="font-size:.75rem;color:#9ca3af;margin-top:20px">BailScan Pro - ' + new Date().toLocaleDateString('fr-FR') + '</p>'
         + '</div></div>',
-      attachments: [{ filename: filename, content: pdfBase64, encoding: 'base64', contentType: 'application/pdf' }]
+      pdfBase64: pdfBase64,
+      filename: filename
     })
   }).then(function(r){ return r.json(); }).then(function(resp) {
     if (resp.error) throw new Error(resp.error);
