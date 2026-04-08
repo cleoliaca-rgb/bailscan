@@ -2763,23 +2763,23 @@ body.is-dashboard #marketingPage { display: none !important; }
               </a>
 
               <!-- ─── PLAINE COMMUNE ─── -->
-              <a href="https://www.referenceloyer.drihl.ile-de-france.developpement-durable.gouv.fr/plaine-commune/" target="_blank" class="ville-encad-card" style="border-left:3px solid #dc2626">
+              <a href="https://www.encadrementdesloyers.gouv.fr/" target="_blank" class="ville-encad-card" style="border-left:3px solid #dc2626">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
                   <span style="background:#dc2626;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">93</span>
                   <div class="ville-encad-nom">Plaine Commune (93)</div>
                 </div>
                 <div class="ville-encad-info" style="line-height:1.5">Aubervilliers · Épinay · Pierrefitte · Saint-Denis · Stains · Villetaneuse · L'Île-Saint-Denis · La Courneuve · Saint-Ouen</div>
-                <div class="ville-encad-info" style="color:var(--gris);margin-top:3px">Depuis juin 2021</div>
+                <div class="ville-encad-info" style="color:var(--pro-accent);margin-top:3px">→ Simulateur national gouv.fr</div>
               </a>
 
               <!-- ─── EST ENSEMBLE ─── -->
-              <a href="https://www.referenceloyer.drihl.ile-de-france.developpement-durable.gouv.fr/est-ensemble/" target="_blank" class="ville-encad-card" style="border-left:3px solid #ea580c">
+              <a href="https://www.encadrementdesloyers.gouv.fr/" target="_blank" class="ville-encad-card" style="border-left:3px solid #ea580c">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
                   <span style="background:#ea580c;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">93</span>
                   <div class="ville-encad-nom">Est Ensemble (93)</div>
                 </div>
                 <div class="ville-encad-info" style="line-height:1.5">Bagnolet · Bobigny · Bondy · Le Pré-Saint-Gervais · Les Lilas · Montreuil · Noisy-le-Sec · Pantin · Romainville</div>
-                <div class="ville-encad-info" style="color:var(--gris);margin-top:3px">Depuis déc. 2021</div>
+                <div class="ville-encad-info" style="color:var(--pro-accent);margin-top:3px">→ Simulateur national gouv.fr</div>
               </a>
 
               <!-- ─── LYON ─── -->
@@ -2813,7 +2813,7 @@ body.is-dashboard #marketingPage { display: none !important; }
               </a>
 
               <!-- ─── PAYS BASQUE ─── -->
-              <a href="https://www.communaute-paysbasque.fr/logement-et-urbanisme/lencadrement-des-loyers" target="_blank" class="ville-encad-card" style="border-left:3px solid #166534">
+              <a href="https://geobasque.communaute-paysbasque.fr/adws/app/dad90ce2-8b10-11ef-b6f8-3d530512f88c/index.html?dummy=1729177715102" target="_blank" class="ville-encad-card" style="border-left:3px solid #166534">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
                   <span style="background:#166534;color:white;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0">64</span>
                   <div class="ville-encad-nom">Pays Basque (24 communes)</div>
@@ -4368,52 +4368,85 @@ body.is-dashboard #marketingPage { display: none !important; }
 
 <div id="tab-loyers-suivi" style="display:none">
   <div class="dash-main-header">
-    <div><div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Loyers & Impayés</div><div class="dash-page-sub">Suivi mensuel des encaissements · Relances automatiques</div></div>
-    <div style="display:flex;gap:8px">
-      <button class="btn-sm" onclick="exportLoyersPDF()">Exporter</button>
-      <button class="btn-primary-pro" onclick="openSaisieLoyer()">+ Enregistrer un paiement</button>
+    <div>
+      <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">💶 Loyers & Impayés</div>
+      <div class="dash-page-sub">Encaissements · Relances · Quittances</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn-sm" onclick="exportLoyersCSV()" title="Export CSV">⬇ Export</button>
+      <button class="btn-sm" style="border-color:var(--pro-accent);color:var(--pro-accent)" onclick="genererMoisActuel()">⟳ Générer le mois</button>
+      <button class="btn-primary-pro" onclick="openSaisieLoyer()">+ Saisir un paiement</button>
     </div>
   </div>
-  <!-- KPIs -->
-  <div class="dash-kpi-row" style="grid-template-columns:repeat(4,1fr)">
-    <div class="kpi-card"><div class="kpi-val" id="loyerKpiAttendu" style="color:var(--pro-accent)">0 €</div><div class="kpi-label">Loyers attendus/mois</div></div>
-    <div class="kpi-card"><div class="kpi-val" id="loyerKpiPercu" style="color:var(--success)">0 €</div><div class="kpi-label">Encaissés</div></div>
-    <div class="kpi-card"><div class="kpi-val" id="loyerKpiImpaye" style="color:var(--danger)">0 €</div><div class="kpi-label">Impayés</div></div>
-    <div class="kpi-card"><div class="kpi-val" id="loyerKpiTaux" style="color:var(--warn)">—</div><div class="kpi-label">Taux de recouvrement</div></div>
+
+  <!-- KPIs avec barre de progression -->
+  <div class="dash-kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+    <div class="kpi-card">
+      <div class="kpi-val" id="loyerKpiAttendu" style="color:var(--pro-accent)">0 €</div>
+      <div class="kpi-label">Attendus ce mois</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val" id="loyerKpiPercu" style="color:var(--success)">0 €</div>
+      <div class="kpi-label">Encaissés</div>
+      <div id="loyerProgressBar" style="margin-top:6px;height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+        <div id="loyerProgressFill" style="height:100%;background:var(--success);border-radius:2px;width:0%;transition:width .4s"></div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val" id="loyerKpiImpaye" style="color:var(--danger)">0 €</div>
+      <div class="kpi-label">Impayés</div>
+      <div id="loyerImapyeCount" style="font-size:.7rem;color:var(--danger);margin-top:4px"></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val" id="loyerKpiTaux" style="color:var(--warn)">—</div>
+      <div class="kpi-label">Taux recouvrement</div>
+    </div>
   </div>
-  <!-- Filtre mois -->
-  <div class="dash-card" style="padding:12px 16px;margin-bottom:16px">
-    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+
+  <!-- Alertes impayés (visible seulement si impayés) -->
+  <div id="loyerAlertesBand" style="display:none;background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:12px 16px;margin-bottom:16px">
+    <div style="font-size:.78rem;font-weight:700;color:#991b1b;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+      ⚠ Impayés en cours <span id="loyerAlertesCount" style="background:#dc2626;color:white;border-radius:10px;padding:0 7px;font-size:.68rem"></span>
+    </div>
+    <div id="loyerAlertesListe" style="display:flex;flex-direction:column;gap:6px"></div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="dash-card" style="padding:10px 14px;margin-bottom:14px">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
       <select id="loyerMoisFil" class="filter-select" style="max-width:160px" onchange="refreshLoyersSuivi()">
         <option value="">Tous les mois</option>
       </select>
       <select id="loyerStatutFil" class="filter-select" onchange="refreshLoyersSuivi()">
-        <option value="">Tous les statuts</option>
-        <option value="paye">Payé</option>
+        <option value="">Tous statuts</option>
+        <option value="paye">Payé ✓</option>
         <option value="partiel">Partiel</option>
         <option value="impaye">Impayé</option>
       </select>
       <span id="loyerFilterCount" style="font-size:.78rem;color:var(--gris);margin-left:auto"></span>
     </div>
   </div>
+
   <!-- Tableau loyers -->
   <div class="dash-card" style="padding:0;overflow:hidden">
     <table class="dash-table-full" style="min-width:700px">
       <thead><tr>
-        <th>Locataire</th><th>Bien</th><th>Mois</th><th>Attendu</th><th>Encaissé</th><th>Statut</th><th>Actions</th>
+        <th>Locataire</th><th>Bien</th><th>Mois</th><th>Attendu</th><th>Encaissé</th><th>Statut</th><th style="text-align:right;padding-right:16px">Actions</th>
       </tr></thead>
       <tbody id="loyersTbody">
         <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gris)">
-          <div style="font-size:2rem;margin-bottom:10px"></div>
+          <div style="font-size:2rem;margin-bottom:10px">💶</div>
           <div style="font-weight:600;margin-bottom:4px">Aucun suivi de loyer</div>
-          <div style="font-size:.82rem">Enregistrez vos paiements reçus pour suivre vos encaissements</div>
+          <div style="font-size:.82rem;margin-bottom:14px">Cliquez sur "Générer le mois" pour initialiser automatiquement tous vos locataires actifs</div>
+          <button class="btn-primary-pro" onclick="genererMoisActuel()">⟳ Générer le mois en cours</button>
         </td></tr>
       </tbody>
     </table>
   </div>
+
   <!-- Modale saisie loyer -->
   <div id="modalSaisieLoyer" class="modal-overlay" style="display:none">
-    <div class="modal" style="max-width:500px">
+    <div class="modal" style="max-width:480px">
       <button class="modal-close" onclick="closeSaisieLoyer()">×</button>
       <div class="modal-title" style="padding:20px 24px 4px">Enregistrer un paiement</div>
       <div style="padding:16px 24px">
@@ -4425,28 +4458,28 @@ body.is-dashboard #marketingPage { display: none !important; }
         </div>
         <div class="form-grid-pro" style="margin-bottom:12px">
           <div class="form-group-pro">
-            <label class="form-label">Mois concerné *</label>
+            <label class="form-label">Mois *</label>
             <input type="month" class="form-input-pro" id="saisieMois">
           </div>
           <div class="form-group-pro">
-            <label class="form-label">Loyer attendu (€)</label>
+            <label class="form-label">Attendu (€)</label>
             <input type="number" class="form-input-pro" id="saisieAttendu" placeholder="800">
           </div>
         </div>
         <div class="form-grid-pro" style="margin-bottom:12px">
           <div class="form-group-pro">
-            <label class="form-label">Montant encaissé (€) *</label>
+            <label class="form-label">Encaissé (€) *</label>
             <input type="number" class="form-input-pro" id="saisiePercu" placeholder="800" oninput="updateSaisieStatut()">
           </div>
           <div class="form-group-pro">
-            <label class="form-label">Date de paiement</label>
+            <label class="form-label">Date paiement</label>
             <input type="date" class="form-input-pro" id="saisieDate">
           </div>
         </div>
         <div class="form-group-pro" style="margin-bottom:12px">
-          <label class="form-label">Mode de paiement</label>
+          <label class="form-label">Mode</label>
           <select class="form-input-pro" id="saisieMode">
-            <option value="virement">Virement bancaire</option>
+            <option value="virement">Virement</option>
             <option value="cheque">Chèque</option>
             <option value="especes">Espèces</option>
             <option value="prelevement">Prélèvement</option>
@@ -6433,12 +6466,12 @@ function verifierEncadrement(){
   // ══════════════════════════════════════════════════════════════════
   var URL_PARIS   = 'https://www.paris.fr/encadrementloyers';
   var URL_LILLE   = 'https://encadrement-loyers.lille.fr/';
-  var URL_PLAINE  = 'https://www.referenceloyer.drihl.ile-de-france.developpement-durable.gouv.fr/plaine-commune/';
-  var URL_EST     = 'https://www.referenceloyer.drihl.ile-de-france.developpement-durable.gouv.fr/est-ensemble/';
+  var URL_PLAINE  = 'https://www.encadrementdesloyers.gouv.fr/';
+  var URL_EST     = 'https://www.encadrementdesloyers.gouv.fr/';
   var URL_LYON    = 'https://demarches.toodego.com/logement/encadrement-des-loyers-v2/';
   var URL_MONTPEL = 'https://eservices.montpellier3m.fr/habitat/encadrement-des-loyers/';
   var URL_BDX     = 'https://simulateur-loyer.bordeaux-metropole.fr/';
-  var URL_BASQUE  = 'https://www.communaute-paysbasque.fr/logement-et-urbanisme/lencadrement-des-loyers';
+  var URL_BASQUE  = 'https://geobasque.communaute-paysbasque.fr/adws/app/dad90ce2-8b10-11ef-b6f8-3d530512f88c/index.html?dummy=1729177715102';
   var URL_GRENOBLE= 'https://www.grenoblealpesmetropole.fr/loyers';
 
   var zones = {
@@ -8165,10 +8198,19 @@ var VEILLE_ALERTES_INITIALES = [
   }
 ];
 
+function veilleLimit(arr) {
+  // Garder max 5 alertes, les plus récentes en premier
+  return (arr || []).slice(0, 5);
+}
+
 function initVeilleData() {
   if (!proState.veille || !proState.veille.length) {
-    proState.veille = VEILLE_ALERTES_INITIALES;
+    // Sanitiser les alertes initiales pour qu'elles aient le même style que les IA
+    proState.veille = veilleLimit(VEILLE_ALERTES_INITIALES.map(sanitizeVeilleItem));
     localStorage.setItem('bailscan_veille', JSON.stringify(proState.veille));
+  } else {
+    // Sanitiser les alertes déjà en mémoire (chargées depuis localStorage)
+    proState.veille = veilleLimit(proState.veille.map(sanitizeVeilleItem));
   }
   refreshVeille();
   autoUpdateVeille(false);
@@ -8225,8 +8267,8 @@ function renderVeille(items) {
   if (!items || !items.length) return;
   var clean = items.map(sanitizeVeilleItem);
   // Mettre à jour proState.veille pour que renderVeilleAlertes() les affiche
-  proState.veille = clean;
-  localStorage.setItem('bailscan_veille', JSON.stringify(clean));
+  proState.veille = veilleLimit(clean);
+  localStorage.setItem('bailscan_veille', JSON.stringify(proState.veille));
   renderVeilleAlertes();
   // Mettre à jour le dernier décret affiché en haut du widget
   var first = clean[0];
@@ -9310,7 +9352,7 @@ function refreshLoyersSuivi() {
   var moisFil = (document.getElementById('loyerMoisFil')||{}).value || '';
   var statutFil = (document.getElementById('loyerStatutFil')||{}).value || '';
 
-  // Remplir select mois
+  // Peupler le select mois (une seule fois)
   var moisSel = document.getElementById('loyerMoisFil');
   if (moisSel && moisSel.options.length <= 1) {
     var moisSet = new Set(suivi.map(function(s){ return s.mois; }));
@@ -9318,11 +9360,12 @@ function refreshLoyersSuivi() {
     for (var i = 0; i < 12; i++) {
       var d2 = new Date(now2.getFullYear(), now2.getMonth() - i, 1);
       var val2 = d2.getFullYear()+'-'+String(d2.getMonth()+1).padStart(2,'0');
-      if (!moisSet.has(val2)) moisSet.add(val2);
+      moisSet.add(val2);
     }
     Array.from(moisSet).sort().reverse().forEach(function(mv) {
       var opt = document.createElement('option');
-      opt.value = mv; opt.textContent = new Date(mv+'-01').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+      opt.value = mv;
+      opt.textContent = new Date(mv+'-01').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
       moisSel.appendChild(opt);
     });
   }
@@ -9330,8 +9373,9 @@ function refreshLoyersSuivi() {
   var moisActuel = new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
   var moisAffiche = moisFil || moisActuel;
 
-  // KPIs globaux
-  var loyersAttenduTotal = locs.filter(function(l){return l.statut==='actif'&&l.loyer;}).reduce(function(s,l){
+  // ── KPIs ──
+  var locsActifs = locs.filter(function(l){ return l.statut==='actif' && l.loyer; });
+  var loyersAttenduTotal = locsActifs.reduce(function(s,l){
     return s + (parseFloat(l.loyer)||0) + (parseFloat(l.complement)||0) + (parseFloat(l.charges||0));
   }, 0);
   var moisSuiviActuel = suivi.filter(function(s){ return s.mois === moisActuel; });
@@ -9342,24 +9386,75 @@ function refreshLoyersSuivi() {
   var f2 = function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
   f2('loyerKpiAttendu', loyersAttenduTotal.toLocaleString('fr-FR')+' €');
   f2('loyerKpiPercu', percuTotal.toLocaleString('fr-FR')+' €');
-  f2('loyerKpiImpaye', impayeTotal.toLocaleString('fr-FR')+' €');
+  f2('loyerKpiImpaye', impayeTotal > 0 ? impayeTotal.toLocaleString('fr-FR')+' €' : '0 €');
   f2('loyerKpiTaux', taux+' %');
 
+  // Barre de progression
+  var fill = document.getElementById('loyerProgressFill');
+  if (fill) fill.style.width = Math.min(100, taux)+'%';
+  if (fill) fill.style.background = taux >= 95 ? 'var(--success)' : taux >= 70 ? 'var(--warn)' : 'var(--danger)';
+
+  // Nombre impayés
+  var nbImpaye = locsActifs.filter(function(l){
+    var entry = moisSuiviActuel.find(function(s){ return String(s.locId)===String(l.id); });
+    if (!entry) return true;
+    var att = (parseFloat(l.loyer)||0)+(parseFloat(l.complement)||0)+(parseFloat(l.charges||0));
+    return parseFloat(entry.percu||0) < att;
+  }).length;
+  f2('loyerImapyeCount', nbImpaye > 0 ? nbImpaye+' locataire'+(nbImpaye>1?'s':'') : '');
+
+  // ── Bande alertes impayés ──
+  var alertesBand = document.getElementById('loyerAlertesBand');
+  var alertesListe = document.getElementById('loyerAlertesListe');
+  var alertesCount = document.getElementById('loyerAlertesCount');
+  var impayesRows = locsActifs.filter(function(l){
+    var entry = moisSuiviActuel.find(function(s){ return String(s.locId)===String(l.id); });
+    if (!entry) return true;
+    return parseFloat(entry.percu||0) < (parseFloat(l.loyer)||0)+(parseFloat(l.complement)||0)+(parseFloat(l.charges||0));
+  });
+  if (alertesBand) alertesBand.style.display = impayesRows.length ? '' : 'none';
+  if (alertesCount) alertesCount.textContent = impayesRows.length;
+  if (alertesListe && impayesRows.length) {
+    alertesListe.innerHTML = impayesRows.slice(0,5).map(function(l){
+      var entry = moisSuiviActuel.find(function(s){ return String(s.locId)===String(l.id); });
+      var att = (parseFloat(l.loyer)||0)+(parseFloat(l.complement)||0)+(parseFloat(l.charges||0));
+      var perc = entry ? parseFloat(entry.percu||0) : 0;
+      var mandat = l.mandatId ? mandats.find(function(m){ return String(m.id)===String(l.mandatId); }) : null;
+      return '<div style="display:flex;align-items:center;justify-content:space-between;background:white;border-radius:8px;padding:8px 12px">'
+        +'<div><span style="font-weight:600;font-size:.83rem">'+(l.prenom||'')+' '+(l.nom||'')+'</span>'
+        +(mandat?'<span style="font-size:.74rem;color:var(--gris);margin-left:6px">'+( mandat.adresse||'')+'</span>':'')+'</div>'
+        +'<div style="display:flex;align-items:center;gap:6px">'
+        +'<span style="font-size:.8rem;color:var(--danger);font-weight:600">'+(att-perc).toLocaleString('fr-FR')+' € manquant</span>'
+        +'<button class="btn-sm" style="font-size:.68rem;color:var(--danger);border-color:var(--danger);padding:3px 8px" data-action="relance" data-id="'+l.id+'">Relance</button>'
+        +'<button class="btn-sm" style="font-size:.68rem;color:var(--success);border-color:var(--success);padding:3px 8px" data-action="paye" data-id="'+l.id+'" data-m="'+moisActuel+'" data-att="'+att+'">✓ Payé</button>'
+        +'</div></div>';
+    }).join('');
+    // Délégation alertes
+    alertesListe.onclick = function(e) {
+      var btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      var action = btn.getAttribute('data-action');
+      var id = btn.getAttribute('data-id');
+      var m2 = btn.getAttribute('data-m');
+      var att2 = parseFloat(btn.getAttribute('data-att')||0);
+      if (action === 'relance') genererRelanceImpaye(id);
+      else if (action === 'paye') marquerPaye(id, m2, att2);
+    };
+  }
+
+  // ── Tableau ──
   var tbodyEl = document.getElementById('loyersTbody');
   if (!tbodyEl) return;
 
   var statutStyle = {
-    paye:   {bg:'#f0fdf4', color:'#166534', label:'Payé'},
+    paye:   {bg:'#f0fdf4', color:'#166534', label:'✓ Payé'},
     partiel:{bg:'#fffbeb', color:'#92400e', label:'Partiel'},
     impaye: {bg:'#fef2f2', color:'#991b1b', label:'Impayé'}
   };
 
-  // Grouper les locataires actifs par mandat (bien)
   var locatairesActifs = locs.filter(function(l){ return l.statut==='actif' && l.loyer; });
-  
-  // Construire les lignes
   var rows = [];
-  var moisListe = moisFil ? [moisFil] : [moisActuel];
+  var moisListe = moisFil ? [moisFil] : [moisAffiche];
 
   locatairesActifs.forEach(function(l) {
     moisListe.forEach(function(m) {
@@ -9378,26 +9473,30 @@ function refreshLoyersSuivi() {
     });
   });
 
+  var countEl = document.getElementById('loyerFilterCount');
+  if (countEl) countEl.textContent = rows.length + ' ligne'+(rows.length>1?'s':'');
+
   if (!rows.length) {
-    tbodyEl.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--gris)"><div>Aucun locataire actif ou aucun loyer enregistré</div></td></tr>';
+    tbodyEl.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--gris)">'
+      +'<div style="font-size:1.6rem;margin-bottom:8px">💶</div>'
+      +'<div style="font-weight:600;margin-bottom:4px">Aucun locataire actif ou aucun loyer enregistré</div>'
+      +'<div style="font-size:.82rem;margin-bottom:12px">Utilisez "Générer le mois" pour initialiser automatiquement</div>'
+      +'<button class="btn-primary-pro" style="font-size:.83rem" onclick="genererMoisActuel()">⟳ Générer le mois</button>'
+      +'</td></tr>';
     return;
   }
 
-  // Grouper par mandat pour afficher un séparateur de bien
-  var grouped = {};
-  var groupOrder = [];
+  // Grouper par bien
+  var grouped = {}; var groupOrder = [];
   rows.forEach(function(r) {
-    var mandatKey = r.mandat ? String(r.mandat.id) : 'sans_bien';
-    if (!grouped[mandatKey]) {
-      grouped[mandatKey] = { mandat: r.mandat, rows: [] };
-      groupOrder.push(mandatKey);
-    }
-    grouped[mandatKey].rows.push(r);
+    var key = r.mandat ? String(r.mandat.id) : 'sans_bien';
+    if (!grouped[key]) { grouped[key] = { mandat: r.mandat, rows: [] }; groupOrder.push(key); }
+    grouped[key].rows.push(r);
   });
 
   var moisLabel = new Date(moisAffiche+'-01').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
-
   var html = '';
+
   groupOrder.forEach(function(key) {
     var group = grouped[key];
     var adresse = group.mandat ? (group.mandat.adresseFull || group.mandat.adresse || 'Bien') : 'Sans bien rattaché';
@@ -9405,119 +9504,144 @@ function refreshLoyersSuivi() {
     var totalPercu = group.rows.reduce(function(s,r){ return s+r.percu; }, 0);
     var toutPaye = group.rows.every(function(r){ return r.statut==='paye'; });
     var unImpaye = group.rows.some(function(r){ return r.statut==='impaye'; });
-    var headerColor = toutPaye ? '#166534' : unImpaye ? '#991b1b' : '#92400e';
-    var headerBg = toutPaye ? '#f0fdf4' : unImpaye ? '#fef2f2' : '#fffbeb';
+    var hC = toutPaye ? '#166534' : unImpaye ? '#991b1b' : '#92400e';
+    var hBg = toutPaye ? '#f0fdf4' : unImpaye ? '#fef2f2' : '#fffbeb';
+    var tauxBien = totalAttendu > 0 ? Math.round((totalPercu/totalAttendu)*100) : 0;
 
-    // En-tête du bien
-    html += '<tr style="background:'+headerBg+';border-bottom:2px solid #e5e7eb">'
-      + '<td colspan="7" style="padding:10px 14px;font-weight:700;font-size:.88rem;color:'+headerColor+'">'
-      + '<span style="font-size:.95rem">'+adresse+'</span>'
-      + '<span style="font-size:.75rem;font-weight:400;color:#6b7280;margin-left:12px">'+moisLabel+'</span>'
-      + '<span style="float:right;font-size:.8rem">Attendu&nbsp;<strong>'+totalAttendu.toLocaleString('fr-FR')+' €</strong>'
-      + '&nbsp;·&nbsp;Encaissé&nbsp;<strong style="color:'+headerColor+'">'+totalPercu.toLocaleString('fr-FR')+' €</strong></span>'
-      + '</td></tr>';
+    html += '<tr style="background:'+hBg+';border-bottom:2px solid #e5e7eb">'
+      +'<td colspan="5" style="padding:10px 14px;font-weight:700;font-size:.87rem;color:'+hC+'">'
+      +'<span style="font-size:.95rem">'+adresse+'</span>'
+      +'<span style="font-size:.74rem;font-weight:400;color:#6b7280;margin-left:10px">'+moisLabel+'</span>'
+      +'</td>'
+      +'<td colspan="2" style="padding:10px 14px;text-align:right">'
+      +'<span style="font-size:.8rem;color:#6b7280">Attendu <strong style="color:'+hC+'">'+totalAttendu.toLocaleString('fr-FR')+' €</strong></span>'
+      +'&nbsp;·&nbsp;'
+      +'<span style="font-size:.8rem;color:#6b7280">Encaissé <strong style="color:'+hC+'">'+totalPercu.toLocaleString('fr-FR')+' €</strong></span>'
+      +'&nbsp;<span style="background:'+hBg+';color:'+hC+';font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:10px;border:1px solid '+hC+'22">'+tauxBien+' %</span>'
+      +'</td></tr>';
 
-    // Lignes des locataires du bien
     group.rows.forEach(function(r) {
       var st = statutStyle[r.statut] || statutStyle.impaye;
-      html += '<tr style="border-bottom:1px solid #f3f4f6">'
-        + '<td style="font-weight:600;padding-left:24px">'+(r.l.prenom||'')+' '+(r.l.nom||'')+'</td>'
-        + '<td style="font-size:.8rem;color:var(--gris)">'+(r.l.tel||r.l.email||'—')+'</td>'
-        + '<td style="font-size:.82rem">'+moisLabel+'</td>'
-        + '<td style="font-weight:600">'+(r.attendu.toLocaleString('fr-FR'))+' €</td>'
-        + '<td style="font-weight:600;color:'+(r.percu>=r.attendu?'var(--success)':r.percu>0?'var(--warn)':'var(--danger)')+'">'+( r.percu ? r.percu.toLocaleString('fr-FR')+' €' : '—' )+'</td>'
-        + '<td><span style="background:'+st.bg+';color:'+st.color+';font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px">'+st.label+'</span></td>'
-        + '<td style="white-space:nowrap">'
-        + '<button class="btn-sm" style="font-size:.72rem" onclick="ouvrirSaisieLoyer(\''+r.l.id+'\',\''+r.m+'\','+r.attendu+')">'+(r.entry ? 'Modifier' : '+ Saisir')+'</button>'
-        + (r.statut==='impaye' ? '<button class="btn-sm" style="font-size:.72rem;margin-left:4px;color:var(--danger);border-color:var(--danger)" onclick="genererRelance(\''+r.l.id+'\')">Relance</button>' : '')
-        + '</td></tr>';
+      var note = r.entry && r.entry.note ? '<br><span style="font-size:.68rem;color:var(--gris);font-style:italic">'+r.entry.note+'</span>' : '';
+      html += '<tr style="border-bottom:1px solid #f3f4f6" class="loyer-row">'
+        +'<td style="padding:10px 10px 10px 24px">'
+        +'<div style="font-weight:600;font-size:.87rem">'+(r.l.prenom||'')+' '+(r.l.nom||'')+'</div>'
+        +(r.l.email?'<div style="font-size:.72rem;color:var(--gris)">'+r.l.email+'</div>':'')
+        +note
+        +'</td>'
+        +'<td style="font-size:.78rem;color:var(--gris);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(r.mandat?r.mandat.adresse||'—':'—')+'</td>'
+        +'<td style="font-size:.82rem">'+moisLabel+'</td>'
+        +'<td style="font-weight:600;font-size:.88rem">'+r.attendu.toLocaleString('fr-FR')+' €</td>'
+        +'<td style="font-weight:600;font-size:.88rem;color:'+(r.percu>=r.attendu?'var(--success)':r.percu>0?'var(--warn)':'var(--gris-light)')+'">'+(r.percu?r.percu.toLocaleString('fr-FR')+' €':'—')+'</td>'
+        +'<td><span style="background:'+st.bg+';color:'+st.color+';font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap">'+st.label+'</span></td>'
+        +'<td style="text-align:right;padding-right:12px;white-space:nowrap">'
+        +(r.statut !== 'paye' ? '<button class="btn-sm" style="font-size:.68rem;color:var(--success);border-color:var(--success);padding:4px 9px;margin-right:4px" data-action="paye" data-id="'+r.l.id+'" data-m="'+r.m+'" data-att="'+r.attendu+'">✓ Payé</button>' : '')
+        +'<button class="btn-sm" style="font-size:.68rem;padding:4px 9px" data-action="saisir" data-id="'+r.l.id+'" data-m="'+r.m+'" data-att="'+r.attendu+'">'+(r.entry?'Modifier':'Saisir')+'</button>'
+        +(r.statut==='impaye'?'<button class="btn-sm" style="font-size:.68rem;color:var(--danger);border-color:var(--danger);padding:4px 9px;margin-left:4px" data-action="relance" data-id="'+r.l.id+'">Relance</button>':'')
+        +(r.statut==='paye'?'<button class="btn-sm" style="font-size:.68rem;padding:4px 9px;margin-left:4px" data-action="quittance" data-id="'+r.l.id+'" data-m="'+r.m+'">Quittance</button>':'')
+        +'</td></tr>';
     });
-
-    // Ligne de sous-total si plusieurs locataires dans le bien
-    if (group.rows.length > 1) {
-      html += '<tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb">'
-        + '<td colspan="3" style="padding:6px 14px;font-size:.75rem;color:#9ca3af">'+group.rows.length+' locataire(s)</td>'
-        + '<td style="font-size:.8rem;font-weight:600">'+totalAttendu.toLocaleString('fr-FR')+' €</td>'
-        + '<td style="font-size:.8rem;font-weight:600;color:'+(toutPaye?'var(--success)':unImpaye?'var(--danger)':'var(--warn)')+'">'+totalPercu.toLocaleString('fr-FR')+' €</td>'
-        + '<td colspan="2"></td></tr>';
-    }
   });
 
   tbodyEl.innerHTML = html;
+
+  // Délégation d'événements pour les boutons data-action
+  tbodyEl.onclick = function(e) {
+    var btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    var action = btn.getAttribute('data-action');
+    var id = btn.getAttribute('data-id');
+    var m  = btn.getAttribute('data-m');
+    var att = parseFloat(btn.getAttribute('data-att')||0);
+    if (action === 'paye')      marquerPaye(id, m, att);
+    else if (action === 'relance')   genererRelanceImpaye(id);
+    else if (action === 'quittance') genererQuittanceRapide(id, m);
+    else if (action === 'saisir')   ouvrirSaisieLoyer(id, m, att);
+  };
 }
 
-function openSaisieLoyer() {
-  var sel = document.getElementById('saisieLocId');
-  if (sel) {
-    var locs = loadLocataires().filter(function(l){ return l.statut==='actif'; });
-    sel.innerHTML = '<option value="">— Sélectionner —</option>' + locs.map(function(l){ return '<option value="'+l.id+'">'+(l.prenom||'')+' '+(l.nom||'')+'</option>'; }).join('');
-  }
-  var now = new Date();
-  var moisEl = document.getElementById('saisieMois');
-  if (moisEl) moisEl.value = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  var dateEl = document.getElementById('saisieDate');
-  if (dateEl) dateEl.value = now.toISOString().split('T')[0];
-  document.getElementById('modalSaisieLoyer').style.display = 'flex';
-}
-
-function ouvrirSaisieLoyer(locId, mois, attendu) {
-  openSaisieLoyer();
-  setTimeout(function(){
-    var sel = document.getElementById('saisieLocId'); if(sel) { sel.value = locId; prefillSaisieLoyer(); }
-    var moisEl = document.getElementById('saisieMois'); if(moisEl) moisEl.value = mois;
-    var attEl = document.getElementById('saisieAttendu'); if(attEl) attEl.value = attendu;
-    var suivi = loadLoyersSuivi();
-    var entry = suivi.find(function(s){ return String(s.locId)===String(locId) && s.mois===mois; });
-    if (entry) {
-      var percuEl = document.getElementById('saisiePercu'); if(percuEl) percuEl.value = entry.percu;
-      var noteEl = document.getElementById('saisieNote'); if(noteEl) noteEl.value = entry.note||'';
-      updateSaisieStatut();
+// ─── Génération automatique du mois pour tous les locataires actifs ───
+function genererMoisActuel() {
+  var locs = loadLocataires().filter(function(l){ return l.statut==='actif' && l.loyer; });
+  var mandats = loadMandats();
+  if (!locs.length) { showToast('Aucun locataire actif avec loyer renseigné.','orange'); return; }
+  var suivi = loadLoyersSuivi();
+  var moisActuel = new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
+  var added = 0;
+  locs.forEach(function(l) {
+    var exists = suivi.find(function(s){ return String(s.locId)===String(l.id) && s.mois===moisActuel; });
+    if (exists) return;
+    var lCharges = parseFloat(l.charges||0);
+    if (!lCharges && l.mandatId) {
+      var m = mandats.find(function(x){ return String(x.id)===String(l.mandatId); });
+      if (m) lCharges = parseFloat(m.charges||0);
     }
-  }, 50);
+    var attendu = (parseFloat(l.loyer)||0) + (parseFloat(l.complement)||0) + lCharges;
+    suivi.unshift({ id: Date.now()+added, locId: l.id, mois: moisActuel, attendu: attendu, percu: 0, statut:'impaye', mode:'', date:'', note:'' });
+    added++;
+  });
+  if (!added) { showToast('Tous les locataires sont déjà initialisés pour ce mois.','blue'); return; }
+  saveLoyersSuivi(suivi);
+  refreshLoyersSuivi();
+  showToast(added+' locataire'+(added>1?'s':'')+' initialisé'+(added>1?'s':'')+' pour '+new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'})+'.','green');
 }
 
-function closeSaisieLoyer() { document.getElementById('modalSaisieLoyer').style.display = 'none'; }
-
-function prefillSaisieLoyer() {
-  var locId = (document.getElementById('saisieLocId')||{}).value;
-  if (!locId) return;
-  var l = loadLocataires().find(function(x){ return String(x.id)===String(locId); });
-  if (!l) return;
-  var attEl = document.getElementById('saisieAttendu');
-  if(attEl) attEl.value = (parseFloat(l.loyer)||0)+(parseFloat(l.complement)||0)+(parseFloat(l.charges)||0);
-}
-
-function updateSaisieStatut() {
-  var attendu = parseFloat((document.getElementById('saisieAttendu')||{}).value)||0;
-  var percu = parseFloat((document.getElementById('saisiePercu')||{}).value)||0;
-  var prev = document.getElementById('saisieStatutPreview');
-  if (!prev || !attendu) { if(prev) prev.style.display='none'; return; }
-  var statut = percu >= attendu ? {bg:'#f0fdf4',color:'#166534',label:'Payé intégralement'} : percu > 0 ? {bg:'#fffbeb',color:'#92400e',label:'Paiement partiel — reste '+(attendu-percu)+' €'} : {bg:'#fef2f2',color:'#991b1b',label:'❌ Impayé — '+attendu+' €'};
-  prev.style.display='block'; prev.style.background=statut.bg; prev.style.color=statut.color; prev.textContent=statut.label;
-}
-
-function saveSaisieLoyer() {
-  var locId = (document.getElementById('saisieLocId')||{}).value;
-  var mois = (document.getElementById('saisieMois')||{}).value;
-  var percu = parseFloat((document.getElementById('saisiePercu')||{}).value)||0;
-  if (!locId || !mois) { showToast('Locataire et mois obligatoires.','orange'); return; }
+// ─── Marquer payé en 1 clic ───
+function marquerPaye(locId, mois, attendu) {
   var suivi = loadLoyersSuivi();
   var idx = suivi.findIndex(function(s){ return String(s.locId)===String(locId) && s.mois===mois; });
-  var entry = {
-    id: idx >= 0 ? suivi[idx].id : Date.now(),
-    locId: locId, mois: mois,
-    attendu: parseFloat((document.getElementById('saisieAttendu')||{}).value)||0,
-    percu: percu,
-    date: (document.getElementById('saisieDate')||{}).value,
-    mode: (document.getElementById('saisieMode')||{}).value,
-    note: (document.getElementById('saisieNote')||{}).value
-  };
-  if (idx >= 0) suivi[idx] = entry; else suivi.unshift(entry);
+  var today = new Date().toISOString().split('T')[0];
+  if (idx >= 0) {
+    suivi[idx].percu = attendu;
+    suivi[idx].statut = 'paye';
+    suivi[idx].date = suivi[idx].date || today;
+  } else {
+    suivi.unshift({ id: Date.now(), locId: locId, mois: mois, attendu: attendu, percu: attendu, statut:'paye', mode:'virement', date: today, note:'' });
+  }
   saveLoyersSuivi(suivi);
-  closeSaisieLoyer();
   refreshLoyersSuivi();
-  showToast('Paiement enregistré.','green');
+  showToast('Loyer marqué comme payé ✓', 'green');
 }
+
+// ─── Générer quittance rapide depuis le tableau ───
+function genererQuittanceRapide(locId, mois) {
+  var l = loadLocataires().find(function(x){ return String(x.id)===String(locId); });
+  if (!l) return;
+  showDashTab('quittances');
+  setTimeout(function(){
+    var sel = document.getElementById('qLocSearch'); if(sel) sel.value=(l.prenom||'')+' '+(l.nom||'');
+    var hid = document.getElementById('qLocHidden'); if(hid) hid.value=l.id;
+    proState._qLocEmail = l.email||'';
+    var moisParts = mois.split('-');
+    var moisNames=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    var selM=document.getElementById('qMois'); if(selM) selM.value=moisNames[parseInt(moisParts[1])-1];
+    var selA=document.getElementById('qAnnee'); if(selA) selA.value=moisParts[0];
+    if(document.getElementById('qLoyer')) document.getElementById('qLoyer').value = l.loyer||'';
+    if(document.getElementById('qCharges')) document.getElementById('qCharges').value = l.charges||0;
+    if(document.getElementById('qAdresse')) document.getElementById('qAdresse').value = l.adresse||'';
+    showToast('Quittance pré-remplie pour '+(l.prenom||'')+' '+(l.nom||''), 'blue');
+  }, 250);
+}
+
+// ─── Export CSV ───
+function exportLoyersCSV() {
+  var locs = loadLocataires();
+  var suivi = loadLoyersSuivi();
+  var rows = [['Locataire','Email','Mois','Attendu','Encaissé','Statut','Mode','Date','Note']];
+  suivi.forEach(function(s) {
+    var l = locs.find(function(x){ return String(x.id)===String(s.locId); });
+    var nom = l ? (l.prenom||'')+' '+(l.nom||'') : 'Inconnu';
+    var email = l ? (l.email||'') : '';
+    rows.push([nom, email, s.mois||'', s.attendu||0, s.percu||0, s.statut||'', s.mode||'', s.date||'', s.note||'']);
+  });
+  var csv = rows.map(function(r){ return r.map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(';'); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'loyers-impayes-'+new Date().toISOString().split('T')[0]+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  showToast('Export CSV téléchargé ✓','green');
+}
+
 
 function genererRelanceImpaye(locId) {
   var l = loadLocataires().find(function(x){ return String(x.id)===String(locId); });
@@ -13259,7 +13383,8 @@ function editLocataire(id) {
   if(document.getElementById('locGarantOrganisme')) document.getElementById('locGarantOrganisme').value=l.garantOrganisme||'';
   if(document.getElementById('locGarantNumDossier')) document.getElementById('locGarantNumDossier').value=l.garantNumDossier||'';
   if(document.getElementById('locGarantAnciennete')) document.getElementById('locGarantAnciennete').value=l.garantAnciennete||'plus3';
-  document.getElementById('locataireForm').style.display='flex';
+  var _lf = document.getElementById('locataireForm');
+  if (_lf) { _lf.style.display='flex'; _lf.classList.add('active'); }
   // Remplir le champ mandat search
   refreshMandatSelectForLoc(null, l.mandatId||'');
   if (l.mandatId) {
@@ -13997,6 +14122,7 @@ function genererNouvelleAlerteIA() {
       alerte.date = new Date().toLocaleDateString('fr-FR');
       if (typeof sanitizeVeilleItem === 'function') alerte = sanitizeVeilleItem(alerte);
       proState.veille.unshift(alerte);
+      proState.veille = veilleLimit(proState.veille);
       localStorage.setItem('bailscan_veille', JSON.stringify(proState.veille));
       renderVeilleAlertes();
     } catch(e) {
@@ -15295,7 +15421,7 @@ function buildDossierFallback(loyer, revenus, contrat, anciennete, garant, piece
 
 function closeFicheLocataire() {
   var m = document.getElementById('modalFicheLocataire');
-  if (m) m.classList.remove('active');
+  if (m) m.remove(); // Suppression totale du DOM pour éviter tout conflit z-index
 }
 
 function deleteLocDoc(locId, type) {
