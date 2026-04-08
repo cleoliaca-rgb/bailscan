@@ -1468,7 +1468,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <a href="/legal.html">Mentions légales</a>
         <a href="/legal.html">CGV</a>
         <a href="/legal.html">Politique de confidentialité</a>
-        <a href="mailto:hello@bailscan.app">Contact</a>
+        <a href="/cdn-cgi/l/email-protection#442c2128282b0426252d283727252a6a253434">Contact</a>
       </div>
     </div>
     <div class="footer-bottom-pro">
@@ -2989,7 +2989,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 <div id="tab-alertes" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">🔔 Alertes & Échéances</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Alertes & Échéances</div>
             <div class="dash-page-sub">Suivez les deadlines légales de votre parc locatif</div>
           </div>
           <button class="btn-primary-pro" onclick="refreshAlertes()">↻ Actualiser</button>
@@ -3050,7 +3050,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 <div id="tab-mandats" style="display:none">
         <div class="dash-main-header">
           <div>
-            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">Biens</div>
+            <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Biens</div>
             <div class="dash-page-sub">Portefeuille de biens · Référentiel pour analyses, dossiers et courriers</div>
           </div>
           <button class="btn-primary-pro" onclick="openNewMandat()">+ Ajouter un bien</button>
@@ -3093,7 +3093,7 @@ body.is-dashboard #marketingPage { display: none !important; }
           </div>
         </div>
       </div>
-<div id="tab-locataires" style="display:none">
+      <div id="tab-locataires" style="display:none">
         <div class="dash-main-header">
           <div>
             <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">👤 Locataires</div>
@@ -3243,14 +3243,6 @@ body.is-dashboard #marketingPage { display: none !important; }
                       <option value="autre">Autre</option>
                     </select>
                   </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Prénom du garant</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantPrenom" placeholder="Jean">
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Nom du garant</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantNom" placeholder="Dupont">
-                  </div>
                   <div class="form-group-pro" style="grid-column:1/-1">
                     <label class="form-label">Adresse</label>
                     <input type="text" class="form-input-pro" id="dossierGarantAdresse" placeholder="3 rue du Moulin">
@@ -3332,7 +3324,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- CNI -->
                 <label class="dossier-piece-card" id="piece-cni-card" for="piece-cni">
-                  <div class="dossier-piece-icon"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="3" width="14" height="10" rx="1"/><circle cx="5" cy="8" r="2"/><path d="M9 6h4M9 10h3"/></svg></div>
+                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="14" height="10" rx="1.5"/><circle cx="5" cy="8" r="1.8"/><line x1="9" y1="6.5" x2="13" y2="6.5"/><line x1="9" y1="9.5" x2="12" y2="9.5"/></svg></div>
                   <div class="dossier-piece-label">Pièce d'identité</div>
                   <div class="dossier-piece-status" id="piece-cni-status">Non fournie</div>
                   <input type="file" id="piece-cni" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('cni',this)">
@@ -3340,7 +3332,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Bulletins de salaire -->
                 <label class="dossier-piece-card" id="piece-paie-card" for="piece-paie">
-                  <div class="dossier-piece-icon"></div>
+                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg></div>
                   <div class="dossier-piece-label">3 bulletins de salaire</div>
                   <div class="dossier-piece-status" id="piece-paie-status">Non fournis</div>
                   <input type="file" id="piece-paie" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('paie',this)">
@@ -3348,7 +3340,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Avis d'imposition -->
                 <label class="dossier-piece-card" id="piece-impots-card" for="piece-impots">
-                  <div class="dossier-piece-icon"></div>
+                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="9" y2="8"/><polyline points="7 12 9 14 13 10" stroke-width="1.6"/></svg></div>
                   <div class="dossier-piece-label">Avis d'imposition</div>
                   <div class="dossier-piece-status" id="piece-impots-status">Non fourni</div>
                   <input type="file" id="piece-impots" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('impots',this)">
@@ -3356,7 +3348,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Contrat de travail -->
                 <label class="dossier-piece-card" id="piece-contrat-card" for="piece-contrat">
-                  <div class="dossier-piece-icon"></div>
+                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="7" y2="11"/><path d="M10 11.5l0.8 0.8 1.7-1.8" stroke-width="1.5"/></svg></div>
                   <div class="dossier-piece-label">Contrat de travail</div>
                   <div class="dossier-piece-status" id="piece-contrat-status">Optionnel</div>
                   <input type="file" id="piece-contrat" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('contrat',this)">
@@ -3364,7 +3356,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Relevés bancaires -->
                 <label class="dossier-piece-card" id="piece-banque-card" for="piece-banque">
-                  <div class="dossier-piece-icon"></div>
+                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="4" width="14" height="9" rx="1.5"/><line x1="1" y1="7.5" x2="15" y2="7.5"/><rect x="3" y="10" width="3" height="1.5" rx="0.5" fill="currentColor" stroke="none"/></svg></div>
                   <div class="dossier-piece-label">Relevés bancaires (3 mois)</div>
                   <div class="dossier-piece-status" id="piece-banque-status">Optionnel</div>
                   <input type="file" id="piece-banque" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('banque',this)">
@@ -3372,7 +3364,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
                 <!-- Quittances de loyer -->
                 <label class="dossier-piece-card" id="piece-quittances-card" for="piece-quittances">
-                  <div class="dossier-piece-icon"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 1L2 5v9h4v-4h4v4h4V5L8 1z"/></svg></div>
+                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 2h12v10l-2 2H2V2z"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="9" x2="9" y2="9"/></svg></div>
                   <div class="dossier-piece-label">Quittances loyer précédent</div>
                   <div class="dossier-piece-status" id="piece-quittances-status">Optionnel</div>
                   <input type="file" id="piece-quittances" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('quittances',this)">
@@ -3380,7 +3372,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
               </div>
 
-              <button class="btn-primary-pro" id="btnAnalyseDossier" onclick="lancerAnalyseDossier()" style="width:100%;margin-top:16px;font-size:.9rem;padding:12px 0">
+              <button class="btn-primary-pro" id="btnAnalyseDossier" onclick="lancerAnalyseDossier()" style="width:100%;margin-top:16px;font-size:.9rem;padding:12px 24px">
                 Analyser le dossier avec l'IA →
               </button>
             </div>
@@ -3503,10 +3495,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div id="dossierPlaceholder" class="dash-card" style="text-align:center;padding:50px 30px">
               <div style="font-size:3rem;margin-bottom:16px"></div>
               <div style="font-weight:700;font-size:1rem;margin-bottom:8px">Analyse IA de dossier locataire</div>
-              <div style="font-size:.84rem;color:var(--gris);max-width:320px;margin:0 auto;line-height:1.7">
-                Remplissez le formulaire et uploadez les pièces justificatives.<br>
-                L'IA calcule le <strong>taux d'effort</strong>, vérifie la <strong>cohérence</strong> des documents et fournit un <strong>score Go / No-Go</strong> en 15 secondes.
-              </div>
+              <div style="font-size:.84rem;color:var(--gris);max-width:320px;margin:0 auto;line-height:1.7">Remplissez le formulaire et uploadez les pièces justificatives. L'IA calcule le <strong>taux d'effort</strong>, vérifie la <strong>cohérence</strong> des documents et fournit un <strong>score Go / No-Go</strong> en 15 secondes.</div>
               <div style="margin-top:20px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
                 <div style="font-size:.78rem;color:var(--gris);text-align:center">
                   <div style="font-size:1.4rem"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 1 4 9 8 9 7 15 13 7 9 7 9 1"/></svg></div>
@@ -4333,7 +4322,6 @@ body.is-dashboard #marketingPage { display: none !important; }
             <button class="btn-sm" onclick="deleteAccount()" style="color:var(--accent);border-color:var(--accent)">Supprimer mon compte</button>
           </div>
         </div>
-      </div>
 
       <!-- Export données -->
       <div class="dash-card" style="margin-bottom:16px">
@@ -4348,6 +4336,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div style="margin-top:10px;font-size:.75rem;color:var(--gris)">Fichiers CSV séparés · Séparateur point-virgule · Compatible Excel FR</div>
       </div>
 
+      </div><!-- /tab-parametres -->
       <!-- /dash-main -->
 
 <!-- ═══════════════════════════════════════════════════════
@@ -5405,7 +5394,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 <!-- MODALE MOT DE PASSE OUBLIÉ -->
 
 
-<!-- script cloudflare retiré --></script><script>
+<!-- script cloudflare retiré --></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 var COURRIER_PROMPTS = {
   conge_bailleur: "Rédigez un congé donné par le bailleur au locataire pour reprise personnelle ou vente, conforme à la loi du 6 juillet 1989. Respectez le préavis légal de 6 mois.",
@@ -7300,18 +7289,41 @@ function deleteMandat(id) {
 }
 
 function buildMandatAgenceHtml(m) {
-  var html = '<div style="margin-bottom:10px"><div style="font-size:.72rem;color:var(--gris);margin-bottom:6px;font-weight:700">MANDAT AGENCE</div>';
-  if (m.mandatAgencePdf) {
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 10px">';
-    html += '<span style="font-size:.82rem;color:#166534">Mandat uploadé' + (m.mandatAgenceNom ? ' : '+m.mandatAgenceNom : '') + '</span>';
-    html += '<button class="btn-sm" style="font-size:.72rem;border-color:var(--accent);color:var(--accent)" data-mid="' + m.id + '" onclick="supprimerMandatAgence(this.dataset.mid)">Supprimer</button>';
+  var hasSigned = m.mandatGestionSigne;
+  var hasPdf    = m.mandatAgencePdf;
+
+  var html = '<div style="margin-bottom:10px">';
+  html += '<div style="font-size:.72rem;color:var(--gris);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em">Mandat de gestion agence</div>';
+
+  // Si mandat généré & signé
+  if (hasSigned) {
+    html += '<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px">';
+    html += '<div style="font-size:1.1rem">✅</div>';
+    html += '<div style="flex:1;min-width:0"><div style="font-size:.83rem;font-weight:600;color:#166534">Mandat signé</div><div style="font-size:.72rem;color:#4b7c5f;margin-top:1px">' + (m.mandatGestionDate||'') + ' · ' + (m.mandatGestionType==='exclusif'?'Exclusif':'Simple') + '</div></div>';
+    html += '<button class="btn-sm" style="font-size:.72rem" data-mid="' + m.id + '" onclick="telechargerMandatGestion(this.dataset.mid)">⬇ PDF</button>';
+    html += '<button class="btn-sm" style="font-size:.72rem;color:var(--pro-accent);border-color:var(--pro-accent)" data-mid="' + m.id + '" onclick="openMandatGestion(this.dataset.mid)">Modifier</button>';
     html += '</div>';
   } else {
-    html += '<label style="display:flex;align-items:center;gap:8px;background:white;border:1px dashed var(--border);border-radius:8px;padding:10px;cursor:pointer;font-size:.82rem;color:var(--gris)">';
-    html += '<span>Uploader le mandat agence (PDF)</span>';
+    // Bouton principal générer
+    html += '<button style="width:100%;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#f0f4ff 0%,#e8edff 100%);border:1.5px dashed var(--pro-accent);border-radius:10px;padding:13px 16px;cursor:pointer;transition:all .15s;text-align:left" onmouseover="this.style.background='#e4ecff'" onmouseout="this.style.background='linear-gradient(135deg,#f0f4ff 0%,#e8edff 100%)'" data-mid="' + m.id + '" onclick="openMandatGestion(this.dataset.mid)">';
+    html += '<div style="font-size:1.4rem">📋</div>';
+    html += '<div><div style="font-size:.85rem;font-weight:700;color:var(--pro-accent)">Générer le mandat de gestion</div><div style="font-size:.74rem;color:var(--gris);margin-top:2px">Rédigez et signez le mandat agence–bailleur</div></div>';
+    html += '</button>';
+  }
+
+  // Upload mandat externe (toujours disponible en secondaire)
+  if (hasPdf) {
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-top:8px">';
+    html += '<span style="font-size:.79rem;color:var(--gris)">📎 ' + (m.mandatAgenceNom||'Mandat externe uploadé') + '</span>';
+    html += '<button class="btn-sm" style="font-size:.68rem;border-color:var(--accent);color:var(--accent)" data-mid="' + m.id + '" onclick="supprimerMandatAgence(this.dataset.mid)">✕</button>';
+    html += '</div>';
+  } else {
+    html += '<label style="display:flex;align-items:center;gap:7px;margin-top:8px;padding:7px 10px;background:white;border:1px dashed var(--border-light);border-radius:8px;cursor:pointer;font-size:.77rem;color:var(--gris-light)">';
+    html += '<span>📎 Ou uploader un mandat existant (PDF)</span>';
     html += '<input type="file" accept=".pdf" style="display:none" data-mid="' + m.id + '" onchange="uploadMandatAgence(this.dataset.mid,this)">';
     html += '</label>';
   }
+
   html += '</div>';
   return html;
 }
@@ -7732,241 +7744,216 @@ function exportFicheMandat(mandatId) {
   var mans = loadMandats ? loadMandats() : proState.mandats;
   var m = mans.find(function(x){ return String(x.id) === String(mandatId); });
   if (!m) { showToast('Mandat introuvable.', 'orange'); return; }
-  if (typeof window.jspdf === 'undefined' && typeof jspdf === 'undefined') {
-    showToast('jsPDF non chargé.', 'orange'); return;
-  }
-  var jsPDF = window.jspdf ? window.jspdf.jsPDF : jspdf.jsPDF;
+  var jsPDFLib = window.jspdf || (typeof jspdf !== 'undefined' ? {jsPDF:jspdf.jsPDF} : null);
+  if (!jsPDFLib) { showToast('jsPDF non chargé.', 'orange'); return; }
+  var jsPDF = jsPDFLib.jsPDF;
   var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
   var ai = proState.agencyInfo || {};
   var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
   var agence = ai.nom || 'BailScan Pro';
-  var PR = [59,111,212], SEC = [240,244,255];
-  var pW = 210, pH = 297, mg = 14, contentW = pW - mg*2;
-  var y = 20;
+  var pW=210, pH=297, mg=14, cW=pW-mg*2;
+  var y=20;
+  var PR=[59,111,212];
 
-  function checkPage(needed) {
+  function np(needed) {
     if (y + needed > pH - 16) { doc.addPage(); y = 20; }
   }
 
-  function sectionTitle(title) {
-    checkPage(12);
+  function title(txt) {
+    np(10);
     doc.setFillColor(PR[0],PR[1],PR[2]);
-    doc.rect(mg, y-4, contentW, 8, 'F');
-    doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
-    doc.text(title.toUpperCase(), mg+3, y+1);
-    y += 9;
-    doc.setTextColor(40,40,40);
+    doc.rect(mg, y-3, cW, 8, 'F');
+    doc.setFontSize(8.5); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+    doc.text(txt.toUpperCase(), mg+3, y+2);
+    y += 10;
+    doc.setTextColor(30,30,30);
   }
 
-  function row(label, value, x, rowY) {
-    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(100,100,100);
-    doc.text(label, x, rowY);
+  function field(label, val, x, fy) {
+    doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(120,120,120);
+    doc.text(label, x, fy);
     doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30);
-    doc.text(String(value||'—'), x, rowY+4);
+    doc.text(String(val||'—'), x, fy+4.5);
   }
 
-  // ── En-tête ──
+  function grid2(items) {
+    // Affiche des items [label, valeur] en 2 colonnes
+    var rH=11, half=cW/2;
+    np(Math.ceil(items.length/2)*rH+6);
+    doc.setFillColor(242,245,255);
+    doc.roundedRect(mg, y, cW, Math.ceil(items.length/2)*rH+3, 2,2,'F');
+    items.forEach(function(r,i){
+      if (!r[0]) return;
+      var xi = i%2===0 ? mg+4 : mg+half+4;
+      var yi = y+8+Math.floor(i/2)*rH;
+      field(r[0], r[1], xi, yi);
+    });
+    y += Math.ceil(items.length/2)*rH+6;
+  }
+
+  // ── EN-TÊTE ──
   doc.setFillColor(PR[0],PR[1],PR[2]);
-  doc.rect(0, 0, pW, 16, 'F');
-  if (logo) {
-    try { var lf=logo.startsWith('data:image/png')?'PNG':'JPEG'; doc.addImage(logo,lf,mg,2,30,11); }
-    catch(e) {}
-  } else {
-    doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
-    doc.text(agence, mg, 10);
-  }
-  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(200,220,255);
-  doc.text('FICHE BIEN · BailScan Pro · ' + new Date().toLocaleDateString('fr-FR'), pW-mg, 10, {align:'right'});
-  y = 24;
+  doc.rect(0,0,pW,16,'F');
+  if (logo) { try { var lf=logo.startsWith('data:image/png')?'PNG':'JPEG'; doc.addImage(logo,lf,mg,2,30,11); } catch(e){} }
+  else { doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255); doc.text(agence, mg, 10); }
+  doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(200,215,255);
+  doc.text('FICHE BIEN · ' + new Date().toLocaleDateString('fr-FR'), pW-mg, 10, {align:'right'});
 
-  // ── Titre ──
-  var adresseAff = m.adresseFull || ((m.adresse||'') + (m.cp?' '+m.cp:'') + (m.ville?' '+m.ville:''));
-  doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
-  doc.text(adresseAff || 'Fiche bien', mg, y); y += 6;
+  // ── TITRE ──
+  var adresseAff = m.adresseFull || ((m.adresse||'')+(m.cp?' '+m.cp:'')+(m.ville?' '+m.ville:''));
+  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+  doc.text(adresseAff||'Fiche bien', mg, y); y+=6;
   if (m.statut) {
-    var statColors = {loue:[22,101,52], vacant:[146,64,14], travaux:[30,64,175], revoque:[154,52,18]};
-    var sc = statColors[m.statut] || [100,100,100];
+    var sColors={loue:[22,101,52],vacant:[146,64,14],travaux:[30,64,175],revoque:[154,52,18]};
+    var sc=sColors[m.statut]||[100,100,100];
+    var sLabels={loue:'Loué',vacant:'Vacant',travaux:'En travaux',revoque:'Révoqué'};
     doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(sc[0],sc[1],sc[2]);
-    var statLabels = {loue:'Loué', vacant:'Vacant', travaux:'En travaux', revoque:'Révoqué'};
-    doc.text('Statut : ' + (statLabels[m.statut]||m.statut), mg, y); y += 7;
+    doc.text('Statut : '+(sLabels[m.statut]||m.statut), mg, y); y+=8;
   }
 
-  // ── Photos du bien ──
+  // ── PHOTOS ──
   var photos = getMandatPhotos ? getMandatPhotos(m.id) : [];
   if (photos && photos.length) {
-    checkPage(60);
-    sectionTitle('Photos du bien');
-    var photoX = mg, photoY = y, photoW = 55, photoH = 42, perRow = 3, gap = 3;
-    photos.forEach(function(ph, pi) {
-      if (pi > 0 && pi % perRow === 0) { photoX = mg; photoY += photoH + gap; checkPage(photoH + gap); }
-      else if (pi > 0) { photoX += photoW + gap; }
+    title('Photos du bien');
+    var pw=57, ph2=44, gp=3, cols=3;
+    var px=mg, py=y;
+    photos.forEach(function(ph3, pi) {
+      if (pi > 0 && pi % cols === 0) { px=mg; py+=ph2+gp; np(ph2+gp+5); }
+      else if (pi > 0) { px+=pw+gp; }
       try {
-        var photoData = (typeof ph === 'object' && ph.data) ? ph.data : ph;
-        var fmt = photoData.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-        doc.addImage(photoData, fmt, photoX, photoY, photoW, photoH);
-      } catch(e) { console.warn('Photo PDF err:', e); }
+        var pd=(typeof ph3==='object'&&ph3.data)?ph3.data:ph3;
+        if (!pd||pd.length<10) return;
+        var fmt=pd.startsWith('data:image/png')?'PNG':'JPEG';
+        doc.addImage(pd,fmt,px,py,pw,ph2);
+      } catch(e){ console.warn('Photo err',e); }
     });
-    y = photoY + photoH + 8;
+    y = py + ph2 + 8;
   }
 
-  // ── Caractéristiques ──
-  checkPage(50);
-  sectionTitle('Caractéristiques du bien');
-  var col1 = mg+2, col2 = mg+contentW/2+2, rowH = 10;
-  var carac = [
-    ['Type de bien', m.type||'—'], ['Surface', (m.surface||'—')+' m²'],
-    ['Nombre de pièces', m.pieces||'—'], ['DPE', m.dpe||'—'],
+  // ── CARACTÉRISTIQUES ──
+  title('Caractéristiques du bien');
+  grid2([
+    ['Type', m.type||'—'], ['Surface', (m.surface||'—')+' m²'],
+    ['Pièces', m.pieces||'—'], ['DPE', m.dpe||'—'],
     ['Zone encadrement', m.zone||'Non concerné'], ['Lien annonce', m.lienAnnonce||'—'],
-  ];
-  doc.setFillColor(SEC[0],SEC[1],SEC[2]);
-  doc.roundedRect(mg, y, contentW, Math.ceil(carac.length/2)*rowH+4, 2,2,'F');
-  carac.forEach(function(r, i) {
-    var xi = i%2===0 ? col1 : col2;
-    var yi = y + 7 + Math.floor(i/2)*rowH;
-    row(r[0], r[1], xi, yi);
-  });
-  y += Math.ceil(carac.length/2)*rowH + 8;
+  ]);
 
-  // ── Financier ──
-  checkPage(40);
-  sectionTitle('Informations financières');
-  var loyer = parseFloat(m.loyer||0);
-  var complement = parseFloat(m.complement||0);
-  var charges = parseFloat(m.charges||0);
-  var depot = parseFloat(m.depot||0);
-  var fin = [
-    ['Loyer HC', (m.loyer||'—')+' €/mois'], ['Complément', complement ? complement+' €/mois' : '—'],
-    ['Charges', (m.charges||'—')+' €/mois'], ['Total CC', (loyer+complement+charges)+' €/mois'],
-    ['Dépôt de garantie', depot ? depot+' €' : '—'], [''],
-  ];
-  doc.setFillColor(SEC[0],SEC[1],SEC[2]);
-  doc.roundedRect(mg, y, contentW, Math.ceil(fin.length/2)*rowH+4, 2,2,'F');
-  fin.forEach(function(r, i) {
-    if (!r[0]) return;
-    var xi = i%2===0 ? col1 : col2;
-    var yi = y + 7 + Math.floor(i/2)*rowH;
-    row(r[0], r[1], xi, yi);
-  });
-  y += Math.ceil(fin.length/2)*rowH + 8;
+  // ── FINANCIER ──
+  title('Informations financières');
+  var loyer=parseFloat(m.loyer||0), comp=parseFloat(m.complement||0), chg=parseFloat(m.charges||0);
+  grid2([
+    ['Loyer HC', (m.loyer||'—')+' €/mois'], ['Complément', comp?comp+' €/mois':'—'],
+    ['Charges', (m.charges||'—')+' €/mois'], ['Total CC', (loyer+comp+chg)+' €/mois'],
+    ['Dépôt de garantie', m.depot?m.depot+' €':'—'], [''],
+  ]);
 
-  // ── Bailleur ──
-  checkPage(40);
-  sectionTitle('Propriétaire bailleur');
-  var bail = [
+  // ── BAILLEUR ──
+  title('Propriétaire bailleur');
+  grid2([
     ['Nom / Société', m.bailleur||'—'], ['Email', m.bailleurEmail||'—'],
     ['Téléphone', m.bailleurTel||'—'], ['Adresse', m.bailleurAdresse||'—'],
-    ['CP', m.bailleurCp||'—'], ['Ville', m.bailleurVille||'—'],
-  ];
-  doc.setFillColor(SEC[0],SEC[1],SEC[2]);
-  doc.roundedRect(mg, y, contentW, Math.ceil(bail.length/2)*rowH+4, 2,2,'F');
-  bail.forEach(function(r, i) {
-    var xi = i%2===0 ? col1 : col2;
-    var yi = y + 7 + Math.floor(i/2)*rowH;
-    row(r[0], r[1], xi, yi);
-  });
-  y += Math.ceil(bail.length/2)*rowH + 8;
+    ['Code postal', m.bailleurCp||'—'], ['Ville', m.bailleurVille||'—'],
+  ]);
 
-  // ── Bail & dates ──
-  checkPage(35);
-  sectionTitle('Bail & occupation');
-  var dates = [
-    ["Date d'entrée", m.dateEntree||"—"], ["Fin de bail", m.dateFin||"—"],
-    ['Locataire rattaché', ''],[''],
-  ];
+  // ── BAIL & LOCATAIRES ──
+  title('Bail & occupation');
+  grid2([
+    ["Date d'entrée", m.dateEntree||'—'], ['Fin de bail', m.dateFin||'—'],
+    ['Durée', m.type==='meuble'?'1 an (meublé)':'3 ans (vide)'], [''],
+  ]);
   var locs = loadLocataires ? loadLocataires() : [];
-  var locatairesFiche = locs.filter(function(l){ return String(l.mandatId)===String(mandatId); });
-  locatairesFiche.forEach(function(l) {
-    checkPage(8);
-    var lName = ((l.prenom||'')+' '+(l.nom||'')).trim();
-    var lLine1 = '• '+lName+(l.email?' — '+l.email:'')+(l.tel?' — '+l.tel:'');
-    var lInfos = [];
-    if (l.loyer) lInfos.push('Loyer: '+(parseFloat(l.loyer||0)+parseFloat(l.complement||0)+parseFloat(l.charges||0))+' €/mois');
-    if (l.depot) lInfos.push('Dépôt: '+l.depot+' €');
-    if (l.dateEntree) lInfos.push('Entrée: '+l.dateEntree);
-    if (l.dateFin) lInfos.push('Fin bail: '+l.dateFin);
-    if (l.garant && l.garant!=='non') lInfos.push('Garant: '+((l.garantPrenom||'')+' '+(l.garantNom||'')).trim());
-    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
-    checkPage(10);
-    doc.text(lLine1, mg+3, y); y+=4.5;
-    if (lInfos.length) { checkPage(6); doc.setFontSize(7.5); doc.setTextColor(100,100,100); var lInfosText=doc.splitTextToSize(lInfos.join(' · '),contentW-8); lInfosText.forEach(function(lt){doc.text(lt,mg+5,y);y+=4;}); }
-    doc.setTextColor(40,40,40); y+=2;
-  });
-  if (!locatairesFiche.length) {
+  var locsFiche = locs.filter(function(l){ return String(l.mandatId)===String(mandatId); });
+  if (locsFiche.length) {
+    locsFiche.forEach(function(l) {
+      np(14);
+      var nom=((l.prenom||'')+' '+(l.nom||'')).trim();
+      var tot=parseFloat(l.loyer||0)+parseFloat(l.complement||0)+parseFloat(l.charges||0);
+      doc.setFontSize(8.5); doc.setFont('helvetica','bold'); doc.setTextColor(30,30,30);
+      doc.text('• '+nom, mg+2, y); y+=5;
+      var infos=[];
+      if (l.email) infos.push(l.email);
+      if (l.tel) infos.push(l.tel);
+      if (tot) infos.push(tot+' €/mois');
+      if (l.depot) infos.push('Dépôt: '+l.depot+' €');
+      if (l.dateEntree) infos.push('Entrée: '+l.dateEntree);
+      if (l.dateFin) infos.push('Fin: '+l.dateFin);
+      if (l.garant&&l.garant!=='non') infos.push('Garant: '+((l.garantPrenom||'')+' '+(l.garantNom||'')).trim());
+      if (infos.length) {
+        var txt=doc.splitTextToSize(infos.join(' · '), cW-6);
+        doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,100);
+        txt.forEach(function(t){ np(5); doc.text(t,mg+4,y); y+=4.5; });
+      }
+      y+=2;
+    });
+  } else {
     doc.setFontSize(8); doc.setFont('helvetica','italic'); doc.setTextColor(150,150,150);
-    doc.text('Aucun locataire rattaché', mg+3, y); y+=5;
+    doc.text('Aucun locataire rattaché', mg+2, y); y+=7;
   }
-  y += 4;
+  y+=3;
 
-  // ── Candidats ──
+  // ── CANDIDATS ──
   var candidats = m.candidats || [];
   if (candidats.length) {
-    checkPage(20);
-    sectionTitle('Candidats analysés');
+    title('Candidats analysés');
     candidats.forEach(function(ca) {
-      checkPage(7);
-      var ok = ca.verdict === 'GO';
+      np(7);
+      var ok=ca.verdict==='GO';
       doc.setFontSize(8); doc.setFont('helvetica','normal');
       doc.setTextColor(ok?22:153, ok?101:27, ok?52:27);
-      doc.text((ok?'✓ ':' ✗ ')+ca.nom+' — Score '+ca.score+'/100 — '+ca.verdict+' ('+ca.date+')', mg+3, y); y+=5;
+      doc.text((ok?'✓ ':' ✗ ')+ca.nom+' — Score '+ca.score+'/100 — '+ca.verdict+' ('+ca.date+')', mg+3, y); y+=5.5;
     });
-    y += 3;
+    y+=2;
   }
 
   // ── EDL ──
-  var edlList = [];
-  try { edlList = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return String(e.mandatId)===String(mandatId); }); } catch(e){}
-  if (edlList.length) {
-    checkPage(20);
-    sectionTitle('États des lieux');
-    edlList.forEach(function(e) {
-      checkPage(7);
+  var edls=[];
+  try { edls=JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return String(e.mandatId)===String(mandatId)&&e.date; }); } catch(e3){}
+  if (edls.length) {
+    title('États des lieux');
+    edls.forEach(function(e) {
+      np(7); var tl=e.type==='entree'?'Entrée':'Sortie';
       doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
-      var typeL = e.type==='entree'?'Entrée':'Sortie';
-      doc.text('• EDL '+typeL+' — '+(e.date||'')+(e.locataire?' — '+e.locataire:''), mg+3, y); y+=5;
+      doc.text('• EDL '+tl+' — '+(e.date||'')+(e.locataire?' — '+e.locataire:'')+(e.sig1||e.sig2?' — Signé':''), mg+3, y); y+=5;
     });
-    y += 3;
+    y+=2;
   }
 
-  // ── Travaux ──
-  var tickets = [];
-  try { tickets = JSON.parse(localStorage.getItem('bailscan_tickets')||'[]').filter(function(t){ return String(t.mandatId)===String(mandatId); }); } catch(e){}
-  if (tickets.length) {
-    checkPage(20);
-    sectionTitle('Travaux & interventions');
-    tickets.forEach(function(t) {
-      checkPage(7);
+  // ── TRAVAUX ──
+  var tks=[];
+  try { tks=JSON.parse(localStorage.getItem('bailscan_tickets')||'[]').filter(function(t){ return String(t.mandatId)===String(mandatId); }); } catch(e4){}
+  if (tks.length) {
+    title('Travaux & interventions');
+    tks.forEach(function(t) {
+      np(7);
       doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
       doc.text('• '+(t.titre||t.type||'Intervention')+' — '+(t.statut||'')+(t.date?' — '+t.date:''), mg+3, y); y+=5;
     });
-    y += 3;
+    y+=2;
   }
 
-  // ── Notes ──
+  // ── NOTES ──
   if (m.notes) {
-    checkPage(20);
-    sectionTitle('Notes');
-    var noteLines = doc.splitTextToSize(m.notes, contentW-4);
+    title('Notes');
+    var nL=doc.splitTextToSize(m.notes, cW-4);
     doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
-    noteLines.forEach(function(l) { checkPage(5); doc.text(l, mg+3, y); y+=4.5; });
-    y += 4;
+    nL.forEach(function(l){ np(5); doc.text(l,mg+3,y); y+=4.5; }); y+=3;
   }
 
-  // ── Révocation ──
-  if (m.statut === 'revoque' && m.dateRevocation) {
-    checkPage(15);
-    sectionTitle('Révocation du mandat');
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(154,52,18);
-    doc.text('Date de révocation : ' + new Date(m.dateRevocation).toLocaleDateString('fr-FR'), mg+3, y); y+=6;
+  // ── RÉVOCATION ──
+  if (m.statut==='revoque'&&m.dateRevocation) {
+    title('Révocation du mandat');
+    doc.setFontSize(8.5); doc.setFont('helvetica','normal'); doc.setTextColor(154,52,18);
+    doc.text('Date : '+new Date(m.dateRevocation).toLocaleDateString('fr-FR'), mg+3, y); y+=7;
   }
 
-  // ── Pied de page ──
-  var totalPages = doc.internal.getNumberOfPages();
-  for (var p=1; p<=totalPages; p++) {
-    doc.setPage(p);
-    doc.setFillColor(245,245,245); doc.rect(0, pH-8, pW, 8, 'F');
+  // ── PIED DE PAGE ──
+  var np2=doc.internal.getNumberOfPages();
+  for (var pg=1;pg<=np2;pg++) {
+    doc.setPage(pg);
+    doc.setFillColor(245,245,245); doc.rect(0,pH-8,pW,8,'F');
     doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
-    doc.text(agence+' · BailScan Pro · Exporté le '+new Date().toLocaleDateString('fr-FR'), mg, pH-3);
-    doc.text('Page '+p+'/'+totalPages, pW-mg, pH-3, {align:'right'});
+    doc.text(agence+' · BailScan Pro · '+new Date().toLocaleDateString('fr-FR'), mg, pH-3);
+    doc.text('Page '+pg+'/'+np2, pW-mg, pH-3, {align:'right'});
   }
 
   doc.save('fiche-mandat-'+(m.adresse||'bien').replace(/[^a-zA-Z0-9]/g,'-').substring(0,30)+'.pdf');
@@ -8871,18 +8858,19 @@ function buildCandidatsHtml(mandatId) {
   var html = '<div style="margin-bottom:10px">'
     + '<div style="font-size:.72rem;color:var(--gris);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em">Candidats analysés (' + candidats.length + ')</div>';
   candidats.slice().reverse().forEach(function(ca) {
-    var isGo = ca.verdict === 'GO';
-    var isMitige = ca.verdict === 'MITIGE';
+    var cverd = (ca.verdict||'').replace('_',' ');
+    var isGo = cverd === 'GO';
+    var isMitige = cverd === 'MITIGE';
     var borderColor = isGo ? '#86efac' : isMitige ? '#fcd34d' : '#fca5a5';
     var bgColor = isGo ? '#f0fdf4' : isMitige ? '#fffbeb' : '#fef2f2';
     var verdictIcon = isGo ? 'GO' : isMitige ? 'Mitigé' : '❌ NO GO';
     var verdictColor = isGo ? '#166534' : isMitige ? '#92400e' : '#991b1b';
     var caId = ca.id ? String(ca.id) : '';
-    html += '<div style="border:1px solid '+borderColor+';background:'+bgColor+';border-radius:10px;padding:10px 12px;margin-bottom:8px">'
+    html += '<div style="border:1px solid '+borderColor+';background:'+bgColor+';border-radius:10px;padding:10px 12px;margin-bottom:8px;text-align:left">'
       // Ligne principale cliquable → voir l'analyse
       + '<div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="voirAnalyseCandidatDepuisMandat(\''+caId+'\',\''+((ca.nom||'').replace(/'/g,"\\'"))+'\')">  '
         + '<div>'
-          + '<div style="font-weight:700;font-size:.84rem;color:#111">' + (ca.nom || '—') + '</div>'
+          + '<div style="font-weight:700;font-size:.84rem;color:#111">' + ((ca.prenom ? ca.prenom+' ' : '') + (ca.nom||'—')).trim() + '</div>'
           + '<div style="font-size:.72rem;color:var(--gris);margin-top:2px">'
             + (ca.date || '') + ' · Score : <strong>' + (ca.score || '—') + '/100</strong>'
             + ' <span style="color:'+verdictColor+';font-size:.65rem;margin-left:4px">— cliquer pour voir le détail →</span>'
@@ -9885,6 +9873,121 @@ function saveEDL() {
   closeModalEDL(true);
   refreshEDLListe();
   showToast('État des lieux enregistré.', 'green');
+  // Proposer l'envoi par email
+  setTimeout(function(){ showEDLEmailPopup(entry.id, entry); }, 500);
+}
+
+
+function showEDLEmailPopup(edlId, entry) {
+  var popup = document.getElementById('edlEmailPopup');
+  if (!popup) return;
+  // Pré-remplir l'email du locataire si disponible
+  var edl = entry || (loadEDL ? loadEDL().find(function(x){ return String(x.id)===String(edlId); }) : null);
+  if (edl) {
+    var locs = loadLocataires ? loadLocataires() : [];
+    var loc = edl.locId ? locs.find(function(l){ return String(l.id)===String(edl.locId); }) : null;
+    if (loc && loc.email) {
+      document.getElementById('edlEmailDest').value = loc.email;
+    }
+    var typeLabel = edl.type === 'entree' ? "d'entrée" : edl.type === 'sortie' ? "de sortie" : "";
+    var info = document.getElementById('edlEmailInfo');
+    if (info) info.textContent = "EDL " + typeLabel + " — " + (edl.adresse || '') + " — " + (edl.date || '');
+    var msg = document.getElementById('edlEmailMsg');
+    if (msg) msg.value = 'Bonjour,\n\nVeuillez trouver ci-joint votre état des lieux ' + typeLabel + ' pour le logement situé au ' + (edl.adresse || '') + '.\n\nCordialement,\n' + ((proState.agencyInfo||{}).nom || 'Votre agence');
+  }
+  document.getElementById('edlEmailId').value = edlId;
+  popup.style.display = 'flex';
+}
+
+function closeEDLEmailPopup() {
+  var popup = document.getElementById('edlEmailPopup');
+  if (popup) popup.style.display = 'none';
+  var btn = document.getElementById('edlEmailSendBtn');
+  if (btn) { btn.textContent = 'Envoyer →'; btn.disabled = false; }
+}
+
+function sendEDLByEmail() {
+  var email = (document.getElementById('edlEmailDest')||{value:''}).value.trim();
+  var msg = (document.getElementById('edlEmailMsg')||{value:''}).value.trim();
+  var edlId = (document.getElementById('edlEmailId')||{value:''}).value;
+  if (!email) { showToast('Renseignez un email destinataire.', 'orange'); return; }
+  if (!edlId) { showToast('EDL introuvable.', 'orange'); return; }
+
+  var btn = document.getElementById('edlEmailSendBtn');
+  if (btn) { btn.textContent = 'Envoi…'; btn.disabled = true; }
+
+  var edl = loadEDL ? loadEDL().find(function(x){ return String(x.id)===String(edlId); }) : null;
+  if (!edl) { showToast('EDL introuvable.', 'orange'); closeEDLEmailPopup(); return; }
+
+  // Générer le PDF en base64 et l'envoyer via /api/send-mail
+  try {
+    var jsPDF = window.jspdf ? window.jspdf.jsPDF : jspdf.jsPDF;
+    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    var ai = proState.agencyInfo || {};
+    var agence = ai.nom || 'BailScan Pro';
+    var typeLabel = edl.type === 'entree' ? "État des lieux d'entrée" : edl.type === 'sortie' ? "État des lieux de sortie" : "État des lieux";
+    var PR = [15,23,62];
+    doc.setFillColor(PR[0],PR[1],PR[2]); doc.rect(0,0,210,14,'F');
+    doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+    doc.text(agence, 14, 9);
+    doc.setFont('helvetica','normal'); doc.setTextColor(200,210,255);
+    doc.text(typeLabel + ' · ' + (edl.date||''), 210-14, 9, {align:'right'});
+    var y = 22;
+    doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+    doc.text(typeLabel, 14, y); y+=7;
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60);
+    doc.text((edl.adresse||'') + (edl.surface?' — '+edl.surface+' m²':''), 14, y); y+=5;
+    doc.text('Date : '+(edl.date||'—')+(edl.heure?' à '+edl.heure:''), 14, y); y+=10;
+    // Pièces
+    if (edl.pieces && edl.pieces.length) {
+      doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+      doc.text('Pièces ('+edl.pieces.length+')', 14, y); y+=6;
+      edl.pieces.forEach(function(p) {
+        if (y > 270) { doc.addPage(); y = 20; }
+        doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(40,40,40);
+        doc.text('• ' + (p.nom||''), 16, y); y+=4.5;
+        if (p.observations) {
+          var lines = doc.splitTextToSize(p.observations, 170);
+          doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(100,100,100);
+          lines.forEach(function(l) { if(y>275){doc.addPage();y=20;} doc.text(l,18,y);y+=4; });
+        }
+      });
+      y += 4;
+    }
+    // Signatures
+    if (edl.sig1 || edl.sig2) {
+      if (y > 240) { doc.addPage(); y = 20; }
+      doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+      doc.text('Signatures', 14, y); y+=6;
+      if (edl.sig1) { try { doc.addImage(edl.sig1,'PNG',14,y,55,22); } catch(e){} }
+      if (edl.sig2) { try { doc.addImage(edl.sig2,'PNG',76,y,55,22); } catch(e){} }
+      y += 30;
+    }
+    var pdfBase64 = doc.output('datauristring').split(',')[1];
+
+    // Envoyer via /api/send-mail
+    fetch('/api/send-mail', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: email,
+        subject: typeLabel + ' — ' + (edl.adresse||'') + ' — ' + (edl.date||''),
+        text: msg,
+        html: '<p style="font-family:sans-serif">' + msg.replace(/\n/g,'<br>') + '</p><p style="color:#888;font-size:12px">Document généré par BailScan Pro</p>',
+        attachments: [{ filename: 'etat-des-lieux-'+(edl.type||'')+'_'+(edl.date||'').replace(/\//g,'-')+'.pdf', content: pdfBase64, encoding: 'base64', contentType: 'application/pdf' }]
+      })
+    }).then(function(r){ return r.json(); }).then(function(data) {
+      if (data.error) throw new Error(data.error);
+      showToast('EDL envoyé à ' + email, 'green');
+      closeEDLEmailPopup();
+    }).catch(function(err) {
+      showToast('Erreur envoi : ' + err.message, 'orange');
+      if (btn) { btn.textContent = 'Envoyer →'; btn.disabled = false; }
+    });
+  } catch(e) {
+    showToast('Erreur génération PDF : ' + e.message, 'orange');
+    if (btn) { btn.textContent = 'Envoyer →'; btn.disabled = false; }
+  }
 }
 
 function refreshEDLListe() {
@@ -11243,8 +11346,9 @@ buildCandidatsHtml = function(mandatId) {
     + '<div style="font-size:.72rem;color:var(--gris);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em">Candidats analysés (' + candidats.length + ')</div>';
 
   candidats.slice().reverse().forEach(function(ca) {
-    var isGo = ca.verdict === 'GO';
-    var isMitige = ca.verdict === 'MITIGE';
+    var cverd2 = (ca.verdict||'').replace('_',' ');
+    var isGo = cverd2 === 'GO';
+    var isMitige = cverd2 === 'MITIGE';
     var estLocataire = ca.estLocataireActuel === true;
     var borderColor = estLocataire ? '#86efac' : isGo ? '#86efac' : isMitige ? '#fcd34d' : '#fca5a5';
     var bgColor = estLocataire ? '#f0fdf4' : isGo ? '#f0fdf4' : isMitige ? '#fffbeb' : '#fef2f2';
@@ -11255,7 +11359,7 @@ buildCandidatsHtml = function(mandatId) {
     html += '<div style="border:1px solid '+borderColor+';background:'+bgColor+';border-radius:10px;padding:10px 12px;margin-bottom:8px'+(estLocataire?';box-shadow:0 0 0 2px #86efac':'')+'">​'
       + '<div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="voirAnalyseCandidatDepuisMandat(\''+caId+'\',\''+((ca.nom||'').replace(/'/g,"\\'"))+'\')">​'
         + '<div>'
-          + '<div style="font-weight:700;font-size:.84rem;color:#111">'+(ca.nom||'—')+'</div>'
+          + '<div style="font-weight:700;font-size:.84rem;color:#111">'+((ca.prenom?ca.prenom+' ':'')+( ca.nom||'—')).trim()+'</div>'
           + '<div style="font-size:.72rem;color:var(--gris);margin-top:2px">'
             + (ca.date||'')+' · Score : <strong>'+(ca.score||'—')+'/100</strong>'
             + (estLocataire ? '' : ' <span style="color:'+verdictColor+';font-size:.65em;margin-left:4px">— voir le détail →</span>')
@@ -12853,7 +12957,7 @@ function refreshLocataires() {
       + '</div>'
       + (l.adresse?'<div style="font-size:.8rem;font-weight:500;margin-bottom:4px">'+l.adresse+'</div>':'')
       + (l.loyer?'<div style="font-size:.78rem;color:var(--gris)">Loyer: '+(parseFloat(l.loyer||0)+parseFloat(l.complement||0))+' €/mois HC</div>':'')
-      + (l.garant && l.garant!=='non' ? '<div style="font-size:.75rem;color:#7e22ce;margin-top:3px">Garant'+(l.garant==='physique'?' physique'+(l.garantNom?' : '+l.garantNom:''):l.garant==='visale'?' Visale':' organisme')+'</div>' : '')
+      + (l.garant && l.garant!=='non' ? '<div style="font-size:.75rem;color:#7e22ce;margin-top:3px">Garant'+(l.garant==='physique'?' physique'+((l.garantPrenom||l.garantNom)?' : '+(l.garantPrenom||'')+' '+(l.garantNom||''):'').trim().replace(/^ /,''):l.garant==='visale'?' Visale':' organisme')+'</div>' : '')
       + finBail
       + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:6px">'
       + '<div style="display:flex;gap:6px;align-items:center">'+scoreHtml+(scoreHtml&&qBadge?' ':'')+qBadge+'</div>'
@@ -14072,7 +14176,7 @@ function openFicheLocataire(locId, event, tab) {
   var locCourriers = (proState.courrierHisto||[]).filter(function(co){ return String(co.locId)===String(locId); });
   var locBaux = (proState.bailsHisto||[]).filter(function(b){ return String(b.locataireId)===String(locId); });
   var locEDLCount = 0;
-  try { locEDLCount = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return String(e.locId)===String(locId)||(l.mandatId&&String(e.mandatId)===String(l.mandatId)); }).length; } catch(eEdl2) {}
+  try { locEDLCount = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return (String(e.locId)===String(locId)||(l.mandatId&&String(e.mandatId)===String(l.mandatId))) && e.date && (e.sig1||e.sig2||e.type); }).length; } catch(eEdl2) {}
   [
     {id:'infos', label:'Infos'},
     {id:'baux', label:'Baux ('+locBaux.length+')'},
@@ -14182,7 +14286,7 @@ function openFicheLocataire(locId, event, tab) {
 
   if (activeTab === 'edl') {
     var edlList = [];
-    try { edlList = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return String(e.locId)===String(locId) || (l.mandatId && String(e.mandatId)===String(l.mandatId)); }); } catch(eEdl) {}
+    try { edlList = JSON.parse(localStorage.getItem('bailscan_edl')||'[]').filter(function(e){ return (String(e.locId)===String(locId) || (l.mandatId && String(e.mandatId)===String(l.mandatId))) && e.date && (e.sig1||e.sig2||e.type); }); } catch(eEdl) {}
     var div = document.createElement('div');
     if (!edlList.length) {
       div.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gris)"><div style="font-size:2rem;margin-bottom:8px"><svg width="28" height="28" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".25"><path d="M8 1L2 5v9h4v-4h4v4h4V5L8 1z"/></svg></div><div>Aucun état des lieux enregistré pour ce locataire</div></div>';
@@ -14194,9 +14298,12 @@ function openFicheLocataire(locId, event, tab) {
           + '<div>'
           + '<div style="font-weight:600;font-size:.88rem;color:var(--texte)">' + typeLabel + ' — ' + (e.adresse||'Adresse non renseignée') + '</div>'
           + '<div style="font-size:.76rem;color:var(--gris);margin-top:3px">' + (e.date||'—') + (e.heure?' à '+e.heure:'') + (e.pieces&&e.pieces.length?' · '+e.pieces.length+' pièce(s)':'') + '</div>'
+          + '<div style="font-size:.72rem;margin-top:4px"><span style="padding:2px 8px;border-radius:10px;font-weight:600;background:'+(e.sig1||e.sig2?'#f0fdf4':'#fff7ed')+';color:'+(e.sig1||e.sig2?'#166534':'#92400e')+'">'+(e.sig1||e.sig2?'Signé':'Non signé')+'</span></div>'
           + '</div>'
           + '<div style="display:flex;gap:6px">'
           + '<button class="btn-sm" onclick="showDashTab(this.dataset.tab)" data-tab="etat-lieux" style="font-size:.72rem">Voir</button>'
+          + '<button class="btn-sm" onclick="exportEDLPDF(\''+e.id+'\')" style="font-size:.72rem">PDF</button>'
+          + '<button class="btn-sm" onclick="showEDLEmailPopup(\''+e.id+'\')" style="font-size:.72rem;color:var(--pro-accent);border-color:var(--pro-accent)">✉ Envoyer</button>'
           + '</div>'
           + '</div>';
       }).join('');
@@ -14438,7 +14545,7 @@ function toggleAnalyseTraitee(id) {
 function validerDossier(goDecision) {
   var result = proState.currentDossierResult;
   if (!result) return;
-  var decision = goDecision ? 'GO' : 'NO_GO';
+  var decision = goDecision ? 'GO' : 'NO GO';
   var locId = document.getElementById('dossierLocSel').value;
   var mandatId = (document.getElementById('dossierMandatSel')||{}).value || null;
 
@@ -16345,6 +16452,709 @@ function edlVoirPhoto(id) {
 
   </div>
 </div>
+<!-- POPUP EMAIL EDL -->
+<div id="edlEmailPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:none;align-items:center;justify-content:center">
+  <div style="background:white;border-radius:16px;padding:28px;max-width:440px;width:92%;box-shadow:0 24px 60px rgba(0,0,0,.25)">
+    <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;color:var(--texte)">Envoyer l'état des lieux par email</div>
+    <div style="font-size:.82rem;color:var(--gris);margin-bottom:18px" id="edlEmailInfo">Le PDF de l'EDL sera envoyé au destinataire.</div>
+    <div class="form-group-pro" style="margin-bottom:14px">
+      <label class="form-label">Email destinataire</label>
+      <input type="email" class="form-input-pro" id="edlEmailDest" placeholder="locataire@email.fr">
+    </div>
+    <div class="form-group-pro" style="margin-bottom:18px">
+      <label class="form-label">Message (optionnel)</label>
+      <textarea class="form-input-pro" id="edlEmailMsg" rows="3" style="resize:none" placeholder="Veuillez trouver ci-joint votre état des lieux…"></textarea>
+    </div>
+    <input type="hidden" id="edlEmailId">
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-sm" onclick="closeEDLEmailPopup()">Annuler</button>
+  
+      <button id="edlEmailSendBtn" class="btn-primary-pro" style="padding:9px 22px;font-size:.85rem" onclick="sendEDLByEmail()">Envoyer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+  MODAL — MANDAT DE GESTION AGENCE
+═══════════════════════════════════════════════════════════════════════ -->
+<div id="modalMandatGestion" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:10000;align-items:center;justify-content:center;padding:16px">
+  <div style="background:white;border-radius:20px;width:100%;max-width:640px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.3);overflow:hidden">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#1e3a6e 0%,#2b52a3 100%);padding:20px 24px;display:flex;align-items:center;gap:14px;flex-shrink:0">
+      <div style="width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">📋</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:1.05rem;color:white;letter-spacing:-.02em">Mandat de gestion</div>
+        <div style="font-size:.77rem;color:rgba(255,255,255,.6);margin-top:2px" id="mgSubtitle">Étape 1 / 2 — Termes du mandat</div>
+      </div>
+      <!-- Steps indicator -->
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        <div id="mgDot1" style="width:28px;height:6px;border-radius:3px;background:white;transition:all .2s"></div>
+        <div id="mgDot2" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.35);transition:all .2s"></div>
+      </div>
+      <button onclick="closeMandatGestion()" style="background:rgba(255,255,255,.15);border:none;color:white;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">×</button>
+    </div>
+
+    <!-- Body scrollable -->
+    <div style="overflow-y:auto;flex:1;padding:24px">
+
+      <!-- ── ÉTAPE 1 : Formulaire termes ── -->
+      <div id="mgStep1">
+
+        <!-- Infos bien & bailleur (lecture seule) -->
+        <div id="mgInfosBien" style="background:#f8faff;border:1px solid #dbeafe;border-radius:12px;padding:14px;margin-bottom:20px">
+          <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;font-weight:700;margin-bottom:8px">Bien & propriétaire</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><div style="font-size:.7rem;color:#9ca3af;margin-bottom:2px">Adresse</div><div style="font-weight:600;font-size:.85rem;color:#111" id="mgBienAdresse">—</div></div>
+            <div><div style="font-size:.7rem;color:#9ca3af;margin-bottom:2px">Bailleur</div><div style="font-weight:600;font-size:.85rem;color:#111" id="mgBienBailleur">—</div></div>
+            <div><div style="font-size:.7rem;color:#9ca3af;margin-bottom:2px">Type</div><div style="font-size:.82rem;color:#374151" id="mgBienType">—</div></div>
+            <div><div style="font-size:.7rem;color:#9ca3af;margin-bottom:2px">Loyer HC</div><div style="font-size:.82rem;color:var(--pro-accent);font-weight:600" id="mgBienLoyer">—</div></div>
+          </div>
+        </div>
+
+        <!-- Termes mandat -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="form-group-pro">
+            <label class="form-label">Type de mandat *</label>
+            <select class="form-input-pro" id="mgType">
+              <option value="exclusif">Exclusif</option>
+              <option value="simple">Simple (non exclusif)</option>
+            </select>
+          </div>
+          <div class="form-group-pro">
+            <label class="form-label">Durée du mandat *</label>
+            <select class="form-input-pro" id="mgDuree">
+              <option value="1 an">1 an renouvelable</option>
+              <option value="2 ans">2 ans renouvelable</option>
+              <option value="3 ans">3 ans renouvelable</option>
+            </select>
+          </div>
+          <div class="form-group-pro">
+            <label class="form-label">Date de prise d'effet *</label>
+            <input type="date" class="form-input-pro" id="mgDateDebut">
+          </div>
+          <div class="form-group-pro">
+            <label class="form-label">Honoraires de gestion (%/loyer CC)</label>
+            <input type="number" class="form-input-pro" id="mgHonoGestion" value="7" min="1" max="20" step="0.5" placeholder="7">
+          </div>
+          <div class="form-group-pro">
+            <label class="form-label">Honoraires relocation (mois)</label>
+            <input type="number" class="form-input-pro" id="mgHonoReloc" value="1" min="0.5" max="3" step="0.5" placeholder="1">
+          </div>
+          <div class="form-group-pro">
+            <label class="form-label">Honoraires états des lieux (€ HT)</label>
+            <input type="number" class="form-input-pro" id="mgHonoEDL" value="150" min="0" step="10" placeholder="150">
+          </div>
+        </div>
+
+        <!-- Missions incluses -->
+        <div style="margin-bottom:16px">
+          <label class="form-label">Missions confiées à l'agence</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+            <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem">
+              <input type="checkbox" id="mgMission1" checked style="accent-color:var(--pro-accent)"> Encaissement des loyers
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem">
+              <input type="checkbox" id="mgMission2" checked style="accent-color:var(--pro-accent)"> Gestion des congés & renouvellements
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem">
+              <input type="checkbox" id="mgMission3" checked style="accent-color:var(--pro-accent)"> États des lieux entrée & sortie
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem">
+              <input type="checkbox" id="mgMission4" checked style="accent-color:var(--pro-accent)"> Suivi travaux & sinistres
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem">
+              <input type="checkbox" id="mgMission5" style="accent-color:var(--pro-accent)"> Assurance loyers impayés (GLI)
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem">
+              <input type="checkbox" id="mgMission6" style="accent-color:var(--pro-accent)"> Visite et sélection locataire
+            </label>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="form-group-pro">
+          <label class="form-label">Clauses particulières / notes (optionnel)</label>
+          <textarea class="form-input-pro" id="mgNotes" rows="3" style="resize:vertical" placeholder="Ex : Le mandant s'engage à informer le mandataire de tout changement…"></textarea>
+        </div>
+
+      </div>
+
+      <!-- ── ÉTAPE 2 : Choix signature ── -->
+      <div id="mgStep2" style="display:none">
+
+        <!-- Choix -->
+        <div id="mgSignChoix" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+          <button onclick="mgShowDirect()" style="background:white;border:2px solid var(--border);border-radius:16px;padding:24px 16px;cursor:pointer;text-align:center;transition:all .2s" id="mgCardDirect"
+            onmouseover="this.style.borderColor='var(--pro-accent)';this.style.background='#f0f4ff'" onmouseout="if(!this.classList.contains('mg-selected')){this.style.borderColor='var(--border)';this.style.background='white'}">
+            <div style="font-size:2rem;margin-bottom:10px">✍️</div>
+            <div style="font-weight:700;font-size:.92rem;color:var(--texte);margin-bottom:4px">Signer maintenant</div>
+            <div style="font-size:.78rem;color:var(--gris);line-height:1.4">Les deux parties signent directement sur tablette ou écran</div>
+          </button>
+          <button onclick="mgShowEmail()" style="background:white;border:2px solid var(--border);border-radius:16px;padding:24px 16px;cursor:pointer;text-align:center;transition:all .2s" id="mgCardEmail"
+            onmouseover="this.style.borderColor='var(--pro-accent)';this.style.background='#f0f4ff'" onmouseout="if(!this.classList.contains('mg-selected')){this.style.borderColor='var(--border)';this.style.background='white'}">
+            <div style="font-size:2rem;margin-bottom:10px">📧</div>
+            <div style="font-weight:700;font-size:.92rem;color:var(--texte);margin-bottom:4px">Envoyer par mail</div>
+            <div style="font-size:.78rem;color:var(--gris);line-height:1.4">Envoyez le PDF au bailleur pour signature à distance</div>
+          </button>
+        </div>
+
+        <!-- Sous-section : Signature directe -->
+        <div id="mgSignDirect" style="display:none">
+          <div style="background:#f0f4ff;border:1px solid #c7d6ff;border-radius:12px;padding:14px;margin-bottom:18px;font-size:.83rem;color:#3451b2">
+            ✋ Faites signer chaque partie sur l'écran — le mandat PDF sera généré et enregistré automatiquement.
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <div style="font-size:.72rem;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Bailleur / Propriétaire</div>
+              <div class="form-group-pro" style="margin-bottom:10px">
+                <label class="form-label">Nom complet</label>
+                <input type="text" class="form-input-pro" id="mgSig1Nom" placeholder="Marie Dupont">
+              </div>
+              <div style="border:2px dashed #c7d6ff;border-radius:10px;background:#fafbff;text-align:center;padding:18px 10px;font-size:.8rem;color:var(--gris);cursor:pointer" onclick="initSignatureCanvas('mgCanvas1')">
+                <div id="mgCanvas1Placeholder">Cliquer pour signer</div>
+                <canvas id="mgCanvas1" width="260" height="90" style="display:none;touch-action:none;cursor:crosshair;max-width:100%"></canvas>
+                <div id="mgCanvas1Clear" style="display:none;margin-top:6px"><button class="btn-sm" onclick="event.stopPropagation();clearCanvas('mgCanvas1')" style="font-size:.7rem">Effacer</button></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:.72rem;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Agent mandataire</div>
+              <div class="form-group-pro" style="margin-bottom:10px">
+                <label class="form-label">Nom complet</label>
+                <input type="text" class="form-input-pro" id="mgSig2Nom" placeholder="Jean Martin">
+              </div>
+              <div style="border:2px dashed #c7d6ff;border-radius:10px;background:#fafbff;text-align:center;padding:18px 10px;font-size:.8rem;color:var(--gris);cursor:pointer" onclick="initSignatureCanvas('mgCanvas2')">
+                <div id="mgCanvas2Placeholder">Cliquer pour signer</div>
+                <canvas id="mgCanvas2" width="260" height="90" style="display:none;touch-action:none;cursor:crosshair;max-width:100%"></canvas>
+                <div id="mgCanvas2Clear" style="display:none;margin-top:6px"><button class="btn-sm" onclick="event.stopPropagation();clearCanvas('mgCanvas2')" style="font-size:.7rem">Effacer</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sous-section : Envoi email -->
+        <div id="mgSignEmail" style="display:none">
+          <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:14px;margin-bottom:18px;font-size:.83rem;color:#166534">
+            📧 Le PDF du mandat sera envoyé au bailleur pour signature. Un exemplaire vous sera transmis à votre adresse agence.
+          </div>
+          <div class="form-group-pro" style="margin-bottom:14px">
+            <label class="form-label">Email du bailleur *</label>
+            <input type="email" class="form-input-pro" id="mgEmailDest" placeholder="bailleur@email.fr">
+          </div>
+          <div class="form-group-pro" style="margin-bottom:6px">
+            <label class="form-label">Objet du mail</label>
+            <input type="text" class="form-input-pro" id="mgEmailObjet" placeholder="Mandat de gestion — 12 rue des Fleurs, Paris">
+          </div>
+          <div class="form-group-pro" style="margin-bottom:0">
+            <label class="form-label">Corps du message</label>
+            <textarea class="form-input-pro" id="mgEmailBody" rows="7" style="resize:vertical;font-size:.83rem;line-height:1.6"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer actions -->
+    <div style="padding:16px 24px;border-top:1px solid var(--border);background:#fafbff;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
+      <button id="mgBtnBack" onclick="mgGoStep(1)" class="btn-sm" style="display:none">← Retour</button>
+      <div style="flex:1"></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn-sm" onclick="closeMandatGestion()">Annuler</button>
+        <button id="mgBtnNext" onclick="mgGoStep(2)" class="btn-primary-pro" style="padding:9px 24px">Suivant →</button>
+        <button id="mgBtnSign" onclick="saveMandatGestionDirect()" class="btn-primary-pro" style="display:none;padding:9px 24px;background:var(--success)">✅ Valider & Télécharger</button>
+        <button id="mgBtnSend" onclick="sendMandatGestionEmail()" class="btn-primary-pro" style="display:none;padding:9px 24px">📧 Envoyer →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// MANDAT DE GESTION — Fonctions JS
+// ═══════════════════════════════════════════════════════════════════════
+
+var _mgMandatId = null;
+var _mgMode = null; // 'direct' | 'email'
+
+function openMandatGestion(mandatId) {
+  _mgMandatId = String(mandatId);
+  _mgMode = null;
+
+  var m = loadMandats().find(function(x){ return String(x.id)===_mgMandatId; });
+  if (!m) return;
+  var ai = proState.agencyInfo || {};
+
+  // Pré-remplir infos bien
+  var adresseAff = m.adresseFull || ((m.adresse||'') + (m.cp?' '+m.cp:'') + (m.ville?' '+m.ville:'')) || '—';
+  var loyerCC = (parseFloat(m.loyer||0)+parseFloat(m.complement||0)+parseFloat(m.charges||0));
+  document.getElementById('mgBienAdresse').textContent = adresseAff;
+  document.getElementById('mgBienBailleur').textContent = m.bailleur || '—';
+  document.getElementById('mgBienType').textContent = (m.type||'—') + (m.surface?' · '+m.surface+' m²':'');
+  document.getElementById('mgBienLoyer').textContent = loyerCC > 0 ? loyerCC + ' €/mois CC' : (parseFloat(m.loyer||0) > 0 ? m.loyer + ' €/mois HC' : '—');
+
+  // Pré-remplir depuis données existantes si déjà créé
+  if (m.mandatGestionType) document.getElementById('mgType').value = m.mandatGestionType;
+  if (m.mandatGestionDuree) document.getElementById('mgDuree').value = m.mandatGestionDuree;
+  if (m.mandatGestionDate) document.getElementById('mgDateDebut').value = m.mandatGestionDate;
+  else document.getElementById('mgDateDebut').value = new Date().toISOString().split('T')[0];
+
+  if (m.mandatGestionHonoGestion) document.getElementById('mgHonoGestion').value = m.mandatGestionHonoGestion;
+  if (m.mandatGestionHonoReloc) document.getElementById('mgHonoReloc').value = m.mandatGestionHonoReloc;
+  if (m.mandatGestionHonoEDL) document.getElementById('mgHonoEDL').value = m.mandatGestionHonoEDL;
+  if (m.mandatGestionNotes) document.getElementById('mgNotes').value = m.mandatGestionNotes;
+
+  // Email corps (pré-rédigé)
+  var bailleurNom = m.bailleur || 'Madame, Monsieur';
+  var agenceNom = ai.nom || 'Notre agence';
+  var agenceAddr = (ai.adresse||'') + (ai.cp?' '+ai.cp:'') + (ai.ville?' '+ai.ville:'');
+  document.getElementById('mgEmailDest').value = m.bailleurEmail || '';
+  document.getElementById('mgEmailObjet').value = 'Mandat de gestion — ' + adresseAff;
+  document.getElementById('mgEmailBody').value =
+    'Madame, Monsieur ' + (m.bailleur||'') + ',
+
+' +
+    'Suite à notre entretien, veuillez trouver ci-joint le mandat de gestion concernant votre bien situé au :
+' +
+    adresseAff + '
+
+' +
+    'Ce document formalise notre mission de gestion locative dans les conditions convenues. ' +
+    'Nous vous invitons à en prendre connaissance attentivement.
+
+' +
+    'Pour toute question, n'hésitez pas à nous contacter directement.
+
+' +
+    'Nous vous souhaitons bonne réception et restons à votre disposition.
+
+' +
+    'Bien cordialement,
+
+' +
+    agenceNom + (agenceAddr ? '
+' + agenceAddr : '') +
+    (ai.tel ? '
+' + ai.tel : '') +
+    (ai.email ? '
+' + ai.email : '');
+
+  // Pré-remplir nom agent
+  document.getElementById('mgSig2Nom').value = (proState.user ? (proState.user.prenom||'')+' '+(proState.user.nom||'') : ai.nom||'').trim();
+  document.getElementById('mgSig1Nom').value = m.bailleur || '';
+
+  // Reset états
+  ['mgCanvas1','mgCanvas2'].forEach(function(id) {
+    var c = document.getElementById(id); if(!c) return;
+    c.style.display = 'none';
+    c.getContext('2d').clearRect(0,0,c.width,c.height);
+    document.getElementById(id+'Placeholder').style.display = '';
+    document.getElementById(id+'Clear').style.display = 'none';
+  });
+  ['mgCardDirect','mgCardEmail'].forEach(function(id){ var el=document.getElementById(id); if(el){el.classList.remove('mg-selected');el.style.borderColor='var(--border)';el.style.background='white';} });
+  document.getElementById('mgSignDirect').style.display = 'none';
+  document.getElementById('mgSignEmail').style.display = 'none';
+
+  mgGoStep(1, true);
+  document.getElementById('modalMandatGestion').style.display = 'flex';
+}
+
+function closeMandatGestion() {
+  document.getElementById('modalMandatGestion').style.display = 'none';
+  _mgMandatId = null;
+}
+
+function mgGoStep(n, force) {
+  if (n === 2 && !force) {
+    // Validation step 1
+    if (!document.getElementById('mgDateDebut').value) {
+      showToast('Renseignez la date de prise d'effet.', 'orange'); return;
+    }
+  }
+  var isStep1 = n === 1;
+  document.getElementById('mgStep1').style.display = isStep1 ? '' : 'none';
+  document.getElementById('mgStep2').style.display = isStep1 ? 'none' : '';
+  document.getElementById('mgBtnBack').style.display = isStep1 ? 'none' : '';
+  document.getElementById('mgBtnNext').style.display = isStep1 ? '' : 'none';
+  document.getElementById('mgBtnSign').style.display = 'none';
+  document.getElementById('mgBtnSend').style.display = 'none';
+  document.getElementById('mgDot1').style.width = isStep1 ? '28px' : '6px';
+  document.getElementById('mgDot1').style.background = 'white';
+  document.getElementById('mgDot2').style.width = isStep1 ? '6px' : '28px';
+  document.getElementById('mgDot2').style.background = isStep1 ? 'rgba(255,255,255,.35)' : 'white';
+  document.getElementById('mgSubtitle').textContent = isStep1
+    ? 'Étape 1 / 2 — Termes du mandat'
+    : 'Étape 2 / 2 — Signature';
+  if (!isStep1) mgSaveFormToMandat(); // persistance intermédiaire
+}
+
+function mgShowDirect() {
+  _mgMode = 'direct';
+  var card = document.getElementById('mgCardDirect'); var card2 = document.getElementById('mgCardEmail');
+  card.classList.add('mg-selected'); card.style.borderColor='var(--pro-accent)'; card.style.background='#f0f4ff';
+  card2.classList.remove('mg-selected'); card2.style.borderColor='var(--border)'; card2.style.background='white';
+  document.getElementById('mgSignDirect').style.display = '';
+  document.getElementById('mgSignEmail').style.display = 'none';
+  document.getElementById('mgBtnSign').style.display = '';
+  document.getElementById('mgBtnSend').style.display = 'none';
+}
+
+function mgShowEmail() {
+  _mgMode = 'email';
+  var card = document.getElementById('mgCardEmail'); var card2 = document.getElementById('mgCardDirect');
+  card.classList.add('mg-selected'); card.style.borderColor='var(--pro-accent)'; card.style.background='#f0f4ff';
+  card2.classList.remove('mg-selected'); card2.style.borderColor='var(--border)'; card2.style.background='white';
+  document.getElementById('mgSignEmail').style.display = '';
+  document.getElementById('mgSignDirect').style.display = 'none';
+  document.getElementById('mgBtnSend').style.display = '';
+  document.getElementById('mgBtnSign').style.display = 'none';
+}
+
+function mgSaveFormToMandat() {
+  if (!_mgMandatId) return;
+  var mans = loadMandats();
+  var m = mans.find(function(x){ return String(x.id)===_mgMandatId; });
+  if (!m) return;
+  m.mandatGestionType     = document.getElementById('mgType').value;
+  m.mandatGestionDuree    = document.getElementById('mgDuree').value;
+  m.mandatGestionDate     = document.getElementById('mgDateDebut').value;
+  m.mandatGestionHonoGestion = document.getElementById('mgHonoGestion').value;
+  m.mandatGestionHonoReloc   = document.getElementById('mgHonoReloc').value;
+  m.mandatGestionHonoEDL     = document.getElementById('mgHonoEDL').value;
+  m.mandatGestionNotes    = document.getElementById('mgNotes').value;
+  saveMandats();
+}
+
+// ─── Collecte données formulaire ───
+function mgGetData() {
+  var m = loadMandats().find(function(x){ return String(x.id)===_mgMandatId; }) || {};
+  var ai = proState.agencyInfo || {};
+  var adresseAff = m.adresseFull || ((m.adresse||'') + (m.cp?' '+m.cp:'') + (m.ville?' '+m.ville:'')) || '—';
+  var getV = function(id){ var e=document.getElementById(id); return e?e.value:''; };
+  var getCb = function(id){ var e=document.getElementById(id); return e?e.checked:false; };
+  var missions = [];
+  if (getCb('mgMission1')) missions.push('Encaissement des loyers et gestion des quittances');
+  if (getCb('mgMission2')) missions.push('Gestion des congés, renouvellements et révisions de loyer');
+  if (getCb('mgMission3')) missions.push('États des lieux d'entrée et de sortie');
+  if (getCb('mgMission4')) missions.push('Suivi travaux, sinistres et relations avec les entreprises');
+  if (getCb('mgMission5')) missions.push('Assurance loyers impayés (GLI)');
+  if (getCb('mgMission6')) missions.push('Organisation des visites et sélection des locataires');
+  return {
+    m: m, ai: ai,
+    adresse: adresseAff,
+    bailleur: m.bailleur || '—',
+    bailleurEmail: m.bailleurEmail || '',
+    type: getV('mgType'),
+    duree: getV('mgDuree'),
+    dateDebut: getV('mgDateDebut'),
+    honoGestion: getV('mgHonoGestion'),
+    honoReloc: getV('mgHonoReloc'),
+    honoEDL: getV('mgHonoEDL'),
+    notes: getV('mgNotes'),
+    missions: missions,
+    agenceNom: ai.nom || 'Agence BailScan Pro',
+    agenceAdresse: (ai.adresse||'') + (ai.cp?' '+ai.cp:'') + (ai.ville?' '+ai.ville:''),
+    agenceTel: ai.tel || '',
+    agenceEmail: ai.email || '',
+    agenceRCS: ai.siret || '',
+    sig1Nom: getV('mgSig1Nom'),
+    sig2Nom: getV('mgSig2Nom'),
+  };
+}
+
+// ─── Génération PDF jsPDF ───
+function generateMandatGestionPDF(data, sig1b64, sig2b64) {
+  if (!window.jspdf) { showToast('jsPDF non chargé. Rechargez la page.','orange'); return null; }
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+  var PR = [30, 58, 110];   // bleu marine
+  var ACCENT = [59, 130, 246];
+  var GR = [107, 114, 128];
+  var W = 210; var ML = 16; var MR = W - 16; var CW = MR - ML;
+
+  // ── Bandeau header ──
+  doc.setFillColor(PR[0],PR[1],PR[2]);
+  doc.rect(0,0,W,22,'F');
+  doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+  doc.text(data.agenceNom, ML, 10);
+  doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(180,200,240);
+  doc.text('Mandat de gestion — ' + (data.type==='exclusif'?'Exclusif':'Simple'), ML, 16);
+  doc.setTextColor(180,200,240);
+  doc.text('BailScan Pro · Document généré le ' + new Date().toLocaleDateString('fr-FR'), MR, 16, {align:'right'});
+
+  var y = 34;
+
+  // ── Titre principal ──
+  doc.setFontSize(17); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+  doc.text('MANDAT DE GESTION ' + (data.type==='exclusif'?'EXCLUSIF':'SIMPLE').toUpperCase(), W/2, y, {align:'center'});
+  y += 6;
+  doc.setFillColor(ACCENT[0],ACCENT[1],ACCENT[2]);
+  doc.rect(W/2-30, y, 60, 0.8, 'F');
+  y += 10;
+
+  // ── Bloc parties ──
+  var drawBloc = function(title, lines, x, bw, yp) {
+    doc.setFillColor(248,250,255);
+    doc.roundedRect(x, yp, bw, 34, 3, 3, 'F');
+    doc.setDrawColor(219,234,254); doc.setLineWidth(0.4);
+    doc.roundedRect(x, yp, bw, 34, 3, 3, 'S');
+    doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(GR[0],GR[1],GR[2]);
+    doc.text(title.toUpperCase(), x+5, yp+6);
+    doc.setFontSize(8.5); doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30);
+    var ly = yp+13;
+    lines.forEach(function(l) { if(l){doc.text(l,x+5,ly);ly+=5.5;} });
+  };
+  var bW = (CW - 6) / 2;
+  drawBloc('Mandant (Bailleur)', [data.bailleur, data.bailleurEmail || '—'], ML, bW, y);
+  drawBloc('Mandataire (Agence)', [data.agenceNom, data.agenceAdresse||'', data.agenceTel||data.agenceEmail||''], ML+bW+6, bW, y);
+  y += 42;
+
+  // ── Bien concerné ──
+  doc.setFillColor(240,244,255);
+  doc.roundedRect(ML, y, CW, 14, 3, 3, 'F');
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(GR[0],GR[1],GR[2]);
+  doc.text('BIEN CONCERNÉ', ML+5, y+6);
+  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+  doc.text(data.adresse, ML+5, y+12);
+  y += 22;
+
+  // ── Conditions financières ──
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+  doc.text('Article 1 — Conditions du mandat', ML, y); y+=7;
+  var rows2 = [
+    ['Type de mandat', data.type==='exclusif'?'Exclusif':'Simple (non exclusif)'],
+    ['Durée', data.duree],
+    ['Prise d'effet', data.dateDebut ? new Date(data.dateDebut).toLocaleDateString('fr-FR') : '—'],
+    ['Honoraires de gestion', data.honoGestion + ' % du loyer charges comprises'],
+    ['Honoraires de relocation', data.honoReloc + ' mois de loyer HC'],
+    ['Honoraires états des lieux', data.honoEDL + ' € HT'],
+  ];
+  doc.setFillColor(248,250,252);
+  doc.roundedRect(ML,y,CW,rows2.length*7.5+2,2,2,'F');
+  doc.setDrawColor(226,232,240); doc.setLineWidth(0.3);
+  doc.roundedRect(ML,y,CW,rows2.length*7.5+2,2,2,'S');
+  rows2.forEach(function(r,i) {
+    var ry = y+7+i*7.5;
+    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(GR[0],GR[1],GR[2]);
+    doc.text(r[0], ML+5, ry);
+    doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30);
+    doc.text(r[1], ML+80, ry);
+    if (i < rows2.length-1) { doc.setDrawColor(240,240,240); doc.line(ML+3,ry+3.5,MR-3,ry+3.5); }
+  });
+  y += rows2.length*7.5+10;
+
+  // ── Missions ──
+  if (y > 220) { doc.addPage(); y = 22; }
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+  doc.text('Article 2 — Missions confiées', ML, y); y+=7;
+  data.missions.forEach(function(mis) {
+    if (y > 270) { doc.addPage(); y=22; }
+    doc.setFillColor(ACCENT[0],ACCENT[1],ACCENT[2]);
+    doc.circle(ML+3, y-1.5, 1.2, 'F');
+    doc.setFontSize(8.5); doc.setFont('helvetica','normal'); doc.setTextColor(50,50,50);
+    doc.text(mis, ML+8, y); y+=6;
+  });
+  y += 6;
+
+  // ── Clauses légales ──
+  if (y > 210) { doc.addPage(); y = 22; }
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+  doc.text('Article 3 — Dispositions légales', ML, y); y+=7;
+  var clauses = [
+    'Le présent mandat est établi conformément à la loi n° 70-9 du 2 janvier 1970 (loi Hoguet) et à son décret d'application n° 72-678 du 20 juillet 1972.',
+    'Le mandataire est titulaire de la carte professionnelle délivrée par la CCI compétente.',
+    'Le mandant autorise expressément le mandataire à percevoir les loyers, charges et dépôts de garantie en son nom.',
+    'En cas de résiliation anticipée, un préavis de 3 mois devra être respecté par la partie résiliante, sauf faute grave.',
+  ];
+  clauses.forEach(function(cl) {
+    var lines = doc.splitTextToSize(cl, CW-6);
+    if (y + lines.length*5 > 270) { doc.addPage(); y=22; }
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
+    lines.forEach(function(l){ doc.text(l,ML+3,y); y+=5; });
+    y+=2;
+  });
+
+  // ── Clauses particulières ──
+  if (data.notes) {
+    if (y > 230) { doc.addPage(); y=22; }
+    doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+    doc.text('Article 4 — Clauses particulières', ML, y); y+=7;
+    var noteLines = doc.splitTextToSize(data.notes, CW-6);
+    doc.setFontSize(8.5); doc.setFont('helvetica','italic'); doc.setTextColor(80,80,80);
+    noteLines.forEach(function(l){ if(y>270){doc.addPage();y=22;} doc.text(l,ML+3,y); y+=5; });
+    y+=6;
+  }
+
+  // ── Signatures ──
+  if (y > 220) { doc.addPage(); y=22; }
+  y += 6;
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(PR[0],PR[1],PR[2]);
+  doc.text('Signatures', ML, y); y+=5;
+  doc.setFillColor(240,244,255); doc.rect(ML,y,CW,0.5,'F'); y+=8;
+
+  var sigW = (CW-10)/2;
+  // Bailleur
+  doc.setFillColor(248,250,252); doc.roundedRect(ML,y,sigW,40,3,3,'F');
+  doc.setDrawColor(219,234,254); doc.setLineWidth(0.4); doc.roundedRect(ML,y,sigW,40,3,3,'S');
+  doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(GR[0],GR[1],GR[2]);
+  doc.text('LE MANDANT (Bailleur)', ML+4, y+6);
+  doc.setFont('helvetica','normal'); doc.setTextColor(50,50,50);
+  doc.text(data.sig1Nom||'', ML+4, y+12);
+  doc.setFontSize(7); doc.setTextColor(GR[0],GR[1],GR[2]);
+  doc.text('Lu et approuvé — Signature :', ML+4, y+19);
+  if (sig1b64) {
+    try { doc.addImage(sig1b64,'PNG',ML+4,y+21,sigW-8,14); } catch(e){}
+  } else {
+    doc.setDrawColor(200,210,230); doc.setLineWidth(0.3);
+    doc.line(ML+4, y+34, ML+sigW-4, y+34);
+  }
+  // Agent
+  var sx2 = ML+sigW+10;
+  doc.setFillColor(248,250,252); doc.roundedRect(sx2,y,sigW,40,3,3,'F');
+  doc.setDrawColor(219,234,254); doc.setLineWidth(0.4); doc.roundedRect(sx2,y,sigW,40,3,3,'S');
+  doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(GR[0],GR[1],GR[2]);
+  doc.text('LE MANDATAIRE (Agence)', sx2+4, y+6);
+  doc.setFont('helvetica','normal'); doc.setTextColor(50,50,50);
+  doc.text(data.sig2Nom||'', sx2+4, y+12);
+  doc.setFontSize(7); doc.setTextColor(GR[0],GR[1],GR[2]);
+  doc.text('Lu et approuvé — Signature :', sx2+4, y+19);
+  if (sig2b64) {
+    try { doc.addImage(sig2b64,'PNG',sx2+4,y+21,sigW-8,14); } catch(e){}
+  } else {
+    doc.setDrawColor(200,210,230); doc.setLineWidth(0.3);
+    doc.line(sx2+4, y+34, sx2+sigW-4, y+34);
+  }
+  y += 48;
+
+  // ── Footer ──
+  var totalPages = doc.getNumberOfPages();
+  for (var pi=1; pi<=totalPages; pi++) {
+    doc.setPage(pi);
+    doc.setFillColor(PR[0],PR[1],PR[2]);
+    doc.rect(0,287,W,10,'F');
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(180,200,240);
+    doc.text(data.agenceNom + ' · Mandat de gestion · Document confidentiel', ML, 293);
+    doc.text('Page '+pi+'/'+totalPages, MR, 293, {align:'right'});
+  }
+
+  return doc;
+}
+
+// ─── Sauvegarde avec signature directe ───
+function saveMandatGestionDirect() {
+  if (!_mgMandatId) return;
+  var data = mgGetData();
+  if (!data.sig1Nom && !data.sig2Nom) { showToast('Renseignez au moins un signataire.','orange'); return; }
+  var sig1b64 = ''; var sig2b64 = '';
+  var c1 = document.getElementById('mgCanvas1'); if(c1&&c1.style.display==='block') sig1b64 = c1.toDataURL();
+  var c2 = document.getElementById('mgCanvas2'); if(c2&&c2.style.display==='block') sig2b64 = c2.toDataURL();
+
+  var doc = generateMandatGestionPDF(data, sig1b64, sig2b64);
+  if (!doc) return;
+
+  var pdfB64 = doc.output('datauristring');
+
+  // Sauvegarder dans le mandat
+  var mans = loadMandats();
+  var m = mans.find(function(x){ return String(x.id)===_mgMandatId; });
+  if (m) {
+    m.mandatGestionSigne = true;
+    m.mandatGestionType = data.type;
+    m.mandatGestionDuree = data.duree;
+    m.mandatGestionDate = data.dateDebut;
+    m.mandatGestionHonoGestion = data.honoGestion;
+    m.mandatGestionHonoReloc = data.honoReloc;
+    m.mandatGestionHonoEDL = data.honoEDL;
+    m.mandatGestionNotes = data.notes;
+    m.mandatGestionPdf = pdfB64;
+    m.mandatGestionSig1Nom = data.sig1Nom;
+    m.mandatGestionSig2Nom = data.sig2Nom;
+    saveMandats();
+    if (typeof saveMandatSupabase === 'function') saveMandatSupabase(m);
+  }
+
+  // Téléchargement automatique
+  var adresseSlug = (data.adresse||'mandat').replace(/[^a-zA-Z0-9]/g,'-').toLowerCase().replace(/-+/g,'-').slice(0,40);
+  doc.save('mandat-gestion-' + adresseSlug + '.pdf');
+
+  closeMandatGestion();
+  showToast('✅ Mandat signé et téléchargé !', 'green');
+  // Rafraîchir la fiche bien
+  setTimeout(function(){ openFicheMandat(_mgMandatId||m.id, 'infos'); closeMandatGestion(); }, 300);
+}
+
+// ─── Télécharger un mandat déjà signé ───
+function telechargerMandatGestion(mandatId) {
+  var m = loadMandats().find(function(x){ return String(x.id)===String(mandatId); });
+  if (!m || !m.mandatGestionPdf) { showToast('PDF du mandat introuvable.','orange'); return; }
+  var a = document.createElement('a');
+  a.href = m.mandatGestionPdf;
+  var adresseSlug = ((m.adresseFull||m.adresse||'mandat')).replace(/[^a-zA-Z0-9]/g,'-').toLowerCase().replace(/-+/g,'-').slice(0,40);
+  a.download = 'mandat-gestion-' + adresseSlug + '.pdf';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+// ─── Envoi par email ───
+function sendMandatGestionEmail() {
+  var email = (document.getElementById('mgEmailDest')||{value:''}).value.trim();
+  var objet = (document.getElementById('mgEmailObjet')||{value:''}).value.trim();
+  var body  = (document.getElementById('mgEmailBody')||{value:''}).value.trim();
+  if (!email) { showToast('Renseignez l'email du bailleur.','orange'); return; }
+
+  var btn = document.getElementById('mgBtnSend');
+  if (btn) { btn.textContent = 'Envoi…'; btn.disabled = true; }
+
+  var data = mgGetData();
+  var doc = generateMandatGestionPDF(data, '', '');
+  if (!doc) { if(btn){btn.textContent='📧 Envoyer →';btn.disabled=false;} return; }
+
+  var pdfBase64 = doc.output('datauristring').split(',')[1];
+  var adresseSlug = (data.adresse||'mandat').replace(/[^a-zA-Z0-9]/g,'-').toLowerCase().replace(/-+/g,'-').slice(0,40);
+  var filename = 'mandat-gestion-' + adresseSlug + '.pdf';
+
+  fetch('/api/send-mail', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to: email,
+      subject: objet,
+      text: body,
+      html: '<div style="font-family:'DM Sans',Arial,sans-serif;max-width:600px;margin:0 auto">'
+        + '<div style="background:#1e3a6e;padding:20px 24px;border-radius:12px 12px 0 0">'
+        + '<div style="font-size:1.1rem;font-weight:700;color:white">' + data.agenceNom + '</div>'
+        + '<div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-top:4px">Mandat de gestion locative</div></div>'
+        + '<div style="background:white;padding:28px 24px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">'
+        + '<p style="font-size:.95rem;color:#111;margin-bottom:16px">' + body.replace(/
+/g,'<br>') + '</p>'
+        + '<div style="background:#f0f4ff;border:1px solid #c7d6ff;border-radius:8px;padding:14px;margin-top:20px;font-size:.82rem;color:#374151">'
+        + '📎 Le mandat de gestion est joint à cet email en format PDF. Veuillez le signer et nous le retourner.</div>'
+        + '<p style="font-size:.75rem;color:#9ca3af;margin-top:20px">Document généré par BailScan Pro · ' + new Date().toLocaleDateString('fr-FR') + '</p>'
+        + '</div></div>',
+      attachments: [{ filename: filename, content: pdfBase64, encoding: 'base64', contentType: 'application/pdf' }]
+    })
+  }).then(function(r){ return r.json(); }).then(function(resp) {
+    if (resp.error) throw new Error(resp.error);
+    // Sauvegarder l'état "envoyé par mail" dans le mandat
+    var mans = loadMandats();
+    var m = mans.find(function(x){ return String(x.id)===_mgMandatId; });
+    if (m) {
+      m.mandatGestionEnvoye = true;
+      m.mandatGestionEnvoyeEmail = email;
+      m.mandatGestionEnvoyeDate = new Date().toLocaleDateString('fr-FR');
+      m.mandatGestionType = data.type;
+      m.mandatGestionDuree = data.duree;
+      m.mandatGestionDate = data.dateDebut;
+      saveMandats();
+    }
+    showToast('📧 Mandat envoyé à ' + email, 'green');
+    closeMandatGestion();
+    setTimeout(function(){ if(_mgMandatId) openFicheMandat(_mgMandatId,'infos'); },300);
+  }).catch(function(err) {
+    showToast('Erreur envoi : ' + err.message, 'orange');
+    if (btn) { btn.textContent = '📧 Envoyer →'; btn.disabled = false; }
+  });
+}
+</script>
 
 </body>
 </html>
