@@ -487,7 +487,10 @@ select.form-input { cursor:pointer; }
   .pro-home-inner { flex-direction:column; }
 }
  
-/* Footer SEO */
+/* DOC HINT PILLS */
+.doc-hint-pill { font-size:0.72rem; color:var(--gris); padding:5px 12px; border:1px solid var(--border); border-radius:20px; cursor:pointer; transition:all .2s; background:white; }
+.doc-hint-pill:hover { border-color:var(--accent); color:var(--accent); }
+.doc-hint-pill.used { border-color:var(--vert); color:var(--vert); background:var(--vert-light); pointer-events:none; }
 .footer-seo { background:var(--noir); color:rgba(255,255,255,0.7); border-top:none; padding:0; flex-direction:column; align-items:stretch; }
 .footer-inner { max-width:1100px; margin:0 auto; padding:52px 48px 28px; width:100%; box-sizing:border-box; }
 .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
@@ -598,7 +601,7 @@ select.form-input { cursor:pointer; }
     <!-- HEADER -->
     <div style="text-align:center;margin-bottom:56px;">
       <div style="display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:16px;">Ce que vous obtenez en 2 minutes</div>
-      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:white;line-height:1.15;letter-spacing:-0.02em;margin:0 auto;max-width:700px;white-space:nowrap;">Pas juste un diagnostic. <em style="color:var(--accent2);">Un dossier complet pour récupérer votre argent.</em></h2>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:white;line-height:1.15;letter-spacing:-0.02em;margin:0 auto;max-width:700px;">Pas juste un diagnostic.<br><em style="color:var(--accent2);white-space:nowrap;">Un dossier complet pour récupérer votre argent.</em></h2>
     </div>
  
     <!-- 3 COLONNES -->
@@ -891,7 +894,6 @@ select.form-input { cursor:pointer; }
       </div>
       <div id="upload-panel">
         <div class="upload-zone" id="uploadZone" onclick="triggerFileInput(event)">
-          
           <div class="upload-zone-title">Glissez votre PDF ici ou cliquez pour parcourir</div>
           <div class="upload-zone-sub">PDF uniquement · Max 10 Mo</div>
           <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleFile(this.files[0])">
@@ -906,6 +908,35 @@ select.form-input { cursor:pointer; }
         <textarea class="textarea-bail" id="bailText" placeholder="Collez ici le texte de votre bail (toutes les clauses, conditions générales…)" oninput="updateCharCount()"></textarea>
         <div class="char-count" id="charCount">0 caractères · Minimum recommandé : 500</div>
       </div>
+ 
+      <!-- DOCUMENTS COMPLÉMENTAIRES -->
+      <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px;">
+          <div style="font-weight:700;font-size:0.92rem;color:var(--noir);">Documents complémentaires</div>
+          <div style="font-size:0.72rem;color:var(--gris);background:var(--creme);border:1px solid var(--border);padding:2px 8px;border-radius:10px;">facultatif</div>
+        </div>
+        <p style="font-size:0.82rem;color:var(--gris);margin-bottom:16px;line-height:1.65;">Ajoutez tout document utile à l'analyse : congé du bailleur, avis de révision IRL, avenant, courrier de l'agence… L'IA les prendra en compte dans son analyse globale.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+          <div class="doc-hint-pill" onclick="addDocHint(this, 'Congé du bailleur')">+ Congé du bailleur</div>
+          <div class="doc-hint-pill" onclick="addDocHint(this, 'Révision IRL')">+ Révision IRL</div>
+          <div class="doc-hint-pill" onclick="addDocHint(this, 'Avenant au bail')">+ Avenant au bail</div>
+          <div class="doc-hint-pill" onclick="addDocHint(this, 'Courrier agence')">+ Courrier agence</div>
+          <div class="doc-hint-pill" onclick="addDocHint(this, 'Quittances de loyer')">+ Quittances de loyer</div>
+          <div class="doc-hint-pill" onclick="addDocHint(this, 'Autre document')">+ Autre</div>
+        </div>
+        <div id="extraDocsZone" style="border:2px dashed var(--border);border-radius:12px;padding:18px 20px;background:white;cursor:pointer;transition:all .2s;" onclick="triggerExtraFileInput()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="event.preventDefault();this.style.borderColor='var(--border)';handleExtraFiles(event.dataTransfer.files)">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:1rem;color:var(--gris);">↑</div>
+            <div>
+              <div style="font-size:0.85rem;font-weight:600;color:var(--noir);">Glissez vos PDFs ou cliquez pour ajouter</div>
+              <div style="font-size:0.75rem;color:var(--gris);margin-top:2px;">Plusieurs fichiers acceptés · PDF uniquement · Max 10 Mo chacun</div>
+            </div>
+          </div>
+          <input type="file" id="extraFileInput" accept=".pdf" multiple style="display:none" onchange="handleExtraFiles(this.files)">
+        </div>
+        <div id="extraDocsList" style="display:flex;flex-direction:column;gap:8px;margin-top:10px;"></div>
+      </div>
+ 
       <div class="wizard-nav">
         <button class="btn-wizard-back" onclick="goStep(2)">← Retour</button>
         <button class="btn-wizard-next" onclick="goStep(4)" id="btnStep3Next">Continuer → Analyser <span>→</span></button>
@@ -1536,6 +1567,7 @@ function buildRecap() {
   var total = (appState.loyerBase + appState.loyerMajore + appState.complementLoyer + appState.charges) || '—';
   var typeLabel = appState.analysisType === 'etat' ? 'État des lieux' : 'Bail locatif';
   var docLabel = appState.uploadMode === 'upload' && appState.pdfBase64 ? 'PDF : ' + appState.pdfName : (document.getElementById('bailText').value.length + ' caractères de texte');
+  var extrasLabel = appState.extraDocs.length > 0 ? appState.extraDocs.length + ' document(s) complémentaire(s)' : 'Aucun';
   document.getElementById('recapBlock').innerHTML =
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
     recap('Type', appState.locationtype === 'colocation' ? 'Colocation' : 'Location') +
@@ -1544,7 +1576,8 @@ function buildRecap() {
     recap('Surface', surface + (surface !== '—' ? ' m²' : '')) +
     recap('Loyer de base', loyer !== '—' ? loyer + ' €/mois' : '—') +
     recap('Total mensuel', total !== '—' ? total + ' €/mois' : '—') +
-    '<div style="grid-column:1/-1">' + recap('Document', typeLabel + ' · ' + docLabel) + '</div>' +
+    '<div style="grid-column:1/-1">' + recap('Document principal', typeLabel + ' · ' + docLabel) + '</div>' +
+    '<div style="grid-column:1/-1">' + recap('Docs complémentaires', extrasLabel) + '</div>' +
     '</div>';
 }
 function recap(label, val) {
@@ -1581,9 +1614,9 @@ function launchAnalysis() {
  
   var payload;
   if (appState.uploadMode === 'upload') {
-    payload = JSON.stringify({ pdf: appState.pdfBase64, context: contextInfo });
+    payload = JSON.stringify({ pdf: appState.pdfBase64, extra_docs: appState.extraDocs.map(function(d){ return {name:d.label, base64:d.base64}; }), context: contextInfo });
   } else {
-    payload = JSON.stringify({ text: textContent, context: contextInfo });
+    payload = JSON.stringify({ text: textContent, extra_docs: appState.extraDocs.map(function(d){ return {name:d.label, base64:d.base64}; }), context: contextInfo });
   }
  
   fetch('/api/analyze', {
@@ -2320,7 +2353,58 @@ function generateLetter(type, btn) {
 }
  
 // ═══════════════════════════════════════
-// MISC
+// DOCUMENTS COMPLÉMENTAIRES
+// ═══════════════════════════════════════
+appState.extraDocs = []; // [{name, base64, label}]
+ 
+function triggerExtraFileInput() {
+  document.getElementById('extraFileInput').click();
+}
+ 
+function addDocHint(el, label) {
+  el.classList.add('used');
+  el.textContent = '✓ ' + label.replace('+ ', '');
+  // Ouvre le sélecteur avec ce label pré-rempli
+  appState._pendingDocLabel = label;
+  document.getElementById('extraFileInput').click();
+}
+ 
+function handleExtraFiles(files) {
+  Array.from(files).forEach(function(file) {
+    if (file.type !== 'application/pdf') return;
+    if (file.size > 10 * 1024 * 1024) { alert(file.name + ' dépasse 10 Mo.'); return; }
+    var label = appState._pendingDocLabel || file.name;
+    appState._pendingDocLabel = null;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var doc = { name: file.name, label: label, base64: e.target.result.split(',')[1], size: file.size };
+      appState.extraDocs.push(doc);
+      renderExtraDocsList();
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('extraFileInput').value = '';
+}
+ 
+function renderExtraDocsList() {
+  var el = document.getElementById('extraDocsList');
+  el.innerHTML = appState.extraDocs.map(function(d, i) {
+    return '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--vert-light);border:1px solid rgba(45,106,79,0.2);border-radius:10px;">' +
+      '<div style="color:var(--vert);font-weight:700;font-size:0.85rem;">✓</div>' +
+      '<div style="flex:1;">' +
+        '<div style="font-size:0.82rem;font-weight:600;color:var(--noir);">' + d.label + '</div>' +
+        '<div style="font-size:0.72rem;color:var(--gris);">' + d.name + ' · ' + (d.size/1024).toFixed(0) + ' Ko</div>' +
+      '</div>' +
+      '<button onclick="removeExtraDoc(' + i + ')" style="background:none;border:none;color:var(--gris);cursor:pointer;font-size:1.1rem;padding:0;">×</button>' +
+    '</div>';
+  }).join('');
+}
+ 
+function removeExtraDoc(i) {
+  appState.extraDocs.splice(i, 1);
+  renderExtraDocsList();
+}
+ 
 // ═══════════════════════════════════════
 function toggleFaq(el) { el.classList.toggle('open'); }
  
@@ -2340,5 +2424,4 @@ function scrollToApp() {
 </script>
 </body>
 </html>
- 
  
