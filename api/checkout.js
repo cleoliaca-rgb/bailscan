@@ -1,10 +1,10 @@
 const Stripe = require('stripe');
-
+ 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-
+ 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
+ 
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -20,11 +20,16 @@ module.exports = async function handler(req, res) {
         quantity: 1,
       }],
       mode: 'payment',
+      customer_creation: 'always',
+      payment_intent_data: {
+        receipt_email: null, // Stripe collecte l'email sur la page de paiement
+        description: 'BailScan — Rapport complet + 5 lettres officielles',
+      },
       success_url: 'https://' + req.headers.host + '/?paid=true&session_id={CHECKOUT_SESSION_ID}',
       cancel_url: 'https://' + req.headers.host + '/?paid=false',
       locale: 'fr',
     });
-
+ 
     res.status(200).json({ url: session.url, sessionId: session.id });
   } catch (err) {
     res.status(500).json({ error: err.message });
