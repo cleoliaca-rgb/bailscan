@@ -659,7 +659,9 @@ select.form-input { cursor:pointer; }
     </div>
  
     <!-- 3 COLONNES -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-radius:20px;" class="deliverables-grid">
+    <!-- CAROUSEL WRAPPER avec flèche droite -->
+    <div style="position:relative;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-radius:20px;" class="deliverables-grid">
  
       <!-- COLONNE 1 : ANALYSE -->
       <div style="background:#111;padding:36px 28px;display:flex;flex-direction:column;gap:20px;">
@@ -742,6 +744,11 @@ select.form-input { cursor:pointer; }
         </div>
       </div>
     </div>
+      <!-- Flèche droite flottante — visible uniquement mobile -->
+      <div id="carousel-arrow-right" style="display:none;position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:36px;height:60px;background:linear-gradient(to left,rgba(13,13,13,0.85),transparent);border-radius:0 10px 10px 0;align-items:center;justify-content:flex-end;padding-right:6px;pointer-events:none;">
+        <span style="color:white;font-size:1.3rem;font-weight:300;line-height:1;">›</span>
+      </div>
+    </div><!-- /carousel-wrapper -->
  
     <!-- CAROUSEL NAV (mobile) -->
     <div id="deliverables-nav" style="display:none;align-items:center;justify-content:center;gap:16px;margin-top:14px;">
@@ -2908,17 +2915,19 @@ function toggleFaq(el) { el.classList.toggle('open'); }
  
 // ── CAROUSEL LIVRABLES ─────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  var grid = document.querySelector('.deliverables-grid');
-  var nav  = document.getElementById('deliverables-nav');
-  var hint = document.getElementById('deliverables-hint-text');
-  if (!grid || !nav) return;
+  var grid       = document.querySelector('.deliverables-grid');
+  var nav        = document.getElementById('deliverables-nav');
+  var hint       = document.getElementById('deliverables-hint-text');
+  var arrowRight = document.getElementById('carousel-arrow-right');
+  if (!grid || !nav || !arrowRight) return;
  
   function isMobile() { return window.innerWidth <= 768; }
  
   function updateDots() {
-    if (!isMobile()) { nav.style.display = 'none'; if (hint) hint.style.display = 'none'; return; }
+    if (!isMobile()) { nav.style.display = 'none'; if (hint) hint.style.display = 'none'; arrowRight.style.display = 'none'; return; }
     nav.style.display  = 'flex';
     if (hint) hint.style.display = 'block';
+    arrowRight.style.display = 'flex';
     var cards = grid.children;
     if (!cards.length) return;
     var cardW = cards[0].offsetWidth + 10;
@@ -2928,11 +2937,12 @@ document.addEventListener('DOMContentLoaded', function() {
       d.style.width      = i === idx ? '20px' : '6px';
       d.style.background = i === idx ? 'var(--accent)' : 'rgba(255,255,255,0.3)';
     });
-    // Arrow opacity
+    // Arrow opacity — hide when on last card
     var prev = document.getElementById('del-prev');
     var next = document.getElementById('del-next');
     if (prev) prev.style.opacity = idx === 0 ? '0.3' : '1';
     if (next) next.style.opacity = idx >= cards.length - 1 ? '0.3' : '1';
+    arrowRight.style.opacity = idx >= cards.length - 1 ? '0' : '1';
   }
  
   // Peek animation on first load — scroll right a bit then back
