@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BailScan — Analysez votre bail locatif en 2 minutes | Clauses illégales détectées par IA</title>
-<meta name="description" content="BailScan analyse votre bail locatif par IA : clauses abusives, encadrement des loyers, état des lieux. Gratuit. Conforme loi du 6 juillet 1989.">
+<title>BailScan — Récupérez l'argent dû par votre propriétaire | Clauses illégales + Lettres officielles</title>
+<meta name="description" content="BailScan analyse votre bail, identifie les sommes récupérables et génère les lettres officielles à envoyer à votre propriétaire. Clauses illégales, encadrement des loyers, mise en demeure. Résultat en 2 minutes.">
 <link rel="canonical" href="https://bailscan.app/">
 <meta property="og:title" content="BailScan — Analysez votre bail locatif en 2 minutes">
-<meta property="og:description" content="1 bail sur 3 contient une clause illégale. BailScan les détecte gratuitement par IA.">
+<meta property="og:description" content="BailScan détecte ce que votre propriétaire vous doit et génère les lettres pour le réclamer. Pas juste un diagnostic — une solution complète.">
 <meta property="og:image" content="https://bailscan.app/og-image.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BailScan","url":"https://bailscan.app","applicationCategory":"LegalService","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,7 +62,8 @@ h1 em { font-style:italic; color:var(--accent); }
 .hero-card-features { display:flex; flex-direction:column; gap:12px; position:relative; z-index:1; }
 .feature-row { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:10px; background:rgba(255,255,255,0.05); }
 .feature-row.new { background:rgba(200,75,47,0.12); border:1px solid rgba(200,75,47,0.2); }
-.feature-icon { font-size:1.1rem; flex-shrink:0; }
+.feature-icon { font-size:1.1rem; flex-shrink:0; color:rgba(245,240,232,0.5); font-style:normal; line-height:1; width:20px; text-align:center; }
+.feature-icon.sm { font-size:0.85rem; }
 .feature-text { font-size:0.88rem; color:rgba(245,240,232,0.75); }
 .feature-text strong { color:var(--creme); }
 .feature-badge { margin-left:auto; background:var(--accent); color:white; font-size:0.62rem; font-weight:700; padding:3px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; }
@@ -277,10 +278,10 @@ select.form-input { cursor:pointer; }
 .clause-card.warning { border-left:4px solid var(--warning); }
 .clause-card.ok { border-left:4px solid var(--vert); }
 .clause-header { display:flex; align-items:flex-start; gap:14px; margin-bottom:10px; }
-.clause-badge { padding:4px 10px; border-radius:6px; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; margin-top:2px; }
-.badge-danger { background:var(--rouge-light); color:var(--accent); }
-.badge-warning { background:var(--warning-light); color:var(--warning); }
-.badge-ok { background:var(--vert-light); color:var(--vert); }
+.clause-badge { padding:3px 10px; border-radius:4px; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; flex-shrink:0; margin-top:2px; }
+.badge-danger { background:var(--rouge-light); color:var(--accent); border:1px solid rgba(200,75,47,0.2); }
+.badge-warning { background:var(--warning-light); color:var(--warning); border:1px solid rgba(245,158,11,0.2); }
+.badge-ok { background:var(--vert-light); color:var(--vert); border:1px solid rgba(45,106,79,0.2); }
 .clause-title { font-weight:700; font-size:0.95rem; color:var(--noir); line-height:1.3; }
 .clause-desc { font-size:0.88rem; color:var(--gris); line-height:1.65; margin-bottom:12px; }
  
@@ -295,7 +296,7 @@ select.form-input { cursor:pointer; }
 .juridique-content.open { display:block; }
 .juridique-content .law-pill { display:inline-block; background:var(--rouge-light); color:var(--accent); font-size:0.75rem; font-weight:600; padding:2px 8px; border-radius:4px; margin:2px 2px 2px 0; }
  
-.clause-action { font-size:0.82rem; color:var(--vert); font-weight:600; display:flex; align-items:center; gap:6px; }
+.clause-action { font-size:0.82rem; color:var(--vert); font-weight:600; display:flex; align-items:center; gap:6px; padding-top:8px; border-top:1px solid var(--border); margin-top:8px; }
 .clause-action::before { content:'→'; }
  
 /* PAYWALL */
@@ -544,7 +545,7 @@ select.form-input { cursor:pointer; }
     <div class="modal-price"><div class="modal-price-n">29€</div><div class="modal-price-sub">paiement unique</div></div>
     <div class="modal-price-once">Accès à vie à votre rapport</div>
     <button class="btn-pay" id="btnPayConfirm" onclick="payWithStripe()">Débloquer mon rapport complet →</button>
-    <div class="modal-secure">🔒 Paiement sécurisé · Satisfait ou remboursé</div>
+    <div class="modal-secure">· Paiement sécurisé · Satisfait ou remboursé ·</div>
   </div>
 </div>
  
@@ -553,7 +554,7 @@ select.form-input { cursor:pointer; }
   <a href="/" class="logo">Bail<span>Scan</span></a>
   <nav>
     <a href="/blog.html">Guide locataire</a>
-    <a href="/pro.html" class="nav-agences">Pour les agences →</a>
+    <a href="/pro.html" class="nav-agences">Pour les agences</a>
     <a href="#app" class="btn-nav">Analyser mon bail →</a>
   </nav>
 </header>
@@ -564,31 +565,140 @@ select.form-input { cursor:pointer; }
   <div class="hero-bg2"></div>
   <div class="hero-inner">
     <div>
-      <div class="hero-tag">IA juridique · Loi du 6 juillet 1989</div>
-      <h1>Votre bail vous coûte peut-être <em>trop cher.</em></h1>
-      <p class="hero-sub">BailScan analyse votre bail, vérifie l'encadrement des loyers et détecte les clauses illégales, avec les explications juridiques complètes pour agir.</p>
+      <div class="hero-tag">IA juridique · Lettres officielles incluses</div>
+      <h1>Récupérez l'argent que votre propriétaire vous <em>doit.</em></h1>
+      <p class="hero-sub">BailScan calcule les sommes que votre propriétaire vous doit, génère le plan d'action étape par étape et rédige les courriers officiels pour les récupérer.</p>
       <div class="hero-ctas">
         <a href="#app" class="btn-primary">Analyser mon bail gratuitement →</a>
-        <a href="#app" class="btn-secondary">Analyser un état des lieux</a>
+        <a href="#app" class="btn-secondary">État des lieux</a>
       </div>
       <div class="hero-stats">
         <div class="stat"><div class="stat-n">1/3</div><div class="stat-l">des baux contient<br>une clause illégale</div></div>
-        <div class="stat"><div class="stat-n">29€</div><div class="stat-l">analyse complète<br>paiement unique</div></div>
+        <div class="stat"><div class="stat-n">5</div><div class="stat-l">lettres officielles<br>générées pour vous</div></div>
         <div class="stat"><div class="stat-n">2 min</div><div class="stat-l">pour analyser<br>votre bail</div></div>
       </div>
     </div>
     <div class="hero-card">
-      <div class="hero-card-title">Ce que BailScan analyse</div>
+      <div class="hero-card-title">Ce que BailScan fait pour vous</div>
       <div class="hero-card-features">
-        <div class="feature-row"><div class="feature-icon">📄</div><div class="feature-text"><strong>Bail</strong> : clauses abusives, dépôt, préavis</div></div>
-        <div class="feature-row new"><div class="feature-icon">🏠</div><div class="feature-text"><strong>État des lieux</strong> : retenues abusives détectées</div><div class="feature-badge">Nouveau</div></div>
-        <div class="feature-row new"><div class="feature-icon">💶</div><div class="feature-text"><strong>Encadrement loyers</strong> : vérification incluse</div><div class="feature-badge">Nouveau</div></div>
-        <div class="feature-row"><div class="feature-icon">⚖️</div><div class="feature-text"><strong>Explications juridiques</strong> : références légales complètes</div></div>
-        <div class="feature-row"><div class="feature-icon">✉️</div><div class="feature-text"><strong>5 lettres officielles</strong> : personnalisées selon votre situation</div></div>
+        <div class="feature-row new"><div class="feature-icon">⌂</div><div class="feature-text"><strong>5 lettres officielles</strong> : mise en demeure, remboursement, conciliation…</div><div class="feature-badge">Exclusif</div></div>
+        <div class="feature-row new"><div class="feature-icon" style="font-size:0.75rem;">▶</div><div class="feature-text"><strong>Plan d'action étape par étape</strong> : exactement quoi faire et dans quel ordre</div><div class="feature-badge">Inclus</div></div>
+        <div class="feature-row"><div class="feature-icon">€</div><div class="feature-text"><strong>Calcul du trop-perçu</strong> : montant exact récupérable depuis le début du bail</div></div>
+        <div class="feature-row"><div class="feature-icon">☰</div><div class="feature-text"><strong>Clauses abusives</strong> : détection + références légales complètes</div></div>
+        <div class="feature-row"><div class="feature-icon">✓</div><div class="feature-text"><strong>Conforme</strong> loi 1989, ALUR, ELAN</div></div>
       </div>
     </div>
   </div>
 </section>
+ 
+<!-- CE QUE VOUS OBTENEZ -->
+<section style="background:var(--noir);padding:72px 48px;border-top:1px solid #1a1a1a;">
+  <div style="max-width:1060px;margin:0 auto;">
+ 
+    <!-- HEADER -->
+    <div style="text-align:center;margin-bottom:56px;">
+      <div style="display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:16px;">Ce que vous obtenez en 2 minutes</div>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:white;line-height:1.15;letter-spacing:-0.02em;margin:0 auto;max-width:640px;">Pas juste un diagnostic.<br><em style="color:var(--accent2)">Un dossier complet pour récupérer votre argent.</em></h2>
+    </div>
+ 
+    <!-- 3 COLONNES -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-radius:20px;overflow:hidden;" class="deliverables-grid">
+ 
+      <!-- COLONNE 1 : ANALYSE -->
+      <div style="background:#111;padding:36px 28px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#555;">01 — Analyse</div>
+          <div style="background:rgba(45,106,79,0.2);color:#7ec8a0;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:3px 10px;border-radius:3px;border:1px solid rgba(45,106,79,0.3);">Gratuit</div>
+        </div>
+        <div style="font-family:'Instrument Serif',serif;font-size:1.35rem;color:white;line-height:1.3;">Votre bail<br>décortiqué</div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px 16px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:0.7rem;color:#666;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Score de bail</div>
+            <div style="display:flex;align-items:baseline;gap:6px;"><span style="font-family:'Instrument Serif',serif;font-size:2.2rem;color:#e8806b;">34</span><span style="font-size:0.75rem;color:#555;">/100</span><span style="font-size:0.72rem;color:#e8806b;margin-left:4px;">— Bail risqué</span></div>
+          </div>
+          <div style="background:rgba(200,75,47,0.08);border-radius:10px;padding:12px 16px;border:1px solid rgba(200,75,47,0.15);">
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.5);line-height:1.6;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span style="color:var(--accent);font-size:0.65rem;font-weight:700;">ILLÉGAL</span><span>Clause interdiction animaux</span></div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span style="color:var(--accent);font-size:0.65rem;font-weight:700;">ILLÉGAL</span><span>Dépôt de garantie 2 mois</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="color:#f59e0b;font-size:0.65rem;font-weight:700;">ATTENTION</span><span>Complément de loyer</span></div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 16px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:0.7rem;color:#666;margin-bottom:4px;">Somme récupérable estimée</div>
+            <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;">1 740 <span style="font-size:1rem;color:var(--accent2);">€</span></div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- COLONNE 2 : PLAN D'ACTION -->
+      <div style="background:#0d0d0d;padding:36px 28px;display:flex;flex-direction:column;gap:20px;border-left:1px solid #1a1a1a;border-right:1px solid #1a1a1a;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#555;">02 — Plan d'action</div>
+          <div style="background:rgba(200,75,47,0.15);color:var(--accent2);font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:3px 10px;border-radius:3px;border:1px solid rgba(200,75,47,0.25);">Inclus</div>
+        </div>
+        <div style="font-family:'Instrument Serif',serif;font-size:1.35rem;color:white;line-height:1.3;">Les étapes exactes,<br>dans l'ordre</div>
+        <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--accent);color:white;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
+            <div style="font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.5;"><strong style="color:white;">Envoyez la mise en demeure</strong><br>Par LRAR à votre propriétaire sous 8 jours</div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="width:22px;height:22px;border-radius:50%;background:#333;color:#888;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
+            <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.5;">Attendez la réponse (délai légal 2 mois)</div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="width:22px;height:22px;border-radius:50%;background:#333;color:#888;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div>
+            <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.5;">Saisissez la Commission de Conciliation</div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="width:22px;height:22px;border-radius:50%;background:#333;color:#888;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div>
+            <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.5;">Si refus : Tribunal Judiciaire (sans avocat)</div>
+          </div>
+          <div style="margin-top:6px;font-size:0.75rem;color:#444;line-height:1.5;padding:0 2px;">Chaque étape inclut le délai légal, les recours possibles et la lettre correspondante.</div>
+        </div>
+      </div>
+ 
+      <!-- COLONNE 3 : LETTRES -->
+      <div style="background:#111;padding:36px 28px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#555;">03 — Courriers officiels</div>
+          <div style="background:rgba(200,75,47,0.15);color:var(--accent2);font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:3px 10px;border-radius:3px;border:1px solid rgba(200,75,47,0.25);">5 lettres</div>
+        </div>
+        <div style="font-family:'Instrument Serif',serif;font-size:1.35rem;color:white;line-height:1.3;">Rédigées et<br>prêtes à envoyer</div>
+        <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+          <!-- Aperçu lettre -->
+          <div style="background:white;border-radius:10px;padding:16px;position:relative;overflow:hidden;">
+            <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;">Mise en demeure</div>
+            <div style="font-size:0.72rem;color:#555;line-height:1.65;font-family:Georgia,serif;">
+              Madame, Monsieur,<br>
+              Par la présente, je vous mets en demeure de procéder à la suppression de la clause figurant à l'article 7 de notre contrat de bail, en violation de l'article 4 de la loi du 6 juillet 1989…
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;height:32px;background:linear-gradient(transparent,white);"></div>
+          </div>
+          <!-- Liste des 5 lettres -->
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:rgba(255,255,255,0.65);padding:6px 10px;background:rgba(255,255,255,0.04);border-radius:7px;"><span style="color:var(--accent);font-size:0.65rem;">✦</span> Lettre au propriétaire</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:rgba(255,255,255,0.65);padding:6px 10px;background:rgba(255,255,255,0.04);border-radius:7px;"><span style="color:var(--accent);font-size:0.65rem;">✦</span> Mise en demeure formelle</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:rgba(255,255,255,0.65);padding:6px 10px;background:rgba(255,255,255,0.04);border-radius:7px;"><span style="color:var(--accent);font-size:0.65rem;">✦</span> Demande de remboursement</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:rgba(255,255,255,0.65);padding:6px 10px;background:rgba(255,255,255,0.04);border-radius:7px;"><span style="color:var(--accent);font-size:0.65rem;">✦</span> Saisine Commission Conciliation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- CTA BAS DE SECTION -->
+    <div style="text-align:center;margin-top:40px;">
+      <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:white;padding:15px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">Obtenir mon dossier complet →</a>
+      <div style="margin-top:12px;font-size:0.75rem;color:#444;">Analyse gratuite · Dossier complet à 29€ · Accès à vie</div>
+    </div>
+ 
+  </div>
+</section>
+<style>
+@media(max-width:768px){
+  .deliverables-grid { grid-template-columns: 1fr !important; }
+}
+</style>
  
 <!-- APP WIZARD -->
 <section id="app">
@@ -599,12 +709,12 @@ select.form-input { cursor:pointer; }
     <!-- TYPE SELECTOR -->
     <div class="type-selector" id="typeSelectorBlock">
       <div class="type-card active" onclick="selectType('bail')" id="type-bail">
-        <div class="type-card-icon">📄</div>
+        
         <div class="type-card-title">Bail locatif</div>
         <div class="type-card-desc">Analysez les clauses de votre contrat de location</div>
       </div>
       <div class="type-card" onclick="selectType('etat')" id="type-etat">
-        <div class="type-card-icon">🏠</div>
+        
         <div class="type-card-title">État des lieux</div>
         <div class="type-card-desc">Détectez les retenues abusives sur votre dépôt</div>
       </div>
@@ -676,11 +786,11 @@ select.form-input { cursor:pointer; }
  
       <!-- DATE DÉBUT BAIL -->
       <div class="form-group" style="margin-bottom:20px;padding:18px 20px;background:var(--creme);border-radius:12px;border:1.5px solid var(--border)">
-        <label for="date_debut_bail" style="font-weight:700;font-size:0.88rem;margin-bottom:10px;display:block">📅 Date de début du bail <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— permet de calculer le remboursement total estimé</span></label>
+        <label for="date_debut_bail" style="font-weight:700;font-size:0.88rem;margin-bottom:10px;display:block">Date de début du bail <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— permet de calculer le remboursement total estimé</span></label>
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
           <input type="date" id="date_debut_bail" class="form-input" style="max-width:210px" oninput="calcLoyerTotal()">
           <div id="bail_duree_display" style="display:none;font-size:0.84rem;color:var(--gris);line-height:1.5">
-            ⏱ Bail en cours depuis <strong><span id="bail_nb_mois">—</span> mois</strong><br>
+            Bail en cours depuis <strong><span id="bail_nb_mois">—</span> mois</strong><br>
             <span style="font-size:0.77rem">Depuis le <span id="bail_date_fmt">—</span></span>
           </div>
         </div>
@@ -690,7 +800,7 @@ select.form-input { cursor:pointer; }
       <div class="form-group">
         <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="color:var(--accent);font-size:0.8rem">*</span></label>
         <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal()">
-        <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">💡 Montant que vous payez chaque mois, hors charges</small>
+        <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Montant que vous payez chaque mois, hors charges</small>
       </div>
  
       <!-- Loyers de référence — zone encadrée -->
@@ -776,18 +886,18 @@ select.form-input { cursor:pointer; }
       <div class="panel-title" id="step3title">Votre bail</div>
       <div class="panel-sub" id="step3sub">Uploadez le PDF ou collez le texte de votre bail</div>
       <div class="upload-tabs">
-        <button class="upload-tab active" id="tab-upload" onclick="switchTab('upload')">📎 Upload PDF</button>
-        <button class="upload-tab" id="tab-text" onclick="switchTab('text')">✍️ Coller le texte</button>
+        <button class="upload-tab active" id="tab-upload" onclick="switchTab('upload')">↑ Upload PDF</button>
+        <button class="upload-tab" id="tab-text" onclick="switchTab('text')">✎ Saisir le texte</button>
       </div>
       <div id="upload-panel">
         <div class="upload-zone" id="uploadZone" onclick="triggerFileInput(event)">
-          <div class="upload-zone-icon">📄</div>
+          
           <div class="upload-zone-title">Glissez votre PDF ici ou cliquez pour parcourir</div>
           <div class="upload-zone-sub">PDF uniquement · Max 10 Mo</div>
           <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleFile(this.files[0])">
         </div>
         <div class="upload-success" id="uploadSuccess" style="display:none">
-          <div class="upload-success-icon">✅</div>
+          <div class="upload-success-icon" style="color:var(--vert);font-size:1.2rem;font-weight:700">✓</div>
           <div><div class="upload-success-name" id="uploadFileName"></div><div class="upload-success-size" id="uploadFileSize"></div></div>
           <button style="margin-left:auto;background:none;border:none;color:var(--gris);cursor:pointer;font-size:1.2rem" onclick="clearFile()">×</button>
         </div>
@@ -812,13 +922,13 @@ select.form-input { cursor:pointer; }
       <div class="analyse-modes" id="analyseModes">
         <div class="analyse-mode active" id="mode-bail" onclick="selectMode('bail')">
           <div class="analyse-mode-badge">Inclus</div>
-          <div class="analyse-mode-icon">📄</div>
+          
           <div class="analyse-mode-title">Analyse du bail</div>
           <div class="analyse-mode-desc">Clauses abusives, légalité du dépôt, conditions de résiliation, explications juridiques détaillées</div>
         </div>
         <div class="analyse-mode active" id="mode-loyer" onclick="selectMode('loyer')">
           <div class="analyse-mode-badge" style="background:var(--vert)">Auto</div>
-          <div class="analyse-mode-icon">💶</div>
+          
           <div class="analyse-mode-title">Encadrement des loyers</div>
           <div class="analyse-mode-desc">Vérification automatique si votre ville est concernée et calcul du trop-perçu éventuel</div>
         </div>
@@ -826,7 +936,7 @@ select.form-input { cursor:pointer; }
       <div class="wizard-nav">
         <button class="btn-wizard-back" onclick="goStep(3)">← Retour</button>
         <button class="btn-analyze" onclick="launchAnalysis()" id="btnAnalyze">
-          <span>🔍</span> Lancer l'analyse gratuite
+          Lancer l'analyse gratuite →
         </button>
       </div>
     </div>
@@ -879,7 +989,7 @@ select.form-input { cursor:pointer; }
         <!-- BANNER DYNAMIQUE MONTANT RÉCLAMABLE (injecté par JS) -->
         <div id="paywallAmountBanner"></div>
  
-        <div class="paywall-icon">🔒</div>
+        
         <div class="paywall-title">Rapport complet disponible</div>
         <div class="paywall-desc">Débloquez l'analyse intégrale avec les explications juridiques, le plan d'action et les lettres officielles</div>
         <div class="paywall-features">
@@ -907,7 +1017,7 @@ select.form-input { cursor:pointer; }
           <div id="reportDate" style="font-size:0.8rem;color:var(--gris)"></div>
         </div>
         <button onclick="exportReportPDF(this)" style="display:flex;align-items:center;gap:8px;background:var(--accent);color:white;border:none;padding:11px 22px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all .2s">
-          📄 Télécharger mon rapport PDF
+          Télécharger le rapport PDF →
         </button>
       </div>
  
@@ -926,7 +1036,7 @@ select.form-input { cursor:pointer; }
  
         <!-- IDENTITÉ LOCATAIRE -->
         <div class="identite-bloc">
-          <div class="identite-bloc-title">✍️ Vos coordonnées pour les lettres</div>
+          <div class="identite-bloc-title">Vos coordonnées pour les lettres</div>
           <div class="identite-bloc-sub">Renseignez ces informations une seule fois — elles seront intégrées automatiquement dans toutes les lettres générées.</div>
           <div class="identite-grid">
             <div class="identite-field">
@@ -994,14 +1104,14 @@ select.form-input { cursor:pointer; }
       </div>
     </div>
  
-    <button class="btn-reset" onclick="resetApp()">↩ Analyser un autre document</button>
+    <button class="btn-reset" onclick="resetApp()">← Analyser un autre document</button>
   </div>
 </section>
  
 <!-- SOCIAL PROOF -->
 <section class="social-proof">
   <div class="sp-inner">
-    <h2 class="sp-title">Ils ont récupéré leur argent grâce à BailScan</h2>
+    <h2 class="sp-title">Ils ont envoyé la lettre. Ils ont récupéré leur argent.</h2>
     <div class="sp-grid">
       <div class="sp-card">
         <div class="sp-stars">★★★★★</div>
@@ -1047,7 +1157,7 @@ select.form-input { cursor:pointer; }
         <div class="proprio-price-feature">Export PDF prêt à signer</div>
       </div>
       <a href="/proprio.html" class="btn-proprio">Obtenir mon bail conforme →</a>
-      <div style="margin-top:12px;font-size:0.72rem;color:var(--gris)">🔒 Paiement sécurisé · Sans abonnement</div>
+      <div style="margin-top:12px;font-size:0.72rem;color:var(--gris)">Paiement sécurisé · Sans abonnement</div>
     </div>
   </div>
 </section>
@@ -1114,33 +1224,16 @@ select.form-input { cursor:pointer; }
   </div>
 </section>
  
-<section class="social-proof">
-  <div class="sp-inner">
-    <h2 class="sp-title">Ils ont récupéré leur argent grâce à BailScan</h2>
-    <div class="sp-grid">
-      <div class="sp-card">
-        <div class="sp-stars">★★★★★</div>
-        <div class="sp-text">Mon bail interdisait les animaux ET demandait 2 mois de dépôt. BailScan a tout détecté en 2 minutes avec les références légales exactes. J'ai envoyé la lettre générée et mon propriétaire a cédé.</div>
-        <div class="sp-author">Marie L., locataire à Lyon · <span class="sp-amount">860€ récupérés</span></div>
-      </div>
-      <div class="sp-card">
-        <div class="sp-stars">★★★★★</div>
-        <div class="sp-text">L'outil a détecté que mon loyer dépassait le plafond d'encadrement parisien. Avec le calcul de trop-perçu et la lettre, j'ai obtenu 1 200€ de remboursement sur 3 ans.</div>
-        <div class="sp-author">Thomas B., locataire à Paris · <span class="sp-amount">1 200€ récupérés</span></div>
-      </div>
-      <div class="sp-card">
-        <div class="sp-stars">★★★★★</div>
-        <div class="sp-text">Je savais pas que les explications juridiques étaient aussi claires. Mon propriétaire m'avait retenu 400€ sur mon dépôt pour de l'usure normale. J'ai tout récupéré grâce à la mise en demeure.</div>
-        <div class="sp-author">Sophie M., locataire à Bordeaux · <span class="sp-amount">400€ récupérés</span></div>
-      </div>
-    </div>
-  </div>
 </section>
  
 <!-- FAQ -->
 <section class="faq">
   <div class="faq-inner">
     <h2 class="faq-title">Questions fréquentes</h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">En quoi BailScan est différent des autres outils gratuits ? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">Les autres outils font du diagnostic : ils détectent les clauses problématiques et s'arrêtent là. BailScan va plus loin : il calcule les sommes récupérables, génère un plan d'action étape par étape, et rédige les 5 lettres officielles personnalisées (mise en demeure, demande de remboursement, saisine de la Commission de Conciliation…). Vous savez exactement quoi envoyer, à qui, et dans quel ordre.</div>
+    </div>
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">BailScan est-il vraiment gratuit ? <span class="faq-toggle">+</span></div>
       <div class="faq-answer">L'analyse de base est 100% gratuite : score de bail, verdict, résumé et détection des 2 premières clauses abusives. L'analyse complète (toutes les clauses avec explications juridiques, plan d'action, 5 lettres) est à 29€ en paiement unique.</div>
@@ -1170,7 +1263,7 @@ select.form-input { cursor:pointer; }
     <div class="footer-top">
       <div class="footer-brand">
         <div class="footer-logo">Bail<span>Scan</span></div>
-        <div class="footer-tagline">Fait pour les locataires et les agences ❤️</div>
+        <div class="footer-tagline">Fait pour les locataires et les agences</div>
         <div class="footer-copy">© 2026 BailScan — Tous droits réservés</div>
       </div>
       <div class="footer-col">
@@ -1236,7 +1329,7 @@ function selectType(type) {
   if (type === 'etat') {
     document.getElementById('step3title').textContent = 'Votre état des lieux';
     document.getElementById('step3sub').textContent = 'Uploadez le PDF ou collez le texte de votre état des lieux d\'entrée et de sortie';
-    document.querySelector('#tab-upload').textContent = '📎 Upload PDF';
+    document.querySelector('#tab-upload').textContent = 'Upload PDF';
     document.getElementById('bailText').placeholder = 'Collez ici le texte de votre état des lieux (entrée et sortie)…';
   } else {
     document.getElementById('step3title').textContent = 'Votre bail';
@@ -1442,7 +1535,7 @@ function buildRecap() {
   var loyer = appState.loyerBase || '—';
   var total = (appState.loyerBase + appState.loyerMajore + appState.complementLoyer + appState.charges) || '—';
   var typeLabel = appState.analysisType === 'etat' ? 'État des lieux' : 'Bail locatif';
-  var docLabel = appState.uploadMode === 'upload' && appState.pdfBase64 ? '📎 ' + appState.pdfName : (document.getElementById('bailText').value.length + ' caractères de texte');
+  var docLabel = appState.uploadMode === 'upload' && appState.pdfBase64 ? 'PDF : ' + appState.pdfName : (document.getElementById('bailText').value.length + ' caractères de texte');
   document.getElementById('recapBlock').innerHTML =
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
     recap('Type', appState.locationtype === 'colocation' ? 'Colocation' : 'Location') +
@@ -1563,9 +1656,9 @@ function displayResults(data) {
   // Verdict badge
   var verdict = data.verdict || 'Inconnu';
   var vb = document.getElementById('verdictBadge');
-  if (verdict === 'Equitable') { vb.className = 'verdict-badge verdict-ok'; vb.textContent = '✓ Bail équitable'; }
-  else if (verdict === 'Risque') { vb.className = 'verdict-badge verdict-warning'; vb.textContent = '⚠ Risques détectés'; }
-  else { vb.className = 'verdict-badge verdict-danger'; vb.textContent = '✕ Clauses abusives'; }
+  if (verdict === 'Equitable') { vb.className = 'verdict-badge verdict-ok'; vb.textContent = '— Bail équitable'; }
+  else if (verdict === 'Risque') { vb.className = 'verdict-badge verdict-warning'; vb.textContent = '— Risques détectés'; }
+  else { vb.className = 'verdict-badge verdict-danger'; vb.textContent = '— Clauses abusives'; }
  
   document.getElementById('scoreVerdict').textContent = data.verdict_titre || verdict;
   document.getElementById('scoreResume').textContent = data.resume || '';
@@ -1662,14 +1755,14 @@ function buildPaywallAmountBanner(data) {
   if (tropPercuTotal > 0 && nbMois > 0) {
     // CAS 1 : montant calculable — banner noir premium avec le gros chiffre
     html += '<div class="paywall-amount-banner">';
-    html += '<div class="paywall-amount-banner-eyebrow">💰 Remboursement total estimé</div>';
+    html += '<div class="paywall-amount-banner-eyebrow"> Remboursement total estimé</div>';
     html += '<div class="paywall-amount-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' <span>€</span></div>';
     html += '<div class="paywall-amount-banner-sub">';
     html += '<strong style="color:rgba(255,255,255,0.9)">' + tropPercuMensuel.toFixed(2) + ' €/mois</strong> × ' + nbMois + ' mois';
     if (lignesDetail.length > 0) html += '<br><span style="opacity:0.7; font-size:0.77rem">' + lignesDetail.join(' · ') + '</span>';
     if (nbDanger > 0) html += '<br><span style="opacity:0.65; font-size:0.77rem">+ ' + nbDanger + ' clause(s) illégale(s) détectée(s)</span>';
-    html += '<br><br>🎯 Réclamez ce montant grâce aux lettres officielles incluses.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">🔓 Débloquer le rapport complet — 29€</button>';
+    html += '<br><br>Réclamez ce montant grâce aux lettres officielles incluses.</div>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"> Débloquer le rapport complet — 29€</button>';
     html += '<div class="paywall-amount-banner-roi">29€ investis · <strong>×' + Math.round(tropPercuTotal / 29) + ' de retour potentiel</strong></div>';
     html += '</div>';
   } else if (isLoyerProbleme || nbDanger > 0) {
@@ -1679,16 +1772,16 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-eyebrow">⚠️ Irrégularités détectées dans votre bail</div>';
     html += '<div class="paywall-amount-banner-amount" style="font-size:2.4rem">' + nbProblemes + ' problème' + (nbProblemes > 1 ? 's' : '') + '<span style="font-size:1.6rem"> juridique' + (nbProblemes > 1 ? 's' : '') + '</span></div>';
     html += '<div class="paywall-amount-banner-sub">Des sommes peuvent vous être dues. Le rapport complet vous donne les lettres officielles pour les réclamer.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">🔓 Débloquer le rapport complet — 29€</button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"> Débloquer le rapport complet — 29€</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · Accès à vie · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   } else {
     // CAS 3 : bail ok ou pas assez de données → banner minimaliste
     html += '<div class="paywall-amount-banner no-amount" style="background:linear-gradient(135deg,#1a2e1e,#2d4a32)">';
-    html += '<div class="paywall-amount-banner-eyebrow">📋 Analyse approfondie disponible</div>';
+    html += '<div class="paywall-amount-banner-eyebrow"> Analyse approfondie disponible</div>';
     html += '<div class="paywall-amount-banner-amount" style="font-size:2rem">Rapport complet<span style="font-size:1.2rem"> de votre bail</span></div>';
     html += '<div class="paywall-amount-banner-sub">Toutes les clauses, le plan d\'action et les lettres officielles pour défendre vos droits.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)">🔓 Débloquer le rapport complet — 29€</button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)"> Débloquer le rapport complet — 29€</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · Accès à vie</div>';
     html += '</div>';
   }
@@ -1701,8 +1794,8 @@ function renderLoyerCheck(data) {
   if (!data.loyer && !appState.loyerBase) { el.innerHTML = ''; return; }
   var loy = data.loyer || { statut: 'ok', analyse: '' };
   var cls = loy.statut === 'danger' ? 'danger' : loy.statut === 'warning' ? 'warning' : 'ok';
-  var icons = { danger: '🚨', warning: '⚠️', ok: '✅' };
-  var icon = icons[loy.statut] || '🔍';
+  var icons = { danger: '', warning: '⚠️', ok: '' };
+  var icon = icons[loy.statut] || '—';
   var html = '';
  
   // ── CALCUL TROP-PERÇU TOTAL ─────────────────────────────────
@@ -1740,7 +1833,7 @@ function renderLoyerCheck(data) {
     if (exedentLoyer > 0) detailParts.push(exedentLoyer.toFixed(2) + ' €/mois (loyer)');
     if (complementIllegal > 0) detailParts.push(complementIllegal.toFixed(2) + ' €/mois (complément)');
     html += '<div class="trop-percu-banner">';
-    html += '<div class="trop-percu-banner-icon">💰</div>';
+    html += '';
     html += '<div class="trop-percu-banner-body">';
     html += '<div class="trop-percu-banner-label">Remboursement total estimé</div>';
     html += '<div class="trop-percu-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' €</div>';
@@ -1754,7 +1847,7 @@ function renderLoyerCheck(data) {
     // Date non renseignée — inciter à la saisir
     var mensuelManquant = (exedentLoyer + complementIllegal).toFixed(2);
     html += '<div style="background:var(--rouge-light);border:1.5px solid rgba(200,75,47,0.3);border-radius:14px;padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;gap:14px">';
-    html += '<span style="font-size:1.6rem">📅</span>';
+    html += '<span style="font-size:1.6rem"></span>';
     html += '<div><div style="font-weight:700;font-size:0.88rem;color:var(--accent)">Ajoutez la date de début de bail pour voir le total réclamable</div>';
     html += '<div style="font-size:0.82rem;color:var(--gris);margin-top:3px">Trop-perçu détecté : <strong>' + mensuelManquant + ' €/mois</strong>';
     if (exedentLoyer > 0) html += ' (loyer : ' + exedentLoyer.toFixed(2) + ' €)';
@@ -1789,19 +1882,19 @@ function renderLoyerCheck(data) {
       // Moins de 3 mois → action en nullité (délai urgent !)
       var joursRestants = Math.max(0, Math.ceil((dans3Mois - now) / (1000 * 60 * 60 * 24)));
       html += '<div class="complement-alerte urgent">';
-      html += '<div class="complement-alerte-title">⚡ Délai urgent — il vous reste ' + joursRestants + ' jours</div>';
-      html += '<div class="complement-alerte-text"><strong>Votre bail a moins de 3 mois</strong> : vous pouvez encore saisir la <strong>Commission Départementale de Conciliation (CDC)</strong> pour demander la <strong>nullité du complément de loyer</strong> (art. 17 loi du 6 juillet 1989). Si le complément n\'est pas justifié par des caractéristiques de localisation ou de confort exceptionnelles par rapport aux logements similaires du voisinage, il peut être annulé et remboursé intégralement.<br><br>👉 <strong>À faire maintenant :</strong> envoyez une lettre recommandée au propriétaire, puis saisissez la CDC si pas de réponse sous 2 mois.</div>';
+      html += '<div class="complement-alerte-title"> Délai urgent — il vous reste ' + joursRestants + ' jours</div>';
+      html += '<div class="complement-alerte-text"><strong>Votre bail a moins de 3 mois</strong> : vous pouvez encore saisir la <strong>Commission Départementale de Conciliation (CDC)</strong> pour demander la <strong>nullité du complément de loyer</strong> (art. 17 loi du 6 juillet 1989). Si le complément n\'est pas justifié par des caractéristiques de localisation ou de confort exceptionnelles par rapport aux logements similaires du voisinage, il peut être annulé et remboursé intégralement.<br><br>→ <strong>À faire maintenant :</strong> envoyez une lettre recommandée au propriétaire, puis saisissez la CDC si pas de réponse sous 2 mois.</div>';
       html += '</div>';
     } else if (delai3MoisDepasse === true) {
       // Plus de 3 mois → action en restitution des sommes indûment perçues
       html += '<div class="complement-alerte normal">';
       html += '<div class="complement-alerte-title">⚖️ Délai de 3 mois dépassé — action en restitution possible</div>';
-      html += '<div class="complement-alerte-text">Le délai pour contester la <strong>validité</strong> du complément de loyer est écoulé. Cependant, si le complément est manifestement abusif ou non justifié, vous pouvez engager une <strong>action en restitution des sommes indûment perçues</strong> devant le Tribunal Judiciaire (art. 1302 Code civil — paiement de l\'indu). La prescription est de <strong>3 ans à compter de chaque versement</strong>.<br><br>👉 Consultez l\'ADIL de votre département ou un avocat spécialisé pour évaluer vos chances de succès.</div>';
+      html += '<div class="complement-alerte-text">Le délai pour contester la <strong>validité</strong> du complément de loyer est écoulé. Cependant, si le complément est manifestement abusif ou non justifié, vous pouvez engager une <strong>action en restitution des sommes indûment perçues</strong> devant le Tribunal Judiciaire (art. 1302 Code civil — paiement de l\'indu). La prescription est de <strong>3 ans à compter de chaque versement</strong>.<br><br>→ Consultez l\'ADIL de votre département ou un avocat spécialisé pour évaluer vos chances de succès.</div>';
       html += '</div>';
     } else {
       // Date non renseignée → afficher les deux options
       html += '<div class="complement-alerte urgent">';
-      html += '<div class="complement-alerte-title">⚡ Complément de loyer — délai critique de 3 mois</div>';
+      html += '<div class="complement-alerte-title"> Complément de loyer — délai critique de 3 mois</div>';
       html += '<div class="complement-alerte-text"><strong>Si votre bail date de moins de 3 mois :</strong> vous pouvez saisir la CDC pour demander la <strong>nullité du complément</strong> — c\'est la voie la plus efficace (art. 17 loi 1989). Renseignez la date de début de bail pour savoir exactement où vous en êtes.<br><br><strong>Si votre bail a plus de 3 mois :</strong> le délai de contestation directe est passé, mais une <strong>action en restitution</strong> reste possible devant le Tribunal Judiciaire sur 3 ans de prescription (art. 1302 Code civil).</div>';
       html += '</div>';
     }
@@ -1811,7 +1904,7 @@ function renderLoyerCheck(data) {
   var simLinks = getSimulateurLinks(appState.ville || '');
   if (simLinks.length > 0) {
     html += '<div class="encadrement-links">';
-    html += '<div class="encadrement-links-title">🔗 Vérifiez sur les simulateurs officiels</div>';
+    html += '<div class="encadrement-links-title">Vérifiez sur les simulateurs officiels</div>';
     html += '<div class="encadrement-links-grid">';
     simLinks.forEach(function(l) {
       var extraClass = l.primary ? ' primary' : '';
@@ -1826,7 +1919,7 @@ function renderLoyerCheck(data) {
 function renderClause(c, idx) {
   var typeClass = c.type === 'danger' ? 'danger' : c.type === 'warning' ? 'warning' : 'ok';
   var badgeClass = 'badge-' + typeClass;
-  var badgeLabels = { danger: '⛔ Illégal', warning: '⚠ À vérifier', ok: '✓ Conforme' };
+  var badgeLabels = { danger: '— Illégal', warning: '— À vérifier', ok: '— Conforme' };
   var html = '<div class="clause-card ' + typeClass + '">';
   html += '<div class="clause-header">';
   html += '<div class="clause-badge ' + badgeClass + '">' + (badgeLabels[c.type] || c.type) + '</div>';
@@ -1837,8 +1930,8 @@ function renderClause(c, idx) {
   if (c.base_legale || c.explication_juridique) {
     html += '<div class="juridique-block">';
     html += '<div class="juridique-header" onclick="toggleJuridique(this)">';
-    html += '<span class="juridique-icon">⚖️</span>';
-    html += '<span class="juridique-label">Explication juridique</span>';
+    
+    html += '<span class="juridique-icon">⚖</span><span class="juridique-label">Référence juridique</span>';
     html += '<span class="juridique-toggle">▼</span>';
     html += '</div>';
     html += '<div class="juridique-content">';
@@ -1906,7 +1999,7 @@ function buildPaidAmountBanner(data) {
   if (complementIllegal > 0) lignes.push('Complément illégal : ' + complementIllegal.toFixed(2) + ' €/mois');
  
   el.innerHTML = '<div class="trop-percu-banner">' +
-    '<div class="trop-percu-banner-icon">💰</div>' +
+    '' +
     '<div class="trop-percu-banner-body">' +
     '<div class="trop-percu-banner-label">Remboursement total estimé</div>' +
     '<div class="trop-percu-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' €</div>' +
@@ -2019,11 +2112,11 @@ window.addEventListener('load', checkPaymentReturn);
 // ═══════════════════════════════════════
 function exportReportPDF(btn) {
   if (!analysisResult) return;
-  btn.textContent = '⏳ Génération…'; btn.disabled = true;
+  btn.textContent = 'Génération…'; btn.disabled = true;
  
   try {
     var jsPDF = window.jspdf && window.jspdf.jsPDF;
-    if (!jsPDF) { alert("Le générateur PDF n'est pas chargé. Réessayez dans quelques secondes."); btn.textContent = '📄 Télécharger mon rapport PDF'; btn.disabled = false; return; }
+    if (!jsPDF) { alert("Le générateur PDF n'est pas chargé. Réessayez dans quelques secondes."); btn.textContent = 'Télécharger le rapport PDF →'; btn.disabled = false; return; }
     var doc = new jsPDF({ unit: 'mm', format: 'a4' });
     var pageW = 210, margin = 18, y = 20, lineH = 6;
  
@@ -2095,7 +2188,7 @@ function exportReportPDF(btn) {
         doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(180,30,30);
         doc.text((c.base_legale||[]).join(' · '), margin, y); y += lineH;
       }
-      if (c.action) addLine('→ ' + c.action, {size:8, bold:true, color:[30,100,30]});
+      if (c.action) addLine(c.action, {size:8, bold:true, color:[30,100,30]});
       y += 4;
     });
  
@@ -2117,12 +2210,12 @@ function exportReportPDF(btn) {
     }
  
     doc.save('rapport-bailscan-' + new Date().toISOString().slice(0,10) + '.pdf');
-    btn.textContent = '✓ PDF téléchargé !';
-    setTimeout(function(){ btn.textContent = '📄 Télécharger mon rapport PDF'; btn.disabled = false; }, 3000);
+    btn.textContent = 'Téléchargé';
+    setTimeout(function(){ btn.textContent = 'Télécharger le rapport PDF →'; btn.disabled = false; }, 3000);
  
   } catch(err) {
     console.error('PDF error:', err);
-    btn.textContent = '📄 Télécharger mon rapport PDF'; btn.disabled = false;
+    btn.textContent = 'Télécharger le rapport PDF →'; btn.disabled = false;
     alert('Erreur lors de la génération du PDF : ' + err.message);
   }
 }
@@ -2195,18 +2288,18 @@ function generateLetter(type, btn) {
       btnRow.id = copyId;
       btnRow.style.cssText = 'display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;';
       var copyBtn = document.createElement('button');
-      copyBtn.textContent = '📋 Copier la lettre';
+      copyBtn.textContent = 'Copier la lettre';
       copyBtn.style.cssText = 'background:var(--noir);color:white;border:none;padding:10px 20px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;';
       copyBtn.onclick = function() {
         var preEl = contentEl.querySelector('pre');
         var txt = preEl ? preEl.textContent : contentEl.textContent;
         navigator.clipboard.writeText(txt).then(function() {
-          copyBtn.textContent = '✓ Copiée !';
-          setTimeout(function() { copyBtn.textContent = '📋 Copier la lettre'; }, 2000);
+          copyBtn.textContent = 'Copié !';
+          setTimeout(function() { copyBtn.textContent = 'Copier la lettre'; }, 2000);
         });
       };
       var dlBtn = document.createElement('button');
-      dlBtn.textContent = '⬇ Télécharger (.txt)';
+      dlBtn.textContent = 'Télécharger (.txt)';
       dlBtn.style.cssText = 'background:white;color:var(--noir);border:1.5px solid var(--border);padding:10px 20px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;';
       dlBtn.onclick = function() {
         var preEl = contentEl.querySelector('pre');
