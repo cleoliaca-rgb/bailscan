@@ -511,7 +511,6 @@ select.form-input { cursor:pointer; }
   .pro-home { padding:40px 20px; }
   .pro-home-inner { flex-direction:column; }
   .diff-strip { grid-template-columns:1fr !important; }
-  #compare-rows > div, #compare-rows > div:first-child { grid-template-columns: 2fr 1fr 1fr !important; }
 }
  
 /* DOC HINT PILLS */
@@ -1245,40 +1244,26 @@ select.form-input { cursor:pointer; }
 </section>
  
 <!-- COMPARAISON CONCURRENTS -->
-<section style="background:white;padding:72px 48px;border-top:1px solid var(--border);">
-  <div style="max-width:900px;margin:0 auto;">
+<section class="compare-section" style="background:white;padding:48px 48px;border-top:1px solid var(--border);">
+  <div style="max-width:780px;margin:0 auto;">
  
-    <div style="text-align:center;margin-bottom:48px;">
+    <div style="text-align:center;margin-bottom:32px;">
       <div style="display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:14px;">Comparatif</div>
-      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--noir);letter-spacing:-0.02em;line-height:1.15;margin:0;">Les autres détectent.<br><em style="color:var(--accent);">BailScan agit.</em></h2>
-      <p style="font-size:0.9rem;color:var(--gris);margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.65;">Tous les outils d'analyse de bail font du diagnostic. BailScan est le seul à vous donner les lettres officielles et les étapes pour récupérer votre argent.</p>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.4rem,2.5vw,1.9rem);color:var(--noir);letter-spacing:-0.02em;line-height:1.15;margin:0;">Les autres détectent. <em style="color:var(--accent);">BailScan agit.</em></h2>
+      
     </div>
  
     <!-- TABLEAU -->
-    <div style="border:1.5px solid var(--border);border-radius:16px;overflow:hidden;">
- 
-      <!-- HEADER -->
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.4fr;background:var(--creme);border-bottom:1.5px solid var(--border);">
-        <div style="padding:14px 20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);">Fonctionnalité</div>
-        <div style="padding:14px 12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gris);text-align:center;border-left:1px solid var(--border);">AnalyseMonBail</div>
-        <div style="padding:14px 12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gris);text-align:center;border-left:1px solid var(--border);">BailAnalyzer</div>
-        <div style="padding:14px 12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gris);text-align:center;border-left:1px solid var(--border);">CheckTonBail</div>
-        <div style="padding:14px 12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gris);text-align:center;border-left:1px solid var(--border);">Bail.immo</div>
-        <div style="padding:14px 12px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:white;text-align:center;border-left:1px solid rgba(200,75,47,0.3);background:var(--accent);">BailScan ✦</div>
-      </div>
- 
-      <!-- ROWS -->
-      <div id="compare-rows"></div>
-    </div>
+    <div id="compare-mobile"></div>
  
     <!-- LÉGENDE PRIX -->
-    <div style="display:flex;gap:24px;justify-content:center;margin-top:24px;flex-wrap:wrap;">
+    <div class="compare-legend" style="display:flex;gap:16px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
       <div style="font-size:0.78rem;color:var(--gris);display:flex;align-items:center;gap:8px;"><span style="font-size:1rem;">✓</span> Inclus</div>
       <div style="font-size:0.78rem;color:var(--gris);display:flex;align-items:center;gap:8px;"><span style="color:#f59e0b;font-size:0.85rem;font-weight:700;">~</span> Partiel</div>
       <div style="font-size:0.78rem;color:var(--gris);display:flex;align-items:center;gap:8px;"><span style="color:#ddd;font-size:1rem;">✗</span> Non disponible</div>
     </div>
  
-    <div style="text-align:center;margin-top:36px;">
+    <div style="text-align:center;margin-top:24px;">
       <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--noir);color:white;padding:14px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--noir)'">Analyser mon bail gratuitement →</a>
     </div>
   </div>
@@ -1286,40 +1271,46 @@ select.form-input { cursor:pointer; }
  
 <script>
 (function(){
+  // others = valeur représentative pour "Les autres outils" (meilleur cas)
   var rows = [
-    { label: 'Analyse des clauses illégales',          vals: ['~','✓','✓','~','✓'], bailscan: '✓' },
-    { label: 'Bail locatif d\'habitation',              vals: ['✗','✓','✓','✓','✓'], bailscan: '✓' },
-    { label: 'Encadrement des loyers',                  vals: ['✗','~','✗','✗','✓'], bailscan: '✓' },
-    { label: 'Calcul du trop-perçu (€)',                vals: ['✗','✗','✗','✗','✓'], bailscan: '✓' },
-    { label: 'Plan d\'action étape par étape',          vals: ['✗','✗','✗','✗','✓'], bailscan: '✓' },
-    { label: 'Lettres officielles générées',            vals: ['✗','✗','✗','✗','✓'], bailscan: '✓' },
-    { label: 'Analyse de documents complémentaires',    vals: ['✗','✗','✗','✗','✓'], bailscan: '✓' },
-    { label: 'Références légales (loi 1989, ALUR)',     vals: ['~','~','✓','~','✓'], bailscan: '✓' },
-    { label: 'Résultat en 30 secondes',                 vals: ['✗','~','~','✓','✓'], bailscan: '✓' },
-    { label: 'Prix',                                    vals: ['99€','?','Gratuit','Gratuit','Gratuit*'], bailscan: '29€', price: true },
+    { label: 'Analyse des clauses illégales',          others: '✓',  bailscan: '✓' },
+    { label: 'Bail locatif d\'habitation',             others: '✓',  bailscan: '✓' },
+    { label: 'Encadrement des loyers',                  others: '✗',  bailscan: '✓' },
+    { label: 'Calcul du trop-perçu (€)',                others: '✗',  bailscan: '✓', excl: true },
+    { label: 'Plan d\'action étape par étape',         others: '✗',  bailscan: '✓', excl: true },
+    { label: 'Lettres officielles générées',            others: '✗',  bailscan: '✓', excl: true },
+    { label: 'Analyse de documents complémentaires',    others: '✗',  bailscan: '✓', excl: true },
+    { label: 'Références légales (loi 1989, ALUR)',     others: '~',  bailscan: '✓' },
+    { label: 'Résultat en 30 secondes',                 others: '~',  bailscan: '✓' },
+    { label: 'Prix',                                    others: 'Gratuit / 99€', bailscan: '29€', price: true },
   ];
  
-  var colors = { '✓':'var(--vert)', '✗':'#ddd', '~':'#f59e0b' };
-  var container = document.getElementById('compare-rows');
-  rows.forEach(function(row, i) {
-    var bg = i % 2 === 0 ? 'white' : '#fafaf8';
-    var isBailscanExclusive = row.vals.every(function(v){ return v === '✗'; });
-    var html = '<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.4fr;background:' + bg + ';border-top:1px solid var(--border);">';
-    html += '<div style="padding:13px 20px;font-size:0.85rem;color:var(--texte);font-weight:' + (isBailscanExclusive ? '700' : '400') + ';">' + row.label;
-    if (isBailscanExclusive) html += ' <span style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);background:var(--rouge-light);padding:2px 6px;border-radius:3px;margin-left:6px;">Exclusif</span>';
-    html += '</div>';
-    row.vals.forEach(function(v) {
-      var color = colors[v] || 'var(--gris)';
-      var fw = v === '✓' ? '700' : (v === '✗' ? '400' : '700');
-      html += '<div style="padding:13px 12px;text-align:center;border-left:1px solid var(--border);font-size:' + (row.price ? '0.78rem' : '1rem') + ';color:' + color + ';font-weight:' + fw + ';">' + v + '</div>';
+  var mob = document.getElementById('compare-mobile');
+  if (mob) {
+    var m = '<div style="display:flex;flex-direction:column;gap:4px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;">';
+    // header
+    m += '<div style="display:grid;grid-template-columns:1fr 80px 90px;background:var(--creme);border-bottom:1.5px solid var(--border);">';
+    m += '<div style="padding:10px 16px;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);">Fonctionnalité</div>';
+    m += '<div style="padding:10px 8px;font-size:0.65rem;font-weight:700;text-transform:uppercase;color:var(--gris);text-align:center;border-left:1px solid var(--border);">Autres</div>';
+    m += '<div style="padding:10px 8px;font-size:0.65rem;font-weight:700;text-transform:uppercase;color:var(--accent);text-align:center;border-left:1px solid rgba(200,75,47,0.3);background:rgba(200,75,47,0.04);">BailScan</div>';
+    m += '</div>';
+    m = m.replace('gap:4px;', ''); // remove gap since we use borders
+    rows.forEach(function(row, i) {
+      var oVal = row.others;
+      var oColor = oVal === '✓' ? 'var(--texte)' : oVal === '~' ? '#f59e0b' : (row.price ? 'var(--gris)' : '#ccc');
+      var bg = i%2===0 ? 'white' : '#fafaf8';
+      m += '<div style="display:grid;grid-template-columns:1fr 80px 90px;background:' + bg + ';border-top:1px solid var(--border);">';
+      m += '<div style="padding:9px 16px;font-size:0.84rem;color:var(--texte);">' + row.label;
+      if (row.excl) m += ' <span style="font-size:0.56rem;font-weight:700;text-transform:uppercase;color:var(--accent);background:var(--rouge-light);padding:1px 5px;border-radius:3px;white-space:nowrap;">Exclusif</span>';
+      m += '</div>';
+      m += '<div style="padding:9px 8px;font-size:' + (row.price?'0.75rem':'1rem') + ';color:' + oColor + ';text-align:center;border-left:1px solid var(--border);">' + oVal + '</div>';
+      m += '<div style="padding:9px 8px;font-size:' + (row.price?'0.75rem':'1rem') + ';color:var(--vert);font-weight:700;text-align:center;border-left:1px solid rgba(200,75,47,0.2);background:rgba(200,75,47,0.04);">' + row.bailscan + '</div>';
+      m += '</div>';
     });
-    var bsColor = row.price ? 'var(--vert)' : 'var(--vert)';
-    html += '<div style="padding:13px 12px;text-align:center;border-left:1px solid rgba(200,75,47,0.2);background:rgba(200,75,47,0.04);font-size:' + (row.price ? '0.78rem' : '1rem') + ';color:' + bsColor + ';font-weight:700;">' + row.bailscan + '</div>';
-    html += '</div>';
-    container.innerHTML += html;
-  });
-  // footnote
-  container.innerHTML += '<div style="padding:10px 20px;font-size:0.72rem;color:var(--gris);background:#fafaf8;border-top:1px solid var(--border);">* Analyse de base gratuite — rapport complet + lettres officielles à 29€ paiement unique</div>';
+    m += '<div style="padding:8px 16px;font-size:0.7rem;color:var(--gris);background:#fafaf8;border-top:1px solid var(--border);">* Analyse gratuite — rapport complet + lettres officielles à 29€</div>';
+    m += '</div>';
+    mob.innerHTML = m;
+  }
 })();
 </script>
  
@@ -2726,5 +2717,4 @@ function scrollToApp() {
 </script>
 </body>
 </html>
- 
  
