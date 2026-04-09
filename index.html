@@ -179,9 +179,9 @@ select.form-input { cursor:pointer; }
  
 /* WIZARD NAV */
 .wizard-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:28px; border-top:1px solid var(--border); }
-.btn-wizard-back { background:transparent; border:1.5px solid var(--border); color:var(--gris); padding:12px 24px; border-radius:10px; font-weight:600; font-size:0.9rem; cursor:pointer; transition:all .2s; }
+.btn-wizard-back { background:transparent; border:1.5px solid var(--border); color:var(--gris); padding:12px clamp(14px,3vw,24px); border-radius:10px; font-weight:600; font-size:clamp(0.78rem,3vw,0.9rem); cursor:pointer; transition:all .2s; white-space:nowrap; }
 .btn-wizard-back:hover { border-color:var(--noir); color:var(--noir); }
-.btn-wizard-next { background:var(--noir); color:white; padding:12px 28px; border-radius:10px; font-weight:700; font-size:0.9rem; cursor:pointer; transition:all .2s; border:none; display:flex; align-items:center; gap:8px; }
+.btn-wizard-next { background:var(--noir); color:white; padding:12px clamp(14px,3vw,28px); border-radius:10px; font-weight:700; font-size:clamp(0.78rem,3vw,0.9rem); cursor:pointer; transition:all .2s; border:none; display:flex; align-items:center; gap:6px; white-space:nowrap; }
 .btn-wizard-next:hover { background:var(--accent); }
 .btn-wizard-next:disabled { opacity:0.4; cursor:not-allowed; }
 .btn-analyze { background:var(--accent); color:white; padding:14px 32px; border-radius:10px; font-weight:700; font-size:1rem; cursor:pointer; border:none; display:flex; align-items:center; gap:10px; transition:all .2s; }
@@ -563,6 +563,10 @@ select.form-input { cursor:pointer; }
   /* Compare table: fixed columns on small screen */
   #compare-mobile .compare-row { grid-template-columns: 1fr 56px 66px !important; }
   #compare-mobile .compare-header { grid-template-columns: 1fr 56px 66px !important; }
+  /* Loyer référence grid → 1 colonne */
+  .loyer-ref-grid { grid-template-columns: 1fr !important; }
+  /* form cols3 → 2 colonnes */
+  .form-grid.cols3 { grid-template-columns: 1fr 1fr !important; }
 }
  
 /* DOC HINT PILLS */
@@ -870,7 +874,7 @@ select.form-input { cursor:pointer; }
       </div>
       <div class="wizard-nav">
         <div></div>
-        <button class="btn-wizard-next" onclick="goStep(2)">Continuer → Loyer <span>→</span></button>
+        <button class="btn-wizard-next" onclick="goStep(2)">Continuer → Loyer</button>
       </div>
     </div>
  
@@ -901,7 +905,7 @@ select.form-input { cursor:pointer; }
       <!-- Loyers de référence — zone encadrée -->
       <div class="form-group" style="margin-top:12px">
         <label style="font-size:0.85rem;font-weight:700;color:var(--noir);margin-bottom:8px;display:block">Loyers de référence <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">— si indiqués dans le bail (zone encadrée)</span></label>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" class="loyer-ref-grid">
           <div>
             <label for="loyer_minore" style="font-size:0.78rem;color:var(--gris);font-weight:600">Loyer minoré (&#8364;/mois)</label>
             <input type="number" id="loyer_minore" class="form-input" placeholder="Ex : 780" min="0" oninput="calcLoyerTotal()" style="margin-top:4px">
@@ -972,7 +976,7 @@ select.form-input { cursor:pointer; }
       </div>
       <div class="wizard-nav">
         <button class="btn-wizard-back" onclick="goStep(1)">← Retour</button>
-        <button class="btn-wizard-next" onclick="goStep(3)">Continuer → Document <span>→</span></button>
+        <button class="btn-wizard-next" onclick="goStep(3)">Continuer → Document</button>
       </div>
     </div>
  
@@ -1031,7 +1035,7 @@ select.form-input { cursor:pointer; }
  
       <div class="wizard-nav">
         <button class="btn-wizard-back" onclick="goStep(2)">← Retour</button>
-        <button class="btn-wizard-next" onclick="goStep(4)" id="btnStep3Next">Continuer → Analyser <span>→</span></button>
+        <button class="btn-wizard-next" onclick="goStep(4)" id="btnStep3Next">Continuer → Analyser</button>
       </div>
     </div>
  
@@ -3005,3 +3009,4 @@ function scrollToApp() {
 </script>
 </body>
 </html>
+ 
