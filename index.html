@@ -530,7 +530,7 @@ select.form-input { cursor:pointer; }
     flex-shrink:0;
   }
   .deliverables-hint { display:flex !important; }
-  .deliverables-cta { margin-top:16px !important; }
+  .deliverables-cta { margin-top:20px !important; }
   .carousel-arrow-btn {
     display:flex !important;
     position:absolute;
@@ -773,14 +773,14 @@ select.form-input { cursor:pointer; }
     </div><!-- /deliverables-wrap -->
  
     <!-- CAROUSEL DOTS (mobile) -->
-    <div id="deliverables-nav" style="display:none;justify-content:center;gap:6px;margin-top:12px;">
+    <div id="deliverables-nav" style="display:none;justify-content:center;gap:6px;margin-top:12px;margin-bottom:6px;">
       <div class="d-dot" style="width:20px;height:3px;border-radius:2px;background:var(--accent);transition:all .3s;"></div>
       <div class="d-dot" style="width:6px;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);transition:all .3s;"></div>
       <div class="d-dot" style="width:6px;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);transition:all .3s;"></div>
     </div>
     <!-- CTA BAS DE SECTION -->
     <div style="text-align:center;margin-top:40px;" class="deliverables-cta">
-      <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:white;padding:15px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">Obtenir mon dossier complet&nbsp;→</a>
+      <a href="#app" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:white;padding:14px clamp(16px,4vw,32px);border-radius:10px;font-weight:700;font-size:clamp(0.78rem,3.5vw,0.95rem);text-decoration:none;transition:all .2s;white-space:nowrap;" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">Obtenir mon dossier complet&nbsp;→</a>
       <div style="margin-top:12px;font-size:0.75rem;color:#444;">Analyse gratuite · Dossier complet à 29€</div>
     </div>
  
@@ -3005,5 +3005,3 @@ function scrollToApp() {
 </script>
 </body>
 </html>
- 
- 
