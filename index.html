@@ -50,7 +50,7 @@ html { scroll-behavior:smooth; scroll-padding-top:80px; }
 body { background:var(--creme); color:var(--texte); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
  
 /* ── HEADER ── */
-header { position:fixed; top:0; left:0; right:0; z-index:100; padding:18px 48px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); background:rgba(245,240,232,0.92); backdrop-filter:blur(12px); }
+header { position:fixed; top:0; left:0; right:0; z-index:100; padding:7px 48px; min-height:50px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); background:rgba(245,240,232,0.92); backdrop-filter:blur(12px); }
 .logo { font-family:'Instrument Serif',serif; font-size:1.6rem; color:var(--noir); text-decoration:none; }
 .logo span { color:var(--accent); }
 nav { display:flex; gap:28px; align-items:center; }
@@ -69,9 +69,9 @@ nav a:hover { color:var(--accent); }
 .hero-tag { display:inline-flex; align-items:center; gap:8px; background:var(--vert-light); color:var(--vert); font-size:0.8rem; font-weight:600; padding:6px 14px; border-radius:20px; margin-bottom:24px; border:1px solid rgba(45,106,79,0.2); }
 .hero-tag::before { content:''; width:7px; height:7px; background:var(--vert); border-radius:50%; animation:pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
-h1 { font-family:'Instrument Serif',serif; font-size:clamp(2.6rem,4.5vw,4rem); line-height:1.08; letter-spacing:-0.03em; color:var(--noir); margin-bottom:20px; }
+h1 { font-family:'Instrument Serif',serif; font-size:clamp(2rem,3.2vw,3rem); line-height:1.1; letter-spacing:-0.03em; color:var(--noir); margin-bottom:20px; }
 h1 em { font-style:italic; color:var(--accent); }
-.hero-sub { font-size:1.05rem; color:var(--gris); line-height:1.7; margin-bottom:36px; max-width:480px; }
+.hero-sub { font-size:1rem; color:var(--gris); line-height:1.7; margin-bottom:36px; max-width:480px; }
 .hero-ctas { display:flex; gap:14px; flex-wrap:wrap; }
 .btn-primary { background:var(--accent); color:white; padding:14px clamp(16px,4vw,28px); border-radius:10px; font-weight:700; font-size:clamp(0.82rem,3vw,1rem); text-decoration:none; transition:all .2s; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
 .btn-primary:hover { background:#a83a20; transform:translateY(-1px); }
@@ -664,7 +664,7 @@ select.form-input { cursor:pointer; }
   <div class="hero-inner">
     <div>
       <div class="hero-tag">IA juridique · Lettres officielles incluses</div>
-      <h1>Récupérez l'argent que votre propriétaire<br><em>vous doit.</em></h1>
+      <h1>Récupérez l'argent que votre propriétaire <em>vous doit.</em></h1>
       <p class="hero-sub">BailScan calcule les sommes que votre propriétaire vous doit, génère le plan d'action étape par étape et rédige les courriers officiels pour les récupérer.</p>
       <div class="hero-ctas">
         <a href="#app" class="btn-primary">Analyser mon bail gratuitement →</a>
@@ -3039,3 +3039,4 @@ function scrollToApp() {
 </script>
 </body>
 </html>
+ 
