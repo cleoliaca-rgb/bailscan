@@ -351,6 +351,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 :root {
   --side-w: 256px;
   --side-bg: #0f172a;
+  --sidebar-bg: #0f172a;
   --side-border: rgba(255,255,255,.06);
   --side-active-bg: rgba(99,149,255,.14);
   --side-active-color: #93b4ff;
@@ -924,7 +925,7 @@ body.is-dashboard #marketingPage { display: none !important; }
     border: none; border-radius: 8px; cursor: pointer; flex-shrink: 0;
   }
   .dash-hamburger svg { stroke: white; }
-  .dash-topbar-mobile {
+  #dashTopbarMobile {
     display: flex !important;
     align-items: center; justify-content: space-between;
     padding: 10px 16px;
@@ -938,6 +939,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
   /* ── SIDEBAR DRAWER ── */
   .dash-sidebar {
+    display: flex !important;
     position: fixed !important;
     top: 0 !important; left: -260px !important;
     width: 240px !important; height: 100vh !important;
@@ -1733,7 +1735,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
 <div id="dashboardSection">
   <!-- Topbar mobile -->
-  <div class="dash-topbar-mobile" id="dashTopbarMobile">
+  <div class="dash-topbar-mobile" id="dashTopbarMobile" style="display:none">
     <button class="dash-hamburger" onclick="toggleDashSidebar()">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="1.8">
         <line x1="3" y1="6" x2="17" y2="6"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="14" x2="17" y2="14"/>
@@ -4473,7 +4475,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="font-size:.82rem;color:#5b21b6;line-height:1.65;margin-bottom:12px">
               YouSign est le leader français de la signature électronique. Vos documents signés ont la même valeur juridique qu'une signature manuscrite.
             </div>
-            <a href="https://yousign.com/fr-fr/tarifs" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#4f46e5;color:white;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600">
+            <a href="https://yousign.app/welcome?lang=fr" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#4f46e5;color:white;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600">
               Créer mon compte YouSign →
             </a>
             <span style="font-size:.76rem;color:#7c3aed;margin-left:12px">Offre gratuite disponible · 10 signatures/mois incluses</span>
@@ -5465,7 +5467,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
 <!-- MODALE MANDAT -->
 <div class="modal-overlay" id="modalMandat" style="display:none">
-  <div class="modal" style="max-width:680px;width:95%;max-height:90vh;overflow-y:auto;padding-bottom:24px">
+  <div class="modal" style="max-width:680px;width:95%;max-height:90vh;overflow-y:auto;padding:0 24px 24px">
     <button class="modal-close" onclick="closeModalMandat()">×</button>
     <div class="modal-title" id="modalMandatTitle">Ajouter un bien</div>
     <input type="hidden" id="mandatEditId">
@@ -5592,7 +5594,10 @@ body.is-dashboard #marketingPage { display: none !important; }
       </div>
       <div class="form-group-pro">
         <label class="form-label">Code postal bailleur</label>
-        <input type="text" class="form-input-pro" id="mandatBailleurCp" placeholder="75001" maxlength="5">
+        <div style="position:relative">
+          <input type="text" class="form-input-pro" id="mandatBailleurCp" placeholder="75001" maxlength="5" oninput="cpAutoBailleur(this.value)" autocomplete="off">
+          <div id="mandatBailleurCpDrop" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:200;overflow:hidden"></div>
+        </div>
       </div>
       <div class="form-group-pro">
         <label class="form-label">Ville bailleur</label>
@@ -5617,7 +5622,9 @@ body.is-dashboard #marketingPage { display: none !important; }
         <textarea class="form-input-pro" id="mandatNotes" rows="2" placeholder="Informations complémentaires…" style="resize:vertical"></textarea>
       </div>
     </div>
-    <button class="btn-submit" onclick="saveMandat()" style="width:100%;margin-top:18px;background:var(--pro-accent);color:white;border:none">Enregistrer le bien</button>
+    <div style="margin-top:18px">
+      <button class="btn-submit" onclick="saveMandat()" style="width:100%;background:var(--pro-accent);color:white;border:none">Enregistrer le bien</button>
+    </div>
   </div>
 </div>
 
@@ -5705,13 +5712,23 @@ async function loadAllData() {
   // Agence
   var {data:agence} = await _SB.from('agences').select('*').eq('id',agId).single();
   if (agence) {
+    // Si Supabase dit onboarding terminé, le marquer en localStorage
+    if (agence.onboarding_done) localStorage.setItem('bailscan_ob_done', '1');
     // Merger données Supabase + localStorage (pour les champs non stockés en DB)
     var localAI = {};
     try { var ls=localStorage.getItem('bailscan_agency_info'); if(ls) localAI=JSON.parse(ls); } catch(e){}
     proState.agencyInfo = Object.assign({}, localAI, {
-      nom:agence.nom, email:agence.email, telephone:agence.telephone,
-      adresse:agence.adresse, siret:agence.siret, logo_url:agence.logo_url,
-      plan:agence.plan, trial_end:agence.trial_end
+      nom: agence.nom || localAI.nom || '',
+      email: agence.email || localAI.email || '',
+      tel: agence.telephone || localAI.tel || '',
+      telephone: agence.telephone || localAI.telephone || '',
+      adresse: agence.adresse || localAI.adresse || '',
+      siret: agence.siret || localAI.siret || '',
+      logo_url: agence.logo_url || localAI.logo_url || '',
+      plan: agence.plan,
+      trial_end: agence.trial_end
+      // carte, garantie, colorPrimary, colorSecondary, colorBody, colorSign
+      // sont préservés depuis localAI via Object.assign ci-dessus
     });
   } else {
     // Pas de données Supabase → charger depuis localStorage
@@ -5783,7 +5800,7 @@ async function saveAgenceSupabase(info) {
   await _SB.from('agences').update({
     nom: info.nom||'',
     email: info.email||'',
-    telephone: info.telephone||'',
+    telephone: info.tel||info.telephone||'',
     adresse: info.adresse||'',
     siret: info.siret||'',
     updated_at: new Date().toISOString()
@@ -6036,8 +6053,12 @@ function showDashboard(){
   // Onboarding premier login
   setTimeout(function() {
     if (localStorage.getItem('bailscan_ob_done') === '1') return;
+    // Vérifier aussi Supabase (onboarding_done)
+    if (proState.agencyInfo && proState.agencyInfo.onboarding_done) {
+      localStorage.setItem('bailscan_ob_done', '1'); return;
+    }
     showOnboarding();
-  }, 1000);
+  }, 1500);
 }
 
 // ─── GESTION PLAN / TRIAL ─────────────────────────────────
@@ -6182,19 +6203,35 @@ function showPlanSuccess(plan) {
 async function subscribePro(plan) {
   var btn = event && event.target;
   if (btn) { btn.textContent = 'Redirection…'; btn.disabled = true; }
-  var mode = window._pwMode || window._dashPricingMode || 'mensuel';
+  // Lire le mode depuis les toggles visibles (landing ou dashboard)
+  var mode = _pricingMode || window._pwMode || window._dashPricingMode || 'mensuel';
+  var modeLabels = { mensuel:'sans engagement', '6mois':'engagement 6 mois', '12mois':'engagement 12 mois' };
+  console.log('[subscribePro] mode:', mode);
   try {
     var agId = await getAgenceId();
     var email = proState.user && proState.user.email || '';
+    if (!email) { alert('Vous devez être connecté pour vous abonner.'); if (btn) { btn.textContent = 'S’abonner →'; btn.disabled = false; } return; }
     var r = await fetch('/api/checkout-pro', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ plan: 'pro', mode: mode, email: email, agence_id: agId })
     });
     var d = await r.json();
-    if (d.url) window.location.href = d.url;
-    else { alert('Erreur : ' + (d.error || 'inconnue')); if (btn) { btn.textContent = 'S’abonner →'; btn.disabled = false; } }
-  } catch(e) { alert('Erreur : ' + e.message); if (btn) { btn.textContent = 'S’abonner →'; btn.disabled = false; } }
+    if (d.url) {
+      window.location.href = d.url;
+    } else {
+      var errMsg = d.error || 'Erreur inconnue';
+      if (errMsg.includes('STRIPE_PRICE')) {
+        alert("Configuration Stripe manquante. Vérifiez les variables d’environnement Vercel : " + errMsg);
+      } else {
+        alert('Erreur : ' + errMsg);
+      }
+      if (btn) { btn.textContent = 'S’abonner →'; btn.disabled = false; }
+    }
+  } catch(e) {
+    alert('Erreur réseau : ' + e.message);
+    if (btn) { btn.textContent = 'S’abonner →'; btn.disabled = false; }
+  }
 }
 async function logout(){
   var sb = getSupabase(); if(sb) await sb.auth.signOut();
@@ -7120,6 +7157,7 @@ function saveAgencyInfo() {
     colorSign:      (document.getElementById('aiColorSign')      ||{value:'#1d4ed8'}).value || '#1d4ed8'
   };
   proState.agencyInfo = ai;
+  localStorage.setItem('bailscan_agency_info', JSON.stringify(ai));
   if(proState.isLoggedIn) saveAgenceSupabase(ai);
   var msg = document.getElementById('aiSaveMsg');
   if (msg) { msg.style.display='block'; setTimeout(function(){ msg.style.display='none'; }, 3000); }
@@ -7678,7 +7716,6 @@ function openFicheMandat(id, activeTab) {
     // Bailleur
     if (m.bailleur) {
       content += '<div style="background:white;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px">'
-        + '<div style="width:40px;height:40px;border-radius:50%;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0"></div>'
         + '<div style="flex:1;min-width:0">'
           + '<div style="font-size:.64rem;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;font-weight:600;margin-bottom:3px">Propriétaire bailleur</div>'
           + '<div style="font-weight:700;font-size:.9rem">'+m.bailleur+'</div>'
@@ -7882,7 +7919,7 @@ function uploadSignature(input) {
     var block = document.getElementById('signaturePreviewBlock');
     if (img) img.src = data;
     if (block) block.style.display = 'block';
-    document.getElementById('sigUploadLabel').textContent = 'Signature enregistrée ✅';
+    document.getElementById('sigUploadLabel').textContent = 'Signature enregistrée ✓';
     showToast('Signature enregistrée — elle sera utilisée dans vos documents PDF.', 'green');
   };
   reader.readAsDataURL(file);
@@ -7996,20 +8033,23 @@ function exportFicheMandat(mandatId) {
   var logo = proState.agencyLogo || localStorage.getItem('bailscan_pro_logo');
   var agence = ai.nom || 'BailScan Pro';
   var pW=210, pH=297, mg=14, cW=pW-mg*2;
-  var y=20;
-  var PR=[59,111,212];
+  var y=26;
+  var PC = getPdfColors ? getPdfColors() : null;
+  var PR = PC ? PC.primary : [59,111,212];
+  var SEC = PC ? PC.secondary : [15,23,42];
 
   function np(needed) {
     if (y + needed > pH - 16) { doc.addPage(); y = 20; }
   }
 
   function title(txt) {
-    np(10);
+    np(16);
+    y += 4; // marge avant chaque titre de section
     doc.setFillColor(PR[0],PR[1],PR[2]);
     doc.rect(mg, y-3, cW, 8, 'F');
     doc.setFontSize(8.5); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
     doc.text(txt.toUpperCase(), mg+3, y+2);
-    y += 10;
+    y += 11;
     doc.setTextColor(30,30,30);
   }
 
@@ -8022,17 +8062,19 @@ function exportFicheMandat(mandatId) {
 
   function grid2(items) {
     // Affiche des items [label, valeur] en 2 colonnes
-    var rH=11, half=cW/2;
-    np(Math.ceil(items.length/2)*rH+6);
+    var rH=12, half=cW/2, pad=6;
+    var rows = Math.ceil(items.length/2);
+    var boxH = rows*rH + pad*2;
+    np(boxH+4);
     doc.setFillColor(242,245,255);
-    doc.roundedRect(mg, y, cW, Math.ceil(items.length/2)*rH+3, 2,2,'F');
+    doc.roundedRect(mg, y, cW, boxH, 2,2,'F');
     items.forEach(function(r,i){
       if (!r[0]) return;
-      var xi = i%2===0 ? mg+4 : mg+half+4;
-      var yi = y+8+Math.floor(i/2)*rH;
+      var xi = i%2===0 ? mg+5 : mg+half+5;
+      var yi = y+pad+6+Math.floor(i/2)*rH;
       field(r[0], r[1], xi, yi);
     });
-    y += Math.ceil(items.length/2)*rH+6;
+    y += boxH+6; // espace après l'encart
   }
 
   // ── EN-TÊTE ──
@@ -8138,13 +8180,59 @@ function exportFicheMandat(mandatId) {
   // ── CANDIDATS ──
   var candidats = m.candidats || [];
   if (candidats.length) {
-    title('Candidats analysés');
-    candidats.forEach(function(ca) {
-      np(7);
-      var ok=ca.verdict==='GO';
-      doc.setFontSize(8); doc.setFont('helvetica','normal');
-      doc.setTextColor(ok?22:153, ok?101:27, ok?52:27);
-      doc.text((ok?'✓ ':' ✗ ')+ca.nom+' — Score '+ca.score+'/100 — '+ca.verdict+' ('+ca.date+')', mg+3, y); y+=5.5;
+    title('Candidats analysés ('+candidats.length+')');
+    candidats.slice().reverse().forEach(function(ca) {
+      var cverd = (ca.verdict||'').replace('_',' ');
+      var isGo = cverd==='GO';
+      var isMitige = cverd==='MITIGE';
+      var cardH = 26;
+      np(cardH+4);
+
+      // Fond coloré selon verdict
+      var bgR = isGo?240:isMitige?255:254;
+      var bgG = isGo?253:isMitige?251:242;
+      var bgB = isGo?244:isMitige?235:242;
+      doc.setFillColor(bgR,bgG,bgB);
+      doc.roundedRect(mg, y, cW, cardH, 2,2,'F');
+
+      // Bande gauche colorée
+      var bR = isGo?34:isMitige?245:239;
+      var bG = isGo?197:isMitige?158:68;
+      var bB = isGo?94:isMitige?11:68;
+      doc.setFillColor(bR,bG,bB);
+      doc.rect(mg, y, 3, cardH, 'F');
+
+      // Badge verdict (droite)
+      var verdLabel = isGo?'GO':isMitige?'MITIGE':'NO GO';
+      var badgeR = isGo?22:isMitige?146:153;
+      var badgeG = isGo?101:isMitige?64:27;
+      var badgeB = isGo?52:isMitige?14:27;
+      doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(badgeR,badgeG,badgeB);
+      doc.text(verdLabel, pW-mg-4, y+8, {align:'right'});
+
+      // Nom candidat
+      var nomCa = ((ca.prenom?ca.prenom+' ':'')+( ca.nom||'—')).trim();
+      doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(15,23,42);
+      doc.text(nomCa, mg+6, y+8);
+
+      // Score
+      var scoreStr = 'Score : '+(ca.score||'—')+'/100';
+      doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(100,116,139);
+      doc.text(scoreStr, mg+6, y+14);
+
+      // Date + infos complémentaires
+      var infoCa = [];
+      if (ca.date) infoCa.push(ca.date);
+      if (ca.revenus) infoCa.push('Revenus : '+ca.revenus+' €/mois');
+      if (ca.contrat) infoCa.push('Contrat : '+ca.contrat);
+      if (ca.garant && ca.garant!=='non') infoCa.push('Garant : '+((ca.garantPrenom||'')+' '+(ca.garantNom||'')).trim()||ca.garant);
+      if (infoCa.length) {
+        doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(120,120,120);
+        var infoTxt = doc.splitTextToSize(infoCa.join(' · '), cW-16);
+        doc.text(infoTxt[0]||'', mg+6, y+20);
+      }
+
+      y += cardH+4;
     });
     y+=2;
   }
@@ -8194,8 +8282,8 @@ function exportFicheMandat(mandatId) {
   var np2=doc.internal.getNumberOfPages();
   for (var pg=1;pg<=np2;pg++) {
     doc.setPage(pg);
-    doc.setFillColor(245,245,245); doc.rect(0,pH-8,pW,8,'F');
-    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
+    doc.setFillColor(SEC[0],SEC[1],SEC[2]); doc.rect(0,pH-8,pW,8,'F');
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(200,210,230);
     doc.text(agence+' · BailScan Pro · '+new Date().toLocaleDateString('fr-FR'), mg, pH-3);
     doc.text('Page '+pg+'/'+np2, pW-mg, pH-3, {align:'right'});
   }
@@ -8227,7 +8315,7 @@ function initSignatureUI() {
   if (img) img.src = sig;
   if (block) block.style.display = 'block';
   var lbl = document.getElementById('sigUploadLabel');
-  if (lbl) lbl.textContent = 'Signature enregistrée ✅';
+  if (lbl) lbl.textContent = 'Signature enregistrée ✓';
 }
 
 function supprimerMandatAgence(mandatId) {
@@ -10346,7 +10434,8 @@ function sendEDLByEmail() {
     var ai = proState.agencyInfo || {};
     var agence = ai.nom || 'BailScan Pro';
     var typeLabel = edl.type === 'entree' ? "État des lieux d'entrée" : edl.type === 'sortie' ? "État des lieux de sortie" : "État des lieux";
-    var PR = [15,23,62];
+    var _PC1 = getPdfColors ? getPdfColors() : null;
+    var PR = _PC1 ? _PC1.primary : [15,23,42];
     doc.setFillColor(PR[0],PR[1],PR[2]); doc.rect(0,0,210,14,'F');
     doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
     doc.text(agence, 14, 9);
@@ -10524,7 +10613,10 @@ function exportEDLPDF(id, saveFirst) {
 
   // ── En-tête ──
   var typeLabel = e.type==='entree' ? "ÉTAT DES LIEUX D'ENTRÉE" : "ÉTAT DES LIEUX DE SORTIE";
-  doc.setFillColor(15,23,42); doc.rect(0,0,W,22,'F');
+  var _PC2 = getPdfColors ? getPdfColors() : null;
+  var _PR2 = _PC2 ? _PC2.primary : [15,23,42];
+  var _SEC2 = _PC2 ? _PC2.secondary : [15,23,42];
+  doc.setFillColor(_SEC2[0],_SEC2[1],_SEC2[2]); doc.rect(0,0,W,22,'F');
   doc.setFontSize(11); doc.setFont(undefined,'bold'); doc.setTextColor(255,255,255);
   doc.text(typeLabel, mg, 10);
   doc.setFontSize(8); doc.setFont(undefined,'normal');
@@ -12215,8 +12307,18 @@ function showOnboarding() {
     var ls = JSON.parse(localStorage.getItem('bailscan_locataires')||'[]');
     if (ms.length > 0 || ls.length > 0) { localStorage.setItem('bailscan_ob_done','1'); return; }
   } catch(e) {}
-  // Nouvel utilisateur → afficher onboarding
-  _obStep = 0; _obDone = []; renderObStep();
+  // Reprendre progression existante si elle existe
+  try {
+    var saved = localStorage.getItem('bailscan_ob_step');
+    if (saved) {
+      var prog = JSON.parse(saved);
+      _obStep = prog.step || 0;
+      _obDone = prog.done || [];
+    } else {
+      _obStep = 0; _obDone = [];
+    }
+  } catch(e) { _obStep = 0; _obDone = []; }
+  renderObStep();
 }
 
 var _obStep = 0;
@@ -12264,6 +12366,8 @@ function obGoStep() {
   var s = _obSteps[_obStep];
   _obDone.push(_obStep);
   _obStep++;
+  // Mémoriser la progression
+  try { localStorage.setItem('bailscan_ob_step', JSON.stringify({step:_obStep, done:_obDone})); } catch(e){}
   closeOnboarding();
   showDashTab(s.tab);
   // Afficher bandeau "étape suivante" après délai
@@ -12271,7 +12375,7 @@ function obGoStep() {
     setTimeout(showObBanner, 800);
   } else {
     // Onboarding terminé
-    try { localStorage.setItem('bailscan_ob_done','1'); } catch(e) {}
+    try { localStorage.setItem('bailscan_ob_done','1'); localStorage.removeItem('bailscan_ob_step'); } catch(e) {}
     if (proState._agenceId) {
       var sb = getSupabase();
       if (sb) sb.from('agences').update({onboarding_done:true}).eq('id', proState._agenceId);
@@ -12322,8 +12426,7 @@ function obCompleteStep() {
 async function closeOnboarding() {
   var el = document.getElementById('modalOnboarding');
   if (el) el.style.display = 'none';
-  var uid = proState.user && proState.user.id || 'x';
-  localStorage.setItem('bs_ob2_' + uid, '1');
+  localStorage.setItem('bailscan_ob_done', '1');
   try {
     var sb=getSupabase(),agId=proState._agenceId||(await getAgenceId());
     if(sb&&agId) await sb.from('agences').update({onboarding_done:true}).eq('id',agId);
@@ -12331,8 +12434,7 @@ async function closeOnboarding() {
 }
 
 function resetOnboarding() {
-  var uid = proState.user && proState.user.id || 'x';
-  localStorage.removeItem('bs_ob2_' + uid);
+  localStorage.removeItem('bailscan_ob_done');
   _obDone = []; _obStep = 0;
   renderObStep();
 }
@@ -12895,6 +12997,11 @@ function exportDossierPDF() {
   var date = new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
   var agence = (proState._agenceData && proState._agenceData.nom) || 'BailScan Pro';
 
+  var _PCd = getPdfColors ? getPdfColors() : null;
+  var _PRd = _PCd ? _PCd.primary : [59,111,212];
+  var _SECd = _PCd ? _PCd.secondary : [17,24,39];
+  var _prHex = '#'+_PRd.map(function(v){return v.toString(16).padStart(2,'0')}).join('');
+  var _secHex = '#'+_SECd.map(function(v){return v.toString(16).padStart(2,'0')}).join('');
   var scoreNum = parseInt(score) || 0;
   var scoreColor = scoreNum >= 70 ? '#2d6a4f' : scoreNum >= 40 ? '#d97706' : '#dc2626';
   var tauxColor = taux && taux <= 33 ? '#2d6a4f' : taux && taux <= 40 ? '#d97706' : '#dc2626';
@@ -12908,11 +13015,11 @@ function exportDossierPDF() {
     +'* { margin:0; padding:0; box-sizing:border-box; }'
     +'body { font-family:"DM Sans",sans-serif; background:white; color:#111; font-size:13px; line-height:1.5; }'
     +'.page { max-width:800px; margin:0 auto; padding:0; }'
-    +'.header { background:#111827; padding:20px 40px; display:flex; justify-content:space-between; align-items:flex-end; }'
+    +'.header { background:'+_secHex+' padding:20px 40px; display:flex; justify-content:space-between; align-items:flex-end; }'
     +'.header-brand { font-weight:700; font-size:22px; color:white; }'
     +'.header-brand em { color:#7fa8e8; font-style:italic; }'
     +'.header-meta { text-align:right; color:rgba(255,255,255,.45); font-size:11px; line-height:1.7; }'
-    +'.score-band { background:#1f2f4a; padding:20px 40px; display:flex; align-items:center; gap:28px; }'
+    +'.score-band { background:'+_secHex+' padding:20px 40px; display:flex; align-items:center; gap:28px; }'
     +'.score-circle { width:72px; height:72px; border-radius:50%; background:'+scoreColor+'; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; flex-shrink:0; }'
     +'.score-n { font-weight:700; font-size:24px; line-height:1; }'
     +'.score-l { font-size:9px; opacity:.7; text-transform:uppercase; letter-spacing:.06em; }'
@@ -12921,7 +13028,7 @@ function exportDossierPDF() {
     +'.score-sub { font-size:12px; color:rgba(255,255,255,.5); }'
     +'.body { padding:20px 40px; }'
     +'.section { margin-bottom:28px; }'
-    +'.section-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#3b6fd4; margin-bottom:12px; padding-bottom:6px; border-bottom:1px solid #e0d8cc; }'
+    +'.section-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:'+_prHex+'; margin-bottom:12px; padding-bottom:6px; border-bottom:1px solid #e0d8cc; }'
     +'.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }'
     +'.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }'
     +'.field { background:#f1f5f9; border-radius:8px; padding:12px 14px; }'
@@ -16655,7 +16762,10 @@ async function saveLocataireSupabase(l) {
 
 // ─── GESTION ABONNEMENT DASHBOARD ────────────────────────
 async function cancelSubscription() {
-  if (!confirm('Résilier votre abonnement BailScan Pro ? Vous garderez l\'accès jusqu\'à la fin de la période en cours.')) return;
+  var plan = proState.agencyInfo && proState.agencyInfo.plan;
+  var mode = proState.agencyInfo && proState.agencyInfo.mode_engagement || 'mensuel';
+  var modeMsg = mode === '6mois' ? ' (engagement 6 mois)' : mode === '12mois' ? ' (engagement 12 mois)' : '';
+  if (!confirm('Résilier votre abonnement BailScan Pro'+modeMsg+' ?\n\nVous garderez l\'accès jusqu\'à la fin de la période en cours.')) return;
   var btn = document.getElementById('btnCancelSub');
   if (btn) { btn.textContent = 'Résiliation...'; btn.disabled = true; }
   try {
@@ -16671,9 +16781,14 @@ async function cancelSubscription() {
       if (status) { status.textContent = 'Résiliation en cours'; status.style.color = 'var(--warn)'; }
       if (btn) btn.style.display = 'none';
       showToast('Résiliation confirmée', 'blue');
+    } else if (d.locked) {
+      // Engagement non terminé
+      var endDate = d.min_end ? new Date(d.min_end).toLocaleDateString('fr-FR') : '';
+      alert('Résiliation impossible — ' + d.error + (endDate ? '\n\nDate de fin d\'engagement : ' + endDate : ''));
+      if (btn) { btn.textContent = 'Résilier mon abonnement'; btn.disabled = false; }
     } else {
       alert('Erreur : ' + (d.error || 'inconnue'));
-      if (btn) { btn.textContent = '❌ Résilier mon abonnement'; btn.disabled = false; }
+      if (btn) { btn.textContent = 'Résilier mon abonnement'; btn.disabled = false; }
     }
   } catch(e) {
     alert('Erreur : ' + e.message);
@@ -17745,6 +17860,46 @@ function toggleBailleurType(type) {
     }
   });
 })();
+
+function cpAutoBailleur(q) {
+  var drop = document.getElementById('mandatBailleurCpDrop');
+  if (!drop || !q || q.length < 2) { if(drop) drop.style.display='none'; return; }
+  fetch('https://geo.api.gouv.fr/communes?codePostal='+q+'&fields=nom,codesPostaux&limit=8')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data||!data.length){drop.style.display='none';return;}
+      drop.innerHTML = data.map(function(com){
+        var cp = com.codesPostaux[0], ville = com.nom;
+        var div = document.createElement('div');
+        div.setAttribute('data-cp', cp);
+        div.setAttribute('data-ville', ville);
+        div.textContent = cp + ' — ' + ville;
+        div.style.cssText = 'padding:9px 14px;cursor:pointer;font-size:.85rem;border-bottom:1px solid #f0ede8';
+        div.addEventListener('mouseover', function(){ this.style.background='#eef2fb'; });
+        div.addEventListener('mouseout',  function(){ this.style.background='white'; });
+        div.addEventListener('mousedown', function(e){
+          e.preventDefault();
+          pickBailleurCp(this.getAttribute('data-cp'), this.getAttribute('data-ville'));
+        });
+        var tmp = document.createElement('div');
+        tmp.appendChild(div);
+        return tmp.innerHTML;
+      }).join('');
+      drop.style.display='block';
+    }).catch(function(){drop.style.display='none';});
+}
+
+function pickBailleurCp(cp, ville) {
+  var cpEl = document.getElementById('mandatBailleurCp'); if(cpEl) cpEl.value = cp;
+  var vEl  = document.getElementById('mandatBailleurVille'); if(vEl) vEl.value = ville;
+  var drop = document.getElementById('mandatBailleurCpDrop'); if(drop) drop.style.display='none';
+}
+
+document.addEventListener('click', function(e){
+  var d = document.getElementById('mandatBailleurCpDrop');
+  if(d && !d.contains(e.target) && e.target.id !== 'mandatBailleurCp') d.style.display='none';
+});
+
 </script>
 
 </body>
