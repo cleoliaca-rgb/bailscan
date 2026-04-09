@@ -506,21 +506,22 @@ select.form-input { cursor:pointer; }
 .btn-pro:hover { background:var(--creme); }
  
 @media(max-width:768px){
-  /* Deliverables carousel on tablet */
+  /* Deliverables carousel */
   .deliverables-grid {
     display:flex !important;
-    overflow-x:auto;
+    overflow-x:scroll !important;
     scroll-snap-type:x mandatory;
     -webkit-overflow-scrolling:touch;
-    gap:8px !important;
-    border-radius:16px;
-    padding-bottom:4px;
+    gap:10px !important;
+    padding-bottom:2px;
+    border-radius:0 !important;
+    scrollbar-width:none;
   }
-  .deliverables-grid::-webkit-scrollbar { height:3px; }
-  .deliverables-grid::-webkit-scrollbar-thumb { background:rgba(200,75,47,0.3); border-radius:2px; }
+  .deliverables-grid::-webkit-scrollbar { display:none; }
   .deliverables-grid > div {
-    min-width:82vw !important;
-    scroll-snap-align:start;
+    min-width:78vw !important;
+    max-width:78vw !important;
+    scroll-snap-align:center;
     border-radius:14px !important;
     flex-shrink:0;
   }
@@ -598,7 +599,7 @@ select.form-input { cursor:pointer; }
       <div class="modal-feature">Références légales complètes (loi 1989, ALUR, ELAN)</div>
     </div>
     <div class="modal-price"><div class="modal-price-n">29€</div><div class="modal-price-sub">paiement unique</div></div>
-    <div class="modal-price-once">Accès à vie à votre rapport</div>
+    <div class="modal-price-once">Paiement unique</div>
     <button class="btn-pay" id="btnPayConfirm" onclick="payWithStripe()">Débloquer mon rapport complet →</button>
     <div class="modal-secure">· Paiement sécurisé · Satisfait ou remboursé ·</div>
   </div>
@@ -657,7 +658,7 @@ select.form-input { cursor:pointer; }
     </div>
  
     <!-- 3 COLONNES -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-radius:20px;overflow:hidden;" class="deliverables-grid">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-radius:20px;" class="deliverables-grid">
  
       <!-- COLONNE 1 : ANALYSE -->
       <div style="background:#111;padding:36px 28px;display:flex;flex-direction:column;gap:20px;">
@@ -741,16 +742,16 @@ select.form-input { cursor:pointer; }
       </div>
     </div>
  
-    <!-- CAROUSEL HINT mobile -->
-    <div class="deliverables-hint" style="display:none;justify-content:center;gap:6px;margin-top:8px;">
-      <div style="width:20px;height:3px;border-radius:2px;background:var(--accent);opacity:0.8;"></div>
-      <div style="width:6px;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);"></div>
-      <div style="width:6px;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);"></div>
+    <!-- CAROUSEL DOTS (mobile) -->
+    <div id="deliverables-dots" style="display:none;justify-content:center;gap:6px;margin-top:12px;">
+      <div class="d-dot active" style="width:20px;height:3px;border-radius:2px;background:var(--accent);transition:all .3s;"></div>
+      <div class="d-dot" style="width:6px;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);transition:all .3s;"></div>
+      <div class="d-dot" style="width:6px;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);transition:all .3s;"></div>
     </div>
     <!-- CTA BAS DE SECTION -->
     <div style="text-align:center;margin-top:40px;">
       <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:white;padding:15px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">Obtenir mon dossier complet&nbsp;→</a>
-      <div style="margin-top:12px;font-size:0.75rem;color:#444;">Analyse gratuite · Dossier complet à 29€ · Accès à vie</div>
+      <div style="margin-top:12px;font-size:0.75rem;color:#444;">Analyse gratuite · Dossier complet à 29€</div>
     </div>
  
   </div>
@@ -1091,7 +1092,7 @@ select.form-input { cursor:pointer; }
           <div class="paywall-feature">5 lettres officielles personnalisées</div>
         </div>
         <div class="paywall-price">29€</div>
-        <div class="paywall-price-sub">Paiement unique · Accès à vie</div>
+        <div class="paywall-price-sub">Paiement unique</div>
         <button class="btn-primary" onclick="openModal()">Débloquer l'analyse complète →</button>
       </div>
     </div>
@@ -1260,7 +1261,7 @@ select.form-input { cursor:pointer; }
       </div>
     </div>
     <div class="proprio-price-card">
-      <div class="proprio-price-badge">Paiement unique · Accès à vie</div>
+      <div class="proprio-price-badge">Paiement unique</div>
       <div class="proprio-price-amount">49€</div>
       <div class="proprio-price-sub">Résultat en moins de 30 secondes</div>
       <div class="proprio-price-features">
@@ -1963,7 +1964,7 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-amount" style="font-size:2.4rem">' + nbProblemes + ' problème' + (nbProblemes > 1 ? 's' : '') + '<span style="font-size:1.6rem"> juridique' + (nbProblemes > 1 ? 's' : '') + '</span></div>';
     html += '<div class="paywall-amount-banner-sub">Des sommes peuvent vous être dues. Le rapport complet vous donne les lettres officielles pour les réclamer.</div>';
     html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"> Débloquer le rapport complet — 29€</button>';
-    html += '<div class="paywall-amount-banner-roi">Paiement unique · Accès à vie · <strong>Satisfait ou remboursé</strong></div>';
+    html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   } else {
     // CAS 3 : bail ok ou pas assez de données → banner minimaliste
@@ -1972,7 +1973,7 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-amount" style="font-size:2rem">Rapport complet<span style="font-size:1.2rem"> de votre bail</span></div>';
     html += '<div class="paywall-amount-banner-sub">Toutes les clauses, le plan d\'action et les lettres officielles pour défendre vos droits.</div>';
     html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)"> Débloquer le rapport complet — 29€</button>';
-    html += '<div class="paywall-amount-banner-roi">Paiement unique · Accès à vie</div>';
+    html += '<div class="paywall-amount-banner-roi">Paiement unique</div>';
     html += '</div>';
   }
  
@@ -2896,6 +2897,29 @@ function removeExtraDoc(i) {
  
 // ═══════════════════════════════════════
 function toggleFaq(el) { el.classList.toggle('open'); }
+ 
+// ── CAROUSEL LIVRABLES ─────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var grid = document.querySelector('.deliverables-grid');
+  var dotsWrap = document.getElementById('deliverables-dots');
+  if (!grid || !dotsWrap) return;
+  function updateDots() {
+    if (window.innerWidth > 768) { dotsWrap.style.display = 'none'; return; }
+    dotsWrap.style.display = 'flex';
+    var cards = grid.children;
+    if (!cards.length) return;
+    var cardW = cards[0].offsetWidth + 10;
+    var idx = Math.round(grid.scrollLeft / cardW);
+    var dots = dotsWrap.querySelectorAll('.d-dot');
+    dots.forEach(function(d, i) {
+      d.style.width = i === idx ? '20px' : '6px';
+      d.style.background = i === idx ? 'var(--accent)' : 'rgba(255,255,255,0.3)';
+    });
+  }
+  grid.addEventListener('scroll', updateDots, { passive: true });
+  window.addEventListener('resize', updateDots);
+  updateDots();
+});
  
 function resetApp() {
   analysisResult = null; isPaid = false;
