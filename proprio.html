@@ -56,7 +56,7 @@ h1.hero-title em{color:var(--accent);font-style:italic;}
 .mode-card:hover{border-color:var(--accent);box-shadow:0 6px 20px rgba(0,0,0,.07);}
 .mode-card.selected{border-color:var(--accent);background:var(--rouge-light);}
 .mc-icon{font-size:2.2rem;margin-bottom:14px;}
-.mc-title{font-family:'Instrument Serif',serif;font-size:1.2rem;color:var(--noir);margin-bottom:8px;}
+.mc-title{font-family:'Instrument Serif',serif;font-size:1.2rem;color:var(--noir);margin-bottom:8px;margin-top:32px;}
 .mc-desc{font-size:0.82rem;color:var(--gris);line-height:1.6;margin-bottom:14px;}
 .mc-feats{display:flex;flex-direction:column;gap:5px;}
 .mc-feat{font-size:0.78rem;color:var(--texte);display:flex;align-items:center;gap:6px;}
@@ -231,9 +231,20 @@ textarea.fi{resize:vertical;min-height:90px;}
 .mail-modal-inner{background:white;border-radius:18px;padding:36px;max-width:440px;width:100%;position:relative;}
 .mail-modal-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--gris);}
 @media(max-width:768px){.results-section{padding:0 16px 60px;}.results-card{padding:24px 18px;}.res-recap{grid-template-columns:1fr 1fr;}.res-actions-grid{grid-template-columns:1fr;}}
-footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;color:var(--gris);font-size:.8rem;flex-wrap:wrap;gap:10px;}
-footer a{color:var(--gris);text-decoration:none;}
-footer a:hover{color:var(--accent);}
+footer{border-top:none;}
+footer a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.82rem;transition:color .2s;}
+footer a:hover{color:white;}
+.footer-seo{background:var(--noir);color:rgba(255,255,255,0.7);padding:0;flex-direction:column;align-items:stretch;}
+.footer-inner{max-width:1100px;margin:0 auto;padding:48px 48px 28px;}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;margin-bottom:32px;}
+.footer-brand .footer-logo{font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;margin-bottom:8px;}
+.footer-brand .footer-logo span{color:var(--accent);}
+.footer-tagline{font-size:0.85rem;color:rgba(255,255,255,0.55);margin-bottom:6px;}
+.footer-copy{font-size:0.75rem;color:rgba(255,255,255,0.3);}
+.footer-col{display:flex;flex-direction:column;gap:10px;}
+.footer-col-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.4);margin-bottom:4px;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;font-size:0.75rem;color:rgba(255,255,255,0.3);text-align:center;}
+@media(max-width:768px){.footer-top{grid-template-columns:1fr 1fr;gap:32px;}.footer-inner{padding:40px 20px 24px;}}
 @media(max-width:640px){footer{padding:20px 16px;flex-direction:column;align-items:flex-start;}}
 </style>
 </head>
@@ -256,15 +267,15 @@ footer a:hover{color:var(--accent);}
     <div class="modal-title" id="modalTitle">Accès complet BailScan</div>
     <div class="modal-sub">Les deux fonctionnalités incluses dans un seul paiement</div>
     <div class="modal-feats" id="modalFeats">
-      <div class="modal-feat">✍️ <strong>Génération de bail</strong> : conforme loi 1989 / ALUR / ELAN</div>
-      <div class="modal-feat">🔍 <strong>Analyse de bail</strong> : clauses à risque, encadrement loyers</div>
-      <div class="modal-feat">📄 Export PDF prêt à signer</div>
-      <div class="modal-feat">✏️ Modifications illimitées sans repayer</div>
+      <div class="modal-feat">✎️ <strong>Génération de bail</strong> : conforme loi 1989 / ALUR / ELAN</div>
+      <div class="modal-feat">◎ <strong>Analyse de bail</strong> : clauses à risque, encadrement loyers</div>
+      <div class="modal-feat">▤ Export PDF prêt à signer</div>
+      <div class="modal-feat">✎️ Modifications illimitées sans repayer</div>
     </div>
     <div class="modal-price"><div class="modal-price-n">49€</div><div class="modal-price-sub">paiement unique</div></div>
     <div class="modal-price-once">Génération + Analyse · Accès à vie</div>
     <button class="btn-pay-modal" id="btnPayConfirm" onclick="payWithStripe()">Obtenir mon document →</button>
-    <div class="modal-secure">🔒 Paiement unique · Génération + Analyse incluses · Sans abonnement</div>
+    <div class="modal-secure">⊠ Paiement unique · Génération + Analyse incluses · Sans abonnement</div>
   </div>
 </div>
  
@@ -283,8 +294,8 @@ footer a:hover{color:var(--accent);}
     <h1 class="hero-title">Votre bail,<br><em>conforme et protégé</em></h1>
     <p class="hero-sub">Générez un bail conforme ou faites analyser votre bail existant. Loi 1989, ALUR et ELAN. Zéro litige avec votre locataire.</p>
     <div class="hero-ctas">
-      <a href="#app" class="btn-hp" onclick="selectMode('generer')">✍️ Générer un bail →</a>
-      <a href="#app" class="btn-hs" onclick="selectMode('analyser')">🔍 Analyser mon bail</a>
+      <a href="#app" class="btn-hp" onclick="selectMode('generer')">Générer un bail →</a>
+      <a href="#app" class="btn-hs" onclick="selectMode('analyser')">Analyser mon bail</a>
     </div>
     <div class="hero-trust">
       <div class="hero-trust-item">Génération + Analyse de bail incluses</div>
@@ -332,7 +343,7 @@ footer a:hover{color:var(--accent);}
       </div>
       <div class="doc-fade"></div>
     </div>
-    <div class="doc-pages-badge">📄 5 pages · PDF téléchargeable · Prêt à signer</div>
+    <div class="doc-pages-badge">▤ 5 pages · PDF téléchargeable · Prêt à signer</div>
   </div>
 </section></section>
  
@@ -342,7 +353,7 @@ footer a:hover{color:var(--accent);}
   <div class="mode-cards">
     <div class="mode-card" id="modeGenerer" onclick="selectMode('generer')">
       <div class="mc-check" id="checkGenerer"></div>
-      <div class="mc-icon">✍️</div>
+      
       <div class="mc-title">Générer un bail</div>
       <div class="mc-desc">Vous mettez en location un bien et avez besoin d'un bail conforme prêt à signer.</div>
       <div class="mc-feats">
@@ -355,7 +366,7 @@ footer a:hover{color:var(--accent);}
     <div class="mode-card" id="modeAnalyser" onclick="selectMode('analyser')">
       <div class="mc-check" id="checkAnalyser"></div>
       <div class="mc-badge" style="background:var(--vert)">Inclus</div>
-      <div class="mc-icon">🔍</div>
+      
       <div class="mc-title">Analyser mon bail existant</div>
       <div class="mc-desc">Vous avez déjà un bail et souhaitez vérifier qu'il ne vous expose pas à des risques.</div>
       <div class="mc-feats">
@@ -386,7 +397,7 @@ footer a:hover{color:var(--accent);}
     <div class="wpanel active" id="step1">
       <div class="panel-title">Le bien loué</div>
       <div class="panel-sub">Informations sur le logement que vous mettez en location</div>
-      <div class="sh">🏠 Type de bien</div>
+      <div class="sh">⌂ Type de bien</div>
       <div class="fg">
         <label>Type de location <span style="color:var(--accent)">*</span></label>
         <div class="rpills">
@@ -414,14 +425,14 @@ footer a:hover{color:var(--accent);}
         </div>
       </div>
       <div class="fg"><label for="genEquipements">Équipements <small>(cuisine équipée, interphone, digicode…)</small></label><input type="text" id="genEquipements" class="fi" placeholder="Ex : cuisine équipée, cave, digicode, parking n°12"></div>
-      <div class="sh">🏡 Annexes & dépendances</div>
+      <div class="sh">⌂ Annexes & dépendances</div>
       <div class="chk-grid">
-        <label class="chk-item"><input type="checkbox" id="chkJardin"> 🌿 Jardin privatif</label>
-        <label class="chk-item"><input type="checkbox" id="chkTerrasse"> ☀️ Terrasse / Balcon</label>
-        <label class="chk-item"><input type="checkbox" id="chkParking"> 🚗 Parking / Garage</label>
-        <label class="chk-item"><input type="checkbox" id="chkCave"> 📦 Cave / Cellier</label>
-        <label class="chk-item"><input type="checkbox" id="chkGrenier"> 🏠 Grenier / Combles</label>
-        <label class="chk-item"><input type="checkbox" id="chkPiscine"> 🏊 Piscine</label>
+        <label class="chk-item"><input type="checkbox" id="chkJardin"> Jardin privatif</label>
+        <label class="chk-item"><input type="checkbox" id="chkTerrasse"> Terrasse / Balcon</label>
+        <label class="chk-item"><input type="checkbox" id="chkParking"> Parking / Garage</label>
+        <label class="chk-item"><input type="checkbox" id="chkCave"> Cave / Cellier</label>
+        <label class="chk-item"><input type="checkbox" id="chkGrenier"> Grenier / Combles</label>
+        <label class="chk-item"><input type="checkbox" id="chkPiscine"> Piscine</label>
       </div>
       <div class="fgrid" style="margin-top:10px">
         <div class="fg"><label for="genAnnexeNum">N° parking / cave <small>si applicable</small></label><input type="text" id="genAnnexeNum" class="fi" placeholder="Ex : Parking n°12, Cave B4"></div>
@@ -437,7 +448,7 @@ footer a:hover{color:var(--accent);}
     <div class="wpanel" id="step2">
       <div class="panel-title">Loyer & conditions financières</div>
       <div class="panel-sub">Définissez le loyer et les modalités financières</div>
-      <div class="sh">💶 Loyer</div>
+      <div class="sh">€ Loyer</div>
       <div class="fgrid">
         <div class="fg"><label for="genLoyer">Loyer mensuel hors charges (€) <span style="color:var(--accent)">*</span></label><input type="number" id="genLoyer" class="fi" placeholder="Ex : 850" min="0"></div>
         <div class="fg"><label for="genCharges">Charges mensuelles (€)</label><input type="number" id="genCharges" class="fi" placeholder="Ex : 80" min="0"><small style="font-size:.72rem;color:var(--gris);margin-top:2px">Provisions sur charges avec régularisation annuelle</small></div>
@@ -459,7 +470,7 @@ footer a:hover{color:var(--accent);}
           <label class="rpill" data-group="genRevision" onclick="setR('genRevision','non',this)">Pas de révision</label>
         </div>
       </div>
-      <div class="sh">📍 Encadrement des loyers <small style="font-weight:400;font-size:.76rem;color:var(--gris)">(Paris, Lyon, Bordeaux, Montpellier, Grenoble, Lille…)</small></div>
+      <div class="sh">◉ Encadrement des loyers <small style="font-weight:400;font-size:.76rem;color:var(--gris)">(Paris, Lyon, Bordeaux, Montpellier, Grenoble, Lille…)</small></div>
       <div class="info-box">ℹ️ Si votre ville est en zone encadrée, renseignez les loyers de référence. Consultez observatoire-loyers.adil.org pour les valeurs exactes.</div>
       <div class="fgrid g3">
         <div class="fg"><label for="genLoyerMinore">Loyer minoré (€/m²)</label><input type="number" id="genLoyerMinore" class="fi" placeholder="Ex : 18.5" step="0.1" min="0"></div>
@@ -478,7 +489,7 @@ footer a:hover{color:var(--accent);}
       <div class="panel-sub" id="step3Sub">Renseignez les informations sur les parties au contrat</div>
  
       <div id="panelGenerer">
-        <div class="sh">👤 Bailleur (vous)</div>
+        <div class="sh">◯ Bailleur (vous)</div>
         <div class="fg"><label>Type de bailleur</label>
           <div class="rpills">
             <label class="rpill active" data-group="genBailleurType" data-group="genBailleurType" onclick="setR('genBailleurType','physique',this);toggleBailleur('physique')">Personne physique</label>
@@ -496,7 +507,7 @@ footer a:hover{color:var(--accent);}
         </div>
         <div class="fg"><label for="genBailleurTel">Téléphone</label><input type="text" id="genBailleurTel" class="fi" placeholder="Ex : 06 12 34 56 78"></div>
  
-        <div class="sh">🏠 Locataire(s)</div>
+        <div class="sh">⌂ Locataire(s)</div>
         <div class="fg" style="background:var(--creme);border-radius:10px;padding:12px 16px;border:1px solid var(--border);margin-bottom:16px">
           <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.88rem;font-weight:600;color:var(--noir)">
             <input type="checkbox" id="chkColocation" onchange="toggleColocsSection()" style="accent-color:var(--accent);width:16px;height:16px;flex-shrink:0">
@@ -518,7 +529,7 @@ footer a:hover{color:var(--accent);}
           <button type="button" onclick="addColoc()" style="display:inline-flex;align-items:center;gap:8px;background:none;border:1.5px dashed var(--border);color:var(--gris);padding:10px 18px;border-radius:9px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gris)'">＋ Ajouter un colocataire</button>
         </div>
  
-        <div class="sh">🔐 Garant <small style="font-weight:400;font-size:.76rem;color:var(--gris)">optionnel</small></div>
+        <div class="sh">⊠ Garant <small style="font-weight:400;font-size:.76rem;color:var(--gris)">optionnel</small></div>
         <div style="background:var(--creme);border-radius:10px;padding:16px;border:1px solid var(--border)">
           <div class="fgrid">
             <div class="fg" style="margin-bottom:0"><label for="genGarantPrenom">Prénom</label><input type="text" id="genGarantPrenom" class="fi" placeholder="Ex : Paul"></div>
@@ -540,15 +551,15 @@ footer a:hover{color:var(--accent);}
       </div>
  
       <div id="panelAnalyser" style="display:none">
-        <div class="info-box">📋 Uploadez votre bail ou collez son texte pour une analyse complète côté propriétaire</div>
+        <div class="info-box">☰ Uploadez votre bail ou collez son texte pour une analyse complète côté propriétaire</div>
         <div class="upload-zone" id="uploadZone" onclick="triggerFileInput(event)">
-          <div style="font-size:2.2rem;margin-bottom:10px">📄</div>
+          <div style="font-size:2.2rem;margin-bottom:10px">▤</div>
           <div style="font-weight:700;font-size:.9rem;color:var(--noir);margin-bottom:4px">Glissez votre PDF ici ou cliquez</div>
           <div style="font-size:.8rem;color:var(--gris)">PDF uniquement · Max 10 Mo</div>
           <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleFile(this.files[0])">
         </div>
         <div class="upload-success" id="uploadSuccess" style="display:none">
-          <div style="font-size:1.4rem">✅</div>
+          <div style="font-size:1.4rem">✓</div>
           <div><div class="upload-success-name" id="uploadFileName"></div><div style="font-size:.75rem;color:var(--gris)" id="uploadFileSize"></div></div>
           <button onclick="clearFile()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--gris)">✕</button>
         </div>
@@ -577,35 +588,35 @@ footer a:hover{color:var(--accent);}
       <div class="panel-sub" id="step4Sub">Personnalisez les clauses de votre bail</div>
  
       <div id="panelClausesAnalyser" style="display:none">
-        <div class="info-box">✅ Toutes les informations sont renseignées. Cliquez sur Continuer pour procéder au paiement et lancer l'analyse.</div>
+        <div class="info-box">✓ Toutes les informations sont renseignées. Cliquez sur Continuer pour procéder au paiement et lancer l'analyse.</div>
       </div>
  
       <div id="panelClausesGenerer">
-        <div class="sh">🔧 Travaux à la charge du locataire</div>
+        <div class="sh">⚙ Travaux à la charge du locataire</div>
         <div class="chk-grid">
-          <label class="chk-item"><input type="checkbox" id="travChaudiere"> 🔧 Entretien chaudière individuelle</label>
-          <label class="chk-item"><input type="checkbox" id="travClim"> ❄️ Entretien climatisation</label>
-          <label class="chk-item"><input type="checkbox" id="travJardin"> 🌿 Entretien jardin / tonte</label>
-          <label class="chk-item"><input type="checkbox" id="travGouttiere"> 🏠 Nettoyage gouttières</label>
-          <label class="chk-item"><input type="checkbox" id="travPiscine"> 🏊 Entretien piscine</label>
-          <label class="chk-item"><input type="checkbox" id="travRamonage"> 🔥 Ramonage cheminée</label>
-          <label class="chk-item"><input type="checkbox" id="travRobinetterie"> 🚿 Joints et robinetterie</label>
-          <label class="chk-item"><input type="checkbox" id="travDetartrage"> 💧 Détartrage équipements</label>
+          <label class="chk-item"><input type="checkbox" id="travChaudiere"> ⚙ Entretien chaudière individuelle</label>
+          <label class="chk-item"><input type="checkbox" id="travClim"> ✦️ Entretien climatisation</label>
+          <label class="chk-item"><input type="checkbox" id="travJardin"> ✦ Entretien jardin / tonte</label>
+          <label class="chk-item"><input type="checkbox" id="travGouttiere"> ⌂ Nettoyage gouttières</label>
+          <label class="chk-item"><input type="checkbox" id="travPiscine"> 〜 Entretien piscine</label>
+          <label class="chk-item"><input type="checkbox" id="travRamonage"> ↑ Ramonage cheminée</label>
+          <label class="chk-item"><input type="checkbox" id="travRobinetterie"> ~ Joints et robinetterie</label>
+          <label class="chk-item"><input type="checkbox" id="travDetartrage"> ~ Détartrage équipements</label>
         </div>
         <div class="fg" style="margin-top:10px"><label for="travAutres">Autres travaux à préciser</label><input type="text" id="travAutres" class="fi" placeholder="Ex : entretien VMC, fosse septique…"></div>
  
-        <div class="sh">📋 Clauses particulières</div>
+        <div class="sh">☰ Clauses particulières</div>
         <div class="chk-grid">
-          <label class="chk-item"><input type="checkbox" id="clauseSousloc"> 🔒 Sous-location interdite</label>
-          <label class="chk-item"><input type="checkbox" id="clauseCession"> 📄 Cession du bail interdite</label>
-          <label class="chk-item"><input type="checkbox" id="clausePno"> 🛡️ Bailleur couvert par PNO</label>
-          <label class="chk-item"><input type="checkbox" id="clauseCompteur"> 📊 Relevés compteurs contradictoires</label>
-          <label class="chk-item"><input type="checkbox" id="clauseDpeTrav"> ⚡ Travaux rénovation énergétique prévus</label>
-          <label class="chk-item"><input type="checkbox" id="clauseNum"> 📱 Signature électronique</label>
+          <label class="chk-item"><input type="checkbox" id="clauseSousloc"> ⊠ Sous-location interdite</label>
+          <label class="chk-item"><input type="checkbox" id="clauseCession"> ▤ Cession du bail interdite</label>
+          <label class="chk-item"><input type="checkbox" id="clausePno"> ⊡️ Bailleur couvert par PNO</label>
+          <label class="chk-item"><input type="checkbox" id="clauseCompteur"> ≡ Relevés compteurs contradictoires</label>
+          <label class="chk-item"><input type="checkbox" id="clauseDpeTrav"> → Travaux rénovation énergétique prévus</label>
+          <label class="chk-item"><input type="checkbox" id="clauseNum"> ◻ Signature électronique</label>
         </div>
         <div class="fg" style="margin-top:10px"><label for="clausesLibres">Clauses libres supplémentaires</label><textarea id="clausesLibres" class="fi" rows="3" placeholder="Ex : parking n°12 inclus, local vélos accessible…"></textarea></div>
  
-        <div class="sh">🛡️ Assurances & garanties</div>
+        <div class="sh">⊡️ Assurances & garanties</div>
         <div class="fgrid">
           <div class="fg"><label>Assurance PNO bailleur</label>
             <div class="rpills"><label class="rpill active" data-group="genPno" onclick="setR('genPno','oui',this)">Oui</label><label class="rpill" data-group="genPno" onclick="setR('genPno','non',this)">Non</label></div>
@@ -618,14 +629,14 @@ footer a:hover{color:var(--accent);}
           <div class="rpills"><label class="rpill active" data-group="genSolidarite" onclick="setR('genSolidarite','oui',this)">Oui</label><label class="rpill" data-group="genSolidarite" onclick="setR('genSolidarite','non',this)">Non</label></div>
         </div>
  
-        <div class="sh">📎 Documents annexés au bail</div>
+        <div class="sh">↗ Documents annexés au bail</div>
         <div class="chk-grid">
-          <label class="chk-item"><input type="checkbox" id="annDpe" checked> 📄 Diagnostic DPE</label>
-          <label class="chk-item"><input type="checkbox" id="annEdl" checked> 📋 État des lieux d'entrée</label>
-          <label class="chk-item"><input type="checkbox" id="annNotice" checked> 📘 Notice d'information locataire</label>
-          <label class="chk-item"><input type="checkbox" id="annRgl"> 📜 Règlement de copropriété</label>
-          <label class="chk-item"><input type="checkbox" id="annGarant"> 🔐 Acte de cautionnement</label>
-          <label class="chk-item"><input type="checkbox" id="annInventaire"> 🛋️ Inventaire mobilier (meublé)</label>
+          <label class="chk-item"><input type="checkbox" id="annDpe" checked> ▤ Diagnostic DPE</label>
+          <label class="chk-item"><input type="checkbox" id="annEdl" checked> ☰ État des lieux d'entrée</label>
+          <label class="chk-item"><input type="checkbox" id="annNotice" checked> ▤ Notice d'information locataire</label>
+          <label class="chk-item"><input type="checkbox" id="annRgl"> ▤ Règlement de copropriété</label>
+          <label class="chk-item"><input type="checkbox" id="annGarant"> ⊠ Acte de cautionnement</label>
+          <label class="chk-item"><input type="checkbox" id="annInventaire"> ◻️ Inventaire mobilier (meublé)</label>
         </div>
       </div>
  
@@ -656,7 +667,7 @@ footer a:hover{color:var(--accent);}
       <!-- PAYWALL -->
       <div class="paywall">
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px">
-          <div style="font-size:1.1rem">🔒</div>
+          <div style="font-size:1.1rem">⊠</div>
           <div class="paywall-title" id="pwTitle" style="font-size:1.3rem;margin-bottom:0">Débloquer le document complet</div>
         </div>
         <div class="paywall-sub" id="pwSub">Génération + Analyse de bail incluses</div>
@@ -674,7 +685,7 @@ footer a:hover{color:var(--accent);}
         <button class="btn-pay" onclick="openModal()" style="font-size:1rem;padding:16px">
           Obtenir mon bail complet →
         </button>
-        <div class="pay-secure">🔒 Paiement sécurisé · Sans abonnement · Accès immédiat</div>
+        <div class="pay-secure">⊠ Paiement sécurisé · Sans abonnement · Accès immédiat</div>
       </div>
  
       <div class="wnav"><button class="btn-back" onclick="goStep(4)">← Retour</button><div></div></div>
@@ -691,7 +702,7 @@ footer a:hover{color:var(--accent);}
     <div class="fg"><label for="mailTo">Email destinataire <span style="color:var(--accent)">*</span></label><input type="email" id="mailTo" class="fi" placeholder="Ex : marie.martin@email.com"></div>
     <div class="fg"><label for="mailNom">Nom du destinataire</label><input type="text" id="mailNom" class="fi" placeholder="Ex : Marie Martin"></div>
     <div class="fg"><label for="mailMsg">Message personnalisé <small style="font-weight:400;color:var(--gris)">(optionnel)</small></label><textarea id="mailMsg" class="fi" rows="3" placeholder="Ex : Bonjour, veuillez trouver ci-joint le bail de location pour signature…"></textarea></div>
-    <button onclick="sendMailNow()" id="btnSendMail" style="width:100%;background:var(--accent);color:white;border:none;padding:13px;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .2s">📧 Envoyer le PDF →</button>
+    <button onclick="sendMailNow()" id="btnSendMail" style="width:100%;background:var(--accent);color:white;border:none;padding:13px;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .2s">✉ Envoyer le PDF →</button>
     <div id="mailStatus" style="display:none;margin-top:10px;text-align:center;font-size:.82rem"></div>
   </div>
 </div>
@@ -708,7 +719,7 @@ footer a:hover{color:var(--accent);}
       </div>
       <div class="result-actions">
         <button class="btn-action" onclick="downloadTxt()">⬇ .txt</button>
-        <button class="btn-action primary" onclick="exportPDF()">📄 Export PDF</button>
+        <button class="btn-action primary" onclick="exportPDF()">▤ Export PDF</button>
       </div>
     </div>
  
@@ -724,7 +735,7 @@ footer a:hover{color:var(--accent);}
  
       <!-- MODIFIER SANS REPAYER -->
       <div class="res-action-card">
-        <div class="res-action-icon">✏️</div>
+        <div class="res-action-icon">✎️</div>
         <div class="res-action-title">Modifier le bail</div>
         <div class="res-action-desc">Corriger une information sans repayer. Le formulaire se rouvre avec vos données.</div>
         <button class="btn-action" style="width:100%" onclick="editBail()">Modifier →</button>
@@ -732,7 +743,7 @@ footer a:hover{color:var(--accent);}
  
       <!-- ENVOYER PAR MAIL -->
       <div class="res-action-card">
-        <div class="res-action-icon">📧</div>
+        <div class="res-action-icon">✉</div>
         <div class="res-action-title">Envoyer par email</div>
         <div class="res-action-desc">Envoyez le PDF directement au locataire ou à vous-même pour signature.</div>
         <button class="btn-action primary" style="width:100%" onclick="openMailModal()">Envoyer →</button>
@@ -740,7 +751,7 @@ footer a:hover{color:var(--accent);}
  
       <!-- ANALYSE INCLUSE -->
       <div class="res-action-card" id="cardAnalyse" style="display:none">
-        <div class="res-action-icon">🔍</div>
+        <div class="res-action-icon">◎</div>
         <div class="res-action-title">Analyser un bail</div>
         <div class="res-action-desc">Inclus dans votre accès. Analysez un bail existant sans frais supplémentaires.</div>
         <button class="btn-action green" style="width:100%" onclick="switchToAnalyse()">Analyser →</button>
@@ -748,7 +759,7 @@ footer a:hover{color:var(--accent);}
  
       <!-- CORRIGER LE BAIL après analyse -->
       <div class="res-action-card" id="cardCorrigerBail" style="display:none">
-        <div class="res-action-icon">🔧</div>
+        <div class="res-action-icon">⚙</div>
         <div class="res-action-title">Corriger le bail</div>
         <div class="res-action-desc">Générez un nouveau bail corrigé en tenant compte des problèmes détectés.</div>
         <button class="btn-action primary" style="width:100%" onclick="editBailFromAnalyse()">Corriger →</button>
@@ -758,7 +769,7 @@ footer a:hover{color:var(--accent);}
  
     <!-- INFOS COMPLÉMENTAIRES -->
     <div id="resInfosCompl" style="display:none;margin-top:24px;padding:20px 24px;background:var(--creme);border-radius:14px;border:1px solid var(--border)">
-      <div style="font-weight:700;font-size:.88rem;color:var(--noir);margin-bottom:14px">📋 Rappels importants</div>
+      <div style="font-weight:700;font-size:.88rem;color:var(--noir);margin-bottom:14px">☰ Rappels importants</div>
       <div style="display:flex;flex-direction:column;gap:8px" id="resRappelsList"></div>
     </div>
  
@@ -768,10 +779,39 @@ footer a:hover{color:var(--accent);}
   </div>
 </section>
  
-<footer>
-  <a href="/" class="logo" style="font-size:1.3rem">Bail<span>Scan</span><span class="logo-proprio">Propriétaires</span></a>
-  <div style="display:flex;gap:18px;flex-wrap:wrap"><a href="/">Locataires</a><a href="/pro.html">Agences</a><a href="/legal.html">Mentions légales</a><a href="/legal.html">CGV</a></div>
-  <div>© 2026 BailScan</div>
+<footer class="footer-seo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Bail<span>Scan</span></div>
+        <div class="footer-tagline">Fait pour les propriétaires et les agences ❤️</div>
+        <div class="footer-copy">© 2026 BailScan — Tous droits réservés</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Outil</div>
+        <a href="/">Pour les locataires</a>
+        <a href="/proprio.html">Pour les propriétaires</a>
+        <a href="/pro.html">Espace professionnel</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Guides</div>
+        <a href="/blog/clauses-abusives-bail.html">Clauses illégales</a>
+        <a href="/blog/depot-garantie.html">Dépôt de garantie</a>
+        <a href="/blog/encadrement-loyers.html">Encadrement des loyers</a>
+        <a href="/blog.html">Tous les guides →</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Informations</div>
+        <a href="/legal.html">Mentions légales</a>
+        <a href="/legal.html">CGV</a>
+        <a href="/legal.html">Politique de confidentialité</a>
+        <a href="/legal.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>BailScan n'est pas un cabinet juridique. Les documents sont fournis à titre informatif.</span>
+    </div>
+  </div>
 </footer>
  
 <script>
@@ -795,7 +835,7 @@ function selectMode(mode){
     document.getElementById('pwSub').textContent='Analyse + Génération de bail incluses';
     document.getElementById('pwFeats').innerHTML=['Bail généré conforme loi 1989 / ALUR / ELAN','Analyse de bail existant incluse','Export PDF prêt à signer','Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
     document.getElementById('modalTitle').textContent='Accès complet BailScan';
-    document.getElementById('modalFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
+    document.getElementById('modalFeats').innerHTML=['✎️ Génération de bail conforme loi 1989 / ALUR / ELAN','◎ Analyse de bail existant incluse','▤ Export PDF prêt à signer','✎️ Modifications illimitées sans repayer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
   }else{
     document.getElementById('step3Title').textContent='Bailleur & locataire';
     document.getElementById('step3Sub').textContent='Renseignez les informations sur les parties au contrat';
@@ -809,7 +849,7 @@ function selectMode(mode){
     document.getElementById('pwSub').textContent='Génération + Analyse de bail incluses';
     document.getElementById('pwFeats').innerHTML=['Bail généré conforme loi 1989 / ALUR / ELAN','Analyse de bail existant incluse','Export PDF prêt à signer','Modifications illimitées sans repayer'].map(function(f){return'<div class="paywall-feat">'+f+'</div>';}).join('');
     document.getElementById('modalTitle').textContent='Accès complet BailScan';
-    document.getElementById('modalFeats').innerHTML=['✍️ Génération de bail conforme loi 1989 / ALUR / ELAN','🔍 Analyse de bail existant incluse','📄 Export PDF prêt à signer','✏️ Modifications illimitées sans repayer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
+    document.getElementById('modalFeats').innerHTML=['✎️ Génération de bail conforme loi 1989 / ALUR / ELAN','◎ Analyse de bail existant incluse','▤ Export PDF prêt à signer','✎️ Modifications illimitées sans repayer'].map(function(f){return'<div class="modal-feat">'+f+'</div>';}).join('');
   }
   setTimeout(function(){document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'});},200);
 }
@@ -1207,13 +1247,13 @@ function showResults(bail,analyse){
  
     // Rappels importants
     var rappels=[];
-    if(S.annDpe)rappels.push('📄 <strong>DPE</strong> : joindre le diagnostic de performance énergétique à la signature.');
-    if(S.annEdl)rappels.push('📋 <strong>État des lieux d\'entrée</strong> : à établir contradictoirement le jour de la remise des clés.');
-    if(S.annNotice)rappels.push('📘 <strong>Notice d\'information</strong> : remettre au locataire (arrêté du 29 mai 2015).');
-    if(S.annGarant)rappels.push('🔐 <strong>Acte de cautionnement</strong> : à faire signer séparément et à annexer.');
-    if(S.annInventaire)rappels.push('🛋️ <strong>Inventaire du mobilier</strong> : obligatoire pour un bail meublé.');
-    rappels.push('✍️ Chaque exemplaire doit être signé par toutes les parties avec la mention <strong>"Lu et approuvé"</strong>.');
-    rappels.push('📧 Conservez une copie signée de chaque partie.');
+    if(S.annDpe)rappels.push('▤ <strong>DPE</strong> : joindre le diagnostic de performance énergétique à la signature.');
+    if(S.annEdl)rappels.push('☰ <strong>État des lieux d\'entrée</strong> : à établir contradictoirement le jour de la remise des clés.');
+    if(S.annNotice)rappels.push('▤ <strong>Notice d\'information</strong> : remettre au locataire (arrêté du 29 mai 2015).');
+    if(S.annGarant)rappels.push('⊠ <strong>Acte de cautionnement</strong> : à faire signer séparément et à annexer.');
+    if(S.annInventaire)rappels.push('◻️ <strong>Inventaire du mobilier</strong> : obligatoire pour un bail meublé.');
+    rappels.push('✎️ Chaque exemplaire doit être signé par toutes les parties avec la mention <strong>"Lu et approuvé"</strong>.');
+    rappels.push('✉ Conservez une copie signée de chaque partie.');
     if(rappels.length){
       document.getElementById('resInfosCompl').style.display='block';
       document.getElementById('resRappelsList').innerHTML=rappels.map(function(r){
@@ -1309,7 +1349,7 @@ function editBailFromAnalyse(){
   var banner=document.createElement('div');
   banner.style.cssText='background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:12px 16px;font-size:.83rem;color:#856404;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px';
   var nbPb=(analyse&&analyse.clauses_abusives)?analyse.clauses_abusives.length:0;
-  banner.innerHTML='<span>🔧</span><span><strong>Correction en cours</strong> : '+(nbPb>0?nbPb+' point'+(nbPb>1?'s':'')+' à corriger ont été repris dans les clauses. Vérifiez et ajustez chaque étape.':'Vérifiez et ajustez votre bail selon l\'analyse.')+'</span>';
+  banner.innerHTML='<span>⚙</span><span><strong>Correction en cours</strong> : '+(nbPb>0?nbPb+' point'+(nbPb>1?'s':'')+' à corriger ont été repris dans les clauses. Vérifiez et ajustez chaque étape.':'Vérifiez et ajustez votre bail selon l\'analyse.')+'</span>';
   var appCard=document.querySelector('.app-card');
   if(appCard&&!document.getElementById('editBanner')){banner.id='editBanner';appCard.insertBefore(banner,appCard.firstChild);}
  
@@ -1419,7 +1459,7 @@ function sendMailNow(){
   // Générer le PDF (même rendu qu'exportPDF)
   var pdfBase64=buildPdfBase64();
   if(!pdfBase64){
-    btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;
+    btn.textContent='✉ Envoyer le PDF →';btn.disabled=false;
     status.style.cssText='display:block;color:var(--accent)';
     status.textContent='Erreur lors de la génération du PDF.';
     return;
@@ -1458,13 +1498,13 @@ function sendMailNow(){
       btn.textContent='✓ Email envoyé !';
       status.style.cssText='display:block;color:var(--vert);font-weight:600';
       status.textContent='Email envoyé à '+to;
-      setTimeout(function(){closeMailModal();btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;status.style.display='none';},3000);
+      setTimeout(function(){closeMailModal();btn.textContent='✉ Envoyer le PDF →';btn.disabled=false;status.style.display='none';},3000);
     }else{
       throw new Error(d.error||'Erreur inconnue');
     }
   })
   .catch(function(e){
-    btn.textContent='📧 Envoyer le PDF →';btn.disabled=false;
+    btn.textContent='✉ Envoyer le PDF →';btn.disabled=false;
     status.style.cssText='display:block;color:var(--accent);font-size:.82rem;font-weight:600';
     status.textContent='Erreur : '+e.message;
     console.error('send-mail error:',e);
