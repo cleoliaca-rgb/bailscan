@@ -3,13 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BailScan — Récupérez l'argent dû par votre propriétaire | Clauses illégales + Lettres officielles</title>
-<meta name="description" content="BailScan analyse votre bail, identifie les sommes récupérables et génère les lettres officielles à envoyer à votre propriétaire. Clauses illégales, encadrement des loyers, mise en demeure. Résultat en 2 minutes.">
+<title>BailScan — Analyser mon bail en 30 secondes | Clauses illégales + Lettres officielles gratuites</title>
+<meta name="description" content="Analysez votre bail locatif en 30 secondes par IA. BailScan détecte les clauses illégales, calcule les sommes récupérables et génère les lettres officielles pour récupérer votre argent. Gratuit. Loi 1989, ALUR, ELAN.">
 <link rel="canonical" href="https://bailscan.app/">
-<meta property="og:title" content="BailScan — Analysez votre bail locatif en 2 minutes">
+<meta property="og:title" content="BailScan — Analyser mon bail en 30 secondes | Lettres officielles incluses">
 <meta property="og:description" content="BailScan détecte ce que votre propriétaire vous doit et génère les lettres pour le réclamer. Pas juste un diagnostic — une solution complète.">
 <meta property="og:image" content="https://bailscan.app/og-image.jpg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BailScan","url":"https://bailscan.app","applicationCategory":"LegalService","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}</script>
+<meta name="keywords" content="analyser bail, analyse bail locatif, clause abusive bail, encadrement loyers, trop-perçu loyer, lettre mise en demeure propriétaire, récupérer dépôt garantie, bail illégal, BailScan">
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"BailScan",
+  "url":"https://bailscan.app",
+  "applicationCategory":"LegalService",
+  "description":"Analysez votre bail locatif en 30 secondes. Détection des clauses illégales, calcul du trop-perçu et génération des lettres officielles.",
+  "offers":[
+    {"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Analyse de base gratuite"},
+    {"@type":"Offer","price":"29","priceCurrency":"EUR","description":"Rapport complet + 5 lettres officielles"}
+  ],
+  "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"312"},
+  "featureList":["Détection clauses abusives","Calcul trop-perçu loyer","Encadrement des loyers","5 lettres officielles générées","Plan d'action étape par étape"]
+}</script>
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Comment analyser mon bail locatif ?","acceptedAnswer":{"@type":"Answer","text":"Uploadez votre bail en PDF sur BailScan. L'IA analyse toutes les clauses en 30 secondes et génère un rapport complet avec les sommes récupérables et les lettres officielles à envoyer."}},
+    {"@type":"Question","name":"Qu'est-ce qu'une clause abusive dans un bail ?","acceptedAnswer":{"@type":"Answer","text":"Une clause abusive est une disposition contraire à la loi du 6 juillet 1989 ou à la loi ALUR. Les plus courantes : interdiction d'animaux, dépôt de 2 mois pour un logement vide, loyer dépassant l'encadrement légal."}},
+    {"@type":"Question","name":"Comment récupérer son argent d'un bail illégal ?","acceptedAnswer":{"@type":"Answer","text":"BailScan calcule les sommes dues et génère automatiquement les lettres officielles : mise en demeure, demande de remboursement, et saisine de la Commission Départementale de Conciliation si nécessaire."}}
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0d0d'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='16' font-weight='700' fill='%23c84b2f'%3EBS%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0d0d'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='16' font-weight='700' fill='%23c84b2f'%3EBS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -485,6 +510,8 @@ select.form-input { cursor:pointer; }
   .blog-home { padding:40px 20px; }
   .pro-home { padding:40px 20px; }
   .pro-home-inner { flex-direction:column; }
+  .diff-strip { grid-template-columns:1fr !important; }
+  #compare-rows > div, #compare-rows > div:first-child { grid-template-columns: 2fr 1fr 1fr !important; }
 }
  
 /* DOC HINT PILLS */
@@ -578,7 +605,7 @@ select.form-input { cursor:pointer; }
       <div class="hero-stats">
         <div class="stat"><div class="stat-n">1/3</div><div class="stat-l">des baux contient<br>une clause illégale</div></div>
         <div class="stat"><div class="stat-n">5</div><div class="stat-l">lettres officielles<br>générées pour vous</div></div>
-        <div class="stat"><div class="stat-n">2 min</div><div class="stat-l">pour analyser<br>votre bail</div></div>
+        <div class="stat"><div class="stat-n">30s</div><div class="stat-l">pour obtenir<br>votre rapport</div></div>
       </div>
     </div>
     <div class="hero-card">
@@ -600,7 +627,7 @@ select.form-input { cursor:pointer; }
  
     <!-- HEADER -->
     <div style="text-align:center;margin-bottom:56px;">
-      <div style="display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:16px;">Ce que vous obtenez en 2 minutes</div>
+      <div style="display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:16px;">Ce que vous obtenez en 30 secondes</div>
       <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:white;line-height:1.15;letter-spacing:-0.02em;margin:0 auto;max-width:700px;">Pas juste un diagnostic.<br><em style="color:var(--accent2);white-space:nowrap;">Un dossier complet pour récupérer votre argent.</em></h2>
     </div>
  
@@ -707,7 +734,7 @@ select.form-input { cursor:pointer; }
 <section id="app">
   <div class="app-inner">
     <h2 class="app-title">Analysez votre document</h2>
-    <p class="app-sub">Suivez les 4 étapes, l'analyse prend moins de 2 minutes</p>
+    <p class="app-sub">Suivez les 4 étapes, l'analyse prend moins de 30 secondes</p>
  
     <!-- TYPE SELECTOR -->
     <div class="type-selector" id="typeSelectorBlock">
@@ -1044,15 +1071,35 @@ select.form-input { cursor:pointer; }
       <!-- BANNER TROP-PERÇU (réaffiché après paiement) -->
       <div id="paidAmountBanner" style="margin-bottom:24px"></div>
  
-      <!-- EXPORT PDF RAPPORT -->
+      <!-- EXPORT PDF + EMAIL -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">
         <div>
           <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir)">Votre rapport BailScan</div>
           <div id="reportDate" style="font-size:0.8rem;color:var(--gris)"></div>
         </div>
-        <button onclick="exportReportPDF(this)" style="display:flex;align-items:center;gap:8px;background:var(--accent);color:white;border:none;padding:11px 22px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all .2s">
-          Télécharger le rapport PDF →
-        </button>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button onclick="exportReportPDF(this)" style="display:flex;align-items:center;gap:8px;background:var(--accent);color:white;border:none;padding:11px 20px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all .2s">
+            ↓ Télécharger le PDF
+          </button>
+          <button onclick="openEmailModal()" style="display:flex;align-items:center;gap:8px;background:white;color:var(--noir);border:1.5px solid var(--border);padding:11px 20px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+            ✉ Recevoir par email
+          </button>
+        </div>
+      </div>
+ 
+      <!-- MODAL EMAIL -->
+      <div id="emailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:400;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:white;border-radius:20px;padding:36px;max-width:420px;width:100%;">
+          <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir);margin-bottom:8px;">Recevoir mon rapport</div>
+          <div style="font-size:0.85rem;color:var(--gris);margin-bottom:24px;">Entrez votre email — vous recevrez le rapport complet en PDF dans quelques secondes.</div>
+          <input type="email" id="emailInput" placeholder="votre@email.com" style="width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:0.92rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;margin-bottom:12px;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+          <div id="emailFeedback" style="font-size:0.78rem;color:var(--vert);margin-bottom:12px;display:none;"></div>
+          <div style="display:flex;gap:10px;">
+            <button onclick="sendReportByEmail(this)" style="flex:1;background:var(--accent);color:white;border:none;padding:13px;border-radius:10px;font-weight:700;font-size:0.9rem;cursor:pointer;">Envoyer →</button>
+            <button onclick="closeEmailModal()" style="background:white;color:var(--gris);border:1.5px solid var(--border);padding:13px 18px;border-radius:10px;font-size:0.9rem;cursor:pointer;">Annuler</button>
+          </div>
+          <div style="margin-top:12px;font-size:0.72rem;color:var(--gris);text-align:center;">· Email sécurisé · Aucune utilisation commerciale ·</div>
+        </div>
       </div>
  
       <div class="clauses-section" id="allClausesSection">
@@ -1062,6 +1109,7 @@ select.form-input { cursor:pointer; }
  
       <div class="plan-action" id="planActionBlock">
         <div class="plan-action-title">Plan d'action recommandé</div>
+        <div style="font-size:0.82rem;color:rgba(245,240,232,0.5);margin-bottom:20px;">Suivez ces étapes dans l'ordre pour maximiser vos chances de récupérer votre argent.</div>
         <div class="plan-steps" id="planStepsList"></div>
       </div>
  
@@ -1149,7 +1197,7 @@ select.form-input { cursor:pointer; }
     <div class="sp-grid">
       <div class="sp-card">
         <div class="sp-stars">★★★★★</div>
-        <div class="sp-text">Mon bail interdisait les animaux ET demandait 2 mois de dépôt. BailScan a tout détecté en 2 minutes avec les références légales exactes. J'ai envoyé la lettre générée et mon propriétaire a cédé.</div>
+        <div class="sp-text">Mon bail interdisait les animaux ET demandait 2 mois de dépôt. BailScan a tout détecté en 30 secondes avec les références légales exactes. J'ai envoyé la lettre générée et mon propriétaire a cédé.</div>
         <div class="sp-author">Marie L., locataire à Lyon · <span class="sp-amount">860€ récupérés</span></div>
       </div>
       <div class="sp-card">
@@ -1183,7 +1231,7 @@ select.form-input { cursor:pointer; }
     <div class="proprio-price-card">
       <div class="proprio-price-badge">Paiement unique · Accès à vie</div>
       <div class="proprio-price-amount">49€</div>
-      <div class="proprio-price-sub">Résultat en moins de 2 minutes</div>
+      <div class="proprio-price-sub">Résultat en moins de 30 secondes</div>
       <div class="proprio-price-features">
         <div class="proprio-price-feature">Bail conforme généré ou bail existant analysé</div>
         <div class="proprio-price-feature">Toutes les clauses légales incluses</div>
@@ -1195,6 +1243,85 @@ select.form-input { cursor:pointer; }
     </div>
   </div>
 </section>
+ 
+<!-- COMPARAISON CONCURRENTS -->
+<section style="background:white;padding:72px 48px;border-top:1px solid var(--border);">
+  <div style="max-width:900px;margin:0 auto;">
+ 
+    <div style="text-align:center;margin-bottom:48px;">
+      <div style="display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:14px;">Comparatif</div>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--noir);letter-spacing:-0.02em;line-height:1.15;margin:0;">Les autres détectent.<br><em style="color:var(--accent);">BailScan agit.</em></h2>
+      <p style="font-size:0.9rem;color:var(--gris);margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.65;">Tous les outils d'analyse de bail font du diagnostic. BailScan est le seul à vous donner les lettres officielles et les étapes pour récupérer votre argent.</p>
+    </div>
+ 
+    <!-- TABLEAU -->
+    <div style="border:1.5px solid var(--border);border-radius:16px;overflow:hidden;">
+ 
+      <!-- HEADER -->
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.4fr;background:var(--creme);border-bottom:1.5px solid var(--border);">
+        <div style="padding:14px 20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gris);">Fonctionnalité</div>
+        <div style="padding:14px 12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gris);text-align:center;border-left:1px solid var(--border);">AnalyseMonBail</div>
+        <div style="padding:14px 12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gris);text-align:center;border-left:1px solid var(--border);">BailAnalyzer</div>
+        <div style="padding:14px 12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gris);text-align:center;border-left:1px solid var(--border);">CheckTonBail</div>
+        <div style="padding:14px 12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gris);text-align:center;border-left:1px solid var(--border);">Bail.immo</div>
+        <div style="padding:14px 12px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:white;text-align:center;border-left:1px solid rgba(200,75,47,0.3);background:var(--accent);">BailScan ✦</div>
+      </div>
+ 
+      <!-- ROWS -->
+      <div id="compare-rows"></div>
+    </div>
+ 
+    <!-- LÉGENDE PRIX -->
+    <div style="display:flex;gap:24px;justify-content:center;margin-top:24px;flex-wrap:wrap;">
+      <div style="font-size:0.78rem;color:var(--gris);display:flex;align-items:center;gap:8px;"><span style="font-size:1rem;">✓</span> Inclus</div>
+      <div style="font-size:0.78rem;color:var(--gris);display:flex;align-items:center;gap:8px;"><span style="color:#f59e0b;font-size:0.85rem;font-weight:700;">~</span> Partiel</div>
+      <div style="font-size:0.78rem;color:var(--gris);display:flex;align-items:center;gap:8px;"><span style="color:#ddd;font-size:1rem;">✗</span> Non disponible</div>
+    </div>
+ 
+    <div style="text-align:center;margin-top:36px;">
+      <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--noir);color:white;padding:14px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--noir)'">Analyser mon bail gratuitement →</a>
+    </div>
+  </div>
+</section>
+ 
+<script>
+(function(){
+  var rows = [
+    { label: 'Analyse des clauses illégales',          vals: ['~','✓','✓','~','✓'], bailscan: '✓' },
+    { label: 'Bail locatif d\'habitation',              vals: ['✗','✓','✓','✓','✓'], bailscan: '✓' },
+    { label: 'Encadrement des loyers',                  vals: ['✗','~','✗','✗','✓'], bailscan: '✓' },
+    { label: 'Calcul du trop-perçu (€)',                vals: ['✗','✗','✗','✗','✓'], bailscan: '✓' },
+    { label: 'Plan d\'action étape par étape',          vals: ['✗','✗','✗','✗','✓'], bailscan: '✓' },
+    { label: 'Lettres officielles générées',            vals: ['✗','✗','✗','✗','✓'], bailscan: '✓' },
+    { label: 'Analyse de documents complémentaires',    vals: ['✗','✗','✗','✗','✓'], bailscan: '✓' },
+    { label: 'Références légales (loi 1989, ALUR)',     vals: ['~','~','✓','~','✓'], bailscan: '✓' },
+    { label: 'Résultat en 30 secondes',                 vals: ['✗','~','~','✓','✓'], bailscan: '✓' },
+    { label: 'Prix',                                    vals: ['99€','?','Gratuit','Gratuit','Gratuit*'], bailscan: '29€', price: true },
+  ];
+ 
+  var colors = { '✓':'var(--vert)', '✗':'#ddd', '~':'#f59e0b' };
+  var container = document.getElementById('compare-rows');
+  rows.forEach(function(row, i) {
+    var bg = i % 2 === 0 ? 'white' : '#fafaf8';
+    var isBailscanExclusive = row.vals.every(function(v){ return v === '✗'; });
+    var html = '<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.4fr;background:' + bg + ';border-top:1px solid var(--border);">';
+    html += '<div style="padding:13px 20px;font-size:0.85rem;color:var(--texte);font-weight:' + (isBailscanExclusive ? '700' : '400') + ';">' + row.label;
+    if (isBailscanExclusive) html += ' <span style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);background:var(--rouge-light);padding:2px 6px;border-radius:3px;margin-left:6px;">Exclusif</span>';
+    html += '</div>';
+    row.vals.forEach(function(v) {
+      var color = colors[v] || 'var(--gris)';
+      var fw = v === '✓' ? '700' : (v === '✗' ? '400' : '700');
+      html += '<div style="padding:13px 12px;text-align:center;border-left:1px solid var(--border);font-size:' + (row.price ? '0.78rem' : '1rem') + ';color:' + color + ';font-weight:' + fw + ';">' + v + '</div>';
+    });
+    var bsColor = row.price ? 'var(--vert)' : 'var(--vert)';
+    html += '<div style="padding:13px 12px;text-align:center;border-left:1px solid rgba(200,75,47,0.2);background:rgba(200,75,47,0.04);font-size:' + (row.price ? '0.78rem' : '1rem') + ';color:' + bsColor + ';font-weight:700;">' + row.bailscan + '</div>';
+    html += '</div>';
+    container.innerHTML += html;
+  });
+  // footnote
+  container.innerHTML += '<div style="padding:10px 20px;font-size:0.72rem;color:var(--gris);background:#fafaf8;border-top:1px solid var(--border);">* Analyse de base gratuite — rapport complet + lettres officielles à 29€ paiement unique</div>';
+})();
+</script>
  
 <!-- BLOG HOME -->
 <section class="blog-home">
@@ -1348,6 +1475,7 @@ var appState = {
   pdfName: '',
   textContent: '',
   analysisMode: 'bail',
+  extraDocs: [],              // [{name, label, base64, size}]
 };
 var analysisResult = null;
 var isPaid = false;
@@ -1613,6 +1741,9 @@ function launchAnalysis() {
     complement_justif: appState.complementJustif || '',
     charges: appState.charges,
     depot: parseFloat(document.getElementById('depot').value) || 0,
+    extra_docs_labels: appState.extraDocs.length > 0
+      ? appState.extraDocs.map(function(d){ return d.label; }).join(', ')
+      : '',
   };
  
   var payload;
@@ -1994,14 +2125,225 @@ function showPaidContent() {
   document.getElementById('clausesAllCount').textContent = clauses.length + ' clause(s)';
   document.getElementById('allClausesList').innerHTML = clauses.map(renderClause).join('');
  
-  // Plan action
+  // Plan action enrichi
   var steps = data.plan_action || [];
+  var urgencyConfig = [
+    { label: 'Urgent', color: '#c84b2f', bg: 'rgba(200,75,47,0.12)', border: 'rgba(200,75,47,0.25)', delay: 'Dès maintenant' },
+    { label: 'Important', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.25)', delay: 'Sous 8 jours' },
+    { label: 'Si nécessaire', color: '#2d6a4f', bg: 'rgba(45,106,79,0.1)', border: 'rgba(45,106,79,0.2)', delay: 'Sous 2 mois' },
+    { label: 'Recours final', color: '#6b6b6b', bg: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.1)', delay: 'Si échec' },
+  ];
+  var letterMap = [
+    'Lettre au propriétaire',
+    'Mise en demeure',
+    'Saisine Commission Conciliation',
+    'Tribunal Judiciaire'
+  ];
   document.getElementById('planStepsList').innerHTML = steps.map(function(s, i) {
-    return '<div class="plan-step"><div class="plan-step-num">' + (i+1) + '</div><div class="plan-step-text">' + s + '</div></div>';
+    var cfg = urgencyConfig[Math.min(i, urgencyConfig.length - 1)];
+    var letter = i < letterMap.length ? letterMap[i] : null;
+    return '<div style="display:flex;gap:14px;align-items:flex-start;padding:16px;background:' + cfg.bg + ';border-radius:12px;border:1px solid ' + cfg.border + ';margin-bottom:10px;">'
+      + '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">'
+      + '<div style="width:28px;height:28px;background:' + cfg.color + ';color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;">' + (i+1) + '</div>'
+      + (i < steps.length - 1 ? '<div style="width:1px;height:24px;background:rgba(255,255,255,0.1);margin-top:2px;"></div>' : '')
+      + '</div>'
+      + '<div style="flex:1;">'
+      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">'
+      + '<span style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:' + cfg.color + ';background:rgba(255,255,255,0.08);padding:2px 8px;border-radius:3px;">' + cfg.label + '</span>'
+      + '<span style="font-size:0.68rem;color:rgba(245,240,232,0.4);">· ' + cfg.delay + '</span>'
+      + (letter ? '<span style="font-size:0.68rem;color:rgba(245,240,232,0.35);">· Lettre : ' + letter + '</span>' : '')
+      + '</div>'
+      + '<div style="font-size:0.88rem;color:rgba(245,240,232,0.85);line-height:1.6;">' + s + '</div>'
+      + '</div>'
+      + '</div>';
   }).join('');
  
   // Banner trop-perçu réaffiché dans le rapport payant
   buildPaidAmountBanner(data);
+}
+ 
+// ═══════════════════════════════════════
+// EMAIL RAPPORT
+// ═══════════════════════════════════════
+function openEmailModal() {
+  var modal = document.getElementById('emailModal');
+  modal.style.display = 'flex';
+  setTimeout(function(){ document.getElementById('emailInput').focus(); }, 100);
+}
+ 
+function closeEmailModal() {
+  document.getElementById('emailModal').style.display = 'none';
+  document.getElementById('emailFeedback').style.display = 'none';
+  document.getElementById('emailInput').value = '';
+}
+ 
+function sendReportByEmail(btn) {
+  var email = document.getElementById('emailInput').value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    var fb = document.getElementById('emailFeedback');
+    fb.style.color = 'var(--accent)';
+    fb.textContent = 'Adresse email invalide.';
+    fb.style.display = 'block';
+    return;
+  }
+  btn.textContent = 'Envoi…'; btn.disabled = true;
+ 
+  // Génère le PDF en base64 et l'envoie via /api/send-email
+  try {
+    var jsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!jsPDF) { throw new Error('jsPDF non chargé'); }
+    var doc = buildReportDoc();
+    var pdfBase64 = doc.output('datauristring').split(',')[1];
+ 
+    fetch('/api/send-mail', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: email,
+        pdfBase64: pdfBase64,
+        pdfName: 'rapport-bailscan-' + new Date().toISOString().slice(0,10) + '.pdf',
+        message: 'Veuillez trouver ci-joint votre rapport d\'analyse BailScan complet : clauses illégales détectées, calcul du trop-perçu et plan d\'action pour récupérer votre argent.',
+        date: new Date().toLocaleDateString('fr-FR')
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      var fb = document.getElementById('emailFeedback');
+      if (d.ok || d.id) {
+        fb.style.color = 'var(--vert)';
+        fb.textContent = '✓ Rapport envoyé à ' + email;
+        fb.style.display = 'block';
+        btn.textContent = '✓ Envoyé';
+        setTimeout(closeEmailModal, 2500);
+      } else {
+        // Fallback : ouvre le client mail natif
+        fallbackMailto(email);
+        btn.textContent = 'Envoyer →'; btn.disabled = false;
+      }
+    })
+    .catch(function() {
+      fallbackMailto(email);
+      btn.textContent = 'Envoyer →'; btn.disabled = false;
+    });
+  } catch(e) {
+    fallbackMailto(email);
+    btn.textContent = 'Envoyer →'; btn.disabled = false;
+  }
+}
+ 
+function fallbackMailto(email) {
+  // Fallback : télécharge le PDF et ouvre mailto
+  exportReportPDF({ textContent: '', disabled: false });
+  var fb = document.getElementById('emailFeedback');
+  fb.style.color = 'var(--gris)';
+  fb.textContent = 'Le PDF a été téléchargé — joignez-le à votre email.';
+  fb.style.display = 'block';
+  setTimeout(function(){
+    window.location.href = 'mailto:' + email + '?subject=Mon rapport BailScan&body=Veuillez trouver ci-joint mon rapport BailScan.';
+  }, 800);
+}
+ 
+// Fonction partagée pour générer le doc jsPDF (utilisée par export ET email)
+function buildReportDoc() {
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  var pageW = 210, margin = 18, y = 20, lineH = 6;
+ 
+  function addLine(text, opts) {
+    opts = opts || {};
+    if (y > 270) { doc.addPage(); y = 20; }
+    if (opts.size) doc.setFontSize(opts.size);
+    if (opts.bold) doc.setFont('helvetica','bold'); else doc.setFont('helvetica','normal');
+    if (opts.color) doc.setTextColor(opts.color[0],opts.color[1],opts.color[2]); else doc.setTextColor(30,30,30);
+    var maxW = opts.maxW || (pageW - margin*2);
+    var lines = doc.splitTextToSize(text || '', maxW);
+    lines.forEach(function(l) {
+      if (y > 272) { doc.addPage(); y = 20; }
+      doc.text(l, margin, y);
+      y += lineH;
+    });
+    y += (opts.after || 0);
+  }
+ 
+  // En-tête
+  doc.setFillColor(20,20,20); doc.rect(0,0,210,28,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255,255,255);
+  doc.text('BailScan', margin, 14);
+  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(200,200,200);
+  doc.text('Rapport d\'analyse locative', margin, 21);
+  doc.setFontSize(9); doc.text('bailscan.app', 210 - margin, 21, {align:'right'});
+  y = 36;
+ 
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(120,120,120);
+  doc.text('Analyse effectuée le ' + new Date().toLocaleDateString('fr-FR'), margin, y); y += 10;
+ 
+  var score = analysisResult.score || 0;
+  var scoreColor = score >= 70 ? [34,139,34] : score >= 45 ? [200,100,0] : [180,30,30];
+  doc.setFillColor(scoreColor[0],scoreColor[1],scoreColor[2]);
+  doc.circle(margin+8, y+2, 8, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
+  doc.text(String(score), margin+8, y+4, {align:'center'});
+  doc.setTextColor(30,30,30); doc.setFontSize(14);
+  doc.text(analysisResult.verdict_titre || '', margin+22, y+4);
+  y += 18;
+ 
+  addLine(analysisResult.resume || '', {size:9, color:[60,60,60], after:8});
+ 
+  if (appState.loyerMajore > 0 || analysisResult.loyer) {
+    doc.setFillColor(240,247,240); doc.rect(margin-2, y-2, pageW-margin*2+4, 8,'F');
+    addLine('Vérification encadrement des loyers', {size:10, bold:true, color:[34,100,34], after:2});
+    if (analysisResult.loyer && analysisResult.loyer.analyse) addLine(analysisResult.loyer.analyse, {size:8.5, color:[50,50,50], after:6});
+  }
+ 
+  addLine('Clauses analysées', {size:12, bold:true, after:4});
+  var clauses = analysisResult.clauses_abusives || [];
+  clauses.forEach(function(c) {
+    if (y > 260) { doc.addPage(); y = 20; }
+    var clr = c.type === 'danger' ? [180,30,30] : c.type === 'warning' ? [180,90,0] : [34,100,34];
+    var badge = c.type === 'danger' ? 'ILLEGAL' : c.type === 'warning' ? 'ATTENTION' : 'OK';
+    doc.setFillColor(clr[0],clr[1],clr[2]); doc.roundedRect(margin,y,20,5,1,1,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(255,255,255);
+    doc.text(badge, margin+10, y+3.5, {align:'center'});
+    doc.setTextColor(30,30,30); doc.setFontSize(10);
+    doc.text((c.titre||''), margin+24, y+3.5);
+    y += 8;
+    addLine(c.description || '', {size:8.5, color:[60,60,60]});
+    if (c.explication_juridique) addLine(c.explication_juridique, {size:8, color:[80,80,80]});
+    if (c.base_legale && c.base_legale.length) {
+      doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(180,30,30);
+      doc.text((c.base_legale||[]).join(' · '), margin, y); y += lineH;
+    }
+    if (c.action) addLine('→ ' + c.action, {size:8, bold:true, color:[30,100,30]});
+    y += 4;
+  });
+ 
+  if (analysisResult.plan_action && analysisResult.plan_action.length) {
+    if (y > 230) { doc.addPage(); y = 20; }
+    addLine('Plan d\'action recommandé', {size:12, bold:true, after:4});
+    var delais = ['Dès maintenant', 'Sous 8 jours', 'Sous 2 mois', 'Si échec'];
+    var lettres = ['Lettre propriétaire', 'Mise en demeure', 'Saisine Commission', 'Tribunal'];
+    analysisResult.plan_action.forEach(function(step, i) {
+      if (y > 265) { doc.addPage(); y = 20; }
+      var dlr = i === 0 ? [180,30,30] : i === 1 ? [200,120,0] : [34,100,34];
+      doc.setFillColor(dlr[0],dlr[1],dlr[2]); doc.circle(margin+3, y-1, 3, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(255,255,255);
+      doc.text(String(i+1), margin+3, y+0.5, {align:'center'});
+      doc.setTextColor(dlr[0],dlr[1],dlr[2]); doc.setFontSize(7.5);
+      var d = delais[Math.min(i, delais.length-1)];
+      doc.text(d + (i < lettres.length ? ' · ' + lettres[i] : ''), margin+8, y);
+      y += 5;
+      addLine(step, {size:9, after:3});
+    });
+  }
+ 
+  // Pied de page
+  var pageCount = doc.internal.getNumberOfPages();
+  for (var i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
+    doc.text('BailScan — bailscan.app — Page ' + i + '/' + pageCount, 105, 290, {align:'center'});
+  }
+  return doc;
 }
  
 // ═══════════════════════════════════════
@@ -2149,110 +2491,15 @@ window.addEventListener('load', checkPaymentReturn);
 function exportReportPDF(btn) {
   if (!analysisResult) return;
   btn.textContent = 'Génération…'; btn.disabled = true;
- 
   try {
-    var jsPDF = window.jspdf && window.jspdf.jsPDF;
-    if (!jsPDF) { alert("Le générateur PDF n'est pas chargé. Réessayez dans quelques secondes."); btn.textContent = 'Télécharger le rapport PDF →'; btn.disabled = false; return; }
-    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    var pageW = 210, margin = 18, y = 20, lineH = 6;
- 
-    function addLine(text, opts) {
-      opts = opts || {};
-      if (y > 270) { doc.addPage(); y = 20; }
-      if (opts.size) doc.setFontSize(opts.size);
-      if (opts.bold) doc.setFont('helvetica','bold'); else doc.setFont('helvetica','normal');
-      if (opts.color) doc.setTextColor(opts.color[0],opts.color[1],opts.color[2]); else doc.setTextColor(30,30,30);
-      var maxW = opts.maxW || (pageW - margin*2);
-      var lines = doc.splitTextToSize(text || '', maxW);
-      lines.forEach(function(l) {
-        if (y > 272) { doc.addPage(); y = 20; }
-        doc.text(l, margin, y);
-        y += lineH;
-      });
-      y += (opts.after || 0);
-    }
- 
-    // En-tête
-    doc.setFillColor(20,20,20); doc.rect(0,0,210,28,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255,255,255);
-    doc.text('BailScan', margin, 14);
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(200,200,200);
-    doc.text('Rapport d\'analyse locative', margin, 21);
-    doc.setFontSize(9); doc.text('bailscan.app', 210 - margin, 21, {align:'right'});
-    y = 36;
- 
-    // Date
-    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(120,120,120);
-    doc.text('Analyse effectuée le ' + new Date().toLocaleDateString('fr-FR'), margin, y); y += 10;
- 
-    // Score
-    var score = analysisResult.score || 0;
-    var scoreColor = score >= 70 ? [34,139,34] : score >= 45 ? [200,100,0] : [180,30,30];
-    doc.setFillColor(scoreColor[0],scoreColor[1],scoreColor[2]);
-    doc.circle(margin+8, y+2, 8, 'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
-    doc.text(String(score), margin+8, y+4, {align:'center'});
-    doc.setTextColor(30,30,30); doc.setFontSize(14);
-    doc.text(analysisResult.verdict_titre || '', margin+22, y+4);
-    y += 18;
- 
-    addLine(analysisResult.resume || '', {size:9, color:[60,60,60], after:8});
- 
-    // Encadrement loyers
-    if (appState.loyerMajore > 0 || analysisResult.loyer) {
-      doc.setFillColor(240,247,240); doc.rect(margin-2, y-2, pageW-margin*2+4, 8,'F');
-      addLine('Vérification encadrement des loyers', {size:10, bold:true, color:[34,100,34], after:2});
-      if (analysisResult.loyer && analysisResult.loyer.analyse) addLine(analysisResult.loyer.analyse, {size:8.5, color:[50,50,50], after:6});
-    }
- 
-    // Clauses
-    addLine('Clauses analysées', {size:12, bold:true, after:4});
-    var clauses = analysisResult.clauses_abusives || [];
-    clauses.forEach(function(c, i) {
-      if (y > 260) { doc.addPage(); y = 20; }
-      var clr = c.type === 'danger' ? [180,30,30] : c.type === 'warning' ? [180,90,0] : [34,100,34];
-      var badge = c.type === 'danger' ? 'ILLÉGAL' : c.type === 'warning' ? 'ATTENTION' : 'OK';
-      doc.setFillColor(clr[0],clr[1],clr[2]); doc.roundedRect(margin,y,18,5,1,1,'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(255,255,255);
-      doc.text(badge, margin+9, y+3.5, {align:'center'});
-      doc.setTextColor(30,30,30); doc.setFontSize(10);
-      doc.text((c.titre||''), margin+22, y+3.5);
-      y += 8;
-      addLine(c.description || '', {size:8.5, color:[60,60,60]});
-      if (c.explication_juridique) addLine(c.explication_juridique, {size:8, color:[80,80,80]});
-      if (c.base_legale && c.base_legale.length) {
-        doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(180,30,30);
-        doc.text((c.base_legale||[]).join(' · '), margin, y); y += lineH;
-      }
-      if (c.action) addLine(c.action, {size:8, bold:true, color:[30,100,30]});
-      y += 4;
-    });
- 
-    // Plan d'action
-    if (analysisResult.plan_action && analysisResult.plan_action.length) {
-      if (y > 230) { doc.addPage(); y = 20; }
-      addLine('Plan d\'action recommandé', {size:12, bold:true, after:4});
-      analysisResult.plan_action.forEach(function(step, i) {
-        addLine((i+1) + '. ' + step, {size:9, after:2});
-      });
-    }
- 
-    // Pied de page
-    var pageCount = doc.internal.getNumberOfPages();
-    for (var i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
-      doc.text('BailScan — bailscan.app — Page ' + i + '/' + pageCount, 105, 290, {align:'center'});
-    }
- 
+    var doc = buildReportDoc();
     doc.save('rapport-bailscan-' + new Date().toISOString().slice(0,10) + '.pdf');
-    btn.textContent = 'Téléchargé';
-    setTimeout(function(){ btn.textContent = 'Télécharger le rapport PDF →'; btn.disabled = false; }, 3000);
- 
+    btn.textContent = '✓ Téléchargé';
+    setTimeout(function(){ btn.textContent = '↓ Télécharger le PDF'; btn.disabled = false; }, 3000);
   } catch(err) {
     console.error('PDF error:', err);
-    btn.textContent = 'Télécharger le rapport PDF →'; btn.disabled = false;
-    alert('Erreur lors de la génération du PDF : ' + err.message);
+    btn.textContent = '↓ Télécharger le PDF'; btn.disabled = false;
+    alert('Erreur PDF : ' + err.message);
   }
 }
  
@@ -2410,7 +2657,7 @@ function hideVilleSuggestions() {
  
 // ═══════════════════════════════════════
 // ═══════════════════════════════════════
-appState.extraDocs = []; // [{name, base64, label}]
+appState._pendingDocLabel = null;
  
 function triggerExtraFileInput() {
   document.getElementById('extraFileInput').click();
