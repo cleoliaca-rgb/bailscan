@@ -363,11 +363,11 @@ select.form-input { cursor:pointer; }
 .plan-step-text strong { color:var(--creme); }
 .letters-section { margin-top:28px; }
 .letters-title { font-family:'Instrument Serif',serif; font-size:1.4rem; color:var(--noir); margin-bottom:16px; }
-.letter-card { background:white; border:1.5px solid var(--border); border-radius:14px; padding:20px 24px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
+.letter-card { background:white; border:1.5px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .letter-card-info { }
 .letter-card-title { font-weight:700; font-size:0.92rem; color:var(--noir); margin-bottom:4px; }
 .letter-card-desc { font-size:0.78rem; color:var(--gris); }
-.btn-letter { background:var(--creme); border:1.5px solid var(--border); color:var(--noir); padding:9px 18px; border-radius:8px; font-size:0.82rem; font-weight:600; cursor:pointer; transition:all .2s; }
+.btn-letter { background:var(--creme); border:1.5px solid var(--border); color:var(--noir); padding:9px 18px; border-radius:8px; font-size:0.82rem; font-weight:600; cursor:pointer; transition:all .2s; white-space:nowrap; flex-shrink:0; }
 .btn-letter:hover { border-color:var(--accent); color:var(--accent); }
 .btn-letter.loading { opacity:0.6; cursor:not-allowed; }
 .letter-content { display:none; background:#fafaf8; border:1.5px solid var(--border); border-radius:12px; padding:28px 32px; margin-top:14px; }
@@ -567,6 +567,7 @@ select.form-input { cursor:pointer; }
   .paywall-price-sub { text-align:left !important; }
   .paywall-features { margin-left:0 !important; }
   .paywall-section .btn-primary { width:100%; justify-content:center; }
+  .trop-percu-cta-text { display:none !important; }
   /* Unlock button: stack text on mobile */
   .paywall-amount-banner-unlock { flex-direction:column; gap:2px; padding:12px 16px; font-size:0.82rem; }
   .unlock-text { white-space:nowrap; }
@@ -2000,7 +2001,7 @@ function buildPaywallAmountBanner(data) {
     if (lignesDetail.length > 0) html += '<br><span style="opacity:0.7; font-size:0.77rem">' + lignesDetail.join(' · ') + '</span>';
     if (nbDanger > 0) html += '<br><span style="opacity:0.65; font-size:0.77rem">+ ' + nbDanger + ' clause(s) illégale(s) détectée(s)</span>';
     html += '<br><br>Réclamez ce montant grâce aux lettres officielles incluses.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price">29€</span></button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">Débloquer le rapport complet →</button>';
     html += '<div class="paywall-amount-banner-roi">29€ investis · <strong>×' + Math.round(tropPercuTotal / 29) + ' de retour potentiel</strong></div>';
     html += '</div>';
   } else if (isLoyerProbleme || nbDanger > 0) {
@@ -2010,7 +2011,7 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-eyebrow">⚠️ Irrégularités détectées dans votre bail</div>';
     html += '<div class="paywall-amount-banner-amount" style="font-size:2.4rem">' + nbProblemes + ' problème' + (nbProblemes > 1 ? 's' : '') + '<span style="font-size:1.6rem"> juridique' + (nbProblemes > 1 ? 's' : '') + '</span></div>';
     html += '<div class="paywall-amount-banner-sub">Des sommes peuvent vous être dues. Le rapport complet vous donne les lettres officielles pour les réclamer.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price">29€</span></button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">Débloquer le rapport complet →</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   } else {
@@ -2019,7 +2020,7 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-eyebrow"> Analyse approfondie disponible</div>';
     html += '<div class="paywall-amount-banner-amount" style="font-size:2rem">Rapport complet<span style="font-size:1.2rem"> de votre bail</span></div>';
     html += '<div class="paywall-amount-banner-sub">Toutes les clauses, le plan d\'action et les lettres officielles pour défendre vos droits.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price">29€</span></button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)">Débloquer le rapport complet →</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique</div>';
     html += '</div>';
   }
@@ -2540,9 +2541,11 @@ function buildReportDoc() {
     if (!el || el.style.display === 'none') return;
     var pre = el.querySelector('pre');
     if (!pre || !pre.textContent.trim()) return;
-    // New page per letter
+ 
+    // New page per letter — always one page per letter
     doc.addPage();
-    if (y > 270) y = 18; else y = 18;
+    y = 18;
+ 
     // Letter header
     doc.setFillColor(13,13,13);
     doc.rect(0, 0, W, 22, 'F');
@@ -2551,20 +2554,34 @@ function buildReportDoc() {
     doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
     doc.text('BailScan — ' + (letterLabels[type] || type), M, 13);
     doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,160,160);
-    doc.text('Lettre générée automatiquement', M, 19);
+    doc.text('Lettre generee automatiquement', M, 19);
     y = 30;
-    // Letter content
+ 
     var text = pre.textContent.trim();
-    var lLines = text.split("\n");
-    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(20,20,20);
-    lLines.forEach(function(line) {
-      if (y > 276) { doc.addPage(); y = 16; }
-      var wrapped = doc.splitTextToSize(line, W - M*2);
-      wrapped.forEach(function(wl) {
-        if (y > 276) { doc.addPage(); y = 16; }
-        doc.text(wl, M, y);
-        y += 5;
+    var rawLines = text.split("\n");
+    var pageH = 280; // usable height before footer
+ 
+    // Auto-fit: try font sizes from 9 down to 6.5 until content fits on one page
+    var fSize = 9;
+    var lineH, allWrapped;
+    while (fSize >= 6.5) {
+      lineH = fSize * 0.42;  // ~mm per line
+      allWrapped = [];
+      doc.setFontSize(fSize);
+      rawLines.forEach(function(line) {
+        var w = doc.splitTextToSize(line || ' ', W - M*2);
+        w.forEach(function(wl) { allWrapped.push(wl); });
       });
+      var totalH = y + allWrapped.length * lineH;
+      if (totalH <= pageH) break;
+      fSize -= 0.5;
+    }
+ 
+    // Render all lines on this single page
+    doc.setFont('helvetica','normal'); doc.setFontSize(fSize); doc.setTextColor(20,20,20);
+    allWrapped.forEach(function(wl) {
+      doc.text(wl, M, y);
+      y += lineH;
     });
   });
  
@@ -2618,7 +2635,7 @@ function buildPaidAmountBanner(data) {
     '<div class="trop-percu-banner-detail"><strong>' + tropPercuMensuel.toFixed(2) + ' €/mois</strong> × ' + nbMois + ' mois' +
     (lignes.length > 0 ? '<br>' + lignes.join(' · ') : '') +
     '</div></div>' +
-    '<div style="color:white;font-size:0.82rem;opacity:0.85;text-align:center;flex-shrink:0">Utilisez les lettres<br>ci-dessous pour<br><strong>réclamer ce montant</strong></div>' +
+    '<div class="trop-percu-cta-text" style="color:white;font-size:0.78rem;opacity:0.85;text-align:center;flex-shrink:0;max-width:100px;line-height:1.4">Utilisez les lettres ci-dessous pour <strong>réclamer ce montant</strong></div>' +
     '</div>';
 }
  
@@ -2803,7 +2820,7 @@ function generateLetter(type, btn) {
     if (!document.getElementById(copyId)) {
       var btnRow = document.createElement('div');
       btnRow.id = copyId;
-      btnRow.style.cssText = 'display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;';
+      btnRow.style.cssText = 'display:flex;gap:10px;margin-top:16px;margin-bottom:20px;flex-wrap:wrap;';
       var copyBtn = document.createElement('button');
       copyBtn.textContent = 'Copier la lettre';
       copyBtn.style.cssText = 'background:var(--noir);color:white;border:none;padding:10px 20px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;';
@@ -3022,4 +3039,5 @@ function scrollToApp() {
 </script>
 </body>
 </html>
+ 
  
