@@ -1110,11 +1110,11 @@ select.form-input { cursor:pointer; }
           <div id="reportDate" style="font-size:0.8rem;color:var(--gris)"></div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button onclick="exportReportPDF(this)" style="display:flex;align-items:center;gap:8px;background:var(--accent);color:white;border:none;padding:11px 20px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all .2s">
+          <button onclick="exportReportPDF(this)" style="display:flex;align-items:center;gap:8px;background:white;color:var(--noir);border:1.5px solid var(--border);padding:11px 20px;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--noir)'" onmouseout="this.style.borderColor='var(--border)'">
             ↓ Télécharger le PDF
           </button>
-          <button onclick="openEmailModal()" style="display:flex;align-items:center;gap:8px;background:white;color:var(--noir);border:1.5px solid var(--border);padding:11px 20px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
-            ✉ Recevoir par email
+          <button onclick="openEmailModal()" style="display:flex;align-items:center;gap:10px;background:var(--accent);color:white;border:none;padding:13px 28px;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(200,75,47,0.3);" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">
+            ✉ Recevoir le rapport par email
           </button>
         </div>
       </div>
