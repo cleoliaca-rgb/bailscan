@@ -25,6 +25,7 @@ module.exports = async function handler(req, res) {
         quantity: 1,
       }],
       mode: 'payment',
+      customer_creation: 'always',
       // Email pour le reçu automatique Stripe
       ...(email ? { customer_email: email } : {}),
       payment_intent_data: {
