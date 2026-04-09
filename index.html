@@ -527,6 +527,28 @@ select.form-input { cursor:pointer; }
   }
   .deliverables-hint { display:flex !important; }
   .deliverables-cta { margin-top:16px !important; }
+  /* Flèche droite CSS pure */
+  .deliverables-wrap {
+    position:relative;
+  }
+  .deliverables-wrap::after {
+    content:'›';
+    position:absolute;
+    right:0;
+    top:0;
+    bottom:0;
+    width:52px;
+    background:linear-gradient(to left, rgba(13,13,13,0.92) 30%, transparent);
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding-right:10px;
+    color:white;
+    font-size:1.8rem;
+    font-weight:200;
+    pointer-events:none;
+    border-radius:0 14px 14px 0;
+  }
 }
 @media(max-width:640px){
   .blog-grid-home { grid-template-columns:1fr; }
@@ -659,8 +681,8 @@ select.form-input { cursor:pointer; }
     </div>
  
     <!-- 3 COLONNES -->
-    <!-- CAROUSEL WRAPPER avec flèche droite -->
-    <div style="position:relative;">
+    <!-- CAROUSEL SECTION -->
+    <div class="deliverables-wrap">
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-radius:20px;" class="deliverables-grid">
  
       <!-- COLONNE 1 : ANALYSE -->
@@ -744,11 +766,9 @@ select.form-input { cursor:pointer; }
         </div>
       </div>
     </div>
-      <!-- Flèche droite flottante — visible uniquement mobile -->
-      <div id="carousel-arrow-right" style="display:none;position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:36px;height:60px;background:linear-gradient(to left,rgba(13,13,13,0.85),transparent);border-radius:0 10px 10px 0;align-items:center;justify-content:flex-end;padding-right:6px;pointer-events:none;">
-        <span style="color:white;font-size:1.3rem;font-weight:300;line-height:1;">›</span>
-      </div>
-    </div><!-- /carousel-wrapper -->
+ 
+ 
+    </div><!-- /deliverables-wrap -->
  
     <!-- CAROUSEL NAV (mobile) -->
     <div id="deliverables-nav" style="display:none;align-items:center;justify-content:center;gap:16px;margin-top:14px;">
@@ -1463,7 +1483,7 @@ select.form-input { cursor:pointer; }
     <div class="footer-top">
       <div class="footer-brand">
         <div class="footer-logo">Bail<span>Scan</span></div>
-        <div class="footer-tagline">Fait pour les locataires et les agences</div>
+        <div class="footer-tagline">Fait pour les locataires et les agences ❤️</div>
         <div class="footer-copy">© 2026 BailScan — Tous droits réservés</div>
       </div>
       <div class="footer-col">
@@ -2918,16 +2938,14 @@ document.addEventListener('DOMContentLoaded', function() {
   var grid       = document.querySelector('.deliverables-grid');
   var nav        = document.getElementById('deliverables-nav');
   var hint       = document.getElementById('deliverables-hint-text');
-  var arrowRight = document.getElementById('carousel-arrow-right');
-  if (!grid || !nav || !arrowRight) return;
+  if (!grid || !nav) return;
  
   function isMobile() { return window.innerWidth <= 768; }
  
   function updateDots() {
-    if (!isMobile()) { nav.style.display = 'none'; if (hint) hint.style.display = 'none'; arrowRight.style.display = 'none'; return; }
+    if (!isMobile()) { nav.style.display = 'none'; if (hint) hint.style.display = 'none'; return; }
     nav.style.display  = 'flex';
     if (hint) hint.style.display = 'block';
-    arrowRight.style.display = 'flex';
     var cards = grid.children;
     if (!cards.length) return;
     var cardW = cards[0].offsetWidth + 10;
@@ -2942,7 +2960,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var next = document.getElementById('del-next');
     if (prev) prev.style.opacity = idx === 0 ? '0.3' : '1';
     if (next) next.style.opacity = idx >= cards.length - 1 ? '0.3' : '1';
-    arrowRight.style.opacity = idx >= cards.length - 1 ? '0' : '1';
+ 
   }
  
   // Peek animation on first load — scroll right a bit then back
