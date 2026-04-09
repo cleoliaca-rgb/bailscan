@@ -45,7 +45,7 @@ function buildSystemPrompt(context) {
     + "Reponds TOUJOURS en JSON valide uniquement. Jamais de markdown. Jamais de backticks.";
 }
  
-function buildBailPrompt(context) {
+function buildBailPrompt(context, extraDocs) {
   var depot = (context && context.depot) || 0;
   var bienType = (context && context.type_bien === 'meuble') ? 'meuble' : 'vide';
   var depotMax = bienType === 'meuble' ? 2 : 1;
@@ -69,11 +69,28 @@ function buildBailPrompt(context) {
     extra += "\nComplément de loyer de " + context.complement_loyer + " euros present dans le bail SANS justification fournie. Verifie si c'est un probleme.";
   }
  
-  return "Analyse ce bail locatif francais." + extra + "\n\n"
+  // Instructions explicites sur les docs complémentaires
+  var extraDocsInstruction = '';
+  if (extraDocs && extraDocs.length > 0) {
+    var docNames = extraDocs.map(function(d){ return '"' + d.name + '"'; }).join(', ');
+    extraDocsInstruction = "\n\n=== DOCUMENTS COMPLEMENTAIRES A ANALYSER OBLIGATOIREMENT ===\n"
+      + "En plus du bail, le locataire a fourni " + extraDocs.length + " document(s) : " + docNames + ".\n"
+      + "Tu DOIS analyser chacun de ces documents et detecter toute irregularite, clause abusive, ou element illegal qu'ils contiennent.\n"
+      + "Pour chaque probleme trouve dans un document complementaire, ajoute une entree dans clauses_abusives avec le titre prefixe par le nom du document (ex: '[Conge du bailleur] Vice de forme').\n"
+      + "Si un conge du bailleur est fourni : verifie le delai de preavis (6 mois minimum hors cas specifiques), la forme (LRAR ou acte d'huissier obligatoire), les motifs legaux (reprise, vente, motif legitime et serieux), et la conformite avec Art. 15 loi du 6 juillet 1989.\n"
+      + "Si une revision IRL est fournie : verifie que l'indice utilise est correct, que le calcul est exact, et qu'elle respecte Art. 17-1 loi 1989.\n"
+      + "=== FIN INSTRUCTIONS DOCS COMPLEMENTAIRES ===\n";
+  }
+ 
+  var formatExample = extraDocs && extraDocs.length > 0
+    ? "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"3 problemes detectes\",\"resume\":\"Resume incluant les docs complementaires.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre clause bail\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"},{\"type\":\"danger\",\"titre\":\"[Conge du bailleur] Vice de forme\",\"description\":\"Le conge ne respecte pas...\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. 15 loi 1989\"],\"action\":\"Contester le conge.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}"
+    : "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"2 clauses a corriger\",\"resume\":\"Resume.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}";
+ 
+  return "Analyse ce bail locatif francais ET tous les documents complementaires fournis." + extra + extraDocsInstruction + "\n\n"
     + "Reponds UNIQUEMENT avec un JSON valide, sans texte avant ni apres, sans backticks, sans markdown.\n"
     + "Format exact attendu :\n"
-    + "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"2 clauses a corriger\",\"resume\":\"Resume.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}\n\n"
-    + "Analyse 3 a 5 clauses reelles du document. JSON pur uniquement.";
+    + formatExample + "\n\n"
+    + "Analyse TOUTES les irregularites trouvees dans le bail ET dans chaque document complementaire. JSON pur uniquement.";
 }
  
 function buildEtatDesLieuxPrompt(context) {
@@ -208,10 +225,14 @@ module.exports = async function handler(req, res) {
  
     // ANALYSE
     var type = context.type_analyse || 'bail';
+    var extraDocs = body.extra_docs || [];
     var systemPrompt = buildSystemPrompt(context);
     var analysisPrompt = type === 'etat'
       ? buildEtatDesLieuxPrompt(context)
-      : buildBailPrompt(context);
+      : buildBailPrompt(context, extraDocs);
+ 
+    // Plus de tokens si docs complémentaires
+    var maxTokensAnalysis = extraDocs.length > 0 ? 2800 : 1800;
  
     var userContent;
     if (body.pdf) {
@@ -224,11 +245,10 @@ module.exports = async function handler(req, res) {
       ];
  
       // Documents complémentaires
-      var extraDocs = body.extra_docs || [];
       if (extraDocs.length > 0) {
         userContent.push({
           type: "text",
-          text: "\n\nDocuments complémentaires fournis par le locataire (" + extraDocs.length + ") — à prendre en compte dans l'analyse :"
+          text: "\n\nDocuments complémentaires fournis par le locataire (" + extraDocs.length + ") — à analyser obligatoirement :"
         });
         extraDocs.forEach(function(doc) {
           var docSizeKB = (doc.base64.length * 0.75) / 1024;
@@ -239,14 +259,12 @@ module.exports = async function handler(req, res) {
         });
       }
  
-      // Prompt d'analyse
       userContent.push({ type: "text", text: analysisPrompt });
  
     } else if (body.text) {
       var extraDocsText = '';
-      var extraDocs = body.extra_docs || [];
       if (extraDocs.length > 0) {
-        extraDocsText = '\n\nDocuments complémentaires joints : ' + extraDocs.map(function(d){ return d.name; }).join(', ') + '. Tiens-en compte dans ton analyse.';
+        extraDocsText = '\n\nDocuments complémentaires joints : ' + extraDocs.map(function(d){ return d.name; }).join(', ') + '. Analyse-les et signale toute irregularite dans les clauses_abusives.';
       }
       userContent = analysisPrompt + "\n\n---\nDOCUMENT A ANALYSER :\n\n" + body.text + extraDocsText;
     } else {
@@ -255,7 +273,7 @@ module.exports = async function handler(req, res) {
  
     var data = await callAnthropic(
       [{ role: "user", content: userContent }],
-      systemPrompt, 1800
+      systemPrompt, maxTokensAnalysis
     );
  
     var rawText = (data.content && data.content[0] && data.content[0].text) || '';
