@@ -1133,7 +1133,8 @@ select.form-input { cursor:pointer; }
         <div class="paywall-desc">Débloquez l'analyse intégrale avec les explications juridiques, le plan d'action et les lettres officielles</div>
         <div class="paywall-features">
           <div class="paywall-feature">Toutes les clauses analysées avec références légales</div>
-          <div class="paywall-feature">Vérification encadrement loyers + trop-perçu</div>
+          <div class="paywall-feature">Vérification encadrement des loyers</div>
+          <div class="paywall-feature">Calcul des sommes récupérables</div>
           <div class="paywall-feature">Plan d'action priorisé</div>
           <div class="paywall-feature">5 lettres officielles personnalisées</div>
         </div>
@@ -1999,7 +2000,7 @@ function buildPaywallAmountBanner(data) {
     if (lignesDetail.length > 0) html += '<br><span style="opacity:0.7; font-size:0.77rem">' + lignesDetail.join(' · ') + '</span>';
     if (nbDanger > 0) html += '<br><span style="opacity:0.65; font-size:0.77rem">+ ' + nbDanger + ' clause(s) illégale(s) détectée(s)</span>';
     html += '<br><br>Réclamez ce montant grâce aux lettres officielles incluses.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price"> — 29€</span></button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price">29€</span></button>';
     html += '<div class="paywall-amount-banner-roi">29€ investis · <strong>×' + Math.round(tropPercuTotal / 29) + ' de retour potentiel</strong></div>';
     html += '</div>';
   } else if (isLoyerProbleme || nbDanger > 0) {
@@ -2009,7 +2010,7 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-eyebrow">⚠️ Irrégularités détectées dans votre bail</div>';
     html += '<div class="paywall-amount-banner-amount" style="font-size:2.4rem">' + nbProblemes + ' problème' + (nbProblemes > 1 ? 's' : '') + '<span style="font-size:1.6rem"> juridique' + (nbProblemes > 1 ? 's' : '') + '</span></div>';
     html += '<div class="paywall-amount-banner-sub">Des sommes peuvent vous être dues. Le rapport complet vous donne les lettres officielles pour les réclamer.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price"> — 29€</span></button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price">29€</span></button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   } else {
@@ -2018,7 +2019,7 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-eyebrow"> Analyse approfondie disponible</div>';
     html += '<div class="paywall-amount-banner-amount" style="font-size:2rem">Rapport complet<span style="font-size:1.2rem"> de votre bail</span></div>';
     html += '<div class="paywall-amount-banner-sub">Toutes les clauses, le plan d\'action et les lettres officielles pour défendre vos droits.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price"> — 29€</span></button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)"><span class="unlock-text">Débloquer le rapport complet</span><span class="unlock-price">29€</span></button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique</div>';
     html += '</div>';
   }
