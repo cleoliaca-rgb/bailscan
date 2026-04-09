@@ -737,7 +737,6 @@ select.form-input { cursor:pointer; }
             <div style="width:22px;height:22px;border-radius:50%;background:#333;color:#888;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div>
             <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.5;">Si refus : Tribunal Judiciaire (sans avocat)</div>
           </div>
-          <div style="margin-top:6px;font-size:0.75rem;color:#444;line-height:1.5;padding:0 2px;">Chaque étape inclut le délai légal, les recours possibles et la lettre correspondante.</div>
         </div>
       </div>
  
@@ -2521,7 +2520,7 @@ function buildReportDoc() {
   var letterTypes = ['proprio','agence','miseendemeure','remboursement','conciliation'];
   var letterLabels = {
     proprio: 'Lettre au propriétaire',
-    agence: 'Lettre à l'agence',
+    agence: "Lettre à l'agence",
     miseendemeure: 'Mise en demeure',
     remboursement: 'Demande de remboursement',
     conciliation: 'Saisine Commission de Conciliation'
@@ -2546,8 +2545,7 @@ function buildReportDoc() {
     y = 30;
     // Letter content
     var text = pre.textContent.trim();
-    var lLines = text.split('
-');
+    var lLines = text.split("\n");
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(20,20,20);
     lLines.forEach(function(line) {
       if (y > 276) { doc.addPage(); y = 16; }
