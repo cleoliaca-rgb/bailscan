@@ -2191,6 +2191,7 @@ function sendReportByEmail(btn) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: email,
+        type: 'rapport',
         pdfBase64: pdfBase64,
         pdfName: 'rapport-bailscan-' + new Date().toISOString().slice(0,10) + '.pdf',
         message: 'Veuillez trouver ci-joint votre rapport d\'analyse BailScan complet : clauses illégales détectées, calcul du trop-perçu et plan d\'action pour récupérer votre argent.',
@@ -2813,5 +2814,4 @@ function scrollToApp() {
 </script>
 </body>
 </html>
- 
  
