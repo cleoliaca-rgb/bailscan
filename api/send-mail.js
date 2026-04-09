@@ -29,7 +29,6 @@ module.exports = async function handler(req, res) {
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto">
   <tr><td style="background:#0d0d0d;border-radius:10px 10px 0 0;border-bottom:3px solid #c84b2f;padding:16px 24px">
     <span style="font-family:Georgia,serif;font-size:1.3rem;color:white;font-weight:bold">BailScan</span>
-    <span style="font-size:.6rem;color:#c84b2f;margin-left:10px;font-weight:700">PROPRIÉTAIRES</span>
   </td></tr>
   <tr><td style="background:white;border:1px solid #e0d8cc;border-top:none;border-radius:0 0 10px 10px;padding:28px">
     <p style="margin:0 0 14px;color:#333">Bonjour${nom ? ' ' + nom : ''},</p>
@@ -40,7 +39,7 @@ module.exports = async function handler(req, res) {
       ${adresse ? `<p style="margin:0 0 4px;font-size:.85rem;color:#333"><b>Bien loué :</b> ${adresse}</p>` : ''}
       <p style="margin:0;font-size:.85rem;color:#333"><b>Généré le :</b> ${dateStr}</p>
     </td></tr></table>
-    <p style="margin:0;font-size:.82rem;color:#888">${type === 'rapport' ? 'Ce rapport est fourni à titre informatif. Pour les litiges complexes, consultez un juriste ou l\'ADIL de votre département.' : 'Le bail est joint en PDF. Chaque partie signe avec la mention <em>"Lu et approuvé"</em>.'}</p>
+    <p style="margin:0;font-size:.82rem;color:#888">${type === 'rapport' ? 'Ce rapport est fourni à titre informatif. Pour les litiges complexes, consultez un juriste ou l'ADIL de votre département.' : 'Le bail est joint en PDF. Chaque partie signe avec la mention <em>&quot;Lu et approuvé&quot;</em>.'}</p>
   </td></tr>
   <tr><td style="text-align:center;padding-top:12px">
     <p style="font-size:.7rem;color:#aaa;margin:0">BailScan · bailscan.app · Loi 89-462 · ALUR · ELAN 2018</p>
