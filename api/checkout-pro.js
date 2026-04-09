@@ -43,6 +43,8 @@ module.exports = async function handler(req, res) {
       }],
       subscription_data: {
         metadata: { agence_id: agence_id || '', email, mode: mode || 'mensuel' },
+        // Envoyer la facture par email à chaque renouvellement
+        description: `BailScan Pro — ${cfg.label}`,
         // Engagement 6 ou 12 mois via cancel_at
         ...(mode === '6mois' ? { cancel_at: Math.floor(Date.now() / 1000) + 6 * 30 * 24 * 3600 } : {}),
         ...(mode === '12mois' ? { cancel_at: Math.floor(Date.now() / 1000) + 365 * 24 * 3600 } : {}),
