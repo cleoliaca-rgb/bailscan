@@ -2236,103 +2236,199 @@ function fallbackMailto(email) {
  
 // Fonction partagée pour générer le doc jsPDF (utilisée par export ET email)
 function buildReportDoc() {
-  var jsPDF = window.jspdf.jsPDF;
+  var jsPDF = window.jspdf && window.jspdf.jsPDF;
+  if (!jsPDF) throw new Error('jsPDF non chargé');
   var doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  var pageW = 210, margin = 18, y = 20, lineH = 6;
+  var W = 210, M = 16, y = 0, lh = 5.5;
+  var accentR = [200,75,47], vertR = [34,100,34], noir = [13,13,13], gris = [107,107,107], border = [216,208,196];
  
-  function addLine(text, opts) {
-    opts = opts || {};
-    if (y > 270) { doc.addPage(); y = 20; }
-    if (opts.size) doc.setFontSize(opts.size);
-    if (opts.bold) doc.setFont('helvetica','bold'); else doc.setFont('helvetica','normal');
-    if (opts.color) doc.setTextColor(opts.color[0],opts.color[1],opts.color[2]); else doc.setTextColor(30,30,30);
-    var maxW = opts.maxW || (pageW - margin*2);
-    var lines = doc.splitTextToSize(text || '', maxW);
+  function nl(n) { y += n || lh; if (y > 276) { doc.addPage(); y = 18; } }
+  function line(text, size, bold, colorArr, maxW) {
+    if (y > 276) { doc.addPage(); y = 18; }
+    doc.setFontSize(size || 9);
+    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+    doc.setTextColor.apply(doc, colorArr || noir);
+    var lines = doc.splitTextToSize(text || '', maxW || W - M*2);
     lines.forEach(function(l) {
-      if (y > 272) { doc.addPage(); y = 20; }
-      doc.text(l, margin, y);
-      y += lineH;
+      if (y > 276) { doc.addPage(); y = 18; }
+      doc.text(l, M, y);
+      y += lh;
     });
-    y += (opts.after || 0);
+  }
+  function hrule(colorArr) {
+    doc.setDrawColor.apply(doc, colorArr || border);
+    doc.setLineWidth(0.3);
+    doc.line(M, y, W - M, y);
+    y += 3;
+  }
+  function pill(label, x, py, bgR, textR) {
+    doc.setFillColor.apply(doc, bgR);
+    doc.roundedRect(x, py - 3.5, doc.getStringUnitWidth(label) * 9 / doc.internal.scaleFactor + 6, 5, 1, 1, 'F');
+    doc.setTextColor.apply(doc, textR);
+    doc.setFontSize(6.5); doc.setFont('helvetica','bold');
+    doc.text(label, x + 3, py);
   }
  
-  // En-tête
-  doc.setFillColor(20,20,20); doc.rect(0,0,210,28,'F');
-  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255,255,255);
-  doc.text('BailScan', margin, 14);
-  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(200,200,200);
-  doc.text('Rapport d\'analyse locative', margin, 21);
-  doc.setFontSize(9); doc.text('bailscan.app', 210 - margin, 21, {align:'right'});
-  y = 36;
+  // ── HEADER ──────────────────────────────────────
+  doc.setFillColor(13,13,13);
+  doc.rect(0, 0, W, 26, 'F');
+  doc.setFillColor(200,75,47);
+  doc.rect(0, 24, W, 2, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(255,255,255);
+  doc.text('BailScan', M, 12);
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(180,180,180);
+  doc.text('Rapport d\'analyse locative', M, 19);
+  doc.setTextColor(100,100,100); doc.setFontSize(7.5);
+  doc.text('bailscan.app', W - M, 19, { align: 'right' });
+  y = 34;
  
-  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(120,120,120);
-  doc.text('Analyse effectuée le ' + new Date().toLocaleDateString('fr-FR'), margin, y); y += 10;
+  // ── DATE ────────────────────────────────────────
+  doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor.apply(doc, gris);
+  doc.text('Analyse du ' + new Date().toLocaleDateString('fr-FR'), M, y); nl(7);
  
+  // ── SCORE CARD ──────────────────────────────────
   var score = analysisResult.score || 0;
-  var scoreColor = score >= 70 ? [34,139,34] : score >= 45 ? [200,100,0] : [180,30,30];
-  doc.setFillColor(scoreColor[0],scoreColor[1],scoreColor[2]);
-  doc.circle(margin+8, y+2, 8, 'F');
+  var sClr = score >= 70 ? [34,139,34] : score >= 45 ? [190,100,0] : accentR;
+  doc.setFillColor(245,240,232);
+  doc.roundedRect(M, y, W - M*2, 22, 3, 3, 'F');
+  doc.setDrawColor.apply(doc, sClr); doc.setLineWidth(0.8);
+  doc.roundedRect(M, y, W - M*2, 22, 3, 3, 'S');
+  // score circle
+  doc.setFillColor.apply(doc, sClr);
+  doc.circle(M + 11, y + 11, 8, 'F');
   doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
-  doc.text(String(score), margin+8, y+4, {align:'center'});
-  doc.setTextColor(30,30,30); doc.setFontSize(14);
-  doc.text(analysisResult.verdict_titre || '', margin+22, y+4);
-  y += 18;
+  doc.text(String(score), M + 11, y + 13, { align: 'center' });
+  // verdict
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor.apply(doc, noir);
+  doc.text(analysisResult.verdict_titre || '', M + 24, y + 8);
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc, gris);
+  var resumeLines = doc.splitTextToSize(analysisResult.resume || '', W - M*2 - 28);
+  resumeLines.slice(0,2).forEach(function(l, idx) { doc.text(l, M + 24, y + 14 + idx * 4.5); });
+  y += 28;
  
-  addLine(analysisResult.resume || '', {size:9, color:[60,60,60], after:8});
- 
-  if (appState.loyerMajore > 0 || analysisResult.loyer) {
-    doc.setFillColor(240,247,240); doc.rect(margin-2, y-2, pageW-margin*2+4, 8,'F');
-    addLine('Vérification encadrement des loyers', {size:10, bold:true, color:[34,100,34], after:2});
-    if (analysisResult.loyer && analysisResult.loyer.analyse) addLine(analysisResult.loyer.analyse, {size:8.5, color:[50,50,50], after:6});
+  // ── ENCADREMENT LOYERS ──────────────────────────
+  if (analysisResult.loyer && analysisResult.loyer.analyse) {
+    doc.setFillColor(240,247,242);
+    var loyerLines = doc.splitTextToSize(analysisResult.loyer.analyse, W - M*2 - 10);
+    var loyerH = loyerLines.length * 4.5 + 14;
+    doc.roundedRect(M, y, W - M*2, loyerH, 2, 2, 'F');
+    doc.setFillColor.apply(doc, vertR); doc.rect(M, y, 3, loyerH, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor.apply(doc, vertR);
+    doc.text('Encadrement des loyers', M + 6, y + 6);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor.apply(doc, noir);
+    loyerLines.forEach(function(l, idx) { doc.text(l, M + 6, y + 12 + idx * 4.5); });
+    y += loyerH + 6;
   }
  
-  addLine('Clauses analysées', {size:12, bold:true, after:4});
+  // ── CLAUSES ─────────────────────────────────────
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor.apply(doc, noir);
+  doc.text('Clauses analysées', M, y); nl(8);
+  hrule();
+ 
+  var badgeCfg = {
+    danger: { label: 'ILLEGAL', bg: [253,235,230], txt: accentR, bar: accentR },
+    warning: { label: 'ATTENTION', bg: [255,251,235], txt: [180,100,0], bar: [245,158,11] },
+    ok: { label: 'CONFORME', bg: [240,247,242], txt: vertR, bar: vertR }
+  };
+ 
   var clauses = analysisResult.clauses_abusives || [];
   clauses.forEach(function(c) {
-    if (y > 260) { doc.addPage(); y = 20; }
-    var clr = c.type === 'danger' ? [180,30,30] : c.type === 'warning' ? [180,90,0] : [34,100,34];
-    var badge = c.type === 'danger' ? 'ILLEGAL' : c.type === 'warning' ? 'ATTENTION' : 'OK';
-    doc.setFillColor(clr[0],clr[1],clr[2]); doc.roundedRect(margin,y,20,5,1,1,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(255,255,255);
-    doc.text(badge, margin+10, y+3.5, {align:'center'});
-    doc.setTextColor(30,30,30); doc.setFontSize(10);
-    doc.text((c.titre||''), margin+24, y+3.5);
-    y += 8;
-    addLine(c.description || '', {size:8.5, color:[60,60,60]});
-    if (c.explication_juridique) addLine(c.explication_juridique, {size:8, color:[80,80,80]});
-    if (c.base_legale && c.base_legale.length) {
-      doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(180,30,30);
-      doc.text((c.base_legale||[]).join(' · '), margin, y); y += lineH;
+    if (y > 255) { doc.addPage(); y = 18; }
+    var cfg = badgeCfg[c.type] || badgeCfg.ok;
+    // card background
+    var titleLines = doc.splitTextToSize(c.titre || '', W - M*2 - 24);
+    var descLines = doc.splitTextToSize(c.description || '', W - M*2 - 8);
+    var juriLines = c.explication_juridique ? doc.splitTextToSize(c.explication_juridique, W - M*2 - 8) : [];
+    var cardH = 8 + titleLines.length * 5 + descLines.length * 4.5 + (juriLines.length > 0 ? juriLines.length * 4 + 6 : 0) + (c.action ? 8 : 0) + 10;
+    if (y + cardH > 272) { doc.addPage(); y = 18; }
+ 
+    doc.setFillColor.apply(doc, cfg.bg);
+    doc.roundedRect(M, y, W - M*2, cardH, 2, 2, 'F');
+    doc.setFillColor.apply(doc, cfg.bar);
+    doc.rect(M, y, 2.5, cardH, 'F');
+ 
+    var cy = y + 6;
+    // badge
+    pill(cfg.label, M + 6, cy, cfg.bar, [255,255,255]);
+    // titre
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor.apply(doc, noir);
+    titleLines.forEach(function(l) { doc.text(l, M + 6 + doc.getStringUnitWidth(cfg.label) * 9 / doc.internal.scaleFactor + 10, cy); cy += 5; });
+    cy += 2;
+    // description
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(60,60,60);
+    descLines.forEach(function(l) { doc.text(l, M + 6, cy); cy += 4.5; });
+    // explication juridique
+    if (juriLines.length) {
+      cy += 3;
+      doc.setFontSize(7); doc.setTextColor(90,90,90);
+      juriLines.forEach(function(l) { doc.text(l, M + 6, cy); cy += 4; });
     }
-    if (c.action) addLine('→ ' + c.action, {size:8, bold:true, color:[30,100,30]});
-    y += 4;
+    // base légale
+    if (c.base_legale && c.base_legale.length) {
+      cy += 2;
+      doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor.apply(doc, cfg.txt);
+      doc.text((c.base_legale || []).join(' · '), M + 6, cy); cy += 4.5;
+    }
+    // action
+    if (c.action) {
+      cy += 1;
+      doc.setFillColor(255,255,255);
+      var actionW = W - M*2 - 12;
+      var actionLines = doc.splitTextToSize('> ' + c.action, actionW);
+      doc.roundedRect(M + 6, cy - 3, actionW, actionLines.length * 4 + 4, 1, 1, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor.apply(doc, vertR);
+      actionLines.forEach(function(l) { doc.text(l, M + 9, cy); cy += 4; });
+    }
+    y += cardH + 5;
   });
  
-  if (analysisResult.plan_action && analysisResult.plan_action.length) {
-    if (y > 230) { doc.addPage(); y = 20; }
-    addLine('Plan d\'action recommandé', {size:12, bold:true, after:4});
-    var delais = ['Dès maintenant', 'Sous 8 jours', 'Sous 2 mois', 'Si échec'];
-    var lettres = ['Lettre propriétaire', 'Mise en demeure', 'Saisine Commission', 'Tribunal'];
-    analysisResult.plan_action.forEach(function(step, i) {
-      if (y > 265) { doc.addPage(); y = 20; }
-      var dlr = i === 0 ? [180,30,30] : i === 1 ? [200,120,0] : [34,100,34];
-      doc.setFillColor(dlr[0],dlr[1],dlr[2]); doc.circle(margin+3, y-1, 3, 'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(255,255,255);
-      doc.text(String(i+1), margin+3, y+0.5, {align:'center'});
-      doc.setTextColor(dlr[0],dlr[1],dlr[2]); doc.setFontSize(7.5);
-      var d = delais[Math.min(i, delais.length-1)];
-      doc.text(d + (i < lettres.length ? ' · ' + lettres[i] : ''), margin+8, y);
-      y += 5;
-      addLine(step, {size:9, after:3});
-    });
-  }
+  // ── PLAN D'ACTION ───────────────────────────────
+  if (y > 240) { doc.addPage(); y = 18; }
+  nl(4);
+  doc.setFillColor(13,13,13);
+  doc.roundedRect(M, y, W - M*2, 10, 2, 2, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(255,255,255);
+  doc.text('Plan d\'action recommande', M + 6, y + 6.5);
+  y += 16;
  
-  // Pied de page
-  var pageCount = doc.internal.getNumberOfPages();
-  for (var i = 1; i <= pageCount; i++) {
-    doc.setPage(i);
-    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
-    doc.text('BailScan — bailscan.app — Page ' + i + '/' + pageCount, 105, 290, {align:'center'});
+  var stepColors = [accentR, [190,100,0], vertR, gris, gris, gris];
+  var stepLabels = ['Urgent — Maintenant', 'Sous 8 jours', 'Sous 2 mois', 'Si echec', 'Si echec', 'Si echec'];
+  var stepLetters = ['Lettre proprietaire', 'Mise en demeure', 'Saisine Commission', 'Tribunal judiciaire', '', ''];
+ 
+  (analysisResult.plan_action || []).forEach(function(step, i) {
+    if (y > 265) { doc.addPage(); y = 18; }
+    var clr = stepColors[Math.min(i, stepColors.length-1)];
+    var stepLines = doc.splitTextToSize(step, W - M*2 - 28);
+    var stepH = stepLines.length * 4.5 + 12;
+ 
+    doc.setFillColor(245,240,232);
+    doc.roundedRect(M, y, W - M*2, stepH, 2, 2, 'F');
+    // number circle
+    doc.setFillColor.apply(doc, clr);
+    doc.circle(M + 7, y + stepH/2, 4.5, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(255,255,255);
+    doc.text(String(i+1), M + 7, y + stepH/2 + 1, { align: 'center' });
+    // label + letter
+    doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor.apply(doc, clr);
+    doc.text(stepLabels[Math.min(i, stepLabels.length-1)], M + 16, y + 5.5);
+    if (stepLetters[i]) {
+      doc.setTextColor.apply(doc, gris);
+      doc.text('· ' + stepLetters[i], M + 16 + doc.getStringUnitWidth(stepLabels[Math.min(i, stepLabels.length-1)]) * 6.5 / doc.internal.scaleFactor + 3, y + 5.5);
+    }
+    // step text
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc, noir);
+    stepLines.forEach(function(l, idx) { doc.text(l, M + 16, y + 10.5 + idx * 4.5); });
+    y += stepH + 3;
+  });
+ 
+  // ── FOOTER ──────────────────────────────────────
+  var pages = doc.internal.getNumberOfPages();
+  for (var p = 1; p <= pages; p++) {
+    doc.setPage(p);
+    doc.setFillColor(245,240,232);
+    doc.rect(0, 287, W, 10, 'F');
+    doc.setFontSize(6.5); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
+    doc.text('BailScan — bailscan.app — Analyse fournie a titre informatif — Page ' + p + '/' + pages, W/2, 292, { align: 'center' });
   }
   return doc;
 }
@@ -2717,4 +2813,5 @@ function scrollToApp() {
 </script>
 </body>
 </html>
+ 
  
