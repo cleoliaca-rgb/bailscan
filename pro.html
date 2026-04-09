@@ -232,6 +232,18 @@ footer.footer-seo-pro{display:flex;background:#0f172a;color:rgba(255,255,255,0.7
 .invite-role-card{border:2px solid var(--border);background:#f1f5f9;border-radius:10px;padding:12px;cursor:pointer;text-align:center;transition:all .2s}
 .invite-role-card.active{border-color:#86efac;background:#f0fdf4}
 
+
+/* ── FEATURES CAROUSEL ── */
+#featTrack { cursor: grab; user-select: none; }
+#featTrack.dragging { cursor: grabbing; transition: none !important; }
+.feat-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; transition: all .2s; padding: 0; }
+.feat-dot.active { background: var(--pro-accent); width: 22px; border-radius: 4px; }
+@media(max-width:900px) {
+  #featTrack .feat-card { flex: 0 0 calc((100% - 20px)/2) !important; }
+}
+@media(max-width:600px) {
+  #featTrack .feat-card { flex: 0 0 86vw !important; }
+}
 </style>
 
 
@@ -1097,6 +1109,72 @@ body.is-dashboard #marketingPage { display: none !important; }
 @media (max-width: 768px) {
   .form-grid-pro { grid-template-columns: 1fr; }
 }
+
+/* ─── RESPONSIVE LANDING : sections manquantes ─── */
+@media (max-width: 768px) {
+  /* Header */
+  header { min-height: 50px !important; }
+
+  /* Hero */
+  .hero { padding: 72px 20px 44px !important; }
+  .hero-inner { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .hero h1 { font-size: 1.85rem !important; line-height: 1.15 !important; }
+  .hero-sub { font-size: .88rem !important; max-width: 100% !important; }
+  .hero-ctas { flex-direction: column; gap: 10px !important; }
+  .hero-ctas .btn-primary-pro,
+  .hero-ctas .btn-secondary-pro { width: 100% !important; text-align: center !important; justify-content: center !important; }
+  .hero-right, .dash-preview { display: none !important; }
+  .hero-stats { flex-wrap: wrap; gap: 16px !important; }
+
+  /* Features */
+  .features { padding: 48px 20px !important; }
+  .features-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .section-title { font-size: 1.8rem !important; }
+  .section-sub { max-width: 100% !important; }
+
+  /* How it works */
+  .how { padding: 48px 20px !important; }
+  .steps { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
+  .steps::before { display: none !important; }
+
+  /* Pricing */
+  .pricing { padding: 48px 20px !important; }
+  .pricing-grid { grid-template-columns: 1fr !important; gap: 16px !important; max-width: 420px; margin: 0 auto !important; }
+  .pricing-toggle-wrap { margin: 20px 0 8px !important; }
+  .pricing-engage-wrap { flex-direction: column; align-items: stretch !important; }
+  .engage-btn { text-align: center !important; }
+
+  /* Particuliers section */
+  .particulier-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+
+  /* Footer */
+  .footer-top-pro { grid-template-columns: 1fr 1fr !important; gap: 20px !important; }
+  .footer-inner-pro { padding: 32px 20px 20px !important; }
+}
+
+@media (max-width: 480px) {
+  /* Hero */
+  .hero { padding: 68px 16px 36px !important; }
+  .hero h1 { font-size: 1.55rem !important; }
+  .hero-sub { font-size: .82rem !important; }
+  .hero-stats .stat-n { font-size: 1.5rem !important; }
+
+  /* Steps : 1 colonne */
+  .steps { grid-template-columns: 1fr !important; gap: 16px !important; }
+
+  /* Pricing */
+  .pricing-grid { max-width: 100% !important; }
+  .pricing-card { padding: 20px 16px !important; }
+
+  /* Features */
+  .feat-card { padding: 18px !important; }
+
+  /* Sections paddings */
+  .features, .how, .pricing { padding-left: 16px !important; padding-right: 16px !important; }
+
+  /* Footer */
+  .footer-top-pro { grid-template-columns: 1fr !important; }
+}
 </style>
 
 </head>
@@ -1111,7 +1189,7 @@ body.is-dashboard #marketingPage { display: none !important; }
     <button class="btn-header-login" onclick="openModal('login')">Connexion</button>
     <button class="btn-header-cta" onclick="openModal('signup')">Essai gratuit 3 jours →</button>
   </nav>
-  <button class="nav-hamburger" id="navHamburger" style="display:none" onclick="toggleMobileNav()" aria-label="Menu">
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </header>
@@ -1167,9 +1245,22 @@ body.is-dashboard #marketingPage { display: none !important; }
     <div class="section-tag">Fonctionnalités Pro</div>
     <h2 class="section-title">Tout ce dont une agence a besoin</h2>
     <p class="section-sub">Du bail à la quittance, de l'analyse à la mise en demeure, tout dans un seul dashboard. Conçu pour les équipes immobilières.</p>
-    <div class="features-grid">
 
-      <div class="feat-card">
+    <!-- Carrousel controls -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:36px;margin-bottom:20px">
+      <div id="featDotsWrap" style="display:flex;gap:7px;align-items:center"></div>
+      <div style="display:flex;gap:8px">
+        <button id="featPrev" onclick="featCarouselMove(-1)" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:1rem;color:var(--gris)" onmouseover="this.style.borderColor='var(--pro-accent)';this.style.color='var(--pro-accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gris)'">‹</button>
+        <button id="featNext" onclick="featCarouselMove(1)"  style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:1rem;color:var(--gris)" onmouseover="this.style.borderColor='var(--pro-accent)';this.style.color='var(--pro-accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gris)'">›</button>
+      </div>
+    </div>
+
+    <!-- Viewport clip -->
+    <div style="overflow:hidden;position:relative">
+      <div id="featTrack" style="display:flex;gap:20px;transition:transform .4s cubic-bezier(.25,.1,.25,1);will-change:transform">
+
+
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Résultat analyse</div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -1186,7 +1277,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Uploadez votre bail en PDF. L'IA détecte chaque clause illégale, vérifie l'encadrement des loyers et calcule le trop-perçu. Score /100 immédiat.</div>
       </div>
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Fiche locataire</div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -1204,7 +1295,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Scoring solvabilité automatique, ratio revenus, type de contrat, garant. Validez ou refusez un dossier en 10 secondes.</div>
       </div>
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Alertes &amp; échéances</div>
           <div style="display:flex;flex-direction:column;gap:5px">
@@ -1227,7 +1318,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Fin de bail, révision IRL, préavis en cours : les alertes se génèrent seules depuis vos fiches. Plus jamais de deadline manquée.</div>
       </div>
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Quittance générée</div>
           <div style="background:white;border-radius:8px;padding:10px 12px">
@@ -1243,7 +1334,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Sélectionnez le locataire et la période : la quittance PDF est générée avec votre logo et envoyée automatiquement par email.</div>
       </div>
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:8px">Courrier généré par l'IA</div>
           <div style="background:rgba(59,111,212,.15);border-radius:6px;padding:4px 8px;font-size:.62rem;color:#7fa8e8;font-weight:600;margin-bottom:8px;display:inline-block">Mise en demeure</div>
@@ -1254,7 +1345,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Congé bailleur, mise en demeure, révision IRL, restitution de dépôt. 8 modèles rédigés par l'IA en 10 secondes, conformes loi 1989.</div>
       </div>
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Bail généré</div>
           <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px">
@@ -1269,7 +1360,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Bail complet loi 1989 + ALUR avec toutes les clauses obligatoires. Économisez 300 à 500€ de frais de juriste.</div>
       </div>
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Encadrement des loyers</div>
           <div style="display:flex;flex-direction:column;gap:5px">
@@ -1283,7 +1374,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Vérification automatique : Paris, Lyon, Bordeaux, Montpellier et toutes les zones tendues. Complément de loyer calculé et justifié.</div>
       </div>
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Vos documents</div>
           <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
@@ -1301,7 +1392,7 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Baux, quittances et courriers générés avec votre charte graphique. Uploadez votre logo une fois, il apparaît partout.</div>
       </div>
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Équipe</div>
           <div style="display:flex;flex-direction:column;gap:5px">
@@ -1325,7 +1416,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       </div>
 
 
-      <div class="feat-card">
+      <div class="feat-card" style="flex:0 0 calc((100% - 40px)/3);min-width:0">
         <div style="background:#111827;border-radius:12px;padding:14px;margin-bottom:16px;font-family:'DM Sans',sans-serif">
           <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:10px">Mandat de gestion</div>
           <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px">
@@ -1344,6 +1435,8 @@ body.is-dashboard #marketingPage { display: none !important; }
         <div class="feat-desc">Rédigez le mandat agence–bailleur en 2 minutes. Paramétrez honoraires et missions, signez directement sur tablette ou envoyez au bailleur par mail avec le PDF en pièce jointe.</div>
       </div>
 
+
+      </div>
     </div>
   </div>
 </section>
@@ -1637,7 +1730,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 
 <div id="dashboardSection">
   <!-- Topbar mobile -->
-  <div class="dash-topbar-mobile" style="display:none" id="dashTopbarMobile">
+  <div class="dash-topbar-mobile" id="dashTopbarMobile">
     <button class="dash-hamburger" onclick="toggleDashSidebar()">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="1.8">
         <line x1="3" y1="6" x2="17" y2="6"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="14" x2="17" y2="14"/>
@@ -2674,7 +2767,7 @@ body.is-dashboard #marketingPage { display: none !important; }
                 <button class="btn-result-action primary" onclick="exportBailPDF()">PDF</button>
                 <button class="btn-result-action" onclick="analyserBailGenere()" style="background:var(--pro-accent);color:#fff;border-color:var(--pro-accent)">Analyser</button>
                 <button class="btn-result-action" onclick="envoyerBailEmail()" style="background:#0ea5e9;color:#fff;border-color:#0ea5e9">Envoyer</button>
-                <button class="btn-result-action" onclick="demanderSignatureElectronique()" style="background:var(--vert);color:#fff;border-color:var(--vert)">Signature</button>
+                <button class="btn-result-action" onclick="openYousignModal('bail')" style="background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border-color:#4f46e5">✍ YouSign</button>
               </div>
             </div>
             <!-- Rattachement locataire & mandat -->
@@ -3074,7 +3167,10 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em"> Biens</div>
             <div class="dash-page-sub">Portefeuille de biens · Référentiel pour analyses, dossiers et courriers</div>
           </div>
-          <button class="btn-primary-pro" onclick="openNewMandat()">+ Ajouter un bien</button>
+          <div style="display:flex;gap:8px">
+            <button class="btn-sm" onclick="openImportCSV('biens')" style="border-color:var(--pro-accent);color:var(--pro-accent)">⬆ Importer CSV</button>
+            <button class="btn-primary-pro" onclick="openNewMandat()">+ Ajouter un bien</button>
+          </div>
         </div>
         <!-- KPIs -->
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
@@ -3120,7 +3216,10 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div class="dash-page-title" style="font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:-.02em">👤 Locataires</div>
             <div class="dash-page-sub">Fiches locataires · Scoring · Documents</div>
           </div>
-          <button class="btn-primary-pro" onclick="openNewLocataire()">+ Ajouter un locataire</button>
+          <div style="display:flex;gap:8px">
+            <button class="btn-sm" onclick="openImportCSV('locataires')" style="border-color:var(--pro-accent);color:var(--pro-accent)">⬆ Importer CSV</button>
+            <button class="btn-primary-pro" onclick="openNewLocataire()">+ Ajouter un locataire</button>
+          </div>
         </div>
         <!-- KPIs -->
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
@@ -4356,6 +4455,83 @@ body.is-dashboard #marketingPage { display: none !important; }
         </div>
         <div style="margin-top:10px;font-size:.75rem;color:var(--gris)">Fichiers CSV séparés · Séparateur point-virgule · Compatible Excel FR</div>
       </div>
+
+
+        <!-- ══ SIGNATURE ÉLECTRONIQUE YOUSIGN ══ -->
+        <div class="dash-card" style="margin-bottom:16px" id="yousignSettingsCard">
+          <div class="dash-section-title" style="display:flex;align-items:center;gap:8px">
+            <span style="background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.04em">YouSign</span>
+            Signature électronique légale
+          </div>
+
+          <!-- Intro + lien compte -->
+          <div style="background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);border:1px solid #c4b5fd;border-radius:12px;padding:16px 18px;margin-bottom:18px">
+            <div style="font-weight:700;font-size:.9rem;color:#4c1d95;margin-bottom:6px">Signez vos mandats et baux avec valeur légale (eIDAS)</div>
+            <div style="font-size:.82rem;color:#5b21b6;line-height:1.65;margin-bottom:12px">
+              YouSign est le leader français de la signature électronique. Vos documents signés ont la même valeur juridique qu'une signature manuscrite.
+            </div>
+            <a href="https://yousign.com/fr-fr/tarifs" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#4f46e5;color:white;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600">
+              Créer mon compte YouSign →
+            </a>
+            <span style="font-size:.76rem;color:#7c3aed;margin-left:12px">Offre gratuite disponible · 10 signatures/mois incluses</span>
+          </div>
+
+          <!-- Guide pas-à-pas -->
+          <div style="margin-bottom:18px">
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gris);margin-bottom:10px">Comment récupérer votre clé API</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:.83rem;color:var(--texte)">
+                <div style="width:22px;height:22px;border-radius:50%;background:#4f46e5;color:white;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px">1</div>
+                <div>Connectez-vous à votre espace YouSign sur <a href="https://app.yousign.com" target="_blank" style="color:#4f46e5;font-weight:600">app.yousign.com</a></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:.83rem;color:var(--texte)">
+                <div style="width:22px;height:22px;border-radius:50%;background:#4f46e5;color:white;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px">2</div>
+                <div>Allez dans <strong>Paramètres</strong> (icône engrenage en bas à gauche) → <strong>API & Webhooks</strong></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:.83rem;color:var(--texte)">
+                <div style="width:22px;height:22px;border-radius:50%;background:#4f46e5;color:white;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px">3</div>
+                <div>Cliquez sur <strong>Créer une clé API</strong>, donnez-lui un nom (ex : BailScan) et copiez la clé générée</div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:.83rem;color:var(--texte)">
+                <div style="width:22px;height:22px;border-radius:50%;background:#4f46e5;color:white;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px">4</div>
+                <div>Collez-la ci-dessous et cliquez sur <strong>Enregistrer</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Champ clé API -->
+          <div class="form-grid-pro" style="margin-bottom:14px">
+            <div class="form-group-pro" style="grid-column:1/-1">
+              <label class="form-label">Votre clé API YouSign <span style="color:#e53e3e">*</span></label>
+              <div style="display:flex;gap:8px">
+                <input type="password" class="form-input-pro" id="yousignApiKey" placeholder="Collez votre clé ici…" style="font-family:monospace;font-size:.82rem;flex:1;letter-spacing:.03em">
+                <button class="btn-sm" onclick="toggleYousignKeyVisibility()" id="yousignKeyToggle" style="flex-shrink:0;min-width:72px">Afficher</button>
+              </div>
+              <div style="font-size:.72rem;color:var(--gris);margin-top:5px">
+                🔒 Votre clé est stockée uniquement sur cet appareil — elle ne transite jamais en clair sur nos serveurs.
+              </div>
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Environnement</label>
+              <select class="form-input-pro" id="yousignMode">
+                <option value="sandbox">Sandbox — Test (gratuit, sans vraie signature)</option>
+                <option value="production">Production — Signatures légales</option>
+              </select>
+              <div style="font-size:.72rem;color:var(--gris);margin-top:4px">Commencez en Sandbox pour tester, passez en Production quand vous êtes prêt.</div>
+            </div>
+            <div class="form-group-pro">
+              <label class="form-label">Statut de la connexion</label>
+              <div id="yousignStatus" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:.83rem;color:var(--gris);background:white;min-height:38px;display:flex;align-items:center">— Non configuré</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-primary-pro" onclick="saveYousignSettings()" style="font-size:.84rem;background:linear-gradient(135deg,#4f46e5,#6366f1)">Enregistrer la clé</button>
+            <button class="btn-sm" onclick="testYousignConnection()" style="font-size:.84rem">Tester la connexion</button>
+            <a href="https://developers.yousign.com/reference/getapikeys" target="_blank" class="btn-sm" style="font-size:.78rem;color:#4f46e5;border-color:#c4b5fd;text-decoration:none;display:inline-flex;align-items:center;gap:4px">Documentation API →</a>
+          </div>
+          <div id="yousignSaveMsg" style="display:none;font-size:.82rem;margin-top:10px;padding:8px 12px;border-radius:8px"></div>
+        </div>
 
       </div><!-- /tab-parametres -->
       <!-- /dash-main -->
@@ -9722,6 +9898,8 @@ function toggleMobileNav() {
   nav.classList.toggle('nav-mobile-open');
   nav.style.display = nav.classList.contains('nav-mobile-open') ? 'flex' : '';
 }
+
+// ── Responsive : sidebar dashboard ──
 
 // ── Responsive : sidebar dashboard ──
 function toggleDashSidebar() {
@@ -17415,6 +17593,141 @@ function toggleBailleurType(type) {
     else sel.value = 'physique';
   }
 }
+
+// ─── FEATURES CAROUSEL ────────────────────────────────────────────────
+(function() {
+  var current = 0;
+  var perPage = 3;
+  var total   = 0;
+  var track, dots, cards;
+  var dragStartX = 0, dragCurrentX = 0, isDragging = false, dragOffset = 0;
+
+  function getPerPage() {
+    return window.innerWidth <= 600 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+  }
+
+  function init() {
+    track = document.getElementById('featTrack');
+    if (!track) return;
+    cards = Array.from(track.querySelectorAll('.feat-card'));
+    total = cards.length;
+    perPage = getPerPage();
+    buildDots();
+    go(0);
+    bindDrag();
+    window.addEventListener('resize', function() {
+      perPage = getPerPage();
+      // Update card widths via inline style
+      var gap = 20;
+      cards.forEach(function(card) {
+        card.style.flex = '0 0 calc((100% - ' + (gap*(perPage-1)) + 'px)/' + perPage + ')';
+      });
+      buildDots();
+      go(Math.min(current, maxPage()));
+    });
+  }
+
+  function maxPage() { return Math.max(0, total - perPage); }
+
+  function buildDots() {
+    var wrap = document.getElementById('featDotsWrap');
+    if (!wrap) return;
+    var pages = maxPage() + 1;
+    wrap.innerHTML = '';
+    for (var i = 0; i < pages; i++) {
+      (function(idx) {
+        var btn = document.createElement('button');
+        btn.className = 'feat-dot' + (idx === current ? ' active' : '');
+        btn.onclick = function() { go(idx); };
+        wrap.appendChild(btn);
+      })(i);
+    }
+  }
+
+  function go(page) {
+    perPage = getPerPage();
+    current = Math.max(0, Math.min(page, maxPage()));
+    if (!track || !cards.length) return;
+
+    // Update card flex widths
+    var gap = 20;
+    cards.forEach(function(card) {
+      card.style.flex = '0 0 calc((100% - ' + (gap*(perPage-1)) + 'px)/' + perPage + ')';
+    });
+
+    // Calculate offset
+    var cardW = cards[0].getBoundingClientRect().width;
+    var offset = -(current * (cardW + gap));
+    track.style.transform = 'translateX(' + offset + 'px)';
+
+    // Update dots
+    var allDots = document.querySelectorAll('.feat-dot');
+    allDots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+
+    // Update arrow opacity
+    var prev = document.getElementById('featPrev');
+    var next = document.getElementById('featNext');
+    if (prev) prev.style.opacity = current === 0 ? '.35' : '1';
+    if (next) next.style.opacity = current >= maxPage() ? '.35' : '1';
+  }
+
+  window.featCarouselMove = function(dir) { go(current + dir); };
+
+  // Drag / swipe
+  function bindDrag() {
+    if (!track) return;
+
+    track.addEventListener('mousedown', function(e) {
+      isDragging = true; dragStartX = e.clientX; dragOffset = 0;
+      track.classList.add('dragging');
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      dragOffset = e.clientX - dragStartX;
+      var cardW = cards[0] ? cards[0].getBoundingClientRect().width : 300;
+      var base = -(current * (cardW + 20));
+      track.style.transform = 'translateX(' + (base + dragOffset) + 'px)';
+    });
+    window.addEventListener('mouseup', function() {
+      if (!isDragging) return;
+      isDragging = false; track.classList.remove('dragging');
+      if (dragOffset < -60) go(current + 1);
+      else if (dragOffset > 60) go(current - 1);
+      else go(current);
+    });
+
+    // Touch
+    track.addEventListener('touchstart', function(e) {
+      dragStartX = e.touches[0].clientX; dragOffset = 0;
+    }, {passive:true});
+    track.addEventListener('touchmove', function(e) {
+      dragOffset = e.touches[0].clientX - dragStartX;
+      var cardW = cards[0] ? cards[0].getBoundingClientRect().width : 300;
+      var base = -(current * (cardW + 20));
+      track.style.transform = 'translateX(' + (base + dragOffset) + 'px)';
+    }, {passive:true});
+    track.addEventListener('touchend', function() {
+      if (dragOffset < -60) go(current + 1);
+      else if (dragOffset > 60) go(current - 1);
+      else go(current);
+    });
+  }
+
+  // Auto-play every 5s (pause on hover)
+  var timer;
+  function startAuto() { timer = setInterval(function() { go(current >= maxPage() ? 0 : current + 1); }, 5000); }
+  function stopAuto()  { clearInterval(timer); }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    init();
+    startAuto();
+    var section = document.getElementById('fonctionnalites');
+    if (section) {
+      section.addEventListener('mouseenter', stopAuto);
+      section.addEventListener('mouseleave', startAuto);
+    }
+  });
+})();
 </script>
 
 </body>
