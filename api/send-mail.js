@@ -10,7 +10,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
  
   try {
-    const { to, nom, message, pdfBase64, pdfName, bailleur, adresse, date } = req.body || {};
+    const { to, nom, message, pdfBase64, pdfName, bailleur, adresse, date, type } = req.body || {};
  
     if (!to || !pdfBase64) {
       return res.status(400).json({ error: 'Parametres manquants : to et pdfBase64 requis' });
@@ -40,7 +40,7 @@ module.exports = async function handler(req, res) {
       ${adresse ? `<p style="margin:0 0 4px;font-size:.85rem;color:#333"><b>Bien loué :</b> ${adresse}</p>` : ''}
       <p style="margin:0;font-size:.85rem;color:#333"><b>Généré le :</b> ${dateStr}</p>
     </td></tr></table>
-    <p style="margin:0;font-size:.82rem;color:#888">Le bail est joint en PDF. Chaque partie signe avec la mention <em>"Lu et approuvé"</em>.</p>
+    <p style="margin:0;font-size:.82rem;color:#888">${type === 'rapport' ? 'Ce rapport est fourni à titre informatif. Pour les litiges complexes, consultez un juriste ou l\'ADIL de votre département.' : 'Le bail est joint en PDF. Chaque partie signe avec la mention <em>"Lu et approuvé"</em>.'}</p>
   </td></tr>
   <tr><td style="text-align:center;padding-top:12px">
     <p style="font-size:.7rem;color:#aaa;margin:0">BailScan · bailscan.app · Loi 89-462 · ALUR · ELAN 2018</p>
@@ -58,7 +58,7 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         from: 'BailScan <noreply@bailscan.app>',
         to: [to],
-        subject: `Votre bail de location BailScan — ${dateStr}`,
+        subject: type === 'rapport' ? `Votre rapport BailScan — ${dateStr}` : `Votre bail de location BailScan — ${dateStr}`,
         html: html,
         attachments: [{
           filename: pdfName || 'BailScan-Bail.pdf',
@@ -82,3 +82,4 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: err.message || 'Erreur serveur interne' });
   }
 };
+ 
