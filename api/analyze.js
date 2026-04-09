@@ -1,9 +1,9 @@
 // BailScan — API analyze.js
 // CommonJS pur — compatible Vercel sans type:module
-
+ 
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-4-20250514";
-
+ 
 const VILLES_ENCADREMENT = [
   "paris", "lyon", "villeurbanne", "bordeaux", "montpellier",
   "grenoble", "lille", "roubaix", "tourcoing", "hellemmes",
@@ -11,12 +11,12 @@ const VILLES_ENCADREMENT = [
   "nanterre", "creteil", "ivry-sur-seine", "bagnolet", "aubervilliers",
   "pantin", "bobigny", "stains", "saint-ouen"
 ];
-
+ 
 function isVilleEncadree(ville) {
   if (!ville) return false;
   return VILLES_ENCADREMENT.some(function(v) { return ville.toLowerCase().includes(v); });
 }
-
+ 
 function buildSystemPrompt(context) {
   var type = (context && context.type_analyse) || 'bail';
   var ville = (context && context.ville) || '';
@@ -26,7 +26,11 @@ function buildSystemPrompt(context) {
   var loyerBase = (context && context.loyer_base) ? context.loyer_base + ' euros/mois' : 'non precise';
   var depot = (context && context.depot) ? context.depot + ' euros' : 'non precise';
   var encadre = isVilleEncadree(ville);
-
+ 
+  var extraDocsNote = (context && context.extra_docs_labels)
+    ? "\n- Documents complémentaires fournis : " + context.extra_docs_labels + " (analysés ci-dessous, prendre en compte)"
+    : '';
+ 
   return "Tu es BailScan, expert juridique en droit locatif francais.\n"
     + "Tu maitrises : loi du 6 juillet 1989, loi ALUR (2014), loi ELAN (2018), decret 87-713.\n\n"
     + "Contexte :\n"
@@ -36,10 +40,11 @@ function buildSystemPrompt(context) {
     + "- Ville : " + (ville || 'non precisee') + (encadre ? ' [ZONE ENCADREMENT LOYERS]' : '') + "\n"
     + "- Surface : " + surface + "\n"
     + "- Loyer declare : " + loyerBase + "\n"
-    + "- Depot de garantie : " + depot + "\n\n"
+    + "- Depot de garantie : " + depot + "\n"
+    + extraDocsNote + "\n\n"
     + "Reponds TOUJOURS en JSON valide uniquement. Jamais de markdown. Jamais de backticks.";
 }
-
+ 
 function buildBailPrompt(context) {
   var depot = (context && context.depot) || 0;
   var bienType = (context && context.type_bien === 'meuble') ? 'meuble' : 'vide';
@@ -48,7 +53,7 @@ function buildBailPrompt(context) {
   var surface = (context && context.surface) || null;
   var loyerBase = (context && context.loyer_base) || null;
   var encadre = isVilleEncadree(ville);
-
+ 
   var extra = '';
   if (encadre && loyerBase && surface) {
     extra += "\nATTENTION : " + ville + " est en zone d'encadrement des loyers. Loyer declare : " + loyerBase + " euros/mois pour " + surface + "m2. Verifie la coherence avec les plafonds legaux.";
@@ -56,21 +61,21 @@ function buildBailPrompt(context) {
   if (depot > 0) {
     extra += "\nDepot de garantie declare : " + depot + " euros. Maximum legal pour un logement " + bienType + " : " + depotMax + " mois de loyer hors charges. Verifie.";
   }
-
+ 
   var justif = (context && context.complement_justif) || '';
   if (justif) {
     extra += "\nJustification du complement de loyer mentionnee dans le bail : \"" + justif + "\". Evalue si cette justification est legalement valable (caracteristiques exceptionnelles de localisation ou confort selon Art. 17-2 loi 1989).";
   } else if (context && context.complement_loyer > 0) {
     extra += "\nComplément de loyer de " + context.complement_loyer + " euros present dans le bail SANS justification fournie. Verifie si c'est un probleme.";
   }
-
+ 
   return "Analyse ce bail locatif francais." + extra + "\n\n"
     + "Reponds UNIQUEMENT avec un JSON valide, sans texte avant ni apres, sans backticks, sans markdown.\n"
     + "Format exact attendu :\n"
     + "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"2 clauses a corriger\",\"resume\":\"Resume.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}\n\n"
     + "Analyse 3 a 5 clauses reelles du document. JSON pur uniquement.";
 }
-
+ 
 function buildEtatDesLieuxPrompt(context) {
   var depot = (context && context.depot) || 0;
   return "Analyse cet etat des lieux d'un logement locatif francais.\n"
@@ -79,7 +84,7 @@ function buildEtatDesLieuxPrompt(context) {
     + "Format : {\"score\":75,\"verdict\":\"Equitable\",\"verdict_titre\":\"Etat conforme\",\"resume\":\"Resume.\",\"loyer\":null,\"clauses_abusives\":[{\"type\":\"warning\",\"titre\":\"Element\",\"description\":\"Desc.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Decret 26 aout 1987\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\"]}\n\n"
     + "Distingue usure normale et degradations reelles. JSON pur uniquement.";
 }
-
+ 
 function buildLetterPrompt(letterType, analysisData, context) {
   var labels = {
     proprio: "au proprietaire pour demander la suppression des clauses illegales",
@@ -88,25 +93,25 @@ function buildLetterPrompt(letterType, analysisData, context) {
     remboursement: "de demande de remboursement du trop-percu de loyer",
     conciliation: "de saisine de la Commission Departementale de Conciliation"
   };
-
+ 
   var clauses = (analysisData && analysisData.clauses_abusives) || [];
   var illegalClauses = clauses
     .filter(function(c) { return c.type === 'danger'; })
     .map(function(c) { return '- ' + c.titre + ' (' + (c.base_legale || []).join(', ') + ')'; })
     .join('\n') || 'Voir rapport complet';
-
+ 
   // Identité — utiliser les vraies valeurs, jamais de crochets si fourni
   var nomLocataire = (context && context.locataire_nom && context.locataire_nom.trim()) ? context.locataire_nom.trim() : null;
   var adresseLogement = (context && context.locataire_adresse && context.locataire_adresse.trim()) ? context.locataire_adresse.trim() : null;
   var nomProprio = (context && context.proprio_nom && context.proprio_nom.trim()) ? context.proprio_nom.trim() : null;
   var dateBail = (context && context.date_bail && context.date_bail.trim()) ? context.date_bail.trim() : null;
-
+ 
   // Montants
   var tropPercuTotal = (context && context.trop_percu_total) || '';
   var tropPercuMensuel = (context && context.trop_percu_mensuel) || '';
   var tropPercuDetail = (context && context.trop_percu_detail) || '';
   var nbMois = (context && context.nb_mois_bail) || '';
-
+ 
   // Bloc identité avec instructions strictes
   var identiteBlock = "=== INFORMATIONS A UTILISER TELLES QUELLES (NE PAS METTRE DE CROCHETS) ===\n"
     + "Nom du locataire (expediteur) : " + (nomLocataire || "A REMPLIR PAR LE LOCATAIRE") + "\n"
@@ -114,7 +119,7 @@ function buildLetterPrompt(letterType, analysisData, context) {
     + "Nom du proprietaire/bailleur : " + (nomProprio || "A REMPLIR PAR LE LOCATAIRE") + "\n"
     + "Date de signature du bail : " + (dateBail || "A REMPLIR PAR LE LOCATAIRE") + "\n"
     + "=== FIN INFORMATIONS ===\n";
-
+ 
   var montantBlock = '';
   if (tropPercuTotal) {
     montantBlock = "\n=== MONTANTS A INCLURE OBLIGATOIREMENT DANS LA LETTRE ===\n"
@@ -124,7 +129,7 @@ function buildLetterPrompt(letterType, analysisData, context) {
       + "=> Exige explicitement le remboursement de " + tropPercuTotal + " dans le corps de la lettre.\n"
       + "=== FIN MONTANTS ===\n";
   }
-
+ 
   var instructionsBlock = "\nREGLES ABSOLUES DE REDACTION :\n"
     + "1. INTERDICTION TOTALE d'utiliser des [crochets] pour les informations fournies ci-dessus\n"
     + "2. Utilise exactement les noms, adresses et dates fournis dans les informations\n"
@@ -134,7 +139,7 @@ function buildLetterPrompt(letterType, analysisData, context) {
     + "6. Lettre LRAR, references legales exactes (loi 6 juillet 1989, ALUR, ELAN), ton ferme mais courtois\n"
     + "7. Mentionner les recours si non-reponse sous 15 jours\n"
     + (tropPercuTotal ? "8. Exiger le remboursement de " + tropPercuTotal + " de maniere explicite\n" : "");
-
+ 
   return "Redige une lettre officielle " + (labels[letterType] || letterType) + ".\n\n"
     + identiteBlock + "\n"
     + "Contexte du bail :\n"
@@ -147,7 +152,7 @@ function buildLetterPrompt(letterType, analysisData, context) {
     + instructionsBlock + "\n"
     + "Retourne UNIQUEMENT le texte brut de la lettre, sans introduction ni commentaire.";
 }
-
+ 
 async function callAnthropic(messages, systemPrompt, maxTokens) {
   maxTokens = maxTokens || 1500;
   var response = await fetch(ANTHROPIC_API, {
@@ -171,21 +176,21 @@ async function callAnthropic(messages, systemPrompt, maxTokens) {
   }
   return response.json();
 }
-
+ 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
+ 
   res.setHeader('Content-Type', 'application/json');
-
+ 
   try {
     var body = req.body;
-
+ 
     if (!body || typeof body !== 'object') {
       return res.status(400).json({ error: 'Corps de requete invalide.' });
     }
-
+ 
     var context = body.context || {};
-
+ 
     // LETTRES
     if (body.letter_mode) {
       var sysPromptL = "Tu es BailScan, expert juridique en droit locatif francais. "
@@ -200,36 +205,62 @@ module.exports = async function handler(req, res) {
       );
       return res.status(200).json({ letter: (dataL.content && dataL.content[0] && dataL.content[0].text) || '' });
     }
-
+ 
     // ANALYSE
     var type = context.type_analyse || 'bail';
     var systemPrompt = buildSystemPrompt(context);
     var analysisPrompt = type === 'etat'
       ? buildEtatDesLieuxPrompt(context)
       : buildBailPrompt(context);
-
+ 
     var userContent;
     if (body.pdf) {
       var sizeKB = (body.pdf.length * 0.75) / 1024;
       if (sizeKB > 4000) return res.status(400).json({ error: 'PDF trop volumineux. Colle le texte directement.' });
+ 
+      // Document principal
       userContent = [
-        { type: "document", source: { type: "base64", media_type: "application/pdf", data: body.pdf } },
-        { type: "text", text: analysisPrompt }
+        { type: "document", source: { type: "base64", media_type: "application/pdf", data: body.pdf } }
       ];
+ 
+      // Documents complémentaires
+      var extraDocs = body.extra_docs || [];
+      if (extraDocs.length > 0) {
+        userContent.push({
+          type: "text",
+          text: "\n\nDocuments complémentaires fournis par le locataire (" + extraDocs.length + ") — à prendre en compte dans l'analyse :"
+        });
+        extraDocs.forEach(function(doc) {
+          var docSizeKB = (doc.base64.length * 0.75) / 1024;
+          if (docSizeKB <= 4000) {
+            userContent.push({ type: "text", text: "--- " + doc.name + " ---" });
+            userContent.push({ type: "document", source: { type: "base64", media_type: "application/pdf", data: doc.base64 } });
+          }
+        });
+      }
+ 
+      // Prompt d'analyse
+      userContent.push({ type: "text", text: analysisPrompt });
+ 
     } else if (body.text) {
-      userContent = analysisPrompt + "\n\n---\nDOCUMENT A ANALYSER :\n\n" + body.text;
+      var extraDocsText = '';
+      var extraDocs = body.extra_docs || [];
+      if (extraDocs.length > 0) {
+        extraDocsText = '\n\nDocuments complémentaires joints : ' + extraDocs.map(function(d){ return d.name; }).join(', ') + '. Tiens-en compte dans ton analyse.';
+      }
+      userContent = analysisPrompt + "\n\n---\nDOCUMENT A ANALYSER :\n\n" + body.text + extraDocsText;
     } else {
       return res.status(400).json({ error: 'Aucun document fourni.' });
     }
-
+ 
     var data = await callAnthropic(
       [{ role: "user", content: userContent }],
       systemPrompt, 1800
     );
-
+ 
     var rawText = (data.content && data.content[0] && data.content[0].text) || '';
     var parsed;
-
+ 
     try {
       var clean = rawText.replace(/```json/g, '').replace(/```/g, '');
       var firstBrace = clean.indexOf('{');
@@ -248,11 +279,12 @@ module.exports = async function handler(req, res) {
         plan_action: ['Reessayer en collant le texte du bail dans le champ texte']
       });
     }
-
+ 
     return res.status(200).json(parsed);
-
+ 
   } catch (error) {
     console.error('BailScan error:', error);
     return res.status(500).json({ error: 'Erreur serveur: ' + error.message });
   }
 };
+ 
