@@ -867,7 +867,7 @@ select.form-input { cursor:pointer; }
         <div class="form-group">
           <label for="ville">Ville <span style="font-weight:400;color:var(--gris);font-size:0.8rem">— recommandé pour vérifier le loyer</span></label>
           <div style="position:relative;">
-            <input type="text" id="ville" class="form-input" placeholder="Ex : Paris, Lyon, Bordeaux…" oninput="updateLoyerCheck();villeAutocomplete(this.value)" autocomplete="off" onblur="setTimeout(hideVilleSuggestions,150)">
+            <input type="text" id="ville" class="form-input" placeholder="Ex : Paris, Lyon, Bordeaux…" oninput="updateLoyerCheck();villeAutocomplete(this.value)" autocomplete="off" onblur="setTimeout(hideVilleSuggestions,300)">
             <div id="villeSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:50;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
           </div>
         </div>
@@ -2860,13 +2860,19 @@ function villeAutocomplete(val) {
     return v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').startsWith(q);
   }).slice(0, 8);
   if (!matches.length) { box.style.display = 'none'; return; }
-  box.innerHTML = matches.map(function(v) {
+ 
+  box.innerHTML = '';
+  matches.forEach(function(v) {
     var isEncadree = ['paris','bordeaux','lyon','villeurbanne','montpellier','grenoble','lille','strasbourg','brest','rennes','nantes','cergy','evry'].some(function(e){ return v.toLowerCase().includes(e); });
-    return '<div onclick="selectVille(\'' + v + '\')" style="padding:10px 16px;cursor:pointer;font-size:0.88rem;color:var(--texte);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);transition:background .15s;" onmouseover="this.style.background=\'var(--creme)\'" onmouseout="this.style.background=\'white\'">' +
-      '<span>' + v + '</span>' +
-      (isEncadree ? '<span style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--vert);background:var(--vert-light);padding:2px 7px;border-radius:3px;border:1px solid rgba(45,106,79,0.2);">Encadrée</span>' : '') +
-    '</div>';
-  }).join('');
+    var div = document.createElement('div');
+    div.style.cssText = 'padding:10px 16px;cursor:pointer;font-size:0.88rem;color:var(--texte);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);';
+    div.innerHTML = '<span>' + v + '</span>' + (isEncadree ? '<span style="font-size:0.62rem;font-weight:700;text-transform:uppercase;color:var(--vert);background:var(--vert-light);padding:2px 7px;border-radius:3px;border:1px solid rgba(45,106,79,0.2);">Encadrée</span>' : '');
+    div.addEventListener('mousedown', function(e) { e.preventDefault(); selectVille(v); });
+    div.addEventListener('touchstart', function(e) { e.preventDefault(); selectVille(v); }, { passive: false });
+    div.addEventListener('mouseover', function() { div.style.background = 'var(--creme)'; });
+    div.addEventListener('mouseout',  function() { div.style.background = 'white'; });
+    box.appendChild(div);
+  });
   box.style.display = 'block';
 }
  
