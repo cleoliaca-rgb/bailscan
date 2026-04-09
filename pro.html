@@ -1446,7 +1446,8 @@ body.is-dashboard #marketingPage { display: none !important; }
 <section class="how">
   <div class="section-inner">
     <div class="section-tag">En 4 étapes</div>
-    <h2 class="section-title">Simple à utiliser, puissant pour votre agence</h2>
+    <h2 class="section-title">Simple à utiliser, puissant<span class="how-br"> </span>pour votre agence</h2>
+    <style>@media(max-width:768px){.how-br{display:block;}}</style>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
@@ -1461,7 +1462,7 @@ body.is-dashboard #marketingPage { display: none !important; }
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-title">Analyse IA</div>
-        <div class="step-desc">Notre IA analyse toutes les clauses en 2 minutes chrono.</div>
+        <div class="step-desc">Notre IA analyse toutes les clauses en 30 secondes.</div>
       </div>
       <div class="step">
         <div class="step-num">4</div>
@@ -1476,7 +1477,7 @@ body.is-dashboard #marketingPage { display: none !important; }
   <div class="section-inner">
     <div class="section-tag" style="color:#7fa8e8">Tarifs</div>
     <h2 class="section-title" style="color:white">Choisissez votre engagement</h2>
-    <p class="section-sub" style="margin-bottom:0;color:rgba(255,255,255,.55)">Essai gratuit 3 jours · Sans CB · Résiliable à tout moment</p>
+    <p class="section-sub" style="margin-bottom:0;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(.75rem,.95rem,1rem)">Essai gratuit 3 jours · Sans CB · Résiliable à tout moment</p>
 
     <!-- Toggle mensuel / annuel -->
     <div style="max-width:900px;margin:0 auto">
@@ -1514,7 +1515,7 @@ body.is-dashboard #marketingPage { display: none !important; }
 </section>
 
 <section id="particuliers" style="padding:80px 48px;background:#f8fafc;border-top:1px solid var(--border)">
-  <style>@media(max-width:768px){#particuliers{padding:48px 20px !important;} #particuliers .part-inner{grid-template-columns:1fr !important;gap:32px !important;} #particuliers .part-card{display:none !important;}}</style>
+  <style>@media(max-width:768px){#particuliers{padding:48px 20px !important;} #particuliers .part-inner{grid-template-columns:1fr !important;gap:28px !important;}}</style>
   <div class="part-inner" style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
     <div>
       <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px">Pour les propriétaires particuliers</div>
@@ -1538,7 +1539,7 @@ body.is-dashboard #marketingPage { display: none !important; }
             <div style="font-family:'Instrument Serif',serif;font-size:3.2rem;color:var(--noir);line-height:1"><sup style="font-size:1.1rem;font-family:'DM Sans';font-weight:600">€</sup>49</div>
             <div style="font-size:.82rem;color:var(--gris)">paiement unique</div>
           </div>
-          <div style="font-size:.8rem;color:var(--gris);margin-bottom:20px">Sans abonnement · Accès à vie</div>
+          <div style="font-size:.8rem;color:var(--gris);margin-bottom:20px">Paiement unique · Sans abonnement</div>
           <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
             <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Analyse complète de toutes les clauses</div>
             <div style="display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--texte)"><span style="color:var(--accent);font-weight:700">✓</span>Détection des clauses illégales</div>
