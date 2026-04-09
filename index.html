@@ -505,12 +505,38 @@ select.form-input { cursor:pointer; }
 .btn-pro { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; background:white; color:var(--noir); border-radius:10px; font-size:0.9rem; font-weight:700; text-decoration:none; transition:all .2s; }
 .btn-pro:hover { background:var(--creme); }
  
+@media(max-width:768px){
+  /* Deliverables carousel on tablet */
+  .deliverables-grid {
+    display:flex !important;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    gap:8px !important;
+    border-radius:16px;
+    padding-bottom:4px;
+  }
+  .deliverables-grid::-webkit-scrollbar { height:3px; }
+  .deliverables-grid::-webkit-scrollbar-thumb { background:rgba(200,75,47,0.3); border-radius:2px; }
+  .deliverables-grid > div {
+    min-width:82vw !important;
+    scroll-snap-align:start;
+    border-radius:14px !important;
+    flex-shrink:0;
+  }
+  .deliverables-hint { display:flex !important; }
+}
 @media(max-width:640px){
   .blog-grid-home { grid-template-columns:1fr; }
   .blog-home { padding:40px 20px; }
   .pro-home { padding:40px 20px; }
   .pro-home-inner { flex-direction:column; }
   .diff-strip { grid-template-columns:1fr !important; }
+  .compare-section { padding:32px 16px !important; }
+  .compare-section > div { max-width:100% !important; }
+  /* Compare table: fixed columns on small screen */
+  #compare-mobile .compare-row { grid-template-columns: 1fr 56px 66px !important; }
+  #compare-mobile .compare-header { grid-template-columns: 1fr 56px 66px !important; }
 }
  
 /* DOC HINT PILLS */
@@ -627,7 +653,7 @@ select.form-input { cursor:pointer; }
     <!-- HEADER -->
     <div style="text-align:center;margin-bottom:56px;">
       <div style="display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:16px;">Ce que vous obtenez en 30 secondes</div>
-      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:white;line-height:1.15;letter-spacing:-0.02em;margin:0 auto;max-width:700px;">Pas juste un diagnostic.<br><em style="color:var(--accent2);white-space:nowrap;">Un dossier complet pour récupérer votre argent.</em></h2>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.6rem);color:white;line-height:1.15;letter-spacing:-0.02em;margin:0 auto;max-width:700px;">Pas juste un diagnostic.<br><em style="color:var(--accent2);">Un dossier complet pour récupérer votre argent.</em></h2>
     </div>
  
     <!-- 3 COLONNES -->
@@ -715,9 +741,15 @@ select.form-input { cursor:pointer; }
       </div>
     </div>
  
+    <!-- CAROUSEL HINT mobile -->
+    <div class="deliverables-hint" style="display:none;justify-content:center;gap:6px;margin-top:8px;">
+      <div style="width:20px;height:3px;border-radius:2px;background:var(--accent);opacity:0.8;"></div>
+      <div style="width:6px;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);"></div>
+      <div style="width:6px;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);"></div>
+    </div>
     <!-- CTA BAS DE SECTION -->
     <div style="text-align:center;margin-top:40px;">
-      <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:white;padding:15px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">Obtenir mon dossier complet →</a>
+      <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:white;padding:15px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">Obtenir mon dossier complet&nbsp;→</a>
       <div style="margin-top:12px;font-size:0.75rem;color:#444;">Analyse gratuite · Dossier complet à 29€ · Accès à vie</div>
     </div>
  
@@ -2263,11 +2295,12 @@ function buildReportDoc() {
     y += 3;
   }
   function pill(label, x, py, bgR, textR) {
-    doc.setFillColor.apply(doc, bgR);
-    doc.roundedRect(x, py - 3.5, doc.getStringUnitWidth(label) * 9 / doc.internal.scaleFactor + 6, 5, 1, 1, 'F');
-    doc.setTextColor.apply(doc, textR);
     doc.setFontSize(6.5); doc.setFont('helvetica','bold');
-    doc.text(label, x + 3, py);
+    var lw = doc.getStringUnitWidth(label) * 6.5 / doc.internal.scaleFactor;
+    doc.setFillColor.apply(doc, bgR);
+    doc.roundedRect(x, py - 4, lw + 6, 5.5, 1, 1, 'F');
+    doc.setTextColor.apply(doc, textR);
+    doc.text(label, x + 3, py - 0.8);
   }
  
   // ── HEADER ──────────────────────────────────────
@@ -2338,9 +2371,17 @@ function buildReportDoc() {
     var cfg = badgeCfg[c.type] || badgeCfg.ok;
     // card background
     var titleLines = doc.splitTextToSize(c.titre || '', W - M*2 - 24);
-    var descLines = doc.splitTextToSize(c.description || '', W - M*2 - 8);
-    var juriLines = c.explication_juridique ? doc.splitTextToSize(c.explication_juridique, W - M*2 - 8) : [];
-    var cardH = 8 + titleLines.length * 5 + descLines.length * 4.5 + (juriLines.length > 0 ? juriLines.length * 4 + 6 : 0) + (c.action ? 8 : 0) + 10;
+    var descLines  = doc.splitTextToSize(c.description || '', W - M*2 - 8);
+    var juriLines  = c.explication_juridique ? doc.splitTextToSize(c.explication_juridique, W - M*2 - 14) : [];
+    var baseLines  = c.base_legale ? doc.splitTextToSize((Array.isArray(c.base_legale)?c.base_legale.join(' · '):c.base_legale), W - M*2 - 8) : [];
+    var actionLines = c.action ? doc.splitTextToSize('> ' + c.action, W - M*2 - 14) : [];
+    // Single source of truth for card height
+    var row1H   = Math.max(5.5, 6) + 5;   // badge row + gap
+    var descH   = descLines.length * 4.5 + 4;
+    var juriH   = juriLines.length > 0 ? (7 + juriLines.length * 4 + 4) : 0;
+    var baseH   = baseLines.length * 4 + 3;
+    var actionH = actionLines.length * 4.5 + 5;
+    var cardH   = 6 + row1H + descH + juriH + baseH + actionH + 5;
     if (y + cardH > 272) { doc.addPage(); y = 18; }
  
     doc.setFillColor.apply(doc, cfg.bg);
@@ -2348,21 +2389,36 @@ function buildReportDoc() {
     doc.setFillColor.apply(doc, cfg.bar);
     doc.rect(M, y, 2.5, cardH, 'F');
  
-    var cy = y + 6;
+    var cy = y + 8;
     // badge
+    var pillW = doc.getStringUnitWidth(cfg.label) * 6.5 / doc.internal.scaleFactor + 6;
     pill(cfg.label, M + 6, cy, cfg.bar, [255,255,255]);
-    // titre
+    // Title on same vertical center as badge text (cy - 0.8 = badge text baseline)
     doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor.apply(doc, noir);
-    titleLines.forEach(function(l) { doc.text(l, M + 6 + doc.getStringUnitWidth(cfg.label) * 9 / doc.internal.scaleFactor + 10, cy); cy += 5; });
+    titleLines.forEach(function(l) { doc.text(l, M + 6 + pillW + 4, cy - 0.8); cy += 5; });
     cy += 2;
     // description
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(60,60,60);
     descLines.forEach(function(l) { doc.text(l, M + 6, cy); cy += 4.5; });
-    // explication juridique
+    // explication juridique (contenu du déployable web)
     if (juriLines.length) {
+      cy += 4;
+      // Fond encadré
+      var juriH = juriLines.length * 4 + 12;
+      doc.setFillColor(249,247,244);
+      doc.roundedRect(M + 5, cy - 3, W - M*2 - 10, juriH, 1.5, 1.5, 'F');
+      doc.setDrawColor.apply(doc, border); doc.setLineWidth(0.3);
+      doc.roundedRect(M + 5, cy - 3, W - M*2 - 10, juriH, 1.5, 1.5, 'S');
+      // Label
+      doc.setFontSize(6.5); doc.setFont('helvetica','bold'); doc.setTextColor.apply(doc, accentR);
+      doc.text('Reference juridique', M + 8, cy + 2);
+      var refW = doc.getStringUnitWidth('Reference juridique') * 6.5 / doc.internal.scaleFactor;
+      doc.setDrawColor.apply(doc, border); doc.setLineWidth(0.2);
+      doc.line(M + 8, cy + 3.5, M + 8 + refW, cy + 3.5);
+      cy += 8;
+      doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
+      juriLines.forEach(function(l) { doc.text(l, M + 8, cy); cy += 4; });
       cy += 3;
-      doc.setFontSize(7); doc.setTextColor(90,90,90);
-      juriLines.forEach(function(l) { doc.text(l, M + 6, cy); cy += 4; });
     }
     // base légale
     if (c.base_legale && c.base_legale.length) {
@@ -2420,6 +2476,49 @@ function buildReportDoc() {
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc, noir);
     stepLines.forEach(function(l, idx) { doc.text(l, M + 16, y + 10.5 + idx * 4.5); });
     y += stepH + 3;
+  });
+ 
+  // ── LETTRES GÉNÉRÉES ────────────────────────────
+  var letterTypes = ['proprio','agence','miseendemeure','remboursement','conciliation'];
+  var letterLabels = {
+    proprio: 'Lettre au propriétaire',
+    agence: 'Lettre à l'agence',
+    miseendemeure: 'Mise en demeure',
+    remboursement: 'Demande de remboursement',
+    conciliation: 'Saisine Commission de Conciliation'
+  };
+  letterTypes.forEach(function(type) {
+    var el = document.getElementById('letter-' + type + '-content');
+    if (!el || el.style.display === 'none') return;
+    var pre = el.querySelector('pre');
+    if (!pre || !pre.textContent.trim()) return;
+    // New page per letter
+    doc.addPage();
+    if (y > 270) y = 18; else y = 18;
+    // Letter header
+    doc.setFillColor(13,13,13);
+    doc.rect(0, 0, W, 22, 'F');
+    doc.setFillColor.apply(doc, accentR);
+    doc.rect(0, 20, W, 2, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
+    doc.text('BailScan — ' + (letterLabels[type] || type), M, 13);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,160,160);
+    doc.text('Lettre générée automatiquement', M, 19);
+    y = 30;
+    // Letter content
+    var text = pre.textContent.trim();
+    var lLines = text.split('
+');
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(20,20,20);
+    lLines.forEach(function(line) {
+      if (y > 276) { doc.addPage(); y = 16; }
+      var wrapped = doc.splitTextToSize(line, W - M*2);
+      wrapped.forEach(function(wl) {
+        if (y > 276) { doc.addPage(); y = 16; }
+        doc.text(wl, M, y);
+        y += 5;
+      });
+    });
   });
  
   // ── FOOTER ──────────────────────────────────────
