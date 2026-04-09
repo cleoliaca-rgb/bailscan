@@ -527,27 +527,27 @@ select.form-input { cursor:pointer; }
   }
   .deliverables-hint { display:flex !important; }
   .deliverables-cta { margin-top:16px !important; }
-  /* Flèche droite CSS pure */
-  .deliverables-wrap {
-    position:relative;
-  }
-  .deliverables-wrap::after {
-    content:'›';
+  /* Flèche droite cliquable */
+  .deliverables-wrap { position:relative; }
+  .carousel-arrow-btn {
+    display:none;
     position:absolute;
     right:0;
     top:0;
     bottom:0;
     width:52px;
-    background:linear-gradient(to left, rgba(13,13,13,0.92) 30%, transparent);
-    display:flex;
+    background:linear-gradient(to left, rgba(13,13,13,0.92) 35%, transparent);
     align-items:center;
     justify-content:flex-end;
     padding-right:10px;
     color:white;
     font-size:1.8rem;
     font-weight:200;
-    pointer-events:none;
+    cursor:pointer;
+    border:none;
     border-radius:0 14px 14px 0;
+    transition:opacity .3s;
+    z-index:2;
   }
 }
 @media(max-width:640px){
@@ -768,6 +768,7 @@ select.form-input { cursor:pointer; }
     </div>
  
  
+      <button class="carousel-arrow-btn" id="carousel-arrow-btn" onclick="scrollCarousel(1)" aria-label="Suivant">›</button>
     </div><!-- /deliverables-wrap -->
  
     <!-- CAROUSEL NAV (mobile) -->
@@ -2938,14 +2939,16 @@ document.addEventListener('DOMContentLoaded', function() {
   var grid       = document.querySelector('.deliverables-grid');
   var nav        = document.getElementById('deliverables-nav');
   var hint       = document.getElementById('deliverables-hint-text');
+  var arrowBtn = document.getElementById('carousel-arrow-btn');
   if (!grid || !nav) return;
  
   function isMobile() { return window.innerWidth <= 768; }
  
   function updateDots() {
-    if (!isMobile()) { nav.style.display = 'none'; if (hint) hint.style.display = 'none'; return; }
+    if (!isMobile()) { nav.style.display = 'none'; if (hint) hint.style.display = 'none'; if (arrowBtn) arrowBtn.style.display = 'none'; return; }
     nav.style.display  = 'flex';
     if (hint) hint.style.display = 'block';
+    if (arrowBtn) arrowBtn.style.display = 'flex';
     var cards = grid.children;
     if (!cards.length) return;
     var cardW = cards[0].offsetWidth + 10;
@@ -2960,6 +2963,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var next = document.getElementById('del-next');
     if (prev) prev.style.opacity = idx === 0 ? '0.3' : '1';
     if (next) next.style.opacity = idx >= cards.length - 1 ? '0.3' : '1';
+    if (arrowBtn) arrowBtn.style.opacity = idx >= cards.length - 1 ? '0' : '1';
  
   }
  
