@@ -819,36 +819,52 @@ body.is-dashboard #marketingPage { display: none !important; }
     display: block; width: 22px; height: 2px;
     background: white; border-radius: 2px; transition: all .2s;
   }
-  .nav-mobile-open {
+  body:not(.is-dashboard) .nav-mobile-open {
     display: flex !important; flex-direction: column;
-    position: fixed; top: 50px; left: 0; right: 0; max-height: calc(100vh - 50px); overflow-y: auto;
-    background: rgba(17,24,39,0.98); backdrop-filter: blur(12px);
-    padding: 16px 20px; gap: 12px; z-index: 9999;
-    border-bottom: 1px solid rgba(255,255,255,.1);
+    position: fixed; top: 50px; left: 0; right: 0;
+    height: calc(100vh - 50px); overflow-y: auto;
+    background: rgba(10,15,28,0.99); backdrop-filter: blur(16px);
+    padding: 24px 24px; gap: 8px; z-index: 9999;
   }
-  .nav-mobile-open a, .nav-mobile-open button {
-    width: 100% !important; text-align: center !important;
-    padding: 12px !important; font-size: .9rem !important;
+  body:not(.is-dashboard) .nav-mobile-open a,
+  body:not(.is-dashboard) .nav-mobile-open button {
+    width: 100% !important; text-align: left !important;
+    padding: 16px 0 !important; font-size: 1rem !important;
+    border-bottom: 1px solid rgba(255,255,255,.07) !important;
+    font-weight: 500 !important;
+  }
+  body:not(.is-dashboard) .nav-mobile-open .btn-header-cta {
+    text-align: center !important;
+    margin-top: 12px !important;
+    border-radius: 10px !important;
+    padding: 14px !important;
+    border: none !important;
+  }
+  body:not(.is-dashboard) .nav-mobile-open .btn-header-login {
+    text-align: center !important;
+    border-radius: 10px !important;
+    padding: 14px !important;
   }
 
   /* ── HEADER LANDING ── */
-  header {
-    padding: 8px 16px !important;
+  body:not(.is-dashboard) header {
+    padding: 10px 20px !important;
     position: fixed; top:0; left:0; right:0; z-index:200;
+    min-height: 54px !important;
   }
-  header nav { display: none !important; }
-  header .logo { font-size: .95rem; }
-  .nav-hamburger {
+  body:not(.is-dashboard) header nav { display: none !important; }
+  body:not(.is-dashboard) header .logo { font-size: 1.4rem !important; }
+  body:not(.is-dashboard) .nav-hamburger {
     display: flex !important;
     flex-direction: column;
     gap: 5px; cursor: pointer;
     padding: 6px; background: none; border: none;
   }
-  .nav-hamburger span {
+  body:not(.is-dashboard) .nav-hamburger span {
     display: block; width: 22px; height: 2px;
     background: white; border-radius: 2px; transition: all .2s;
   }
-  #navHamburger { display: flex !important; }
+  body:not(.is-dashboard) #navHamburger { display: flex !important; }
 
   /* ── HERO LANDING ── */
   .hero { padding: 80px 20px 48px !important; }
@@ -1270,10 +1286,10 @@ body.is-dashboard #marketingPage { display: none !important; }
   .dash-card table { font-size: .78rem !important; }
 
   /* Float AI button */
-  #aiAgentBtn { bottom: 16px !important; right: 14px !important; }
+  #aiAgentBtn { bottom: 76px !important; right: 14px !important; }
 
   /* Onboarding widget */
-  #obBanner { right: 10px !important; left: 10px !important; width: auto !important; bottom: 70px !important; }
+  #obBanner { right: 10px !important; left: 10px !important; width: auto !important; bottom: 130px !important; }
 }
 
 /* ── Très petit mobile (< 480px) ── */
