@@ -26,6 +26,21 @@
     },
     "api/quittances-auto.js": {
       "maxDuration": 60
+    },
+    "api/send-welcome.js": {
+      "maxDuration": 30
+    },
+    "api/cron-trial-reminders.js": {
+      "maxDuration": 60
+    },
+    "api/stripe-webhook.js": {
+      "maxDuration": 30
+    },
+    "api/cancel-subscription.js": {
+      "maxDuration": 10
+    },
+    "api/yousign.js": {
+      "maxDuration": 30
     }
   },
   "crons": [
@@ -36,6 +51,10 @@
     {
       "path": "/api/quittances-auto",
       "schedule": "0 8 1 * *"
+    },
+    {
+      "path": "/api/cron-trial-reminders",
+      "schedule": "0 9 * * *"
     }
   ]
 }
