@@ -38,9 +38,6 @@
     },
     "api/cancel-subscription.js": {
       "maxDuration": 10
-    },
-    "api/yousign.js": {
-      "maxDuration": 30
     }
   },
   "crons": [
