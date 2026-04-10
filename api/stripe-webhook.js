@@ -175,6 +175,43 @@ export default async function handler(req, res) {
         }).eq('id', agenceId);
  
         console.log(`[webhook] Plan activé pour agence ${agenceId} (mode: ${mode})`);
+ 
+        // Email de bienvenue post-abonnement
+        const customerEmail = session.customer_email || (await stripe.customers.retrieve(session.customer)).email;
+        if (customerEmail) {
+          const { data: ag } = await sb.from('agences').select('nom, email').eq('id', agenceId).maybeSingle();
+          const prenomAg = ag?.nom?.split(' ')[0] || 'vous';
+          const modeLabel = mode === '6mois' ? 'engagement 6 mois (135 €/mois)' : mode === '12mois' ? 'engagement 12 mois (120 €/mois)' : 'mensuel sans engagement (150 €/mois)';
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bailscan.app';
+          await sendEmail({
+            to: customerEmail,
+            subject: `Bienvenue dans BailScan Pro — votre abonnement est actif`,
+            html: `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+              body{font-family:Arial,sans-serif;background:#f8fafc;margin:0;padding:0}
+              .wrap{max-width:560px;margin:32px auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+              .hdr{background:#0f172a;padding:24px 32px}.logo{font-size:22px;font-weight:700;color:white}
+              .logo em{color:#f97316;font-style:italic}.badge{font-size:10px;font-weight:700;background:#3b6fd4;color:white;padding:2px 8px;border-radius:4px;margin-left:6px;vertical-align:middle}
+              .body{padding:32px}h2{font-size:20px;color:#0f172a;margin:0 0 12px}
+              p{font-size:14px;color:#475569;line-height:1.7;margin:0 0 16px}
+              .btn{display:inline-block;background:#3b6fd4;color:white;padding:13px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px}
+              .footer{background:#f1f5f9;padding:20px 32px;font-size:12px;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0}
+            </style></head><body><div class="wrap">
+              <div class="hdr"><div class="logo">Bail<em>Scan</em><span class="badge">PRO</span></div></div>
+              <div class="body">
+                <h2>Votre abonnement BailScan Pro est actif ✓</h2>
+                <p>Félicitations ! Votre abonnement <strong>${modeLabel}</strong> est maintenant actif. Vous avez accès à toutes les fonctionnalités sans limitation.</p>
+                <p>Vos données et configurations ont été conservées. Vous pouvez reprendre là où vous en étiez.</p>
+                <a href="${appUrl}" class="btn">Accéder à mon dashboard →</a>
+                <p style="margin-top:20px;font-size:13px;color:#94a3b8">Vos factures vous seront envoyées automatiquement chaque mois à cette adresse. Pour toute question, répondez à cet email.</p>
+              </div>
+              <div class="footer">BailScan Pro · <a href="${appUrl}" style="color:#3b6fd4;text-decoration:none">bailscan.app</a></div>
+            </div></body></html>`,
+          });
+          // Annuler les relances trial si encore pending
+          await sb.from('email_sequences').update({ status: 'cancelled' })
+            .eq('email', customerEmail).eq('status', 'pending');
+          console.log('[webhook] Email bienvenue abonnement envoyé à', customerEmail);
+        }
       }
     }
  
