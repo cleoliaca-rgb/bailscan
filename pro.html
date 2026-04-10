@@ -1425,6 +1425,26 @@ body:not(.is-dashboard) .step-title,
 body:not(.is-dashboard) .step-desc {
   font-family: 'DM Sans', sans-serif !important;
 }
+
+/* ── Espacement formulaire Générer un bail ── */
+#tab-generer .form-group-pro,
+#tab-generer .form-grid-pro {
+  margin-bottom: 14px;
+}
+/* Première ligne après un titre de section → pas de marge top supplémentaire */
+#tab-generer [style*="border-bottom:1px solid var(--pro-light)"] + .form-group-pro,
+#tab-generer [style*="border-bottom:1px solid var(--pro-light)"] + .form-grid-pro {
+  margin-top: 0;
+}
+/* Espace entre deux sections (avant les titres) */
+#tab-generer [style*="border-bottom:1px solid var(--pro-light)"] {
+  margin-top: 24px !important;
+  margin-bottom: 12px !important;
+}
+/* Premier titre de section — pas de marge top */
+#tab-generer #genererForm > [style*="border-bottom:1px solid var(--pro-light)"]:first-of-type {
+  margin-top: 0 !important;
+}
 </style>
 
 </head>
@@ -1761,6 +1781,50 @@ body:not(.is-dashboard) .step-desc {
 
     <p style="text-align:center;font-size:0.78rem;color:rgba(255,255,255,.35);margin-top:20px">Paiement sécurisé · Facture mensuelle · Résiliable à tout moment après la période d'engagement</p>
   </div>
+</section>
+
+
+<!-- ── Section import / migration ── -->
+<section id="importSection" style="padding:72px 48px;background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="import-inner" style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <div>
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--pro-accent);margin-bottom:14px">Migration sans friction</div>
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--noir);line-height:1.15;margin-bottom:16px">Vos données déjà ailleurs ?<br><em style="color:var(--pro-accent);font-style:italic">Importez en 30 secondes.</em></h2>
+      <p style="font-size:.92rem;color:var(--gris);line-height:1.75;margin-bottom:28px">Pas question de tout ressaisir à la main. Exportez vos biens, locataires et baux depuis votre outil actuel (Excel, CSV, Notion, Rentila, Gererseul) et importez tout d'un coup dans BailScan Pro. L'IA fait le mapping automatiquement.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texte)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--pro-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pro-accent);font-weight:700;font-size:.8rem">✓</div>Import CSV universel : biens, locataires, baux
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texte)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--pro-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pro-accent);font-weight:700;font-size:.8rem">✓</div>Mapping automatique des colonnes par l'IA
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texte)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--pro-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pro-accent);font-weight:700;font-size:.8rem">✓</div>Opérationnel dès la première connexion
+        </div>
+      </div>
+    </div>
+    <div style="background:#f8fafc;border:1.5px solid var(--border);border-radius:16px;padding:28px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gris);margin-bottom:16px">Compatible avec</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.84rem;color:var(--texte);font-weight:500">Excel / Google Sheets</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.84rem;color:var(--texte);font-weight:500">Fichiers CSV</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.84rem;color:var(--texte);font-weight:500">Rentila · Gererseul</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.84rem;color:var(--texte);font-weight:500">Notion · Airtable</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.84rem;color:var(--texte);font-weight:500">ImmoPad · Garantme</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.84rem;color:var(--texte);font-weight:500">Tout format tabulaire</div>
+      </div>
+      <button onclick="openModal('signup')" style="width:100%;margin-top:18px;padding:12px;background:var(--pro-accent);color:white;border:none;border-radius:8px;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='#2a5bbf'" onmouseout="this.style.background='var(--pro-accent)'">Importer mes données gratuitement →</button>
+    </div>
+  </div>
+  <style>
+    @media(max-width:768px){
+      #importSection { padding:48px 20px !important; }
+      .import-inner { grid-template-columns:1fr !important; gap:28px !important; }
+    }
+    @media(max-width:480px){
+      #importSection { padding:36px 16px !important; }
+    }
+  </style>
 </section>
 
 <section id="particuliers" style="padding:80px 48px;background:#f8fafc;border-top:1px solid var(--border)">
@@ -2128,9 +2192,18 @@ body:not(.is-dashboard) .step-desc {
         </div>
 
         <!-- Bandeau essai -->
-        <div id="trialBanner" style="margin-bottom:20px;padding:10px 14px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <div style="font-size:.82rem;color:var(--gris)">Essai gratuit — <span id="trialDaysLeftBanner" style="font-weight:600;color:var(--texte)">3</span> jours restants · expire le <span id="trialEndDate" style="color:var(--texte)"></span></div>
-          <button onclick="showDashTab('abonnement')" style="background:var(--pro-accent);color:white;padding:6px 14px;border-radius:6px;font-size:.78rem;font-weight:600;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0">S'abonner →</button>
+        <div id="trialBanner" style="margin-bottom:20px;padding:14px 18px;background:#0f172a;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:14px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="background:rgba(59,111,212,.25);border-radius:8px;padding:8px 14px;text-align:center;flex-shrink:0">
+              <div style="font-size:1.4rem;font-weight:800;color:white;line-height:1" id="trialDaysLeftBanner">3</div>
+              <div style="font-size:.6rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;margin-top:1px">jours</div>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:.88rem;color:white;margin-bottom:2px">Essai gratuit en cours</div>
+              <div style="font-size:.76rem;color:rgba(255,255,255,.45)">Expire le <span id="trialEndDate"></span> · Accès complet sans engagement</div>
+            </div>
+          </div>
+          <button onclick="showDashTab('abonnement')" style="background:var(--pro-accent);color:white;padding:8px 18px;border-radius:7px;font-size:.82rem;font-weight:700;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0">Passer en Pro →</button>
         </div>
 
         <!-- KPIs principaux -->
@@ -2564,7 +2637,7 @@ body:not(.is-dashboard) .step-desc {
 
             <!-- Section bailleur -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:4px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Bailleur (propriétaire)</div>
-            <div class="form-group-pro" style="margin-bottom:10px">
+            <div class="form-group-pro" style="margin-bottom:12px">
               <label class="form-label">Type de bailleur</label>
               <div class="radio-group-pro">
                 <label class="radio-pill-pro active" onclick="setGenRadio('gen_bailleur_type','physique',this);toggleBailleurType('physique')"><input type="radio" name="gen_bailleur_type" value="physique" checked> Personne physique</label>
@@ -2572,12 +2645,12 @@ body:not(.is-dashboard) .step-desc {
                 <label class="radio-pill-pro" onclick="setGenRadio('gen_bailleur_type','morale',this);toggleBailleurType('morale')"><input type="radio" name="gen_bailleur_type" value="morale"> Personne morale</label>
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0" id="bailleurPrenomRow">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px" id="bailleurPrenomRow">
+              <div class="form-group-pro">
                 <label class="form-label">Prénom</label>
                 <input type="text" class="form-input-pro" id="genBailleurPrenom" placeholder="Ex : Jean">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Nom <span style="color:#e53e3e">*</span></label>
                 <input type="text" class="form-input-pro" id="genBailleurNom" placeholder="Ex : Dupont">
               </div>
@@ -2586,30 +2659,30 @@ body:not(.is-dashboard) .step-desc {
               <label class="form-label">Dénomination sociale <span style="color:#e53e3e">*</span></label>
               <input type="text" class="form-input-pro" id="genBailleurDenom" placeholder="Ex : SCI Les Lilas, Dupont Immobilier SARL">
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Adresse complète</label>
                 <input type="text" class="form-input-pro" id="genBailleurAdresse" placeholder="Ex : 12 rue de la Paix, 75001 Paris">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Code postal</label>
                 <input type="text" class="form-input-pro" id="genCodePostal" placeholder="Ex : 75011" maxlength="5">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Ville</label>
                 <input type="text" class="form-input-pro" id="genBailleurVille" placeholder="Ex : Paris">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Email</label>
                 <input type="email" class="form-input-pro" id="genBailleurEmail" placeholder="Ex : jean.dupont@email.com">
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:16px">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Téléphone</label>
                 <input type="text" class="form-input-pro" id="genBailleurTel" placeholder="Ex : 06 12 34 56 78">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Type de bailleur</label>
                 <select class="form-input-pro" id="genBailleurType">
                   <option value="physique">Personne physique</option>
@@ -2627,28 +2700,28 @@ body:not(.is-dashboard) .step-desc {
                 <option value="">— Saisie manuelle —</option>
               </select>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Prénom</label>
                 <input type="text" class="form-input-pro" id="genLocatairePrenom" placeholder="Ex : Marie">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Nom</label>
                 <input type="text" class="form-input-pro" id="genLocataireNom" placeholder="Ex : Martin">
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Adresse actuelle du locataire</label>
                 <input type="text" class="form-input-pro" id="genLocataireAdresse" placeholder="Ex : 5 avenue Victor Hugo, 69001 Lyon">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Email</label>
                 <input type="email" class="form-input-pro" id="genLocataireEmail" placeholder="Ex : marie.martin@email.com">
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:16px">
-              <div class="form-group-pro" style="grid-column:1/-1">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro" style="grid-column:1/-1;margin-bottom:12px">
                 <label class="form-label">Cautionnement <span style="font-weight:400;color:var(--gris);font-size:.78rem">— optionnel</span></label>
                 <input type="hidden" id="genGarant" value="non">
                 <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px">
@@ -2663,7 +2736,7 @@ body:not(.is-dashboard) .step-desc {
                 <div id="genGarantFields" style="display:none;margin-top:10px">
                   <!-- Organisme -->
                   <div id="genGarantOrgRow" style="display:none">
-                    <div class="form-group-pro" style="grid-column:1/-1">
+                    <div class="form-group-pro" style="grid-column:1/-1;margin-bottom:12px">
                       <label class="form-label" style="font-size:.78rem">Nom de l'organisme</label>
                       <input type="text" class="form-input-pro" id="genGarantOrganisme" placeholder="Action Logement, GarantMe..." style="font-size:.88rem">
                     </div>
@@ -2677,7 +2750,7 @@ body:not(.is-dashboard) .step-desc {
                   </div>
                   <!-- Physique / Caution solidaire -->
                   <div id="genGarantPhysRow" style="display:none">
-                    <div class="form-grid-pro" style="margin-top:12px">
+                    <div class="form-grid-pro" style="margin-bottom:12px">
                       <div class="form-group-pro">
                         <label class="form-label" style="font-size:.78rem">Prénom</label>
                         <input type="text" class="form-input-pro" id="genGarantPrenom" placeholder="Jean" style="font-size:.88rem">
@@ -2686,7 +2759,7 @@ body:not(.is-dashboard) .step-desc {
                         <label class="form-label" style="font-size:.78rem">Nom</label>
                         <input type="text" class="form-input-pro" id="genGarantNom" placeholder="Dupont" style="font-size:.88rem">
                       </div>
-                      <div class="form-group-pro" style="grid-column:1/-1">
+                      <div class="form-group-pro" style="grid-column:1/-1;margin-bottom:12px">
                         <label class="form-label" style="font-size:.78rem">Adresse complète</label>
                         <input type="text" class="form-input-pro" id="genGarantAdresse" placeholder="3 rue du Moulin" style="font-size:.88rem">
                       </div>
@@ -2734,7 +2807,7 @@ body:not(.is-dashboard) .step-desc {
                   </div>
                 </div>
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Type de location</label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_type','vide',this)"><input type="radio" name="gen_type" value="vide" checked> Vide</label>
@@ -2746,32 +2819,32 @@ body:not(.is-dashboard) .step-desc {
 
             <!-- Section bien loué -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:20px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Bien loué</div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Adresse du bien</label>
                 <input type="text" class="form-input-pro" id="genBienAdresse" placeholder="Ex : 8 rue des Lilas, 75020 Paris">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Ville</label>
                 <input type="text" class="form-input-pro" id="genVille" placeholder="Ex : Paris">
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Surface habitable (m²)</label>
                 <input type="number" class="form-input-pro" id="genSurface" placeholder="Ex : 52" min="1">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Nombre de pièces</label>
                 <input type="number" class="form-input-pro" id="genPieces" placeholder="Ex : 3" min="1">
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Étage</label>
                 <input type="text" class="form-input-pro" id="genEtage" placeholder="Ex : 3ème étage, bâtiment B">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">DPE (classe énergie)</label>
                 <select class="form-input-pro" id="genDpe">
                   <option value="A">A — Très performant (≤70 kWh)</option>
@@ -2784,8 +2857,8 @@ body:not(.is-dashboard) .step-desc {
                 </select>
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:16px">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">GES (classe émissions)</label>
                 <select class="form-input-pro" id="genGes">
                   <option value="A">A (≤5 kg CO₂/m².an)</option>
@@ -2797,7 +2870,7 @@ body:not(.is-dashboard) .step-desc {
                   <option value="G">G (>80)</option>
                 </select>
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Équipements fournis</label>
                 <input type="text" class="form-input-pro" id="genEquipements" placeholder="Ex : cuisine équipée, parking, cave, digicode">
               </div>
@@ -2805,28 +2878,28 @@ body:not(.is-dashboard) .step-desc {
 
             <!-- Section financière -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:20px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Conditions financières</div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Loyer mensuel HC (€) <span style="color:#e53e3e">*</span></label>
                 <input type="number" class="form-input-pro" id="genLoyer" placeholder="Ex : 800" min="0">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Charges (€/mois)</label>
                 <input type="number" class="form-input-pro" id="genCharges" placeholder="Ex : 80" min="0">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Dépôt de garantie (€)</label>
                 <input type="number" class="form-input-pro" id="genDepotGarantie" placeholder="Ex : 2 174" min="0">
               </div>
             </div>
             <!-- Complément de loyer -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:20px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Complément de loyer <span style="font-weight:400;font-size:.75rem;color:var(--gris)">(zones encadrées uniquement)</span></div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Montant du complément (€/mois) <span style="font-weight:400;color:var(--gris);font-size:.78rem">— laisser vide si aucun</span></label>
                 <input type="number" class="form-input-pro" id="genComplement" placeholder="Ex : 80" min="0">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Justificatif du complément</label>
                 <select class="form-input-pro" id="genComplementJustif" onchange="toggleComplementDetail()">
                   <option value="">— Sélectionner —</option>
@@ -2847,39 +2920,39 @@ body:not(.is-dashboard) .step-desc {
                 ENCADREMENT DES LOYERS
                 <span style="font-size:.72rem;font-weight:400;color:var(--gris)">— Au moins 1 champ requis si zone encadrée</span>
               </div>
-              <div class="form-grid-pro" style="margin-bottom:8px">
-                <div class="form-group-pro" style="margin-bottom:0">
+              <div class="form-grid-pro" style="margin-bottom:12px">
+                <div class="form-group-pro" style="margin-bottom:12px">
                   <label class="form-label" style="font-size:.78rem">Loyer de référence (€/m²/mois) <span style="color:var(--gris)">facultatif</span></label>
                   <input type="number" class="form-input-pro" id="genLoyerRef" placeholder="Ex : 14.50" min="0" step="0.01" style="font-size:.88rem">
                 </div>
-                <div class="form-group-pro" style="margin-bottom:0">
+                <div class="form-group-pro" style="margin-bottom:12px">
                   <label class="form-label" style="font-size:.78rem">Loyer de référence majoré (€/m²/mois) <span style="color:var(--gris)">facultatif</span></label>
                   <input type="number" class="form-input-pro" id="genLoyerMajore" placeholder="Ex : 18.10" min="0" step="0.01" style="font-size:.88rem">
                 </div>
               </div>
-              <div class="form-grid-pro" style="margin-top:12px">
-                <div class="form-group-pro" style="margin-bottom:0">
+              <div class="form-grid-pro" style="margin-bottom:12px">
+                <div class="form-group-pro" style="margin-bottom:12px">
                   <label class="form-label" style="font-size:.78rem">Loyer de référence minoré (€/m²/mois) <span style="color:var(--gris)">facultatif</span></label>
                   <input type="number" class="form-input-pro" id="genLoyerMinore" placeholder="Ex : 11.50" min="0" step="0.01" style="font-size:.88rem">
                 </div>
-                <div class="form-group-pro" style="margin-bottom:0">
+                <div class="form-group-pro" style="margin-bottom:12px">
                   <label class="form-label" style="font-size:.78rem">Indice IRL de référence <span style="color:var(--gris)">facultatif</span></label>
                   <input type="text" class="form-input-pro" id="genIrl" placeholder="Ex : T3-2025 — 143.00" style="font-size:.88rem">
                 </div>
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Dépôt de garantie (€) <span style="font-weight:400;color:var(--gris);font-size:.78rem">max 1 mois HC vide / 2 mois meublé</span></label>
                 <input type="number" class="form-input-pro" id="genDepot" placeholder="Ex : 800" min="0">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Date d'entrée dans les lieux</label>
                 <input type="date" class="form-input-pro" id="genDateEntree">
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:16px">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Durée du bail</label>
                 <select class="form-input-pro" id="genDuree">
                   <option value="3 ans">3 ans (standard vide)</option>
@@ -2888,7 +2961,7 @@ body:not(.is-dashboard) .step-desc {
                   <option value="6 ans">6 ans (bailleur personne morale)</option>
                 </select>
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Révision loyer</label>
                 <select class="form-input-pro" id="genRevision">
                   <option value="IRL">Indice de Référence des Loyers (IRL) — standard</option>
@@ -2918,7 +2991,7 @@ body:not(.is-dashboard) .step-desc {
               </div>
             </div>
 
-            <div class="form-group-pro" style="margin-bottom:0">
+            <div class="form-group-pro" style="margin-bottom:12px">
               <label class="form-label">Clauses particulières <span style="font-weight:400;color:var(--gris);font-size:.78rem">— cochez + complétez si besoin</span></label>
               <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:6px;margin-bottom:8px">
                 <label class="annex-check"><input type="checkbox" id="clause_sousloc"> Sous-location interdite</label>
@@ -2933,7 +3006,7 @@ body:not(.is-dashboard) .step-desc {
                 <textarea class="form-input-pro" id="genSpecificites" rows="2" placeholder="Ex : parking n°12 inclus, local vélos accessible, clés boîte aux lettres n°4…" style="resize:vertical;font-size:.84rem"></textarea>
               </div>
             </div>
-            <div class="form-group-pro" style="margin-bottom:20px">
+            <div class="form-group-pro" style="margin-bottom:12px">
               <label class="form-label">Assurance habitation obligatoire</label>
               <div class="radio-group-pro">
                 <label class="radio-pill-pro active" onclick="setGenRadio('gen_assurance','oui',this)"><input type="radio" name="gen_assurance" value="oui" checked> Oui (standard)</label>
@@ -2953,12 +3026,12 @@ body:not(.is-dashboard) .step-desc {
               <label class="annex-check"><input type="checkbox" id="genPiscine">Piscine</label>
               <label class="annex-check"><input type="checkbox" id="genSousloc"> Sous-location interdite</label>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">N° parking / Cave <span style="font-weight:400;color:var(--gris);font-size:.78rem">si applicable</span></label>
                 <input type="text" class="form-input-pro" id="genAnnexeNum" placeholder="Ex : Parking n°12, Cave B4">
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Immeuble en copropriété ?</label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_copro','oui',this)"><input type="radio" name="gen_copro" value="oui" checked> Oui</label>
@@ -2966,22 +3039,22 @@ body:not(.is-dashboard) .step-desc {
                 </div>
               </div>
             </div>
-            <div class="form-group-pro" style="margin-bottom:16px" id="genSyndicWrap">
+            <div class="form-group-pro" style="margin-bottom:12px" id="genSyndicWrap">
               <label class="form-label">Syndic de copropriété</label>
               <input type="text" class="form-input-pro" id="genSyndic" placeholder="Ex : Cabinet Foncia — 01 23 45 67 89">
             </div>
 
             <!-- Clauses spéciales supplémentaires -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:20px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Clauses & assurances</div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Assurance PNO bailleur <span style="font-weight:400;color:var(--gris);font-size:.78rem">(propriétaire non-occupant)</span></label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_pno','oui',this)"><input type="radio" name="gen_pno" value="oui" checked> Oui</label>
                   <label class="radio-pill-pro" onclick="setGenRadio('gen_pno','non',this)"><input type="radio" name="gen_pno" value="non"> Non</label>
                 </div>
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Clause résolutoire expresse</label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_resolutoire','oui',this)"><input type="radio" name="gen_resolutoire" value="oui" checked> Oui</label>
@@ -2989,20 +3062,20 @@ body:not(.is-dashboard) .step-desc {
                 </div>
               </div>
             </div>
-            <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro" style="margin-top:12px">
+            <div class="form-grid-pro" style="margin-bottom:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Clause de solidarité <span style="font-weight:400;color:var(--gris);font-size:.78rem">(colocation)</span></label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro" onclick="setGenRadio('gen_solidarite','oui',this)"><input type="radio" name="gen_solidarite" value="oui"> Oui</label>
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_solidarite','non',this)"><input type="radio" name="gen_solidarite" value="non" checked> Non</label>
                 </div>
               </div>
-              <div class="form-group-pro" style="margin-top:12px">
+              <div class="form-group-pro">
                 <label class="form-label">Honoraires d'agence TTC (€)</label>
                 <input type="number" class="form-input-pro" id="genHonoraires" placeholder="Ex : 650">
               </div>
             </div>
-            <div class="form-group-pro" style="margin-bottom:20px">
+            <div class="form-group-pro" style="margin-bottom:12px">
               <label class="form-label">Documents annexés au bail</label>
               <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:6px">
                 <label class="annex-check"><input type="checkbox" id="genAnnDpe" checked> Diagnostic DPE</label>
@@ -3059,7 +3132,7 @@ body:not(.is-dashboard) .step-desc {
               <button class="btn-primary-pro" onclick="sauvegarderRattachementBail();showToast('Rattachements enregistrés.','green')" style="font-size:.84rem;padding:8px 20px">Enregistrer le rattachement</button>
             </div>
             <div style="background:#f1f5f9;border:1px solid var(--border);border-radius:10px;padding:20px;font-size:0.82rem;line-height:1.9;white-space:pre-wrap;max-height:500px;overflow-y:auto;font-family:monospace" id="genererResultText"></div>
-            <button class="btn-sm" onclick="document.getElementById('genererResult').style.display='none';document.getElementById('genererForm').style.display='block'" style="margin-top:12px">← Générer un nouveau bail</button>
+            <button class="btn-sm" onclick="document.getElementById('genererResult').style.display='none';document.getElementById('genererForm').style.display='block'">← Générer un nouveau bail</button>
           </div>
         </div>
       </div>
@@ -3528,154 +3601,69 @@ body:not(.is-dashboard) .step-desc {
             <div class="dash-page-sub">Scoring IA · Taux d'effort · Cohérence des pièces · Détection documents suspects</div>
           </div>
           <div style="display:flex;gap:10px;align-items:center">
-            <span style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.04em">PRO</span>
+            <span style="background:#7c3aed;color:#fff;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.06em">PRO</span>
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:20px;align-items:start">
+        <div style="display:grid;grid-template-columns:400px 1fr;gap:20px;align-items:start">
 
-          <!-- ── PANNEAU GAUCHE : configuration + upload ── -->
-          <div>
-            <!-- Sélection locataire -->
-            <div class="dash-card" style="margin-bottom:16px">
-              <div class="dash-section-title">Rattacher à un mandat (bien) et un locataire</div>
+          <!-- ── COLONNE GAUCHE : formulaire compact ── -->
+          <div style="display:flex;flex-direction:column;gap:12px">
+
+            <!-- Bien + locataire -->
+            <div class="dash-card" style="padding:16px">
+              <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:10px">Rattachement</div>
               <div style="margin-bottom:10px">
-                <label class="form-label" style="font-size:.76rem;margin-bottom:4px;display:block">Bien (mandat)</label>
+                <label class="form-label" style="font-size:.75rem;margin-bottom:3px;display:block">Bien (mandat)</label>
                 <div style="position:relative">
-                  <input type="text" class="form-input-pro" id="dossierMandatSearch" placeholder="Rechercher un bien…" autocomplete="off" style="padding-right:30px" oninput="filterDossierMandats(this.value)" onfocus="showDossierMandatDropdown()">
-                  <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gris);font-size:.85rem;pointer-events:none"></span>
+                  <input type="text" class="form-input-pro" id="dossierMandatSearch" placeholder="Rechercher un bien…" autocomplete="off" style="padding-right:30px;font-size:.84rem" oninput="filterDossierMandats(this.value)" onfocus="showDossierMandatDropdown()">
                   <div id="dossierMandatDropdown" style="display:none;position:absolute;top:100%;left:0;width:100%;z-index:300;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.14);max-height:200px;overflow-y:auto;margin-top:2px"></div>
                 </div>
                 <select style="display:none" id="dossierMandatSel"></select>
               </div>
               <div>
-                <label class="form-label" style="font-size:.76rem;margin-bottom:4px;display:block">Locataire candidat</label>
-                <select class="form-input-pro" id="dossierLocSel" onchange="selectDossierLoc(this.value)" style="cursor:pointer;margin-bottom:0">
-                <option value="">— Nouveau dossier libre —</option>
-              </select>
+                <label class="form-label" style="font-size:.75rem;margin-bottom:3px;display:block">Locataire candidat</label>
+                <select class="form-input-pro" id="dossierLocSel" onchange="selectDossierLoc(this.value)" style="cursor:pointer;font-size:.84rem">
+                  <option value="">— Nouveau dossier libre —</option>
+                </select>
+              </div>
             </div>
 
-            <!-- Infos logement pour calcul taux d'effort -->
-            <div class="dash-card" style="margin-bottom:16px">
-              <div class="dash-section-title">Logement visé</div>
-              <div class="form-grid-pro">
+            <!-- Logement + candidat sur 2 colonnes dans une card -->
+            <div class="dash-card" style="padding:16px">
+              <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:12px">Logement & Candidat</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
                 <div class="form-group-pro">
-                  <label class="form-label">Loyer mensuel HC (€) *</label>
-                  <input type="number" class="form-input-pro" id="dossierLoyer" placeholder="Ex : 900" min="0" step="10" oninput="updateDossierCalc()">
+                  <label class="form-label" style="font-size:.75rem">Loyer HC (€) *</label>
+                  <input type="number" class="form-input-pro" id="dossierLoyer" placeholder="900" min="0" step="10" oninput="updateDossierCalc()" style="font-size:.84rem">
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Complément loyer (€) <small style="font-weight:400;color:var(--gris)">optionnel</small></label>
-                  <input type="number" class="form-input-pro" id="dossierComplement" placeholder="0" min="0" step="1" oninput="updateDossierCalc()">
+                  <label class="form-label" style="font-size:.75rem">Charges (€)</label>
+                  <input type="number" class="form-input-pro" id="dossierCharges" placeholder="80" min="0" step="5" oninput="updateDossierCalc()" style="font-size:.84rem">
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Charges forfaitaires (€)</label>
-                  <input type="number" class="form-input-pro" id="dossierCharges" placeholder="Ex : 80" min="0" step="5" oninput="updateDossierCalc()">
+                  <label class="form-label" style="font-size:.75rem">Complément (€)</label>
+                  <input type="number" class="form-input-pro" id="dossierComplement" placeholder="0" min="0" step="1" oninput="updateDossierCalc()" style="font-size:.84rem">
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Type de location</label>
-                  <select class="form-input-pro" id="dossierTypeLoc">
+                  <label class="form-label" style="font-size:.75rem">Type</label>
+                  <select class="form-input-pro" id="dossierTypeLoc" style="font-size:.84rem">
                     <option value="vide">Vide</option>
                     <option value="meuble">Meublé</option>
                     <option value="coloc">Colocation</option>
                   </select>
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Garantie</label>
-                  <input type="hidden" id="dossierGarant" value="non" onchange="toggleDossierGarantFields()">
-                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-                    <button type="button" class="dos-garant-pill active" data-val="non" onclick="setDossierGarant('non')" style="padding:6px 12px;border:1px solid var(--pro-accent);border-radius:8px;background:var(--pro-light);color:var(--pro-accent);font-weight:700;font-size:.8rem;cursor:pointer">Aucune</button>
-                    <button type="button" class="dos-garant-pill" data-val="physique" onclick="setDossierGarant('physique')" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Garant physique</button>
-                    <button type="button" class="dos-garant-pill" data-val="caution_solidaire" onclick="setDossierGarant('caution_solidaire')" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Caution solidaire</button>
-                    <button type="button" class="dos-garant-pill" data-val="visale" onclick="setDossierGarant('visale')" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Visale</button>
-                    <button type="button" class="dos-garant-pill" data-val="garantme" onclick="setDossierGarant('garantme')" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">GarantMe</button>
-                    <button type="button" class="dos-garant-pill" data-val="autre_organisme" onclick="setDossierGarant('autre_organisme')" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--gris);font-weight:600;font-size:.8rem;cursor:pointer">Autre organisme</button>
-                  </div>
-                </div>
-              </div>
-              <!-- Champs garant physique — s'affiche si "Garant physique" sélectionné -->
-              <div id="dossierGarantFields" style="display:none;margin-top:8px;background:#f5f3ff;border:1px solid #d8b4fe;border-radius:10px;padding:14px">
-                <div style="font-size:.76rem;font-weight:700;color:#7e22ce;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em"><span id="dosGarantFieldsTitle">Garant — Informations</span></div>
-                <div class="form-grid-pro">
-                  <!-- Nom organisme (Autre organisme) -->
-                  <div id="dosGarantOrganismeRow" class="form-group-pro" style="display:none;grid-column:1/-1">
-                    <label class="form-label">Nom de l'organisme</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantOrganisme" placeholder="Ex : Action Logement, Cautioneo...">
-                  </div>
-                  <!-- Numéro dossier Visale/GarantMe -->
-                  <div id="dosGarantNumRow" class="form-group-pro" style="display:none;grid-column:1/-1">
-                    <label class="form-label">Numéro de dossier / référence</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantNumDossier" placeholder="N° de dossier ou référence">
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Prénom du garant</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantPrenom" placeholder="Jean">
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Nom du garant</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantNom" placeholder="Dupont">
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Revenus nets garant (€/mois)</label>
-                    <input type="number" class="form-input-pro" id="dossierGarantRevenus" placeholder="Ex : 3500" oninput="updateDossierCalc()">
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Situation garant</label>
-                    <select class="form-input-pro" id="dossierGarantContrat">
-                      <option value="cdi">CDI</option>
-                      <option value="fonctionnaire">Fonctionnaire</option>
-                      <option value="retraite">Retraité</option>
-                      <option value="independant">Indépendant / TNS</option>
-                      <option value="autre">Autre</option>
-                    </select>
-                  </div>
-                  <div class="form-group-pro" style="grid-column:1/-1">
-                    <label class="form-label">Adresse</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantAdresse" placeholder="3 rue du Moulin">
-                  </div>
-                  <div class="form-group-pro" style="position:relative">
-                    <label class="form-label">Code postal</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantCp" placeholder="75018" maxlength="5" oninput="cpAutoDossierGarant(this.value)" autocomplete="off">
-                    <div id="dossierGarantCpDrop" style="position:absolute;top:calc(100% + 2px);left:0;width:100%;background:white;border:1px solid #d8d0c4;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none;z-index:300;max-height:160px;overflow-y:auto"></div>
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Ville</label>
-                    <input type="text" class="form-input-pro" id="dossierGarantVille" placeholder="Paris">
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Email du garant</label>
-                    <input type="email" class="form-input-pro" id="dossierGarantEmail" placeholder="jean@email.com">
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Téléphone du garant</label>
-                    <input type="tel" class="form-input-pro" id="dossierGarantTel" placeholder="06 12 34 56 78">
-                  </div>
-                  <div class="form-group-pro">
-                    <label class="form-label">Ancienneté emploi garant</label>
-                    <select class="form-input-pro" id="dossierGarantAnciennete">
-                      <option value="plus3">Plus de 3 ans</option>
-                      <option value="1a3">1 à 3 ans</option>
-                      <option value="moins1">Moins d'1 an</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Informations candidat (auto ou manuel) -->
-            <div class="dash-card" style="margin-bottom:16px">
-              <div class="dash-section-title">Candidat locataire</div>
-              <div class="form-grid-pro">
-                <div class="form-group-pro">
-                  <label class="form-label">Prénom</label>
-                  <input type="text" class="form-input-pro" id="dossierPrenom" placeholder="Marie">
+                  <label class="form-label" style="font-size:.75rem">Prénom</label>
+                  <input type="text" class="form-input-pro" id="dossierPrenom" placeholder="Marie" style="font-size:.84rem">
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Nom</label>
-                  <input type="text" class="form-input-pro" id="dossierNom" placeholder="Dupont">
+                  <label class="form-label" style="font-size:.75rem">Nom</label>
+                  <input type="text" class="form-input-pro" id="dossierNom" placeholder="Dupont" style="font-size:.84rem">
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Type de contrat</label>
-                  <select class="form-input-pro" id="dossierContrat">
+                  <label class="form-label" style="font-size:.75rem">Contrat</label>
+                  <select class="form-input-pro" id="dossierContrat" style="font-size:.84rem">
                     <option value="cdi">CDI</option>
                     <option value="cdd">CDD</option>
                     <option value="independant">Indépendant / TNS</option>
@@ -3685,12 +3673,12 @@ body:not(.is-dashboard) .step-desc {
                   </select>
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Revenus nets déclarés (€/mois)</label>
-                  <input type="number" class="form-input-pro" id="dossierRevenus" placeholder="Ex : 2 700" min="0" oninput="updateDossierCalc()">
+                  <label class="form-label" style="font-size:.75rem">Revenus nets (€/mois)</label>
+                  <input type="number" class="form-input-pro" id="dossierRevenus" placeholder="2 700" min="0" oninput="updateDossierCalc()" style="font-size:.84rem">
                 </div>
                 <div class="form-group-pro">
-                  <label class="form-label">Ancienneté au poste</label>
-                  <select class="form-input-pro" id="dossierAnciennete">
+                  <label class="form-label" style="font-size:.75rem">Ancienneté poste</label>
+                  <select class="form-input-pro" id="dossierAnciennete" style="font-size:.84rem">
                     <option value="moins6">Moins de 6 mois</option>
                     <option value="6a12">6 à 12 mois</option>
                     <option value="1a3">1 à 3 ans</option>
@@ -3698,80 +3686,148 @@ body:not(.is-dashboard) .step-desc {
                   </select>
                 </div>
               </div>
-            </div>
 
-            <!-- Upload des pièces -->
-            <div class="dash-card">
-              <div class="dash-section-title">Pièces justificatives</div>
-              <div style="font-size:.78rem;color:var(--gris);margin-bottom:14px">Formats : PDF, JPG, PNG. L'IA analyse le contenu pour détecter incohérences et documents suspects.</div>
-
-              <div id="dossierPiecesGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-
-                <!-- CNI -->
-                <label class="dossier-piece-card" id="piece-cni-card" for="piece-cni">
-                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="14" height="10" rx="1.5"/><circle cx="5" cy="8" r="1.8"/><line x1="9" y1="6.5" x2="13" y2="6.5"/><line x1="9" y1="9.5" x2="12" y2="9.5"/></svg></div>
-                  <div class="dossier-piece-label">Pièce d'identité</div>
-                  <div class="dossier-piece-status" id="piece-cni-status">Non fournie</div>
-                  <input type="file" id="piece-cni" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('cni',this)">
-                </label>
-
-                <!-- Bulletins de salaire -->
-                <label class="dossier-piece-card" id="piece-paie-card" for="piece-paie">
-                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg></div>
-                  <div class="dossier-piece-label">3 bulletins de salaire</div>
-                  <div class="dossier-piece-status" id="piece-paie-status">Non fournis</div>
-                  <input type="file" id="piece-paie" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('paie',this)">
-                </label>
-
-                <!-- Avis d'imposition -->
-                <label class="dossier-piece-card" id="piece-impots-card" for="piece-impots">
-                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="9" y2="8"/><polyline points="7 12 9 14 13 10" stroke-width="1.6"/></svg></div>
-                  <div class="dossier-piece-label">Avis d'imposition</div>
-                  <div class="dossier-piece-status" id="piece-impots-status">Non fourni</div>
-                  <input type="file" id="piece-impots" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('impots',this)">
-                </label>
-
-                <!-- Contrat de travail -->
-                <label class="dossier-piece-card" id="piece-contrat-card" for="piece-contrat">
-                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="7" y2="11"/><path d="M10 11.5l0.8 0.8 1.7-1.8" stroke-width="1.5"/></svg></div>
-                  <div class="dossier-piece-label">Contrat de travail</div>
-                  <div class="dossier-piece-status" id="piece-contrat-status">Optionnel</div>
-                  <input type="file" id="piece-contrat" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('contrat',this)">
-                </label>
-
-                <!-- Relevés bancaires -->
-                <label class="dossier-piece-card" id="piece-banque-card" for="piece-banque">
-                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="4" width="14" height="9" rx="1.5"/><line x1="1" y1="7.5" x2="15" y2="7.5"/><rect x="3" y="10" width="3" height="1.5" rx="0.5" fill="currentColor" stroke="none"/></svg></div>
-                  <div class="dossier-piece-label">Relevés bancaires</div>
-                  <div class="dossier-piece-status" id="piece-banque-status">Optionnel</div>
-                  <input type="file" id="piece-banque" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('banque',this)">
-                </label>
-
-                <!-- Quittances de loyer -->
-                <label class="dossier-piece-card" id="piece-quittances-card" for="piece-quittances">
-                  <div class="dossier-piece-icon"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 2h12v10l-2 2H2V2z"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="9" x2="9" y2="9"/></svg></div>
-                  <div class="dossier-piece-label">Quittances loyer précédent</div>
-                  <div class="dossier-piece-status" id="piece-quittances-status">Optionnel</div>
-                  <input type="file" id="piece-quittances" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('quittances',this)">
-                </label>
-
+              <!-- Garantie — pills horizontaux compacts -->
+              <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px">
+                <label class="form-label" style="font-size:.75rem;margin-bottom:6px;display:block">Garantie</label>
+                <input type="hidden" id="dossierGarant" value="non" onchange="toggleDossierGarantFields()">
+                <div style="display:flex;gap:5px;flex-wrap:wrap">
+                  <button type="button" class="dos-garant-pill active" data-val="non" onclick="setDossierGarant('non')" style="padding:4px 10px;border:1px solid var(--pro-accent);border-radius:20px;background:var(--pro-light);color:var(--pro-accent);font-weight:600;font-size:.75rem;cursor:pointer">Aucune</button>
+                  <button type="button" class="dos-garant-pill" data-val="physique" onclick="setDossierGarant('physique')" style="padding:4px 10px;border:1px solid var(--border);border-radius:20px;background:white;color:var(--gris);font-weight:500;font-size:.75rem;cursor:pointer">Physique</button>
+                  <button type="button" class="dos-garant-pill" data-val="caution_solidaire" onclick="setDossierGarant('caution_solidaire')" style="padding:4px 10px;border:1px solid var(--border);border-radius:20px;background:white;color:var(--gris);font-weight:500;font-size:.75rem;cursor:pointer">Caution</button>
+                  <button type="button" class="dos-garant-pill" data-val="visale" onclick="setDossierGarant('visale')" style="padding:4px 10px;border:1px solid var(--border);border-radius:20px;background:white;color:var(--gris);font-weight:500;font-size:.75rem;cursor:pointer">Visale</button>
+                  <button type="button" class="dos-garant-pill" data-val="garantme" onclick="setDossierGarant('garantme')" style="padding:4px 10px;border:1px solid var(--border);border-radius:20px;background:white;color:var(--gris);font-weight:500;font-size:.75rem;cursor:pointer">GarantMe</button>
+                  <button type="button" class="dos-garant-pill" data-val="autre_organisme" onclick="setDossierGarant('autre_organisme')" style="padding:4px 10px;border:1px solid var(--border);border-radius:20px;background:white;color:var(--gris);font-weight:500;font-size:.75rem;cursor:pointer">Autre</button>
+                </div>
               </div>
 
-              <!-- Documents supplémentaires -->
-              <div style="margin-top:16px">
-                <div style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:8px">Documents supplémentaires (optionnel)</div>
-                <div id="extraDocsGrid" style="display:flex;flex-direction:column;gap:6px"></div>
-                <button onclick="addExtraDoc()" style="display:flex;align-items:center;gap:6px;background:none;border:1.5px dashed var(--border);border-radius:8px;padding:8px 12px;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--gris);width:100%;margin-top:6px;transition:all .2s" onmouseover="this.style.borderColor='var(--pro-accent)';this.style.color='var(--pro-accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gris)'">
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+              <!-- Champs garant — masqués par défaut -->
+              <div id="dossierGarantFields" style="display:none;margin-top:10px;background:#f5f3ff;border:1px solid #d8b4fe;border-radius:8px;padding:12px">
+                <div style="font-size:.72rem;font-weight:700;color:#7e22ce;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em"><span id="dosGarantFieldsTitle">Garant</span></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div id="dosGarantOrganismeRow" class="form-group-pro" style="display:none;grid-column:1/-1">
+                    <label class="form-label" style="font-size:.75rem">Nom de l'organisme</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantOrganisme" placeholder="Ex : Action Logement…" style="font-size:.84rem">
+                  </div>
+                  <div id="dosGarantNumRow" class="form-group-pro" style="display:none;grid-column:1/-1">
+                    <label class="form-label" style="font-size:.75rem">N° de dossier</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantNumDossier" placeholder="Référence…" style="font-size:.84rem">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label" style="font-size:.75rem">Prénom</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantPrenom" placeholder="Jean" style="font-size:.84rem">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label" style="font-size:.75rem">Nom</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantNom" placeholder="Dupont" style="font-size:.84rem">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label" style="font-size:.75rem">Revenus (€/mois)</label>
+                    <input type="number" class="form-input-pro" id="dossierGarantRevenus" placeholder="3 500" oninput="updateDossierCalc()" style="font-size:.84rem">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label" style="font-size:.75rem">Situation</label>
+                    <select class="form-input-pro" id="dossierGarantContrat" style="font-size:.84rem">
+                      <option value="cdi">CDI</option>
+                      <option value="fonctionnaire">Fonctionnaire</option>
+                      <option value="retraite">Retraité</option>
+                      <option value="independant">Indépendant / TNS</option>
+                      <option value="autre">Autre</option>
+                    </select>
+                  </div>
+                  <div class="form-group-pro" style="grid-column:1/-1">
+                    <label class="form-label" style="font-size:.75rem">Adresse</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantAdresse" placeholder="3 rue du Moulin" style="font-size:.84rem">
+                  </div>
+                  <div class="form-group-pro" style="position:relative">
+                    <label class="form-label" style="font-size:.75rem">Code postal</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantCp" placeholder="75018" maxlength="5" oninput="cpAutoDossierGarant(this.value)" autocomplete="off" style="font-size:.84rem">
+                    <div id="dossierGarantCpDrop" style="position:absolute;top:calc(100% + 2px);left:0;width:100%;background:white;border:1px solid #d8d0c4;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none;z-index:300;max-height:160px;overflow-y:auto"></div>
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label" style="font-size:.75rem">Ville</label>
+                    <input type="text" class="form-input-pro" id="dossierGarantVille" placeholder="Paris" style="font-size:.84rem">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label" style="font-size:.75rem">Email</label>
+                    <input type="email" class="form-input-pro" id="dossierGarantEmail" placeholder="jean@email.com" style="font-size:.84rem">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label" style="font-size:.75rem">Téléphone</label>
+                    <input type="tel" class="form-input-pro" id="dossierGarantTel" placeholder="06 12 34 56 78" style="font-size:.84rem">
+                  </div>
+                  <div class="form-group-pro">
+                    <label class="form-label" style="font-size:.75rem">Ancienneté emploi</label>
+                    <select class="form-input-pro" id="dossierGarantAnciennete" style="font-size:.84rem">
+                      <option value="plus3">Plus de 3 ans</option>
+                      <option value="1a3">1 à 3 ans</option>
+                      <option value="moins1">Moins d'1 an</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="dosGarantInfo" style="display:none"></div>
+              </div>
+            </div>
+
+            <!-- Pièces justificatives — grille 3 colonnes compacte -->
+            <div class="dash-card" style="padding:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris)">Pièces justificatives</div>
+                <div style="font-size:.7rem;color:var(--gris)">PDF · JPG · PNG</div>
+              </div>
+              <div id="dossierPiecesGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+                <label class="dossier-piece-card" id="piece-cni-card" for="piece-cni" style="padding:10px 8px;text-align:center">
+                  <div class="dossier-piece-icon" style="margin-bottom:4px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="14" height="10" rx="1.5"/><circle cx="5" cy="8" r="1.8"/><line x1="9" y1="6.5" x2="13" y2="6.5"/><line x1="9" y1="9.5" x2="12" y2="9.5"/></svg></div>
+                  <div class="dossier-piece-label" style="font-size:.72rem">Pièce d'identité</div>
+                  <div class="dossier-piece-status" id="piece-cni-status" style="font-size:.65rem">Non fournie</div>
+                  <input type="file" id="piece-cni" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('cni',this)">
+                </label>
+                <label class="dossier-piece-card" id="piece-paie-card" for="piece-paie" style="padding:10px 8px;text-align:center">
+                  <div class="dossier-piece-icon" style="margin-bottom:4px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg></div>
+                  <div class="dossier-piece-label" style="font-size:.72rem">Bulletins de salaire</div>
+                  <div class="dossier-piece-status" id="piece-paie-status" style="font-size:.65rem">Non fournis</div>
+                  <input type="file" id="piece-paie" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('paie',this)">
+                </label>
+                <label class="dossier-piece-card" id="piece-impots-card" for="piece-impots" style="padding:10px 8px;text-align:center">
+                  <div class="dossier-piece-icon" style="margin-bottom:4px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><line x1="5" y1="5" x2="11" y2="5"/><polyline points="7 12 9 14 13 10" stroke-width="1.6"/></svg></div>
+                  <div class="dossier-piece-label" style="font-size:.72rem">Avis d'imposition</div>
+                  <div class="dossier-piece-status" id="piece-impots-status" style="font-size:.65rem">Non fourni</div>
+                  <input type="file" id="piece-impots" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('impots',this)">
+                </label>
+                <label class="dossier-piece-card" id="piece-contrat-card" for="piece-contrat" style="padding:10px 8px;text-align:center">
+                  <div class="dossier-piece-icon" style="margin-bottom:4px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1" width="12" height="14" rx="1.5"/><path d="M10 11.5l0.8 0.8 1.7-1.8" stroke-width="1.5"/></svg></div>
+                  <div class="dossier-piece-label" style="font-size:.72rem">Contrat de travail</div>
+                  <div class="dossier-piece-status" id="piece-contrat-status" style="font-size:.65rem">Optionnel</div>
+                  <input type="file" id="piece-contrat" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handlePieceUpload('contrat',this)">
+                </label>
+                <label class="dossier-piece-card" id="piece-banque-card" for="piece-banque" style="padding:10px 8px;text-align:center">
+                  <div class="dossier-piece-icon" style="margin-bottom:4px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="4" width="14" height="9" rx="1.5"/><line x1="1" y1="7.5" x2="15" y2="7.5"/><rect x="3" y="10" width="3" height="1.5" rx="0.5" fill="currentColor" stroke="none"/></svg></div>
+                  <div class="dossier-piece-label" style="font-size:.72rem">Relevés bancaires</div>
+                  <div class="dossier-piece-status" id="piece-banque-status" style="font-size:.65rem">Optionnel</div>
+                  <input type="file" id="piece-banque" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('banque',this)">
+                </label>
+                <label class="dossier-piece-card" id="piece-quittances-card" for="piece-quittances" style="padding:10px 8px;text-align:center">
+                  <div class="dossier-piece-icon" style="margin-bottom:4px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 2h12v10l-2 2H2V2z"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="9" x2="9" y2="9"/></svg></div>
+                  <div class="dossier-piece-label" style="font-size:.72rem">Quittances loyer</div>
+                  <div class="dossier-piece-status" id="piece-quittances-status" style="font-size:.65rem">Optionnel</div>
+                  <input type="file" id="piece-quittances" accept=".pdf,.jpg,.jpeg,.png" style="display:none" multiple onchange="handlePieceUpload('quittances',this)">
+                </label>
+              </div>
+
+              <!-- Docs supplémentaires -->
+              <div style="margin-top:10px">
+                <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:6px">Documents supplémentaires</div>
+                <div id="extraDocsGrid" style="display:flex;flex-direction:column;gap:5px"></div>
+                <button onclick="addExtraDoc()" style="display:flex;align-items:center;gap:5px;background:none;border:1.5px dashed var(--border);border-radius:7px;padding:7px 10px;font-size:.75rem;font-weight:600;cursor:pointer;color:var(--gris);width:100%;margin-top:5px;transition:all .2s" onmouseover="this.style.borderColor='var(--pro-accent)';this.style.color='var(--pro-accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gris)'">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
                   Ajouter un document
                 </button>
               </div>
 
-              <button class="btn-primary-pro" id="btnAnalyseDossier" onclick="lancerAnalyseDossier()" style="width:100%;margin-top:16px;font-size:.9rem;padding:12px 24px">
+              <button class="btn-primary-pro" id="btnAnalyseDossier" onclick="lancerAnalyseDossier()" style="width:100%;margin-top:14px;font-size:.88rem;padding:11px 20px">
                 Analyser le dossier avec l'IA →
               </button>
             </div>
-          </div>
 
           </div><!-- /panneau-gauche -->
 
@@ -13719,7 +13775,7 @@ function openNewLocataire() {
   var gc = document.getElementById('locGarantContrat'); if(gc) gc.value='cdi';
   var gf = document.getElementById('locGarantFields'); if(gf) gf.style.display='none';
   var sc=document.getElementById('locScoreDisplay'); if(sc) sc.textContent='— Renseignez loyer et revenus';
-  var _lfe=document.getElementById('locataireForm'); if(_lfe){var _sYl=window.scrollY;document.body.style.overflow='hidden';document.body.style.position='fixed';document.body.style.top='-'+_sYl+'px';document.body.style.width='100%';_lfe._scrollY=_sYl;_lfe.style.display='flex';}
+  var _lfe=document.getElementById('locataireForm'); if(_lfe){_lfe.style.display='flex'; _lfe.classList.add('active');}
 }
 
 function closeLocataireForm() {
@@ -17010,13 +17066,15 @@ function openModal(name) {
   document.querySelectorAll('.modal-overlay').forEach(function(m){m.style.display='none';m.classList.remove('active');});
   var el = document.getElementById(id);
   if (el) {
-    // Bloquer le scroll du body sans changer sa position
-    var scrollY = window.scrollY;
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = '-' + scrollY + 'px';
-    document.body.style.width = '100%';
-    el._scrollY = scrollY;
+    // Scroll lock uniquement sur la page marketing (pas le dashboard)
+    if (!document.body.classList.contains('is-dashboard')) {
+      var scrollY = window.scrollY;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '-' + scrollY + 'px';
+      document.body.style.width = '100%';
+      el._scrollY = scrollY;
+    }
     el.style.display = 'flex';
     el.classList.add('active');
   }
@@ -17035,12 +17093,20 @@ function closeModal(name) {
   if(el){ _restoreScroll(el); el.style.display='none'; el.classList.remove('active'); }
 }
 function _restoreScroll(el) {
-  var scrollY = el._scrollY || 0;
-  document.body.style.overflow = '';
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
-  window.scrollTo(0, scrollY);
+  // Ne restaurer que si on était en mode scroll lock (page marketing)
+  if (el._scrollY !== undefined && !document.body.classList.contains('is-dashboard')) {
+    var scrollY = el._scrollY || 0;
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
+  } else {
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+  }
 }
 
 function updateQLocNom() {
