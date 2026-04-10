@@ -2021,7 +2021,7 @@ body:not(.is-dashboard) .step-desc {
     <div class="dash-sidebar">
       <div class="dash-sidebar-logo" style="padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:12px">
         <span>Bail<em>Scan</em><span class="logo-pro-badge">PRO</span></span>
-        <div class="dash-trial-pill" id="trialPill">⏱ <span id="trialDaysLeft">3</span>j</div>
+        <div id="trialPill" style="font-size:.68rem;color:rgba(255,255,255,.3);margin-top:6px;letter-spacing:.02em">Essai — <span id="trialDaysLeft">3</span>j restants</div>
       </div>
 
       <div class="dash-nav">
@@ -2128,18 +2128,9 @@ body:not(.is-dashboard) .step-desc {
         </div>
 
         <!-- Bandeau essai -->
-        <div id="trialBanner" style="margin-bottom:24px;background:linear-gradient(135deg,#1e3a6e,#3b6fd4);border-radius:8px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-          <div style="display:flex;align-items:center;gap:16px">
-            <div style="background:rgba(255,255,255,.15);border-radius:12px;padding:10px 16px;text-align:center;flex-shrink:0">
-              <div style="font-weight:700;font-size:2.2rem;color:white;line-height:1" id="trialDaysLeftBanner">3</div>
-              <div style="font-size:.62rem;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.08em;margin-top:2px">jours</div>
-            </div>
-            <div>
-              <div style="font-weight:700;font-size:1rem;color:white">Essai gratuit en cours</div>
-              <div style="font-size:.83rem;color:rgba(255,255,255,.6);margin-top:3px">Accès complet à toutes les fonctionnalités Pro. Sans engagement.</div>
-            </div>
-          </div>
-          <button onclick="showDashTab('abonnement')" style="background:white;color:#3b6fd4;padding:10px 20px;border-radius:9px;font-size:.88rem;font-weight:700;border:none;cursor:pointer;white-space:nowrap">Passer en Pro →</button>
+        <div id="trialBanner" style="margin-bottom:20px;padding:10px 14px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-size:.82rem;color:var(--gris)">Essai gratuit — <span id="trialDaysLeftBanner" style="font-weight:600;color:var(--texte)">3</span> jours restants · expire le <span id="trialEndDate" style="color:var(--texte)"></span></div>
+          <button onclick="showDashTab('abonnement')" style="background:var(--pro-accent);color:white;padding:6px 14px;border-radius:6px;font-size:.78rem;font-weight:600;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0">S'abonner →</button>
         </div>
 
         <!-- KPIs principaux -->
@@ -2568,7 +2559,7 @@ body:not(.is-dashboard) .step-desc {
               </select>
             </div>
             <div style="font-size:0.88rem;color:var(--gris);margin-bottom:20px;background:var(--pro-light);padding:14px 16px;border-radius:10px;border-left:3px solid var(--pro-accent)">
-              BailScan génère un bail complet conforme loi du 6 juillet 1989 + ALUR. Ce document est fourni à titre indicatif — relecture conseillée pour les situations complexes.
+              Ce document est fourni à titre indicatif — relecture conseillée pour les situations complexes.
             </div>
 
             <!-- Section bailleur -->
@@ -2582,11 +2573,11 @@ body:not(.is-dashboard) .step-desc {
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0" id="bailleurPrenomRow">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Prénom</label>
                 <input type="text" class="form-input-pro" id="genBailleurPrenom" placeholder="Ex : Jean">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Nom <span style="color:#e53e3e">*</span></label>
                 <input type="text" class="form-input-pro" id="genBailleurNom" placeholder="Ex : Dupont">
               </div>
@@ -2596,29 +2587,29 @@ body:not(.is-dashboard) .step-desc {
               <input type="text" class="form-input-pro" id="genBailleurDenom" placeholder="Ex : SCI Les Lilas, Dupont Immobilier SARL">
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Adresse complète</label>
                 <input type="text" class="form-input-pro" id="genBailleurAdresse" placeholder="Ex : 12 rue de la Paix, 75001 Paris">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Code postal</label>
                 <input type="text" class="form-input-pro" id="genCodePostal" placeholder="Ex : 75011" maxlength="5">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Ville</label>
                 <input type="text" class="form-input-pro" id="genBailleurVille" placeholder="Ex : Paris">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Email</label>
                 <input type="email" class="form-input-pro" id="genBailleurEmail" placeholder="Ex : jean.dupont@email.com">
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:16px">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Téléphone</label>
                 <input type="text" class="form-input-pro" id="genBailleurTel" placeholder="Ex : 06 12 34 56 78">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Type de bailleur</label>
                 <select class="form-input-pro" id="genBailleurType">
                   <option value="physique">Personne physique</option>
@@ -2637,21 +2628,21 @@ body:not(.is-dashboard) .step-desc {
               </select>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Prénom</label>
                 <input type="text" class="form-input-pro" id="genLocatairePrenom" placeholder="Ex : Marie">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Nom</label>
                 <input type="text" class="form-input-pro" id="genLocataireNom" placeholder="Ex : Martin">
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Adresse actuelle du locataire</label>
                 <input type="text" class="form-input-pro" id="genLocataireAdresse" placeholder="Ex : 5 avenue Victor Hugo, 69001 Lyon">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Email</label>
                 <input type="email" class="form-input-pro" id="genLocataireEmail" placeholder="Ex : marie.martin@email.com">
               </div>
@@ -2686,7 +2677,7 @@ body:not(.is-dashboard) .step-desc {
                   </div>
                   <!-- Physique / Caution solidaire -->
                   <div id="genGarantPhysRow" style="display:none">
-                    <div class="form-grid-pro">
+                    <div class="form-grid-pro" style="margin-top:12px">
                       <div class="form-group-pro">
                         <label class="form-label" style="font-size:.78rem">Prénom</label>
                         <input type="text" class="form-input-pro" id="genGarantPrenom" placeholder="Jean" style="font-size:.88rem">
@@ -2743,7 +2734,7 @@ body:not(.is-dashboard) .step-desc {
                   </div>
                 </div>
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Type de location</label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_type','vide',this)"><input type="radio" name="gen_type" value="vide" checked> Vide</label>
@@ -2756,31 +2747,31 @@ body:not(.is-dashboard) .step-desc {
             <!-- Section bien loué -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:20px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Bien loué</div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Adresse du bien</label>
                 <input type="text" class="form-input-pro" id="genBienAdresse" placeholder="Ex : 8 rue des Lilas, 75020 Paris">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Ville</label>
                 <input type="text" class="form-input-pro" id="genVille" placeholder="Ex : Paris">
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Surface habitable (m²)</label>
                 <input type="number" class="form-input-pro" id="genSurface" placeholder="Ex : 52" min="1">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Nombre de pièces</label>
                 <input type="number" class="form-input-pro" id="genPieces" placeholder="Ex : 3" min="1">
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Étage</label>
                 <input type="text" class="form-input-pro" id="genEtage" placeholder="Ex : 3ème étage, bâtiment B">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">DPE (classe énergie)</label>
                 <select class="form-input-pro" id="genDpe">
                   <option value="A">A — Très performant (≤70 kWh)</option>
@@ -2794,7 +2785,7 @@ body:not(.is-dashboard) .step-desc {
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:16px">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">GES (classe émissions)</label>
                 <select class="form-input-pro" id="genGes">
                   <option value="A">A (≤5 kg CO₂/m².an)</option>
@@ -2806,7 +2797,7 @@ body:not(.is-dashboard) .step-desc {
                   <option value="G">G (>80)</option>
                 </select>
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Équipements fournis</label>
                 <input type="text" class="form-input-pro" id="genEquipements" placeholder="Ex : cuisine équipée, parking, cave, digicode">
               </div>
@@ -2815,15 +2806,15 @@ body:not(.is-dashboard) .step-desc {
             <!-- Section financière -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:20px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Conditions financières</div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Loyer mensuel HC (€) <span style="color:#e53e3e">*</span></label>
                 <input type="number" class="form-input-pro" id="genLoyer" placeholder="Ex : 800" min="0">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Charges (€/mois)</label>
                 <input type="number" class="form-input-pro" id="genCharges" placeholder="Ex : 80" min="0">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Dépôt de garantie (€)</label>
                 <input type="number" class="form-input-pro" id="genDepotGarantie" placeholder="Ex : 2 174" min="0">
               </div>
@@ -2831,11 +2822,11 @@ body:not(.is-dashboard) .step-desc {
             <!-- Complément de loyer -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:20px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Complément de loyer <span style="font-weight:400;font-size:.75rem;color:var(--gris)">(zones encadrées uniquement)</span></div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Montant du complément (€/mois) <span style="font-weight:400;color:var(--gris);font-size:.78rem">— laisser vide si aucun</span></label>
                 <input type="number" class="form-input-pro" id="genComplement" placeholder="Ex : 80" min="0">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Justificatif du complément</label>
                 <select class="form-input-pro" id="genComplementJustif" onchange="toggleComplementDetail()">
                   <option value="">— Sélectionner —</option>
@@ -2866,7 +2857,7 @@ body:not(.is-dashboard) .step-desc {
                   <input type="number" class="form-input-pro" id="genLoyerMajore" placeholder="Ex : 18.10" min="0" step="0.01" style="font-size:.88rem">
                 </div>
               </div>
-              <div class="form-grid-pro">
+              <div class="form-grid-pro" style="margin-top:12px">
                 <div class="form-group-pro" style="margin-bottom:0">
                   <label class="form-label" style="font-size:.78rem">Loyer de référence minoré (€/m²/mois) <span style="color:var(--gris)">facultatif</span></label>
                   <input type="number" class="form-input-pro" id="genLoyerMinore" placeholder="Ex : 11.50" min="0" step="0.01" style="font-size:.88rem">
@@ -2878,17 +2869,17 @@ body:not(.is-dashboard) .step-desc {
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Dépôt de garantie (€) <span style="font-weight:400;color:var(--gris);font-size:.78rem">max 1 mois HC vide / 2 mois meublé</span></label>
                 <input type="number" class="form-input-pro" id="genDepot" placeholder="Ex : 800" min="0">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Date d'entrée dans les lieux</label>
                 <input type="date" class="form-input-pro" id="genDateEntree">
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:16px">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Durée du bail</label>
                 <select class="form-input-pro" id="genDuree">
                   <option value="3 ans">3 ans (standard vide)</option>
@@ -2897,7 +2888,7 @@ body:not(.is-dashboard) .step-desc {
                   <option value="6 ans">6 ans (bailleur personne morale)</option>
                 </select>
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Révision loyer</label>
                 <select class="form-input-pro" id="genRevision">
                   <option value="IRL">Indice de Référence des Loyers (IRL) — standard</option>
@@ -2963,11 +2954,11 @@ body:not(.is-dashboard) .step-desc {
               <label class="annex-check"><input type="checkbox" id="genSousloc"> Sous-location interdite</label>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">N° parking / Cave <span style="font-weight:400;color:var(--gris);font-size:.78rem">si applicable</span></label>
                 <input type="text" class="form-input-pro" id="genAnnexeNum" placeholder="Ex : Parking n°12, Cave B4">
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Immeuble en copropriété ?</label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_copro','oui',this)"><input type="radio" name="gen_copro" value="oui" checked> Oui</label>
@@ -2983,14 +2974,14 @@ body:not(.is-dashboard) .step-desc {
             <!-- Clauses spéciales supplémentaires -->
             <div style="font-weight:700;font-size:.88rem;color:var(--pro-accent);margin-top:20px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--pro-light)">Clauses & assurances</div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Assurance PNO bailleur <span style="font-weight:400;color:var(--gris);font-size:.78rem">(propriétaire non-occupant)</span></label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_pno','oui',this)"><input type="radio" name="gen_pno" value="oui" checked> Oui</label>
                   <label class="radio-pill-pro" onclick="setGenRadio('gen_pno','non',this)"><input type="radio" name="gen_pno" value="non"> Non</label>
                 </div>
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Clause résolutoire expresse</label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_resolutoire','oui',this)"><input type="radio" name="gen_resolutoire" value="oui" checked> Oui</label>
@@ -2999,14 +2990,14 @@ body:not(.is-dashboard) .step-desc {
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:0">
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Clause de solidarité <span style="font-weight:400;color:var(--gris);font-size:.78rem">(colocation)</span></label>
                 <div class="radio-group-pro">
                   <label class="radio-pill-pro" onclick="setGenRadio('gen_solidarite','oui',this)"><input type="radio" name="gen_solidarite" value="oui"> Oui</label>
                   <label class="radio-pill-pro active" onclick="setGenRadio('gen_solidarite','non',this)"><input type="radio" name="gen_solidarite" value="non" checked> Non</label>
                 </div>
               </div>
-              <div class="form-group-pro">
+              <div class="form-group-pro" style="margin-top:12px">
                 <label class="form-label">Honoraires d'agence TTC (€)</label>
                 <input type="number" class="form-input-pro" id="genHonoraires" placeholder="Ex : 650">
               </div>
@@ -12795,7 +12786,6 @@ function showObBanner() {
     + '<div style="font-weight:700;font-size:.9rem;margin-bottom:6px;line-height:1.3">'+s.title+'</div>'
     + '<div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.55;margin-bottom:14px">'+s.desc+'</div>'
     + '<button id="obContinueBtn" style="width:100%;padding:10px;background:#3b6fd4;color:white;border:none;border-radius:8px;font-weight:700;font-size:.85rem;cursor:pointer">'+s.cta+'</button>'
-    + 'style="width:100%;padding:10px;background:#3b6fd4;color:white;border:none;border-radius:8px;font-weight:700;font-size:.85rem;cursor:pointer">'+s.cta+'</button>'
     + '<button onclick="obSkipBanner()" style="width:100%;padding:7px;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:.78rem;margin-top:6px">Passer cette étape</button>'
     + '</div>';
 
