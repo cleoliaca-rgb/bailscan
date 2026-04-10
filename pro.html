@@ -1445,6 +1445,9 @@ body:not(.is-dashboard) .step-desc {
 #tab-generer #genererForm > [style*="border-bottom:1px solid var(--pro-light)"]:first-of-type {
   margin-top: 0 !important;
 }
+
+/* Cacher la section import sur le dashboard */
+body.is-dashboard #importSection { display: none !important; }
 </style>
 
 </head>
@@ -6342,6 +6345,7 @@ function showDashboard(){
   document.body.classList.add('is-dashboard');
   var _mp=document.getElementById('marketingPage');if(_mp){_mp.style.cssText='display:none!important';}
   var _sp=document.getElementById('particuliers');if(_sp){_sp.style.cssText='display:none!important';}
+  var _is=document.getElementById('importSection');if(_is){_is.style.cssText='display:none!important';}
   var _ft=document.querySelector('.footer-seo-pro');if(_ft){_ft.style.cssText='display:none!important';}
   document.getElementById('marketingFooter').style.display='none';
   document.getElementById('dashboardSection').style.display='block';
@@ -13753,29 +13757,32 @@ function setLocGarant(val, btn) {
 }
 
 function openNewLocataire() {
-  document.getElementById('locEditId').value = '';
-  document.getElementById('locFormTitle').textContent = 'Nouveau locataire';
-  // locBienSel sera chargé après ouverture
-  refreshLocBailSel('');
+  // Ouvrir la modal EN PREMIER — avant tout reset
+  var _lfe = document.getElementById('locataireForm');
+  if (!_lfe) { console.error('[BailScan] locataireForm introuvable'); return; }
+  _lfe.style.display = 'flex';
+  _lfe.classList.add('active');
+
+  // Reset défensif — chaque opération dans try/catch pour ne pas bloquer
+  try { document.getElementById('locEditId').value = ''; } catch(e){}
+  try { document.getElementById('locFormTitle').textContent = 'Nouveau locataire'; } catch(e){}
+  try { refreshLocBailSel(''); } catch(e){}
   ['locPrenom','locNom','locEmail','locTel','locAdresse','locLoyer','locComplement','locDepot','locRevenus','locNotes','locAgent'].forEach(function(id){
-    var el=document.getElementById(id); if(el) el.value='';
+    try { var el=document.getElementById(id); if(el) el.value=''; } catch(e){}
   });
-  // Réinitialiser le champ mandat search
-  var lms = document.getElementById('locBienSearch'); if(lms) lms.value='';
-  refreshMandatSelectForLoc(null,'');
-  var lmsel = document.getElementById('locBienSelected'); if(lmsel) lmsel.style.display='none';
-  ['locDateEntree','locDateFin'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('locStatut').value='actif';
-  document.getElementById('locContrat').value='cdi';
-  document.getElementById('locGarant').value='non';
-  // Reset champs garant
+  try { var lms=document.getElementById('locBienSearch'); if(lms) lms.value=''; } catch(e){}
+  try { refreshMandatSelectForLoc(null,''); } catch(e){}
+  try { var lmsel=document.getElementById('locBienSelected'); if(lmsel) lmsel.style.display='none'; } catch(e){}
+  ['locDateEntree','locDateFin'].forEach(function(id){ try { var el=document.getElementById(id); if(el) el.value=''; } catch(e){} });
+  try { var ls=document.getElementById('locStatut'); if(ls) ls.value='actif'; } catch(e){}
+  try { var lc=document.getElementById('locContrat'); if(lc) lc.value='cdi'; } catch(e){}
+  try { var lg=document.getElementById('locGarant'); if(lg) lg.value='non'; } catch(e){}
   ['locGarantNom','locGarantAdresse','locGarantEmail','locGarantTel','locGarantRevenus'].forEach(function(id){
-    var el=document.getElementById(id); if(el) el.value='';
+    try { var el=document.getElementById(id); if(el) el.value=''; } catch(e){}
   });
-  var gc = document.getElementById('locGarantContrat'); if(gc) gc.value='cdi';
-  var gf = document.getElementById('locGarantFields'); if(gf) gf.style.display='none';
-  var sc=document.getElementById('locScoreDisplay'); if(sc) sc.textContent='— Renseignez loyer et revenus';
-  var _lfe=document.getElementById('locataireForm'); if(_lfe){_lfe.style.display='flex'; _lfe.classList.add('active');}
+  try { var gc=document.getElementById('locGarantContrat'); if(gc) gc.value='cdi'; } catch(e){}
+  try { var gf=document.getElementById('locGarantFields'); if(gf) gf.style.display='none'; } catch(e){}
+  try { var sc=document.getElementById('locScoreDisplay'); if(sc) sc.textContent='— Renseignez loyer et revenus'; } catch(e){}
 }
 
 function closeLocataireForm() {
