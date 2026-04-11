@@ -1,6 +1,5 @@
 /**
  * BailScan Pro — /api/send-welcome.js
- * Email de bienvenue immédiat + relances J+1, J+2, J+3
  */
  
 const FROM = process.env.RESEND_FROM_EMAIL || 'BailScan Pro <bonjour@bailscan.app>';
@@ -20,74 +19,171 @@ async function sendEmail({ to, subject, html }) {
   return data;
 }
  
-function headerHtml(preview = '') {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8">
-${preview ? `<div style="display:none;max-height:0;overflow:hidden">${preview}</div>` : ''}
-<style>
-  body{font-family:Arial,sans-serif;background:#f8fafc;margin:0;padding:0;color:#0f172a}
-  .wrap{max-width:560px;margin:32px auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08)}
-  .hdr{background:#0f172a;padding:24px 32px}
-  .logo{font-size:22px;font-weight:700;color:white;font-style:italic}
-  .logo span{color:#f97316}
-  .badge{font-size:10px;font-weight:700;background:#3b6fd4;color:white;padding:2px 8px;border-radius:4px;margin-left:6px;vertical-align:middle;font-style:normal}
-  .body{padding:32px}
-  h2{font-size:20px;color:#0f172a;margin:0 0 12px}
-  p{font-size:14px;color:#475569;line-height:1.7;margin:0 0 16px}
-  .btn{display:inline-block;background:#3b6fd4;color:white;padding:13px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px}
-  .feature{display:flex;gap:12px;padding:12px;background:#f8fafc;border-radius:8px;margin-bottom:8px}
-  .fi{font-size:1.1rem;width:24px;flex-shrink:0}
-  .ft{font-size:13px;color:#334155}
-  .footer{background:#f1f5f9;padding:20px 32px;font-size:12px;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0}
-</style></head><body><div class="wrap">
-  <div class="hdr"><div class="logo">Bail<span>Scan</span><span class="badge">PRO</span></div></div>`;
-}
- 
-const footerHtml = `</div><div class="footer">
-  BailScan Pro · Pour les agences immobilières françaises<br>
-  <a href="${APP_URL}" style="color:#3b6fd4;text-decoration:none">Accéder à mon dashboard →</a>
-</div></div></body></html>`;
- 
 function welcomeHtml({ prenom, trialEnd }) {
-  return headerHtml('Votre essai gratuit BailScan Pro est activé') + `
+  return `<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bienvenue sur BailScan Pro</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;color:#0f172a}
+  .wrap{max-width:600px;margin:32px auto;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.08)}
+  .hdr{background:#0f172a;padding:28px 40px;text-align:left}
+  .logo{font-size:24px;font-weight:700;color:white;letter-spacing:-.02em}
+  .logo-accent{color:#f97316}
+  .logo-badge{font-size:9px;font-weight:800;background:#3b6fd4;color:white;padding:2px 7px;border-radius:3px;margin-left:8px;vertical-align:middle;letter-spacing:.06em;font-style:normal;text-transform:uppercase}
+  .hdr-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:6px;letter-spacing:.02em}
+  .body{padding:40px}
+  .greeting{font-size:22px;font-weight:700;color:#0f172a;margin-bottom:8px;line-height:1.3}
+  .intro{font-size:15px;color:#475569;line-height:1.75;margin-bottom:28px}
+  .trial-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:18px 22px;margin-bottom:28px;display:flex;align-items:center;gap:16px}
+  .trial-num{font-size:36px;font-weight:800;color:#3b6fd4;line-height:1;flex-shrink:0}
+  .trial-text{font-size:13px;color:#1e40af;line-height:1.6}
+  .trial-text strong{font-weight:700}
+  .section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#94a3b8;margin-bottom:14px}
+  .features{display:block;margin-bottom:28px}
+  .feat{padding:14px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:flex-start;gap:14px}
+  .feat:last-child{border-bottom:none}
+  .feat-dot{width:8px;height:8px;border-radius:50%;background:#3b6fd4;flex-shrink:0;margin-top:6px}
+  .feat-body{}
+  .feat-title{font-size:14px;font-weight:700;color:#0f172a;margin-bottom:3px}
+  .feat-desc{font-size:13px;color:#64748b;line-height:1.6}
+  .steps{background:#f8fafc;border-radius:10px;padding:20px 22px;margin-bottom:28px}
+  .step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+  .step:last-child{margin-bottom:0}
+  .step-num{width:24px;height:24px;border-radius:50%;background:#0f172a;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .step-body{font-size:13px;color:#334155;line-height:1.6}
+  .step-body strong{color:#0f172a;font-weight:700}
+  .cta-wrap{text-align:center;margin-bottom:28px}
+  .cta{display:inline-block;background:#3b6fd4;color:white;padding:15px 36px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .divider{height:1px;background:#f1f5f9;margin:28px 0}
+  .tips{font-size:13px;color:#475569;line-height:1.75;margin-bottom:28px}
+  .tips strong{color:#0f172a;font-weight:700}
+  .footer{background:#f8fafc;padding:24px 40px;text-align:center;border-top:1px solid #e2e8f0}
+  .footer-logo{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:6px}
+  .footer-logo span{color:#f97316}
+  .footer-text{font-size:12px;color:#94a3b8;line-height:1.7}
+  .footer-link{color:#3b6fd4;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+ 
+  <!-- Header -->
+  <div class="hdr">
+    <div class="logo">Bail<span class="logo-accent">Scan</span><span class="logo-badge">PRO</span></div>
+    <div class="hdr-sub">La plateforme IA pour agences immobilières</div>
+  </div>
+ 
+  <!-- Body -->
   <div class="body">
-    <h2>Bienvenue ${prenom} !</h2>
-    <p>Votre essai gratuit de <strong>3 jours</strong> est actif jusqu'au <strong>${trialEnd}</strong>. Aucune carte bancaire requise.</p>
-    <div class="feature"><div class="fi">◎</div><div class="ft"><strong>Analyse de baux IA</strong> — Score de conformité, clauses illégales, corrections clause par clause</div></div>
-    <div class="feature"><div class="fi">□</div><div class="ft"><strong>Gestion des biens & mandats</strong> — Portefeuille centralisé, fiches complètes</div></div>
-    <div class="feature"><div class="fi">◇</div><div class="ft"><strong>Dossiers locataires</strong> — Scoring IA, analyse de solvabilité automatique</div></div>
-    <div class="feature"><div class="fi">▭</div><div class="ft"><strong>Génération de baux & quittances</strong> — Conformes loi 1989 / ALUR / ELAN</div></div>
-    <p style="margin-top:20px">Pour démarrer, configurez d'abord les informations de votre agence dans <strong>Paramètres</strong>.</p>
-    <a href="${APP_URL}" class="btn">Accéder à mon dashboard →</a>
-    <p style="margin-top:20px;font-size:13px;color:#94a3b8">Questions ? Répondez directement à cet email.</p>
-  </div>` + footerHtml;
+ 
+    <div class="greeting">Bienvenue ${prenom ? ', ' + prenom : ''} !</div>
+    <p class="intro">Votre compte BailScan Pro est activé. Vous avez accès à l'intégralité de la plateforme pendant <strong>3 jours</strong>, sans carte bancaire et sans engagement.</p>
+ 
+    <!-- Trial box -->
+    <div class="trial-box">
+      <div class="trial-num">3j</div>
+      <div class="trial-text">
+        <strong>Essai gratuit jusqu'au ${trialEnd}</strong><br>
+        Accès complet à toutes les fonctionnalités Pro. Aucune carte requise.
+      </div>
+    </div>
+ 
+    <!-- Fonctionnalités -->
+    <div class="section-title">Ce que vous pouvez faire dès maintenant</div>
+    <div class="features">
+      <div class="feat"><div class="feat-dot"></div><div class="feat-body"><div class="feat-title">Analyse de bail par l'IA</div><div class="feat-desc">Uploadez un bail PDF — l'IA détecte les clauses illégales, calcule le score de conformité ALUR/ELAN et génère les corrections clause par clause en moins de 30 secondes.</div></div></div>
+      <div class="feat"><div class="feat-dot"></div><div class="feat-body"><div class="feat-title">Gestion des biens et mandats</div><div class="feat-desc">Centralisez votre portefeuille : mandats de gestion, fiches biens, DPE, loyers, charges, diagnostics. Tout est consultable et exportable en PDF.</div></div></div>
+      <div class="feat"><div class="feat-dot"></div><div class="feat-body"><div class="feat-title">Dossiers locataires et scoring IA</div><div class="feat-desc">Créez des fiches locataires complètes. L'IA calcule automatiquement le taux d'effort, le score Go/No-Go et détecte les documents suspects.</div></div></div>
+      <div class="feat"><div class="feat-dot"></div><div class="feat-body"><div class="feat-title">Génération de baux et quittances</div><div class="feat-desc">Rédigez des baux conformes loi 1989 / ALUR en quelques clics. Générez et envoyez les quittances mensuelles automatiquement à vos locataires.</div></div></div>
+      <div class="feat"><div class="feat-dot"></div><div class="feat-body"><div class="feat-title">États des lieux, courriers et suivi des loyers</div><div class="feat-desc">EDL illustrés avec photos, courriers juridiques pré-rédigés (mises en demeure, congés), suivi des impayés et alertes d'échéances automatiques.</div></div></div>
+    </div>
+ 
+    <!-- Pour bien démarrer -->
+    <div class="steps">
+      <div class="section-title" style="margin-bottom:16px">Pour bien démarrer en 3 étapes</div>
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Configurez votre agence</strong> — Renseignez votre logo, adresse, carte professionnelle et garantie financière dans Paramètres. Ces informations s'intègreront automatiquement à tous vos PDF.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Créez votre premier bien</strong> — Ajoutez un mandat, renseignez le loyer, le DPE et le bailleur. Rattachez-y un locataire pour activer le suivi complet.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Analysez un bail existant</strong> — Uploadez un bail PDF dans Nouvelle analyse. Vous recevrez le rapport de conformité en moins de 30 secondes.</div></div>
+    </div>
+ 
+    <!-- CTA -->
+    <div class="cta-wrap">
+      <a href="${APP_URL}" class="cta">Accéder à mon dashboard</a>
+    </div>
+ 
+    <div class="divider"></div>
+ 
+    <!-- Tips -->
+    <p class="tips">
+      <strong>Un conseil :</strong> commencez par renseigner les informations de votre agence dans <strong>Paramètres</strong> — votre logo, adresse et n° de carte professionnelle apparaîtront sur tous vos documents générés (baux, mandats, quittances, courriers).<br><br>
+    </p>
+ 
+  </div>
+ 
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-logo">Bail<span>Scan</span> Pro</div>
+    <p class="footer-text">
+      Solution IA pour agences immobilières françaises<br>
+      <a href="${APP_URL}" class="footer-link">bailscan.app</a> &nbsp;·&nbsp;
+      <a href="mailto:bonjour@bailscan.app" class="footer-link">bonjour@bailscan.app</a>
+    </p>
+  </div>
+ 
+</div>
+</body></html>`;
 }
  
 function reminderJ1Html({ prenom, trialEnd }) {
-  return headerHtml("Il vous reste 2 jours d'essai") + `
-  <div class="body">
-    <h2>Avez-vous testé l'analyse de bail, ${prenom} ?</h2>
-    <p>Il vous reste <strong>2 jours</strong> d'essai (jusqu'au <strong>${trialEnd}</strong>).</p>
-    <p>En moins de 30 secondes, l'IA détecte les clauses illégales, calcule le score de conformité et propose les corrections.</p>
-    <a href="${APP_URL}" class="btn">Analyser mon premier bail →</a>
-  </div>` + footerHtml;
+  return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<style>body{font-family:Arial,sans-serif;background:#f1f5f9;color:#0f172a}.wrap{max-width:600px;margin:32px auto;background:white;border-radius:12px;overflow:hidden}.hdr{background:#0f172a;padding:24px 40px}.logo{font-size:20px;font-weight:700;color:white}.logo span{color:#f97316}.body{padding:36px}.title{font-size:20px;font-weight:700;margin-bottom:12px}.text{font-size:14px;color:#475569;line-height:1.75;margin-bottom:20px}.cta{display:inline-block;background:#3b6fd4;color:white;padding:13px 30px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px}.footer{padding:20px 40px;text-align:center;font-size:12px;color:#94a3b8;border-top:1px solid #f1f5f9}</style>
+</head><body><div class="wrap">
+<div class="hdr"><div class="logo">Bail<span>Scan</span> Pro</div></div>
+<div class="body">
+  <div class="title">Avez-vous testé l'analyse de bail${prenom ? ', ' + prenom : ''} ?</div>
+  <p class="text">Il vous reste <strong>2 jours</strong> d'essai (jusqu'au <strong>${trialEnd}</strong>).<br><br>
+  L'analyse de bail IA est la fonctionnalité phare de BailScan Pro. Uploadez un bail PDF — en moins de 30 secondes, l'IA détecte les clauses illégales, calcule le score de conformité et propose les corrections rédigées.<br><br>
+  Pour tester : <strong>Tableau de bord &rarr; Nouvelle analyse &rarr; Uploader un bail PDF</strong>.</p>
+  <a href="${APP_URL}" class="cta">Analyser mon premier bail</a>
+</div>
+<div class="footer">BailScan Pro &nbsp;·&nbsp; <a href="${APP_URL}" style="color:#3b6fd4;text-decoration:none">bailscan.app</a></div>
+</div></body></html>`;
 }
  
 function reminderJ2Html({ prenom, trialEnd }) {
-  return headerHtml("Plus qu'un jour d'essai") + `
-  <div class="body">
-    <h2>Plus qu'un jour d'essai, ${prenom}</h2>
-    <p>Votre essai expire <strong>demain</strong> (${trialEnd}).</p>
-    <a href="${APP_URL}" class="btn">Créer mon premier bien →</a>
-  </div>` + footerHtml;
+  return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<style>body{font-family:Arial,sans-serif;background:#f1f5f9;color:#0f172a}.wrap{max-width:600px;margin:32px auto;background:white;border-radius:12px;overflow:hidden}.hdr{background:#0f172a;padding:24px 40px}.logo{font-size:20px;font-weight:700;color:white}.logo span{color:#f97316}.body{padding:36px}.title{font-size:20px;font-weight:700;margin-bottom:12px}.text{font-size:14px;color:#475569;line-height:1.75;margin-bottom:20px}.cta{display:inline-block;background:#3b6fd4;color:white;padding:13px 30px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px}.footer{padding:20px 40px;text-align:center;font-size:12px;color:#94a3b8;border-top:1px solid #f1f5f9}</style>
+</head><body><div class="wrap">
+<div class="hdr"><div class="logo">Bail<span>Scan</span> Pro</div></div>
+<div class="body">
+  <div class="title">Plus qu'un jour d'essai${prenom ? ', ' + prenom : ''}</div>
+  <p class="text">Votre essai gratuit expire <strong>demain</strong> (${trialEnd}).<br><br>
+  Vous n'avez pas encore créé de bien en gestion ? C'est le coeur de BailScan Pro — centralisez tous vos mandats, locataires, loyers et documents en un seul endroit.<br><br>
+  Pour continuer à utiliser la plateforme après l'essai, choisissez votre formule depuis le tableau de bord.</p>
+  <a href="${APP_URL}" class="cta">Créer mon premier bien</a>
+</div>
+<div class="footer">BailScan Pro &nbsp;·&nbsp; <a href="${APP_URL}" style="color:#3b6fd4;text-decoration:none">bailscan.app</a></div>
+</div></body></html>`;
 }
  
 function reminderJ3Html({ prenom }) {
-  return headerHtml("Votre essai expire aujourd'hui") + `
-  <div class="body">
-    <h2>Votre essai expire aujourd'hui, ${prenom}</h2>
-    <p>Pour continuer sans perdre vos données, choisissez votre formule.</p>
-    <a href="${APP_URL}#tarifs" class="btn">S'abonner maintenant →</a>
-  </div>` + footerHtml;
+  return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<style>body{font-family:Arial,sans-serif;background:#f1f5f9;color:#0f172a}.wrap{max-width:600px;margin:32px auto;background:white;border-radius:12px;overflow:hidden}.hdr{background:#0f172a;padding:24px 40px}.logo{font-size:20px;font-weight:700;color:white}.logo span{color:#f97316}.body{padding:36px}.title{font-size:20px;font-weight:700;margin-bottom:12px}.text{font-size:14px;color:#475569;line-height:1.75;margin-bottom:20px}.price-box{background:#0f172a;border-radius:10px;padding:24px;text-align:center;margin:20px 0}.price-num{font-size:36px;font-weight:800;color:white}.price-sub{font-size:13px;color:rgba(255,255,255,.5);margin:6px 0 16px}.cta{display:inline-block;background:#3b6fd4;color:white;padding:13px 30px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px}.footer{padding:20px 40px;text-align:center;font-size:12px;color:#94a3b8;border-top:1px solid #f1f5f9}</style>
+</head><body><div class="wrap">
+<div class="hdr"><div class="logo">Bail<span>Scan</span> Pro</div></div>
+<div class="body">
+  <div class="title">Votre essai expire aujourd'hui${prenom ? ', ' + prenom : ''}</div>
+  <p class="text">Pour continuer à utiliser BailScan Pro et ne pas perdre vos données, choisissez votre formule dès maintenant.</p>
+  <div class="price-box">
+    <div class="price-num">150<span style="font-size:18px;font-weight:400"> € / mois</span></div>
+    <div class="price-sub">Accès complet · Analyses illimitées · Sans engagement</div>
+    <a href="${APP_URL}#tarifs" class="cta">S'abonner maintenant</a>
+  </div>
+  <p class="text" style="font-size:13px;color:#94a3b8;text-align:center">Engagement 6 ou 12 mois disponibles pour des tarifs réduits.</p>
+</div>
+<div class="footer">BailScan Pro &nbsp;·&nbsp; <a href="${APP_URL}" style="color:#3b6fd4;text-decoration:none">bailscan.app</a></div>
+</div></body></html>`;
 }
  
 module.exports = async function handler(req, res) {
@@ -111,12 +207,11 @@ module.exports = async function handler(req, res) {
       case 'welcome': {
         const result = await sendEmail({
           to: email,
-          subject: 'Bienvenue sur BailScan Pro — votre essai gratuit est activé',
+          subject: 'Bienvenue sur BailScan Pro — votre accès est activé',
           html: welcomeHtml({ prenom: prenomFmt, trialEnd }),
         });
         console.log('[send-welcome] welcome sent OK:', result.id);
  
-        // Essayer de programmer les relances en Supabase (optionnel — ne bloque pas si la table n'existe pas)
         try {
           const { createClient } = require('@supabase/supabase-js');
           const sb = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
