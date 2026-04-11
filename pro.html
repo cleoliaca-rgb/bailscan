@@ -869,9 +869,10 @@ body.is-dashboard #marketingPage { display: none !important; }
   /* ── HERO LANDING ── */
   .hero { padding: 80px 20px 48px !important; }
   .hero-inner { grid-template-columns: 1fr !important; gap: 28px !important; }
-  .hero h1 { font-size: 1.9rem !important; line-height: 1.2 !important; }
+  .hero h1 { font-size: 1.75rem !important; line-height: 1.2 !important; }
   .hero-sub { font-size: .85rem !important; }
   .hero-right { display: none !important; }
+  .section-title { font-size: 1.75rem !important; }
   .hero-stats { flex-wrap: wrap; gap: 14px !important; }
   .hero-ctas { flex-direction: column; gap: 10px !important; }
   .hero-ctas button, .hero-ctas a { width: 100% !important; text-align: center !important; }
@@ -1091,43 +1092,6 @@ body.is-dashboard #marketingPage { display: none !important; }
 
 /* ─── RESPONSIVE LANDING : sections manquantes ─── */
 @media (max-width: 768px) {
-  /* Header */
-  header { min-height: 50px !important; }
-
-  /* Hero */
-  .hero { padding: 72px 20px 44px !important; }
-  .hero-inner { grid-template-columns: 1fr !important; gap: 24px !important; }
-  .hero h1 { font-size: 1.85rem !important; line-height: 1.15 !important; }
-  .hero-sub { font-size: .88rem !important; max-width: 100% !important; }
-  .hero-ctas { flex-direction: column; gap: 10px !important; }
-  .hero-ctas .btn-primary-pro,
-  .hero-ctas .btn-secondary-pro { width: 100% !important; text-align: center !important; justify-content: center !important; }
-  .hero-right, .dash-preview { display: none !important; }
-  .hero-stats { flex-wrap: wrap; gap: 16px !important; }
-
-  /* Features */
-  .features { padding: 48px 20px !important; }
-  .features-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-  .section-title { font-size: 1.8rem !important; }
-  .section-sub { max-width: 100% !important; }
-
-  /* How it works */
-  .how { padding: 48px 20px !important; }
-  .steps { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
-  .steps::before { display: none !important; }
-
-  /* Pricing */
-  .pricing { padding: 48px 20px !important; }
-  .pricing-grid { grid-template-columns: 1fr !important; gap: 16px !important; max-width: 420px; margin: 0 auto !important; }
-  .pricing-toggle-wrap { margin: 20px 0 8px !important; }
-  .pricing-engage-wrap { flex-direction: column; align-items: stretch !important; }
-  .engage-btn { text-align: center !important; }
-
-  /* Particuliers section */
-  .particulier-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
-
-  /* Footer */
-  .footer-top-pro { grid-template-columns: 1fr 1fr !important; gap: 20px !important; }
   .footer-inner-pro { padding: 32px 20px 20px !important; }
 }
 
@@ -6042,11 +6006,34 @@ window.addEventListener('DOMContentLoaded', function() {
       console.log('[BailScan] Auth event:', event, session && session.user && session.user.email);
       if (event === 'SIGNED_IN' && session && session.user) {
         if (!proState.isLoggedIn) {
-          proState.user = buildUser(session.user);
+          var u = session.user;
+          proState.user = buildUser(u);
           proState.isLoggedIn = true;
           closeModal('login');
           closeModal('signup');
           showDashboard();
+
+          // Envoyer le welcome email si première connexion OAuth (Google)
+          // On détecte le premier login via created_at ≈ now (< 60 secondes)
+          try {
+            var createdAt = new Date(u.created_at).getTime();
+            var isNewUser = (Date.now() - createdAt) < 60000;
+            var welcomeSentKey = 'bailscan_welcome_sent_' + u.id;
+            var alreadySent = localStorage.getItem(welcomeSentKey);
+            if (isNewUser && !alreadySent) {
+              localStorage.setItem(welcomeSentKey, '1');
+              var meta = u.user_metadata || {};
+              var prenom = meta.prenom || meta.full_name || meta.name || '';
+              var nom = meta.nom || '';
+              var agence = meta.agence || '';
+              fetch('/api/send-welcome', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ action:'welcome', email:u.email, prenom:prenom, nom:nom, agence:agence })
+              }).then(function(r){ console.log('[oauth] welcome sent:', r.status); })
+                .catch(function(e){ console.warn('[oauth] welcome failed:', e.message); });
+            }
+          } catch(e) { console.warn('[oauth] welcome check failed:', e.message); }
         }
       }
       if (event === 'SIGNED_OUT') {
@@ -6107,12 +6094,16 @@ async function handleSignup() {
     document.getElementById('signupForm').style.display='none';
     document.getElementById('signupSuccess').style.display='block';
     // Envoyer le welcome email dans tous les cas (user confirmé ou en attente)
+    console.log('[signup] sending welcome to', email);
     fetch('/api/send-welcome', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ action:'welcome', email:email, prenom:prenom, nom:nom, agence:agence||'' })
-    }).then(function(r){ console.log('[signup] welcome sent:', r.status); })
-      .catch(function(e){ console.warn('[signup] welcome email failed:', e.message); });
+    }).then(function(r){
+      console.log('[signup] welcome HTTP status:', r.status);
+      return r.json();
+    }).then(function(d){ console.log('[signup] welcome response:', JSON.stringify(d)); })
+      .catch(function(e){ console.error('[signup] welcome fetch error:', e.message); });
 
     if (data && data.user) {
       proState.user = { id:data.user.id, email:email, prenom:prenom, nom:nom, agence:agence||'Mon agence', trialEnd:(localStorage.getItem('bailscan_trial_end')||(localStorage.setItem('bailscan_trial_end',new Date(Date.now()+3*864e5).toISOString()),localStorage.getItem('bailscan_trial_end'))) };
@@ -12046,7 +12037,7 @@ function toggleAgentIA() {
     }
     if (dot) dot.style.display = 'none';
     var setupDiv = document.getElementById('agentSetupKey');
-    var hasKey = !!localStorage.getItem('bailscan_anthropic_key');
+    var hasKey = true; // Clé gérée côté serveur via /api/ai
     if (setupDiv) setupDiv.style.display = hasKey ? 'none' : 'block';
     setTimeout(function() { initAgentChat(); }, 50);
     setTimeout(function() {
@@ -14716,7 +14707,7 @@ function genererNouvelleAlerteIA() {
     try {
       var resp = await fetch('/api/ai', {
         method: 'POST',
-        headers: (function(){var k=localStorage.getItem('bailscan_anthropic_key')||'';var h={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};if(k)h['x-api-key']=k;return h;})(),
+        headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, messages: [{ role: 'user', content: prompt }] })
       });
       var data = await resp.json();
@@ -14914,7 +14905,7 @@ function lancerAnalyseDossier() {
     try {
       var resp = await fetch('/api/ai', {
         method: 'POST',
-        headers: (function(){var k=localStorage.getItem('bailscan_anthropic_key')||'';var h={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};if(k)h['x-api-key']=k;return h;})(),
+        headers: {'Content-Type':'application/json'},
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 1800,
