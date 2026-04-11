@@ -6005,35 +6005,34 @@ window.addEventListener('DOMContentLoaded', function() {
     sb.auth.onAuthStateChange(function(event, session) {
       console.log('[BailScan] Auth event:', event, session && session.user && session.user.email);
       if (event === 'SIGNED_IN' && session && session.user) {
+        var u = session.user;
+        // Welcome email — envoyé une seule fois par user (flag localStorage)
+        try {
+          var welcomeKey = 'bs_welcome_' + u.id;
+          if (!localStorage.getItem(welcomeKey)) {
+            localStorage.setItem(welcomeKey, '1');
+            var meta = u.user_metadata || {};
+            var prenom = meta.prenom || meta.full_name || meta.name || u.email.split('@')[0] || '';
+            var agence = meta.agence || '';
+            console.log('[welcome] envoi pour', u.email);
+            fetch('/api/send-welcome', {
+              method: 'POST',
+              headers: {'Content-Type':'application/json'},
+              body: JSON.stringify({ action:'welcome', email:u.email, prenom:prenom, nom:'', agence:agence })
+            }).then(function(r){ console.log('[welcome] status:', r.status); return r.json(); })
+              .then(function(d){ console.log('[welcome] réponse:', JSON.stringify(d)); })
+              .catch(function(e){ console.error('[welcome] erreur:', e.message); });
+          } else {
+            console.log('[welcome] déjà envoyé pour', u.email);
+          }
+        } catch(e) { console.warn('[welcome] exception:', e.message); }
+
         if (!proState.isLoggedIn) {
-          var u = session.user;
           proState.user = buildUser(u);
           proState.isLoggedIn = true;
           closeModal('login');
           closeModal('signup');
           showDashboard();
-
-          // Envoyer le welcome email si première connexion OAuth (Google)
-          // On détecte le premier login via created_at ≈ now (< 60 secondes)
-          try {
-            var createdAt = new Date(u.created_at).getTime();
-            var isNewUser = (Date.now() - createdAt) < 60000;
-            var welcomeSentKey = 'bailscan_welcome_sent_' + u.id;
-            var alreadySent = localStorage.getItem(welcomeSentKey);
-            if (isNewUser && !alreadySent) {
-              localStorage.setItem(welcomeSentKey, '1');
-              var meta = u.user_metadata || {};
-              var prenom = meta.prenom || meta.full_name || meta.name || '';
-              var nom = meta.nom || '';
-              var agence = meta.agence || '';
-              fetch('/api/send-welcome', {
-                method: 'POST',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({ action:'welcome', email:u.email, prenom:prenom, nom:nom, agence:agence })
-              }).then(function(r){ console.log('[oauth] welcome sent:', r.status); })
-                .catch(function(e){ console.warn('[oauth] welcome failed:', e.message); });
-            }
-          } catch(e) { console.warn('[oauth] welcome check failed:', e.message); }
         }
       }
       if (event === 'SIGNED_OUT') {
