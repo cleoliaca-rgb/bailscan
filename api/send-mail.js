@@ -39,7 +39,7 @@ module.exports = async function handler(req, res) {
       ${adresse ? `<p style="margin:0 0 4px;font-size:.85rem;color:#333"><b>Bien loué :</b> ${adresse}</p>` : ''}
       <p style="margin:0;font-size:.85rem;color:#333"><b>Généré le :</b> ${dateStr}</p>
     </td></tr></table>
-    <p style="margin:0;font-size:.82rem;color:#888">${type === 'rapport' ? 'Ce rapport est fourni à titre informatif. Pour les litiges complexes, consultez un juriste ou l'ADIL de votre département.' : 'Le bail est joint en PDF. Chaque partie signe avec la mention <em>&quot;Lu et approuvé&quot;</em>.'}</p>
+    <p style="margin:0;font-size:.82rem;color:#888">${type === 'rapport' ? 'Ce rapport est fourni à titre informatif. Pour les litiges complexes, consultez un juriste ou l&#39;ADIL de votre d&eacute;partement.' : 'Le bail est joint en PDF. Chaque partie signe avec la mention <em>&quot;Lu et approuv&eacute;&quot;</em>.'}</p>
   </td></tr>
   <tr><td style="text-align:center;padding-top:12px">
     <p style="font-size:.7rem;color:#aaa;margin:0">BailScan · bailscan.app · Loi 89-462 · ALUR · ELAN 2018</p>
@@ -55,7 +55,7 @@ module.exports = async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: from: 'BailScan Pro <bonjour@bailscan.app>'
+        from: 'BailScan Pro <bonjour@bailscan.app>',
         to: [to],
         subject: type === 'rapport' ? `Votre rapport BailScan — ${dateStr}` : `Votre bail de location BailScan — ${dateStr}`,
         html: html,
@@ -81,4 +81,5 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: err.message || 'Erreur serveur interne' });
   }
 };
+ 
  
