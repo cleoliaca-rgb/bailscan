@@ -53,7 +53,7 @@
       "path": "/api/cron-trial-reminders",
       "schedule": "0 9 * * *"
     }
-  ]
+  ],
   "cleanUrls": true,
   "trailingSlash": false
 }
