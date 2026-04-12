@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/0.5/sitemap">
+
+  <!-- Pages principales -->
+  <url><loc>https://bailscan.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://bailscan.app/proprio</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/pro</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://bailscan.app/legal</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+
+  <!-- Articles de blog -->
+  <url><loc>https://bailscan.app/analyse-bail-locatif-gratuit</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/bail-locatif-droits-locataire</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/charges-locatives</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/clauses-abusives-bail-location</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/clauses-abusives-bail</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/comment-recuperer-depot-garantie</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/conge-proprietaire</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/depot-garantie-2-mois-illegal</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/depot-garantie-non-rendu-recours</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/depot-garantie</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/encadrement-loyers</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/etat-des-lieux</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/garant-caution-bail</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/interdiction-animaux-bail</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/lettre-contestation-clause-abusive-bail</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/lettre-mise-en-demeure-proprietaire</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bailscan.app/logement-indecent</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/loyer-impaye-procedure</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/preavis-locataire</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/renouvellement-bail</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/revision-loyer-irl</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/sous-location-bail</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/travaux-logement</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bailscan.app/zone-tendue-liste-communes</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+</urlset>
