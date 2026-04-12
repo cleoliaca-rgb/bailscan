@@ -1252,7 +1252,7 @@ body.is-dashboard #marketingPage { display: none !important; }
   .dash-card table { font-size: .78rem !important; }
 
   /* Float AI button */
-  #aiAgentBtn { bottom: 76px !important; right: 14px !important; }
+  #aiAgentBtn { bottom: 80px !important; right: 14px !important; }
 
   /* Onboarding widget */
   #obBanner { right: 10px !important; left: 10px !important; width: auto !important; bottom: 130px !important; }
@@ -2013,7 +2013,7 @@ body.is-dashboard #importSection { display: none !important; }
 
 <div id="dashboardSection">
   <!-- Topbar mobile -->
-  <div class="dash-topbar-mobile" id="dashTopbarMobile" style="display:none">
+  <div class="dash-topbar-mobile" id="dashTopbarMobile">
     <button class="dash-hamburger" onclick="toggleDashSidebar()">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="1.8">
         <line x1="3" y1="6" x2="17" y2="6"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="14" x2="17" y2="14"/>
@@ -2040,9 +2040,9 @@ body.is-dashboard #importSection { display: none !important; }
       <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v8M6 6h3a1 1 0 010 2H7a1 1 0 000 2h3"/></svg>
       Loyers
     </button>
-    <button class="mob-nav-item" onclick="toggleDashSidebar()">
-      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="6" x2="17" y2="6"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="14" x2="17" y2="14"/></svg>
-      Menu
+    <button class="mob-nav-item" onclick="showDashTab('analyses')">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12L6 8l3 3 5-6"/></svg>
+      Analyse
     </button>
   </div>
 
@@ -2919,6 +2919,10 @@ body.is-dashboard #importSection { display: none !important; }
               <div class="form-group-pro">
                 <label class="form-label">Date d'entrée dans les lieux</label>
                 <input type="date" class="form-input-pro" id="genDateEntree">
+              </div>
+              <div class="form-group-pro">
+                <label class="form-label">Date de fin de bail <span style="font-weight:400;color:var(--gris);font-size:.78rem">optionnel — calculée auto sinon</span></label>
+                <input type="date" class="form-input-pro" id="genDateFin">
               </div>
             </div>
             <div class="form-grid-pro" style="margin-bottom:12px">
@@ -9819,6 +9823,7 @@ function preFillGenererFromMandat(mandatId) {
       sf('genLocataireNom', loc.nom||'');
       sf('genLocataireEmail', loc.email||'');
       if (loc.dateEntree) sf('genDateEntree', loc.dateEntree);
+      if (loc.dateFin) sf('genDateFin', loc.dateFin);
       if (loc.garant && loc.garant !== 'non') {
         if (typeof setGenGarant === 'function') setGenGarant(loc.garant);
         sf('genGarantPrenom', loc.garantPrenom||'');
@@ -14634,6 +14639,19 @@ function genererBailConforme() {
     charges: val('genCharges') || '0',
     depot: val('genDepot') || loyer,
     dateEntree: val('genDateEntree') || '[Date]',
+    dateFin: (function(){
+      var fin = val('genDateFin');
+      if (fin) return fin;
+      var debut = val('genDateEntree');
+      var dureeVal = val('genDuree') || '3 ans';
+      if (!debut) return '';
+      var d = new Date(debut);
+      var years = dureeVal.match(/(\d+)\s*an/i);
+      var months = dureeVal.match(/(\d+)\s*mois/i);
+      if (years) d.setFullYear(d.getFullYear() + parseInt(years[1]));
+      else if (months) d.setMonth(d.getMonth() + parseInt(months[1]));
+      return d.toISOString().split('T')[0];
+    })(),
     duree: val('genDuree') || '3 ans',
     revision: val('genRevision') || 'IRL',
     complement: val('genComplement'),
@@ -15444,7 +15462,18 @@ function validerDossier(goDecision) {
     if (loc) {
       loc.dossierVerdict = decision;
       loc.dossierMandatId = mandatId;
-      // Clients persistés via Supabase
+      // Remontée des infos de l'analyse dans la fiche locataire
+      var r = result || {};
+      if (r.revenus)       loc.revenus      = r.revenus;
+      if (r.contrat)       loc.contrat      = r.contrat;
+      if (r.dateFin)       loc.dateFin      = r.dateFin;
+      if (r.garantNom)     loc.garantNom    = r.garantNom;
+      if (r.garantPrenom)  loc.garantPrenom = r.garantPrenom;
+      if (r.garantRevenus) loc.garantRevenus= r.garantRevenus;
+      if (r.garantContrat) loc.garantContrat= r.garantContrat;
+      if (r.garantAdresse) loc.garantAdresse= r.garantAdresse;
+      if (mandatId)        loc.mandatId     = mandatId;
+      saveLocataires(locs);
     }
   }
 
@@ -15709,7 +15738,7 @@ function buildBailComplet(g) {
 
   var typeBailleur = g.bailleurType === 'sci' ? 'une SCI' : g.bailleurType === 'indivision' ? 'une indivision' : 'une personne physique';
   var duree = g.duree || '3';
-  var dureeType = (g.gen_type === 'meuble') ? '1 an (logement meuble)' : duree + ' ans';
+  var dureeType = (g.gen_type === 'meuble') ? '1 an (logement meuble)' : (/\d+\s*ans?/i.test(duree) ? duree : duree + ' ans');
 
   // Complément de loyer
   var complementClause = '';
@@ -15774,7 +15803,7 @@ function buildBailComplet(g) {
     '',
     (g.garantNom ? [
       'GARANT :',
-      'Nom : ' + g.garantNom,
+      'Nom : ' + (g.garantPrenom ? g.garantPrenom + ' ' : '') + g.garantNom,
       (g.garantAdresse ? 'Adresse : ' + g.garantAdresse : ''),
       'Type de cautionnement : ' + (g.cautionnement==='solidaire'?'Cautionnement solidaire (acte sous seing prive)':g.cautionnement==='simple'?'Cautionnement simple':g.cautionnement==='acte_notarie'?'Acte notarié':'Cautionnement solidaire'),
       'Duree : ' + (g.cautionDuree==='indeterminee'?'Duree indeterminee (resiliable avec preavis)':'Duree du bail uniquement'),
@@ -15812,7 +15841,7 @@ function buildBailComplet(g) {
     '',
     'Duree : ' + dureeType,
     'Date de prise d\'effet : ' + (g.dateEntree||today),
-    'Date d\'echeance : A compter de la date d\'effet, le bail se renouvelle par tacite reconduction.',
+    (g.dateFin ? 'Date d\'echeance : ' + g.dateFin + ' (tacite reconduction ensuite)' : 'Date d\'echeance : A compter de la date d\'effet, le bail se renouvelle par tacite reconduction.'),
     '',
     'Preavis :',
     '- Conge du locataire : 3 mois (1 mois en zone tendue, mutation, perte emploi, sante)',
