@@ -55,7 +55,7 @@ module.exports = async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'BailScan <noreply@bailscan.app>',
+        from: from: 'BailScan Pro <bonjour@bailscan.app>'
         to: [to],
         subject: type === 'rapport' ? `Votre rapport BailScan — ${dateStr}` : `Votre bail de location BailScan — ${dateStr}`,
         html: html,
