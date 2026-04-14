@@ -2700,8 +2700,8 @@ function closeModal() { document.getElementById('modalOverlay').classList.remove
 function payWithStripe() {
   var btn = document.getElementById('btnPayConfirm');
   btn.textContent = 'Redirection…'; btn.disabled = true;
-  if (analysisResult) sessionStorage.setItem('bailscan_analysis', JSON.stringify(analysisResult));
-  sessionStorage.setItem('bailscan_context', JSON.stringify({
+  if (analysisResult) localStorage.setItem('bailscan_analysis', JSON.stringify(analysisResult));
+  localStorage.setItem('bailscan_context', JSON.stringify({
     ville: appState.ville, surface: appState.surface,
     loyerBase: appState.loyerBase, bienType: appState.bienType,
     loyerMajore: appState.loyerMajore,
@@ -2719,19 +2719,20 @@ function payWithStripe() {
 }
  
 function checkPaymentReturn() {
-  var hash = window.location.hash;
-  var isPaidReturn = hash === '#paid=true';
-  var isCancelReturn = hash === '#paid=false';
-  if (isPaidReturn) {
+  window._cpChecked = true;
+  var params = new URLSearchParams(window.location.search);
+  var paidOk = params.get('paid') === 'true';
+  var sessionId = params.get('session_id');
+  if (paidOk && sessionId) {
     window.history.replaceState({}, '', '/');
-    var saved = sessionStorage.getItem('bailscan_analysis');
-    var savedCtx = sessionStorage.getItem('bailscan_context');
+    var saved = localStorage.getItem('bailscan_analysis');
+    var savedCtx = localStorage.getItem('bailscan_context');
     if (savedCtx) { try { var ctx = JSON.parse(savedCtx); Object.assign(appState, ctx); } catch(e){} }
     if (saved) {
       try {
         analysisResult = JSON.parse(saved);
-        sessionStorage.removeItem('bailscan_analysis');
-        sessionStorage.removeItem('bailscan_context');
+        localStorage.removeItem('bailscan_analysis');
+        localStorage.removeItem('bailscan_context');
         isPaid = true;
         displayResults(analysisResult);
         setTimeout(function() {
@@ -2743,11 +2744,12 @@ function checkPaymentReturn() {
     } else {
       alert('Paiement confirmé ! Relancez une analyse pour accéder au rapport complet.');
     }
-  } else if (isCancelReturn) {
+  } else if (params.get('paid') === 'false') {
     window.history.replaceState({}, '', '/');
   }
 }
-window.addEventListener('load', checkPaymentReturn);
+checkPaymentReturn();
+window.addEventListener('load', function(){ if(!window._cpChecked){ checkPaymentReturn(); } });
  
 // ═══════════════════════════════════════
 // LETTRES
