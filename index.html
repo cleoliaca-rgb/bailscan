@@ -2719,10 +2719,6 @@ function payWithStripe() {
 }
  
 function checkPaymentReturn() {
-  // Vérifier si déjà payé (session précédente)
-  if (localStorage.getItem('bailscan_paid') === 'true') {
-    isPaid = true;
-  }
   var params = new URLSearchParams(window.location.search);
   if (params.get('paid') === 'true' && params.get('session_id')) {
     window.history.replaceState({}, '', '/');
@@ -2743,22 +2739,7 @@ function checkPaymentReturn() {
         }, 200);
       } catch(e) { console.error(e); }
     } else {
-      // localStorage vide (navigateur strict) — activer le mode payant persistant
-      localStorage.setItem('bailscan_paid', 'true');
-      localStorage.setItem('bailscan_paid_at', Date.now().toString());
-      isPaid = true;
-      var pw = document.getElementById('paywallSection');
-      if (pw) pw.style.display = 'none';
-      var ps = document.getElementById('paidSection');
-      if (ps) {
-        ps.style.display = 'block';
-        ps.innerHTML = '<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:16px;padding:32px;text-align:center;margin:20px 0">'
-          + '<div style="font-size:2rem;margin-bottom:12px">\u2713</div>'
-          + '<div style="font-weight:700;font-size:1.1rem;color:#166534;margin-bottom:8px">Paiement confirm\u00e9 !</div>'
-          + '<div style="font-size:.88rem;color:#166534;line-height:1.6">Acc\u00e8s activ\u00e9. Uploadez \u00e0 nouveau votre bail ci-dessus \u2014 le rapport complet s'affichera automatiquement.</div>'
-          + '</div>';
-      }
-      window.scrollTo({top: 0, behavior: 'smooth'});
+      alert('Paiement confirmé ! Relancez une analyse pour accéder au rapport complet.');
     }
   } else if (params.get('paid') === 'false') {
     window.history.replaceState({}, '', '/');
