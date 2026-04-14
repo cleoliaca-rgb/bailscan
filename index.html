@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script>
+(function(){
+  try {
+    var s = window.location.search;
+    if (s.indexOf('paid=true') > -1) {
+      var m = s.match(/session_id=([^&]+)/);
+      localStorage.setItem('_bs_paid', '1');
+      if (m) localStorage.setItem('_bs_sid', m[1]);
+    } else if (s.indexOf('paid=false') > -1) {
+      localStorage.removeItem('_bs_paid');
+      localStorage.removeItem('_bs_sid');
+    }
+  } catch(e) {}
+})();
+</script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -2719,11 +2734,11 @@ function payWithStripe() {
 }
  
 function checkPaymentReturn() {
-  window._cpChecked = true;
   var params = new URLSearchParams(window.location.search);
-  var paidOk = params.get('paid') === 'true';
-  var sessionId = params.get('session_id');
-  if (paidOk && sessionId) {
+  var _bsPaid = params.get('paid')==='true' || localStorage.getItem('_bs_paid')==='1';
+  var _bsSid = params.get('session_id') || localStorage.getItem('_bs_sid');
+  localStorage.removeItem('_bs_paid'); localStorage.removeItem('_bs_sid');
+  if (_bsPaid && _bsSid) {
     window.history.replaceState({}, '', '/');
     var saved = localStorage.getItem('bailscan_analysis');
     var savedCtx = localStorage.getItem('bailscan_context');
@@ -2748,8 +2763,7 @@ function checkPaymentReturn() {
     window.history.replaceState({}, '', '/');
   }
 }
-checkPaymentReturn();
-window.addEventListener('load', function(){ if(!window._cpChecked){ checkPaymentReturn(); } });
+window.addEventListener('load', checkPaymentReturn);
  
 // ═══════════════════════════════════════
 // LETTRES
