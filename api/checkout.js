@@ -38,8 +38,8 @@ module.exports = async (req, res) => {
         price: priceId,
         quantity: 1,
       }],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://bailscan.app'}/?paiement=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url:  `${process.env.NEXT_PUBLIC_APP_URL || 'https://bailscan.app'}/?paiement=cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://bailscan.app'}/?paid=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${process.env.NEXT_PUBLIC_APP_URL || 'https://bailscan.app'}/?paid=false`,
       allow_promotion_codes: true,
       payment_intent_data: {
         description: 'BailScan — Analyse complète de bail',
@@ -69,3 +69,4 @@ module.exports = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+ 
