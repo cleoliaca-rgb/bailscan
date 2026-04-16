@@ -1206,10 +1206,12 @@ function payWithStripe(){
  
 function checkPaymentReturn(){
   var params=new URLSearchParams(window.location.search);
-  if(params.get('paid')==='true'){
+  var isPaidReturn = params.get('paid')==='true' || params.get('paiement')==='success';
+  if(isPaidReturn){
     window.history.replaceState({},'','/proprio.html');
     var saved=sessionStorage.getItem('proprio_state');
     if(saved){S=Object.assign(S,JSON.parse(saved));S.isPaid=true;sessionStorage.removeItem('proprio_state');launchGeneration();}
+    else{S.isPaid=true;}
   }
 }
  
