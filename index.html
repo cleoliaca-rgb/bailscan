@@ -229,11 +229,71 @@ select.form-input { cursor:pointer; }
 }
 
 /* Sticky CTA mobile */
+/* Exit intent popup */
+.exit-popup-overlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.exit-popup-overlay.active { display:flex; }
+.exit-popup {
+  background:white;
+  border-radius:20px;
+  padding:32px 28px;
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  position:relative;
+  animation:fadeIn .2s ease;
+}
+.exit-popup-close {
+  position:absolute;
+  top:14px;right:16px;
+  background:none;border:none;
+  font-size:1.4rem;color:var(--gris);
+  cursor:pointer;line-height:1;
+}
+
 .sticky-cta-mobile {
   display:none;
 }
 @media(max-width:768px) {
-  .sticky-cta-mobile {
+  /* Exit intent popup */
+.exit-popup-overlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.exit-popup-overlay.active { display:flex; }
+.exit-popup {
+  background:white;
+  border-radius:20px;
+  padding:32px 28px;
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  position:relative;
+  animation:fadeIn .2s ease;
+}
+.exit-popup-close {
+  position:absolute;
+  top:14px;right:16px;
+  background:none;border:none;
+  font-size:1.4rem;color:var(--gris);
+  cursor:pointer;line-height:1;
+}
+
+.sticky-cta-mobile {
     display:flex;
     position:fixed;
     bottom:0;left:0;right:0;
@@ -757,7 +817,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h1>Récupérez l'argent que votre propriétaire <em>vous doit.</em></h1>
       <p class="hero-sub">BailScan calcule les sommes que votre propriétaire vous doit, génère le plan d'action étape par étape et rédige les courriers officiels pour les récupérer.</p>
       <div class="hero-ctas">
-        <a href="#app" class="btn-primary">Analyser mon bail gratuitement →</a>
+        <a href="#app" class="btn-primary">Voir combien mon proprio me doit →</a>
         <a href="#app" class="btn-secondary">État des lieux</a>
       </div>
       <div class="hero-stats">
@@ -946,6 +1006,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="wizard-panel active" id="step1">
       <div class="panel-title">Contexte du logement</div>
       <div class="panel-sub">Ces informations permettent une analyse plus précise et personnalisée</div>
+      <div style="background:rgba(200,75,47,0.06);border-radius:10px;padding:10px 16px;margin-bottom:16px;font-size:0.8rem;color:var(--accent);font-weight:600;text-align:center;">
+        87% des bails analysés contiennent au moins 1 irrégularité
+      </div>
       <div class="form-grid">
         <div class="form-group">
           <label>Type de location <span class="req">*</span></label>
@@ -1253,6 +1316,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="clauses-section" id="freeClausesSection">
       <div class="clauses-title">Clauses analysées <span id="clausesFreeCount"></span></div>
       <div id="freeClausesList"></div>
+
+      <!-- TEASER clauses cachées -->
+      <div id="hiddenClausesTeaser" style="display:none;margin-top:12px;border-radius:14px;overflow:hidden;border:2px solid var(--accent);">
+        <!-- Fausses clauses floutées -->
+        <div style="position:relative;">
+          <div style="padding:14px 18px;background:white;filter:blur(4px);pointer-events:none;user-select:none;">
+            <div style="height:14px;background:rgba(200,75,47,0.2);border-radius:4px;margin-bottom:8px;width:70%;"></div>
+            <div style="height:10px;background:var(--border);border-radius:4px;width:90%;"></div>
+          </div>
+          <div style="padding:14px 18px;background:white;border-top:1px solid var(--border);filter:blur(4px);pointer-events:none;user-select:none;">
+            <div style="height:14px;background:rgba(200,75,47,0.15);border-radius:4px;margin-bottom:8px;width:60%;"></div>
+            <div style="height:10px;background:var(--border);border-radius:4px;width:85%;"></div>
+          </div>
+        </div>
+        <!-- CTA par-dessus -->
+        <div style="background:var(--accent);padding:14px 18px;text-align:center;cursor:pointer;" onclick="openModal()">
+          <div style="font-size:0.88rem;font-weight:800;color:white;" id="hiddenClausesCount">+ X clauses illégales masquées</div>
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);margin-top:2px;">Débloquer pour voir lesquelles et comment réclamer →</div>
+        </div>
+      </div>
     </div>
  
     <!-- PAYWALL -->
@@ -1291,9 +1374,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div style="font-size:0.78rem;color:var(--gris);margin-top:8px;font-weight:600;">Marie L. · locataire à Lyon · 860€ récupérés</div>
         </div>
 
-        <div class="paywall-price">29€</div>
-        <div class="paywall-price-sub">Paiement unique</div>
-        <button class="btn-primary" id="paywallMainCta" onclick="openModal()">Débloquer l'analyse complète →</button>
+        <!-- ANCRAGE PRIX -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0 8px;flex-wrap:wrap;">
+          <div style="text-align:center;">
+            <div class="paywall-price" style="margin-bottom:2px;">29€</div>
+            <div style="font-size:0.75rem;color:var(--vert);font-weight:700;">BailScan</div>
+          </div>
+          <div style="font-size:1.4rem;color:var(--border);">vs</div>
+          <div style="text-align:center;opacity:0.5;">
+            <div style="font-family:'Instrument Serif',serif;font-size:2.8rem;color:var(--gris);text-decoration:line-through;">200€</div>
+            <div style="font-size:0.75rem;color:var(--gris);font-weight:600;">avocat</div>
+          </div>
+        </div>
+        <div class="paywall-price-sub">Paiement unique · Résultat immédiat</div>
+
+        <!-- MESSAGE PERTE MENSUELLE -->
+        <div id="monthlyLossMsg" style="display:none;margin:10px 0 16px;padding:10px 16px;background:rgba(200,75,47,0.06);border-radius:10px;border:1px solid rgba(200,75,47,0.15);font-size:0.82rem;color:var(--accent);font-weight:600;text-align:center;"></div>
+
+        <button class="btn-primary" id="paywallMainCta" onclick="openModal()" style="font-size:1rem;padding:16px 28px;">Débloquer l'analyse complète →</button>
+
+        <!-- BADGES DE CONFIANCE -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--gris);">
+            <span style="font-size:0.9rem;">🔒</span> Paiement sécurisé
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--vert);font-weight:600;">
+            <span>✓</span> Satisfait ou remboursé
+          </div>
+        </div>
 
         <!-- GARANTIE -->
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:0.78rem;color:var(--gris);">
@@ -1502,7 +1610,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
  
     <div style="text-align:center;margin-top:24px;">
-      <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--noir);color:white;padding:14px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--noir)'">Analyser mon bail gratuitement →</a>
+      <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--noir);color:white;padding:14px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--noir)'">Voir combien mon proprio me doit →</a>
     </div>
   </div>
 </section>
@@ -1979,6 +2087,60 @@ function updatePaywallCTA() {
   checkSticky();
 })();
 
+// ═══════════════════════════════════════
+// EXIT INTENT
+// ═══════════════════════════════════════
+var _exitShown = false;
+var _paywallSeen = false;
+
+function closeExitPopup() {
+  document.getElementById('exitPopupOverlay').classList.remove('active');
+}
+
+function openModalFromExit() {
+  closeExitPopup();
+  openModal();
+}
+
+// Détecter quand le paywall a été vu
+document.addEventListener('DOMContentLoaded', function() {
+  // Exit intent desktop — souris qui quitte vers le haut
+  document.addEventListener('mouseleave', function(e) {
+    if (e.clientY <= 0 && !_exitShown && _paywallSeen) {
+      _exitShown = true;
+      showExitPopup();
+    }
+  });
+  // Exit intent mobile — scroll vers le haut rapide
+  var lastScrollY = 0;
+  window.addEventListener('scroll', function() {
+    var delta = window.scrollY - lastScrollY;
+    lastScrollY = window.scrollY;
+    if (delta < -80 && !_exitShown && _paywallSeen) {
+      _exitShown = true;
+      showExitPopup();
+    }
+  });
+});
+
+function showExitPopup() {
+  var popup = document.getElementById('exitPopupOverlay');
+  if (!popup) return;
+  // Personnaliser avec le montant si disponible
+  var bannerEl = document.getElementById('paywallAmountBanner');
+  var montantEl = bannerEl ? bannerEl.querySelector('.paywall-amount-banner-amount') : null;
+  if (montantEl) {
+    var txt = montantEl.textContent.replace(/[^0-9\s]/g,'').trim().replace(/\s/g,'');
+    var montant = parseInt(txt);
+    if (montant > 50) {
+      document.getElementById('exitPopupTitle').textContent = 'Vous alliez laisser ' + montant.toLocaleString('fr-FR') + '€ derrière vous';
+      document.getElementById('exitPopupBtn').textContent = 'Récupérer mes ' + montant.toLocaleString('fr-FR') + '€ pour 29€ →';
+      document.getElementById('exitPopupSub').textContent = 'Votre analyse a détecté des irrégularités dans votre bail. Le rapport complet vous donne les lettres officielles pour les réclamer.';
+    }
+  }
+  popup.classList.add('active');
+}
+
 // Timer paywall
 function startPaywallTimer() {
   var key = 'bs_timer_start';
@@ -2249,9 +2411,31 @@ function displayResults(data) {
  
   // Free clauses (2 first)
   var clauses = data.clauses_abusives || [];
-  var freeClauses = clauses.slice(0, 2);
+  // Trier par sévérité : danger d'abord, puis warning, puis ok
+  var sortedClauses = clauses.slice().sort(function(a, b) {
+    var order = { danger: 0, warning: 1, ok: 2 };
+    return (order[a.type] || 2) - (order[b.type] || 2);
+  });
+  var freeClauses = sortedClauses.slice(0, 2);
+  var hiddenCount = Math.max(0, clauses.length - freeClauses.length);
   document.getElementById('clausesFreeCount').textContent = freeClauses.length + ' sur ' + clauses.length;
   document.getElementById('freeClausesList').innerHTML = freeClauses.map(renderClause).join('');
+
+  // Teaser clauses cachées
+  var teaser = document.getElementById('hiddenClausesTeaser');
+  var teaserCount = document.getElementById('hiddenClausesCount');
+  if (teaser && hiddenCount > 0) {
+    teaser.style.display = 'block';
+    var dangerHidden = sortedClauses.slice(2).filter(function(c){ return c.type === 'danger'; }).length;
+    var warningHidden = sortedClauses.slice(2).filter(function(c){ return c.type === 'warning'; }).length;
+    var teaserText = '+ ' + hiddenCount + ' clause' + (hiddenCount > 1 ? 's' : '');
+    if (dangerHidden > 0) teaserText += ' dont ' + dangerHidden + ' illégale' + (dangerHidden > 1 ? 's' : '') + ' masquée' + (dangerHidden > 1 ? 's' : '');
+    else if (warningHidden > 0) teaserText += ' à risque masquée' + (warningHidden > 1 ? 's' : '');
+    else teaserText += ' masquée' + (hiddenCount > 1 ? 's' : '');
+    if (teaserCount) teaserCount.textContent = teaserText;
+  } else if (teaser) {
+    teaser.style.display = 'none';
+  }
  
   document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
   // Date rapport
@@ -2371,6 +2555,13 @@ function buildPaywallAmountBanner(data) {
   }
  
   el.innerHTML = html;
+
+  // MESSAGE PERTE MENSUELLE
+  var lossMsg = document.getElementById('monthlyLossMsg');
+  if (lossMsg && tropPercuMensuel > 0) {
+    lossMsg.style.display = 'block';
+    lossMsg.innerHTML = '⚠️ Chaque mois sans agir = <strong>' + tropPercuMensuel.toFixed(0) + '€</strong> de plus perdus';
+  }
 }
  
 function renderLoyerCheck(data) {
@@ -3387,6 +3578,7 @@ function resetApp() {
   document.getElementById('typeSelectorBlock').style.display = 'grid';
   document.getElementById('paidSection').style.display = 'none';
   document.getElementById('paywallSection').style.display = 'block';
+  _paywallSeen = true;
   startPaywallTimer();
   // META PIXEL — InitiateCheckout (retargeting)
   if (typeof fbq === 'function') {
@@ -3401,6 +3593,18 @@ function scrollToApp() {
   document.getElementById('app').scrollIntoView({behavior:'smooth'});
 }
 </script>
+
+<!-- EXIT INTENT POPUP -->
+<div class="exit-popup-overlay" id="exitPopupOverlay">
+  <div class="exit-popup">
+    <button class="exit-popup-close" onclick="closeExitPopup()">×</button>
+    <div style="font-size:2.5rem;margin-bottom:12px;">⚠️</div>
+    <div id="exitPopupTitle" style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir);margin-bottom:8px;line-height:1.2;">Attendez !</div>
+    <div id="exitPopupSub" style="font-size:0.88rem;color:var(--gris);margin-bottom:20px;line-height:1.6;">Votre analyse est prête. Débloquez votre rapport complet pour récupérer ce qui vous est dû.</div>
+    <button onclick="openModalFromExit()" style="background:var(--accent);color:white;border:none;padding:14px 28px;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;width:100%;margin-bottom:10px;" id="exitPopupBtn">Débloquer pour seulement 29€ →</button>
+    <button onclick="closeExitPopup()" style="background:none;border:none;color:var(--gris);font-size:0.78rem;cursor:pointer;text-decoration:underline;">Non merci, je préfère perdre cet argent</button>
+  </div>
+</div>
 
 <!-- STICKY CTA MOBILE -->
 <div class="sticky-cta-mobile" id="stickyCta">
