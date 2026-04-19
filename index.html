@@ -2139,21 +2139,39 @@ function showExitPopup() {
 }
 
 // Timer paywall
+var _timerInterval = null;
 function startPaywallTimer() {
-  var key = 'bs_timer_start';
-  var start = localStorage.getItem(key);
-  if (!start) { start = Date.now(); localStorage.setItem(key, start); }
+  // Reset le timer à chaque analyse — toujours 30min depuis maintenant
+  var start = Date.now();
+  if (_timerInterval) clearInterval(_timerInterval);
   function tick() {
-    var elapsed = Math.floor((Date.now() - parseInt(start)) / 1000);
+    var elapsed = Math.floor((Date.now() - start) / 1000);
     var remaining = Math.max(0, 1800 - elapsed);
-    var h = Math.floor(remaining / 3600);
-    var m = Math.floor((remaining % 3600) / 60);
+    var m = Math.floor(remaining / 60);
     var s = remaining % 60;
     var el = document.getElementById('timerCount');
-    if (el) el.textContent = (h > 0 ? h + 'h ' : '') + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    if (el) {
+      el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+      // Passer au rouge vif quand < 5 minutes
+      if (remaining < 300) {
+        el.style.color = '#ff4444';
+        el.style.animation = 'pulse 0.8s infinite';
+      } else {
+        el.style.color = '#fbbf24';
+        el.style.animation = '';
+      }
+    }
+    if (remaining === 0 && _timerInterval) {
+      clearInterval(_timerInterval);
+      // Message d'expiration
+      var timerBox = document.getElementById('paywallTimer');
+      if (timerBox) {
+        timerBox.innerHTML = '⚠️ Analyse expirée — <span style="text-decoration:underline;cursor:pointer;" onclick="location.reload()">Relancer une nouvelle analyse</span>';
+      }
+    }
   }
   tick();
-  setInterval(tick, 1000);
+  _timerInterval = setInterval(tick, 1000);
 }
  
 // ═══════════════════════════════════════
@@ -2527,11 +2545,14 @@ function buildPaywallAmountBanner(data) {
   } else if (isLoyerProbleme || nbDanger > 0) {
     // CAS 2 : problème détecté mais pas de montant (date manquante ou pas de chiffres)
     var nbProblemes = nbDanger + (isLoyerProbleme ? 1 : 0);
-    html += '<div class="paywall-amount-banner no-amount">';
-    html += '<div class="paywall-amount-banner-eyebrow">⚠️ Irrégularités détectées dans votre bail</div>';
-    html += '<div class="paywall-amount-banner-amount" style="font-size:2.4rem">' + nbProblemes + ' problème' + (nbProblemes > 1 ? 's' : '') + '<span style="font-size:1.6rem"> juridique' + (nbProblemes > 1 ? 's' : '') + '</span></div>';
-    html += '<div class="paywall-amount-banner-sub">Des sommes peuvent vous être dues. Le rapport complet vous donne les lettres officielles pour les réclamer.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">Voir mon rapport complet →</button>';
+    // Estimation conservatrice : 150€ par clause danger, 80€ par warning
+    var estimCas2 = (nbDanger * 150) + (isLoyerProbleme ? (loyerBase > 0 ? Math.round(loyerBase * 2) : 200) : 0);
+    if (estimCas2 < 100) estimCas2 = 100 + nbProblemes * 50;
+    html += '<div class="paywall-amount-banner">';
+    html += '<div class="paywall-amount-banner-eyebrow">⚠️ Potentiel récupérable estimé</div>';
+    html += '<div class="paywall-amount-banner-amount">' + estimCas2.toLocaleString("fr-FR") + ' <span>€ min.</span></div>';
+    html += '<div class="paywall-amount-banner-sub">Basé sur ' + nbProblemes + ' irrégularité' + (nbProblemes > 1 ? 's' : '') + ' détectée' + (nbProblemes > 1 ? 's' : '') + ' dans votre bail. Le rapport exact calcule le montant réel.</div>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">Récupérer mes ' + estimCas2.toLocaleString("fr-FR") + '€ pour seulement 29€ →</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   } else {
