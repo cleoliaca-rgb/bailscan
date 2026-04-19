@@ -785,7 +785,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="modal-price"><div class="modal-price-n">29€</div><div class="modal-price-sub">paiement unique</div></div>
     <div class="modal-price-once">Paiement unique</div>
-    <button class="btn-pay" id="btnPayConfirm" onclick="payWithStripe()">Débloquer mon rapport complet →</button>
+    <button class="btn-pay" id="btnPayConfirm" onclick="payWithStripe()">Récupérer mon argent pour seulement 29€ →</button>
     <div class="modal-secure">· Paiement sécurisé · Satisfait ou remboursé ·</div>
   </div>
 </div>
@@ -1351,7 +1351,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <!-- TIMER URGENCE — fond noir pour contraste -->
         <div id="paywallTimer" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#0d0d0d;border-radius:12px;padding:12px 20px;margin-bottom:20px;font-size:0.88rem;font-weight:700;color:white;">
-          ⏱ Cette analyse expire dans <span id="timerCount" style="font-size:1.05rem;letter-spacing:0.08em;color:#fbbf24;">23:59</span>
+          ⏱ Cette analyse expire dans <span id="timerCount" style="font-size:1.05rem;letter-spacing:0.08em;color:#fbbf24;">29:59</span>
         </div>
 
         <!-- BANNER DYNAMIQUE MONTANT RÉCLAMABLE (injecté par JS) -->
@@ -1403,10 +1403,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </div>
 
-        <!-- GARANTIE -->
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:0.78rem;color:var(--gris);">
-          <span style="color:var(--vert);font-weight:700;">✓</span> Satisfait ou remboursé sous 48h
-        </div>
+
       </div>
     </div>
  
@@ -2036,7 +2033,7 @@ function updatePaywallCTA() {
       return;
     }
   }
-  mainBtn.textContent = 'Débloquer mon rapport complet →';
+  mainBtn.textContent = 'Récupérer mon argent pour seulement 29€ →';
 }
 
 // ═══════════════════════════════════════
@@ -2148,7 +2145,7 @@ function startPaywallTimer() {
   if (!start) { start = Date.now(); localStorage.setItem(key, start); }
   function tick() {
     var elapsed = Math.floor((Date.now() - parseInt(start)) / 1000);
-    var remaining = Math.max(0, 86400 - elapsed);
+    var remaining = Math.max(0, 1800 - elapsed);
     var h = Math.floor(remaining / 3600);
     var m = Math.floor((remaining % 3600) / 60);
     var s = remaining % 60;
@@ -2416,7 +2413,7 @@ function displayResults(data) {
     var order = { danger: 0, warning: 1, ok: 2 };
     return (order[a.type] || 2) - (order[b.type] || 2);
   });
-  var freeClauses = sortedClauses.slice(0, 2);
+  var freeClauses = sortedClauses.slice(0, 1);
   var hiddenCount = Math.max(0, clauses.length - freeClauses.length);
   document.getElementById('clausesFreeCount').textContent = freeClauses.length + ' sur ' + clauses.length;
   document.getElementById('freeClausesList').innerHTML = freeClauses.map(renderClause).join('');
@@ -2426,8 +2423,8 @@ function displayResults(data) {
   var teaserCount = document.getElementById('hiddenClausesCount');
   if (teaser && hiddenCount > 0) {
     teaser.style.display = 'block';
-    var dangerHidden = sortedClauses.slice(2).filter(function(c){ return c.type === 'danger'; }).length;
-    var warningHidden = sortedClauses.slice(2).filter(function(c){ return c.type === 'warning'; }).length;
+    var dangerHidden = sortedClauses.slice(1).filter(function(c){ return c.type === 'danger'; }).length;
+    var warningHidden = sortedClauses.slice(1).filter(function(c){ return c.type === 'warning'; }).length;
     var teaserText = '+ ' + hiddenCount + ' clause' + (hiddenCount > 1 ? 's' : '');
     if (dangerHidden > 0) teaserText += ' dont ' + dangerHidden + ' illégale' + (dangerHidden > 1 ? 's' : '') + ' masquée' + (dangerHidden > 1 ? 's' : '');
     else if (warningHidden > 0) teaserText += ' à risque masquée' + (warningHidden > 1 ? 's' : '');
@@ -2524,7 +2521,7 @@ function buildPaywallAmountBanner(data) {
     if (lignesDetail.length > 0) html += '<br><span style="opacity:0.7; font-size:0.77rem">' + lignesDetail.join(' · ') + '</span>';
     if (nbDanger > 0) html += '<br><span style="opacity:0.65; font-size:0.77rem">+ ' + nbDanger + ' clause(s) illégale(s) détectée(s)</span>';
     html += '<br><br>Réclamez ce montant grâce aux lettres officielles incluses.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">Débloquer le rapport complet →</button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" id="bannerCta1">Récupérer mes ' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + '€ pour seulement 29€ →</button>';
     html += '<div class="paywall-amount-banner-roi">29€ investis · <strong>×' + Math.round(tropPercuTotal / 29) + ' de retour potentiel</strong></div>';
     html += '</div>';
   } else if (isLoyerProbleme || nbDanger > 0) {
@@ -2534,7 +2531,7 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-eyebrow">⚠️ Irrégularités détectées dans votre bail</div>';
     html += '<div class="paywall-amount-banner-amount" style="font-size:2.4rem">' + nbProblemes + ' problème' + (nbProblemes > 1 ? 's' : '') + '<span style="font-size:1.6rem"> juridique' + (nbProblemes > 1 ? 's' : '') + '</span></div>';
     html += '<div class="paywall-amount-banner-sub">Des sommes peuvent vous être dues. Le rapport complet vous donne les lettres officielles pour les réclamer.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">Débloquer le rapport complet →</button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">Voir mon rapport complet →</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   } else {
@@ -2549,7 +2546,7 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-eyebrow">Potentiel récupérable estimé</div>';
     html += '<div class="paywall-amount-banner-amount">' + minEstimate.toLocaleString("fr-FR") + ' <span>€ min.</span></div>';
     html += '<div class="paywall-amount-banner-sub">Estimation conservatrice basée sur votre situation. Le rapport complet calcule le montant exact et génère les lettres pour le réclamer.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)">Débloquer le rapport complet →</button>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)">Récupérer mes ' + minEstimate.toLocaleString('fr-FR') + '€ pour seulement 29€ →</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   }
