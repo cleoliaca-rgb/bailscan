@@ -2394,6 +2394,9 @@ function displayResults(data) {
   document.getElementById('typeSelectorBlock').style.display = 'none';
   var rs = document.getElementById('resultsSection');
   rs.style.display = 'block';
+  // Démarrer le timer dès l'affichage des résultats
+  _paywallSeen = true;
+  startPaywallTimer();
  
   // Date
   document.getElementById('analysisDate').textContent = new Date().toLocaleDateString('fr-FR');
@@ -2545,12 +2548,16 @@ function buildPaywallAmountBanner(data) {
   } else if (isLoyerProbleme || nbDanger > 0) {
     // CAS 2 : problème détecté mais pas de montant (date manquante ou pas de chiffres)
     var nbProblemes = nbDanger + (isLoyerProbleme ? 1 : 0);
-    // Estimation conservatrice : 150€ par clause danger, 80€ par warning
-    var estimCas2 = (nbDanger * 150) + (isLoyerProbleme ? (loyerBase > 0 ? Math.round(loyerBase * 2) : 200) : 0);
+    // Utiliser le vrai dépôt illégal si disponible
+    var depotVerse2 = appState.depot || 0;
+    var loyerBase2 = appState.loyerBase || 0;
+    var bienType2 = appState.bienType || 'vide';
+    var depotIllegal2 = (bienType2 === 'vide' && depotVerse2 > loyerBase2 && loyerBase2 > 0) ? Math.round(depotVerse2 - loyerBase2) : 0;
+    var estimCas2 = Math.max(depotIllegal2, nbDanger * 150) + (isLoyerProbleme && loyerBase2 > 0 ? Math.round(loyerBase2 * 2) : 0);
     if (estimCas2 < 100) estimCas2 = 100 + nbProblemes * 50;
     html += '<div class="paywall-amount-banner">';
     html += '<div class="paywall-amount-banner-eyebrow">⚠️ Potentiel récupérable estimé</div>';
-    html += '<div class="paywall-amount-banner-amount">' + estimCas2.toLocaleString("fr-FR") + ' <span>€ min.</span></div>';
+    html += '<div class="paywall-amount-banner-amount">' + estimCas2.toLocaleString("fr-FR") + ' <span>€ minimum</span></div>';
     html += '<div class="paywall-amount-banner-sub">Basé sur ' + nbProblemes + ' irrégularité' + (nbProblemes > 1 ? 's' : '') + ' détectée' + (nbProblemes > 1 ? 's' : '') + ' dans votre bail. Le rapport exact calcule le montant réel.</div>';
     html += '<button class="paywall-amount-banner-unlock" onclick="openModal()">Récupérer mes ' + estimCas2.toLocaleString("fr-FR") + '€ pour seulement 29€ →</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
@@ -2565,7 +2572,7 @@ function buildPaywallAmountBanner(data) {
     var minEstimate = depotIllegal > 0 ? depotIllegal : (loyerB > 0 ? Math.round(loyerB * 0.15) : 200);
     html += '<div class="paywall-amount-banner">';
     html += '<div class="paywall-amount-banner-eyebrow">Potentiel récupérable estimé</div>';
-    html += '<div class="paywall-amount-banner-amount">' + minEstimate.toLocaleString("fr-FR") + ' <span>€ min.</span></div>';
+    html += '<div class="paywall-amount-banner-amount">' + minEstimate.toLocaleString("fr-FR") + ' <span>€ minimum</span></div>';
     html += '<div class="paywall-amount-banner-sub">Estimation conservatrice basée sur votre situation. Le rapport complet calcule le montant exact et génère les lettres pour le réclamer.</div>';
     html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)">Récupérer mes ' + minEstimate.toLocaleString('fr-FR') + '€ pour seulement 29€ →</button>';
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
