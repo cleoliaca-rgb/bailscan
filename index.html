@@ -748,6 +748,95 @@ select.form-input { cursor:pointer; }
   .step-dot { width:28px; height:28px; font-size:0.72rem; }
   .step-line { margin:0 2px; }
 }
+@media(max-width:640px) {
+  /* Timer paywall */
+  #paywallTimer {
+    font-size:0.78rem !important;
+    padding:10px 14px !important;
+    gap:6px !important;
+  }
+  #timerCount {
+    font-size:0.95rem !important;
+  }
+
+  /* Prix ancrage 29€ vs avocat */
+  .paywall-price-anchor {
+    gap:10px !important;
+  }
+  .paywall-price-anchor .price-vs {
+    font-size:1rem !important;
+  }
+
+  /* Badges de confiance — empiler sur mobile */
+  .paywall-trust-badges {
+    gap:10px !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+  }
+
+  /* Social proof bar */
+  #liveCounterBar {
+    padding:10px 14px !important;
+  }
+
+  /* Step3 choice cards */
+  #step3ChoiceCards > div {
+    padding:14px 16px !important;
+  }
+
+  /* Hidden clauses teaser */
+  #hiddenClausesTeaser {
+    font-size:0.82rem !important;
+  }
+
+  /* Paywall banner button */
+  .paywall-amount-banner-unlock {
+    font-size:0.82rem !important;
+    padding:12px 14px !important;
+  }
+
+  /* Exit popup */
+  .exit-popup {
+    padding:24px 20px !important;
+  }
+
+  /* Sans bail panel */
+  #sansBailPanel button {
+    font-size:0.85rem !important;
+  }
+
+  /* Ancrage prix */
+  #paywallPriceAnchor {
+    flex-wrap:wrap !important;
+    gap:10px !important;
+    justify-content:flex-start !important;
+  }
+
+  /* Message perte mensuelle */
+  #monthlyLossMsg {
+    font-size:0.78rem !important;
+  }
+
+  /* CTA principal paywall */
+  #paywallMainCta {
+    font-size:0.85rem !important;
+    padding:14px 16px !important;
+    white-space:normal !important;
+    line-height:1.3 !important;
+  }
+}
+
+@media(max-width:400px) {
+  #paywallMainCta {
+    font-size:0.78rem !important;
+  }
+  .paywall-amount-banner-amount {
+    font-size:2rem !important;
+  }
+  #timerCount {
+    font-size:0.88rem !important;
+  }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -807,10 +896,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-inner">
     <div>
       <!-- SOCIAL PROOF BAR -->
-      <div style="display:flex;align-items:center;gap:10px;background:white;border:1.5px solid rgba(200,75,47,0.25);border-radius:14px;padding:12px 18px;margin-bottom:24px;box-shadow:0 2px 12px rgba(200,75,47,0.08);">
+      <div id="liveCounterBar" style="display:flex;align-items:center;gap:10px;background:white;border:1.5px solid rgba(200,75,47,0.25);border-radius:14px;padding:12px 18px;margin-bottom:24px;box-shadow:0 2px 12px rgba(200,75,47,0.08);">
         <span style="width:9px;height:9px;background:var(--accent);border-radius:50%;flex-shrink:0;animation:pulse 1.5s infinite;"></span>
         <div>
-          <span style="font-size:1.1rem;font-weight:800;color:var(--accent);" id="liveCounter">564</span>
+          <span style="font-size:clamp(1.4rem,5vw,1.1rem);font-weight:800;color:var(--accent);" id="liveCounter">564</span>
           <span style="font-size:0.88rem;font-weight:600;color:var(--noir);"> locataires ont récupéré de l'argent ce mois-ci</span>
         </div>
       </div>
@@ -1006,7 +1095,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="wizard-panel active" id="step1">
       <div class="panel-title">Contexte du logement</div>
       <div class="panel-sub">Ces informations permettent une analyse plus précise et personnalisée</div>
-      <div style="background:rgba(200,75,47,0.06);border-radius:10px;padding:10px 16px;margin-bottom:16px;font-size:0.8rem;color:var(--accent);font-weight:600;text-align:center;">
+      <div style="background:rgba(200,75,47,0.06);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:0.92rem;color:var(--accent);font-weight:700;text-align:center;">
         87% des bails analysés contiennent au moins 1 irrégularité
       </div>
       <div class="form-grid">
@@ -1375,7 +1464,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
 
         <!-- ANCRAGE PRIX -->
-        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0 8px;flex-wrap:wrap;">
+        <div id="paywallPriceAnchor" style="display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0 8px;flex-wrap:wrap;">
           <div style="text-align:center;">
             <div class="paywall-price" style="margin-bottom:2px;">29€</div>
             <div style="font-size:0.75rem;color:var(--vert);font-weight:700;">BailScan</div>
@@ -1394,7 +1483,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="btn-primary" id="paywallMainCta" onclick="openModal()" style="font-size:1rem;padding:16px 28px;">Débloquer l'analyse complète →</button>
 
         <!-- BADGES DE CONFIANCE -->
-        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap;">
+        <div class="paywall-trust-badges" style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap;">
           <div style="display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--gris);">
             <span style="font-size:0.9rem;">🔒</span> Paiement sécurisé
           </div>
@@ -2282,7 +2371,7 @@ function buildRecap() {
   var loyer = appState.loyerBase || '—';
   var total = (appState.loyerBase + appState.loyerMajore + appState.complementLoyer + appState.charges) || '—';
   var typeLabel = appState.analysisType === 'etat' ? 'État des lieux' : 'Bail locatif';
-  var docLabel = appState.uploadMode === 'upload' && appState.pdfBase64 ? 'PDF : ' + appState.pdfName : (document.getElementById('bailText').value.length + ' caractères de texte');
+  var docLabel = appState.noPdf ? 'Analyse loyer uniquement (sans bail)' : (appState.uploadMode === 'upload' && appState.pdfBase64 ? 'PDF : ' + appState.pdfName : (document.getElementById('bailText').value.length + ' caractères de texte'));
   var extrasLabel = appState.extraDocs.length > 0 ? appState.extraDocs.length + ' document(s) complémentaire(s)' : 'Aucun';
   document.getElementById('recapBlock').innerHTML =
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
@@ -2395,8 +2484,9 @@ function displayResults(data) {
   var rs = document.getElementById('resultsSection');
   rs.style.display = 'block';
   // Démarrer le timer dès l'affichage des résultats
-  _paywallSeen = true;
   startPaywallTimer();
+  // Activer exit intent après 4 secondes
+  setTimeout(function() { _paywallSeen = true; }, 4000);
  
   // Date
   document.getElementById('analysisDate').textContent = new Date().toLocaleDateString('fr-FR');
@@ -3603,8 +3693,9 @@ function resetApp() {
   document.getElementById('typeSelectorBlock').style.display = 'grid';
   document.getElementById('paidSection').style.display = 'none';
   document.getElementById('paywallSection').style.display = 'block';
-  _paywallSeen = true;
   startPaywallTimer();
+  // Activer exit intent après 4 secondes
+  setTimeout(function() { _paywallSeen = true; }, 4000);
   // META PIXEL — InitiateCheckout (retargeting)
   if (typeof fbq === 'function') {
     fbq('track', 'InitiateCheckout', { value: 29.00, currency: 'EUR', num_items: 1 });
