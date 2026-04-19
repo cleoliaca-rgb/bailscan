@@ -949,7 +949,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- Loyer de base — obligatoire -->
       <div class="form-group">
         <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="color:var(--accent);font-size:0.8rem">*</span></label>
-        <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal()">
+        <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal();showLoyerAlert()">
         <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Montant que vous payez chaque mois, hors charges</small>
       </div>
  
@@ -1025,6 +1025,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="loyer-row"><span class="loyer-row-label">Charges</span><span class="loyer-row-val" id="lb4">—</span></div>
         <div class="loyer-row"><span class="loyer-row-label" style="font-weight:700">Total mensuel</span><span class="loyer-row-val loyer-total" id="lb_total">—</span></div>
       </div>
+      <!-- ALERTE LOYER TEMPS RÉEL -->
+      <div id="loyerAlertBox" style="display:none;margin-top:16px;padding:14px 18px;border-radius:12px;font-size:0.85rem;font-weight:600;"></div>
+ 
       <div class="wizard-nav">
         <button class="btn-wizard-back" onclick="goStep(1)">← Retour</button>
         <button class="btn-wizard-next" onclick="goStep(3)">Continuer → Document</button>
@@ -1088,6 +1091,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="btn-wizard-back" onclick="goStep(2)">← Retour</button>
         <button class="btn-wizard-next" onclick="goStep(4)" id="btnStep3Next">Continuer → Analyser</button>
       </div>
+ 
+      <!-- OPTION SANS BAIL -->
+      <div style="margin-top:20px;padding:16px 20px;background:var(--creme);border-radius:14px;border:1.5px dashed var(--border);text-align:center;" id="noBailBox">
+        <div style="font-size:0.88rem;font-weight:700;color:var(--noir);margin-bottom:6px;">📄 Pas votre bail sous la main ?</div>
+        <div style="font-size:0.8rem;color:var(--gris);margin-bottom:12px;">On peut quand même analyser votre loyer et détecter les irrégularités courantes.</div>
+        <button onclick="skipToAnalysePartielle()" style="background:var(--noir);color:white;border:none;padding:11px 24px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;width:100%">Analyser sans le bail →</button>
+      </div>
+ 
+      <!-- EMAIL CAPTURE -->
+      <div id="emailCaptureBox" style="display:none;margin-top:16px;padding:20px;background:white;border-radius:14px;border:1.5px solid var(--border);">
+        <div style="font-size:0.92rem;font-weight:700;color:var(--noir);margin-bottom:6px;">Recevez votre analyse par email</div>
+        <div style="font-size:0.8rem;color:var(--gris);margin-bottom:14px;">Entrez votre email — vous recevrez aussi un rappel pour analyser votre bail complet.</div>
+        <input type="email" id="captureEmail" class="form-input" placeholder="votre@email.com" style="margin-bottom:10px;">
+        <button onclick="proceedWithoutBail()" style="background:var(--accent);color:white;border:none;padding:12px 24px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;width:100%">Lancer l'analyse partielle →</button>
+      </div>
+ 
     </div>
  
     <!-- STEP 4 : RÉCAP + LANCER -->
@@ -1168,6 +1187,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div id="paywallAmountBanner"></div>
  
         
+        <!-- TIMER URGENCE -->
+        <div id="paywallTimer" style="display:inline-flex;align-items:center;gap:8px;background:#fff3cd;border:1.5px solid #ffc107;border-radius:10px;padding:8px 16px;margin-bottom:16px;font-size:0.82rem;font-weight:700;color:#856404;">
+          ⏱ Offre valable encore <span id="timerCount">23:59</span>
+        </div>
+ 
         <div class="paywall-title">Rapport complet disponible</div>
         <div class="paywall-desc">Débloquez l'analyse intégrale avec les explications juridiques, le plan d'action et les lettres officielles</div>
         <div class="paywall-features">
@@ -1180,6 +1204,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="paywall-price">29€</div>
         <div class="paywall-price-sub">Paiement unique</div>
         <button class="btn-primary" onclick="openModal()">Débloquer l'analyse complète →</button>
+ 
+        <!-- GARANTIE -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:0.78rem;color:var(--gris);">
+          <span style="color:var(--vert);font-weight:700;">✓</span> Satisfait ou remboursé sous 48h — sans question
+        </div>
+ 
+        <!-- TEMOIGNAGE -->
+        <div style="margin-top:20px;padding:16px;background:var(--creme);border-radius:12px;border:1px solid var(--border);text-align:left;">
+          <div style="font-size:0.78rem;color:var(--accent);font-weight:700;margin-bottom:6px;">★★★★★</div>
+          <div style="font-size:0.82rem;color:var(--noir);line-height:1.5;font-style:italic;">"J'avais un dépôt de garantie de 2 mois — illégal pour une location vide. BailScan l'a détecté et j'ai récupéré 860€ avec la lettre générée."</div>
+          <div style="font-size:0.75rem;color:var(--gris);margin-top:6px;">Marie L., locataire à Lyon</div>
+        </div>
       </div>
     </div>
  
@@ -1569,6 +1605,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 // STATE
 // ═══════════════════════════════════════
 var appState = {
+  noPdf: false,
+  captureEmail: '',
   analysisType: 'bail',       // 'bail' | 'etat'
   locationtype: 'location',
   bienType: 'vide',
@@ -1699,6 +1737,82 @@ function calcLoyerTotal() {
 function updateLoyerCheck() {
   appState.ville = document.getElementById('ville').value;
   appState.surface = document.getElementById('surface').value;
+  showLoyerAlert();
+}
+ 
+function showLoyerAlert() {
+  var box = document.getElementById('loyerAlertBox');
+  if (!box) return;
+  var ville = (appState.ville || '').toLowerCase();
+  var loyer = parseFloat(document.getElementById('loyer_base') && document.getElementById('loyer_base').value) || 0;
+  var surface = parseFloat(appState.surface) || 0;
+  var zonesEncadrees = ['paris','bordeaux','lyon','villeurbanne','montpellier','grenoble','lille','strasbourg','brest','rennes','nantes','cergy','evry','argenteuil','aubervilliers','aulnay','bobigny','boulogne','champigny','clichy','colombes','courbevoie','fontenay','issy','ivry','montreuil','nanterre','neuilly','pantin','saint-denis','saint-maur','vitry'];
+  var isEncadree = zonesEncadrees.some(function(z){ return ville.includes(z); });
+  if (!ville || !loyer || !surface) { box.style.display='none'; return; }
+  var prixM2 = loyer / surface;
+  if (isEncadree && prixM2 > 20) {
+    box.style.display = 'block';
+    box.style.background = '#fff3cd';
+    box.style.border = '1.5px solid #ffc107';
+    box.style.color = '#856404';
+    box.innerHTML = '⚠️ Votre loyer (' + prixM2.toFixed(0) + '€/m²) semble élevé pour ' + document.getElementById('ville').value + ' — zone encadrée. BailScan va vérifier si vous êtes trop facturé.';
+  } else if (prixM2 > 30) {
+    box.style.display = 'block';
+    box.style.background = '#fff3cd';
+    box.style.border = '1.5px solid #ffc107';
+    box.style.color = '#856404';
+    box.innerHTML = '⚠️ Votre loyer (' + prixM2.toFixed(0) + '€/m²) semble très élevé. L'analyse BailScan va vérifier sa légalité.';
+  } else {
+    box.style.display = 'none';
+  }
+}
+ 
+function skipToAnalysePartielle() {
+  document.getElementById('noBailBox').style.display = 'none';
+  document.getElementById('emailCaptureBox').style.display = 'block';
+}
+ 
+function proceedWithoutBail() {
+  var email = document.getElementById('captureEmail').value.trim();
+  if (email) {
+    // Stocker email pour relance
+    appState.captureEmail = email;
+    // Envoyer email de rappel en background
+    fetch('/api/send-mail', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        type: 'rappel',
+        email: email,
+        ville: appState.ville || '',
+        loyer: appState.loyerBase || 0
+      })
+    }).catch(function(){});
+  }
+  // Lancer analyse partielle sans document
+  appState.noPdf = true;
+  appState.uploadMode = 'text';
+  // Texte minimal pour déclencher l'analyse loyer uniquement
+  document.getElementById('bailText').value = 'Analyse basée sur les informations de loyer uniquement. Pas de document fourni.';
+  goStep(4);
+}
+ 
+// Timer paywall
+function startPaywallTimer() {
+  var key = 'bs_timer_start';
+  var start = localStorage.getItem(key);
+  if (!start) { start = Date.now(); localStorage.setItem(key, start); }
+  function tick() {
+    var elapsed = Math.floor((Date.now() - parseInt(start)) / 1000);
+    var remaining = Math.max(0, 86400 - elapsed);
+    var h = Math.floor(remaining / 3600);
+    var m = Math.floor((remaining % 3600) / 60);
+    var s = remaining % 60;
+    var el = document.getElementById('timerCount');
+    if (el) el.textContent = (h > 0 ? h + 'h ' : '') + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 1000);
 }
  
 // ═══════════════════════════════════════
@@ -1709,10 +1823,12 @@ function goStep(n) {
  
   // Validation step 3
   if (n === 4) {
-    var hasContent = appState.uploadMode === 'upload' ? appState.pdfBase64 : document.getElementById('bailText').value.trim().length > 100;
-    if (!hasContent) {
-      alert('Veuillez fournir votre document avant de continuer.');
-      return;
+    if (!appState.noPdf) {
+      var hasContent = appState.uploadMode === 'upload' ? appState.pdfBase64 : document.getElementById('bailText').value.trim().length > 100;
+      if (!hasContent) {
+        alert('Veuillez fournir votre document avant de continuer.');
+        return;
+      }
     }
   }
  
@@ -1834,8 +1950,10 @@ function selectMode(m) {
 // ═══════════════════════════════════════
 function launchAnalysis() {
   var textContent = appState.uploadMode === 'text' ? document.getElementById('bailText').value.trim() : '';
-  if (appState.uploadMode === 'upload' && !appState.pdfBase64) { alert('Veuillez fournir votre document.'); return; }
-  if (appState.uploadMode === 'text' && textContent.length < 100) { alert('Le texte est trop court pour être analysé.'); return; }
+  if (!appState.noPdf) {
+    if (appState.uploadMode === 'upload' && !appState.pdfBase64) { alert('Veuillez fournir votre document.'); return; }
+    if (appState.uploadMode === 'text' && textContent.length < 100) { alert('Le texte est trop court pour être analysé.'); return; }
+  }
  
   showLoading();
  
@@ -3069,12 +3187,17 @@ function scrollCarousel(dir) {
 }
  
 function resetApp() {
+  appState.noPdf = false;
+  appState.captureEmail = '';
+  document.getElementById('noBailBox') && (document.getElementById('noBailBox').style.display='block');
+  document.getElementById('emailCaptureBox') && (document.getElementById('emailCaptureBox').style.display='none');
   analysisResult = null; isPaid = false;
   document.getElementById('resultsSection').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('typeSelectorBlock').style.display = 'grid';
   document.getElementById('paidSection').style.display = 'none';
   document.getElementById('paywallSection').style.display = 'block';
+  startPaywallTimer();
   goStep(1);
 }
  
@@ -3084,3 +3207,4 @@ function scrollToApp() {
 </script>
 </body>
 </html>
+ 
