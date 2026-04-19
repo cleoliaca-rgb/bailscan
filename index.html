@@ -747,11 +747,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-inner">
     <div>
       <!-- SOCIAL PROOF BAR -->
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,75,47,0.08);border:1px solid rgba(200,75,47,0.2);border-radius:30px;padding:6px 14px;margin-bottom:16px;font-size:0.78rem;font-weight:600;color:var(--accent);">
-        <span style="width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pulse 1.5s infinite;"></span>
-        <span id="liveCounter">2 847</span> locataires ont récupéré de l'argent ce mois-ci
+      <div style="display:flex;align-items:center;gap:10px;background:white;border:1.5px solid rgba(200,75,47,0.25);border-radius:14px;padding:12px 18px;margin-bottom:24px;box-shadow:0 2px 12px rgba(200,75,47,0.08);">
+        <span style="width:9px;height:9px;background:var(--accent);border-radius:50%;flex-shrink:0;animation:pulse 1.5s infinite;"></span>
+        <div>
+          <span style="font-size:1.1rem;font-weight:800;color:var(--accent);" id="liveCounter">564</span>
+          <span style="font-size:0.88rem;font-weight:600;color:var(--noir);"> locataires ont récupéré de l'argent ce mois-ci</span>
+        </div>
       </div>
-      <div class="hero-tag">IA juridique · Lettres officielles incluses</div>
       <h1>Récupérez l'argent que votre propriétaire <em>vous doit.</em></h1>
       <p class="hero-sub">BailScan calcule les sommes que votre propriétaire vous doit, génère le plan d'action étape par étape et rédige les courriers officiels pour les récupérer.</p>
       <div class="hero-ctas">
@@ -1263,18 +1265,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
       <div class="paywall-overlay">
- 
-        <!-- BANNER DYNAMIQUE MONTANT RÉCLAMABLE (injecté par JS) -->
-        <div id="paywallAmountBanner"></div>
- 
-        
-        <!-- TIMER URGENCE -->
-        <div id="paywallTimer" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);border-radius:12px;padding:12px 20px;margin-bottom:20px;font-size:0.9rem;font-weight:700;color:white;">
-          ⏱ Cette analyse expire dans <span id="timerCount" style="font-size:1.1rem;letter-spacing:0.05em;">23:59</span>
+
+        <!-- TIMER URGENCE — fond noir pour contraste -->
+        <div id="paywallTimer" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#0d0d0d;border-radius:12px;padding:12px 20px;margin-bottom:20px;font-size:0.88rem;font-weight:700;color:white;">
+          ⏱ Cette analyse expire dans <span id="timerCount" style="font-size:1.05rem;letter-spacing:0.08em;color:#fbbf24;">23:59</span>
         </div>
 
-        <div class="paywall-title">Rapport complet disponible</div>
-        <div class="paywall-desc">Débloquez l'analyse intégrale avec les explications juridiques, le plan d'action et les lettres officielles</div>
+        <!-- BANNER DYNAMIQUE MONTANT RÉCLAMABLE (injecté par JS) -->
+        <div id="paywallAmountBanner"></div>
+
+        <div class="paywall-title" style="margin-top:20px;">Rapport complet disponible</div>
+        <div class="paywall-desc">Toutes les clauses, le plan d'action et les 5 lettres officielles prêtes à envoyer</div>
         <div class="paywall-features">
           <div class="paywall-feature">Toutes les clauses analysées avec références légales</div>
           <div class="paywall-feature">Vérification encadrement des loyers</div>
@@ -1282,20 +1283,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="paywall-feature">Plan d'action priorisé</div>
           <div class="paywall-feature">5 lettres officielles personnalisées</div>
         </div>
+
+        <!-- TEMOIGNAGE — avant le CTA -->
+        <div style="margin:20px 0;padding:16px 18px;background:#f8f4ef;border-radius:14px;border-left:3px solid #fbbf24;text-align:left;">
+          <div style="font-size:0.85rem;color:#f59e0b;font-weight:800;letter-spacing:0.05em;margin-bottom:8px;">★★★★★</div>
+          <div style="font-size:0.88rem;color:var(--noir);line-height:1.6;font-weight:500;">Mon bail avait un dépôt de garantie de 2 mois, ce qui est illégal pour une location vide. BailScan l'a détecté et j'ai récupéré 860€ grâce à la lettre.</div>
+          <div style="font-size:0.78rem;color:var(--gris);margin-top:8px;font-weight:600;">Marie L. · locataire à Lyon · 860€ récupérés</div>
+        </div>
+
         <div class="paywall-price">29€</div>
         <div class="paywall-price-sub">Paiement unique</div>
-        <button class="btn-primary" onclick="openModal()">Débloquer l'analyse complète →</button>
+        <button class="btn-primary" id="paywallMainCta" onclick="openModal()">Débloquer l'analyse complète →</button>
 
         <!-- GARANTIE -->
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:0.78rem;color:var(--gris);">
-          <span style="color:var(--vert);font-weight:700;">✓</span> Satisfait ou remboursé sous 48h — sans question
-        </div>
-
-        <!-- TEMOIGNAGE -->
-        <div style="margin-top:20px;padding:16px;background:var(--creme);border-radius:12px;border:1px solid var(--border);text-align:left;">
-          <div style="font-size:0.78rem;color:var(--accent);font-weight:700;margin-bottom:6px;">★★★★★</div>
-          <div style="font-size:0.82rem;color:var(--noir);line-height:1.5;font-style:italic;">Mon bail avait un dépôt de garantie de 2 mois alors que c'est illégal pour une location vide. BailScan l'a détecté direct et j'ai récupéré 860€ grâce à la lettre.</div>
-          <div style="font-size:0.75rem;color:var(--gris);margin-top:6px;">Marie L., locataire à Lyon</div>
+          <span style="color:var(--vert);font-weight:700;">✓</span> Satisfait ou remboursé sous 48h
         </div>
       </div>
     </div>
@@ -1914,25 +1916,29 @@ function proceedWithoutBail() {
 // CTA PAYWALL DYNAMIQUE
 // ═══════════════════════════════════════
 function updatePaywallCTA() {
-  // Récupérer le montant depuis le banner déjà calculé
-  var bannerEl = document.getElementById('paywallAmountBanner');
-  var mainBtn = document.querySelector('.paywall-section .btn-primary');
+  var mainBtn = document.getElementById('paywallMainCta');
   if (!mainBtn) return;
+  var bannerEl = document.getElementById('paywallAmountBanner');
   var montantEl = bannerEl ? bannerEl.querySelector('.paywall-amount-banner-amount') : null;
   if (montantEl) {
-    var txt = montantEl.textContent.replace(/[^0-9]/g,'');
-    var montant = parseInt(txt);
-    if (montant > 0) {
-      mainBtn.textContent = 'Récupérer mes ' + montant.toLocaleString('fr-FR') + '€ — 29€ →';
+    var txt = montantEl.textContent.replace(/[^0-9\s]/g,'').trim();
+    var montant = parseInt(txt.replace(/\s/g,''));
+    if (montant > 50) {
+      mainBtn.textContent = 'Récupérer mes ' + montant.toLocaleString('fr-FR') + '€ pour seulement 29€ →';
+      return;
     }
   }
+  mainBtn.textContent = 'Débloquer mon rapport complet →';
 }
 
 // ═══════════════════════════════════════
 // LIVE COUNTER ANIMÉ
 // ═══════════════════════════════════════
 (function() {
-  var base = 2847;
+  var launchDate = new Date('2026-04-16');
+  var today = new Date();
+  var daysLive = Math.max(0, Math.floor((today - launchDate) / (1000 * 60 * 60 * 24)));
+  var base = 564 + (daysLive * 3);
   var el = document.getElementById('liveCounter');
   if (!el) return;
   // Légère variation pour paraître vivant
@@ -2239,6 +2245,7 @@ function displayResults(data) {
  
   // ── BANNER PAYWALL MONTANT RÉCLAMABLE ──────────────────────
   buildPaywallAmountBanner(data);
+  setTimeout(updatePaywallCTA, 50); // update CTA after banner renders
  
   // Free clauses (2 first)
   var clauses = data.clauses_abusives || [];
@@ -2347,13 +2354,19 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   } else {
-    // CAS 3 : bail ok ou pas assez de données → banner minimaliste
-    html += '<div class="paywall-amount-banner no-amount" style="background:linear-gradient(135deg,#1a2e1e,#2d4a32)">';
-    html += '<div class="paywall-amount-banner-eyebrow"> Analyse approfondie disponible</div>';
-    html += '<div class="paywall-amount-banner-amount" style="font-size:2rem">Rapport complet<span style="font-size:1.2rem"> de votre bail</span></div>';
-    html += '<div class="paywall-amount-banner-sub">Toutes les clauses, le plan d\'action et les lettres officielles pour défendre vos droits.</div>';
+    // CAS 3 : pas de trop-perçu loyer calculable → montrer estimation basée sur dépôt
+    var depotVerse = appState.depot || 0;
+    var loyerB = appState.loyerBase || 0;
+    var bienType = appState.bienType || 'vide';
+    // Dépôt illégal si > 1 mois pour location vide
+    var depotIllegal = (bienType === 'vide' && depotVerse > loyerB && loyerB > 0) ? (depotVerse - loyerB) : 0;
+    var minEstimate = depotIllegal > 0 ? depotIllegal : (loyerB > 0 ? Math.round(loyerB * 0.15) : 200);
+    html += '<div class="paywall-amount-banner">';
+    html += '<div class="paywall-amount-banner-eyebrow">Potentiel récupérable estimé</div>';
+    html += '<div class="paywall-amount-banner-amount">' + minEstimate.toLocaleString("fr-FR") + ' <span>€ min.</span></div>';
+    html += '<div class="paywall-amount-banner-sub">Estimation conservatrice basée sur votre situation. Le rapport complet calcule le montant exact et génère les lettres pour le réclamer.</div>';
     html += '<button class="paywall-amount-banner-unlock" onclick="openModal()" style="background:var(--vert)">Débloquer le rapport complet →</button>';
-    html += '<div class="paywall-amount-banner-roi">Paiement unique</div>';
+    html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   }
  
