@@ -2129,21 +2129,24 @@ function updatePaywallCTA() {
 // LIVE COUNTER ANIMÉ
 // ═══════════════════════════════════════
 (function() {
+  var el = document.getElementById('liveCounter');
+  if (!el) return;
   var launchDate = new Date('2026-04-16');
   var today = new Date();
   var daysLive = Math.max(0, Math.floor((today - launchDate) / (1000 * 60 * 60 * 24)));
+  // Base déterministe : même valeur pour tous les visiteurs du même jour
   var base = 564 + (daysLive * 3);
-  var el = document.getElementById('liveCounter');
-  if (!el) return;
-  // Légère variation pour paraître vivant
-  var val = base + Math.floor(Math.random() * 40);
+  var val = base;
   el.textContent = val.toLocaleString('fr-FR');
-  setInterval(function() {
-    if (Math.random() > 0.7) {
-      val += Math.floor(Math.random() * 3) + 1;
-      el.textContent = val.toLocaleString('fr-FR');
-    }
-  }, 8000);
+  // Légère incrémentation en session — uniquement après 10s
+  setTimeout(function() {
+    setInterval(function() {
+      if (Math.random() > 0.6) {
+        val += 1;
+        el.textContent = val.toLocaleString('fr-FR');
+      }
+    }, 12000);
+  }, 10000);
 })();
 
 // ═══════════════════════════════════════
