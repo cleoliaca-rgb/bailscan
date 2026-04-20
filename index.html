@@ -2516,6 +2516,14 @@ function displayResults(data) {
   // ── BANNER PAYWALL MONTANT RÉCLAMABLE ──────────────────────
   buildPaywallAmountBanner(data);
   setTimeout(updatePaywallCTA, 50); // update CTA after banner renders
+
+  // Si déjà payé → afficher directement le contenu payant
+  if (isPaid) {
+    document.getElementById('paywallSection').style.display = 'none';
+    document.getElementById('paidSection').style.display = 'block';
+    showPaidContent();
+    return;
+  }
  
   // Free clauses (2 first)
   var clauses = data.clauses_abusives || [];
@@ -3379,11 +3387,7 @@ function checkPaymentReturn() {
         if (typeof fbq === 'function') {
           fbq('track', 'Purchase', { value: 29.00, currency: 'EUR' });
         }
-        setTimeout(function() {
-          document.getElementById('paywallSection').style.display = 'none';
-          document.getElementById('paidSection').style.display = 'block';
-          showPaidContent();
-        }, 200);
+        // isPaid est déjà true → displayResults gère l'affichage direct
       } catch(e) { console.error(e); }
     } else {
       alert('Paiement confirmé ! Relancez une analyse pour accéder au rapport complet.');
