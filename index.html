@@ -1769,20 +1769,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p style="font-size:0.95rem;color:rgba(255,255,255,0.6);max-width:520px;margin:0 auto;line-height:1.5;">Clauses illégales décryptées, témoignages, conseils pratiques.</p>
     </div>
 
-    <!-- 4 EMBEDS TIKTOK OFFICIELS — cover thumbnail naturel, single click pour lire -->
+    <!-- 4 EMBEDS TIKTOK OFFICIELS — wrapper tt-wrap permet de scaler visuellement le player TikTok (qui force un min-width interne de 325px) -->
     <div class="tiktok-grid" id="tiktokGrid">
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7637509580401954070" data-video-id="7637509580401954070" style="max-width:280px;min-width:240px;margin:0 auto;width:100%;background:transparent;">
-        <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
-      </blockquote>
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7641166055154502945" data-video-id="7641166055154502945" style="max-width:280px;min-width:240px;margin:0 auto;width:100%;background:transparent;">
-        <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
-      </blockquote>
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640076060775779616" data-video-id="7640076060775779616" style="max-width:280px;min-width:240px;margin:0 auto;width:100%;background:transparent;">
-        <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
-      </blockquote>
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640879823241383200" data-video-id="7640879823241383200" style="max-width:280px;min-width:240px;margin:0 auto;width:100%;background:transparent;">
-        <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
-      </blockquote>
+      <div class="tt-wrap">
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7637509580401954070" data-video-id="7637509580401954070" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
+          <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
+        </blockquote>
+      </div>
+      <div class="tt-wrap">
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7641166055154502945" data-video-id="7641166055154502945" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
+          <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
+        </blockquote>
+      </div>
+      <div class="tt-wrap">
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640076060775779616" data-video-id="7640076060775779616" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
+          <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
+        </blockquote>
+      </div>
+      <div class="tt-wrap">
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640879823241383200" data-video-id="7640879823241383200" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
+          <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
+        </blockquote>
+      </div>
     </div>
 
     <!-- CTA PROFIL + INSTAGRAM + FACEBOOK -->
@@ -1807,23 +1815,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <style>
 .tiktok-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 220px);
   gap: 16px;
-  max-width: 1180px;
+  max-width: 1000px;
   margin: 0 auto;
+  justify-content: center;
   align-items: start;
-  justify-items: center;
 }
-.tiktok-grid .tiktok-embed {
-  border-radius: 14px !important;
+.tt-wrap {
+  width: 220px;
+  height: 500px;
   overflow: hidden;
+  border-radius: 14px;
+  position: relative;
 }
-/* Responsive : 2 cols sur desktop moyen et tablet, 1 col sur mobile */
-@media (max-width: 1100px) {
-  .tiktok-grid { grid-template-columns: repeat(2, 1fr); max-width: 600px; }
+.tt-wrap .tiktok-embed,
+.tt-wrap iframe {
+  transform: scale(0.68) !important;
+  transform-origin: top left !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 325px !important;
+  max-width: 325px !important;
+  min-width: 325px !important;
+  margin: 0 !important;
 }
-@media (max-width: 600px) {
-  .tiktok-grid { grid-template-columns: 1fr; max-width: 360px; }
+/* Responsive : 2 cols sur tablet, 1 col sur mobile */
+@media (max-width: 1024px) {
+  .tiktok-grid { grid-template-columns: repeat(2, 220px); max-width: 480px; }
+}
+@media (max-width: 540px) {
+  .tiktok-grid { grid-template-columns: 220px; }
 }
 </style>
 
