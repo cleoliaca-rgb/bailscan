@@ -701,7 +701,25 @@ select.form-input { cursor:pointer; }
   }
 }
 @media(max-width:640px){
-  .blog-grid-home { grid-template-columns:1fr; }
+  /* Carrousel horizontal sur mobile : cartes en flex avec scroll-snap */
+  .blog-grid-home {
+    display: flex !important;
+    grid-template-columns: none !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding: 4px 20px 18px;
+    margin: 0 -20px;
+    scrollbar-width: none;
+  }
+  .blog-grid-home::-webkit-scrollbar { display: none; }
+  .blog-card-home {
+    flex: 0 0 78%;
+    max-width: 78%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
   .blog-home { padding:40px 20px; }
   .pro-home { padding:40px 20px; }
   .pro-home-inner { flex-direction:column; }
@@ -1769,27 +1787,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p style="font-size:0.95rem;color:rgba(255,255,255,0.6);max-width:520px;margin:0 auto;line-height:1.5;">Clauses illégales décryptées, témoignages, conseils pratiques.</p>
     </div>
 
-    <!-- 4 EMBEDS TIKTOK OFFICIELS — wrapper tt-wrap permet de scaler visuellement le player TikTok (qui force un min-width interne de 325px) -->
+    <!-- 4 EMBEDS TIKTOK OFFICIELS — wrapper externe crop, wrapper interne scale (TikTok force min-width:325px en interne, on scale visuellement) -->
     <div class="tiktok-grid" id="tiktokGrid">
-      <div class="tt-wrap">
-        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7637509580401954070" data-video-id="7637509580401954070" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
-          <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
-        </blockquote>
+      <div class="tt-outer">
+        <div class="tt-inner">
+          <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7637509580401954070" data-video-id="7637509580401954070" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
+            <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
+          </blockquote>
+        </div>
       </div>
-      <div class="tt-wrap">
-        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7641166055154502945" data-video-id="7641166055154502945" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
-          <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
-        </blockquote>
+      <div class="tt-outer">
+        <div class="tt-inner">
+          <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7641166055154502945" data-video-id="7641166055154502945" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
+            <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
+          </blockquote>
+        </div>
       </div>
-      <div class="tt-wrap">
-        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640076060775779616" data-video-id="7640076060775779616" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
-          <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
-        </blockquote>
+      <div class="tt-outer">
+        <div class="tt-inner">
+          <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640076060775779616" data-video-id="7640076060775779616" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
+            <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
+          </blockquote>
+        </div>
       </div>
-      <div class="tt-wrap">
-        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640879823241383200" data-video-id="7640879823241383200" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
-          <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
-        </blockquote>
+      <div class="tt-outer">
+        <div class="tt-inner">
+          <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640879823241383200" data-video-id="7640879823241383200" style="max-width:325px;min-width:325px;margin:0;background:transparent;">
+            <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
+          </blockquote>
+        </div>
       </div>
     </div>
 
@@ -1815,38 +1841,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <style>
 .tiktok-grid {
   display: grid;
-  grid-template-columns: repeat(4, 220px);
+  grid-template-columns: repeat(4, 240px);
   gap: 16px;
-  max-width: 1000px;
+  max-width: 1080px;
   margin: 0 auto;
   justify-content: center;
   align-items: start;
 }
-.tt-wrap {
-  width: 220px;
-  height: 500px;
+/* Wrapper externe : dimensions visuelles finales + crop */
+.tt-outer {
+  width: 240px;
+  height: 520px;
   overflow: hidden;
   border-radius: 14px;
-  position: relative;
+  background: #000;
 }
-.tt-wrap .tiktok-embed,
-.tt-wrap iframe {
-  transform: scale(0.68) !important;
-  transform-origin: top left !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 325px !important;
-  max-width: 325px !important;
-  min-width: 325px !important;
-  margin: 0 !important;
+/* Wrapper interne : taille native TikTok (325px) + scale visuel pour rentrer dans 240px */
+.tt-inner {
+  width: 325px;
+  transform: scale(0.738);
+  transform-origin: top left;
 }
 /* Responsive : 2 cols sur tablet, 1 col sur mobile */
 @media (max-width: 1024px) {
-  .tiktok-grid { grid-template-columns: repeat(2, 220px); max-width: 480px; }
+  .tiktok-grid { grid-template-columns: repeat(2, 240px); max-width: 520px; }
 }
-@media (max-width: 540px) {
-  .tiktok-grid { grid-template-columns: 220px; }
+@media (max-width: 560px) {
+  .tiktok-grid { grid-template-columns: 240px; }
 }
 </style>
 
