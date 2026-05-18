@@ -3018,8 +3018,30 @@ function displayResults(data) {
   rs.style.display = 'block';
   // Démarrer le timer dès l'affichage des résultats
   startPaywallTimer();
-  // Activer exit intent après 4 secondes
-  setTimeout(function() { _paywallSeen = true; }, 4000);
+  // Exit intent : activé seulement APRÈS engagement réel (≥20s ET ≥25% du rapport scrollé)
+  // Évite que le popup fire dès qu'on bouge la souris hors de la page sans avoir lu
+  var _engagementTime = false;
+  var _engagementScroll = false;
+  function _checkEngagement() {
+    if (_engagementTime && _engagementScroll) _paywallSeen = true;
+  }
+  setTimeout(function() { _engagementTime = true; _checkEngagement(); }, 20000);
+  function _trackResultsScrollDepth() {
+    var rs = document.getElementById('resultsSection');
+    if (!rs) return;
+    var rsTop = rs.offsetTop;
+    var rsHeight = rs.offsetHeight || 1;
+    var viewportBottom = window.scrollY + window.innerHeight;
+    var depthIntoSection = Math.max(0, viewportBottom - rsTop) / rsHeight;
+    if (depthIntoSection >= 0.25) {
+      _engagementScroll = true;
+      window.removeEventListener('scroll', _trackResultsScrollDepth);
+      _checkEngagement();
+    }
+  }
+  window.addEventListener('scroll', _trackResultsScrollDepth, { passive: true });
+  // Trigger initial au cas où le rapport est déjà visible suffisamment au chargement
+  setTimeout(_trackResultsScrollDepth, 100);
  
   // Date
   document.getElementById('analysisDate').textContent = new Date().toLocaleDateString('fr-FR');
@@ -4277,8 +4299,9 @@ function resetApp() {
   // Reset toggle complément de loyer sur "Non"
   if (typeof toggleComplement === 'function') toggleComplement(false);
   startPaywallTimer();
-  // Activer exit intent après 4 secondes
-  setTimeout(function() { _paywallSeen = true; }, 4000);
+  // Reset exit intent flags — displayResults() ré-armera la détection d'engagement
+  _paywallSeen = false;
+  _exitShown = false;
   // META PIXEL — InitiateCheckout (retargeting)
   if (typeof fbq === 'function') {
     fbq('track', 'InitiateCheckout', { value: 29.00, currency: 'EUR', num_items: 1 });
