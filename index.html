@@ -1771,16 +1771,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- 4 EMBEDS TIKTOK OFFICIELS — cover thumbnail naturel, single click pour lire -->
     <div class="tiktok-grid" id="tiktokGrid">
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7637509580401954070" data-video-id="7637509580401954070" style="max-width:340px;min-width:280px;margin:0 auto;width:100%;background:transparent;">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7637509580401954070" data-video-id="7637509580401954070" style="max-width:280px;min-width:240px;margin:0 auto;width:100%;background:transparent;">
         <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
       </blockquote>
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7641166055154502945" data-video-id="7641166055154502945" style="max-width:340px;min-width:280px;margin:0 auto;width:100%;background:transparent;">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7641166055154502945" data-video-id="7641166055154502945" style="max-width:280px;min-width:240px;margin:0 auto;width:100%;background:transparent;">
         <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
       </blockquote>
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640076060775779616" data-video-id="7640076060775779616" style="max-width:340px;min-width:280px;margin:0 auto;width:100%;background:transparent;">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640076060775779616" data-video-id="7640076060775779616" style="max-width:280px;min-width:240px;margin:0 auto;width:100%;background:transparent;">
         <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
       </blockquote>
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640879823241383200" data-video-id="7640879823241383200" style="max-width:340px;min-width:280px;margin:0 auto;width:100%;background:transparent;">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@bailscan.app/video/7640879823241383200" data-video-id="7640879823241383200" style="max-width:280px;min-width:240px;margin:0 auto;width:100%;background:transparent;">
         <section><a target="_blank" title="@bailscan.app" href="https://www.tiktok.com/@bailscan.app">@bailscan.app</a></section>
       </blockquote>
     </div>
@@ -1809,7 +1809,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-  max-width: 1400px;
+  max-width: 1180px;
   margin: 0 auto;
   align-items: start;
   justify-items: center;
@@ -1819,8 +1819,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   overflow: hidden;
 }
 /* Responsive : 2 cols sur desktop moyen et tablet, 1 col sur mobile */
-@media (max-width: 1280px) {
-  .tiktok-grid { grid-template-columns: repeat(2, 1fr); max-width: 720px; }
+@media (max-width: 1100px) {
+  .tiktok-grid { grid-template-columns: repeat(2, 1fr); max-width: 600px; }
 }
 @media (max-width: 600px) {
   .tiktok-grid { grid-template-columns: 1fr; max-width: 360px; }
@@ -1830,44 +1830,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Script TikTok embed officiel — affiche le cover thumbnail naturellement, single click pour lire -->
 <script async src="https://www.tiktok.com/embed.js"></script>
 
-<!-- Mutex postMessage : quand une vidéo joue, mettre les autres en pause -->
+<!-- Mutex via focus iframe : quand une vidéo est cliquée elle prend le focus, on reload la précédente pour stopper sa lecture (TikTok ne broadcast pas fiablement les events onStateChange via postMessage) -->
 <script>
 (function() {
-  window.addEventListener('message', function(e) {
-    // Filtrer uniquement les messages provenant de TikTok
-    if (!e.origin || e.origin.indexOf('tiktok.com') === -1) return;
-    if (!e.data) return;
-    var data;
+  var lastActive = null;
+  function pauseIframe(iframe) {
+    if (!iframe || iframe.tagName !== 'IFRAME') return;
+    // Essai 1 : postMessage pause (silencieux, pas de flash)
     try {
-      data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-    } catch(_) { return; }
-    // Détection lecture : TikTok envoie type='onStateChange' avec value=1 (playing)
-    var isPlaying = (data && (
-      (data.type === 'onStateChange' && (data.value === 1 || data.value === 'playing')) ||
-      data.type === 'onPlayerPlay' ||
-      data.type === 'play'
-    ));
-    if (!isPlaying) return;
-    // Mettre les autres iframes TikTok en pause
-    var iframes = document.querySelectorAll('#tiktokGrid iframe');
-    iframes.forEach(function(f) {
-      if (f.contentWindow && f.contentWindow !== e.source) {
-        try {
-          f.contentWindow.postMessage(JSON.stringify({
-            'x-tiktok-player': true,
-            type: 'pause',
-            value: ''
-          }), '*');
-        } catch(err) {}
-      }
-    });
+      iframe.contentWindow.postMessage(JSON.stringify({
+        'x-tiktok-player': true,
+        type: 'pause',
+        value: ''
+      }), '*');
+    } catch(_) {}
+    // Essai 2 (fallback fiable) : reload de l'iframe après court délai
+    setTimeout(function() {
+      try {
+        var src = iframe.src;
+        if (!src) return;
+        iframe.src = '';
+        setTimeout(function() { iframe.src = src; }, 0);
+      } catch(_) {}
+    }, 250);
+  }
+  function checkActive() {
+    var ae = document.activeElement;
+    if (!ae || ae.tagName !== 'IFRAME') return;
+    if (!ae.closest || !ae.closest('#tiktokGrid')) return;
+    if (ae === lastActive) return;
+    // Pauser l'iframe précédemment active
+    if (lastActive) pauseIframe(lastActive);
+    lastActive = ae;
     // Tracking
     try {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: 'tiktok_play' });
       if (typeof clarity === 'function') clarity('event', 'tiktok_play');
     } catch(_) {}
+  }
+  // Le clic sur une iframe lui donne le focus, ce qui fait blur sur la window
+  window.addEventListener('blur', function() {
+    setTimeout(checkActive, 100);
   });
+  // Filet de sécurité : polling périodique au cas où blur ne fire pas (certaines versions Safari)
+  setInterval(checkActive, 800);
 })();
 </script>
 
