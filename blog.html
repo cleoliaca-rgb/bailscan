@@ -910,4 +910,9 @@ function filterCards(cat, btn) {
     card.style.display = show ? 'flex' : 'none';
     if (show) count++;
   });
-  
+  document.getElementById('grid-label').textContent = count + ' guide' + (count > 1 ? 's' : '') + ' disponible' + (count > 1 ? 's' : '');
+}
+</script>
+</body>
+</html>
+ 
