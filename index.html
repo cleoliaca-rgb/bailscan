@@ -912,7 +912,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <nav>
     <a href="/blog.html">Guide locataire</a>
     <a href="/pro.html" class="nav-agences">Pour les agences</a>
-    <a href="#app" class="btn-nav">Analyser mon bail →</a>
+    <a href="/analyser" class="btn-nav">Analyser mon bail →</a>
   </nav>
 </header>
  
@@ -923,18 +923,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-inner">
     <div>
       <!-- SOCIAL PROOF BAR -->
-      <div id="liveCounterBar" style="display:flex;align-items:center;gap:10px;background:white;border:1.5px solid rgba(200,75,47,0.25);border-radius:14px;padding:12px 18px;margin-bottom:24px;box-shadow:0 2px 12px rgba(200,75,47,0.08);">
-        <span style="width:9px;height:9px;background:var(--accent);border-radius:50%;flex-shrink:0;animation:pulse 1.5s infinite;"></span>
+      <div style="display:flex;align-items:center;gap:10px;background:white;border:1.5px solid rgba(200,75,47,0.25);border-radius:14px;padding:12px 18px;margin-bottom:24px;box-shadow:0 2px 12px rgba(200,75,47,0.08);">
+        <span style="font-size:1.2rem;flex-shrink:0;line-height:1;">🔒</span>
         <div>
-          <span style="font-size:clamp(1.4rem,5vw,1.1rem);font-weight:800;color:var(--accent);" id="liveCounter">564</span>
-          <span style="font-size:0.88rem;font-weight:600;color:var(--noir);"> locataires ont récupéré de l'argent</span>
+          <span style="font-size:0.88rem;font-weight:700;color:var(--accent);">100 % anonyme</span>
+          <span style="font-size:0.88rem;font-weight:600;color:var(--noir);"> · Sans inscription · Bail jamais stocké</span>
         </div>
       </div>
       <h1>Découvrez si votre propriétaire<br>vous doit <em>de l'argent.</em></h1>
       <p class="hero-sub">BailScan calcule les sommes que votre propriétaire vous doit, génère le plan d'action étape par étape et rédige les courriers officiels pour les récupérer.</p>
       <div class="hero-ctas">
-        <a href="#app" class="btn-primary">Voir combien mon proprio me doit →</a>
-        <a href="#app" class="btn-secondary">État des lieux</a>
+        <a href="/analyser" class="btn-primary">Voir combien mon proprio me doit →</a>
+        <a href="/analyser" class="btn-secondary">État des lieux</a>
       </div>
       <div class="hero-stats">
         <div class="stat"><div class="stat-n">1 740€</div><div class="stat-l">récupération<br>moyenne par locataire</div></div>
@@ -1063,7 +1063,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <!-- CTA BAS DE SECTION -->
     <div style="text-align:center;margin-top:40px;" class="deliverables-cta">
-      <a href="#app" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:white;padding:14px clamp(16px,4vw,32px);border-radius:10px;font-weight:700;font-size:clamp(0.78rem,3.5vw,0.95rem);text-decoration:none;transition:all .2s;white-space:nowrap;" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">Obtenir mon dossier complet&nbsp;→</a>
+      <a href="/analyser" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:white;padding:14px clamp(16px,4vw,32px);border-radius:10px;font-weight:700;font-size:clamp(0.78rem,3.5vw,0.95rem);text-decoration:none;transition:all .2s;white-space:nowrap;" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">Obtenir mon dossier complet&nbsp;→</a>
       <div style="margin-top:12px;font-size:0.75rem;color:#444;">Analyse gratuite · Dossier complet à 29€</div>
     </div>
  
@@ -1075,644 +1075,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 </style>
  
-<!-- APP WIZARD -->
-<section id="app">
-  <div class="app-inner">
-    <h2 class="app-title">Analysez votre document</h2>
-    <p class="app-sub">Suivez les 4 étapes, l'analyse prend moins de 30 secondes</p>
- 
-    <!-- TYPE SELECTOR -->
-    <div class="type-selector" id="typeSelectorBlock">
-      <div class="type-card active" onclick="selectType('bail')" id="type-bail">
-        
-        <div class="type-card-title">Bail locatif</div>
-        <div class="type-card-desc">Analysez les clauses de votre contrat de location</div>
-      </div>
-      <div class="type-card" onclick="selectType('etat')" id="type-etat">
-        
-        <div class="type-card-title">État des lieux</div>
-        <div class="type-card-desc">Détectez les retenues abusives sur votre dépôt</div>
-      </div>
-    </div>
- 
-    <!-- PROGRESS -->
-    <div class="wizard-progress" id="wizardProgress">
-      <div class="wizard-step-indicator">
-        <div class="step-dot active" id="dot1">1</div>
-        <div class="step-label active" id="lbl1">Contexte</div>
-      </div>
-      <div class="step-line" id="line1"></div>
-      <div class="wizard-step-indicator">
-        <div class="step-dot" id="dot2">2</div>
-        <div class="step-label" id="lbl2">Logement</div>
-      </div>
-      <div class="step-line" id="line2"></div>
-      <div class="wizard-step-indicator">
-        <div class="step-dot" id="dot3">3</div>
-        <div class="step-label" id="lbl3">Document</div>
-      </div>
-      <div class="step-line" id="line3"></div>
-      <div class="wizard-step-indicator">
-        <div class="step-dot" id="dot4">4</div>
-        <div class="step-label" id="lbl4">Analyser</div>
-      </div>
-    </div>
- 
-    <!-- STEP 1 : CONTEXTE -->
-    <div class="wizard-panel active" id="step1">
-      <div class="panel-title">Contexte du logement</div>
-      <div class="panel-sub">Ces informations permettent une analyse plus précise et personnalisée</div>
-      <div style="background:rgba(200,75,47,0.06);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:0.92rem;color:var(--accent);font-weight:700;text-align:center;">
-        87% des bails analysés contiennent au moins 1 irrégularité
-      </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Type de location <span class="req">*</span></label>
-          <div class="radio-group">
-            <label class="radio-pill active" id="pill-loc" onclick="setRadio('location_type','location',this)"><input type="radio" name="location_type" value="location" checked> Location</label>
-            <label class="radio-pill" id="pill-col" onclick="setRadio('location_type','colocation',this)"><input type="radio" name="location_type" value="colocation"> Colocation</label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Type de bien <span class="req">*</span></label>
-          <div class="radio-group">
-            <label class="radio-pill active" id="pill-vide" onclick="setRadio('bien_type','vide',this)"><input type="radio" name="bien_type" value="vide" checked> Vide</label>
-            <label class="radio-pill" id="pill-meuble" onclick="setRadio('bien_type','meuble',this)"><input type="radio" name="bien_type" value="meuble"> Meublé</label>
-          </div>
-        </div>
-      </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="ville">Ville <span style="font-weight:400;color:var(--gris);font-size:0.8rem">(recommandé pour vérifier le loyer)</span></label>
-          <div style="position:relative;">
-            <input type="text" id="ville" class="form-input" placeholder="Ex : Paris, Lyon, Bordeaux…" oninput="updateLoyerCheck();villeAutocomplete(this.value)" autocomplete="off" onblur="setTimeout(hideVilleSuggestions,300)">
-            <div id="villeSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:50;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="surface">Surface (m²) <span style="font-weight:400;color:var(--gris);font-size:0.8rem">(recommandé)</span></label>
-          <input type="number" id="surface" class="form-input" placeholder="Ex : 35" min="1" oninput="updateLoyerCheck()">
-        </div>
-      </div>
-      <div class="wizard-nav">
-        <div></div>
-        <button class="btn-wizard-next" onclick="goStep(2)">Continuer → Loyer</button>
-      </div>
-    </div>
- 
-    <!-- STEP 2 : LOYER -->
-    <div class="wizard-panel" id="step2">
-      <div class="panel-title">Informations sur le loyer</div>
-      <div class="panel-sub">Nous vérifierons si votre loyer respecte l'encadrement légal</div>
- 
-      <!-- DATE DÉBUT BAIL -->
-      <div class="form-group" style="margin-bottom:20px;padding:18px 20px;background:var(--creme);border-radius:12px;border:1.5px solid var(--border)">
-        <label for="date_debut_bail" style="font-weight:700;font-size:0.88rem;margin-bottom:10px;display:block">Date de début du bail <span style="font-size:0.73rem;font-weight:400;color:var(--gris)">(permet de calculer le remboursement total estimé)</span></label>
-        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-          <input type="date" id="date_debut_bail" class="form-input" style="max-width:210px" oninput="calcLoyerTotal()">
-          <div id="bail_duree_display" style="display:none;font-size:0.84rem;color:var(--gris);line-height:1.5">
-            Bail en cours depuis <strong><span id="bail_nb_mois">—</span> mois</strong><br>
-            <span style="font-size:0.77rem">Depuis le <span id="bail_date_fmt">—</span></span>
-          </div>
-        </div>
-      </div>
- 
-      <!-- Loyer de base — obligatoire -->
-      <div class="form-group">
-        <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="color:var(--accent);font-size:0.8rem">*</span></label>
-        <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal();showLoyerAlert()">
-        <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Montant que vous payez chaque mois, hors charges</small>
-      </div>
- 
-      <!-- Loyers de référence — toggle Oui/Non puis champs conditionnels -->
-      <div class="form-group" style="margin-top:12px">
-        <label style="font-size:0.85rem;font-weight:700;color:var(--noir);margin-bottom:8px;display:block">
-          Votre bail mentionne-t-il des loyers de référence ?
-          <span style="font-size:0.73rem;font-weight:400;color:var(--gris);display:block;margin-top:3px;line-height:1.4;">Indiqués pour les villes en zone encadrée (Paris, Lyon, Bordeaux, Lille, Montpellier…)</span>
-        </label>
 
-        <!-- Toggle Oui/Non -->
-        <div style="display:flex;gap:8px;">
-          <button type="button" id="loyerRefNo" onclick="toggleLoyerRef(false)" style="flex:1;padding:12px 16px;background:white;border:1.5px solid var(--accent);color:var(--accent);font-weight:700;font-size:0.88rem;border-radius:10px;cursor:pointer;transition:all .15s;font-family:inherit;">Non</button>
-          <button type="button" id="loyerRefYes" onclick="toggleLoyerRef(true)" style="flex:1;padding:12px 16px;background:white;border:1.5px solid var(--border);color:var(--gris);font-weight:700;font-size:0.88rem;border-radius:10px;cursor:pointer;transition:all .15s;font-family:inherit;">Oui</button>
-        </div>
-
-        <!-- Bloc dépliable : 3 champs + checkboxes (caché par défaut) -->
-        <div id="loyerRefBlock" style="display:none;margin-top:14px;">
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" class="loyer-ref-grid">
-            <div>
-              <label for="loyer_minore" style="font-size:0.78rem;color:var(--gris);font-weight:600">Loyer minoré (&#8364;/mois)</label>
-              <input type="number" id="loyer_minore" class="form-input" placeholder="Ex : 780" min="0" oninput="calcLoyerTotal()" style="margin-top:4px">
-            </div>
-            <div>
-              <label for="loyer_ref" style="font-size:0.78rem;color:var(--gris);font-weight:600">Loyer de référence (&#8364;/mois)</label>
-              <input type="number" id="loyer_ref" class="form-input" placeholder="Ex : 870" min="0" oninput="calcLoyerTotal()" style="margin-top:4px">
-            </div>
-            <div>
-              <label for="loyer_majore" style="font-size:0.78rem;color:var(--gris);font-weight:600">Loyer majoré (&#8364;/mois)</label>
-              <input type="number" id="loyer_majore" class="form-input" placeholder="Ex : 950" min="0" oninput="calcLoyerTotal()" style="margin-top:4px">
-            </div>
-          </div>
-          <!-- Cases à cocher : lequel est pris en compte -->
-          <div id="loyer_ref_checkboxes" style="display:none;margin-top:10px;padding:12px;background:var(--creme);border-radius:10px;border:1px solid var(--border)">
-            <p style="font-size:0.78rem;font-weight:700;color:var(--noir);margin:0 0 8px">Quel(s) loyer(s) de référence est/sont mentionné(s) dans votre bail ?</p>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;cursor:pointer">
-                <input type="checkbox" id="use_loyer_minore" onchange="calcLoyerTotal()" style="width:15px;height:15px;accent-color:var(--accent)">
-                Loyer minoré
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;cursor:pointer">
-                <input type="checkbox" id="use_loyer_ref" onchange="calcLoyerTotal()" style="width:15px;height:15px;accent-color:var(--accent)">
-                Loyer de référence
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;cursor:pointer">
-                <input type="checkbox" id="use_loyer_majore" onchange="calcLoyerTotal()" style="width:15px;height:15px;accent-color:var(--accent)">
-                Loyer majoré
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
- 
-      <!-- Complément de loyer — toggle Oui/Non puis montant + justification conditionnels -->
-      <div class="form-group" style="margin-top:12px">
-        <label style="font-size:0.85rem;font-weight:700;color:var(--noir);margin-bottom:8px;display:block">
-          Votre bail mentionne-t-il un complément de loyer ?
-          <span style="font-size:0.73rem;font-weight:400;color:var(--gris);display:block;margin-top:3px;line-height:1.4;">Supplément au loyer de base, souvent justifié par une caractéristique exceptionnelle du logement.</span>
-        </label>
-
-        <!-- Toggle Oui/Non -->
-        <div style="display:flex;gap:8px;">
-          <button type="button" id="complementNo" onclick="toggleComplement(false)" style="flex:1;padding:12px 16px;background:white;border:1.5px solid var(--accent);color:var(--accent);font-weight:700;font-size:0.88rem;border-radius:10px;cursor:pointer;transition:all .15s;font-family:inherit;">Non</button>
-          <button type="button" id="complementYes" onclick="toggleComplement(true)" style="flex:1;padding:12px 16px;background:white;border:1.5px solid var(--border);color:var(--gris);font-weight:700;font-size:0.88rem;border-radius:10px;cursor:pointer;transition:all .15s;font-family:inherit;">Oui</button>
-        </div>
-
-        <!-- Bloc dépliable : montant + justification (caché par défaut) -->
-        <div id="complementBlock" style="display:none;margin-top:14px;">
-          <div class="form-group" style="margin-bottom:14px;">
-            <label for="complement_loyer" style="font-size:0.82rem;font-weight:600;color:var(--noir);">Montant du complément (&#8364;/mois)</label>
-            <input type="number" id="complement_loyer" class="form-input" placeholder="Ex : 80" min="0" oninput="calcLoyerTotal()" style="margin-top:4px">
-          </div>
-          <div class="form-group" id="complement_justif_group" style="margin:0;">
-            <label for="complement_justif" style="font-size:0.82rem;font-weight:600;color:var(--noir);display:block;margin-bottom:4px;">
-              Justification du complément
-              <span style="font-size:0.73rem;font-weight:400;color:var(--gris);">(optionnel)</span>
-            </label>
-            <div style="font-size:0.75rem;color:var(--gris);margin-bottom:8px;line-height:1.5;">
-              Si une justification est mentionnée dans votre bail, copiez-la ici. BailScan vérifiera si elle est valable selon la loi. Si vous laissez vide, le complément sera considéré comme non justifié (potentiellement récupérable).
-            </div>
-            <textarea id="complement_justif" class="form-input" rows="3" placeholder="Ex : Jardin privatif de 40 m², vue dégagée sur parc, double exposition..." style="resize:vertical;font-size:0.85rem;"></textarea>
-          </div>
-        </div>
-      </div>
- 
-      <div class="form-grid" style="margin-top:18px;">
-        <div class="form-group">
-          <label for="charges">Charges mensuelles (&#8364;)</label>
-          <input type="number" id="charges" class="form-input" placeholder="Ex : 80" min="0" oninput="calcLoyerTotal()">
-        </div>
-        <div class="form-group">
-          <label for="depot">Dépôt de garantie versé (€)</label>
-          <input type="number" id="depot" class="form-input" placeholder="Ex : 800" min="0">
-        </div>
-      </div>
-      <div class="loyer-breakdown" id="loyerBreakdown" style="display:none">
-        <div class="loyer-row"><span class="loyer-row-label">Loyer de base</span><span class="loyer-row-val" id="lb1">—</span></div>
-        <div class="loyer-row"><span class="loyer-row-label">Loyer majoré</span><span class="loyer-row-val" id="lb2">—</span></div>
-        <div class="loyer-row"><span class="loyer-row-label">Complément de loyer</span><span class="loyer-row-val" id="lb3">—</span></div>
-        <div class="loyer-row"><span class="loyer-row-label">Charges</span><span class="loyer-row-val" id="lb4">—</span></div>
-        <div class="loyer-row"><span class="loyer-row-label" style="font-weight:700">Total mensuel</span><span class="loyer-row-val loyer-total" id="lb_total">—</span></div>
-      </div>
-      <!-- ALERTE LOYER TEMPS RÉEL -->
-      <div id="loyerAlertBox" style="display:none;margin-top:16px;padding:14px 18px;border-radius:12px;font-size:0.85rem;font-weight:600;"></div>
-
-      <div class="wizard-nav">
-        <button class="btn-wizard-back" onclick="goStep(1)">← Retour</button>
-        <button class="btn-wizard-next" onclick="goStep(3)" id="btnStep2Next">Continuer → Document</button>
-      </div>
-    </div>
- 
-    <!-- STEP 3 : DOCUMENT -->
-    <div class="wizard-panel" id="step3">
-      <div class="panel-title" id="step3title">Votre bail</div>
-      <div class="panel-sub" id="step3sub">Comment souhaitez-vous procéder ?</div>
-
-      <!-- CHOIX PRINCIPAL : 2 cartes égales -->
-      <div id="step3ChoiceCards" style="display:flex;flex-direction:column;gap:12px;margin-bottom:8px;">
-
-        <!-- CARTE 1 : J'ai mon bail -->
-        <div onclick="showBailUpload()" style="cursor:pointer;padding:18px 20px;border-radius:14px;border:2px solid var(--border);background:white;display:flex;align-items:center;gap:16px;transition:all .2s;" onmouseover="this.style.borderColor='var(--noir)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--creme);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">📄</div>
-          <div>
-            <div style="font-size:0.92rem;font-weight:700;color:var(--noir);margin-bottom:3px;">J'ai mon bail en PDF</div>
-            <div style="font-size:0.78rem;color:var(--gris);">Analyse complète. Toutes les clauses détectées.</div>
-          </div>
-          <div style="margin-left:auto;color:var(--gris);font-size:1.2rem;">›</div>
-        </div>
-
-        <!-- CARTE 2 : Je n'ai pas mon bail -->
-        <div onclick="showSansBail()" style="cursor:pointer;padding:18px 20px;border-radius:14px;border:2px solid var(--accent);background:rgba(200,75,47,0.04);display:flex;align-items:center;gap:16px;transition:all .2s;" onmouseover="this.style.background='rgba(200,75,47,0.08)'" onmouseout="this.style.background='rgba(200,75,47,0.04)'">
-          <div style="width:44px;height:44px;border-radius:12px;background:rgba(200,75,47,0.1);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">📱</div>
-          <div>
-            <div style="font-size:0.92rem;font-weight:700;color:var(--noir);margin-bottom:3px;">Je n'ai pas mon bail</div>
-            <div style="font-size:0.78rem;color:var(--gris);">On vérifie quand même votre loyer en 30 secondes</div>
-          </div>
-          <div style="margin-left:auto;color:var(--accent);font-size:1.2rem;">›</div>
-        </div>
-
-      </div>
-
-      <!-- PANEL UPLOAD (caché par défaut) -->
-      <div id="bailUploadPanel" style="display:none;">
-        <div style="margin:16px 0 12px;cursor:pointer;color:var(--gris);font-size:0.82rem;" onclick="showChoiceCards()">← Retour</div>
-        <div class="upload-tabs">
-          <button class="upload-tab active" id="tab-upload" onclick="switchTab('upload')">↑ Upload PDF</button>
-          <button class="upload-tab" id="tab-text" onclick="switchTab('text')">✎ Saisir le texte</button>
-        </div>
-        <div id="upload-panel">
-          <div class="upload-zone" id="uploadZone" onclick="triggerFileInput(event)">
-            <div class="upload-zone-title">Glissez votre PDF ici ou cliquez pour parcourir</div>
-            <div class="upload-zone-sub">PDF uniquement · Max 10 Mo</div>
-            <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleFile(this.files[0])">
-          </div>
-          <div class="upload-success" id="uploadSuccess" style="display:none">
-            <div class="upload-success-icon" style="color:var(--vert);font-size:1.2rem;font-weight:700">✓</div>
-            <div><div class="upload-success-name" id="uploadFileName"></div><div class="upload-success-size" id="uploadFileSize"></div></div>
-            <button style="margin-left:auto;background:none;border:none;color:var(--gris);cursor:pointer;font-size:1.2rem" onclick="clearFile()">×</button>
-          </div>
-        </div>
-        <div id="text-panel" style="display:none">
-          <textarea class="textarea-bail" id="bailText" placeholder="Collez ici le texte de votre bail (toutes les clauses, conditions générales…)" oninput="updateCharCount()"></textarea>
-          <div class="char-count" id="charCount">0 caractères · Minimum recommandé : 500</div>
-        </div>
-
-        <!-- DOCUMENTS COMPLÉMENTAIRES -->
-        <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
-          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px;">
-            <div style="font-weight:700;font-size:0.92rem;color:var(--noir);">Documents complémentaires</div>
-            <div style="font-size:0.72rem;color:var(--gris);background:var(--creme);border:1px solid var(--border);padding:2px 8px;border-radius:10px;">facultatif</div>
-          </div>
-          <p style="font-size:0.82rem;color:var(--gris);margin-bottom:16px;line-height:1.65;">Ajoutez tout document utile à l'analyse : congé du bailleur, avis de révision IRL, avenant, courrier de l'agence…</p>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
-            <div class="doc-hint-pill" onclick="addDocHint(this, 'Congé du bailleur')">+ Congé du bailleur</div>
-            <div class="doc-hint-pill" onclick="addDocHint(this, 'Révision IRL')">+ Révision IRL</div>
-            <div class="doc-hint-pill" onclick="addDocHint(this, 'Avenant au bail')">+ Avenant au bail</div>
-            <div class="doc-hint-pill" onclick="addDocHint(this, 'Courrier agence')">+ Courrier agence</div>
-            <div class="doc-hint-pill" onclick="addDocHint(this, 'Quittances de loyer')">+ Quittances de loyer</div>
-            <div class="doc-hint-pill" onclick="addDocHint(this, 'Autre document')">+ Autre</div>
-          </div>
-          <div id="extraDocsZone" style="border:2px dashed var(--border);border-radius:12px;padding:18px 20px;background:white;cursor:pointer;transition:all .2s;" onclick="triggerExtraFileInput()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="event.preventDefault();this.style.borderColor='var(--border)';handleExtraFiles(event.dataTransfer.files)">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="font-size:1rem;color:var(--gris);">↑</div>
-              <div>
-                <div style="font-size:0.85rem;font-weight:600;color:var(--noir);">Glissez vos PDFs ou cliquez pour ajouter</div>
-                <div style="font-size:0.75rem;color:var(--gris);margin-top:2px;">Plusieurs fichiers acceptés · PDF uniquement · Max 10 Mo chacun</div>
-              </div>
-            </div>
-            <input type="file" id="extraFileInput" accept=".pdf" multiple style="display:none" onchange="handleExtraFiles(this.files)">
-          </div>
-          <div id="extraDocsList" style="display:flex;flex-direction:column;gap:8px;margin-top:10px;"></div>
-        </div>
-
-        <div class="wizard-nav">
-          <button class="btn-wizard-back" onclick="showChoiceCards()">← Retour</button>
-          <button class="btn-wizard-next" onclick="goStep(4)" id="btnStep3Next">Continuer → Analyser</button>
-        </div>
-      </div>
-
-      <!-- PANEL SANS BAIL -->
-      <div id="sansBailPanel" style="display:none;">
-        <div style="margin:16px 0 16px;cursor:pointer;color:var(--gris);font-size:0.82rem;" onclick="showChoiceCards()">← Retour</div>
-        <div style="padding:16px 20px;background:var(--creme);border-radius:12px;border:1px solid var(--border);margin-bottom:16px;">
-          <div style="font-size:0.85rem;font-weight:700;color:var(--noir);margin-bottom:6px;">Ce qu'on peut détecter sans le bail</div>
-          <div style="font-size:0.78rem;color:var(--gris);line-height:1.8;">✓ Loyer trop élevé vs plafond légal<br>✓ Dépôt de garantie illégal<br>✓ Estimation du trop-perçu</div>
-        </div>
-        <input type="email" id="captureEmail" class="form-input" placeholder="Votre email pour recevoir le rapport" style="width:100%;box-sizing:border-box;margin-bottom:12px;">
-        <button onclick="proceedWithoutBail()" style="background:var(--accent);color:white;border:none;padding:13px 24px;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;width:100%;">Analyser mon loyer →</button>
-        <div style="text-align:center;font-size:0.75rem;color:var(--gris);margin-top:10px;">Gratuit · Sans engagement · Résultat en 30 secondes</div>
-      </div>
-
-      <!-- éléments legacy pour compatibilité JS -->
-      <div id="noBailBox" style="display:none;"></div>
-      <div id="emailCaptureBox" style="display:none;"></div>
-
-    </div>
- 
-    <!-- STEP 4 : RÉCAP + LANCER -->
-    <div class="wizard-panel" id="step4">
-      <div class="panel-title">Prêt à analyser</div>
-      <div class="panel-sub">Vérifiez les informations puis lancez l'analyse</div>
-      <div id="recapBlock" style="background:var(--creme);border-radius:14px;padding:20px 24px;margin-bottom:24px;border:1px solid var(--border);">
-        <!-- Rempli dynamiquement -->
-      </div>
-      <div class="analyse-modes" id="analyseModes">
-        <div class="analyse-mode active" id="mode-bail" onclick="selectMode('bail')">
-          <div class="analyse-mode-badge">Inclus</div>
-          
-          <div class="analyse-mode-title">Analyse du bail</div>
-          <div class="analyse-mode-desc">Clauses abusives, légalité du dépôt, conditions de résiliation, explications juridiques détaillées</div>
-        </div>
-        <div class="analyse-mode active" id="mode-loyer" onclick="selectMode('loyer')">
-          <div class="analyse-mode-badge" style="background:var(--vert)">Auto</div>
-          
-          <div class="analyse-mode-title">Encadrement des loyers</div>
-          <div class="analyse-mode-desc">Vérification automatique si votre ville est concernée et calcul du trop-perçu éventuel</div>
-        </div>
-      </div>
-      <div class="wizard-nav">
-        <button class="btn-wizard-back" onclick="goStep(3)">← Retour</button>
-        <button class="btn-analyze" onclick="launchAnalysis()" id="btnAnalyze">
-          Lancer l'analyse gratuite →
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
- 
-<!-- RESULTS -->
-<section class="results-section" id="resultsSection">
-  <div class="results-inner">
-    <div class="results-header">
-      <div>
-        <div class="results-title">Votre rapport BailScan</div>
-        <div class="results-subtitle" id="resultsSubtitle">Analyse effectuée le <span id="analysisDate"></span></div>
-      </div>
-    </div>
- 
-    <!-- SCORE -->
-    <div class="score-card" id="scoreCard">
-      <div class="score-circle" id="scoreCircle">
-        <span class="score-num" id="scoreNum">—</span>
-        <span class="score-label">/100</span>
-      </div>
-      <div class="score-info">
-        <div class="verdict-badge" id="verdictBadge"></div>
-        <div class="score-verdict" id="scoreVerdict"></div>
-        <div class="score-resume" id="scoreResume"></div>
-      </div>
-    </div>
- 
-    <!-- LOYER CHECK -->
-    <div id="loyerCheckResult"></div>
- 
-    <!-- CLAUSES GRATUITES -->
-    <div class="clauses-section" id="freeClausesSection">
-      <div class="clauses-title">Clauses analysées <span id="clausesFreeCount"></span></div>
-      <div id="freeClausesList"></div>
-
-      <!-- TEASER clauses cachées -->
-      <div id="hiddenClausesTeaser" style="display:none;margin-top:12px;border-radius:14px;overflow:hidden;border:2px solid var(--accent);">
-        <!-- Fausses clauses floutées -->
-        <div style="position:relative;">
-          <div style="padding:14px 18px;background:white;filter:blur(4px);pointer-events:none;user-select:none;">
-            <div style="height:14px;background:rgba(200,75,47,0.2);border-radius:4px;margin-bottom:8px;width:70%;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:90%;"></div>
-          </div>
-          <div style="padding:14px 18px;background:white;border-top:1px solid var(--border);filter:blur(4px);pointer-events:none;user-select:none;">
-            <div style="height:14px;background:rgba(200,75,47,0.15);border-radius:4px;margin-bottom:8px;width:60%;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:85%;"></div>
-          </div>
-        </div>
-        <!-- CTA par-dessus -->
-        <div style="background:var(--accent);padding:14px 18px;text-align:center;cursor:pointer;" onclick="trackBeginCheckout('hidden_clauses_bar');openModal()">
-          <div style="font-size:0.88rem;font-weight:800;color:white;" id="hiddenClausesCount">+ X clauses illégales masquées</div>
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);margin-top:2px;">Débloquer pour voir lesquelles et comment réclamer →</div>
-        </div>
-      </div>
-    </div>
- 
-    <!-- PAYWALL -->
-    <div class="paywall-section" id="paywallSection">
-      <div class="paywall-blur" id="paywallBlur">
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="height:80px;background:var(--border);border-radius:12px;opacity:0.5"></div>
-          <div style="height:80px;background:var(--border);border-radius:12px;opacity:0.3"></div>
-          <div style="height:80px;background:var(--border);border-radius:12px;opacity:0.15"></div>
-        </div>
-      </div>
-      <div class="paywall-overlay">
-
-        <!-- TIMER URGENCE — fond noir pour contraste -->
-        <div id="paywallTimer" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#0d0d0d;border-radius:12px;padding:12px 20px;margin-bottom:20px;font-size:0.88rem;font-weight:700;color:white;">
-          ⏱ Cette analyse expire dans <span id="timerCount" style="font-size:1.05rem;letter-spacing:0.08em;color:#fbbf24;">29:59</span>
-        </div>
-
-        <!-- BANNER DYNAMIQUE MONTANT RÉCLAMABLE (injecté par JS) -->
-        <div id="paywallAmountBanner"></div>
-
-        <div class="paywall-title" style="margin-top:20px;">Rapport complet disponible</div>
-        <div class="paywall-desc">Toutes les clauses, le plan d'action et les 5 lettres officielles prêtes à être envoyées MAINTENANT</div>
-        <div class="paywall-features">
-          <div class="paywall-feature">Toutes les clauses analysées avec références légales</div>
-          <div class="paywall-feature">Vérification encadrement des loyers</div>
-          <div class="paywall-feature">Calcul des sommes récupérables</div>
-          <div class="paywall-feature">Plan d'action priorisé</div>
-          <div class="paywall-feature">5 lettres officielles personnalisées</div>
-        </div>
-
-        <!-- TEMOIGNAGE — avant le CTA -->
-        <div style="margin:20px 0;padding:16px 18px;background:#f8f4ef;border-radius:14px;border-left:3px solid #fbbf24;text-align:left;">
-          <div style="display:flex;gap:2px;margin-bottom:8px;color:#f59e0b;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          </div>
-          <div style="font-size:0.88rem;color:var(--noir);line-height:1.6;font-weight:500;">Mon bail avait un dépôt de garantie de 2 mois, ce qui est illégal pour une location vide. BailScan l'a détecté et j'ai récupéré 860€ grâce à la lettre.</div>
-          <div style="font-size:0.78rem;color:var(--gris);margin-top:8px;font-weight:600;">Marie L. · locataire à Lyon · 860€ récupérés</div>
-        </div>
-
-        <!-- ANCRAGE PRIX — triple contraste -->
-        <div id="paywallPriceAnchor" style="display:flex;align-items:stretch;justify-content:center;gap:8px;margin:16px 0 8px;flex-wrap:nowrap;">
-          <div style="flex:1;min-width:0;text-align:center;padding:14px 6px;background:rgba(200,75,47,0.04);border-radius:10px;opacity:0.7;">
-            <div style="font-family:'Instrument Serif',serif;font-size:clamp(1.4rem,5vw,1.9rem);color:var(--gris);text-decoration:line-through;line-height:1;">1 500€+</div>
-            <div style="font-size:0.68rem;color:var(--gris);font-weight:600;margin-top:6px;line-height:1.3;">Procédure<br>judiciaire</div>
-          </div>
-          <div style="flex:1;min-width:0;text-align:center;padding:14px 6px;background:rgba(200,75,47,0.04);border-radius:10px;opacity:0.7;">
-            <div style="font-family:'Instrument Serif',serif;font-size:clamp(1.4rem,5vw,1.9rem);color:var(--gris);text-decoration:line-through;line-height:1;">200€</div>
-            <div style="font-size:0.68rem;color:var(--gris);font-weight:600;margin-top:6px;line-height:1.3;">1h avocat<br>diagnostic</div>
-          </div>
-          <div style="flex:1;min-width:0;text-align:center;padding:14px 6px;background:linear-gradient(135deg,rgba(45,106,79,0.10),rgba(45,106,79,0.04));border:1.5px solid var(--vert);border-radius:10px;">
-            <div class="paywall-price" style="margin:0;line-height:1;font-size:clamp(1.6rem,5.5vw,2.2rem);">29€</div>
-            <div style="font-size:0.68rem;color:var(--vert);font-weight:800;margin-top:6px;line-height:1.3;text-transform:uppercase;letter-spacing:0.05em;">BailScan<br>complet</div>
-          </div>
-        </div>
-        <div class="paywall-price-sub">Paiement unique · Résultat immédiat</div>
-
-        <!-- MESSAGE PERTE MENSUELLE -->
-        <div id="monthlyLossMsg" style="display:none;margin:10px 0 16px;padding:10px 16px;background:rgba(200,75,47,0.06);border-radius:10px;border:1px solid rgba(200,75,47,0.15);font-size:0.82rem;color:var(--accent);font-weight:600;text-align:center;"></div>
-
-        <!-- BLOC GARANTIE — fort impact sur la confiance -->
-        <div style="display:flex;align-items:center;gap:12px;margin:14px auto 18px;padding:12px 16px;background:rgba(45,106,79,0.06);border:1.5px solid rgba(45,106,79,0.25);border-radius:12px;max-width:480px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--vert);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:1.1rem;">✓</div>
-          <div style="text-align:left;">
-            <div style="font-weight:700;font-size:clamp(0.78rem,3.1vw,0.88rem);color:var(--noir);line-height:1.3;white-space:nowrap;">Satisfait ou remboursé sous 14 jours</div>
-            <div style="font-size:0.74rem;color:var(--gris);margin-top:2px;line-height:1.4;">Pas de question, remboursement intégral si l'analyse ne vous sert à rien.</div>
-          </div>
-        </div>
-
-        <button class="btn-primary" id="paywallMainCta" onclick="trackBeginCheckout('paywall_cta');openModal()" style="font-size:1rem;padding:16px 28px;">Débloquer l'analyse complète →</button>
-
-        <!-- BADGES DE CONFIANCE -->
-        <div class="paywall-trust-badges" style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;flex-wrap:wrap;">
-          <div style="display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--gris);">
-            <span style="font-size:0.9rem;">🔒</span> Paiement sécurisé Stripe
-          </div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--gris);">
-            <span style="font-size:0.9rem;">🇫🇷</span> Données RGPD non stockées
-          </div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--gris);">
-            <span style="font-size:0.9rem;">⚖️</span> Loi 1989 · ALUR · ELAN
-          </div>
-        </div>
-
-        <!-- CAPTURE EMAIL "PAS PRÊT" — récupère les hésitants pour relance -->
-        <div id="emailCaptureBlock" style="margin-top:24px;padding-top:20px;border-top:1px dashed var(--border);">
-          <div id="emailCaptureToggle" style="text-align:center;">
-            <button type="button" onclick="showEmailCapture()" style="background:none;border:none;color:var(--gris);font-size:0.78rem;text-decoration:underline;cursor:pointer;font-family:inherit;padding:6px 12px;">Pas prêt à payer ? Recevoir l'analyse par email</button>
-          </div>
-          <div id="emailCaptureForm" style="display:none;margin-top:8px;padding:16px;background:var(--creme,#f8f4ef);border-radius:12px;">
-            <div style="font-size:0.85rem;color:var(--noir);font-weight:600;margin-bottom:6px;">On vous envoie un récap par email</div>
-            <div style="font-size:0.76rem;color:var(--gris);margin-bottom:12px;line-height:1.5;">Vous pourrez débloquer le rapport complet à tout moment depuis le lien envoyé. Aucun spam.</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <input type="email" id="captureEmailInput" placeholder="votre@email.fr" style="flex:1;min-width:180px;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:0.88rem;font-family:inherit;background:white;">
-              <button type="button" onclick="submitEmailCapture()" id="captureEmailBtn" style="background:var(--noir);color:white;border:none;padding:11px 18px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;">Envoyer →</button>
-            </div>
-            <div id="captureEmailMsg" style="margin-top:10px;font-size:0.78rem;display:none;"></div>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
- 
-    <!-- PAID CONTENT -->
-    <div class="paid-section" id="paidSection">
- 
-      <!-- BANNER TROP-PERÇU (réaffiché après paiement) -->
-      <div id="paidAmountBanner" style="margin-bottom:24px"></div>
- 
-      <!-- EXPORT PDF + EMAIL -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">
-        <div>
-          <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir)">Votre rapport BailScan</div>
-          <div id="reportDate" style="font-size:0.8rem;color:var(--gris)"></div>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button onclick="exportReportPDF(this)" style="display:flex;align-items:center;gap:8px;background:white;color:var(--noir);border:1.5px solid var(--border);padding:11px 20px;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--noir)'" onmouseout="this.style.borderColor='var(--border)'">
-            ↓ Télécharger le PDF
-          </button>
-          <button onclick="openEmailModal()" style="display:flex;align-items:center;gap:10px;background:var(--accent);color:white;border:none;padding:13px 28px;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(200,75,47,0.3);" onmouseover="this.style.background='#a83a20'" onmouseout="this.style.background='var(--accent)'">
-            ✉ Recevoir le rapport par email
-          </button>
-        </div>
-      </div>
- 
-      <!-- MODAL EMAIL -->
-      <div id="emailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:400;align-items:center;justify-content:center;padding:20px;">
-        <div style="background:white;border-radius:20px;padding:36px;max-width:420px;width:100%;">
-          <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir);margin-bottom:8px;">Recevoir mon rapport</div>
-          <div style="font-size:0.85rem;color:var(--gris);margin-bottom:24px;">Entrez votre email. Vous recevrez le rapport complet en PDF dans quelques secondes.</div>
-          <input type="email" id="emailInput" placeholder="votre@email.com" style="width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:0.92rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;margin-bottom:12px;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
-          <div id="emailFeedback" style="font-size:0.78rem;color:var(--vert);margin-bottom:12px;display:none;"></div>
-          <div style="display:flex;gap:10px;">
-            <button onclick="sendReportByEmail(this)" style="flex:1;background:var(--accent);color:white;border:none;padding:13px;border-radius:10px;font-weight:700;font-size:0.9rem;cursor:pointer;">Envoyer →</button>
-            <button onclick="closeEmailModal()" style="background:white;color:var(--gris);border:1.5px solid var(--border);padding:13px 18px;border-radius:10px;font-size:0.9rem;cursor:pointer;">Annuler</button>
-          </div>
-          <div style="margin-top:12px;font-size:0.72rem;color:var(--gris);text-align:center;">· Email sécurisé · Aucune utilisation commerciale ·</div>
-        </div>
-      </div>
- 
-      <div class="clauses-section" id="allClausesSection">
-        <div class="clauses-title">Toutes les clauses <span id="clausesAllCount"></span></div>
-        <div id="allClausesList"></div>
-      </div>
- 
-      <div class="plan-action" id="planActionBlock">
-        <div class="plan-action-title">Plan d'action recommandé</div>
-        <div style="font-size:0.82rem;color:rgba(245,240,232,0.5);margin-bottom:20px;">Suivez ces étapes dans l'ordre pour maximiser vos chances de récupérer votre argent.</div>
-        <div class="plan-steps" id="planStepsList"></div>
-      </div>
- 
-      <div class="letters-section">
-        <div class="letters-title">Lettres officielles</div>
- 
-        <!-- IDENTITÉ LOCATAIRE -->
-        <div class="identite-bloc">
-          <div class="identite-bloc-title">Vos coordonnées pour les lettres</div>
-          <div class="identite-bloc-sub">Renseignez ces informations une seule fois. Elles seront intégrées automatiquement dans toutes les lettres générées.</div>
-          <div class="identite-grid">
-            <div class="identite-field">
-              <label>Prénom et Nom</label>
-              <input type="text" id="id_nom" placeholder="Ex : Marie Dupont" oninput="saveIdentite()">
-            </div>
-            <div class="identite-field">
-              <label>Adresse du logement loué</label>
-              <input type="text" id="id_adresse" placeholder="Ex : 12 rue des Acacias, 33000 Bordeaux" oninput="saveIdentite()">
-            </div>
-            <div class="identite-field">
-              <label>Nom du propriétaire / bailleur</label>
-              <input type="text" id="id_proprio" placeholder="Ex : M. Jean Martin" oninput="saveIdentite()">
-            </div>
-            <div class="identite-field">
-              <label>Date de signature du bail</label>
-              <input type="text" id="id_date_bail" placeholder="Ex : 15 janvier 2024" oninput="saveIdentite()">
-            </div>
-          </div>
-          <span class="identite-saved" id="identiteSavedMsg">✓ Informations enregistrées</span>
-        </div>
- 
-        <div id="lettersList">
-          <div class="letter-card">
-            <div class="letter-card-info">
-              <div class="letter-card-title">Lettre au propriétaire</div>
-              <div class="letter-card-desc">Demande de modification / suppression des clauses illégales</div>
-            </div>
-            <button class="btn-letter" onclick="generateLetter('proprio', this)">Générer →</button>
-          </div>
-          <div id="letter-proprio-content" class="letter-content"></div>
-          <div class="letter-card">
-            <div class="letter-card-info">
-              <div class="letter-card-title">Lettre à l'agence immobilière</div>
-              <div class="letter-card-desc">Si l'agence gère le bien et refuse d'intervenir</div>
-            </div>
-            <button class="btn-letter" onclick="generateLetter('agence', this)">Générer →</button>
-          </div>
-          <div id="letter-agence-content" class="letter-content"></div>
-          <div class="letter-card">
-            <div class="letter-card-info">
-              <div class="letter-card-title">Mise en demeure</div>
-              <div class="letter-card-desc">Courrier formel avant saisine de la conciliation</div>
-            </div>
-            <button class="btn-letter" onclick="generateLetter('miseendemeure', this)">Générer →</button>
-          </div>
-          <div id="letter-miseendemeure-content" class="letter-content"></div>
-          <div class="letter-card">
-            <div class="letter-card-info">
-              <div class="letter-card-title">Demande de remboursement (loyer)</div>
-              <div class="letter-card-desc">Si l'encadrement des loyers n'est pas respecté</div>
-            </div>
-            <button class="btn-letter" onclick="generateLetter('remboursement', this)">Générer →</button>
-          </div>
-          <div id="letter-remboursement-content" class="letter-content"></div>
-          <div class="letter-card">
-            <div class="letter-card-info">
-              <div class="letter-card-title">Saisine Commission de Conciliation</div>
-              <div class="letter-card-desc">Si le dialogue avec le propriétaire échoue</div>
-            </div>
-            <button class="btn-letter" onclick="generateLetter('conciliation', this)">Générer →</button>
-          </div>
-          <div id="letter-conciliation-content" class="letter-content"></div>
-        </div>
-      </div>
-    </div>
- 
-    <button class="btn-reset" onclick="resetApp()">← Analyser un autre document</button>
-  </div>
-</section>
- 
-<!-- SOCIAL PROOF -->
 <section class="social-proof">
   <div class="sp-inner">
     <h2 class="sp-title">Ils ont envoyé la lettre. Ils ont récupéré leur argent.</h2>
@@ -2008,7 +1371,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
  
     <div style="text-align:center;margin-top:24px;">
-      <a href="#app" style="display:inline-flex;align-items:center;gap:10px;background:var(--noir);color:white;padding:14px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--noir)'">Voir combien mon proprio me doit →</a>
+      <a href="/analyser" style="display:inline-flex;align-items:center;gap:10px;background:var(--noir);color:white;padding:14px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--noir)'">Voir combien mon proprio me doit →</a>
     </div>
   </div>
 </section>
@@ -2883,6 +2246,7 @@ function clearFile() {
  
 document.addEventListener('DOMContentLoaded', function() {
   var zone = document.getElementById('uploadZone');
+  if (!zone) return; // Page sans formulaire (home)
   zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
   zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
   zone.addEventListener('drop', function(e) { e.preventDefault(); zone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
@@ -3962,6 +3326,11 @@ function payWithStripe() {
 function checkPaymentReturn() {
   var params = new URLSearchParams(window.location.search);
   var _bsPaid = params.get('paid')==='true' || localStorage.getItem('_bs_paid')==='1';
+  // Rediriger vers /analyser si retour de paiement sur la home
+  if (_bsPaid && window.location.pathname === '/') {
+    window.location.replace('/analyser' + window.location.search);
+    return;
+  }
   var _bsSid = params.get('session_id') || localStorage.getItem('_bs_sid');
   localStorage.removeItem('_bs_paid'); localStorage.removeItem('_bs_sid');
   if (_bsPaid && _bsSid) {
@@ -4330,7 +3699,7 @@ function scrollToApp() {
 
 <!-- STICKY CTA MOBILE -->
 <div class="sticky-cta-mobile" id="stickyCta">
-  <a href="#app" class="sticky-btn" onclick="document.getElementById('stickyCta').style.display='none'">
+  <a href="/analyser" class="sticky-btn" onclick="document.getElementById('stickyCta').style.display='none'">
     Analyser mon bail gratuitement →
   </a>
   <div class="sticky-sub">Gratuit · 30 secondes · Sans engagement</div>
