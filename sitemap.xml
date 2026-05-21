@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
  
-  <!-- ── PAGES PRINCIPALES (sans .html) ── -->
+  <!-- ── PAGES PRINCIPALES (sans .html, URLs canoniques) ── -->
  
   <url>
     <loc>https://bailscan.app/</loc>
@@ -38,7 +38,16 @@
     <priority>0.3</priority>
   </url>
  
-  <!-- ── ARTICLES DU BLOG (100 guides, sans .html) ── -->
+  <url>
+    <loc>https://bailscan.app/analyser</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+ 
+  <!-- /analyser : page d'action principale -->
+ 
+  <!-- ── ARTICLES DU BLOG (106 guides) ── -->
  
   <!-- 6-signes-loyer-illegal (ESSENTIEL) -->
   <url>
@@ -51,6 +60,14 @@
   <!-- aide-caf-demenagement-2026 -->
   <url>
     <loc>https://bailscan.app/blog/aide-caf-demenagement-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
+  <!-- aix-en-provence-zone-tendue-2026 -->
+  <url>
+    <loc>https://bailscan.app/blog/aix-en-provence-zone-tendue-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -142,6 +159,14 @@
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+ 
+  <!-- besancon-zone-tendue-2026 -->
+  <url>
+    <loc>https://bailscan.app/blog/besancon-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
  
   <!-- caution-solidaire-vs-simple -->
@@ -752,6 +777,14 @@
     <priority>0.7</priority>
   </url>
  
+  <!-- rouen-zone-tendue-2026 -->
+  <url>
+    <loc>https://bailscan.app/blog/rouen-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
   <!-- sous-location-airbnb-illegale -->
   <url>
     <loc>https://bailscan.app/blog/sous-location-airbnb-illegale</loc>
@@ -782,6 +815,14 @@
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+ 
+  <!-- toulon-zone-tendue-2026 -->
+  <url>
+    <loc>https://bailscan.app/blog/toulon-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
  
   <!-- toulouse-zone-tendue-2026 -->
@@ -816,6 +857,22 @@
     <priority>0.7</priority>
   </url>
  
+  <!-- villejuif-zone-tendue-2026 -->
+  <url>
+    <loc>https://bailscan.app/blog/villejuif-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
+  <!-- villeurbanne-zone-tendue-2026 -->
+  <url>
+    <loc>https://bailscan.app/blog/villeurbanne-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
   <!-- visite-proprietaire-bail -->
   <url>
     <loc>https://bailscan.app/blog/visite-proprietaire-bail</loc>
@@ -838,54 +895,6 @@
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-  </url>
- 
-  <!-- aix-en-provence-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
-  <url>
-    <loc>https://bailscan.app/blog/aix-en-provence-zone-tendue-2026</loc>
-    <lastmod>2026-05-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <!-- besancon-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
-  <url>
-    <loc>https://bailscan.app/blog/besancon-zone-tendue-2026</loc>
-    <lastmod>2026-05-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <!-- rouen-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
-  <url>
-    <loc>https://bailscan.app/blog/rouen-zone-tendue-2026</loc>
-    <lastmod>2026-05-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <!-- toulon-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
-  <url>
-    <loc>https://bailscan.app/blog/toulon-zone-tendue-2026</loc>
-    <lastmod>2026-05-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <!-- villejuif-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
-  <url>
-    <loc>https://bailscan.app/blog/villejuif-zone-tendue-2026</loc>
-    <lastmod>2026-05-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <!-- villeurbanne-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
-  <url>
-    <loc>https://bailscan.app/blog/villeurbanne-zone-tendue-2026</loc>
-    <lastmod>2026-05-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
  
 </urlset>
