@@ -1,0 +1,2653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/favicon.ico">
+<title>Guide du locataire 2026 : 202 guides juridiques + modèles gratuits | BailScan</title>
+<meta name="description" content="202 guides juridiques pour les locataires français : clauses abusives, dépôt de garantie, encadrement des loyers, modèles de lettres gratuits. Références légales 2026.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://bailscan.app/blog">
+<meta property="og:title" content="Guide du locataire 2026 : 202 guides + modèles gratuits | BailScan">
+<meta property="og:description" content="202 guides juridiques + 12 modèles de lettres gratuits pour les locataires.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bailscan.app/blog">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Blog","name":"Guide du locataire · BailScan","url":"https://bailscan.app/blog","description":"202 guides juridiques pour les locataires français.","publisher":{"@type":"Organization","name":"BailScan","url":"https://bailscan.app","logo":{"@type":"ImageObject","url":"https://bailscan.app/favicon.ico"}},"inLanguage":"fr"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --noir: #0d0d0d;
+  --creme: #f5f0e8;
+  --accent: #c84b2f;
+  --accent2: #e8a87c;
+  --vert: #2d6a4f;
+  --vert-light: #e8f5ee;
+  --rouge-light: #fdf0ed;
+  --or: #b8963e;
+  --or-light: #faf3e2;
+  --texte: #1a1a1a;
+  --gris: #6b6b6b;
+  --border: #d8d0c4;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 18px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: rgba(245,240,232,0.95);
+  backdrop-filter: blur(12px);
+}
+.logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); }
+.logo span { color: var(--accent); }
+nav.main-nav { display: flex; gap: 28px; align-items: center; }
+nav.main-nav a { color: var(--gris); font-size: .9rem; transition: color .2s; }
+nav.main-nav a:hover { color: var(--accent); }
+nav.main-nav a.active { color: var(--noir); font-weight: 600; }
+.btn-nav { background: var(--noir); color: var(--creme) !important; padding: 10px 22px; border-radius: 8px; font-weight: 600; }
+.btn-nav:hover { background: var(--accent) !important; }
+.nav-pro { color: var(--gris) !important; font-size: .88rem !important; }
+.nav-pro:hover { color: var(--accent) !important; }
+
+/* ── HERO ── */
+.hero { padding: 120px 48px 48px; max-width: 1160px; margin: 0 auto; }
+.hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; padding-bottom: 56px; border-bottom: 1px solid var(--border); }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--rouge-light); color: var(--accent);
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 20px;
+  border: 1px solid rgba(200,75,47,.15);
+  margin-bottom: 20px;
+}
+.hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.4rem, 4vw, 3.4rem); font-weight: 400; line-height: 1.1; letter-spacing: -.025em; color: var(--noir); margin-bottom: 20px; }
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-desc { font-size: .95rem; line-height: 1.75; color: var(--gris); max-width: 440px; margin-bottom: 28px; }
+.hero-search-wrap { position: relative; margin-bottom: 28px; max-width: 440px; }
+.hero-search { width: 100%; padding: 14px 18px 14px 44px; border: 1.5px solid var(--border); border-radius: 10px; background: white; font-family: 'DM Sans', sans-serif; font-size: .92rem; color: var(--texte); outline: none; transition: border-color .2s, box-shadow .2s; }
+.hero-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,75,47,.08); }
+.hero-search::placeholder { color: #b8b0a4; }
+.hero-search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #b8b0a4; pointer-events: none; }
+.hero-kpis { display: flex; gap: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+.kpi-n { font-family: 'Instrument Serif', serif; font-size: 2rem; color: var(--noir); line-height: 1; display: block; }
+.kpi-l { font-size: .75rem; color: var(--gris); margin-top: 4px; line-height: 1.4; }
+
+/* Featured */
+.featured { background: var(--noir); border-radius: 20px; padding: 40px; display: flex; flex-direction: column; gap: 20px; position: relative; overflow: hidden; }
+.featured::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(200,75,47,.18) 0%, transparent 70%); pointer-events: none; }
+.featured-cat { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent2); }
+.featured h2 { font-family: 'Instrument Serif', serif; font-size: 1.55rem; font-weight: 400; line-height: 1.25; color: white; letter-spacing: -.01em; }
+.featured-desc { font-size: .84rem; line-height: 1.7; color: rgba(255,255,255,.6); }
+.featured-meta { font-size: .7rem; color: rgba(255,255,255,.3); letter-spacing: .05em; display: flex; gap: 14px; align-items: center; }
+.featured-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; padding: 11px 20px; border-radius: 8px; font-size: .82rem; font-weight: 700; width: fit-content; transition: background .2s, transform .15s; margin-top: 4px; }
+.featured-cta:hover { background: #a83a20; transform: translateY(-1px); }
+
+/* ── NAV HUBS (sticky) ── */
+.hub-nav-wrap { position: sticky; top: 70px; z-index: 50; background: rgba(245,240,232,0.96); backdrop-filter: blur(12px); padding: 14px 0; border-bottom: 1px solid var(--border); margin-top: 8px; }
+.hub-nav { max-width: 1160px; margin: 0 auto; padding: 0 48px; display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-btn { font-family: 'DM Sans', sans-serif; font-size: .8rem; font-weight: 500; padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: white; color: var(--gris); cursor: pointer; transition: all .15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; }
+.nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+.nav-btn.active { background: var(--noir); color: var(--creme); border-color: var(--noir); font-weight: 600; }
+.nav-btn svg { flex-shrink: 0; }
+.nav-btn.active svg { color: var(--accent2); }
+.nav-count { display: inline-flex; align-items: center; justify-content: center; background: var(--rouge-light); color: var(--accent); font-size: .65rem; font-weight: 700; padding: 2px 7px; border-radius: 12px; min-width: 22px; }
+.nav-btn.active .nav-count { background: rgba(255,255,255,0.15); color: var(--creme); }
+
+/* ── HUBS ── */
+.hubs-wrap { max-width: 1160px; margin: 0 auto; padding: 48px 48px 80px; }
+.hub { margin-bottom: 72px; scroll-margin-top: 140px; }
+.hub.hidden { display: none; }
+.hub-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1.5px solid var(--noir); }
+.hub-header-text { display: flex; gap: 18px; align-items: flex-start; flex: 1; }
+.hub-icon {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: white; border: 1.5px solid var(--border); border-radius: 10px;
+  flex-shrink: 0; color: var(--noir);
+}
+.hub-title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.85rem); line-height: 1.15; color: var(--noir); letter-spacing: -.015em; margin-bottom: 6px; }
+.hub-intro { font-size: .88rem; line-height: 1.6; color: var(--gris); max-width: 680px; }
+.hub-count { font-size: .72rem; color: var(--gris); text-transform: uppercase; letter-spacing: .1em; white-space: nowrap; padding-bottom: 4px; }
+.hub-count-n { font-family: 'Instrument Serif', serif; font-size: 1.5rem; color: var(--noir); font-weight: 400; margin-right: 4px; }
+
+/* Grille */
+.articles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.card { background: white; border: 1.5px solid var(--border); border-radius: 14px; display: flex; flex-direction: column; overflow: hidden; transition: border-color .2s, transform .2s, box-shadow .2s; }
+.card.hidden { display: none; }
+.card:hover { border-color: rgba(200,75,47,.3); transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,.07); }
+.card-stripe { height: 3px; background: var(--accent); opacity: 0; transition: opacity .2s; }
+.card:hover .card-stripe { opacity: 1; }
+.card-stripe.vert-stripe { background: var(--vert); }
+.card-stripe.or-stripe { background: var(--or); }
+.card-stripe.encre-stripe { background: var(--noir); }
+.card-body-inner { padding: 20px 20px 0; flex: 1; }
+.card-cat { font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.card-cat.vert { color: var(--vert); }
+.card-cat.or { color: #9a7a30; }
+.card-cat.encre { color: var(--noir); }
+.badge-gratuit { font-size: .55rem; background: var(--vert); color: white; padding: 2px 6px; border-radius: 3px; letter-spacing: .06em; font-weight: 700; }
+.badge-essentiel { font-size: .55rem; background: var(--or); color: white; padding: 2px 6px; border-radius: 3px; letter-spacing: .06em; font-weight: 700; }
+.card h3 { font-family: 'Instrument Serif', serif; font-size: 1.05rem; font-weight: 400; line-height: 1.3; color: var(--noir); margin-bottom: 8px; letter-spacing: -.01em; }
+.card p { font-size: .8rem; line-height: 1.6; color: var(--gris); }
+.card-foot { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+.card-date { font-size: .68rem; color: #aaa5a0; letter-spacing: .04em; }
+.card-read { font-size: .68rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 4px; letter-spacing: .04em; }
+.card-read::after { content: '→'; transition: transform .15s; }
+.card:hover .card-read::after { transform: translateX(3px); }
+
+/* Empty */
+.empty-state { text-align: center; padding: 64px 24px; color: var(--gris); display: none; }
+.empty-state.show { display: block; }
+.empty-state h3 { font-family: 'Instrument Serif', serif; font-size: 1.4rem; color: var(--noir); margin-bottom: 8px; }
+.empty-state p { font-size: .9rem; }
+.empty-state button { margin-top: 18px; background: var(--noir); color: var(--creme); border: none; padding: 10px 22px; border-radius: 8px; font-family: inherit; font-weight: 600; cursor: pointer; font-size: .85rem; }
+.empty-state button:hover { background: var(--accent); }
+
+/* CTA Band */
+.cta-band { background: var(--noir); padding: 72px 48px; }
+.cta-band-inner { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 60px; align-items: center; }
+.cta-band-eyebrow { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent2); font-weight: 600; margin-bottom: 14px; }
+.cta-band h2 { font-family: 'Instrument Serif', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; line-height: 1.15; color: white; letter-spacing: -.02em; margin-bottom: 12px; }
+.cta-band h2 em { font-style: italic; color: rgba(255,255,255,.45); }
+.cta-band p { font-size: .88rem; color: rgba(255,255,255,.45); line-height: 1.75; max-width: 500px; }
+.cta-band-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; padding: 15px 30px; border-radius: 10px; font-weight: 700; font-size: .9rem; white-space: nowrap; flex-shrink: 0; transition: background .2s, transform .15s; }
+.cta-band-btn:hover { background: #a83a20; transform: translateY(-2px); }
+
+/* Footer */
+.footer-seo { background: var(--noir); color: rgba(255,255,255,.7); }
+.footer-inner { max-width: 1160px; margin: 0 auto; padding: 60px 48px 32px; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: white; margin-bottom: 8px; }
+.footer-logo span { color: var(--accent); }
+.footer-tagline { font-size: .82rem; color: rgba(255,255,255,.4); line-height: 1.7; max-width: 280px; }
+.footer-copy { font-size: .72rem; color: rgba(255,255,255,.2); margin-top: 18px; }
+.footer-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-col-title { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: rgba(255,255,255,.3); margin-bottom: 6px; }
+.footer-col a { font-size: .82rem; color: rgba(255,255,255,.5); transition: color .2s; }
+.footer-col a:hover { color: white; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 24px; font-size: .72rem; color: rgba(255,255,255,.25); text-align: center; }
+
+/* Responsive */
+@media (max-width: 960px) {
+  header { padding: 16px 20px; }
+  nav.main-nav a:not(.btn-nav):not(.nav-pro) { display: none; }
+  .hero { padding: 108px 20px 36px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hub-nav, .hubs-wrap { padding-left: 20px; padding-right: 20px; }
+  .hub-nav-wrap { top: 64px; }
+  .articles-grid { grid-template-columns: 1fr 1fr; }
+  .cta-band { padding: 52px 20px; }
+  .cta-band-inner { grid-template-columns: 1fr; gap: 28px; }
+  .footer-inner { padding: 44px 20px 28px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .hub-header { flex-direction: column; align-items: flex-start; }
+  .hub-header-text { width: 100%; }
+}
+@media (max-width: 600px) {
+  .hero h1 { font-size: 2.2rem; }
+  .articles-grid { grid-template-columns: 1fr; }
+  .hero-kpis { gap: 20px; }
+  .footer-top { grid-template-columns: 1fr; }
+  .featured { padding: 28px; }
+  .featured h2 { font-size: 1.3rem; }
+  .hub-icon { width: 36px; height: 36px; }
+}
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.hero { animation: fadeUp .5s ease both; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">Bail<span>Scan</span></a>
+  <nav class="main-nav">
+    <a href="/blog" class="active">Guide locataire</a>
+    <a href="/pro" class="nav-pro">Pour les agences →</a>
+    <a href="/analyser" class="btn-nav">Analyser mon bail →</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Guide du locataire · Mis à jour mars 2026</div>
+      <h1>Vos droits locatifs,<br><em>clairement expliqués</em></h1>
+      <p class="hero-desc">1 bail sur 3 contient au moins une clause illégale. Nos 202 guides analysent le droit locatif avec les références légales exactes. 12 modèles de lettres gratuits inclus.</p>
+
+      <div class="hero-search-wrap">
+        <svg class="hero-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" class="hero-search" id="searchInput" placeholder="Rechercher un sujet (caution, loyer, Paris...)" autocomplete="off">
+      </div>
+
+      <div class="hero-kpis">
+        <div>
+          <span class="kpi-n">202</span>
+          <div class="kpi-l">Guides juridiques<br>à jour 2026</div>
+        </div>
+        <div>
+          <span class="kpi-n">1 740€</span>
+          <div class="kpi-l">Récupération<br>moyenne</div>
+        </div>
+        <div>
+          <span class="kpi-n">2 min</span>
+          <div class="kpi-l">Analyse de bail<br>par IA</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="blog/recuperer-1000-euros-trop-percu" class="featured">
+      <div class="featured-cat">★ Guide essentiel · Récupération</div>
+      <h2>Récupérer 1000€ de trop-perçu : 6 sources possibles</h2>
+      <p class="featured-desc">Récupérer le trop-perçu de loyer : 6 sources possibles, jusqu'à 7 200 € à Paris.</p>
+      <div class="featured-meta">
+        <span>Mars 2026</span>
+        <span>·</span>
+        <span>4 min de lecture</span>
+        <span>·</span>
+        <span>+ modèle LRAR</span>
+      </div>
+      <span class="featured-cta">Lire le guide →</span>
+    </a>
+  </div>
+</section>
+
+<!-- NAV HUBS (sticky) -->
+<div class="hub-nav-wrap">
+  <div class="hub-nav">
+      <button class="nav-btn active" data-cat="all" onclick="goToHub('all',this)">Tous les guides<span class="nav-count">202</span></button>
+      <button class="nav-btn" data-cat="recuperer" onclick="goToHub('recuperer',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>Récupérer son argent</span>
+        <span class="nav-count">12</span>
+      </button>
+      <button class="nav-btn" data-cat="conflit" onclick="goToHub('conflit',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Conflit propriétaire</span>
+        <span class="nav-count">24</span>
+      </button>
+      <button class="nav-btn" data-cat="caution" onclick="goToHub('caution',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Caution & dépôt</span>
+        <span class="nav-count">8</span>
+      </button>
+      <button class="nav-btn" data-cat="temoignages" onclick="goToHub('temoignages',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Témoignages</span>
+        <span class="nav-count">5</span>
+      </button>
+      <button class="nav-btn" data-cat="outils" onclick="goToHub('outils',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+        <span>Calculs & outils</span>
+        <span class="nav-count">10</span>
+      </button>
+      <button class="nav-btn" data-cat="infos" onclick="goToHub('infos',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Combien, durée, coût</span>
+        <span class="nav-count">19</span>
+      </button>
+      <button class="nav-btn" data-cat="modeles" onclick="goToHub('modeles',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        <span>Modèles de lettres</span>
+        <span class="nav-count">9</span>
+      </button>
+      <button class="nav-btn" data-cat="villes" onclick="goToHub('villes',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Villes & zones tendues</span>
+        <span class="nav-count">41</span>
+      </button>
+      <button class="nav-btn" data-cat="lois" onclick="goToHub('lois',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        <span>Lois & règlementation</span>
+        <span class="nav-count">10</span>
+      </button>
+      <button class="nav-btn" data-cat="bail" onclick="goToHub('bail',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>Bail & contrat</span>
+        <span class="nav-count">23</span>
+      </button>
+      <button class="nav-btn" data-cat="charges" onclick="goToHub('charges',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>Charges locatives</span>
+        <span class="nav-count">1</span>
+      </button>
+      <button class="nav-btn" data-cat="aides" onclick="goToHub('aides',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+        <span>Aides & dossier</span>
+        <span class="nav-count">11</span>
+      </button>
+      <button class="nav-btn" data-cat="technique" onclick="goToHub('technique',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span>Problèmes techniques</span>
+        <span class="nav-count">7</span>
+      </button>
+      <button class="nav-btn" data-cat="impayes" onclick="goToHub('impayes',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Impayés & expulsion</span>
+        <span class="nav-count">2</span>
+      </button>
+      <button class="nav-btn" data-cat="juris" onclick="goToHub('juris',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12V8a2 2 0 0 0-2-2h-2"/><path d="M2 12v4a2 2 0 0 0 2 2h2"/><path d="M22 16v2a2 2 0 0 1-2 2h-2"/><path d="M2 8V6a2 2 0 0 1 2-2h2"/><line x1="10" y1="6" x2="14" y2="6"/><line x1="10" y1="18" x2="14" y2="18"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="18" y1="10" x2="18" y2="14"/></svg>
+        <span>Jurisprudence 2024-25</span>
+        <span class="nav-count">10</span>
+      </button>
+      <button class="nav-btn" data-cat="comparatifs" onclick="goToHub('comparatifs',this)">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <span>Comparatifs & BailScan</span>
+        <span class="nav-count">10</span>
+      </button>
+  </div>
+</div>
+
+<!-- HUBS -->
+<main class="hubs-wrap" id="hubsWrap">
+
+  <!-- HUB: Récupérer son argent -->
+  <section class="hub" id="hub-recuperer" data-hub="recuperer">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Récupérer son argent</h2>
+          <p class="hub-intro">Comment récupérer caution, trop-perçu et charges abusives. Procédures, calculs, modèles LRAR.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">12</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/6-signes-loyer-illegal" class="card" data-cat="recuperer" data-search="6 signes loyer illegal 6 signes que votre loyer est illegal : dpe f/g, encadrement, complement, irl, charges. recuperation moyenne 1 740 €.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération <span class="badge-essentiel">ESSENTIEL</span></div>
+          <h3>6 signes loyer illegal</h3>
+          <p>6 signes que votre loyer est illégal : DPE F/G, encadrement, complément, IRL, charges.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bail-illegal-comment-recuperer-argent" class="card" data-cat="recuperer" data-search="bail illegal : comment recuperer largent ? 1 bail sur 3 contient des clauses illegales. procedure complete pour recuperer le trop-percu, contester les clauses, et obtenir des dommages-interets.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Bail illégal : comment récupérer l'argent ?</h3>
+          <p>1 bail sur 3 contient des clauses illégales.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/charges-trop-elevees-comment-contester" class="card" data-cat="recuperer" data-search="charges trop elevees : comment les contester charges abusives : 5 categories a verifier. demande de decompte + lrar + recuperation sur 3 ans. moyenne 580 € recuperes.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Charges trop élevées : comment les contester</h3>
+          <p>Charges abusives : 5 catégories à vérifier.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/clauses-abusives-comment-recuperer" class="card" data-cat="recuperer" data-search="clauses abusives : comment recuperer largent clauses abusives nulles (article 4 loi 1989) : 14 types frequents. recuperation moyenne 1 200 € sur 3 ans. procedure 2026 + lrar modele.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Clauses abusives : comment récupérer l'argent</h3>
+          <p>Clauses abusives nulles (article 4 loi 1989) : 14 types fréquents.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-recuperer-proprio-3-ans-passes" class="card" data-cat="recuperer" data-search="combien je peux recuperer aupres de mon proprio sur 3 ans recuperation sur 3 ans retroactifs : 6 sources + calcul exact. moyenne 1 740 €, jusqua 7 200 €. procedure complete 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Combien je peux récupérer auprès de mon proprio sur 3 ans</h3>
+          <p>Récupération sur 3 ans rétroactifs : 6 sources + calcul exact.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comment-baisser-son-loyer-2026" class="card" data-cat="recuperer" data-search="comment baisser son loyer 2026 baisser son loyer 2026 : 5 leviers legaux, recuperation moyenne 1 740 € sur 3 ans. lettre type lrar + procedure.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération <span class="badge-essentiel">ESSENTIEL</span></div>
+          <h3>Comment baisser son loyer 2026</h3>
+          <p>Baisser son loyer 2026 : 5 leviers légaux, récupération moyenne 1 740 € sur 3 ans.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comment-contester-son-loyer" class="card" data-cat="recuperer" data-search="comment contester son loyer contester son loyer 2026 : encadrement, irl, complement, charges. 4 leviers, demarches etape par etape. recuperation moyenne 1 740 €.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Comment contester son loyer</h3>
+          <p>Contester son loyer 2026 : encadrement, IRL, complément, charges.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comment-savoir-si-mon-loyer-est-legal" class="card" data-cat="recuperer" data-search="comment savoir si mon loyer est legal comment verifier si mon loyer est legal : 4 criteres (zone tendue, encadrement, complement, irl). methode complete 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Comment savoir si mon loyer est legal</h3>
+          <p>Comment vérifier si mon loyer est légal : 4 critères (zone tendue, encadrement, complément, IRL).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/complement-loyer-paris-illegal" class="card" data-cat="recuperer" data-search="complement loyer paris illegal complement de loyer paris 2026 : conditions strictes, 80 % illegaux. recuperation moyenne 7 200 € sur 3 ans. comment verifier en 2 min.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Complement loyer paris illegal</h3>
+          <p>Complément de loyer Paris 2026 : conditions strictes, 80 % illégaux.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/loyer-trop-eleve-paris-comment-baisser" class="card" data-cat="recuperer" data-search="loyer trop eleve a paris : comment le baisser loyer depassant le plafond paris ? 80 % des complements de loyer sont illegaux. recuperation moyenne 4 300 € a paris + baisse future.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Loyer trop élevé à Paris : comment le baisser</h3>
+          <p>Loyer dépassant le plafond Paris ? 80 % des compléments de loyer sont illégaux.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/mise-en-demeure-proprio-modele-gratuit" class="card" data-cat="recuperer" data-search="mise en demeure proprietaire : modele lrar gratuit modele de mise en demeure proprietaire a copier-coller : caution, travaux, charges, loyer. effet juridique immediat. 2026 conforme.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération </div>
+          <h3>Mise en demeure propriétaire : modèle LRAR gratuit</h3>
+          <p>Modèle de mise en demeure propriétaire à copier-coller : caution, travaux, charges, loyer.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/recuperer-1000-euros-trop-percu" class="card" data-cat="recuperer" data-search="recuperer 1000€ de trop-percu : 6 sources possibles recuperer le trop-percu de loyer : 6 sources possibles, jusqua 7 200 € a paris. procedure complete + lettres lrar fournies 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Récupération <span class="badge-essentiel">ESSENTIEL</span></div>
+          <h3>Récupérer 1000€ de trop-perçu : 6 sources possibles</h3>
+          <p>Récupérer le trop-perçu de loyer : 6 sources possibles, jusqu'à 7 200 € à Paris.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Conflit propriétaire -->
+  <section class="hub" id="hub-conflit" data-hub="conflit">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Conflit propriétaire</h2>
+          <p class="hub-intro">Quand votre proprio est abusif, intrusif, menaçant ou injoignable. 30 cas concrets et procédures.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">24</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/mon-proprio-veut-pas-rendre-caution" class="card" data-cat="conflit" data-search="mon proprio ne veut pas me rendre ma caution : que faire ? proprietaire refuse de rendre votre depot de garantie ? penalite automatique 10 %/mois + lrar + cdc. recuperation moyenne 847 € en 6 semaines.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio <span class="badge-essentiel">ESSENTIEL</span></div>
+          <h3>Mon proprio ne veut pas me rendre ma caution : que faire ?</h3>
+          <p>Propriétaire refuse de rendre votre dépôt de garantie ? Pénalité automatique 10 %/mois + LRAR + CDC.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-augmente-loyer-sans-prevenir" class="card" data-cat="conflit" data-search="proprio augmente mon loyer sans prevenir : cest illegal hausse de loyer sans notification ecrite ? illegal. recuperation du trop-percu sur 3 ans + revision irl plafonnee 2 %. procedure complete 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio augmente mon loyer sans prévenir : c'est illégal</h3>
+          <p>Hausse de loyer sans notification écrite ? Illégal.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-coupe-eau-chauffage-illegal" class="card" data-cat="conflit" data-search="proprio coupe leau ou le chauffage : delit penal bailleur coupe eau, gaz, electricite, chauffage ? delit penal 1 an de prison + 15 000 €. refere durgence + dommages-interets. procedure 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio coupe l'eau ou le chauffage : délit pénal</h3>
+          <p>Bailleur coupe eau, gaz, électricité, chauffage ? Délit pénal 1 an de prison + 15 000 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-encaisse-pas-cheque-loyer" class="card" data-cat="conflit" data-search="proprio nencaisse pas mon cheque : que faire bailleur tarde a encaisser votre cheque ? vos droits + risques. procedure 2026 pour eviter lexpulsion abusive.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio n'encaisse pas mon chèque : que faire</h3>
+          <p>Bailleur tarde à encaisser votre chèque ? Vos droits + risques.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-faire-payer-peinture-legal" class="card" data-cat="conflit" data-search="proprio faire payer peinture legal peinture facturee par le bailleur : usure normale apres 5+ ans. recuperation moyenne 600 € sur retenue abusive.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio faire payer peinture legal</h3>
+          <p>Peinture facturée par le bailleur : usure normale après 5+ ans.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-fait-edl-sans-moi" class="card" data-cat="conflit" data-search="proprio fait ledl sans moi : cest inopposable bailleur fait letat des lieux sans votre presence ? edl non opposable. vous pouvez contester toute retenue. procedure complete 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio fait l'EDL sans moi : c'est inopposable</h3>
+          <p>Bailleur fait l'état des lieux sans votre présence ? EDL non opposable.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-fait-pression-partir-vite" class="card" data-cat="conflit" data-search="proprio fait pression pour que je parte vite : 5 defenses bailleur vous harcele pour partir avant la fin du bail ? harcelement = delit penal. restez calme et utilisez nos 5 leviers de defense.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio fait pression pour que je parte vite : 5 défenses</h3>
+          <p>Bailleur vous harcèle pour partir avant la fin du bail ? Harcèlement = délit pénal.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-garde-mon-courrier" class="card" data-cat="conflit" data-search="proprio garde ou ouvre mon courrier : delit penal bailleur ouvre ou conserve votre courrier ? violation correspondance, delit penal. 1 an de prison + dommages-interets. procedure 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio garde ou ouvre mon courrier : délit pénal</h3>
+          <p>Bailleur ouvre ou conserve votre courrier ? Violation correspondance, délit pénal.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-laisse-logement-insalubre" class="card" data-cat="conflit" data-search="proprio laisse mon logement insalubre : 4 leviers humidite, moisissures, vetuste ? logement insalubre = sortie sans preavis + dommages-interets + travaux forces. procedure complete 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio laisse mon logement insalubre : 4 leviers</h3>
+          <p>Humidité, moisissures, vétusté ? Logement insalubre = sortie sans préavis + dommages-intérêts + travaux forcés.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-me-menace-expulsion-payer" class="card" data-cat="conflit" data-search="proprio menace dexpulsion pour me faire payer : illegal bailleur menace dexpulsion sans procedure ? menace illegale. procedure dexpulsion = 12-18 mois minimum. restez et defendez vos droits.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio menace d'expulsion pour me faire payer : illégal</h3>
+          <p>Bailleur menace d'expulsion sans procédure ? Menace illégale.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-refuse-faire-travaux-urgents" class="card" data-cat="conflit" data-search="proprio refuse de faire les travaux urgents : 4 leviers proprietaire refuse fuite, panne chauffage, infiltration ? 4 leviers : lrar, refere, consignation, reduction loyer retroactive. procedure complete.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio refuse de faire les travaux urgents : 4 leviers</h3>
+          <p>Propriétaire refuse fuite, panne chauffage, infiltration ? 4 leviers : LRAR, référé, consignation, réduction loyer rétroactive.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-refuse-quittance-loyer" class="card" data-cat="conflit" data-search="proprio refuse de me donner ma quittance : obligation legale bailleur refuse la quittance ? obligation legale (article 21 loi 1989). lrar + amende possible. procedure complete en 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio refuse de me donner ma quittance : obligation légale</h3>
+          <p>Bailleur refuse la quittance ? Obligation légale (article 21 loi 1989).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-refuse-renouveler-mon-bail" class="card" data-cat="conflit" data-search="proprio refuse de renouveler mon bail : ce qui est legal bailleur refuse le renouvellement ? 3 motifs strictement admis : reprise, vente, motif serieux. 40 % des refus sont nuls pour vice de forme.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio refuse de renouveler mon bail : ce qui est légal</h3>
+          <p>Bailleur refuse le renouvellement ? 3 motifs strictement admis : reprise, vente, motif sérieux.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-rentre-sans-prevenir" class="card" data-cat="conflit" data-search="proprio rentre sans prevenir proprietaire qui rentre sans prevenir : cest un delit (15 000 € amende). procedure, lettre type, sanctions 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio rentre sans prevenir</h3>
+          <p>Propriétaire qui rentre sans prévenir : c'est un délit (15 000 € amende).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-retient-depot-pour-peinture" class="card" data-cat="conflit" data-search="proprio retient ma caution pour la peinture : illegal apres 5 ans proprietaire retient votre caution pour repeindre ? au-dela de 5 ans, cest de la vetuste a sa charge. modele de contestation + recuperation moyenne 540 €.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio retient ma caution pour la peinture : illégal après 5 ans</h3>
+          <p>Propriétaire retient votre caution pour repeindre ? Au-delà de 5 ans, c'est de la vétusté à sa charge.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-vendre-logement-droit-preemption" class="card" data-cat="conflit" data-search="mon proprio veut vendre : ai-je un droit de preemption ? proprietaire veut vendre votre logement loue ? vous avez un droit de preemption : 2 mois pour acheter en priorite. procedure complete 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Mon proprio veut vendre : ai-je un droit de préemption ?</h3>
+          <p>Propriétaire veut vendre votre logement loué ? Vous avez un droit de préemption : 2 mois pour acheter en priorité.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-veut-aug-loyer-fin-bail" class="card" data-cat="conflit" data-search="proprio veut augmenter le loyer a la fin du bail : limites augmentation a la fin du bail ? seulement si loyer sous-evalue + procedure stricte 6 mois avant. cas particuliers zone tendue + encadrement.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio veut augmenter le loyer à la fin du bail : limites</h3>
+          <p>Augmentation à la fin du bail ? Seulement si loyer sous-évalué + procédure stricte 6 mois avant.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-veut-me-faire-payer-degats-anciens" class="card" data-cat="conflit" data-search="proprio facture des degats qui etaient deja la : refusez ! bailleur facture des degats presents avant votre entree ? ledl dentree fait foi. recuperation moyenne 620 € sur les retenues abusives.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio facture des dégâts qui étaient déjà là : refusez !</h3>
+          <p>Bailleur facture des dégâts présents avant votre entrée ? L'EDL d'entrée fait foi.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-veut-me-virer-resister" class="card" data-cat="conflit" data-search="proprio veut me virer resister proprio veut vous virer : les motifs valides, les nuls, comment resister legalement en 2026. protection senior et demarches.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio veut me virer resister</h3>
+          <p>Proprio veut vous virer : les motifs valides, les nuls, comment résister légalement en 2026.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-veut-me-virer-rien-fait" class="card" data-cat="conflit" data-search="proprio veut me virer sans raison : 4 defenses bailleur veut resilier votre bail sans motif valable ? les motifs sont strictement limites. recuperation possible + maintien dans les lieux.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio veut me virer sans raison : 4 défenses</h3>
+          <p>Bailleur veut résilier votre bail sans motif valable ? Les motifs sont strictement limités.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-veut-recuperer-pour-famille" class="card" data-cat="conflit" data-search="proprio veut reprendre pour sa famille : verifiez reprise pour habiter par bailleur ou famille : conditions strictes. 40 % des conges sont nuls. fraude detectee = 6 000 € dommages-interets.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio veut reprendre pour sa famille : vérifiez</h3>
+          <p>Reprise pour habiter par bailleur ou famille : conditions strictes.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-veut-rembourser-charges" class="card" data-cat="conflit" data-search="proprio veut me rembourser des charges trop elevees regularisation de charges abusive ? 5 categories a verifier. recuperation moyenne 487 € sur 3 ans. procedure complete 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio veut me rembourser des charges trop élevées</h3>
+          <p>Régularisation de charges abusive ? 5 catégories à vérifier.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-veut-vendre-je-dois-partir" class="card" data-cat="conflit" data-search="proprio veut vendre : dois-je vraiment partir ? bailleur veut vendre votre logement ? vente occupee : vous restez. vente libre : droit de preemption 2 mois. procedure complete 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio veut vendre : dois-je vraiment partir ?</h3>
+          <p>Bailleur veut vendre votre logement ? Vente OCCUPÉE : vous restez.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-vient-sans-prevenir-recours" class="card" data-cat="conflit" data-search="proprio vient sans prevenir : violation de domicile bailleur entre chez vous sans preavis ? violation de domicile : 1 an de prison. preavis 24h obligatoire. dommages-interets + procedure penale.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Conflit proprio </div>
+          <h3>Proprio vient sans prévenir : violation de domicile</h3>
+          <p>Bailleur entre chez vous sans préavis ? Violation de domicile : 1 an de prison.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Caution & dépôt -->
+  <section class="hub" id="hub-caution" data-hub="caution">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Caution & dépôt</h2>
+          <p class="hub-intro">Délais de restitution, pénalité 10 %/mois, retenues abusives. Modèles LRAR pour récupérer.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">8</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/bailleur-pas-rendu-caution-3-mois" class="card" data-cat="caution" data-search="caution non rendue apres 3 mois : vos droits exacts depot de garantie non rendu apres 3 mois ? penalite automatique 10 %/mois + recuperation integrale. modele lrar + procedure cdc en 6 semaines.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Caution </div>
+          <h3>Caution non rendue après 3 mois : vos droits exacts</h3>
+          <p>Dépôt de garantie non rendu après 3 mois ? Pénalité automatique 10 %/mois + récupération intégrale.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bailleur-pas-rendu-caution-6-mois" class="card" data-cat="caution" data-search="caution non rendue apres 6 mois : recuperer 50 % de penalite 6 mois sans restitution du depot ? penalite de 50 % du loyer mensuel cumulee + recuperation + dommages-interets. procedure en 8 semaines.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Caution </div>
+          <h3>Caution non rendue après 6 mois : récupérer 50 % de pénalité</h3>
+          <p>6 mois sans restitution du dépôt ? Pénalité de 50 % du loyer mensuel cumulée + récupération + dommages-intérêts.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-depot-garantie-meuble-2026" class="card" data-cat="caution" data-search="combien de depot de garantie pour un meuble en 2026 depot de garantie meuble 2026 : maximum 2 mois de loyer hors charges. recuperation sur 3 ans si depassement. modele lrar.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Caution </div>
+          <h3>Combien de dépôt de garantie pour un meublé en 2026</h3>
+          <p>Dépôt de garantie meublé 2026 : maximum 2 mois de loyer hors charges.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/depot-garantie-delai-restitution" class="card" data-cat="caution" data-search="depot garantie delai restitution delai legal de restitution du depot de garantie : 1 mois si edl conforme, 2 mois si retenues. 10 % de penalite par mois de retard.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Caution </div>
+          <h3>Depot garantie delai restitution</h3>
+          <p>Délai légal de restitution du dépôt de garantie : 1 mois si EDL conforme, 2 mois si retenues.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-depot-garantie" class="card" data-cat="caution" data-search="modele lettre depot garantie modele lettre lrar reclamation depot de garantie : texte officiel 2026 pret a envoyer + penalite 10 %/mois auto.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Caution </div>
+          <h3>Modele lettre depot garantie</h3>
+          <p>Modèle lettre LRAR réclamation dépôt de garantie : texte officiel 2026 prêt à envoyer + pénalité 10 %/mois auto.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/recuperer-depot-garantie-combien-temps" class="card" data-cat="caution" data-search="combien de temps pour recuperer son depot de garantie ? delai legal de restitution du depot : 1 mois (edl ok) ou 2 mois (retenues). penalite automatique 10 %/mois au-dela. procedure complete 2026.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Caution </div>
+          <h3>Combien de temps pour récupérer son dépôt de garantie ?</h3>
+          <p>Délai légal de restitution du dépôt : 1 mois (EDL OK) ou 2 mois (retenues).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/recuperer-depot-garantie-paris" class="card" data-cat="caution" data-search="recuperer son depot de garantie a paris recuperer votre depot a paris : penalite 10 %/mois, cdc paris, juridictions competentes. recuperation moyenne 1 240 € en 6-8 semaines.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Caution </div>
+          <h3>Récupérer son dépôt de garantie à Paris</h3>
+          <p>Récupérer votre dépôt à Paris : pénalité 10 %/mois, CDC Paris, juridictions compétentes.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/retenue-abusive-caution" class="card" data-cat="caution" data-search="retenue abusive caution retenue abusive sur la caution : usure normale, peintures, frais de cabinet. recuperation 800 € en moyenne. procedure 2026.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Caution </div>
+          <h3>Retenue abusive caution</h3>
+          <p>Retenue abusive sur la caution : usure normale, peintures, frais de cabinet.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Témoignages -->
+  <section class="hub" id="hub-temoignages" data-hub="temoignages">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Témoignages</h2>
+          <p class="hub-intro">Histoires réelles de locataires qui ont récupéré 800 à 2 500 € de leur propriétaire en 4-9 semaines.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">5</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/temoignage-recuperation-caution-bordeaux" class="card" data-cat="temoignages" data-search="karim  31 ans a bordeaux  a recupere 1 156 € temoignage : karim  31 ans a bordeaux  a recupere 1 156 € de son proprietaire en 5 semaines. methode complete + lettres lrar.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Témoignage </div>
+          <h3>Karim  31 ans à Bordeaux  a récupéré 1 156 €</h3>
+          <p>Témoignage : Karim  31 ans à Bordeaux  a récupéré 1 156 € de son propriétaire en 5 semaines.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/temoignage-recuperation-caution-lille" class="card" data-cat="temoignages" data-search="lucie  24 ans a lille  a recupere 891 € temoignage : lucie  24 ans a lille  a recupere 891 € de son proprietaire en 4 semaines. methode complete + lettres lrar.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Témoignage </div>
+          <h3>Lucie  24 ans à Lille  a récupéré 891 €</h3>
+          <p>Témoignage : Lucie  24 ans à Lille  a récupéré 891 € de son propriétaire en 4 semaines.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/temoignage-recuperation-caution-lyon" class="card" data-cat="temoignages" data-search="marie  28 ans a lyon  a recupere 1 847 € temoignage : marie  28 ans a lyon  a recupere 1 847 € de son proprietaire en 7 semaines. methode complete + lettres lrar.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Témoignage </div>
+          <h3>Marie  28 ans à Lyon  a récupéré 1 847 €</h3>
+          <p>Témoignage : Marie  28 ans à Lyon  a récupéré 1 847 € de son propriétaire en 7 semaines.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/temoignage-recuperation-caution-paris" class="card" data-cat="temoignages" data-search="thomas  32 ans a paris  a recupere 2 436 € temoignage : thomas  32 ans a paris  a recupere 2 436 € de son proprietaire en 9 semaines. methode complete + lettres lrar.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Témoignage </div>
+          <h3>Thomas  32 ans à Paris  a récupéré 2 436 €</h3>
+          <p>Témoignage : Thomas  32 ans à Paris  a récupéré 2 436 € de son propriétaire en 9 semaines.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/temoignage-recuperation-caution-toulouse" class="card" data-cat="temoignages" data-search="sarah  26 ans a toulouse  a recupere 1 380 € temoignage : sarah  26 ans a toulouse  a recupere 1 380 € de son proprietaire en 6 semaines. methode complete + lettres lrar.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Témoignage </div>
+          <h3>Sarah  26 ans à Toulouse  a récupéré 1 380 €</h3>
+          <p>Témoignage : Sarah  26 ans à Toulouse  a récupéré 1 380 € de son propriétaire en 6 semaines.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Calculs & outils -->
+  <section class="hub" id="hub-outils" data-hub="outils">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Calculs & outils</h2>
+          <p class="hub-intro">Calculer préavis, IRL, frais d'agence, trop-perçu. Tests gamifiés et comparateurs interactifs.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">10</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/calculatrice-trop-percu-loyer" class="card" data-cat="outils" data-search="combien votre proprietaire vous doit-il ? calculez en 1 minute combien votre proprietaire vous doit : trop-percu de loyer, charges abusives, depot non rendu. recuperation sur 3 ans retroactifs.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Combien votre propriétaire vous doit-il ?</h3>
+          <p>Calculez en 1 minute combien votre propriétaire vous doit : trop-perçu de loyer, charges abusives, dépôt non rendu.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/calculer-duree-prescription-loyer" class="card" data-cat="outils" data-search="calculer la prescription de mes droits locataire en 2026 prescription des droits locataires : 3 ans pour recuperer trop-percu, depot, charges. 5 ans pour les loyers impayes. detail 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Calculer la prescription de mes droits locataire en 2026</h3>
+          <p>Prescription des droits locataires : 3 ans pour récupérer trop-perçu, dépôt, charges.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/calculer-frais-etat-des-lieux-locataire" class="card" data-cat="outils" data-search="calculer les frais dedl a la charge du locataire en 2026 frais detat des lieux a la charge du locataire : 3 €/m² maximum. calcul + recuperation du trop-percu. procedure 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Calculer les frais d'EDL à la charge du locataire en 2026</h3>
+          <p>Frais d'état des lieux à la charge du locataire : 3 €/m² maximum.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/calculer-indemnite-eviction-locataire" class="card" data-cat="outils" data-search="calculer lindemnite deviction du locataire en 2026 indemnite deviction du locataire : 2-12 mois de loyer + frais demenagement + dommages-interets. calcul exact + jurisprudence 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Calculer l'indemnité d'éviction du locataire en 2026</h3>
+          <p>Indemnité d'éviction du locataire : 2-12 mois de loyer + frais déménagement + dommages-intérêts.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/calculer-loyer-max-airbnb-residence-principale" class="card" data-cat="outils" data-search="calculer le loyer max airbnb pour ma residence principale 2026 plafond airbnb residence principale : 90 jours/an en zone tendue + declaration mairie. calcul revenus + obligations fiscales 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Calculer le loyer max Airbnb pour ma résidence principale 2026</h3>
+          <p>Plafond Airbnb résidence principale : 90 jours/an en zone tendue + déclaration mairie.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/calculer-mon-preavis-1-ou-3-mois" class="card" data-cat="outils" data-search="combien de mois de preavis pour quitter mon logement ? test rapide : combien de mois de preavis pour quitter mon logement ? 1 ou 3 mois selon zone tendue, type de bail, motif. lettre lrar fournie.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Combien de mois de préavis pour quitter mon logement ?</h3>
+          <p>Test rapide : combien de mois de préavis pour quitter mon logement ? 1 ou 3 mois selon zone tendue, type de bail, motif.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/calculer-preavis-meuble-1-mois" class="card" data-cat="outils" data-search="calculer mon preavis pour un logement meuble : 1 mois partout preavis meuble : 1 mois automatique partout en france. calcul date deffet + lettre lrar. procedure complete 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Calculer mon préavis pour un logement meublé : 1 mois partout</h3>
+          <p>Préavis meublé : 1 mois automatique partout en France.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comparateur-loyer-encadre-par-quartier" class="card" data-cat="outils" data-search="comparer votre loyer aux plafonds 2026 par quartier comparez votre loyer aux plafonds legaux par quartier dans les 7 villes en encadrement : paris, lyon, lille, bordeaux, montpellier, villeurbanne, plaisance-du-touch.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Comparer votre loyer aux plafonds 2026 par quartier</h3>
+          <p>Comparez votre loyer aux plafonds légaux par quartier dans les 7 villes en encadrement : Paris, Lyon, Lille, Bordeaux, M</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/simulateur-irl-2026-calcul-automatique" class="card" data-cat="outils" data-search="calculer la revision irl 2026 de mon loyer calculez la revision irl 2026 de votre loyer en 30 secondes. indice insee officiel + plafond legal. recuperation du trop-percu si depassement.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Calculer la révision IRL 2026 de mon loyer</h3>
+          <p>Calculez la révision IRL 2026 de votre loyer en 30 secondes.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/test-bail-legal-5-questions" class="card" data-cat="outils" data-search="test : votre bail est-il legal ? 5 questions test rapide pour verifier si votre bail respecte la loi en 5 questions : preavis, depot, charges, clauses abusives. diagnostic immediat.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Outil </div>
+          <h3>Test : votre bail est-il légal ? 5 questions</h3>
+          <p>Test rapide pour vérifier si votre bail respecte la loi en 5 questions : préavis, dépôt, charges, clauses abusives.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Combien, durée, coût -->
+  <section class="hub" id="hub-infos" data-hub="infos">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Combien, durée, coût</h2>
+          <p class="hub-intro">Toutes les réponses chiffrées : combien je peux récupérer, en combien de temps, à quel prix.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">19</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/combien-charges-recuperables-2026" class="card" data-cat="infos" data-search="combien de charges recuperables par le bailleur en 2026 charges recuperables 2026 : eau, ordures, gardien (75 % max), entretien commun. liste precise du decret 87-713 + recuperation abusives.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien de charges récupérables par le bailleur en 2026</h3>
+          <p>Charges récupérables 2026 : eau, ordures, gardien (75 % max), entretien commun.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-dpe-impact-loyer-2026" class="card" data-cat="infos" data-search="combien le dpe impacte le loyer en 2026 (f-g gele) dpe f ou g : loyer gele depuis aout 2022. interdiction de location g depuis 2025. impact financier : recuperation 720 € moyenne.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien le DPE impacte le loyer en 2026 (F-G gelé)</h3>
+          <p>DPE F ou G : loyer gelé depuis août 2022.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-frais-agence-maximum-2026" class="card" data-cat="infos" data-search="combien de frais dagence maximum en 2026 (par ville) plafond frais dagence 2026 : 8/10/12 €/m² selon zone + 3 €/m² edl. recuperation moyenne 180 € si depassement. tableau complet par ville.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien de frais d'agence maximum en 2026 (par ville)</h3>
+          <p>Plafond frais d'agence 2026 : 8/10/12 €/m² selon zone + 3 €/m² EDL.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-honoraires-syndic-charges" class="card" data-cat="infos" data-search="combien dhonoraires syndic refacturables au locataire : 0 % honoraires de syndic au locataire : 0 % recuperables. recuperation moyenne 280 €/an sur 3 ans en cas dabus. procedure 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien d'honoraires syndic refacturables au locataire : 0 %</h3>
+          <p>Honoraires de syndic au locataire : 0 % récupérables.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-on-peut-recuperer-caution" class="card" data-cat="infos" data-search="combien on peut recuperer sur sa caution : 540 a 1 600 € recuperation de caution : moyenne 540 €, jusqua 1 600 €. calcul exact : depot + penalite 10 %/mois + retenues abusives. guide 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien on peut récupérer sur sa caution : 540 à 1 600 €</h3>
+          <p>Récupération de caution : moyenne 540 €, jusqu'à 1 600 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-on-peut-recuperer-charges-abusives" class="card" data-cat="infos" data-search="combien on peut recuperer en charges abusives : 487 € moyenne charges abusives : recuperation moyenne 487 €. 5 categories a verifier : gardien, ravalement, taxe fonciere, syndic, gros travaux. procedure 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien on peut récupérer en charges abusives : 487 € moyenne</h3>
+          <p>Charges abusives : récupération moyenne 487 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-on-peut-recuperer-edl-abusif" class="card" data-cat="infos" data-search="combien on peut recuperer apres un edl abusif : 620 € moyenne edl abusif : recuperation moyenne 620 €. methodes : edl dentree annexe, grille vetuste, photos, contestation des retenues. procedure 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien on peut récupérer après un EDL abusif : 620 € moyenne</h3>
+          <p>EDL abusif : récupération moyenne 620 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-on-peut-recuperer-frais-agence" class="card" data-cat="infos" data-search="combien on peut recuperer en frais dagence excessifs frais dagence excessifs : plafonds 8/10/12 €/m² + 3 €/m² edl. recuperation moyenne 180 €, jusqua 500 €. modele lrar.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien on peut récupérer en frais d'agence excessifs</h3>
+          <p>Frais d'agence excessifs : plafonds 8/10/12 €/m² + 3 €/m² EDL.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/combien-on-peut-recuperer-trop-percu-loyer" class="card" data-cat="infos" data-search="combien on peut recuperer en trop-percu de loyer : 720 a 7 200 € trop-percu de loyer : moyenne 720 €, jusqua 7 200 € a paris. causes : encadrement depasse, irl excessif, complement abusif. recuperation 3 ans.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien on peut récupérer en trop-perçu de loyer : 720 à 7 200 €</h3>
+          <p>Trop-perçu de loyer : moyenne 720 €, jusqu'à 7 200 € à Paris.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/cout-commission-conciliation" class="card" data-cat="infos" data-search="combien coute la commission de conciliation : 0 € cdc totalement gratuite. pas davocat obligatoire. sur dossier ou audience. competente pour caution, loyer, charges, edl. procedure 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien coûte la Commission de Conciliation : 0 €</h3>
+          <p>CDC totalement gratuite.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/cout-contester-loyer-procedure" class="card" data-cat="infos" data-search="combien coute la contestation de loyer : 0 a 30 € cout contestation de loyer abusif : lrar 5 €, cdc gratuite, expertise 200-400 €. recuperation moyenne 720 €, jusqua 7 200 €.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien coûte la contestation de loyer : 0 à 30 €</h3>
+          <p>Coût contestation de loyer abusif : LRAR 5 €, CDC gratuite, expertise 200-400 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/cout-lettre-huissier" class="card" data-cat="infos" data-search="combien coute une lettre par huissier (commissaire) : 50-150 € lettre par commissaire de justice (ex-huissier) : 50-150 € selon distance. force probante. alternative lrar a 5 €. procedure 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien coûte une lettre par huissier (commissaire) : 50-150 €</h3>
+          <p>Lettre par commissaire de justice (ex-huissier) : 50-150 € selon distance.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/cout-recuperer-caution-procedure" class="card" data-cat="infos" data-search="combien coute la recuperation de caution : 0 a 400 € cout recuperation caution : lrar 5 €, cdc gratuit, tribunal 0 € sans avocat. huissier 200-400 €. recuperation moyenne 540 €.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien coûte la récupération de caution : 0 à 400 €</h3>
+          <p>Coût récupération caution : LRAR 5 €, CDC gratuit, tribunal 0 € sans avocat.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/cout-saisir-tribunal-locataire" class="card" data-cat="infos" data-search="combien coute de saisir le tribunal en tant que locataire : 0 € saisir le tribunal en tant que locataire : 0 € en procedure simplifiee &lt; 10 000 €. frais dhuissier : 50-100 €. aide juridictionnelle possible.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien coûte de saisir le tribunal en tant que locataire : 0 €</h3>
+          <p>Saisir le tribunal en tant que locataire : 0 € en procédure simplifiée &lt; 10 000 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/duree-procedure-caution-non-rendue" class="card" data-cat="infos" data-search="combien de temps pour recuperer sa caution : 6-12 semaines duree procedure caution non rendue : 6 semaines (lrar + transaction) a 12 mois (tribunal). etapes detaillees + jalons en 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien de temps pour récupérer sa caution : 6-12 semaines</h3>
+          <p>Durée procédure caution non rendue : 6 semaines (LRAR + transaction) à 12 mois (tribunal).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/duree-procedure-cdc-locatif" class="card" data-cat="infos" data-search="combien de temps prend la cdc en location : 2-3 mois duree commission departementale de conciliation : 2-3 mois en moyenne. etapes : saisine, instruction, audience, decision. details 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien de temps prend la CDC en location : 2-3 mois</h3>
+          <p>Durée Commission Départementale de Conciliation : 2-3 mois en moyenne.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/duree-procedure-conciliateur-justice" class="card" data-cat="infos" data-search="combien de temps prend le conciliateur de justice : 4-8 semaines duree conciliateur de justice locatif : 4-8 semaines. gratuit, sans avocat, mairie ou prefecture. alternative rapide a la cdc.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien de temps prend le conciliateur de justice : 4-8 semaines</h3>
+          <p>Durée conciliateur de justice locatif : 4-8 semaines.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/duree-procedure-huissier-locatif" class="card" data-cat="infos" data-search="combien de temps prend lhuissier en location : 2-6 semaines duree huissier locatif (commissaire de justice) : 2-6 semaines. cout : 200-400 €. utile pour constat, signification, edl litigieux.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien de temps prend l'huissier en location : 2-6 semaines</h3>
+          <p>Durée huissier locatif (commissaire de justice) : 2-6 semaines.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/duree-procedure-tribunal-judiciaire-locataire" class="card" data-cat="infos" data-search="combien de temps prend le tribunal judiciaire (locataire) : 6-12 mois duree tribunal judiciaire procedure simplifiee locataire : 6-12 mois en moyenne. etapes : assignation, audience, jugement, execution.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Info chiffrée </div>
+          <h3>Combien de temps prend le tribunal judiciaire (locataire) : 6-12 mois</h3>
+          <p>Durée tribunal judiciaire procédure simplifiée locataire : 6-12 mois en moyenne.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Modèles de lettres -->
+  <section class="hub" id="hub-modeles" data-hub="modeles">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Modèles de lettres</h2>
+          <p class="hub-intro">12 modèles de lettres LRAR officiels, prêts à copier-coller. Adaptés à chaque situation locataire.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">9</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/modele-attestation-hebergement-gratuit" class="card" data-cat="modeles" data-search="modele attestation hebergement gratuit modele attestation dhebergement gratuit 2026 : texte officiel a recopier + pieces a joindre. pour caf, banque, demarches.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele attestation hebergement gratuit</h3>
+          <p>Modèle attestation d'hébergement gratuit 2026 : texte officiel à recopier + pièces à joindre.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-contestation-augmentation-loyer" class="card" data-cat="modeles" data-search="modele lettre contestation augmentation loyer modele lrar contestation augmentation loyer : irl mal calcule, dpe f/g, sans clause de revision. texte officiel 2026.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele lettre contestation augmentation loyer</h3>
+          <p>Modèle LRAR contestation augmentation loyer : IRL mal calculé, DPE F/G, sans clause de révision.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-contestation-edl-sortie" class="card" data-cat="modeles" data-search="modele lettre contestation edl sortie modele lrar contestation etat des lieux de sortie : retenues abusives, degradations contestees. texte officiel 2026.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele lettre contestation edl sortie</h3>
+          <p>Modèle LRAR contestation état des lieux de sortie : retenues abusives, dégradations contestées.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-demande-baisse-loyer" class="card" data-cat="modeles" data-search="modele lettre demande baisse loyer modele lrar demande de baisse de loyer 2026 : 5 motifs, calcul, jurisprudence. texte officiel pret a envoyer.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele lettre demande baisse loyer</h3>
+          <p>Modèle LRAR demande de baisse de loyer 2026 : 5 motifs, calcul, jurisprudence.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-demande-travaux" class="card" data-cat="modeles" data-search="modele lettre demande travaux modele lrar demande de travaux : fuite, chauffage, humidite, infiltrations. texte officiel 2026 avec delai 60 jours.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele lettre demande travaux</h3>
+          <p>Modèle LRAR demande de travaux : fuite, chauffage, humidité, infiltrations.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-desolidarisation-bail" class="card" data-cat="modeles" data-search="modele lettre desolidarisation bail modele lrar desolidarisation de bail : apres separation, divorce, depart coloc. texte officiel 2026.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele lettre desolidarisation bail</h3>
+          <p>Modèle LRAR désolidarisation de bail : après séparation, divorce, départ coloc.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-preavis-depart" class="card" data-cat="modeles" data-search="modele lettre preavis depart modele lettre preavis depart logement : 1 mois (zone tendue, meuble) ou 3 mois (vide). texte officiel 2026 pret a envoyer.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele lettre preavis depart</h3>
+          <p>Modèle lettre préavis départ logement : 1 mois (zone tendue, meublé) ou 3 mois (vide).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-remboursement-trop-percu-loyer" class="card" data-cat="modeles" data-search="modele lettre remboursement trop percu loyer modele lettre lrar remboursement trop-percu loyer : encadrement, irl, complement abusif. texte officiel 2026 pret a envoyer.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele lettre remboursement trop percu loyer</h3>
+          <p>Modèle lettre LRAR remboursement trop-perçu loyer : encadrement, IRL, complément abusif.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/modele-lettre-signalement-logement-insalubre" class="card" data-cat="modeles" data-search="modele lettre signalement logement insalubre modele de lettre signalement logement insalubre au prefet : procedure ars, sanctions, indemnisation 2026.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Modèle gratuit <span class="badge-gratuit">GRATUIT</span></div>
+          <h3>Modele lettre signalement logement insalubre</h3>
+          <p>Modèle de lettre signalement logement insalubre au préfet : procédure ARS, sanctions, indemnisation 2026.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Villes & zones tendues -->
+  <section class="hub" id="hub-villes" data-hub="villes">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Villes & zones tendues</h2>
+          <p class="hub-intro">Votre commune est-elle en zone tendue ? Préavis, encadrement, Airbnb : 42 villes décortiquées.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">41</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/aix-en-provence-zone-tendue-2026" class="card" data-cat="villes" data-search="aix-en-provence est-elle en zone tendue ? guide 2026 aix-en-provence en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb, verification charges. etudiants et marche tendu.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Aix-en-Provence est-elle en zone tendue ? Guide 2026</h3>
+          <p>Aix-en-Provence en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/annecy-zone-tendue-2026" class="card" data-cat="villes" data-search="annecy en zone tendue 2026 : vos droits annecy en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Annecy en zone tendue 2026 : vos droits</h3>
+          <p>Annecy en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/antibes-zone-tendue-2026" class="card" data-cat="villes" data-search="antibes en zone tendue 2026 : vos droits antibes en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Antibes en zone tendue 2026 : vos droits</h3>
+          <p>Antibes en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/argenteuil-zone-tendue-2026" class="card" data-cat="villes" data-search="argenteuil en zone tendue 2026 : vos droits argenteuil en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Argenteuil en zone tendue 2026 : vos droits</h3>
+          <p>Argenteuil en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/aubervilliers-zone-tendue-2026" class="card" data-cat="villes" data-search="aubervilliers en zone tendue 2026 : vos droits aubervilliers en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Aubervilliers en zone tendue 2026 : vos droits</h3>
+          <p>Aubervilliers en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/avignon-zone-tendue-2026" class="card" data-cat="villes" data-search="avignon en zone tendue 2026 : vos droits avignon en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Avignon en zone tendue 2026 : vos droits</h3>
+          <p>Avignon en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/besancon-zone-tendue-2026" class="card" data-cat="villes" data-search="besancon est-elle en zone tendue en 2026 ? besancon en zone tendue : ce que dit le decret 2013-392, consequences sur preavis, encadrement et airbnb. verification officielle.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Besançon est-elle en zone tendue en 2026 ?</h3>
+          <p>Besançon en zone tendue : ce que dit le décret 2013-392, conséquences sur préavis, encadrement et Airbnb.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/boulogne-billancourt-zone-tendue-2026" class="card" data-cat="villes" data-search="boulogne-billancourt en zone tendue 2026 : vos droits boulogne-billancourt en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Boulogne-Billancourt en zone tendue 2026 : vos droits</h3>
+          <p>Boulogne-Billancourt en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/brest-zone-tendue-2026" class="card" data-cat="villes" data-search="brest en zone tendue 2026 : vos droits brest en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Brest en zone tendue 2026 : vos droits</h3>
+          <p>Brest en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/caen-zone-tendue-2026" class="card" data-cat="villes" data-search="caen en zone tendue 2026 : vos droits caen en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Caen en zone tendue 2026 : vos droits</h3>
+          <p>Caen en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/cannes-zone-tendue-2026" class="card" data-cat="villes" data-search="cannes en zone tendue 2026 : vos droits cannes en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Cannes en zone tendue 2026 : vos droits</h3>
+          <p>Cannes en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/chambery-zone-tendue-2026" class="card" data-cat="villes" data-search="chambery en zone tendue 2026 : vos droits chambery en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Chambéry en zone tendue 2026 : vos droits</h3>
+          <p>Chambéry en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/creteil-zone-tendue-2026" class="card" data-cat="villes" data-search="creteil en zone tendue 2026 : vos droits creteil en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Créteil en zone tendue 2026 : vos droits</h3>
+          <p>Créteil en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/encadrement-loyer-bordeaux" class="card" data-cat="villes" data-search="encadrement loyer bordeaux encadrement loyer bordeaux depuis juillet 2022 : plafonds par quartier, comment verifier en 2 min, recuperation 5 400 € sur 3 ans.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Encadrement loyer bordeaux</h3>
+          <p>Encadrement loyer Bordeaux depuis juillet 2022 : plafonds par quartier, comment vérifier en 2 min, récupération 5 400 € </p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/encadrement-loyer-lille" class="card" data-cat="villes" data-search="encadrement loyer lille encadrement loyer lille depuis 2020 : plafonds par quartier, simulateur officiel, recuperation moyenne 5 800 € sur 3 ans.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Encadrement loyer lille</h3>
+          <p>Encadrement loyer Lille depuis 2020 : plafonds par quartier, simulateur officiel, récupération moyenne 5 800 € sur 3 ans</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/encadrement-loyer-montpellier" class="card" data-cat="villes" data-search="encadrement loyer montpellier encadrement loyer montpellier depuis 2022 : plafonds par quartier, verification en 30s, recuperation moyenne 4 500 € sur 3 ans.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Encadrement loyer montpellier</h3>
+          <p>Encadrement loyer Montpellier depuis 2022 : plafonds par quartier, vérification en 30s, récupération moyenne 4 500 € sur</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/encadrement-loyer-plaisance-du-touch" class="card" data-cat="villes" data-search="encadrement loyer plaisance du touch plaisance-du-touch encadree depuis 2024 : plafonds par quartier, simulation, recuperation moyenne sur 3 ans.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Encadrement loyer plaisance du touch</h3>
+          <p>Plaisance-du-Touch encadrée depuis 2024 : plafonds par quartier, simulation, récupération moyenne sur 3 ans.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/grenoble-zone-tendue-2026" class="card" data-cat="villes" data-search="grenoble zone tendue 2026 grenoble zone tendue depuis 2013 : preavis 1 mois, regulation airbnb. encadrement loyer envisage 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Grenoble zone tendue 2026</h3>
+          <p>Grenoble zone tendue depuis 2013 : préavis 1 mois, régulation Airbnb.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/le-havre-zone-tendue-2026" class="card" data-cat="villes" data-search="le havre en zone tendue 2026 : vos droits le havre en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Le Havre en zone tendue 2026 : vos droits</h3>
+          <p>Le Havre en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/le-mans-zone-tendue-2026" class="card" data-cat="villes" data-search="le mans est-elle en zone tendue en 2026 ? le mans pas en zone tendue (decret 2013). consequences : preavis 3 mois, pas de plafond airbnb. details 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Le Mans est-elle en zone tendue en 2026 ?</h3>
+          <p>Le Mans pas en zone tendue (décret 2013).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/limoges-zone-tendue-2026" class="card" data-cat="villes" data-search="limoges est-elle en zone tendue en 2026 ? limoges pas en zone tendue (decret 2013). consequences : preavis 3 mois, pas de plafond airbnb. details 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Limoges est-elle en zone tendue en 2026 ?</h3>
+          <p>Limoges pas en zone tendue (décret 2013).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/lyon-zone-tendue-verification" class="card" data-cat="villes" data-search="lyon zone tendue verification lyon zone tendue 2026 : oui, depuis 2013. preavis 1 mois, encadrement actif. liste officielle des communes et verification gratuite.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Lyon zone tendue verification</h3>
+          <p>Lyon zone tendue 2026 : oui, depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/marseille-zone-tendue-2026" class="card" data-cat="villes" data-search="marseille zone tendue 2026 marseille zone tendue 2026 : preavis 1 mois automatique, encadrement airbnb, protections. loyer pas encadre (difference).">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Marseille zone tendue 2026</h3>
+          <p>Marseille zone tendue 2026 : préavis 1 mois automatique, encadrement Airbnb, protections.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/montreuil-zone-tendue-2026" class="card" data-cat="villes" data-search="montreuil en zone tendue 2026 : vos droits montreuil en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Montreuil en zone tendue 2026 : vos droits</h3>
+          <p>Montreuil en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/nanterre-zone-tendue-2026" class="card" data-cat="villes" data-search="nanterre en zone tendue 2026 : vos droits nanterre en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Nanterre en zone tendue 2026 : vos droits</h3>
+          <p>Nanterre en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/nantes-zone-tendue-2026" class="card" data-cat="villes" data-search="nantes zone tendue 2026 nantes zone tendue depuis 2013 : preavis 1 mois, regulation airbnb. encadrement loyer envisage 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Nantes zone tendue 2026</h3>
+          <p>Nantes zone tendue depuis 2013 : préavis 1 mois, régulation Airbnb.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/nice-zone-tendue-2026" class="card" data-cat="villes" data-search="nice en zone tendue 2026 : vos droits nice en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Nice en zone tendue 2026 : vos droits</h3>
+          <p>Nice en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/pau-zone-tendue-2026" class="card" data-cat="villes" data-search="pau est-elle en zone tendue en 2026 ? pau pas en zone tendue (decret 2013). consequences : preavis 3 mois, pas de plafond airbnb. details 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Pau est-elle en zone tendue en 2026 ?</h3>
+          <p>Pau pas en zone tendue (décret 2013).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/reims-zone-tendue-2026" class="card" data-cat="villes" data-search="reims en zone tendue 2026 : vos droits reims en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Reims en zone tendue 2026 : vos droits</h3>
+          <p>Reims en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/rennes-zone-tendue-2026" class="card" data-cat="villes" data-search="rennes en zone tendue 2026 : vos droits rennes en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Rennes en zone tendue 2026 : vos droits</h3>
+          <p>Rennes en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/rouen-zone-tendue-2026" class="card" data-cat="villes" data-search="rouen est-elle en zone tendue en 2026 ? rouen et 21 communes de la metropole rouen normandie en zone tendue depuis 2013. preavis 1 mois, airbnb 90 jours, protections renforcees.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Rouen est-elle en zone tendue en 2026 ?</h3>
+          <p>Rouen et 21 communes de la Métropole Rouen Normandie en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/saint-denis-zone-tendue-2026" class="card" data-cat="villes" data-search="saint-denis en zone tendue 2026 : vos droits saint-denis en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Saint-Denis en zone tendue 2026 : vos droits</h3>
+          <p>Saint-Denis en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/saint-etienne-zone-tendue-2026" class="card" data-cat="villes" data-search="saint-etienne en zone tendue 2026 : vos droits saint-etienne en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Saint-Étienne en zone tendue 2026 : vos droits</h3>
+          <p>Saint-Étienne en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/strasbourg-zone-tendue-2026" class="card" data-cat="villes" data-search="strasbourg zone tendue 2026 strasbourg zone tendue depuis 2013 : preavis 1 mois, regulation airbnb. encadrement loyer envisage.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Strasbourg zone tendue 2026</h3>
+          <p>Strasbourg zone tendue depuis 2013 : préavis 1 mois, régulation Airbnb.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/toulon-zone-tendue-2026" class="card" data-cat="villes" data-search="toulon est-elle en zone tendue en 2026 ? toulon et 12 communes de la metropole tpm en zone tendue depuis 2013. preavis 1 mois, plafond airbnb, charges. verifiez vos droits.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Toulon est-elle en zone tendue en 2026 ?</h3>
+          <p>Toulon et 12 communes de la Métropole TPM en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/toulouse-zone-tendue-2026" class="card" data-cat="villes" data-search="toulouse zone tendue 2026 toulouse en zone tendue depuis 2013 : preavis 1 mois, regulation airbnb. encadrement loyer en discussion 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Toulouse zone tendue 2026</h3>
+          <p>Toulouse en zone tendue depuis 2013 : préavis 1 mois, régulation Airbnb.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/tours-zone-tendue-2026" class="card" data-cat="villes" data-search="tours en zone tendue 2026 : vos droits tours en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Tours en zone tendue 2026 : vos droits</h3>
+          <p>Tours en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/villejuif-zone-tendue-2026" class="card" data-cat="villes" data-search="villejuif est-elle en zone tendue ? vos droits 2026 villejuif est en zone tendue depuis 2013. preavis 1 mois automatique, encadrement airbnb, plafond charges. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Villejuif est-elle en zone tendue ? Vos droits 2026</h3>
+          <p>Villejuif est en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/villeurbanne-zone-tendue-2026" class="card" data-cat="villes" data-search="villeurbanne : zone tendue + encadrement des loyers 2026 villeurbanne en zone tendue et en encadrement des loyers depuis 2021. plafonds par quartier, preavis 1 mois, verifications loyer.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Villeurbanne : zone tendue + encadrement des loyers 2026</h3>
+          <p>Villeurbanne en zone tendue ET en encadrement des loyers depuis 2021.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/vitry-sur-seine-zone-tendue-2026" class="card" data-cat="villes" data-search="vitry-sur-seine en zone tendue 2026 : vos droits vitry-sur-seine en zone tendue depuis 2013. preavis 1 mois automatique, plafond airbnb 90 jours, vos droits 2026. verifiez votre bail.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville </div>
+          <h3>Vitry-sur-Seine en zone tendue 2026 : vos droits</h3>
+          <p>Vitry-sur-Seine en zone tendue depuis 2013.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/zone-tendue-liste-communes" class="card" data-cat="villes" data-search="liste des villes en zone tendue 2026 : 1 149 communes officielles liste officielle des 1 149 communes en zone tendue france 2026 (decret 2013-392). preavis 1 mois automatique, plafond airbnb 90 jours, protections renforcees par ville.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Ville <span class="badge-essentiel">ESSENTIEL</span></div>
+          <h3>Liste des villes en zone tendue 2026 : 1 149 communes officielles</h3>
+          <p>Liste officielle des 1 149 communes en zone tendue France 2026 (décret 2013-392).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Lois & règlementation -->
+  <section class="hub" id="hub-lois" data-hub="lois">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Lois & règlementation</h2>
+          <p class="hub-intro">Loi ALUR, ELAN, climat, encadrement. Comprendre les règles qui s'appliquent à votre bail.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">10</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/dpe-f-g-loyer-gele" class="card" data-cat="lois" data-search="dpe f g loyer gele dpe f ou g : loyer gele depuis aout 2022. recuperation moyenne 1 200 € sur 3 ans + interdiction location g des 2025.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Dpe f g loyer gele</h3>
+          <p>DPE F ou G : loyer gelé depuis août 2022.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/frais-agence-location-2026" class="card" data-cat="lois" data-search="frais agence location 2026 frais agence location 2026 : plafonds 8/10/12 €/m², repartition bailleur/locataire, edl. recuperation si depassement.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Frais agence location 2026</h3>
+          <p>Frais agence location 2026 : plafonds 8/10/12 €/m², répartition bailleur/locataire, EDL.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/loca-pass-fsl-2026" class="card" data-cat="lois" data-search="loca pass fsl 2026 loca-pass et fsl 2026 : avance depot gratuite, aide premier loyer, depannage impaye. tout sur les aides au logement.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Loca pass fsl 2026</h3>
+          <p>Loca-Pass et FSL 2026 : avance dépôt gratuite, aide premier loyer, dépannage impayé.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/loi-airbnb-residence-principale-paris" class="card" data-cat="lois" data-search="loi airbnb residence principale paris sous-louer residence principale paris sur airbnb : 90 jours max, declaration mairie, numero denregistrement. sanctions jusqua 100 000 €.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Loi airbnb residence principale paris</h3>
+          <p>Sous-louer résidence principale Paris sur Airbnb : 90 jours max, déclaration mairie, numéro d'enregistrement.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/loi-alur-2026-locataires" class="card" data-cat="lois" data-search="loi alur 2026 locataires loi alur : 7 protections cles pour les locataires en 2026. encadrement, frais agence, clauses abusives, bail type. tout comprendre.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Loi alur 2026 locataires</h3>
+          <p>Loi ALUR : 7 protections clés pour les locataires en 2026.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/loi-elan-2026-locataires" class="card" data-cat="lois" data-search="loi elan 2026 locataires loi elan 2018 : bail mobilite, encadrement test, sanction airbnb. les 5 nouveautes concretes pour les locataires en 2026.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Loi elan 2026 locataires</h3>
+          <p>Loi ELAN 2018 : bail mobilité, encadrement test, sanction Airbnb.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprietaire-ne-repond-pas-que-faire" class="card" data-cat="lois" data-search="mon proprietaire ne repond pas : que faire ? proprietaire qui ne repond plus a vos courriers, mails, appels ? 5 demarches legales pour le forcer a reagir. modeles lrar + procedure dhuissier.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Mon propriétaire ne répond pas : que faire ?</h3>
+          <p>Propriétaire qui ne répond plus à vos courriers, mails, appels ? 5 démarches légales pour le forcer à réagir.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/regularisation-charges-locatives-2026" class="card" data-cat="lois" data-search="regularisation charges locatives 2026 regularisation charges locatives 2026 : decompte, justificatifs, contestation. recuperation moyenne 800 € sur 3 ans.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Regularisation charges locatives 2026</h3>
+          <p>Régularisation charges locatives 2026 : décompte, justificatifs, contestation.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/taxe-ordures-menageres-locataire-2026" class="card" data-cat="lois" data-search="taxe ordures menageres locataire 2026 teom 2026 : recuperable sur locataire. calcul, contestation, plafonds. economie possible si paiement abusif.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Taxe ordures menageres locataire 2026</h3>
+          <p>TEOM 2026 : récupérable sur locataire.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/visite-proprietaire-bail" class="card" data-cat="lois" data-search="visite proprietaire bail visites du proprietaire : frequence, duree (2h/jour ouvre), refus possible, conge en cours. vos droits face aux abus en 2026.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Loi </div>
+          <h3>Visite proprietaire bail</h3>
+          <p>Visites du propriétaire : fréquence, durée (2h/jour ouvré), refus possible, congé en cours.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Bail & contrat -->
+  <section class="hub" id="hub-bail" data-hub="bail">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Bail & contrat</h2>
+          <p class="hub-intro">Tout sur votre bail : meublé/vide, colocation, sous-location, état des lieux, renouvellement.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">23</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/apl-colocation-2026" class="card" data-cat="bail" data-search="apl colocation 2026 apl en colocation 2026 : eligibilite, calcul individuel, demarches caf. combien chaque coloc peut toucher.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Apl colocation 2026</h3>
+          <p>APL en colocation 2026 : éligibilité, calcul individuel, démarches CAF.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/assurance-habitation-locataire" class="card" data-cat="bail" data-search="assurance habitation locataire assurance habitation locataire : obligation legale, garanties minimales, prix moyen, sanctions en cas dabsence. guide complet 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Assurance habitation locataire</h3>
+          <p>Assurance habitation locataire : obligation légale, garanties minimales, prix moyen, sanctions en cas d'absence.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/augmentation-loyer-cours-bail" class="card" data-cat="bail" data-search="augmentation loyer cours bail augmentation loyer 2026 : irl trimestre, gel dpe f/g, conditions strictes. contester a paris, lyon, bordeaux avec calcul et lettre type.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Augmentation loyer cours bail</h3>
+          <p>Augmentation loyer 2026 : IRL trimestre, gel DPE F/G, conditions strictes.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bail-conjoint-separation" class="card" data-cat="bail" data-search="bail conjoint separation separation, divorce, rupture pacs : qui garde le logement loue ? solidarite, desolidarisation, demarches 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Bail conjoint separation</h3>
+          <p>Séparation, divorce, rupture PACS : qui garde le logement loué ? Solidarité, désolidarisation, démarches 2026.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bail-expire-que-se-passe-t-il" class="card" data-cat="bail" data-search="bail expire que se passe t il bail expire : tacite reconduction automatique, droits du locataire, sortie possible. procedure 2026 complete.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Bail expire que se passe t il</h3>
+          <p>Bail expiré : tacite reconduction automatique, droits du locataire, sortie possible.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bail-meuble-vs-vide" class="card" data-cat="bail" data-search="bail meuble vs vide bail meuble vs bail vide : duree (1 an vs 3 ans), depot de garantie (2 vs 1 mois), fiscalite, preavis. comparatif complet 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Bail meuble vs vide</h3>
+          <p>Bail meublé vs bail vide : durée (1 an vs 3 ans), dépôt de garantie (2 vs 1 mois), fiscalité, préavis.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bail-mobilite" class="card" data-cat="bail" data-search="bail mobilite bail mobilite 2026 : 1-10 mois aucun depot de garantie. ideal stage/mission a paris, lyon, bordeaux. economisez 2 mois de loyer.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Bail mobilite</h3>
+          <p>Bail mobilité 2026 : 1-10 mois AUCUN dépôt de garantie.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bail-tacitement-reconduit-droits" class="card" data-cat="bail" data-search="bail tacitement reconduit droits tacite reconduction du bail 2026 : memes conditions, droits, pieges. quand et comment refuser ou accepter.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Bail tacitement reconduit droits</h3>
+          <p>Tacite reconduction du bail 2026 : mêmes conditions, droits, pièges.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/clause-resolutoire-bail-explication-2026" class="card" data-cat="bail" data-search="clause resolutoire : ce que dit la loi en 2026 clause resolutoire dans votre bail : conditions strictes 2026, motifs valables, procedure dexpulsion. 80 % des clauses sont mal redigees.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Clause résolutoire : ce que dit la loi en 2026</h3>
+          <p>Clause résolutoire dans votre bail : conditions strictes 2026, motifs valables, procédure d'expulsion.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/colocataire-ne-paie-pas-solution" class="card" data-cat="bail" data-search="colocataire ne paie pas solution colocataire ne paie pas son loyer : clause solidarite, demarches, exclusion. comment ne pas tout payer en 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Colocataire ne paie pas solution</h3>
+          <p>Colocataire ne paie pas son loyer : clause solidarité, démarches, exclusion.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/colocation-bail-regles" class="card" data-cat="bail" data-search="colocation bail regles colocation a paris, lyon, bordeaux : clause de solidarite, depart dun coloc, depot. toutes les regles 2026 avec exemples chiffres.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Colocation bail regles</h3>
+          <p>Colocation à Paris, Lyon, Bordeaux : clause de solidarité, départ d'un coloc, dépôt.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/depart-anticipe-bail-sans-frais-2026" class="card" data-cat="bail" data-search="comment partir avant la fin du bail sans frais ? comment quitter votre logement avant la fin du bail sans payer de penalite : 5 methodes legales en 2026. cession de bail, sous-location, motifs speciaux.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Comment partir avant la fin du bail sans frais ?</h3>
+          <p>Comment quitter votre logement avant la fin du bail sans payer de pénalité : 5 méthodes légales en 2026.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/diagnostics-obligatoires-bail" class="card" data-cat="bail" data-search="diagnostics obligatoires bail diagnostics obligatoires au bail : dpe, plomb, amiante, erp, risques naturels. sanctions en cas dabsence ou de mensonge. 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Diagnostics obligatoires bail</h3>
+          <p>Diagnostics obligatoires au bail : DPE, plomb, amiante, ERP, risques naturels.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/locataire-protege-conge" class="card" data-cat="bail" data-search="locataire protege conge locataire protege : seniors, handicap, ressources modestes. conditions pour refuser un conge pour vendre ou reprise. vos droits en 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Locataire protege conge</h3>
+          <p>Locataire protégé : seniors, handicap, ressources modestes.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/mois-loyer-avance-limite-legale" class="card" data-cat="bail" data-search="mois loyer avance limite legale loyer davance 2026 : 1 mois maximum (vide), 2 mois (meuble). au-dela : illegal. recuperation possible sur 3 ans.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Mois loyer avance limite legale</h3>
+          <p>Loyer d'avance 2026 : 1 mois maximum (vide), 2 mois (meublé).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/preavis-1-mois-justificatif-quels-cas" class="card" data-cat="bail" data-search="preavis 1 mois sans zone tendue : les 7 cas justifies hors zone tendue, 7 motifs permettent le preavis 1 mois : mutation, perte demploi, rsa, +60 ans, sante. justificatifs et procedure 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Préavis 1 mois sans zone tendue : les 7 cas justifiés</h3>
+          <p>Hors zone tendue, 7 motifs permettent le préavis 1 mois : mutation, perte d'emploi, RSA, +60 ans, santé.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprietaire-refuse-etat-des-lieux" class="card" data-cat="bail" data-search="proprietaire refuse etat des lieux proprietaire refuse letat des lieux dentree ou de sortie : consequences, demarche huissier, presomption en votre faveur. guide 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Proprietaire refuse etat des lieux</h3>
+          <p>Propriétaire refuse l'état des lieux d'entrée ou de sortie : conséquences, démarche huissier, présomption en votre faveur.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/quittance-loyer-obligation" class="card" data-cat="bail" data-search="quittance loyer obligation quittance de loyer : obligation gratuite du proprietaire, sanctions en cas de refus, modele conforme. vos droits 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Quittance loyer obligation</h3>
+          <p>Quittance de loyer : obligation gratuite du propriétaire, sanctions en cas de refus, modèle conforme.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/refus-renouvellement-bail-recours" class="card" data-cat="bail" data-search="refus renouvellement bail recours refus de renouvellement de bail : 4 recours du locataire en 2026. motif valable, protection, procedure complete.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Refus renouvellement bail recours</h3>
+          <p>Refus de renouvellement de bail : 4 recours du locataire en 2026.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/revision-loyer-cours-bail-illegal-2026" class="card" data-cat="bail" data-search="augmentation de loyer en cours de bail : legale ou pas ? bailleur veut augmenter votre loyer en cours de bail ? sans clause de revision dans le bail, cest illegal. contestation et recuperation sur 3 ans.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Augmentation de loyer en cours de bail : légale ou pas ?</h3>
+          <p>Bailleur veut augmenter votre loyer en cours de bail ? Sans clause de révision dans le bail, c'est illégal.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/solidarite-colocataires-fin-bail-2026" class="card" data-cat="bail" data-search="solidarite colocataires : combien de temps apres mon depart ? vous quittez une colocation : la clause de solidarite ne court que 6 mois apres votre depart. loi alur + procedure pour vous desengager 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Solidarité colocataires : combien de temps après mon départ ?</h3>
+          <p>Vous quittez une colocation : la clause de solidarité ne court que 6 mois après votre départ.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/sous-location-airbnb-illegale" class="card" data-cat="bail" data-search="sous location airbnb illegale sous-location airbnb sans accord : illegale, sanctions, loi le meur 2024. tout ce quil faut savoir avant de louer son logement sur plateforme.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Sous location airbnb illegale</h3>
+          <p>Sous-location Airbnb sans accord : illégale, sanctions, loi Le Meur 2024.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/vente-logement-loue" class="card" data-cat="bail" data-search="vente logement loue vente du logement loue : droit de preemption du locataire, conge pour vendre, delais et conditions. vos droits complets en 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Bail </div>
+          <h3>Vente logement loue</h3>
+          <p>Vente du logement loué : droit de préemption du locataire, congé pour vendre, délais et conditions.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Charges locatives -->
+  <section class="hub" id="hub-charges" data-hub="charges">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Charges locatives</h2>
+          <p class="hub-intro">Charges récupérables vs abusives. Décompte annuel, régularisation. Récupération moyenne 487 €.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">1</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/charges-locatives-abusives" class="card" data-cat="charges" data-search="charges locatives abusives charges locatives abusives : 5 categories illegalement facturees (gardien, ravalement, taxe fonciere). recuperation moyenne 1 080 € sur 3 ans.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Charges </div>
+          <h3>Charges locatives abusives</h3>
+          <p>Charges locatives abusives : 5 catégories illégalement facturées (gardien, ravalement, taxe foncière).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Aides & dossier -->
+  <section class="hub" id="hub-aides" data-hub="aides">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Aides & dossier</h2>
+          <p class="hub-intro">APL, Visale, Loca-Pass, Mobili-Jeune. Comment monter un dossier de location parfait sans garant.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">11</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/aide-caf-demenagement-2026" class="card" data-cat="aides" data-search="aide caf demenagement 2026 aide caf demenagement 2026 : 1 087 € maximum pour familles 3+ enfants. conditions, demarches en ligne.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Aide caf demenagement 2026</h3>
+          <p>Aide CAF déménagement 2026 : 1 087 € maximum pour familles 3+ enfants.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/apl-aide-logement" class="card" data-cat="aides" data-search="apl aide logement apl 2026 : conditions, montant, calcul (revenus, loyer, zone), demarches sur caf.fr. combien toucher en moyenne. guide complet.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Apl aide logement</h3>
+          <p>APL 2026 : conditions, montant, calcul (revenus, loyer, zone), démarches sur CAF.fr.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/caution-solidaire-vs-simple" class="card" data-cat="aides" data-search="caution solidaire vs simple caution solidaire vs simple : differences, benefice de discussion, duree dengagement. choisir le bon type 2026.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Caution solidaire vs simple</h3>
+          <p>Caution solidaire vs simple : différences, bénéfice de discussion, durée d'engagement.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/caution-visale" class="card" data-cat="aides" data-search="caution visale caution visale action logement : conditions, demarches, montants couverts. alternative gratuite au garant physique en 2026.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Caution visale</h3>
+          <p>Caution Visale Action Logement : conditions, démarches, montants couverts.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/discrimination-logement-prouver-agir" class="card" data-cat="aides" data-search="discrimination logement prouver agir discrimination location 2026 : testing, preuves, plainte. 45 000 € damende pour le bailleur discriminant.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Discrimination logement prouver agir</h3>
+          <p>Discrimination location 2026 : testing, preuves, plainte.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/dossier-location-parfait" class="card" data-cat="aides" data-search="dossier location parfait dossier de location 2026 : 11 pieces obligatoires, ce qui est interdit, ordre de presentation. triplez vos chances detre pris.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Dossier location parfait</h3>
+          <p>Dossier de location 2026 : 11 pièces obligatoires, ce qui est interdit, ordre de présentation.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/louer-sans-cdi-2026" class="card" data-cat="aides" data-search="louer sans cdi 2026 cdd, interim, independant, freelance : 6 solutions pour louer sans cdi en 2026. visale, garant, avance loyer. guide complet.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Louer sans cdi 2026</h3>
+          <p>CDD, intérim, indépendant, freelance : 6 solutions pour louer sans CDI en 2026.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/mobili-jeune-aide-2026" class="card" data-cat="aides" data-search="mobili jeune aide 2026 mobili-jeune 2026 : 100 €/mois daide gratuite jusqua 30 ans. conditions, demarches, cumul autres aides.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Mobili jeune aide 2026</h3>
+          <p>MOBILI-JEUNE 2026 : 100 €/mois d'aide gratuite jusqu'à 30 ans.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/refus-bail-mobilite-recours-locataire" class="card" data-cat="aides" data-search="refus de bail mobilite : que faire en 2026 ? bailleur refuse de signer un bail mobilite ? 4 recours legaux pour faire valoir vos droits : motifs admis, alternatives, procedure cdc.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Refus de bail mobilité : que faire en 2026 ?</h3>
+          <p>Bailleur refuse de signer un bail mobilité ? 4 recours légaux pour faire valoir vos droits : motifs admis, alternatives,</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/refus-dossier-location-motifs-interdits" class="card" data-cat="aides" data-search="refus dossier location motifs interdits refus de dossier location 2026 : motifs legaux vs discriminatoires. 25 criteres interdits par la loi + recours.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Refus dossier location motifs interdits</h3>
+          <p>Refus de dossier location 2026 : motifs légaux vs discriminatoires.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/trouver-logement-sans-garant" class="card" data-cat="aides" data-search="trouver logement sans garant pas de garant pour louer ? 6 alternatives gratuites en 2026 : visale, loca-pass, fsl, depot avance, sous-location. guide complet.">
+        <div class="card-stripe vert-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat vert">Aide </div>
+          <h3>Trouver logement sans garant</h3>
+          <p>Pas de garant pour louer ? 6 alternatives gratuites en 2026 : Visale, Loca-Pass, FSL, dépôt avancé, sous-location.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Problèmes techniques -->
+  <section class="hub" id="hub-technique" data-hub="technique">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Problèmes techniques</h2>
+          <p class="hub-intro">Humidité, fuites, panne chauffage, punaises, voisins bruyants. Procédures pour forcer le bailleur.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">7</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/chauffage-panne-procedure" class="card" data-cat="technique" data-search="chauffage panne procedure chauffage en panne en location : obligations bailleur, delai 5 jours, recours, reduction loyer jusqua 30 %. procedure 2026.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Technique </div>
+          <h3>Chauffage panne procedure</h3>
+          <p>Chauffage en panne en location : obligations bailleur, délai 5 jours, recours, réduction loyer jusqu'à 30 %.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/degat-des-eaux-locataire-2026" class="card" data-cat="technique" data-search="degat des eaux locataire 2026 degat des eaux locataire : qui paie en 2026, declaration, indemnisation, recours. procedure assurance + lettre type.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Technique </div>
+          <h3>Degat des eaux locataire 2026</h3>
+          <p>Dégât des eaux locataire : qui paie en 2026, déclaration, indemnisation, recours.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/moisissure-logement-loue-recours" class="card" data-cat="technique" data-search="moisissure logement loue recours moisissure dans logement loue : qui paie, recours, reduction loyer jusqua 40 %. procedure 2026 + lettre type.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Technique </div>
+          <h3>Moisissure logement loue recours</h3>
+          <p>Moisissure dans logement loué : qui paie, recours, réduction loyer jusqu'à 40 %.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/plomberie-cassee-qui-paie" class="card" data-cat="technique" data-search="plomberie cassee qui paie plomberie en location : qui paie ? fuite, joint, chasse deau, robinet entartre. liste precise 2026 des responsabilites.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Technique </div>
+          <h3>Plomberie cassee qui paie</h3>
+          <p>Plomberie en location : qui paie ? Fuite, joint, chasse d'eau, robinet entartré.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/punaises-de-lit-locataire" class="card" data-cat="technique" data-search="punaises de lit locataire punaises de lit : responsabilite locataire ou bailleur, qui paie le traitement, recours en cas dinfestation. loi elan et jurisprudence 2026.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Technique </div>
+          <h3>Punaises de lit locataire</h3>
+          <p>Punaises de lit : responsabilité locataire ou bailleur, qui paie le traitement, recours en cas d'infestation.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/quitter-logement-non-decent" class="card" data-cat="technique" data-search="quitter logement non decent logement non decent : preavis 0, indemnisation, demarches. comment quitter rapidement avec recuperation des frais.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Technique </div>
+          <h3>Quitter logement non decent</h3>
+          <p>Logement non décent : préavis 0, indemnisation, démarches.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/voisin-bruyant-recours-locataire" class="card" data-cat="technique" data-search="voisin bruyant recours locataire voisin bruyant en location : demarches etape par etape, lettre type, conciliateur, mediation, plainte. solution 2026.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Technique </div>
+          <h3>Voisin bruyant recours locataire</h3>
+          <p>Voisin bruyant en location : démarches étape par étape, lettre type, conciliateur, médiation, plainte.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Impayés & expulsion -->
+  <section class="hub" id="hub-impayes" data-hub="impayes">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Impayés & expulsion</h2>
+          <p class="hub-intro">Trêve hivernale, procédure d'expulsion, FSL. Vos droits si vous traversez une difficulté de paiement.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">2</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/expulsion-treve-hivernale-droits-2026" class="card" data-cat="impayes" data-search="treve hivernale 2026 : pas dexpulsion du 1er novembre au 31 mars treve hivernale du 1er novembre au 31 mars : pas dexpulsion possible. procedures, exceptions, droits du locataire pendant la treve. guide 2026.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Impayé </div>
+          <h3>Trêve hivernale 2026 : pas d'expulsion du 1er novembre au 31 mars</h3>
+          <p>Trêve hivernale du 1er novembre au 31 mars : pas d'expulsion possible.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/loyer-impaye-expulsion-chronologie" class="card" data-cat="impayes" data-search="loyer impaye expulsion chronologie loyer impaye : 12-24 mois minimum avant expulsion. chronologie 2026, recours, treve hivernale, fsl.">
+        <div class="card-stripe encre-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat encre">Impayé </div>
+          <h3>Loyer impaye expulsion chronologie</h3>
+          <p>Loyer impayé : 12-24 mois minimum avant expulsion.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Jurisprudence 2024-25 -->
+  <section class="hub" id="hub-juris" data-hub="juris">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12V8a2 2 0 0 0-2-2h-2"/><path d="M2 12v4a2 2 0 0 0 2 2h2"/><path d="M22 16v2a2 2 0 0 1-2 2h-2"/><path d="M2 8V6a2 2 0 0 1 2-2h2"/><line x1="10" y1="6" x2="14" y2="6"/><line x1="10" y1="18" x2="14" y2="18"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="18" y1="10" x2="18" y2="14"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Jurisprudence 2024-25</h2>
+          <p class="hub-intro">5 catégories de décisions de tribunaux français. Ce que vous pouvez vraiment obtenir en justice.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">10</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/jurisprudence-airbnb-illegal-2024-2025" class="card" data-cat="juris" data-search="jurisprudence airbnb illegal : sanctions locataires 2024-2025 jurisprudence 2024-2025 : sous-location airbnb sans accord bailleur = resiliation bail + dommages 5 000-50 000 €. cas reels.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Jurisprudence Airbnb illégal : sanctions locataires 2024-2025</h3>
+          <p>Jurisprudence 2024-2025 : sous-location Airbnb sans accord bailleur = résiliation bail + dommages 5 000-50 000 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/jurisprudence-caution-non-rendue-2024-2025" class="card" data-cat="juris" data-search="jurisprudence caution non rendue : analyse 2024-2025 jurisprudence 2024-2025 sur la caution non rendue : 5 arrets cles, penalite 10 %/mois confirmee, dommages-interets moyens 600-2 000 €.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Jurisprudence caution non rendue : analyse 2024-2025</h3>
+          <p>Jurisprudence 2024-2025 sur la caution non rendue : 5 arrêts clés, pénalité 10 %/mois confirmée, dommages-intérêts moyen</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/jurisprudence-charges-douteuses-2024-2025" class="card" data-cat="juris" data-search="jurisprudence charges locatives douteuses : 2024-2025 jurisprudence 2024-2025 charges abusives : gardien 100 %, ravalement, taxe fonciere. recuperation moyenne 580 € sur 3 ans confirmee.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Jurisprudence charges locatives douteuses : 2024-2025</h3>
+          <p>Jurisprudence 2024-2025 charges abusives : gardien 100 %, ravalement, taxe foncière.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/jurisprudence-clauses-abusives-bail-2024-2025" class="card" data-cat="juris" data-search="jurisprudence clauses abusives bail : 2024-2025 jurisprudence 2024-2025 sur les clauses abusives du bail : interdiction animaux annulee, clause penale nulle, frais dagence excessifs sanctionnes.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Jurisprudence clauses abusives bail : 2024-2025</h3>
+          <p>Jurisprudence 2024-2025 sur les clauses abusives du bail : interdiction animaux annulée, clause pénale nulle, frais d'ag</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/jurisprudence-expulsion-locataire-2024-2025" class="card" data-cat="juris" data-search="jurisprudence expulsion locataire : 5 decisions 2024-2025 jurisprudence 2024-2025 expulsion : treve hivernale respectee, delais etendus, fsl maintenu. bailleurs sanctionnes pour expulsion abusive.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Jurisprudence expulsion locataire : 5 décisions 2024-2025</h3>
+          <p>Jurisprudence 2024-2025 expulsion : trêve hivernale respectée, délais étendus, FSL maintenu.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-perdu-tribunal-caution" class="card" data-cat="juris" data-search="proprietaire condamne pour caution non rendue : 5 jurisprudences 2024-2025 jurisprudences 2024-2025 : 5 condamnations de bailleurs pour caution non rendue. penalite 10 %/mois + dommages-interets. recuperation moyenne 1 350 €.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Propriétaire condamné pour caution non rendue : 5 jurisprudences 2024-2025</h3>
+          <p>Jurisprudences 2024-2025 : 5 condamnations de bailleurs pour caution non rendue.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-perdu-tribunal-charges" class="card" data-cat="juris" data-search="proprietaire condamne pour charges abusives : jurisprudences 2024-2025 jurisprudences 2024-2025 : 5 condamnations pour charges abusives (gardien 100 %, ravalement, taxe fonciere). recuperation moyenne 580 €.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Propriétaire condamné pour charges abusives : jurisprudences 2024-2025</h3>
+          <p>Jurisprudences 2024-2025 : 5 condamnations pour charges abusives (gardien 100 %, ravalement, taxe foncière).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-perdu-tribunal-edl" class="card" data-cat="juris" data-search="proprietaire condamne pour edl abusif : 5 jurisprudences 2024-2025 jurisprudences 2024-2025 : edl non contradictoire ou abusif = retenues annulees. recuperation moyenne 680 €. methode complete 2026.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Propriétaire condamné pour EDL abusif : 5 jurisprudences 2024-2025</h3>
+          <p>Jurisprudences 2024-2025 : EDL non contradictoire ou abusif = retenues annulées.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-perdu-tribunal-expulsion-abusive" class="card" data-cat="juris" data-search="proprietaire condamne pour expulsion abusive : 5 cas 2024-2025 jurisprudences 2024-2025 : expulsion abusive, menaces, harcelement. bailleurs condamnes a 1 500-5 000 € dommages-interets.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Propriétaire condamné pour expulsion abusive : 5 cas 2024-2025</h3>
+          <p>Jurisprudences 2024-2025 : expulsion abusive, menaces, harcèlement.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/proprio-perdu-tribunal-loyer-excessif" class="card" data-cat="juris" data-search="proprietaire condamne pour loyer excessif : jurisprudences 2024-2025 jurisprudences 2024-2025 : 5 condamnations pour depassement dencadrement. recuperation moyenne 4 300 € a paris. procedure complete.">
+        <div class="card-stripe or-stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat or">Jurisprudence </div>
+          <h3>Propriétaire condamné pour loyer excessif : jurisprudences 2024-2025</h3>
+          <p>Jurisprudences 2024-2025 : 5 condamnations pour dépassement d'encadrement.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HUB: Comparatifs & BailScan -->
+  <section class="hub" id="hub-comparatifs" data-hub="comparatifs">
+    <div class="hub-header">
+      <div class="hub-header-text">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </div>
+        <div>
+          <h2 class="hub-title">Comparatifs & BailScan</h2>
+          <p class="hub-intro">BailScan vs avocat, CDC vs tribunal, comparatif d'outils. Pour choisir le bon recours.</p>
+        </div>
+      </div>
+      <div class="hub-count"><span class="hub-count-n">10</span> guides</div>
+    </div>
+    <div class="articles-grid">
+      <a href="blog/bailscan-avis-comment-ca-marche" class="card" data-cat="comparatifs" data-search="avis bailscan : comment ca marche en 2 minutes avis bailscan : analyse de bail par ia en 2 minutes. recuperation moyenne 1 740 €, jusqua 7 200 €. comment ca marche, prix, avis utilisateurs.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif <span class="badge-essentiel">ESSENTIEL</span></div>
+          <h3>Avis BailScan : comment ça marche en 2 minutes</h3>
+          <p>Avis BailScan : analyse de bail par IA en 2 minutes.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bailscan-combien-on-recupere-moyenne" class="card" data-cat="comparatifs" data-search="combien on recupere avec bailscan : statistiques 2026 recuperation moyenne avec bailscan en 2026 : 1 740 €. detail par source : caution 540 €, loyer paris 4 300 €, charges 487 €. stats reelles.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>Combien on récupère avec BailScan : statistiques 2026</h3>
+          <p>Récupération moyenne avec BailScan en 2026 : 1 740 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bailscan-est-ce-serieux-fiable" class="card" data-cat="comparatifs" data-search="bailscan est-il serieux et fiable ? avis 2026 bailscan fiable ? oui : analyse par ia juridique, references legales exactes, 50+ points verifies. securite donnees, anonymat, sans inscription.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>BailScan est-il sérieux et fiable ? Avis 2026</h3>
+          <p>BailScan fiable ? Oui : analyse par IA juridique, références légales exactes, 50+ points vérifiés.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bailscan-prix-29-euros-pourquoi" class="card" data-cat="comparatifs" data-search="bailscan a 29 € : pourquoi ce prix ? bailscan 29 € : prix juste pour analyse complete + lettres lrar. roi moyen 5 000 % (recuperation 1 740 € moyenne). comparatif avec avocat.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>BailScan à 29 € : pourquoi ce prix ?</h3>
+          <p>BailScan 29 € : prix juste pour analyse complète + lettres LRAR.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/bailscan-vs-avocat-locataire-comparatif" class="card" data-cat="comparatifs" data-search="bailscan vs avocat locataire : comparatif 2026 bailscan vs avocat : 29 € vs 800-1 500 €. delai 2 min vs 2-4 semaines. comparatif complet : prix, qualite, services. avis utilisateurs.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>BailScan vs avocat locataire : comparatif 2026</h3>
+          <p>BailScan vs avocat : 29 € vs 800-1 500 €.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comparatif-aides-juridiques-locatives" class="card" data-cat="comparatifs" data-search="comparatif aides juridiques locatives gratuites en 2026 aides juridiques gratuites pour locataires : anil, adil, point dacces au droit, aide juridictionnelle. conditions, demarches, duree.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>Comparatif aides juridiques locatives gratuites en 2026</h3>
+          <p>Aides juridiques gratuites pour locataires : ANIL, ADIL, point d'accès au droit, aide juridictionnelle.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comparatif-avocats-locataires" class="card" data-cat="comparatifs" data-search="comparatif avocats specialises locataires : faut-il en prendre un ? avocat locataire : 800-1 500 € en moyenne. necessaire seulement si litige > 10 000 €. comparatif avec cdc, anil, tribunal sans avocat.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>Comparatif avocats spécialisés locataires : faut-il en prendre un ?</h3>
+          <p>Avocat locataire : 800-1 500 € en moyenne.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comparatif-cdc-vs-tribunal" class="card" data-cat="comparatifs" data-search="cdc ou tribunal ? comparatif pour locataires 2026 comparatif cdc (gratuit, 2-3 mois) vs tribunal judiciaire (6-12 mois). decisions, couts, taux de succes. choisir le bon recours en 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>CDC ou tribunal ? Comparatif pour locataires 2026</h3>
+          <p>Comparatif CDC (gratuit, 2-3 mois) vs tribunal judiciaire (6-12 mois).</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comparatif-services-analyse-bail" class="card" data-cat="comparatifs" data-search="comparatif des services danalyse de bail en france 2026 comparatif des services danalyse de bail en 2026 : bailscan, avocat specialise, anil, association locataires. prix, delais, efficacite.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>Comparatif des services d'analyse de bail en France 2026</h3>
+          <p>Comparatif des services d'analyse de bail en 2026 : BailScan, avocat spécialisé, ANIL, association locataires.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+      <a href="blog/comparatif-sites-aide-locataire" class="card" data-cat="comparatifs" data-search="comparatif sites daide locataire en france : lequel choisir ? comparatif des sites daide locataire en france : anil, inc, que choisir, bailscan, droitsdulocataire.fr. forces et limites de chacun en 2026.">
+        <div class="card-stripe -stripe"></div>
+        <div class="card-body-inner">
+          <div class="card-cat ">Comparatif </div>
+          <h3>Comparatif sites d'aide locataire en France : lequel choisir ?</h3>
+          <p>Comparatif des sites d'aide locataire en France : ANIL, INC, Que Choisir, BailScan, droitsdulocataire.fr.</p>
+        </div>
+        <div class="card-foot"><span class="card-date">Mars 2026</span><span class="card-read">4 min</span></div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- Empty state pour la recherche -->
+  <div class="empty-state" id="emptyState">
+    <h3>Aucun guide ne correspond à votre recherche</h3>
+    <p>Essayez d'autres mots-clés ou parcourez les catégories ci-dessus.</p>
+    <button onclick="resetFilters()">Voir tous les guides</button>
+  </div>
+</main>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="cta-band-inner">
+    <div>
+      <div class="cta-band-eyebrow">Vérifier votre bail</div>
+      <h2>Votre bail respecte-t-il la loi ?<br><em>Analyse en 2 minutes.</em></h2>
+      <p>BailScan analyse votre contrat de location et identifie chaque clause illégale avec les références légales exactes. Récupération moyenne 1 740 € sur 3 ans.</p>
+    </div>
+    <a href="/analyser" class="cta-band-btn">Analyser mon bail →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-seo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Bail<span>Scan</span></div>
+        <p class="footer-tagline">L'analyse de bail par IA pour locataires français. Récupérez votre dû en 2 minutes.</p>
+        <div class="footer-copy">© 2026 BailScan · Tous droits réservés</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Produit</div>
+        <a href="/analyser">Analyser mon bail</a>
+        <a href="/proprio">Pour propriétaires</a>
+        <a href="/pro">Pour agences</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Guide locataire</div>
+        <a href="/blog">Tous les guides</a>
+        <a href="/blog/modele-lettre-depot-garantie">Modèles de lettres</a>
+        <a href="/blog/zone-tendue-liste-communes">Zone tendue</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Légal</div>
+        <a href="/legal">Mentions légales</a>
+      </div>
+    </div>
+    <div class="footer-bottom">BailScan n'est pas un cabinet juridique. Les analyses sont fournies à titre informatif et ne constituent pas un conseil juridique.</div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+  
+  let currentCat = 'all';
+  let currentSearch = '';
+  let searchTimeout;
+  
+  const searchInput = document.getElementById('searchInput');
+  const emptyState = document.getElementById('emptyState');
+  const allHubs = document.querySelectorAll('.hub');
+  const allCards = document.querySelectorAll('.card');
+  const allNavBtns = document.querySelectorAll('.nav-btn');
+  
+  function normalize(str) {
+    if (!str) return '';
+    return str.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  }
+  
+  function applyFilters() {
+    const searchTerm = normalize(currentSearch);
+    let totalVisible = 0;
+    
+    allHubs.forEach(function(hub) {
+      const hubCat = hub.dataset.hub;
+      const matchesCategory = currentCat === 'all' || hubCat === currentCat;
+      let hubVisibleCount = 0;
+      
+      hub.querySelectorAll('.card').forEach(function(card) {
+        const cardSearchData = card.dataset.search || '';
+        const matchesSearch = !searchTerm || cardSearchData.indexOf(searchTerm) !== -1;
+        const shouldShow = matchesCategory && matchesSearch;
+        
+        if (shouldShow) {
+          card.classList.remove('hidden');
+          hubVisibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      
+      // Show hub if it has visible cards AND matches the category filter
+      if (hubVisibleCount > 0 && matchesCategory) {
+        hub.classList.remove('hidden');
+        totalVisible += hubVisibleCount;
+      } else {
+        hub.classList.add('hidden');
+      }
+    });
+    
+    // Empty state
+    if (totalVisible === 0) {
+      emptyState.classList.add('show');
+    } else {
+      emptyState.classList.remove('show');
+    }
+  }
+  
+  window.goToHub = function(cat, btn) {
+    currentCat = cat;
+    allNavBtns.forEach(function(b) { b.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+    
+    applyFilters();
+    
+    if (cat === 'all') {
+      const hubNavWrap = document.querySelector('.hub-nav-wrap');
+      if (hubNavWrap) {
+        window.scrollTo({ top: hubNavWrap.offsetTop - 70, behavior: 'smooth' });
+      }
+    } else {
+      setTimeout(function() {
+        const hub = document.getElementById('hub-' + cat);
+        if (hub && !hub.classList.contains('hidden')) {
+          const top = hub.getBoundingClientRect().top + window.pageYOffset - 130;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      }, 50);
+    }
+  };
+  
+  window.resetFilters = function() {
+    currentCat = 'all';
+    currentSearch = '';
+    if (searchInput) searchInput.value = '';
+    allNavBtns.forEach(function(b) { b.classList.remove('active'); });
+    const allBtn = document.querySelector('.nav-btn[data-cat="all"]');
+    if (allBtn) allBtn.classList.add('active');
+    applyFilters();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  // ─── Recherche en temps réel avec debounce ───
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      currentSearch = e.target.value;
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(applyFilters, 80);
+    });
+    
+    // Échappement clavier
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        currentSearch = '';
+        applyFilters();
+        searchInput.blur();
+      }
+    });
+  }
+  
+  // Raccourci clavier "/" pour focus la recherche
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      if (searchInput) searchInput.focus();
+    }
+  });
+})();
+</script>
+</body>
+</html>
