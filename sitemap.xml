@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
  
-  <!-- ── PAGES PRINCIPALES ── -->
+  <!-- ── PAGES PRINCIPALES (sans .html) ── -->
  
   <url>
     <loc>https://bailscan.app/</loc>
@@ -11,38 +11,38 @@
   </url>
  
   <url>
-    <loc>https://bailscan.app/blog.html</loc>
+    <loc>https://bailscan.app/blog</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
  
   <url>
-    <loc>https://bailscan.app/proprietaire.html</loc>
+    <loc>https://bailscan.app/proprio</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
  
   <url>
-    <loc>https://bailscan.app/pro.html</loc>
+    <loc>https://bailscan.app/pro</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
  
   <url>
-    <loc>https://bailscan.app/legal.html</loc>
+    <loc>https://bailscan.app/legal</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
  
-  <!-- ── ARTICLES DU BLOG (100 guides) ── -->
+  <!-- ── ARTICLES DU BLOG (100 guides, sans .html) ── -->
  
   <!-- 6-signes-loyer-illegal (ESSENTIEL) -->
   <url>
-    <loc>https://bailscan.app/blog/6-signes-loyer-illegal.html</loc>
+    <loc>https://bailscan.app/blog/6-signes-loyer-illegal</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -50,7 +50,7 @@
  
   <!-- aide-caf-demenagement-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/aide-caf-demenagement-2026.html</loc>
+    <loc>https://bailscan.app/blog/aide-caf-demenagement-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -58,7 +58,7 @@
  
   <!-- analyse-bail-locatif-gratuit -->
   <url>
-    <loc>https://bailscan.app/blog/analyse-bail-locatif-gratuit.html</loc>
+    <loc>https://bailscan.app/blog/analyse-bail-locatif-gratuit</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -66,7 +66,7 @@
  
   <!-- apl-aide-logement -->
   <url>
-    <loc>https://bailscan.app/blog/apl-aide-logement.html</loc>
+    <loc>https://bailscan.app/blog/apl-aide-logement</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -74,7 +74,7 @@
  
   <!-- apl-colocation-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/apl-colocation-2026.html</loc>
+    <loc>https://bailscan.app/blog/apl-colocation-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -82,7 +82,7 @@
  
   <!-- assurance-habitation-locataire -->
   <url>
-    <loc>https://bailscan.app/blog/assurance-habitation-locataire.html</loc>
+    <loc>https://bailscan.app/blog/assurance-habitation-locataire</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -90,7 +90,7 @@
  
   <!-- augmentation-loyer-cours-bail -->
   <url>
-    <loc>https://bailscan.app/blog/augmentation-loyer-cours-bail.html</loc>
+    <loc>https://bailscan.app/blog/augmentation-loyer-cours-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -98,7 +98,7 @@
  
   <!-- bail-conjoint-separation -->
   <url>
-    <loc>https://bailscan.app/blog/bail-conjoint-separation.html</loc>
+    <loc>https://bailscan.app/blog/bail-conjoint-separation</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -106,7 +106,7 @@
  
   <!-- bail-expire-que-se-passe-t-il -->
   <url>
-    <loc>https://bailscan.app/blog/bail-expire-que-se-passe-t-il.html</loc>
+    <loc>https://bailscan.app/blog/bail-expire-que-se-passe-t-il</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -114,7 +114,7 @@
  
   <!-- bail-locatif-droits-locataire -->
   <url>
-    <loc>https://bailscan.app/blog/bail-locatif-droits-locataire.html</loc>
+    <loc>https://bailscan.app/blog/bail-locatif-droits-locataire</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -122,7 +122,7 @@
  
   <!-- bail-meuble-vs-vide -->
   <url>
-    <loc>https://bailscan.app/blog/bail-meuble-vs-vide.html</loc>
+    <loc>https://bailscan.app/blog/bail-meuble-vs-vide</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -130,7 +130,7 @@
  
   <!-- bail-mobilite -->
   <url>
-    <loc>https://bailscan.app/blog/bail-mobilite.html</loc>
+    <loc>https://bailscan.app/blog/bail-mobilite</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -138,7 +138,7 @@
  
   <!-- bail-tacitement-reconduit-droits -->
   <url>
-    <loc>https://bailscan.app/blog/bail-tacitement-reconduit-droits.html</loc>
+    <loc>https://bailscan.app/blog/bail-tacitement-reconduit-droits</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -146,7 +146,7 @@
  
   <!-- caution-solidaire-vs-simple -->
   <url>
-    <loc>https://bailscan.app/blog/caution-solidaire-vs-simple.html</loc>
+    <loc>https://bailscan.app/blog/caution-solidaire-vs-simple</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -154,7 +154,7 @@
  
   <!-- caution-visale (ESSENTIEL) -->
   <url>
-    <loc>https://bailscan.app/blog/caution-visale.html</loc>
+    <loc>https://bailscan.app/blog/caution-visale</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -162,7 +162,7 @@
  
   <!-- charges-locatives -->
   <url>
-    <loc>https://bailscan.app/blog/charges-locatives.html</loc>
+    <loc>https://bailscan.app/blog/charges-locatives</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -170,7 +170,7 @@
  
   <!-- charges-locatives-abusives -->
   <url>
-    <loc>https://bailscan.app/blog/charges-locatives-abusives.html</loc>
+    <loc>https://bailscan.app/blog/charges-locatives-abusives</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -178,7 +178,7 @@
  
   <!-- chauffage-panne-procedure -->
   <url>
-    <loc>https://bailscan.app/blog/chauffage-panne-procedure.html</loc>
+    <loc>https://bailscan.app/blog/chauffage-panne-procedure</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -186,7 +186,7 @@
  
   <!-- clauses-abusives-bail -->
   <url>
-    <loc>https://bailscan.app/blog/clauses-abusives-bail.html</loc>
+    <loc>https://bailscan.app/blog/clauses-abusives-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -194,7 +194,7 @@
  
   <!-- clauses-abusives-bail-location (ESSENTIEL) -->
   <url>
-    <loc>https://bailscan.app/blog/clauses-abusives-bail-location.html</loc>
+    <loc>https://bailscan.app/blog/clauses-abusives-bail-location</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -202,7 +202,7 @@
  
   <!-- colocataire-ne-paie-pas-solution -->
   <url>
-    <loc>https://bailscan.app/blog/colocataire-ne-paie-pas-solution.html</loc>
+    <loc>https://bailscan.app/blog/colocataire-ne-paie-pas-solution</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -210,7 +210,7 @@
  
   <!-- colocation-bail-regles -->
   <url>
-    <loc>https://bailscan.app/blog/colocation-bail-regles.html</loc>
+    <loc>https://bailscan.app/blog/colocation-bail-regles</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -218,7 +218,7 @@
  
   <!-- comment-baisser-son-loyer-2026 (ESSENTIEL) -->
   <url>
-    <loc>https://bailscan.app/blog/comment-baisser-son-loyer-2026.html</loc>
+    <loc>https://bailscan.app/blog/comment-baisser-son-loyer-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -226,7 +226,7 @@
  
   <!-- comment-contester-son-loyer -->
   <url>
-    <loc>https://bailscan.app/blog/comment-contester-son-loyer.html</loc>
+    <loc>https://bailscan.app/blog/comment-contester-son-loyer</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -234,7 +234,7 @@
  
   <!-- comment-recuperer-depot-garantie -->
   <url>
-    <loc>https://bailscan.app/blog/comment-recuperer-depot-garantie.html</loc>
+    <loc>https://bailscan.app/blog/comment-recuperer-depot-garantie</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -242,7 +242,7 @@
  
   <!-- comment-savoir-si-mon-loyer-est-legal -->
   <url>
-    <loc>https://bailscan.app/blog/comment-savoir-si-mon-loyer-est-legal.html</loc>
+    <loc>https://bailscan.app/blog/comment-savoir-si-mon-loyer-est-legal</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -250,7 +250,7 @@
  
   <!-- complement-loyer-paris-illegal -->
   <url>
-    <loc>https://bailscan.app/blog/complement-loyer-paris-illegal.html</loc>
+    <loc>https://bailscan.app/blog/complement-loyer-paris-illegal</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -258,7 +258,7 @@
  
   <!-- conge-proprietaire -->
   <url>
-    <loc>https://bailscan.app/blog/conge-proprietaire.html</loc>
+    <loc>https://bailscan.app/blog/conge-proprietaire</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -266,7 +266,7 @@
  
   <!-- degat-des-eaux-locataire-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/degat-des-eaux-locataire-2026.html</loc>
+    <loc>https://bailscan.app/blog/degat-des-eaux-locataire-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -274,7 +274,7 @@
  
   <!-- depot-garantie -->
   <url>
-    <loc>https://bailscan.app/blog/depot-garantie.html</loc>
+    <loc>https://bailscan.app/blog/depot-garantie</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -282,7 +282,7 @@
  
   <!-- depot-garantie-2-mois-illegal -->
   <url>
-    <loc>https://bailscan.app/blog/depot-garantie-2-mois-illegal.html</loc>
+    <loc>https://bailscan.app/blog/depot-garantie-2-mois-illegal</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -290,7 +290,7 @@
  
   <!-- depot-garantie-delai-restitution -->
   <url>
-    <loc>https://bailscan.app/blog/depot-garantie-delai-restitution.html</loc>
+    <loc>https://bailscan.app/blog/depot-garantie-delai-restitution</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -298,7 +298,7 @@
  
   <!-- depot-garantie-non-rendu-recours (ESSENTIEL) -->
   <url>
-    <loc>https://bailscan.app/blog/depot-garantie-non-rendu-recours.html</loc>
+    <loc>https://bailscan.app/blog/depot-garantie-non-rendu-recours</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -306,7 +306,7 @@
  
   <!-- diagnostics-obligatoires-bail -->
   <url>
-    <loc>https://bailscan.app/blog/diagnostics-obligatoires-bail.html</loc>
+    <loc>https://bailscan.app/blog/diagnostics-obligatoires-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -314,7 +314,7 @@
  
   <!-- discrimination-logement-prouver-agir -->
   <url>
-    <loc>https://bailscan.app/blog/discrimination-logement-prouver-agir.html</loc>
+    <loc>https://bailscan.app/blog/discrimination-logement-prouver-agir</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -322,7 +322,7 @@
  
   <!-- dossier-location-parfait -->
   <url>
-    <loc>https://bailscan.app/blog/dossier-location-parfait.html</loc>
+    <loc>https://bailscan.app/blog/dossier-location-parfait</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -330,7 +330,7 @@
  
   <!-- dpe-f-g-loyer-gele -->
   <url>
-    <loc>https://bailscan.app/blog/dpe-f-g-loyer-gele.html</loc>
+    <loc>https://bailscan.app/blog/dpe-f-g-loyer-gele</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -338,7 +338,7 @@
  
   <!-- encadrement-loyer-bordeaux -->
   <url>
-    <loc>https://bailscan.app/blog/encadrement-loyer-bordeaux.html</loc>
+    <loc>https://bailscan.app/blog/encadrement-loyer-bordeaux</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -346,7 +346,7 @@
  
   <!-- encadrement-loyer-lille -->
   <url>
-    <loc>https://bailscan.app/blog/encadrement-loyer-lille.html</loc>
+    <loc>https://bailscan.app/blog/encadrement-loyer-lille</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -354,7 +354,7 @@
  
   <!-- encadrement-loyer-montpellier -->
   <url>
-    <loc>https://bailscan.app/blog/encadrement-loyer-montpellier.html</loc>
+    <loc>https://bailscan.app/blog/encadrement-loyer-montpellier</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -362,7 +362,7 @@
  
   <!-- encadrement-loyer-plaisance-du-touch -->
   <url>
-    <loc>https://bailscan.app/blog/encadrement-loyer-plaisance-du-touch.html</loc>
+    <loc>https://bailscan.app/blog/encadrement-loyer-plaisance-du-touch</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -370,7 +370,7 @@
  
   <!-- encadrement-loyers -->
   <url>
-    <loc>https://bailscan.app/blog/encadrement-loyers.html</loc>
+    <loc>https://bailscan.app/blog/encadrement-loyers</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -378,7 +378,7 @@
  
   <!-- etat-des-lieux -->
   <url>
-    <loc>https://bailscan.app/blog/etat-des-lieux.html</loc>
+    <loc>https://bailscan.app/blog/etat-des-lieux</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -386,7 +386,7 @@
  
   <!-- frais-agence-location-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/frais-agence-location-2026.html</loc>
+    <loc>https://bailscan.app/blog/frais-agence-location-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -394,7 +394,7 @@
  
   <!-- garant-caution-bail -->
   <url>
-    <loc>https://bailscan.app/blog/garant-caution-bail.html</loc>
+    <loc>https://bailscan.app/blog/garant-caution-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -402,7 +402,7 @@
  
   <!-- grenoble-zone-tendue-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/grenoble-zone-tendue-2026.html</loc>
+    <loc>https://bailscan.app/blog/grenoble-zone-tendue-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -410,7 +410,7 @@
  
   <!-- interdiction-animaux-bail -->
   <url>
-    <loc>https://bailscan.app/blog/interdiction-animaux-bail.html</loc>
+    <loc>https://bailscan.app/blog/interdiction-animaux-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -418,7 +418,7 @@
  
   <!-- lettre-contestation-clause-abusive-bail -->
   <url>
-    <loc>https://bailscan.app/blog/lettre-contestation-clause-abusive-bail.html</loc>
+    <loc>https://bailscan.app/blog/lettre-contestation-clause-abusive-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -426,7 +426,7 @@
  
   <!-- lettre-mise-en-demeure-proprietaire -->
   <url>
-    <loc>https://bailscan.app/blog/lettre-mise-en-demeure-proprietaire.html</loc>
+    <loc>https://bailscan.app/blog/lettre-mise-en-demeure-proprietaire</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -434,7 +434,7 @@
  
   <!-- locapass-fsl-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/locapass-fsl-2026.html</loc>
+    <loc>https://bailscan.app/blog/locapass-fsl-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -442,7 +442,7 @@
  
   <!-- locataire-protege-conge -->
   <url>
-    <loc>https://bailscan.app/blog/locataire-protege-conge.html</loc>
+    <loc>https://bailscan.app/blog/locataire-protege-conge</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -450,7 +450,7 @@
  
   <!-- logement-indecent -->
   <url>
-    <loc>https://bailscan.app/blog/logement-indecent.html</loc>
+    <loc>https://bailscan.app/blog/logement-indecent</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -458,7 +458,7 @@
  
   <!-- loi-airbnb-residence-principale-paris -->
   <url>
-    <loc>https://bailscan.app/blog/loi-airbnb-residence-principale-paris.html</loc>
+    <loc>https://bailscan.app/blog/loi-airbnb-residence-principale-paris</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -466,7 +466,7 @@
  
   <!-- loi-alur-2026-locataires -->
   <url>
-    <loc>https://bailscan.app/blog/loi-alur-2026-locataires.html</loc>
+    <loc>https://bailscan.app/blog/loi-alur-2026-locataires</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -474,7 +474,7 @@
  
   <!-- loi-elan-2026-locataires -->
   <url>
-    <loc>https://bailscan.app/blog/loi-elan-2026-locataires.html</loc>
+    <loc>https://bailscan.app/blog/loi-elan-2026-locataires</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -482,7 +482,7 @@
  
   <!-- louer-sans-cdi-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/louer-sans-cdi-2026.html</loc>
+    <loc>https://bailscan.app/blog/louer-sans-cdi-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -490,7 +490,7 @@
  
   <!-- loyer-impaye-expulsion-chronologie -->
   <url>
-    <loc>https://bailscan.app/blog/loyer-impaye-expulsion-chronologie.html</loc>
+    <loc>https://bailscan.app/blog/loyer-impaye-expulsion-chronologie</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -498,7 +498,7 @@
  
   <!-- loyer-impaye-procedure -->
   <url>
-    <loc>https://bailscan.app/blog/loyer-impaye-procedure.html</loc>
+    <loc>https://bailscan.app/blog/loyer-impaye-procedure</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -506,7 +506,7 @@
  
   <!-- lyon-zone-tendue-verification -->
   <url>
-    <loc>https://bailscan.app/blog/lyon-zone-tendue-verification.html</loc>
+    <loc>https://bailscan.app/blog/lyon-zone-tendue-verification</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -514,7 +514,7 @@
  
   <!-- marseille-zone-tendue-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/marseille-zone-tendue-2026.html</loc>
+    <loc>https://bailscan.app/blog/marseille-zone-tendue-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -522,7 +522,7 @@
  
   <!-- mobili-jeune-aide-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/mobili-jeune-aide-2026.html</loc>
+    <loc>https://bailscan.app/blog/mobili-jeune-aide-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -530,7 +530,7 @@
  
   <!-- modele-attestation-hebergement-gratuit -->
   <url>
-    <loc>https://bailscan.app/blog/modele-attestation-hebergement-gratuit.html</loc>
+    <loc>https://bailscan.app/blog/modele-attestation-hebergement-gratuit</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -538,7 +538,7 @@
  
   <!-- modele-contestation-edl-sortie -->
   <url>
-    <loc>https://bailscan.app/blog/modele-contestation-edl-sortie.html</loc>
+    <loc>https://bailscan.app/blog/modele-contestation-edl-sortie</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -546,7 +546,7 @@
  
   <!-- modele-lettre-contestation-augmentation-loyer -->
   <url>
-    <loc>https://bailscan.app/blog/modele-lettre-contestation-augmentation-loyer.html</loc>
+    <loc>https://bailscan.app/blog/modele-lettre-contestation-augmentation-loyer</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -554,7 +554,7 @@
  
   <!-- modele-lettre-demande-baisse-loyer -->
   <url>
-    <loc>https://bailscan.app/blog/modele-lettre-demande-baisse-loyer.html</loc>
+    <loc>https://bailscan.app/blog/modele-lettre-demande-baisse-loyer</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -562,7 +562,7 @@
  
   <!-- modele-lettre-demande-travaux -->
   <url>
-    <loc>https://bailscan.app/blog/modele-lettre-demande-travaux.html</loc>
+    <loc>https://bailscan.app/blog/modele-lettre-demande-travaux</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -570,7 +570,7 @@
  
   <!-- modele-lettre-depot-garantie -->
   <url>
-    <loc>https://bailscan.app/blog/modele-lettre-depot-garantie.html</loc>
+    <loc>https://bailscan.app/blog/modele-lettre-depot-garantie</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -578,7 +578,7 @@
  
   <!-- modele-lettre-desolidarisation-bail -->
   <url>
-    <loc>https://bailscan.app/blog/modele-lettre-desolidarisation-bail.html</loc>
+    <loc>https://bailscan.app/blog/modele-lettre-desolidarisation-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -586,7 +586,7 @@
  
   <!-- modele-lettre-preavis-depart -->
   <url>
-    <loc>https://bailscan.app/blog/modele-lettre-preavis-depart.html</loc>
+    <loc>https://bailscan.app/blog/modele-lettre-preavis-depart</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -594,7 +594,7 @@
  
   <!-- modele-lettre-remboursement-trop-percu-loyer -->
   <url>
-    <loc>https://bailscan.app/blog/modele-lettre-remboursement-trop-percu-loyer.html</loc>
+    <loc>https://bailscan.app/blog/modele-lettre-remboursement-trop-percu-loyer</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -602,7 +602,7 @@
  
   <!-- modele-lettre-signalement-logement-insalubre -->
   <url>
-    <loc>https://bailscan.app/blog/modele-lettre-signalement-logement-insalubre.html</loc>
+    <loc>https://bailscan.app/blog/modele-lettre-signalement-logement-insalubre</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -610,7 +610,7 @@
  
   <!-- mois-loyer-avance-limite-legale -->
   <url>
-    <loc>https://bailscan.app/blog/mois-loyer-avance-limite-legale.html</loc>
+    <loc>https://bailscan.app/blog/mois-loyer-avance-limite-legale</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -618,7 +618,7 @@
  
   <!-- moisissure-logement-loue-recours -->
   <url>
-    <loc>https://bailscan.app/blog/moisissure-logement-loue-recours.html</loc>
+    <loc>https://bailscan.app/blog/moisissure-logement-loue-recours</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -626,7 +626,7 @@
  
   <!-- nantes-zone-tendue-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/nantes-zone-tendue-2026.html</loc>
+    <loc>https://bailscan.app/blog/nantes-zone-tendue-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -634,7 +634,7 @@
  
   <!-- plomberie-cassee-qui-paie -->
   <url>
-    <loc>https://bailscan.app/blog/plomberie-cassee-qui-paie.html</loc>
+    <loc>https://bailscan.app/blog/plomberie-cassee-qui-paie</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -642,7 +642,7 @@
  
   <!-- preavis-locataire (ESSENTIEL) -->
   <url>
-    <loc>https://bailscan.app/blog/preavis-locataire.html</loc>
+    <loc>https://bailscan.app/blog/preavis-locataire</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -650,7 +650,7 @@
  
   <!-- proprietaire-refuse-etat-des-lieux -->
   <url>
-    <loc>https://bailscan.app/blog/proprietaire-refuse-etat-des-lieux.html</loc>
+    <loc>https://bailscan.app/blog/proprietaire-refuse-etat-des-lieux</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -658,7 +658,7 @@
  
   <!-- proprio-faire-payer-peinture-legal -->
   <url>
-    <loc>https://bailscan.app/blog/proprio-faire-payer-peinture-legal.html</loc>
+    <loc>https://bailscan.app/blog/proprio-faire-payer-peinture-legal</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -666,7 +666,7 @@
  
   <!-- proprio-rentre-sans-prevenir -->
   <url>
-    <loc>https://bailscan.app/blog/proprio-rentre-sans-prevenir.html</loc>
+    <loc>https://bailscan.app/blog/proprio-rentre-sans-prevenir</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -674,7 +674,7 @@
  
   <!-- proprio-veut-me-virer-resister -->
   <url>
-    <loc>https://bailscan.app/blog/proprio-veut-me-virer-resister.html</loc>
+    <loc>https://bailscan.app/blog/proprio-veut-me-virer-resister</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -682,7 +682,7 @@
  
   <!-- punaises-de-lit-locataire -->
   <url>
-    <loc>https://bailscan.app/blog/punaises-de-lit-locataire.html</loc>
+    <loc>https://bailscan.app/blog/punaises-de-lit-locataire</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -690,7 +690,7 @@
  
   <!-- quittance-loyer-obligation -->
   <url>
-    <loc>https://bailscan.app/blog/quittance-loyer-obligation.html</loc>
+    <loc>https://bailscan.app/blog/quittance-loyer-obligation</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -698,7 +698,7 @@
  
   <!-- quitter-logement-non-decent -->
   <url>
-    <loc>https://bailscan.app/blog/quitter-logement-non-decent.html</loc>
+    <loc>https://bailscan.app/blog/quitter-logement-non-decent</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -706,7 +706,7 @@
  
   <!-- refus-dossier-location-motifs-interdits -->
   <url>
-    <loc>https://bailscan.app/blog/refus-dossier-location-motifs-interdits.html</loc>
+    <loc>https://bailscan.app/blog/refus-dossier-location-motifs-interdits</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -714,7 +714,7 @@
  
   <!-- refus-renouvellement-bail-recours -->
   <url>
-    <loc>https://bailscan.app/blog/refus-renouvellement-bail-recours.html</loc>
+    <loc>https://bailscan.app/blog/refus-renouvellement-bail-recours</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -722,7 +722,7 @@
  
   <!-- regularisation-charges-locatives-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/regularisation-charges-locatives-2026.html</loc>
+    <loc>https://bailscan.app/blog/regularisation-charges-locatives-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -730,7 +730,7 @@
  
   <!-- renouvellement-bail -->
   <url>
-    <loc>https://bailscan.app/blog/renouvellement-bail.html</loc>
+    <loc>https://bailscan.app/blog/renouvellement-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -738,7 +738,7 @@
  
   <!-- retenue-abusive-caution -->
   <url>
-    <loc>https://bailscan.app/blog/retenue-abusive-caution.html</loc>
+    <loc>https://bailscan.app/blog/retenue-abusive-caution</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -746,7 +746,7 @@
  
   <!-- revision-loyer-irl -->
   <url>
-    <loc>https://bailscan.app/blog/revision-loyer-irl.html</loc>
+    <loc>https://bailscan.app/blog/revision-loyer-irl</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -754,7 +754,7 @@
  
   <!-- sous-location-airbnb-illegale -->
   <url>
-    <loc>https://bailscan.app/blog/sous-location-airbnb-illegale.html</loc>
+    <loc>https://bailscan.app/blog/sous-location-airbnb-illegale</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -762,7 +762,7 @@
  
   <!-- sous-location-bail -->
   <url>
-    <loc>https://bailscan.app/blog/sous-location-bail.html</loc>
+    <loc>https://bailscan.app/blog/sous-location-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -770,7 +770,7 @@
  
   <!-- strasbourg-zone-tendue-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/strasbourg-zone-tendue-2026.html</loc>
+    <loc>https://bailscan.app/blog/strasbourg-zone-tendue-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -778,7 +778,7 @@
  
   <!-- taxe-ordures-menageres-locataire-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/taxe-ordures-menageres-locataire-2026.html</loc>
+    <loc>https://bailscan.app/blog/taxe-ordures-menageres-locataire-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -786,7 +786,7 @@
  
   <!-- toulouse-zone-tendue-2026 -->
   <url>
-    <loc>https://bailscan.app/blog/toulouse-zone-tendue-2026.html</loc>
+    <loc>https://bailscan.app/blog/toulouse-zone-tendue-2026</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -794,7 +794,7 @@
  
   <!-- travaux-logement -->
   <url>
-    <loc>https://bailscan.app/blog/travaux-logement.html</loc>
+    <loc>https://bailscan.app/blog/travaux-logement</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -802,7 +802,7 @@
  
   <!-- trouver-logement-sans-garant -->
   <url>
-    <loc>https://bailscan.app/blog/trouver-logement-sans-garant.html</loc>
+    <loc>https://bailscan.app/blog/trouver-logement-sans-garant</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -810,7 +810,7 @@
  
   <!-- vente-logement-loue -->
   <url>
-    <loc>https://bailscan.app/blog/vente-logement-loue.html</loc>
+    <loc>https://bailscan.app/blog/vente-logement-loue</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -818,7 +818,7 @@
  
   <!-- visite-proprietaire-bail -->
   <url>
-    <loc>https://bailscan.app/blog/visite-proprietaire-bail.html</loc>
+    <loc>https://bailscan.app/blog/visite-proprietaire-bail</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -826,7 +826,7 @@
  
   <!-- voisin-bruyant-recours-locataire -->
   <url>
-    <loc>https://bailscan.app/blog/voisin-bruyant-recours-locataire.html</loc>
+    <loc>https://bailscan.app/blog/voisin-bruyant-recours-locataire</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -834,10 +834,58 @@
  
   <!-- zone-tendue-liste-communes (ESSENTIEL) -->
   <url>
-    <loc>https://bailscan.app/blog/zone-tendue-liste-communes.html</loc>
+    <loc>https://bailscan.app/blog/zone-tendue-liste-communes</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+  </url>
+ 
+  <!-- aix-en-provence-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
+  <url>
+    <loc>https://bailscan.app/blog/aix-en-provence-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
+  <!-- besancon-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
+  <url>
+    <loc>https://bailscan.app/blog/besancon-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
+  <!-- rouen-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
+  <url>
+    <loc>https://bailscan.app/blog/rouen-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
+  <!-- toulon-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
+  <url>
+    <loc>https://bailscan.app/blog/toulon-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
+  <!-- villejuif-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
+  <url>
+    <loc>https://bailscan.app/blog/villejuif-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
+  <!-- villeurbanne-zone-tendue-2026 (NOUVEAU - villes secondaires) -->
+  <url>
+    <loc>https://bailscan.app/blog/villeurbanne-zone-tendue-2026</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
  
 </urlset>
