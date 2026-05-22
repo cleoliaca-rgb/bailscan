@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Créer un compte — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, var(--bg-main) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-wrap { width: 100%; max-width: 460px; }
+
+.auth-logo { text-align: center; margin-bottom: 22px; }
+.auth-logo-text { font-family: 'Instrument Serif', serif; font-size: 2rem; color: var(--texte); }
+.auth-logo-text span { color: var(--accent); }
+.auth-logo-badge {
+  display: inline-block; background: var(--bg-main); border: 1px solid var(--border);
+  color: var(--gris); font-size: .62rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; padding: 2px 9px; border-radius: 12px; margin-left: 6px; vertical-align: 7px;
+}
+
+.auth-card {
+  background: white; border: 1px solid var(--border); border-radius: 16px;
+  padding: 32px; box-shadow: 0 4px 32px rgba(15,23,42,.06);
+}
+
+.auth-title {
+  font-family: 'Instrument Serif', serif; font-size: 1.5rem;
+  color: var(--texte); margin-bottom: 4px; text-align: center;
+}
+.auth-sub { font-size: .82rem; color: var(--gris); text-align: center; margin-bottom: 22px; }
+
+.auth-form-group { margin-bottom: 13px; }
+.auth-label { display: block; font-size: .76rem; font-weight: 600; color: var(--texte); margin-bottom: 5px; }
+.auth-label small { font-weight: 400; color: var(--gris); font-size: .7rem; }
+.auth-input {
+  width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+  border-radius: 9px; font-size: .88rem; font-family: inherit; color: var(--texte);
+  background: white; outline: none; transition: border-color .15s;
+}
+.auth-input:focus { border-color: var(--pro-accent); }
+
+.auth-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.auth-input-with-icon { position: relative; }
+.auth-input-with-icon .auth-input { padding-right: 40px; }
+.auth-input-toggle {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--gris); cursor: pointer; padding: 4px;
+}
+
+/* Password strength */
+.pwd-strength {
+  display: flex; gap: 4px; margin-top: 6px;
+}
+.pwd-strength-bar {
+  flex: 1; height: 3px; background: var(--border); border-radius: 2px; transition: background .25s;
+}
+.pwd-strength-bar.weak { background: var(--danger); }
+.pwd-strength-bar.medium { background: var(--warn); }
+.pwd-strength-bar.strong { background: var(--vert); }
+.pwd-hint { font-size: .7rem; color: var(--gris); margin-top: 5px; }
+
+.auth-checkbox-row {
+  display: flex; align-items: flex-start; gap: 9px; margin: 16px 0 18px;
+  font-size: .76rem; color: var(--gris); line-height: 1.5;
+}
+.auth-checkbox-row input { accent-color: var(--pro-accent); width: 15px; height: 15px; margin-top: 2px; flex-shrink: 0; }
+.auth-link { color: var(--pro-accent); text-decoration: none; font-weight: 600; }
+.auth-link:hover { text-decoration: underline; }
+
+.btn-auth-primary {
+  width: 100%; padding: 12px; background: var(--pro-accent); color: white; border: none;
+  border-radius: 10px; font-weight: 700; font-size: .9rem; cursor: pointer;
+  font-family: inherit; transition: background .15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-auth-primary:hover { background: #2a5bbf; }
+.btn-auth-primary:disabled { background: var(--border); cursor: not-allowed; }
+
+.auth-divider {
+  display: flex; align-items: center; gap: 12px; margin: 18px 0;
+  font-size: .76rem; color: var(--gris); text-transform: uppercase; letter-spacing: .08em;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+.btn-auth-google {
+  width: 100%; padding: 11px; background: white; color: var(--texte);
+  border: 1.5px solid var(--border); border-radius: 10px; font-weight: 600;
+  font-size: .88rem; cursor: pointer; font-family: inherit; transition: all .15s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-auth-google:hover { border-color: var(--texte); background: var(--bg-main); }
+
+.auth-footer { text-align: center; font-size: .85rem; color: var(--gris); margin-top: 18px; }
+
+.auth-trust { text-align: center; margin-top: 22px; font-size: .72rem; color: var(--gris); line-height: 1.6; }
+.auth-trust-items {
+  display: flex; gap: 14px; justify-content: center; align-items: center;
+  flex-wrap: wrap; margin-bottom: 4px;
+}
+.auth-trust-item { display: flex; align-items: center; gap: 4px; }
+
+.auth-error {
+  background: var(--danger-light); color: var(--danger); font-size: .82rem;
+  padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; display: none;
+  border: 1px solid rgba(220,38,38,.2);
+}
+.auth-error.show { display: block; }
+
+.plan-banner {
+  background: linear-gradient(135deg, rgba(59,111,212,.07), rgba(22,163,74,.07));
+  border: 1px solid rgba(59,111,212,.18);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: .8rem;
+  color: var(--texte);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.plan-banner-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--pro-accent); color: white;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .auth-card { padding: 24px 20px; }
+  .auth-row-2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="auth-wrap">
+
+  <div class="auth-logo">
+    <a href="https://bailscan.app" style="text-decoration:none;">
+      <span class="auth-logo-text">Bail<span>Scan</span></span><span class="auth-logo-badge">Propriétaires</span>
+    </a>
+  </div>
+
+  <div class="auth-card">
+
+    <h1 class="auth-title">Créez votre compte gratuit</h1>
+    <p class="auth-sub">1 bien · 2 analyses/mois · Sans CB requise</p>
+
+    <!-- Plan d'arrivée -->
+    <div class="plan-banner">
+      <div class="plan-banner-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>
+        <strong>Plan Gratuit</strong> sélectionné · Vous pourrez passer à l'Essentiel ou Premium à tout moment depuis votre dashboard.
+      </div>
+    </div>
+
+    <div class="auth-error" id="authError"></div>
+
+    <button class="btn-auth-google" onclick="signupWithGoogle()">
+      <svg width="17" height="17" viewBox="0 0 18 18">
+        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+        <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/>
+        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+      </svg>
+      Continuer avec Google
+    </button>
+
+    <div class="auth-divider">ou avec votre email</div>
+
+    <form onsubmit="handleSignup(event)">
+      <div class="auth-row-2">
+        <div class="auth-form-group">
+          <label class="auth-label" for="signupPrenom">Prénom</label>
+          <input type="text" class="auth-input" id="signupPrenom" placeholder="Cléolia" required autocomplete="given-name">
+        </div>
+        <div class="auth-form-group">
+          <label class="auth-label" for="signupNom">Nom</label>
+          <input type="text" class="auth-input" id="signupNom" placeholder="Clergé-André" required autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="auth-form-group">
+        <label class="auth-label" for="signupEmail">Email</label>
+        <input type="email" class="auth-input" id="signupEmail" placeholder="vous@exemple.com" required autocomplete="email">
+      </div>
+
+      <div class="auth-form-group">
+        <label class="auth-label" for="signupPassword">
+          Mot de passe <small>(8 caractères minimum)</small>
+        </label>
+        <div class="auth-input-with-icon">
+          <input type="password" class="auth-input" id="signupPassword" placeholder="••••••••" required autocomplete="new-password" minlength="8" oninput="checkPwdStrength()">
+          <button type="button" class="auth-input-toggle" onclick="togglePwd('signupPassword')" aria-label="Afficher le mot de passe">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="pwd-strength">
+          <div class="pwd-strength-bar" id="pwdBar1"></div>
+          <div class="pwd-strength-bar" id="pwdBar2"></div>
+          <div class="pwd-strength-bar" id="pwdBar3"></div>
+          <div class="pwd-strength-bar" id="pwdBar4"></div>
+        </div>
+        <div class="pwd-hint" id="pwdHint">Au moins 8 caractères, idéalement une majuscule et un chiffre.</div>
+      </div>
+
+      <div class="auth-checkbox-row">
+        <input type="checkbox" id="cgu" required>
+        <label for="cgu">J'accepte les <a href="#" class="auth-link">CGU</a> et la <a href="#" class="auth-link">Politique de confidentialité</a>. Je comprends que mes données sont hébergées en France et ne seront jamais vendues à des tiers.</label>
+      </div>
+
+      <button type="submit" class="btn-auth-primary">
+        Créer mon compte gratuit
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      Déjà un compte ? <a href="connexion.html" class="auth-link">Se connecter</a>
+    </div>
+
+  </div>
+
+  <div class="auth-trust">
+    <div class="auth-trust-items">
+      <div class="auth-trust-item">🔒 Chiffrement AES-256</div>
+      <div class="auth-trust-item">🇫🇷 Hébergement France</div>
+      <div class="auth-trust-item">Aucune CB requise</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function togglePwd(id) {
+  var el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+function checkPwdStrength() {
+  var pwd = document.getElementById('signupPassword').value;
+  var bars = [1,2,3,4].map(i => document.getElementById('pwdBar' + i));
+  bars.forEach(b => b.className = 'pwd-strength-bar');
+
+  var score = 0;
+  if (pwd.length >= 8) score++;
+  if (pwd.match(/[A-Z]/)) score++;
+  if (pwd.match(/[0-9]/)) score++;
+  if (pwd.match(/[^a-zA-Z0-9]/) || pwd.length >= 12) score++;
+
+  var color = score <= 1 ? 'weak' : score === 2 ? 'medium' : score === 3 ? 'medium' : 'strong';
+  for (var i = 0; i < score; i++) bars[i].classList.add(color);
+
+  var hints = {
+    0: 'Au moins 8 caractères',
+    1: 'Mot de passe faible',
+    2: 'Mot de passe moyen',
+    3: 'Mot de passe bon',
+    4: 'Mot de passe excellent'
+  };
+  document.getElementById('pwdHint').textContent = hints[score];
+}
+
+async function handleSignup(e) {
+  e.preventDefault();
+  var email = document.getElementById('signupEmail').value;
+  var pwd = document.getElementById('signupPassword').value;
+  var prenom = document.getElementById('signupPrenom').value;
+  var nom = document.getElementById('signupNom').value;
+  var errBox = document.getElementById('authError');
+  var btn = e.target.querySelector('button[type="submit"]');
+
+  btn.disabled = true;
+  btn.innerHTML = 'Création en cours…';
+  errBox.classList.remove('show');
+
+  // ─── INTÉGRATION SUPABASE ───
+  // const { data, error } = await supabase.auth.signUp({
+  //   email, password: pwd,
+  //   options: { data: { prenom, nom, plan: 'gratuit' } }
+  // });
+  // if (error) {
+  //   errBox.textContent = error.message === 'User already registered'
+  //     ? 'Un compte existe déjà avec cet email.'
+  //     : 'Erreur lors de la création du compte.';
+  //   errBox.classList.add('show'); btn.disabled = false;
+  //   btn.innerHTML = 'Créer mon compte gratuit'; return;
+  // }
+  // window.location.href = '/dashboard.html';
+
+  // Mockup
+  setTimeout(() => {
+    window.location.href = 'dashboard.html';
+  }, 800);
+}
+
+async function signupWithGoogle() {
+  alert('Redirection vers Google OAuth…\n\n(À connecter via supabase.auth.signInWithOAuth)');
+}
+</script>
+</body>
+</html>
