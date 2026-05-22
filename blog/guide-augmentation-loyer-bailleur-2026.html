@@ -116,6 +116,21 @@ details[open] .faq-q::after{transform:rotate(45deg)}.faq-a{padding:0 20px 16px;f
 @media(max-width:560px){.article-h1{font-size:1.75rem}.article-meta{gap:10px}.badge-update{margin-left:0}.cta-inline{flex-direction:column}.footer-top{grid-template-columns:1fr}.breadcrumb{padding-top:90px}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Combien peut-on augmenter le loyer par an ?","acceptedAnswer":{"@type":"Answer","text":"L'augmentation est limitée à la variation annuelle de l'IRL (Indice de Référence des Loyers) publié par l'INSEE. En 2026, cela représente généralement entre +1,5% et +3,5% selon les trimestres."}},
+    {"@type":"Question","name":"Faut-il l'accord du locataire pour augmenter le loyer ?","acceptedAnswer":{"@type":"Answer","text":"Non, si une clause d'indexation existe dans le bail et que le calcul IRL est correct. Le locataire ne peut pas refuser une augmentation conforme à la clause et à l'IRL."}},
+    {"@type":"Question","name":"Peut-on augmenter sans clause d'indexation ?","acceptedAnswer":{"@type":"Answer","text":"Non, jamais en cours de bail. Sans clause d'indexation, le loyer reste fixe pendant toute la durée du bail."}},
+    {"@type":"Question","name":"Le DPE E peut-il encore voir son loyer augmenter ?","acceptedAnswer":{"@type":"Answer","text":"Oui, jusqu'à 2034. L'interdiction d'augmentation s'applique pour le moment uniquement aux DPE F et G."}},
+    {"@type":"Question","name":"L'augmentation est-elle rétroactive ?","acceptedAnswer":{"@type":"Answer","text":"Non, jamais. L'augmentation s'applique uniquement à partir de la date de notification."}},
+    {"@type":"Question","name":"Faut-il envoyer la notification en LRAR ?","acceptedAnswer":{"@type":"Answer","text":"Recommandé mais pas obligatoire si la clause d'indexation l'autorise par lettre simple. La LRAR offre une preuve d'envoi et de réception."}}
+  ]
+}
+</script>
+
 </head>
 <body>
 <header>
@@ -133,8 +148,8 @@ details[open] .faq-q::after{transform:rotate(45deg)}.faq-a{padding:0 20px 16px;f
     <h1 class="article-h1">Augmentation de loyer : guide complet bailleur 2026</h1>
     <div class="post-h1-cta">
       <div class="post-h1-cta-text">
-        <strong>Générer un bail avec clause IRL conforme</strong>
-        <span>49€ - bail conforme ALUR + clauses augmentation</span>
+        <strong>Bail conforme avec clause IRL</strong>
+        <span>49€ - bail + analyse + modifications illimitées</span>
       </div>
       <a href="/proprio" class="post-h1-cta-btn">Découvrir →</a>
     </div>
@@ -152,68 +167,238 @@ details[open] .faq-q::after{transform:rotate(45deg)}.faq-a{padding:0 20px 16px;f
       <span class="badge-update">Pilier 2026</span>
     </div>
 
-    <h2 id="sommaire">Tous les sujets du cluster</h2>
-    <p>Ce guide pilier regroupe tous les sujets connexes pour vous aider à maîtriser le sujet de A à Z. Cliquez sur les cartes ci-dessous pour approfondir chaque point.</p>
-    <div class="cluster-grid">
-  <a href="/blog/quand-avertir-locataire-augmentation-loyer-2026" class="cluster-card">
-    <div class="cluster-card-label">Guide</div>
-    <div class="cluster-card-title">Quand avertir le locataire d'une augmentation de loyer (2026)</div>
-    <div class="cluster-card-meta">1,000 recherches/mois</div>
-  </a>
-  <a href="/blog/augmentation-loyer-dpe-e-interdiction-2026" class="cluster-card">
-    <div class="cluster-card-label">Guide</div>
-    <div class="cluster-card-title">Augmentation loyer DPE E : règles 2026</div>
-    <div class="cluster-card-meta">390 recherches/mois</div>
-  </a>
-  <a href="/blog/comment-augmenter-loyer-bail-commercial-2026" class="cluster-card">
-    <div class="cluster-card-label">Guide</div>
-    <div class="cluster-card-title">Comment augmenter le loyer d'un bail commercial en 2026</div>
-    <div class="cluster-card-meta">320 recherches/mois</div>
-  </a>
-  <a href="/blog/augmenter-loyer-fin-bail-procedure-2026" class="cluster-card">
-    <div class="cluster-card-label">Guide</div>
-    <div class="cluster-card-title">Augmenter le loyer en fin de bail : procédure 2026</div>
-    <div class="cluster-card-meta">590 recherches/mois</div>
-  </a>
-</div>
-
-    <h2 id="introduction">Ce qu'il faut absolument savoir</h2>
-    <p>Un propriétaire peut augmenter le loyer une fois par an selon l'IRL (Indice de Référence des Loyers) à la date prévue dans le bail. L'augmentation n'est possible qu'avec une clause d'indexation dans le bail. Depuis 2023, les logements DPE F et G ne peuvent plus voir leur loyer augmenter. Préavis écrit obligatoire.</p>
+    <h2 id="essentiel">L'essentiel à retenir en 2026</h2>
+    <p>L'<strong>augmentation de loyer</strong> est strictement encadrée en France. Un propriétaire ne peut pas augmenter le loyer librement : il doit respecter des règles précises de calcul (indice IRL), de timing (une fois par an à la date anniversaire) et de notification (lettre simple ou LRAR selon la clause d'indexation).</p>
+    
+    <div class="callout callout-warn">
+    <span class="callout-icon">⚠</span>
+    <p>Depuis 2023, les <strong>logements classés DPE F et G</strong> ne peuvent plus voir leur loyer augmenter (loi Climat et résilience 2021). Cette interdiction s'étendra aux DPE E à partir de 2034.</p>
+    </div>
+    
+    <h3 id="essentiel-points">Les 5 points clés pour 2026</h3>
+    <ul>
+      <li><strong>Clause d'indexation obligatoire</strong> dans le bail. Sans clause, aucune augmentation possible.</li>
+      <li><strong>Une fois par an</strong> maximum, à la date anniversaire du bail (ou date prévue dans la clause).</li>
+      <li><strong>Indice IRL</strong> (Indice de Référence des Loyers) publié trimestriellement par l'INSEE.</li>
+      <li><strong>Interdiction DPE F/G</strong> : ces logements ne peuvent plus voir leur loyer augmenter.</li>
+      <li><strong>Notification écrite</strong> au locataire avant application, jamais rétroactive.</li>
+    </ul>
+    
+    <h2 id="cadre-legal">Cadre légal complet de l'augmentation</h2>
+    <p>L'augmentation de loyer en cours de bail est strictement encadrée par plusieurs textes qui définissent les conditions et les sanctions en cas d'abus.</p>
+    
+    <h3 id="cadre-1989">Loi du 6 juillet 1989 (article 17-1)</h3>
+    <p>Le texte fondateur précise que <strong>la révision du loyer ne peut intervenir qu'à la date anniversaire du bail</strong>, sur la base de l'IRL, et uniquement si une clause d'indexation figure dans le contrat. La variation est limitée à la variation annuelle de l'IRL.</p>
+    
+    <h3 id="cadre-climat">Loi Climat et résilience (août 2021)</h3>
+    <p>Depuis le 24 août 2022, les <strong>logements classés F ou G ne peuvent plus voir leur loyer augmenter</strong> au moment d'une révision ou d'un renouvellement de bail. Cette mesure vise à inciter les propriétaires à rénover les passoires thermiques.</p>
+    
+    <h3 id="cadre-elan">Loi ELAN (2018) et plafonnement zones tendues</h3>
+    <p>Dans les <strong>28 agglomérations en zone tendue</strong>, l'augmentation à la relocation (entre deux locataires) est plafonnée à la variation de l'IRL, sauf travaux d'amélioration importants ou loyer manifestement sous-évalué.</p>
+    
+    <h3 id="cadre-encadrement">Encadrement strict (Paris, Lyon, etc.)</h3>
+    <p>Dans les villes en encadrement strict (Paris, Lyon, Bordeaux, Lille, Montpellier, Plaisance-du-Touch, Villeurbanne, Pays Basque), le loyer ne peut jamais dépasser le <strong>loyer de référence majoré</strong>, même après augmentation.</p>
+    
+    <h2 id="calcul-irl">Comment calculer l'augmentation avec l'IRL</h2>
+    <p>L'IRL est l'indice de référence pour toute révision de loyer en cours de bail. Voici la méthode de calcul exacte.</p>
+    
+    <h3 id="formule-irl">La formule de calcul</h3>
+    <p>La formule est simple : <strong>Nouveau loyer = Loyer actuel × (IRL du trimestre de référence / IRL du même trimestre l'année précédente)</strong>. Le trimestre de référence est celui indiqué dans la clause d'indexation du bail.</p>
+    
+    <h3 id="exemple-irl">Exemple concret 2026</h3>
+    <p>Loyer actuel : 850€/mois. IRL T1 2026 : 145,47. IRL T1 2025 : 142,06. Calcul : 850 × (145,47 / 142,06) = 850 × 1,024 = <strong>870,30€</strong>. Augmentation autorisée : +20,30€/mois (+2,4%).</p>
+    
+    <h3 id="irl-trimestres">Quel trimestre prendre en compte ?</h3>
+    <p>Toujours celui indiqué dans la <strong>clause d'indexation du bail</strong>. Si la clause précise "IRL T1", c'est l'indice du 1er trimestre qui sert de référence chaque année. Pas de modification possible en cours de bail.</p>
     
     <div class="cta-inline">
       <div class="cta-inline-text">
-        <div class="cta-inline-title">Générer un bail avec clause IRL conforme</div>
-        <div class="cta-inline-sub">49€ - bail conforme ALUR + clauses augmentation</div>
+        <div class="cta-inline-title">Bail conforme avec clause IRL incluse</div>
+        <div class="cta-inline-sub">Avec BailScan Proprio 49€, votre bail intègre automatiquement la clause d'indexation conforme loi 1989 + ALUR.</div>
       </div>
-      <a href="/proprio" class="cta-inline-btn">Y aller →</a>
+      <a href="/proprio" class="cta-inline-btn">Découvrir →</a>
+    </div>
+    
+    <h2 id="procedure">Procédure pour augmenter le loyer en 6 étapes</h2>
+    
+    <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Vérifier la clause d'indexation</h4><p>Sans clause d'indexation explicite dans le bail, aucune augmentation n'est possible. Vérifier également que la clause précise l'IRL de référence et le trimestre.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Vérifier le DPE</h4><p>Si le logement est classé F ou G, l'augmentation est INTERDITE depuis 2023. Vérifier votre diagnostic DPE avant tout calcul.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Calculer le nouveau loyer</h4><p>Appliquer la formule IRL avec les bons trimestres de référence. Arrondir au centime près.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Notifier le locataire</h4><p>Envoyer une lettre simple ou LRAR (selon le bail) avant la date anniversaire, mentionnant le calcul, l'ancien loyer, le nouveau loyer et l'IRL utilisé.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Appliquer à la date anniversaire</h4><p>L'augmentation ne peut JAMAIS être rétroactive. Elle s'applique à compter de la date anniversaire du bail (ou la date indiquée dans la clause).</p></div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-content"><h4>Mettre à jour les quittances</h4><p>Les quittances émises après l'augmentation doivent refléter le nouveau montant. Préciser la nouvelle base de loyer + charges sur la première quittance majorée.</p></div></div>
+    </div>
+    
+    <h2 id="cas-particuliers">Cas particuliers et exceptions</h2>
+    
+    <h3 id="cas-dpe">Cas DPE F et G : interdiction totale</h3>
+    <p>Depuis le 24 août 2022, aucune augmentation de loyer n'est possible pour les passoires thermiques (DPE F et G), y compris l'indexation annuelle IRL. Cette mesure restera en vigueur jusqu'à la rénovation du logement.</p>
+    
+    <h3 id="cas-zone-tendue">Cas zone tendue : encadrement strict</h3>
+    <p>Dans les 28 agglomérations en zone tendue, l'augmentation à la relocation est limitée à la variation IRL. Dans les villes en encadrement strict, le loyer ne peut dépasser le loyer de référence majoré, peu importe le calcul IRL.</p>
+    
+    <h3 id="cas-renouvellement">Augmentation à la fin du bail (renouvellement)</h3>
+    <p>Le bailleur peut proposer une augmentation significative <strong>en fin de bail</strong> si le loyer est manifestement sous-évalué. Procédure stricte : 3 références comparables minimum, préavis 6 mois, accord du locataire ou saisine de la CDC.</p>
+    
+    <h3 id="cas-travaux">Augmentation après travaux d'amélioration</h3>
+    <p>Si vous réalisez des travaux d'amélioration significatifs (rénovation énergétique, agrandissement, équipements neufs), une augmentation supérieure à l'IRL est possible. Plafond : 15% du coût des travaux par an, étalée sur 6 ans maximum.</p>
+    
+    <h3 id="cas-bail-mobilite">Cas du bail mobilité (1-10 mois)</h3>
+    <p>Aucune augmentation possible en cours de bail mobilité (durée trop courte). Pour un nouveau bail mobilité avec le même locataire, le loyer peut être réévalué selon les règles standards.</p>
+    
+    <h2 id="erreurs">Les 5 erreurs courantes à éviter</h2>
+    
+    <h3 id="erreur-1">1. Augmenter sans clause d'indexation</h3>
+    <p>Sans clause d'indexation dans le bail signé, AUCUNE augmentation n'est légale, même avec un calcul IRL correct. Le locataire peut refuser et exiger le remboursement des sommes payées en trop sur 3 ans.</p>
+    
+    <h3 id="erreur-2">2. Augmenter un DPE F ou G</h3>
+    <p>Erreur fréquente depuis 2023. L'augmentation d'un logement classé F ou G est strictement interdite. Le locataire peut récupérer les sommes versées en trop + dommages-intérêts.</p>
+    
+    <h3 id="erreur-3">3. Augmentation rétroactive</h3>
+    <p>L'augmentation s'applique à compter de la notification, JAMAIS rétroactivement. Toute tentative de récupérer des mois antérieurs est illégale et peut être contestée en justice.</p>
+    
+    <h3 id="erreur-4">4. Mauvais trimestre IRL</h3>
+    <p>Erreur de calcul courante : utiliser le mauvais trimestre IRL. Toujours se référer à la clause d'indexation du bail pour le trimestre exact. En cas de doute, l'INSEE publie les valeurs trimestrielles sur insee.fr.</p>
+    
+    <h3 id="erreur-5">5. Augmenter en zone tendue au-dessus du plafond</h3>
+    <p>Dans les villes en encadrement strict (Paris, Lyon, etc.), même un calcul IRL correct peut conduire à un loyer dépassant le plafond légal. Vérifier toujours le loyer de référence majoré avant d'appliquer l'augmentation.</p>
+    
+    <h2 id="modeles">Modèle de lettre de notification</h2>
+    <p>Voici la structure type d'une lettre de notification d'augmentation de loyer à envoyer au locataire avant la date anniversaire.</p>
+    
+    <h3 id="structure-lettre">Structure de la lettre LRAR</h3>
+    <p>1) Coordonnées bailleur et locataire. 2) Objet : "Révision annuelle du loyer". 3) Référence au bail (date de signature, adresse). 4) Mention de la clause d'indexation. 5) Calcul détaillé (loyer actuel, IRL anciens et nouveaux, formule, nouveau loyer). 6) Date d'application. 7) Signature.</p>
+    
+    <h2 id="comparatif">Comparatif : quelle solution pour gérer vos augmentations ?</h2>
+    
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Solution</th>
+          <th>Prix</th>
+          <th>Profil idéal</th>
+          <th>Avantages</th>
+          <th>Limites</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Faire soi-même</strong></td>
+          <td>0€</td>
+          <td>1 bien, propriétaire confiant</td>
+          <td>Gratuit, contrôle total</td>
+          <td>Risque d'erreur de calcul ou de procédure</td>
+        </tr>
+        <tr>
+          <td><strong>BailScan Proprio</strong></td>
+          <td><strong>49€</strong></td>
+          <td>1-3 biens, particulier</td>
+          <td>Bail conforme + analyse + clause indexation intégrée</td>
+          <td>Paiement unique, pas de gestion locative auto</td>
+        </tr>
+        <tr>
+          <td><strong>BailScan Analyser (locataire)</strong></td>
+          <td><strong>29€</strong></td>
+          <td>Locataire qui suspecte une augmentation illégale</td>
+          <td>Détection automatique des augmentations abusives</td>
+          <td>Réservé aux locataires</td>
+        </tr>
+        <tr>
+          <td>Notaire</td>
+          <td>250€</td>
+          <td>Sécurité juridique maximale</td>
+          <td>Acte authentique, force exécutoire</td>
+          <td>Cher, lent</td>
+        </tr>
+        <tr>
+          <td>Logiciel gestion locative</td>
+          <td>15-30€/mois</td>
+          <td>Multi-propriétaires</td>
+          <td>Calculs automatiques, fiscalité</td>
+          <td>Abonnement, courbe d'apprentissage</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    
+    <div class="callout callout-info">
+    <span class="callout-icon">💡</span>
+    <p><strong>Vous êtes locataire ?</strong> Si votre loyer a augmenté et vous suspectez une augmentation illégale, vérifiez votre bail avec <a href="/analyser"><strong>BailScan Analyser à 29€</strong></a>. Récupération moyenne 1 740€.<br><strong>Vous êtes propriétaire ?</strong> Générez un bail conforme avec clause IRL intégrée pour 49€ : <a href="/proprio"><strong>BailScan Proprio</strong></a>, paiement unique sans abonnement.</p>
+    </div>
+    
+    <h2 id="faq">Foire aux questions</h2>
+    <div class="faq">
+    <details class="faq-item"><summary class="faq-q">Combien peut-on augmenter le loyer par an ?</summary><div class="faq-a"><p>L'augmentation est limitée à la variation annuelle de l'IRL (Indice de Référence des Loyers) publié par l'INSEE. En 2026, cela représente généralement entre +1,5% et +3,5% selon les trimestres.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Faut-il l'accord du locataire pour augmenter ?</summary><div class="faq-a"><p>Non, si une clause d'indexation existe dans le bail et que le calcul IRL est correct. Le locataire ne peut pas refuser une augmentation conforme à la clause et à l'IRL. En revanche, une augmentation hors clause nécessite son accord explicite.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Peut-on augmenter sans clause d'indexation ?</summary><div class="faq-a"><p>Non, jamais en cours de bail. Sans clause d'indexation, le loyer reste fixe pendant toute la durée du bail. Seule exception : en fin de bail si le loyer est manifestement sous-évalué, avec accord du locataire ou décision de la CDC.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Le DPE E peut-il encore voir son loyer augmenter ?</summary><div class="faq-a"><p>Oui, jusqu'à 2034. L'interdiction d'augmentation s'applique pour le moment uniquement aux DPE F et G. Les DPE E pourront être augmentés jusqu'à leur interdiction de location prévue pour 2034.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">L'augmentation est-elle rétroactive ?</summary><div class="faq-a"><p>Non, jamais. L'augmentation s'applique uniquement à partir de la date de notification (ou date anniversaire si la lettre arrive avant). Toute tentative de rattrapage rétroactif est illégale.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Faut-il envoyer la notification en LRAR ?</summary><div class="faq-a"><p>Recommandé mais pas obligatoire si la clause d'indexation l'autorise par lettre simple. La LRAR offre une preuve d'envoi et de réception, indispensable en cas de litige ultérieur.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Que faire si j'ai oublié d'augmenter pendant 2 ans ?</summary><div class="faq-a"><p>Vous pouvez rattraper les augmentations annuelles non appliquées dans la limite de 1 an de prescription. Au-delà, les augmentations omises sont perdues définitivement.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Augmentation possible entre deux locataires ?</summary><div class="faq-a"><p>En zone tendue : limitée à l'IRL sauf travaux ou loyer manifestement sous-évalué. Hors zone tendue : liberté du bailleur, sauf logements DPE F/G qui ne peuvent pas voir leur loyer augmenter.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Le locataire peut-il refuser ?</summary><div class="faq-a"><p>Si la clause d'indexation existe et le calcul est correct : NON, il ne peut pas refuser. Si une erreur est détectée (mauvais IRL, DPE F/G, etc.) : OUI, il peut contester et récupérer les sommes versées en trop.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Quel recours pour un locataire face à une augmentation abusive ?</summary><div class="faq-a"><p>1) Demander par écrit la justification du calcul. 2) En cas de désaccord, saisir la Commission Départementale de Conciliation (gratuit). 3) Si nécessaire, saisir le tribunal judiciaire avec récupération possible sur 3 ans + dommages-intérêts.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Le complément de loyer peut-il augmenter ?</summary><div class="faq-a"><p>En encadrement strict, le complément de loyer reste figé pour la durée du bail. Il ne peut pas être révisé annuellement comme le loyer de base.</p></div></details>
+    
+    <details class="faq-item"><summary class="faq-q">Faut-il mettre à jour les quittances après l'augmentation ?</summary><div class="faq-a"><p>Oui, à partir du mois où l'augmentation s'applique. Les quittances doivent refléter le nouveau montant du loyer HC. Préciser sur la première quittance majorée la nouvelle base de calcul.</p></div></details>
+    </div>
+    
+    <h2 id="aller-plus-loin">Aller plus loin : articles connexes</h2>
+    
+    <div class="cluster-grid">
+      <a href="/blog/quand-avertir-locataire-augmentation-loyer-2026" class="cluster-card">
+        <div class="cluster-card-label">Notification</div>
+        <div class="cluster-card-title">Quand avertir le locataire d'une augmentation</div>
+        <div class="cluster-card-meta">1 000 recherches/mois</div>
+      </a>
+      <a href="/blog/augmentation-loyer-dpe-e-interdiction-2026" class="cluster-card">
+        <div class="cluster-card-label">DPE</div>
+        <div class="cluster-card-title">Augmentation et DPE E/F/G : règles 2026</div>
+        <div class="cluster-card-meta">390 recherches/mois</div>
+      </a>
+      <a href="/blog/comment-augmenter-loyer-bail-commercial-2026" class="cluster-card">
+        <div class="cluster-card-label">Bail commercial</div>
+        <div class="cluster-card-title">Augmentation bail commercial</div>
+        <div class="cluster-card-meta">320 recherches/mois</div>
+      </a>
+      <a href="/blog/augmenter-loyer-fin-bail-procedure-2026" class="cluster-card">
+        <div class="cluster-card-label">Fin de bail</div>
+        <div class="cluster-card-title">Augmenter le loyer en fin de bail</div>
+        <div class="cluster-card-meta">590 recherches/mois</div>
+      </a>
+      <a href="/blog/augmentation-loyer-2026-guide-complet-bailleur" class="cluster-card">
+        <div class="cluster-card-label">Guide IRL</div>
+        <div class="cluster-card-title">Augmentation loyer 2026 (guide IRL + DPE)</div>
+        <div class="cluster-card-meta">4 400 recherches/mois</div>
+      </a>
+      <a href="/blog/lettre-augmentation-loyer-modele-pdf-2026" class="cluster-card">
+        <div class="cluster-card-label">Modèle</div>
+        <div class="cluster-card-title">Lettre d'augmentation : modèle PDF gratuit</div>
+        <div class="cluster-card-meta">1 600 recherches/mois</div>
+      </a>
+    </div>
+    
+    <div class="cta-inline" style="background:var(--noir);color:white;">
+      <div class="cta-inline-text">
+        <div class="cta-inline-title" style="color:white;">Bail conforme avec clause d'indexation</div>
+        <div class="cta-inline-sub">BailScan Proprio 49€ : bail conforme loi 1989 + ALUR + ELAN avec clause IRL intégrée. Génération en 2 minutes.</div>
+      </div>
+      <a href="/proprio" class="cta-inline-btn" style="background:var(--accent);color:white;">Découvrir →</a>
     </div>
 
-    <h2 id="aller-plus-loin">Approfondir chaque aspect</h2>
-    <p>Pour aller plus loin sur chaque sujet précis, consultez nos guides détaillés :</p>
-    <div class="cluster-grid">
-  <a href="/blog/quand-avertir-locataire-augmentation-loyer-2026" class="cluster-card">
-    <div class="cluster-card-label">Guide</div>
-    <div class="cluster-card-title">Quand avertir le locataire d'une augmentation de loyer (2026)</div>
-    <div class="cluster-card-meta">1,000 recherches/mois</div>
-  </a>
-  <a href="/blog/augmentation-loyer-dpe-e-interdiction-2026" class="cluster-card">
-    <div class="cluster-card-label">Guide</div>
-    <div class="cluster-card-title">Augmentation loyer DPE E : règles 2026</div>
-    <div class="cluster-card-meta">390 recherches/mois</div>
-  </a>
-  <a href="/blog/comment-augmenter-loyer-bail-commercial-2026" class="cluster-card">
-    <div class="cluster-card-label">Guide</div>
-    <div class="cluster-card-title">Comment augmenter le loyer d'un bail commercial en 2026</div>
-    <div class="cluster-card-meta">320 recherches/mois</div>
-  </a>
-  <a href="/blog/augmenter-loyer-fin-bail-procedure-2026" class="cluster-card">
-    <div class="cluster-card-label">Guide</div>
-    <div class="cluster-card-title">Augmenter le loyer en fin de bail : procédure 2026</div>
-    <div class="cluster-card-meta">590 recherches/mois</div>
-  </a>
-</div>
-
-    <div class="article-sources"><strong>Sources légales :</strong> Loi n°89-462 du 6 juillet 1989 — Article 21 (quittance) — Article 15 (résiliation) — Loi ALUR du 24 mars 2014 — Loi ELAN du 23 novembre 2018</div>
+    <div class="article-sources"><strong>Sources légales :</strong> Loi n°89-462 du 6 juillet 1989 — Article 17-1 (révision) — Loi Climat et résilience du 22 août 2021 — Loi ALUR du 24 mars 2014 — Loi ELAN — Décret n°2013-392 du 10 mai 2013 (zones tendues) — INSEE (publication IRL)</div>
   </main>
   <aside class="sidebar">
     <nav class="toc-box">
