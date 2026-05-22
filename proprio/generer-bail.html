@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Générer un bail — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ═══ WIZARD ═══ */
+.bail-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 36px 40px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+@media (max-width: 700px) { .bail-card { padding: 24px 18px; } }
+
+.wizard-progress {
+  display: flex;
+  align-items: center;
+  margin-bottom: 36px;
+}
+.wstep { display: flex; align-items: center; gap: 6px; flex: 1; }
+.wstep:last-child { flex: 0; }
+.wdot {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .76rem; font-weight: 700;
+  color: var(--gris);
+  background: white;
+  flex-shrink: 0;
+  transition: all .3s;
+}
+.wdot.active { border-color: var(--accent); background: var(--accent); color: white; }
+.wdot.done { border-color: var(--vert); background: var(--vert); color: white; }
+.wlbl { font-size: .72rem; font-weight: 600; color: var(--gris); white-space: nowrap; }
+.wlbl.active { color: var(--accent); }
+.wline { flex: 1; height: 2px; background: var(--border); margin: 0 4px; transition: background .3s; }
+.wline.done { background: var(--vert); }
+
+.wpanel { display: none; }
+.wpanel.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.panel-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.7rem;
+  color: var(--texte);
+  margin-bottom: 4px;
+}
+.panel-sub {
+  font-size: .85rem;
+  color: var(--gris);
+  margin-bottom: 28px;
+}
+
+.sh {
+  font-weight: 700;
+  font-size: .83rem;
+  color: var(--accent);
+  margin: 22px 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1.5px solid rgba(200,75,47,.2);
+}
+.sh:first-child { margin-top: 0; }
+
+.fg {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.fg label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--texte);
+}
+.fg label small {
+  font-weight: 400;
+  color: var(--gris);
+  font-size: .72rem;
+}
+.fi {
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  font-size: .87rem;
+  font-family: inherit;
+  color: var(--texte);
+  background: white;
+  transition: border-color .2s;
+  outline: none;
+  width: 100%;
+}
+.fi:focus { border-color: var(--accent); }
+.fi::placeholder { color: #bbb; }
+textarea.fi { resize: vertical; min-height: 60px; }
+
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fgrid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 600px) { .fgrid, .fgrid.g3 { grid-template-columns: 1fr; } }
+
+.rpills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.rpill {
+  padding: 8px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--gris);
+  transition: all .15s;
+}
+.rpill:hover { border-color: var(--accent); color: var(--accent); }
+.rpill.active {
+  border-color: var(--accent);
+  background: rgba(200,75,47,.08);
+  color: var(--accent);
+}
+
+.chk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px;
+  margin-top: 6px;
+}
+.chk-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .82rem;
+  color: var(--texte);
+  transition: all .15s;
+  background: white;
+}
+.chk-item:hover { border-color: var(--accent); background: rgba(200,75,47,.04); }
+.chk-item input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.info-box {
+  background: rgba(22,163,74,.08);
+  border: 1px solid rgba(22,163,74,.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: .82rem;
+  color: var(--vert);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.wnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
+}
+.btn-back {
+  background: white;
+  border: 1.5px solid var(--border);
+  color: var(--gris);
+  padding: 10px 20px;
+  border-radius: 9px;
+  font-size: .86rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .2s;
+}
+.btn-back:hover { border-color: var(--texte); color: var(--texte); }
+.btn-next {
+  background: var(--accent);
+  color: white;
+  padding: 11px 26px;
+  border-radius: 9px;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  transition: all .2s;
+}
+.btn-next:hover { background: #a83a20; transform: translateY(-1px); }
+
+/* Preview du bail */
+.bail-preview {
+  position: relative;
+  margin-bottom: 24px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+}
+.bail-preview-content {
+  background: white;
+  padding: 30px 40px;
+  max-height: 320px;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  font-family: Georgia, serif;
+  font-size: .82rem;
+  line-height: 1.7;
+  color: #444;
+}
+.bail-preview-content h3 {
+  font-family: Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 16px 0 12px;
+  color: #222;
+}
+.bail-preview-content .lbl { font-weight: 700; color: #222; }
+.bail-preview-blur {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 180px;
+  background: linear-gradient(to bottom, transparent, white 80%);
+  pointer-events: none;
+}
+.bail-preview-lock {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  text-align: center;
+  padding: 18px 20px 22px;
+}
+.bail-preview-pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: .75rem;
+  color: var(--gris);
+  margin-bottom: 8px;
+}
+.bail-preview-page-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.bail-preview-page-dot.active { background: var(--accent); }
+
+/* Paywall */
+.paywall {
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+  border-radius: 16px;
+  padding: 32px;
+  color: white;
+  text-align: center;
+}
+.paywall-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.6rem;
+  color: white;
+  margin-bottom: 6px;
+}
+.paywall-sub {
+  font-size: .85rem;
+  color: rgba(255,255,255,.6);
+  margin-bottom: 22px;
+}
+.paywall-feats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+  text-align: left;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.paywall-feat {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: .85rem;
+  color: rgba(255,255,255,.88);
+}
+.paywall-feat::before {
+  content: "✓";
+  color: #4ade80;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.paywall-price {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.8rem;
+  color: white;
+  margin-bottom: 2px;
+}
+.paywall-price-sub {
+  font-size: .76rem;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 20px;
+}
+.btn-pay {
+  background: var(--accent);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 11px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  transition: all .2s;
+}
+.btn-pay:hover { background: #a83a20; transform: translateY(-1px); }
+.pay-secure {
+  font-size: .73rem;
+  color: rgba(255,255,255,.5);
+  margin-top: 12px;
+}
+
+.bien-banner {
+  background: linear-gradient(135deg, var(--pro-light), white);
+  border: 1px solid rgba(59,111,212,.2);
+  border-radius: 11px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.bien-banner-info { display: flex; align-items: center; gap: 12px; }
+.bien-banner-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: var(--pro-accent);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.bien-banner-title { font-weight: 700; font-size: .9rem; color: var(--texte); }
+.bien-banner-sub { font-size: .76rem; color: var(--gris); margin-top: 2px; }
+
+@media (max-width: 600px) {
+  .wlbl { display: none; }
+}
+</style>
+</head>
+<body>
+
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo"><div class="dash-sidebar-logo-left"><span class="dash-sidebar-logo-name">BailScan</span><span class="dash-sidebar-logo-badge">PROPRIO</span></div></div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Vue d'ensemble</a>
+    <a href="biens.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Mes biens <span class="dash-nav-badge">2</span></a>
+    <a href="locataires.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Mes locataires</a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Mettre en location</a>
+    <a href="gerer-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Gérer ma location</a>
+    <a href="baux.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>Mes baux</a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Analyses juridiques</a>
+    <a href="analyse-dossier.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Analyse dossier IA <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span></a>
+    <a href="assistant-juridique.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Assistant juridique <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span></a>
+    <a href="courriers.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Courriers & lettres</a>
+    <a href="documents.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Documents</a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Mes garanties</a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Mon abonnement</a>
+    <a href="aide.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Aide & contact</a>
+  </nav>
+  <div class="dash-user"><div class="dash-user-row"><div class="dash-user-avatar">CC</div><div class="dash-user-info"><div class="dash-user-name">Cléolia Clergé-André</div><div class="dash-user-plan">Plan Gratuit</div></div></div></div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div>
+      <div class="dash-topbar-title">Générer un bail</div>
+      <div class="dash-topbar-sub">Bail conforme loi 1989 / ALUR / ELAN · 19€ tout inclus</div>
+    </div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="baux.html" class="btn-ghost" style="font-size:.82rem;">← Retour à mes baux</a>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <div class="bail-card">
+
+    <!-- Bandeau Bien sélectionné (optionnel) -->
+    <div class="bien-banner" id="bienBanner">
+      <div class="bien-banner-info">
+        <div class="bien-banner-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        </div>
+        <div>
+          <div class="bien-banner-title">Studio Bordeaux Chartrons</div>
+          <div class="bien-banner-sub">22 rue Notre-Dame, 33000 Bordeaux · 28 m² · Meublé</div>
+        </div>
+      </div>
+      <button class="btn-ghost" style="font-size:.78rem;">Changer de bien</button>
+    </div>
+
+    <!-- Progress -->
+    <div class="wizard-progress">
+      <div class="wstep"><div class="wdot active" id="d1">1</div><div class="wlbl active" id="l1">Bien</div></div>
+      <div class="wline" id="wl1"></div>
+      <div class="wstep"><div class="wdot" id="d2">2</div><div class="wlbl" id="l2">Loyer</div></div>
+      <div class="wline" id="wl2"></div>
+      <div class="wstep"><div class="wdot" id="d3">3</div><div class="wlbl" id="l3">Parties</div></div>
+      <div class="wline" id="wl3"></div>
+      <div class="wstep"><div class="wdot" id="d4">4</div><div class="wlbl" id="l4">Clauses</div></div>
+      <div class="wline" id="wl4"></div>
+      <div class="wstep"><div class="wdot" id="d5">5</div><div class="wlbl" id="l5">Résultat</div></div>
+    </div>
+
+    <!-- STEP 1 : BIEN -->
+    <div class="wpanel active" id="step1">
+      <div class="panel-title">Le bien loué</div>
+      <div class="panel-sub">Informations sur le logement que vous mettez en location</div>
+
+      <div class="sh">Type de bien</div>
+      <div class="fg">
+        <label>Type de location <span style="color:var(--accent)">*</span></label>
+        <div class="rpills">
+          <label class="rpill" data-group="genType" onclick="setR('genType','vide',this)">Vide</label>
+          <label class="rpill active" data-group="genType" onclick="setR('genType','meuble',this)">Meublé</label>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label for="genAdresse">Adresse (rue, numéro) <span style="color:var(--accent)">*</span></label>
+        <input type="text" id="genAdresse" class="fi" placeholder="Ex : 22 rue Notre-Dame" value="22 rue Notre-Dame">
+      </div>
+
+      <div class="fgrid g3">
+        <div class="fg"><label for="genCp">Code postal <span style="color:var(--accent)">*</span></label><input type="text" id="genCp" class="fi" placeholder="Ex : 33000" maxlength="5" value="33000"></div>
+        <div class="fg" style="grid-column:span 2"><label for="genVille">Ville <span style="color:var(--accent)">*</span></label><input type="text" id="genVille" class="fi" placeholder="Ex : Bordeaux" value="Bordeaux"></div>
+      </div>
+
+      <div class="fgrid g3">
+        <div class="fg"><label for="genSurface">Surface habitable (m²) <span style="color:var(--accent)">*</span></label><input type="number" id="genSurface" class="fi" placeholder="Ex : 28" min="1" value="28"></div>
+        <div class="fg"><label for="genPieces">Nombre de pièces</label><input type="number" id="genPieces" class="fi" placeholder="Ex : 1" min="1" value="1"></div>
+        <div class="fg"><label for="genEtage">Étage</label><input type="text" id="genEtage" class="fi" placeholder="Ex : 2e étage" value="2e étage"></div>
+      </div>
+
+      <div class="fgrid">
+        <div class="fg">
+          <label for="genDpe">Classe DPE <small>(performance énergétique)</small></label>
+          <select id="genDpe" class="fi">
+            <option value="A">A — Très performant (≤70 kWh/m².an)</option>
+            <option value="B">B — Performant (71–110)</option>
+            <option value="C" selected>C — Assez performant (111–180)</option>
+            <option value="D">D — Peu performant (181–250)</option>
+            <option value="E">E — Énergivore (251–330)</option>
+            <option value="F">F — Très énergivore (331–420)</option>
+            <option value="G">G — Extrêmement énergivore (&gt;420)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="genGes">Classe GES <small>(émissions CO₂)</small></label>
+          <select id="genGes" class="fi">
+            <option value="A">A (≤5 kg CO₂/m².an)</option>
+            <option value="B">B (6–10)</option>
+            <option value="C" selected>C (11–20)</option>
+            <option value="D">D (21–35)</option>
+            <option value="E">E (36–55)</option>
+            <option value="F">F (56–80)</option>
+            <option value="G">G (&gt;80)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label for="genEquipements">Équipements <small>(cuisine équipée, interphone…)</small></label>
+        <input type="text" id="genEquipements" class="fi" placeholder="Ex : cuisine équipée, lit double, bureau, machine à laver" value="cuisine équipée, lit double, bureau, machine à laver, micro-ondes">
+      </div>
+
+      <div class="sh">Annexes & dépendances</div>
+      <div class="chk-grid">
+        <label class="chk-item"><input type="checkbox" id="chkJardin"> Jardin privatif</label>
+        <label class="chk-item"><input type="checkbox" id="chkTerrasse"> Terrasse / Balcon</label>
+        <label class="chk-item"><input type="checkbox" id="chkParking"> Parking / Garage</label>
+        <label class="chk-item"><input type="checkbox" id="chkCave" checked> Cave / Cellier</label>
+        <label class="chk-item"><input type="checkbox" id="chkGrenier"> Grenier / Combles</label>
+        <label class="chk-item"><input type="checkbox" id="chkPiscine"> Piscine</label>
+      </div>
+
+      <div class="fgrid" style="margin-top:14px;">
+        <div class="fg"><label for="genAnnexeNum">N° parking / cave <small>si applicable</small></label><input type="text" id="genAnnexeNum" class="fi" placeholder="Ex : Cave n°12"></div>
+        <div class="fg">
+          <label>Immeuble en copropriété ?</label>
+          <div class="rpills">
+            <label class="rpill active" data-group="genCopro" onclick="setR('genCopro','oui',this)">Oui</label>
+            <label class="rpill" data-group="genCopro" onclick="setR('genCopro','non',this)">Non</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label for="genSyndic">Syndic de copropriété <small>si applicable</small></label>
+        <input type="text" id="genSyndic" class="fi" placeholder="Ex : Cabinet Foncia — 01 23 45 67 89">
+      </div>
+
+      <div class="wnav">
+        <div></div>
+        <button class="btn-next" onclick="goStep(2)">Continuer → Loyer</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 : LOYER -->
+    <div class="wpanel" id="step2">
+      <div class="panel-title">Loyer & conditions financières</div>
+      <div class="panel-sub">Définissez le loyer et les modalités financières</div>
+
+      <div class="sh">Loyer</div>
+      <div class="fgrid">
+        <div class="fg">
+          <label for="genLoyer">Loyer mensuel hors charges (€) <span style="color:var(--accent)">*</span></label>
+          <input type="number" id="genLoyer" class="fi" placeholder="Ex : 680" min="0" value="680">
+        </div>
+        <div class="fg">
+          <label for="genCharges">Charges mensuelles (€)</label>
+          <input type="number" id="genCharges" class="fi" placeholder="Ex : 40" min="0" value="40">
+          <small style="font-size:.72rem;color:var(--gris);margin-top:2px;">Provisions sur charges avec régularisation annuelle</small>
+        </div>
+      </div>
+
+      <div class="fgrid">
+        <div class="fg">
+          <label for="genDepot">Dépôt de garantie (€)</label>
+          <input type="number" id="genDepot" class="fi" placeholder="Ex : 1360" min="0" value="1360">
+          <small style="font-size:.72rem;color:var(--gris);margin-top:2px;">Max 1 mois HC (vide) ou 2 mois HC (meublé)</small>
+        </div>
+        <div class="fg">
+          <label for="genDateEntree">Date d'entrée prévue <span style="color:var(--accent)">*</span></label>
+          <input type="date" id="genDateEntree" class="fi" value="2026-06-01">
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Durée du bail</label>
+        <div class="rpills">
+          <label class="rpill" data-group="genDuree" onclick="setR('genDuree','3 ans',this)">3 ans (vide)</label>
+          <label class="rpill active" data-group="genDuree" onclick="setR('genDuree','1 an',this)">1 an (meublé)</label>
+          <label class="rpill" data-group="genDuree" onclick="setR('genDuree','9 mois',this)">9 mois (étudiant meublé)</label>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Révision du loyer</label>
+        <div class="rpills">
+          <label class="rpill active" data-group="genRevision" onclick="setR('genRevision','IRL',this)">IRL (Indice de Référence des Loyers)</label>
+          <label class="rpill" data-group="genRevision" onclick="setR('genRevision','non',this)">Pas de révision</label>
+        </div>
+      </div>
+
+      <div class="sh">Encadrement des loyers <small style="font-weight:400;font-size:.76rem;color:var(--gris);">(Paris, Lyon, Bordeaux, Montpellier…)</small></div>
+      <div class="info-box">⚠ Bordeaux est en zone encadrée. Renseignez les loyers de référence ci-dessous (source : observatoire-loyers.adil.org).</div>
+
+      <div class="fgrid g3">
+        <div class="fg"><label for="genLoyerMinore">Loyer minoré (€/m²)</label><input type="number" id="genLoyerMinore" class="fi" placeholder="Ex : 11.5" step="0.1" min="0" value="11.5"></div>
+        <div class="fg"><label for="genLoyerRef">Loyer de référence (€/m²)</label><input type="number" id="genLoyerRef" class="fi" placeholder="Ex : 14.4" step="0.1" min="0" value="14.4"></div>
+        <div class="fg"><label for="genLoyerMajore">Loyer majoré (€/m²)</label><input type="number" id="genLoyerMajore" class="fi" placeholder="Ex : 17.3" step="0.1" min="0" value="17.3"></div>
+      </div>
+
+      <div class="fg">
+        <label for="genComplement">Complément de loyer (€) <small>si applicable</small></label>
+        <input type="number" id="genComplement" class="fi" placeholder="Ex : 0" min="0" value="0">
+      </div>
+
+      <div class="fg">
+        <label for="genIrl">Valeur IRL de référence <small>(source INSEE, optionnel)</small></label>
+        <input type="text" id="genIrl" class="fi" placeholder="Ex : 145.47 (T4 2025)" value="145.47">
+      </div>
+
+      <div class="wnav">
+        <button class="btn-back" onclick="goStep(1)">← Retour</button>
+        <button class="btn-next" onclick="goStep(3)">Continuer → Parties</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 : PARTIES -->
+    <div class="wpanel" id="step3">
+      <div class="panel-title">Bailleur & locataire</div>
+      <div class="panel-sub">Renseignez les informations sur les parties au contrat</div>
+
+      <div class="sh">Bailleur (vous)</div>
+      <div class="fg">
+        <label>Type de bailleur</label>
+        <div class="rpills">
+          <label class="rpill active" data-group="genBailleurType" onclick="setR('genBailleurType','physique',this);toggleBailleur('physique')">Personne physique</label>
+          <label class="rpill" data-group="genBailleurType" onclick="setR('genBailleurType','sci',this);toggleBailleur('sci')">SCI</label>
+          <label class="rpill" data-group="genBailleurType" onclick="setR('genBailleurType','indivision',this);toggleBailleur('indivision')">Indivision</label>
+        </div>
+      </div>
+
+      <div id="bPhysiqueFields">
+        <div class="fgrid">
+          <div class="fg"><label for="genBailleurPrenom">Prénom</label><input type="text" id="genBailleurPrenom" class="fi" value="Cléolia"></div>
+          <div class="fg"><label for="genBailleurNom">Nom <span style="color:var(--accent)">*</span></label><input type="text" id="genBailleurNom" class="fi" value="Clergé-André"></div>
+        </div>
+      </div>
+      <div id="bMoraleFields" style="display:none;">
+        <div class="fg">
+          <label for="genBailleurDenom">Dénomination sociale <span style="color:var(--accent)">*</span></label>
+          <input type="text" id="genBailleurDenom" class="fi" placeholder="Ex : SCI Les Lilas">
+        </div>
+      </div>
+
+      <div class="fg">
+        <label for="genBailleurAdresse">Adresse (rue, numéro)</label>
+        <input type="text" id="genBailleurAdresse" class="fi" placeholder="Ex : 5 rue Victor Hugo">
+      </div>
+
+      <div class="fgrid g3">
+        <div class="fg"><label for="genBailleurCp">Code postal</label><input type="text" id="genBailleurCp" class="fi" maxlength="5"></div>
+        <div class="fg"><label for="genBailleurVille">Ville</label><input type="text" id="genBailleurVille" class="fi"></div>
+        <div class="fg"><label for="genBailleurEmail">Email</label><input type="email" id="genBailleurEmail" class="fi"></div>
+      </div>
+
+      <div class="fg">
+        <label for="genBailleurTel">Téléphone</label>
+        <input type="text" id="genBailleurTel" class="fi" placeholder="Ex : 06 12 34 56 78">
+      </div>
+
+      <div class="sh">Locataire(s)</div>
+
+      <div style="background:var(--bg-main);border-radius:10px;padding:12px 16px;border:1px solid var(--border);margin-bottom:16px;">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.88rem;font-weight:600;color:var(--texte);">
+          <input type="checkbox" id="chkColocation" onchange="toggleColocsSection()" style="accent-color:var(--accent);width:16px;height:16px;flex-shrink:0;">
+          C'est une colocation
+          <small style="font-weight:400;color:var(--gris);font-size:.78rem;">plusieurs locataires sur le même bail</small>
+        </label>
+      </div>
+
+      <div class="fgrid">
+        <div class="fg"><label for="genLocPrenom">Prénom</label><input type="text" id="genLocPrenom" class="fi" placeholder="Ex : Lucas"></div>
+        <div class="fg"><label for="genLocNom">Nom</label><input type="text" id="genLocNom" class="fi" placeholder="Ex : Durand"></div>
+      </div>
+
+      <div class="fg">
+        <label for="genLocAdresse">Adresse actuelle (rue, numéro)</label>
+        <input type="text" id="genLocAdresse" class="fi" placeholder="Ex : 5 avenue Victor Hugo">
+      </div>
+
+      <div class="fgrid g3">
+        <div class="fg"><label for="genLocCp">Code postal</label><input type="text" id="genLocCp" class="fi" maxlength="5"></div>
+        <div class="fg"><label for="genLocVille">Ville</label><input type="text" id="genLocVille" class="fi"></div>
+        <div class="fg"><label for="genLocEmail">Email</label><input type="email" id="genLocEmail" class="fi"></div>
+      </div>
+
+      <div id="colocsSection" style="display:none;">
+        <div id="colocsList"></div>
+        <button type="button" onclick="addColoc()" style="display:inline-flex;align-items:center;gap:8px;background:none;border:1.5px dashed var(--border);color:var(--gris);padding:10px 18px;border-radius:9px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;transition:all .15s;">
+          + Ajouter un colocataire
+        </button>
+      </div>
+
+      <div class="sh">Garant <small style="font-weight:400;font-size:.76rem;color:var(--gris);">optionnel</small></div>
+
+      <div style="background:var(--bg-main);border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div class="fgrid">
+          <div class="fg" style="margin-bottom:0;"><label for="genGarantPrenom">Prénom</label><input type="text" id="genGarantPrenom" class="fi" placeholder="Ex : Paul"></div>
+          <div class="fg" style="margin-bottom:0;"><label for="genGarantNom">Nom</label><input type="text" id="genGarantNom" class="fi" placeholder="Ex : Durand"></div>
+        </div>
+        <div class="fg" style="margin-top:10px;margin-bottom:0;">
+          <label for="genGarantAdresse">Adresse (rue, numéro)</label>
+          <input type="text" id="genGarantAdresse" class="fi" placeholder="Ex : 3 rue du Moulin">
+        </div>
+        <div class="fgrid" style="margin-top:10px;">
+          <div class="fg" style="margin-bottom:0;"><label for="genGarantCp">Code postal</label><input type="text" id="genGarantCp" class="fi" maxlength="5"></div>
+          <div class="fg" style="margin-bottom:0;"><label for="genGarantVille">Ville</label><input type="text" id="genGarantVille" class="fi"></div>
+        </div>
+        <div class="fgrid" style="margin-top:10px;">
+          <div class="fg" style="margin-bottom:0;"><label for="genGarantEmail">Email</label><input type="email" id="genGarantEmail" class="fi"></div>
+          <div class="fg" style="margin-bottom:0;"><label for="genGarantTel">Téléphone</label><input type="text" id="genGarantTel" class="fi"></div>
+        </div>
+        <div class="fg" style="margin-top:10px;margin-bottom:0;">
+          <label>Type de cautionnement</label>
+          <div class="rpills">
+            <label class="rpill active" data-group="genCaution" onclick="setR('genCaution','solidaire',this)">Solidaire</label>
+            <label class="rpill" data-group="genCaution" onclick="setR('genCaution','simple',this)">Simple</label>
+            <label class="rpill" data-group="genCaution" onclick="setR('genCaution','notarie',this)">Acte notarié</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="wnav">
+        <button class="btn-back" onclick="goStep(2)">← Retour</button>
+        <button class="btn-next" onclick="goStep(4)">Continuer → Clauses</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 : CLAUSES -->
+    <div class="wpanel" id="step4">
+      <div class="panel-title">Clauses & spécificités</div>
+      <div class="panel-sub">Personnalisez les clauses de votre bail</div>
+
+      <div class="sh">Travaux à la charge du locataire</div>
+      <div class="chk-grid">
+        <label class="chk-item"><input type="checkbox" id="travChaudiere"> Entretien chaudière individuelle</label>
+        <label class="chk-item"><input type="checkbox" id="travClim"> Entretien climatisation</label>
+        <label class="chk-item"><input type="checkbox" id="travJardin"> Entretien jardin / tonte</label>
+        <label class="chk-item"><input type="checkbox" id="travGouttiere"> Nettoyage gouttières</label>
+        <label class="chk-item"><input type="checkbox" id="travPiscine"> Entretien piscine</label>
+        <label class="chk-item"><input type="checkbox" id="travRamonage"> Ramonage cheminée</label>
+        <label class="chk-item"><input type="checkbox" id="travRobinetterie" checked> Joints et robinetterie</label>
+        <label class="chk-item"><input type="checkbox" id="travDetartrage" checked> Détartrage équipements</label>
+      </div>
+      <div class="fg" style="margin-top:14px;">
+        <label for="travAutres">Autres travaux à préciser</label>
+        <input type="text" id="travAutres" class="fi" placeholder="Ex : entretien VMC, fosse septique…">
+      </div>
+
+      <div class="sh">Clauses particulières</div>
+      <div class="chk-grid">
+        <label class="chk-item"><input type="checkbox" id="clauseSousloc" checked> Sous-location interdite</label>
+        <label class="chk-item"><input type="checkbox" id="clauseCession" checked> Cession du bail interdite</label>
+        <label class="chk-item"><input type="checkbox" id="clausePno" checked> Bailleur couvert par PNO</label>
+        <label class="chk-item"><input type="checkbox" id="clauseCompteur" checked> Relevés compteurs contradictoires</label>
+        <label class="chk-item"><input type="checkbox" id="clauseDpeTrav"> Travaux rénovation énergétique prévus</label>
+        <label class="chk-item"><input type="checkbox" id="clauseNum" checked> Signature électronique</label>
+      </div>
+      <div class="fg" style="margin-top:14px;">
+        <label for="clausesLibres">Clauses libres supplémentaires</label>
+        <textarea id="clausesLibres" class="fi" rows="3" placeholder="Ex : local vélos accessible, ascenseur d'occasion…"></textarea>
+      </div>
+
+      <div class="sh">Assurances & garanties</div>
+      <div class="fgrid">
+        <div class="fg">
+          <label>Assurance PNO bailleur</label>
+          <div class="rpills">
+            <label class="rpill active" data-group="genPno" onclick="setR('genPno','oui',this)">Oui</label>
+            <label class="rpill" data-group="genPno" onclick="setR('genPno','non',this)">Non</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Clause résolutoire expresse</label>
+          <div class="rpills">
+            <label class="rpill active" data-group="genResolutoire" onclick="setR('genResolutoire','oui',this)">Oui (recommandé)</label>
+            <label class="rpill" data-group="genResolutoire" onclick="setR('genResolutoire','non',this)">Non</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Clause de solidarité <small>(colocation uniquement)</small></label>
+        <div class="rpills">
+          <label class="rpill active" data-group="genSolidarite" onclick="setR('genSolidarite','oui',this)">Oui</label>
+          <label class="rpill" data-group="genSolidarite" onclick="setR('genSolidarite','non',this)">Non</label>
+        </div>
+      </div>
+
+      <div class="sh">Documents annexés au bail</div>
+      <div class="chk-grid">
+        <label class="chk-item"><input type="checkbox" id="annDpe" checked> Diagnostic DPE</label>
+        <label class="chk-item"><input type="checkbox" id="annEdl" checked> État des lieux d'entrée</label>
+        <label class="chk-item"><input type="checkbox" id="annNotice" checked> Notice d'information locataire</label>
+        <label class="chk-item"><input type="checkbox" id="annRgl"> Règlement de copropriété</label>
+        <label class="chk-item"><input type="checkbox" id="annGarant" checked> Acte de cautionnement</label>
+        <label class="chk-item"><input type="checkbox" id="annInventaire" checked> Inventaire mobilier (meublé)</label>
+      </div>
+
+      <div class="wnav">
+        <button class="btn-back" onclick="goStep(3)">← Retour</button>
+        <button class="btn-next" onclick="goStep(5)">Continuer → Résultat</button>
+      </div>
+    </div>
+
+    <!-- STEP 5 : RESULTAT + PAIEMENT -->
+    <div class="wpanel" id="step5">
+      <div class="panel-title">Votre bail est prêt</div>
+      <div class="panel-sub">Aperçu du document généré selon vos informations</div>
+
+      <!-- Preview -->
+      <div class="bail-preview">
+        <div class="bail-preview-content">
+          <h3>BAIL DE LOCATION MEUBLÉE</h3>
+          <p style="text-align:center;font-size:.76rem;color:#888;margin-bottom:18px;">Soumis aux dispositions de la loi du 6 juillet 1989 et de la loi ALUR</p>
+
+          <p><span class="lbl">ENTRE LES SOUSSIGNÉS :</span></p>
+          <p><span class="lbl">Le Bailleur :</span> Madame Cléolia <span class="lbl">CLERGÉ-ANDRÉ</span>, ci-après dénommée « le Bailleur »,</p>
+
+          <p><span class="lbl">D'UNE PART,</span></p>
+
+          <p><span class="lbl">ET</span></p>
+
+          <p><span class="lbl">Le Locataire :</span> [Nom et prénom du locataire], demeurant [adresse], ci-après dénommé « le Locataire »,</p>
+
+          <p><span class="lbl">D'AUTRE PART,</span></p>
+
+          <p style="margin-top:14px;"><span class="lbl">IL A ÉTÉ CONVENU CE QUI SUIT :</span></p>
+
+          <h3 style="font-size:.95rem;margin-top:16px;">ARTICLE 1 — OBJET DU BAIL</h3>
+          <p>Le Bailleur donne en location au Locataire qui accepte, les locaux ci-après désignés :</p>
+          <p>Logement situé au <span class="lbl">22 rue Notre-Dame, 33000 Bordeaux</span>, 2e étage, d'une surface habitable de <span class="lbl">28 m²</span>, comprenant 1 pièce principale.</p>
+          <p>Équipements : cuisine équipée, lit double, bureau, machine à laver, micro-ondes.</p>
+          <p>Annexes : cave n°[…].</p>
+
+          <h3 style="font-size:.95rem;margin-top:16px;">ARTICLE 2 — DURÉE ET RENOUVELLEMENT</h3>
+          <p>Le présent bail est consenti pour une durée de <span class="lbl">1 an</span> à compter du <span class="lbl">1er juin 2026</span>...</p>
+        </div>
+        <div class="bail-preview-blur"></div>
+        <div class="bail-preview-lock">
+          <div class="bail-preview-pages">
+            <div class="bail-preview-page-dot active"></div>
+            <div class="bail-preview-page-dot"></div>
+            <div class="bail-preview-page-dot"></div>
+            <div class="bail-preview-page-dot"></div>
+            <div class="bail-preview-page-dot"></div>
+            <span style="margin-left:4px;font-size:.72rem;color:var(--gris);">5 pages · document complet</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paywall -->
+      <div class="paywall">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:#4ade80;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div class="paywall-title">Débloquer le document complet</div>
+        </div>
+        <div class="paywall-sub">Le bail le moins cher du marché, tout inclus</div>
+
+        <div class="paywall-feats">
+          <div class="paywall-feat">Bail conforme loi 1989 / ALUR / ELAN 2026</div>
+          <div class="paywall-feat">Analyse IA de conformité incluse</div>
+          <div class="paywall-feat">Signature électronique illimitée (eIDAS)</div>
+          <div class="paywall-feat">6 annexes obligatoires générées</div>
+          <div class="paywall-feat">Export PDF + Word</div>
+          <div class="paywall-feat">Stockage sécurisé 1 an</div>
+        </div>
+
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:4px;">
+          <div class="paywall-price">19€</div>
+          <div style="font-size:.85rem;color:rgba(255,255,255,.5);">paiement unique</div>
+        </div>
+        <div class="paywall-price-sub">PDF + Analyse + Signature · Sans abonnement</div>
+
+        <button class="btn-pay" onclick="payerBail()">Obtenir mon bail complet →</button>
+        <div class="pay-secure">🔒 Paiement sécurisé Stripe · Accès immédiat</div>
+
+        <!-- Comparatif marché -->
+        <div style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:.74rem;color:rgba(255,255,255,.55);text-align:left;">
+          <div style="font-weight:700;color:rgba(255,255,255,.75);margin-bottom:6px;text-align:center;">Comparé au marché</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span>Smartloc</span><span>~31 € (19€ + signatures)</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span>Faireplace</span><span>19 € signature seule</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span>Notaire</span><span>~250 €</span></div>
+          <div style="display:flex;justify-content:space-between;color:#4ade80;font-weight:700;"><span>BailScan</span><span>19 € tout inclus</span></div>
+        </div>
+      </div>
+
+      <div style="background:rgba(59,111,212,.06);border:1px solid rgba(59,111,212,.15);border-radius:10px;padding:14px 16px;margin-top:20px;text-align:center;font-size:.82rem;color:var(--texte);">
+        <strong>💡 Plusieurs biens en location ?</strong> Avec l'abonnement <strong>Essentiel à 14€/mois</strong>, les baux sont <strong>illimités et inclus</strong>, plus quittances auto, alertes IRL, comptabilité, et IA juridique 24/7.
+        <a href="abonnement.html" style="color:var(--pro-accent);font-weight:600;text-decoration:none;display:block;margin-top:6px;">Voir l'Essentiel · 14€/mois →</a>
+      </div>
+
+      <div class="wnav">
+        <button class="btn-back" onclick="goStep(4)">← Retour</button>
+        <div></div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+// Sidebar mobile
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') && !sb.contains(e.target) && !e.target.closest('.mobile-only')) sb.classList.remove('open');
+});
+
+// ═══ Wizard logic ═══
+var currentStep = 1;
+
+function goStep(n) {
+  // Hide all panels
+  document.querySelectorAll('.wpanel').forEach(p => p.classList.remove('active'));
+  // Show target
+  document.getElementById('step' + n).classList.add('active');
+
+  // Update progress
+  for (var i = 1; i <= 5; i++) {
+    var dot = document.getElementById('d' + i);
+    var lbl = document.getElementById('l' + i);
+    var line = document.getElementById('wl' + i);
+
+    dot.classList.remove('active', 'done');
+    lbl.classList.remove('active');
+    if (line) line.classList.remove('done');
+
+    if (i < n) {
+      dot.classList.add('done');
+      dot.innerHTML = '✓';
+      if (line) line.classList.add('done');
+    } else if (i === n) {
+      dot.classList.add('active');
+      dot.innerHTML = i;
+      lbl.classList.add('active');
+    } else {
+      dot.innerHTML = i;
+    }
+  }
+
+  currentStep = n;
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══ Radio pills ═══
+function setR(group, value, el) {
+  document.querySelectorAll('[data-group="' + group + '"]').forEach(p => p.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+// ═══ Bailleur type toggle ═══
+function toggleBailleur(type) {
+  document.getElementById('bPhysiqueFields').style.display = (type === 'physique') ? 'block' : 'none';
+  document.getElementById('bMoraleFields').style.display = (type === 'physique') ? 'none' : 'block';
+}
+
+// ═══ Colocataires ═══
+var colocCount = 0;
+function toggleColocsSection() {
+  var section = document.getElementById('colocsSection');
+  section.style.display = document.getElementById('chkColocation').checked ? 'block' : 'none';
+}
+
+function addColoc() {
+  colocCount++;
+  var div = document.createElement('div');
+  div.style.cssText = 'background:var(--bg-main);border-radius:10px;padding:14px;border:1px solid var(--border);margin-top:10px;';
+  div.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <strong style="font-size:.85rem;color:var(--texte);">Colocataire ${colocCount + 1}</strong>
+      <button type="button" onclick="this.closest('div').parentElement.remove()" style="background:none;border:none;color:var(--gris);cursor:pointer;font-size:.78rem;">✕ Retirer</button>
+    </div>
+    <div class="fgrid">
+      <div class="fg" style="margin-bottom:0;"><label>Prénom</label><input type="text" class="fi" placeholder="Ex : Marie"></div>
+      <div class="fg" style="margin-bottom:0;"><label>Nom</label><input type="text" class="fi" placeholder="Ex : Dupont"></div>
+    </div>
+    <div class="fg" style="margin-top:10px;margin-bottom:0;"><label>Email</label><input type="email" class="fi" placeholder="Ex : marie@email.com"></div>
+  `;
+  document.getElementById('colocsList').appendChild(div);
+}
+
+// ═══ Paiement ═══
+function payerBail() {
+  alert('Redirection vers Stripe pour le paiement de 19€…\n\n(À connecter à votre Stripe Checkout)');
+}
+</script>
+</body>
+</html>
