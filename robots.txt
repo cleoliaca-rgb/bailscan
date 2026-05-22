@@ -1,0 +1,72 @@
+# robots.txt BailScan — Mis à jour mai 2026
+# Documentation : https://developers.google.com/search/docs/crawling-indexing/robots/intro
+
+# ──────────────────────────────────────────
+# RÈGLES POUR TOUS LES MOTEURS DE RECHERCHE
+# ──────────────────────────────────────────
+User-agent: *
+Allow: /
+
+# Bloquer les pages techniques sans valeur SEO
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /static/
+
+# Bloquer les paramètres de tracking (UTM, Facebook, Google Ads)
+Disallow: /*?utm_*
+Disallow: /*?fbclid=*
+Disallow: /*?gclid=*
+Disallow: /*?ref=*
+
+# Bloquer les pages de paiement et test
+Disallow: /success
+Disallow: /cancel
+Disallow: /test
+Disallow: /preview
+
+# ──────────────────────────────────────────
+# RÈGLES POUR GOOGLEBOT (priorité élevée)
+# ──────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+Allow: /blog/
+Allow: /analyser
+Allow: /proprio
+Allow: /pro
+Disallow: /api/
+
+# ──────────────────────────────────────────
+# RÈGLES POUR BINGBOT
+# ──────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+
+# ──────────────────────────────────────────
+# BLOCAGE DES BOTS IA (optionnel - protège ton contenu)
+# Décommente les lignes ci-dessous si tu ne veux pas que
+# ton contenu soit utilisé pour entraîner les modèles IA
+# ──────────────────────────────────────────
+# User-agent: GPTBot
+# Disallow: /
+#
+# User-agent: ChatGPT-User
+# Disallow: /
+#
+# User-agent: ClaudeBot
+# Disallow: /
+#
+# User-agent: CCBot
+# Disallow: /
+#
+# User-agent: anthropic-ai
+# Disallow: /
+#
+# User-agent: PerplexityBot
+# Disallow: /
+
+# ──────────────────────────────────────────
+# SITEMAP
+# ──────────────────────────────────────────
+Sitemap: https://bailscan.app/sitemap.xml
