@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tableau de bord — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* Spécifique à la vue d'ensemble */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+@media (max-width: 1000px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+.wizard-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 22px 24px;
+  margin-bottom: 18px;
+}
+.wizard-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.wizard-card-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.15rem;
+  color: var(--texte);
+}
+.wizard-card-sub {
+  font-size: .8rem;
+  color: var(--gris);
+  margin-top: 2px;
+}
+.wizard-next-action {
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--pro-light);
+  border-radius: 9px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.wizard-next-action-text {
+  font-size: .85rem;
+  color: #1e40af;
+}
+.wizard-next-action-text strong { font-weight: 700; }
+
+.bien-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.bien-row:last-child { border-bottom: none; }
+.bien-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gris);
+  flex-shrink: 0;
+}
+.bien-info { flex: 1; min-width: 0; }
+.bien-name {
+  font-weight: 600;
+  font-size: .87rem;
+  color: var(--texte);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bien-meta {
+  font-size: .75rem;
+  color: var(--gris);
+  margin-top: 2px;
+}
+.bien-loyer {
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--texte);
+  text-align: right;
+  flex-shrink: 0;
+}
+.bien-status {
+  font-size: .68rem;
+  color: var(--vert);
+  margin-top: 2px;
+  text-align: right;
+}
+
+.echeance-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.echeance-row:last-child { border-bottom: none; }
+.echeance-date {
+  width: 44px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.echeance-day {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--texte);
+}
+.echeance-month {
+  font-size: .62rem;
+  color: var(--gris);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-top: 3px;
+}
+.echeance-text { flex: 1; font-size: .82rem; color: var(--texte); }
+.echeance-sub { font-size: .72rem; color: var(--gris); margin-top: 2px; }
+
+.activity-row {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.activity-row:last-child { border-bottom: none; }
+.activity-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--gris);
+}
+.activity-content { flex: 1; }
+.activity-text { font-size: .82rem; color: var(--texte); line-height: 1.45; }
+.activity-text strong { font-weight: 700; }
+.activity-time { font-size: .7rem; color: var(--gris); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR (copie de _sidebar.html avec dashboard actif) ── -->
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo">
+    <div class="dash-sidebar-logo-left">
+      <span class="dash-sidebar-logo-name">BailScan</span>
+      <span class="dash-sidebar-logo-badge">PROPRIO</span>
+    </div>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item active">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Vue d'ensemble
+    </a>
+    <a href="biens.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Mes biens <span class="dash-nav-badge">2</span>
+    </a>
+    <a href="locataires.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Mes locataires
+    </a>
+
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Mettre en location
+    </a>
+    <a href="gerer-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Gérer ma location
+    </a>
+    <a href="baux.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      Mes baux
+    </a>
+
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analyses juridiques
+    </a>
+    <a href="courriers.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Courriers & lettres
+    </a>
+    <a href="documents.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Documents
+    </a>
+
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Mes garanties
+    </a>
+
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Mon abonnement
+    </a>
+    <a href="aide.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Aide & contact
+    </a>
+  </nav>
+  <div class="dash-user">
+    <div class="dash-user-row">
+      <div class="dash-user-avatar">CC</div>
+      <div class="dash-user-info">
+        <div class="dash-user-name">Cléolia Clergé-André</div>
+        <div class="dash-user-plan">Plan Gratuit</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── TOP BAR ── -->
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <div class="dash-topbar-title">Bonjour Cléolia</div>
+      <div class="dash-topbar-sub">Voici l'état de vos locations aujourd'hui</div>
+    </div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Passer à l'Essentiel
+    </a>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+  </div>
+</header>
+
+<!-- ── MAIN CONTENT ── -->
+<main class="dash-main">
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Loyers du mois</div>
+      <div class="kpi-value">1 720 €</div>
+      <div class="kpi-trend up">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        2/2 encaissés
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Biens actifs</div>
+      <div class="kpi-value">2</div>
+      <div class="kpi-trend flat">1 loué · 1 en cours</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Alertes en cours</div>
+      <div class="kpi-value">3</div>
+      <div class="kpi-trend warn">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        2 à traiter
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Revenus annuels</div>
+      <div class="kpi-value">20 640 €</div>
+      <div class="kpi-trend up">Estimation 2026</div>
+    </div>
+  </div>
+
+  <!-- Upgrade banner (visible si plan gratuit) -->
+  <div class="upgrade-banner">
+    <div>
+      <div class="upgrade-banner-title">Vous gérez vos locations à la main ?</div>
+      <div class="upgrade-banner-sub">L'Essentiel automatise quittances, suivi loyers et alertes pour 14&nbsp;€/mois (≈ 7&nbsp;€ après déduction d'impôts).</div>
+    </div>
+    <a href="abonnement.html" class="upgrade-banner-btn">Découvrir l'Essentiel</a>
+  </div>
+
+  <!-- Wizard 4 étapes (style Mr Hugo) -->
+  <div class="wizard-card">
+    <div class="wizard-card-header">
+      <div>
+        <div class="wizard-card-title">Mise en location — 7 Rue Général Gallieni</div>
+        <div class="wizard-card-sub">Suivez les étapes pour activer votre location</div>
+      </div>
+      <a href="biens.html" class="btn-secondary">Voir le bien</a>
+    </div>
+    <div class="wizard-progress">
+      <div class="wizard-step done">
+        <div class="wizard-step-circle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="wizard-step-label">Bien ajouté</div>
+      </div>
+      <div class="wizard-step done">
+        <div class="wizard-step-circle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="wizard-step-label">Bail créé</div>
+      </div>
+      <div class="wizard-step current">
+        <div class="wizard-step-circle">3</div>
+        <div class="wizard-step-label">Locataire ajouté</div>
+      </div>
+      <div class="wizard-step">
+        <div class="wizard-step-circle">4</div>
+        <div class="wizard-step-label">Loyer activé</div>
+      </div>
+    </div>
+    <div class="wizard-next-action">
+      <div class="wizard-next-action-text">
+        <strong>Prochaine étape :</strong> ajoutez les informations de votre locataire pour activer la signature électronique du bail.
+      </div>
+      <a href="locataires.html" class="btn-primary">Ajouter mon locataire</a>
+    </div>
+  </div>
+
+  <!-- Grille 2 colonnes : biens + côté droit -->
+  <div class="dashboard-grid">
+
+    <!-- Colonne principale : mes biens + activité -->
+    <div>
+      <div class="card">
+        <div class="card-title">
+          <span>Mes biens</span>
+          <a href="biens.html" class="btn-ghost">Tout voir →</a>
+        </div>
+
+        <div class="bien-row">
+          <div class="bien-thumb">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="bien-info">
+            <div class="bien-name">Appartement 2 pièces — La Teste-de-Buch</div>
+            <div class="bien-meta">60 m² · 7 Rue Général Gallieni · Non meublé</div>
+          </div>
+          <div>
+            <div class="bien-loyer">860 €<span style="font-weight:500;font-size:.75rem;color:var(--gris);"> /mois</span></div>
+            <div class="bien-status">✓ Loyer encaissé</div>
+          </div>
+        </div>
+
+        <div class="bien-row">
+          <div class="bien-thumb">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="bien-info">
+            <div class="bien-name">Studio meublé — Bordeaux Chartrons</div>
+            <div class="bien-meta">25 m² · 14 Cours Portal · Meublé étudiant</div>
+          </div>
+          <div>
+            <div class="bien-loyer">680 €<span style="font-weight:500;font-size:.75rem;color:var(--gris);"> /mois</span></div>
+            <div class="bien-status" style="color:var(--warn);">En cours de location</div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:14px;">
+          <a href="biens.html" class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter un bien
+          </a>
+        </div>
+      </div>
+
+      <!-- Activité récente -->
+      <div class="card">
+        <div class="card-title">
+          <span>Activité récente</span>
+          <span class="text-muted text-small" style="text-transform:none;letter-spacing:0;font-weight:500;">7 derniers jours</span>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-icon" style="background:var(--vert-light);color:var(--vert);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="activity-content">
+            <div class="activity-text">Loyer de <strong>860 €</strong> encaissé pour <strong>Appartement Gallieni</strong></div>
+            <div class="activity-time">Il y a 2 jours · 05/05/2026</div>
+          </div>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-icon" style="background:var(--pro-light);color:var(--pro-accent);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="activity-content">
+            <div class="activity-text">Bail généré pour <strong>Studio Bordeaux Chartrons</strong></div>
+            <div class="activity-time">Il y a 4 jours · 03/05/2026</div>
+          </div>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-icon" style="background:var(--warn-light);color:#a16207;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="activity-content">
+            <div class="activity-text">Alerte : <strong>révision de loyer annuelle</strong> possible pour Appartement Gallieni (indice IRL T1 2026)</div>
+            <div class="activity-time">Il y a 5 jours · 02/05/2026</div>
+          </div>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="activity-content">
+            <div class="activity-text">Quittance de loyer envoyée à <strong>Carolina M.</strong></div>
+            <div class="activity-time">Il y a 6 jours · 01/05/2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne droite : alertes + échéances -->
+    <div>
+      <!-- Alertes -->
+      <div class="card">
+        <div class="card-title">
+          <span style="color:var(--accent);">⚠ Alertes</span>
+          <span class="badge badge-danger">3</span>
+        </div>
+
+        <div class="alert alert-warn" style="margin-bottom:8px;padding:10px 12px;">
+          <div style="flex:1;">
+            <div style="font-weight:600;margin-bottom:2px;">Révision de loyer disponible</div>
+            <div style="font-size:.76rem;opacity:.85;">Indice IRL T1 2026 publié. Vous pouvez réviser le loyer de l'Appartement Gallieni (+1,2 %).</div>
+            <a href="courriers.html" style="font-size:.76rem;color:#92400e;font-weight:600;text-decoration:underline;display:inline-block;margin-top:6px;">Générer le courrier →</a>
+          </div>
+        </div>
+
+        <div class="alert alert-info" style="margin-bottom:8px;padding:10px 12px;">
+          <div style="flex:1;">
+            <div style="font-weight:600;margin-bottom:2px;">Fin de bail dans 4 mois</div>
+            <div style="font-size:.76rem;opacity:.85;">Le bail de l'Appartement Gallieni se termine le 18/09/2026. Renouvellement tacite si pas d'opposition.</div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger" style="margin-bottom:0;padding:10px 12px;">
+          <div style="flex:1;">
+            <div style="font-weight:600;margin-bottom:2px;">Diagnostic DPE à renouveler</div>
+            <div style="font-size:.76rem;opacity:.85;">Le DPE du Studio Bordeaux expire dans 2 mois. Obligatoire avant nouveau bail.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prochaines échéances -->
+      <div class="card">
+        <div class="card-title">
+          <span>Prochaines échéances</span>
+        </div>
+
+        <div class="echeance-row">
+          <div class="echeance-date">
+            <div class="echeance-day">05</div>
+            <div class="echeance-month">Juin</div>
+          </div>
+          <div>
+            <div class="echeance-text">Encaissement loyer · <strong>Gallieni</strong></div>
+            <div class="echeance-sub">860 € + 35 € charges</div>
+          </div>
+        </div>
+
+        <div class="echeance-row">
+          <div class="echeance-date">
+            <div class="echeance-day">15</div>
+            <div class="echeance-month">Juin</div>
+          </div>
+          <div>
+            <div class="echeance-text">Signature bail · <strong>Bordeaux</strong></div>
+            <div class="echeance-sub">Candidat : Lucas D.</div>
+          </div>
+        </div>
+
+        <div class="echeance-row">
+          <div class="echeance-date">
+            <div class="echeance-day">01</div>
+            <div class="echeance-month">Juil</div>
+          </div>
+          <div>
+            <div class="echeance-text">Régularisation de charges annuelle</div>
+            <div class="echeance-sub">Pensez à fournir les justificatifs</div>
+          </div>
+        </div>
+
+        <div class="echeance-row">
+          <div class="echeance-date">
+            <div class="echeance-day">18</div>
+            <div class="echeance-month">Sept</div>
+          </div>
+          <div>
+            <div class="echeance-text">Fin de bail · <strong>Gallieni</strong></div>
+            <div class="echeance-sub">Reconduction tacite si rien</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outils rapides -->
+      <div class="card">
+        <div class="card-title">Outils rapides</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="baux.html" class="btn-secondary" style="justify-content:flex-start;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Générer un bail (49&nbsp;€)
+          </a>
+          <a href="analyses.html" class="btn-secondary" style="justify-content:flex-start;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Analyser un bail
+          </a>
+          <a href="courriers.html" class="btn-secondary" style="justify-content:flex-start;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Rédiger un courrier
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// Fermer sidebar mobile en cliquant en dehors
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') &&
+      !sb.contains(e.target) && !e.target.closest('.mobile-only')) {
+    sb.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

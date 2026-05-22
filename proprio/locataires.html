@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mes locataires — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.loc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.loc-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.filter-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--gris);
+  cursor: pointer;
+  transition: all .12s;
+}
+.filter-pill.active {
+  background: var(--pro-light);
+  color: var(--pro-accent);
+  border-color: var(--pro-accent);
+}
+.search-box { position: relative; min-width: 240px; }
+.search-box input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: .82rem;
+  background: white;
+  font-family: inherit;
+}
+.search-box svg {
+  position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+  color: var(--gris);
+}
+
+/* Card locataire */
+.locs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.loc-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 20px;
+  transition: all .2s;
+  cursor: pointer;
+}
+.loc-card:hover {
+  border-color: var(--pro-accent);
+  box-shadow: 0 4px 14px rgba(15,23,42,.05);
+}
+.loc-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.loc-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b6fd4 0%, #5a8fed 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.loc-name {
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--texte);
+}
+.loc-card-bien {
+  font-size: .77rem;
+  color: var(--gris);
+  margin-top: 2px;
+}
+.loc-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 12px;
+}
+.loc-info-label {
+  font-size: .68rem;
+  color: var(--gris);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 2px;
+}
+.loc-info-value {
+  font-weight: 600;
+  font-size: .82rem;
+  color: var(--texte);
+}
+.loc-card-footer {
+  display: flex;
+  gap: 7px;
+}
+.loc-card-footer .btn-sm { flex: 1; }
+
+.loc-add-card {
+  background: transparent;
+  border: 2px dashed var(--border);
+  border-radius: var(--card-radius);
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  color: var(--gris);
+}
+.loc-add-card:hover {
+  border-color: var(--pro-accent);
+  background: var(--pro-light);
+  color: var(--pro-accent);
+}
+
+/* Garants section */
+.garant-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-main);
+  border-radius: 9px;
+  margin-bottom: 8px;
+}
+.garant-avatar-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--vert-light);
+  color: var(--vert);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.garant-info { flex: 1; }
+.garant-name { font-weight: 600; font-size: .85rem; color: var(--texte); }
+.garant-meta { font-size: .74rem; color: var(--gris); margin-top: 2px; }
+
+/* Historique */
+.histo-table { width: 100%; border-collapse: collapse; }
+.histo-table th {
+  font-size: .62rem;
+  font-weight: 700;
+  color: var(--gris-light);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-main);
+}
+.histo-table td {
+  font-size: .82rem;
+  color: var(--texte);
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+.histo-table tr:last-child td { border: none; }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo">
+    <div class="dash-sidebar-logo-left">
+      <span class="dash-sidebar-logo-name">BailScan</span>
+      <span class="dash-sidebar-logo-badge">PROPRIO</span>
+    </div>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Vue d'ensemble
+    </a>
+    <a href="biens.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Mes biens <span class="dash-nav-badge">2</span>
+    </a>
+    <a href="locataires.html" class="dash-nav-item active">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Mes locataires
+    </a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Mettre en location
+    </a>
+    <a href="gerer-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Gérer ma location
+    </a>
+    <a href="baux.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      Mes baux
+    </a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analyses juridiques
+    </a>
+    <a href="courriers.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Courriers & lettres
+    </a>
+    <a href="documents.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Documents
+    </a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Mes garanties
+    </a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Mon abonnement
+    </a>
+    <a href="aide.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Aide & contact
+    </a>
+  </nav>
+  <div class="dash-user">
+    <div class="dash-user-row">
+      <div class="dash-user-avatar">CC</div>
+      <div class="dash-user-info">
+        <div class="dash-user-name">Cléolia Clergé-André</div>
+        <div class="dash-user-plan">Plan Gratuit</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <div class="dash-topbar-title">Mes locataires</div>
+      <div class="dash-topbar-sub">1 actif · 3 candidats en cours · 2 anciens</div>
+    </div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Passer à l'Essentiel
+    </a>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <div class="page-header">
+    <div class="page-header-row">
+      <div>
+        <h1 class="page-title">Mes locataires</h1>
+        <div class="page-sub">Suivez les locataires actifs, candidats et historique.</div>
+      </div>
+      <a href="#" class="btn-primary" onclick="alert('Modal ajout locataire à implémenter')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Ajouter un locataire
+      </a>
+    </div>
+  </div>
+
+  <div class="loc-toolbar">
+    <div class="loc-filters">
+      <button class="filter-pill active">Actifs (1)</button>
+      <button class="filter-pill">Candidats (3)</button>
+      <button class="filter-pill">Anciens (2)</button>
+      <button class="filter-pill">Tous</button>
+    </div>
+    <div class="search-box">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Rechercher un locataire…">
+    </div>
+  </div>
+
+  <!-- Locataires actifs -->
+  <div class="locs-grid">
+
+    <div class="loc-card">
+      <div class="loc-card-header">
+        <div class="loc-avatar">CM</div>
+        <div style="flex:1;">
+          <div class="loc-name">Carolina Martinez</div>
+          <div class="loc-card-bien">Appartement Gallieni · La Teste-de-Buch</div>
+        </div>
+        <span class="badge badge-success">Actif</span>
+      </div>
+      <div class="loc-info-grid">
+        <div>
+          <div class="loc-info-label">Loyer</div>
+          <div class="loc-info-value">895 € / mois</div>
+        </div>
+        <div>
+          <div class="loc-info-label">Dépôt</div>
+          <div class="loc-info-value">860 €</div>
+        </div>
+        <div>
+          <div class="loc-info-label">Entrée</div>
+          <div class="loc-info-value">18/09/2024</div>
+        </div>
+        <div>
+          <div class="loc-info-label">Fin de bail</div>
+          <div class="loc-info-value">18/09/2026</div>
+        </div>
+      </div>
+      <div class="loc-card-footer">
+        <button class="btn-sm">Voir fiche</button>
+        <button class="btn-sm">Documents</button>
+        <button class="btn-sm">Contacter</button>
+      </div>
+    </div>
+
+    <div class="loc-add-card" onclick="alert('Modal ajout locataire à implémenter')">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--bg-main);display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+      <div style="font-weight:700;font-size:.92rem;margin-bottom:4px;">Ajouter un locataire</div>
+      <div style="font-size:.78rem;max-width:200px;line-height:1.5;">Locataire en place ou nouveau candidat</div>
+    </div>
+
+  </div>
+
+  <!-- Candidats en cours -->
+  <div class="card">
+    <div class="card-title">
+      <span>Candidats en cours · Studio Bordeaux Chartrons</span>
+      <a href="mettre-en-location.html" class="btn-ghost">Gérer →</a>
+    </div>
+    <table class="table-full">
+      <thead>
+        <tr>
+          <th>Candidat</th>
+          <th>Profession</th>
+          <th>Revenus</th>
+          <th>Score dossier</th>
+          <th>Garant</th>
+          <th>Reçu le</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="loc-avatar" style="width:32px;height:32px;font-size:.74rem;">LD</div>
+              <div>
+                <div style="font-weight:600;">Lucas Durand</div>
+                <div style="font-size:.72rem;color:var(--gris);">Étudiant ESC Bordeaux</div>
+              </div>
+            </div>
+          </td>
+          <td>Étudiant</td>
+          <td>—</td>
+          <td><span class="badge badge-success">Excellent · 92/100</span></td>
+          <td><span class="badge badge-info">Parents</span></td>
+          <td>12/05/2026</td>
+          <td><button class="btn-sm">Examiner</button></td>
+        </tr>
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="loc-avatar" style="width:32px;height:32px;font-size:.74rem;background:linear-gradient(135deg,#9333ea,#c084fc);">AM</div>
+              <div>
+                <div style="font-weight:600;">Amélie Martin</div>
+                <div style="font-size:.72rem;color:var(--gris);">CDI · 2 200 €/mois</div>
+              </div>
+            </div>
+          </td>
+          <td>Assistante</td>
+          <td>2 200 €</td>
+          <td><span class="badge badge-warn">Moyen · 68/100</span></td>
+          <td><span class="badge badge-neutral">Aucun</span></td>
+          <td>10/05/2026</td>
+          <td><button class="btn-sm">Examiner</button></td>
+        </tr>
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="loc-avatar" style="width:32px;height:32px;font-size:.74rem;background:linear-gradient(135deg,#16a34a,#22c55e);">TB</div>
+              <div>
+                <div style="font-weight:600;">Thomas Bernard</div>
+                <div style="font-size:.72rem;color:var(--gris);">CDI · 2 800 €/mois</div>
+              </div>
+            </div>
+          </td>
+          <td>Ingénieur</td>
+          <td>2 800 €</td>
+          <td><span class="badge badge-success">Très bon · 85/100</span></td>
+          <td><span class="badge badge-info">Visale</span></td>
+          <td>08/05/2026</td>
+          <td><button class="btn-sm">Examiner</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section garants -->
+  <div class="card">
+    <div class="card-title">Garants associés</div>
+    <div class="garant-row">
+      <div class="garant-avatar-sm">JM</div>
+      <div class="garant-info">
+        <div class="garant-name">José Martinez (père de Carolina M.)</div>
+        <div class="garant-meta">Caution solidaire · Revenus 4 100 €/mois · Pièces validées ✓</div>
+      </div>
+      <button class="btn-sm">Voir</button>
+    </div>
+    <div class="garant-row">
+      <div class="garant-avatar-sm" style="background:var(--pro-light);color:var(--pro-accent);">VI</div>
+      <div class="garant-info">
+        <div class="garant-name">Visale (caution gratuite Action Logement)</div>
+        <div class="garant-meta">En attente d'attribution · Candidat : Thomas Bernard</div>
+      </div>
+      <button class="btn-sm">Vérifier</button>
+    </div>
+  </div>
+
+  <!-- Anciens locataires -->
+  <div class="card">
+    <div class="card-title">
+      <span>Anciens locataires</span>
+      <span class="text-muted text-small" style="text-transform:none;letter-spacing:0;font-weight:500;">Historique conservé 10 ans (obligation légale)</span>
+    </div>
+    <table class="histo-table">
+      <thead>
+        <tr>
+          <th>Locataire</th>
+          <th>Bien</th>
+          <th>Période</th>
+          <th>Durée</th>
+          <th>Sortie</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="loc-avatar" style="width:30px;height:30px;font-size:.7rem;background:var(--gris-light);">SP</div>
+              <span style="font-weight:600;">Sophie Petit</span>
+            </div>
+          </td>
+          <td>Gallieni</td>
+          <td>09/2022 — 08/2024</td>
+          <td>2 ans</td>
+          <td><span class="badge badge-success">Sans litige</span></td>
+          <td><button class="btn-sm">Dossier</button></td>
+        </tr>
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="loc-avatar" style="width:30px;height:30px;font-size:.7rem;background:var(--gris-light);">FB</div>
+              <span style="font-weight:600;">François Boutin</span>
+            </div>
+          </td>
+          <td>Bordeaux Chartrons</td>
+          <td>09/2023 — 04/2026</td>
+          <td>2 ans 7 mois</td>
+          <td><span class="badge badge-warn">DG retenu partiellement</span></td>
+          <td><button class="btn-sm">Dossier</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') &&
+      !sb.contains(e.target) && !e.target.closest('.mobile-only')) {
+    sb.classList.remove('open');
+  }
+});
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
