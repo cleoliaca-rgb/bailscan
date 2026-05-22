@@ -361,13 +361,14 @@
         <div class="pricing-feature">Analyses juridiques illimitées</div>
         <div class="pricing-feature">Analyses dossiers locataires illimitées</div>
         <div class="pricing-feature">Quittances automatiques mensuelles</div>
-        <div class="pricing-feature">Suivi loyers + comptabilité simplifiée</div>
+        <div class="pricing-feature">Comptabilité automatique (lignes auto, exports PDF/Excel)</div>
+        <div class="pricing-feature">Suivi des loyers en temps réel</div>
         <div class="pricing-feature">Alertes (IRL, fin de bail, diagnostics)</div>
         <div class="pricing-feature">Bibliothèque juridique complète</div>
         <div class="pricing-feature">Générateur IA de courriers illimité</div>
         <div class="pricing-feature">Coffre-fort 20 Go</div>
       </div>
-      <button class="btn-pricing btn-pricing-pro">
+      <button class="btn-pricing btn-pricing-pro" onclick="BailScan.checkout('essentiel_monthly')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         Passer à l'Essentiel
       </button>
@@ -387,6 +388,7 @@
         <div class="pricing-feature">Prélèvement automatique illimité (0€/prélèvement)</div>
         <div class="pricing-feature">Assistant juridique IA illimité 24/7</div>
         <div class="pricing-feature">Veille juridique automatique (loi, jurisprudence)</div>
+        <div class="pricing-feature">Auto-catégorisation IA des factures (scan facture)</div>
         <div class="pricing-feature">Déclaration 2042 + 2044 pré-remplie (LMNP, foncier)</div>
         <div class="pricing-feature">Simulateur fiscal multi-régimes</div>
         <div class="pricing-feature">EDL digital app mobile (4× plus rapide)</div>
@@ -395,7 +397,7 @@
         <div class="pricing-feature">Export comptable Excel + CSV</div>
         <div class="pricing-feature">Coffre-fort 100 Go</div>
       </div>
-      <button class="btn-pricing btn-pricing-outline">Passer à Premium</button>
+      <button class="btn-pricing btn-pricing-outline" onclick="BailScan.checkout('premium_monthly')">Passer à Premium</button>
     </div>
 
   </div>
@@ -435,9 +437,13 @@
         <tr><td>Coffre-fort numérique</td><td>5 Go</td><td>20 Go</td><td>100 Go</td></tr>
 
         <tr class="section-head"><td colspan="4">Fiscalité & comptabilité</td></tr>
-        <tr><td>Comptabilité simplifiée</td><td class="compare-no">—</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Comptabilité automatique (lignes auto)</td><td class="compare-no">—</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Charges & dépenses manuelles</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Auto-catégorisation IA factures (photo)</td><td class="compare-no">—</td><td class="compare-no">—</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Exports PDF / CSV / Excel</td><td>1/mois</td><td class="compare-yes">Illimité</td><td class="compare-yes">Illimité</td></tr>
+        <tr><td>Simulateur fiscal multi-régimes</td><td class="compare-no">—</td><td class="compare-no">—</td><td class="compare-yes">✓</td></tr>
         <tr><td>Déclaration 2042 + 2044 pré-remplie</td><td class="compare-no">—</td><td class="compare-no">—</td><td class="compare-yes">✓</td></tr>
-        <tr><td>Expert fiscaliste dédié</td><td class="compare-no">—</td><td class="compare-no">—</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Service liasse fiscale LMNP (add-on annuel)</td><td colspan="3" style="text-align:center;">199 €/an (vs ~600 € comptable)</td></tr>
 
         <tr class="section-head"><td colspan="4">Assistant juridique IA</td></tr>
         <tr><td>Bibliothèque juridique</td><td>Basique</td><td class="compare-yes">Complète</td><td class="compare-yes">Complète</td></tr>
@@ -515,6 +521,46 @@
   </div>
 
   <!-- Facturation -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin: 28px 0 14px;">Services additionnels</h2>
+
+  <div class="card" style="background:linear-gradient(135deg,#0f172a 0%,#1a1a1a 100%);color:white;border:none;">
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:center;">
+      <div>
+        <div style="display:inline-block;background:rgba(200,75,47,.2);border:1px solid rgba(200,75,47,.4);color:#f9a98a;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:4px 11px;border-radius:18px;margin-bottom:12px;">Add-on annuel</div>
+        <h3 style="font-family:'Instrument Serif',serif;font-size:1.5rem;color:white;line-height:1.15;margin-bottom:10px;">Service Liasse Fiscale LMNP / Régime réel</h3>
+        <p style="font-size:.85rem;color:rgba(255,255,255,.72);line-height:1.6;margin-bottom:14px;">Un expert-comptable partenaire produit votre liasse fiscale complète (bilan, compte de résultat, amortissements, formulaires 2031/2033) à partir de votre comptabilité BailScan. Vérification, validation et télétransmission au SIE incluses.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.78rem;color:rgba(255,255,255,.85);">
+          <div style="display:flex;align-items:center;gap:6px;"><span style="color:#6ee7b7;font-weight:700;">✓</span> Bilan + compte de résultat</div>
+          <div style="display:flex;align-items:center;gap:6px;"><span style="color:#6ee7b7;font-weight:700;">✓</span> Amortissements automatiques</div>
+          <div style="display:flex;align-items:center;gap:6px;"><span style="color:#6ee7b7;font-weight:700;">✓</span> Liasse 2031 / 2033 / 2042-C</div>
+          <div style="display:flex;align-items:center;gap:6px;"><span style="color:#6ee7b7;font-weight:700;">✓</span> Télétransmission SIE</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:22px;text-align:center;">
+        <div style="font-size:.7rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Liasse fiscale 2026</div>
+        <div style="font-family:'Instrument Serif',serif;font-size:2.4rem;color:white;line-height:1;">199 €</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,.5);margin:4px 0 14px;">paiement unique annuel</div>
+        <div style="background:rgba(110,231,183,.12);border:1px solid rgba(110,231,183,.25);color:#6ee7b7;font-size:.72rem;padding:7px 10px;border-radius:7px;margin-bottom:12px;font-weight:600;">~400 € économisés vs comptable</div>
+        <button onclick="BailScan.checkout('liasse_fiscale')" style="width:100%;background:#c84b2f;color:white;border:none;padding:12px;border-radius:9px;font-weight:700;font-size:.86rem;cursor:pointer;font-family:inherit;">
+          Souscrire la liasse 2026
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin: 28px 0 14px;">Gestion de mon abonnement</h2>
+
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:240px;">
+      <strong style="font-size:.95rem;color:var(--texte);display:block;margin-bottom:4px;">Portail de facturation Stripe</strong>
+      <div style="font-size:.82rem;color:var(--gris);line-height:1.55;">Mettez à jour votre carte bancaire, téléchargez vos factures, modifiez ou résiliez votre abonnement en un clic, sans contact support.</div>
+    </div>
+    <button onclick="BailScan.openBillingPortal()" class="btn-primary" style="font-size:.86rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Gérer mon abonnement →
+    </button>
+  </div>
+
   <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin: 28px 0 14px;">Historique de facturation</h2>
 
   <div class="card">
@@ -550,5 +596,7 @@ document.querySelectorAll('.ptoggle').forEach(p => p.addEventListener('click', (
 }));
 document.querySelectorAll('.faq-row').forEach(r => r.addEventListener('click', () => r.classList.toggle('open')));
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="bailscan-auth.js"></script>
 </body>
 </html>

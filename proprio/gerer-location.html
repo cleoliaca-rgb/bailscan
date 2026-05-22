@@ -198,6 +198,11 @@
       Analyse dossier IA
       <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span>
     </a>
+    <a href="assistant-juridique.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Assistant juridique
+      <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span>
+    </a>
     <a href="courriers.html" class="dash-nav-item">
       <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       Courriers & lettres
@@ -273,15 +278,214 @@
   </div>
 
   <div class="subtabs">
-    <button class="subtab active" data-tab="loyers">Recevoir les loyers</button>
+    <button class="subtab active" data-tab="prelevement">Prélèvement auto <span style="background:var(--vert);color:white;font-size:.55rem;padding:2px 6px;border-radius:10px;margin-left:5px;vertical-align:1px;">NEW</span></button>
+    <button class="subtab" data-tab="loyers">Suivi des loyers</button>
     <button class="subtab" data-tab="quittances">Quittances</button>
     <button class="subtab" data-tab="compta">Comptabilité</button>
     <button class="subtab" data-tab="fisc">Fiscalité</button>
     <button class="subtab" data-tab="edl-sortie">EDL de sortie</button>
   </div>
 
-  <!-- ── TAB 1 : LOYERS ── -->
-  <div class="tab-panel active" id="tab-loyers">
+  <!-- ── TAB 1 : PRÉLÈVEMENT AUTO ── -->
+  <div class="tab-panel active" id="tab-prelevement">
+
+    <!-- Hero éducatif -->
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#16a34a 200%);border-radius:14px;padding:28px 32px;color:white;margin-bottom:22px;position:relative;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:center;">
+        <div>
+          <div style="display:inline-block;background:rgba(22,163,74,.2);border:1px solid rgba(22,163,74,.4);color:#6ee7b7;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:4px 11px;border-radius:18px;margin-bottom:14px;">Nouveau · Exclusivité BailScan</div>
+          <h2 style="font-family:'Instrument Serif',serif;font-size:1.7rem;color:white;line-height:1.15;margin-bottom:10px;">Le loyer prélevé automatiquement.<br><em style="color:#6ee7b7;">Plus jamais de relances.</em></h2>
+          <p style="font-size:.88rem;color:rgba(255,255,255,.75);line-height:1.6;max-width:480px;margin-bottom:0;">Votre locataire signe un mandat SEPA en ligne (5 minutes). Le loyer est prélevé à date fixe chaque mois et reversé sur votre compte sous 2 jours. Compatible avec les locataires déjà en place.</p>
+        </div>
+        <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:11px;padding:18px;text-align:center;backdrop-filter:blur(10px);">
+          <div style="font-size:.7rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Taux d'acceptation</div>
+          <div style="font-family:'Instrument Serif',serif;font-size:2.8rem;color:#6ee7b7;line-height:1;">97 %</div>
+          <div style="font-size:.74rem;color:rgba(255,255,255,.6);margin-top:4px;">des locataires acceptent</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid-4" style="margin-bottom:20px;">
+      <div class="kpi-card">
+        <div class="kpi-label">Loyers prélevés</div>
+        <div class="kpi-value">895 €</div>
+        <div class="kpi-trend up">+ mensuel auto</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Prochain prélèvement</div>
+        <div class="kpi-value" style="font-size:1.5rem;">3 juin</div>
+        <div class="kpi-trend flat">dans 12 jours</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Versement sur compte</div>
+        <div class="kpi-value" style="font-size:1.5rem;">5 juin</div>
+        <div class="kpi-trend flat">2 jours après prélèvement</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Coût</div>
+        <div class="kpi-value" style="font-size:1.5rem;">Inclus</div>
+        <div class="kpi-trend up">Premium 29,90€</div>
+      </div>
+    </div>
+
+    <!-- Liste des prélèvements actifs -->
+    <h3 style="font-family:'Instrument Serif',serif;font-size:1.2rem;color:var(--texte);margin-bottom:14px;">Prélèvements actifs</h3>
+
+    <div class="card" style="margin-bottom:14px;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:18px;align-items:center;">
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--vert-light);color:var(--vert);display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:.95rem;color:var(--texte);">Appartement Gallieni · Carolina M.</div>
+          <div style="font-size:.78rem;color:var(--gris);margin-top:2px;">Mandat SEPA signé le 18/09/2024 · Référence MD-3892-2024 · IBAN ****1234</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-weight:700;font-size:1rem;color:var(--texte);">895 €</div>
+          <div style="font-size:.74rem;color:var(--gris);">le 3 du mois</div>
+        </div>
+        <div>
+          <span class="badge badge-success">✓ Actif</span>
+          <button class="btn-sm" style="margin-left:6px;">⋯</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- État vide pour Studio Bordeaux -->
+    <div class="card" style="border:1.5px dashed var(--border);background:var(--bg-main);">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;">
+        <div style="width:42px;height:42px;border-radius:10px;background:white;color:var(--gris);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:.95rem;color:var(--texte);">Studio Bordeaux Chartrons · En cours de mise en location</div>
+          <div style="font-size:.78rem;color:var(--gris);margin-top:2px;">Activez le prélèvement automatique lors de la signature du bail</div>
+        </div>
+        <button class="btn-primary" style="font-size:.82rem;">Activer le prélèvement →</button>
+      </div>
+    </div>
+
+    <!-- Comment ça marche -->
+    <h3 style="font-family:'Instrument Serif',serif;font-size:1.2rem;color:var(--texte);margin: 28px 0 14px;">Comment ça marche</h3>
+
+    <div class="grid-4">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;">1</div>
+          <strong style="font-size:.85rem;color:var(--texte);">Vous activez</strong>
+        </div>
+        <p style="font-size:.78rem;color:var(--gris);line-height:1.55;margin:0;">Depuis le bail ou pour un locataire déjà en place. Un email est envoyé à votre locataire.</p>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;">2</div>
+          <strong style="font-size:.85rem;color:var(--texte);">Locataire signe</strong>
+        </div>
+        <p style="font-size:.78rem;color:var(--gris);line-height:1.55;margin:0;">Mandat SEPA en ligne, signature électronique eIDAS. 5 minutes maximum.</p>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;">3</div>
+          <strong style="font-size:.85rem;color:var(--texte);">Prélèvement auto</strong>
+        </div>
+        <p style="font-size:.78rem;color:var(--gris);line-height:1.55;margin:0;">Chaque mois à date fixe, notre partenaire bancaire prélève le compte du locataire.</p>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;">4</div>
+          <strong style="font-size:.85rem;color:var(--texte);">Vous recevez</strong>
+        </div>
+        <p style="font-size:.78rem;color:var(--gris);line-height:1.55;margin:0;">Loyer reversé par virement sur votre compte 2 jours après. Quittance générée et envoyée automatiquement.</p>
+      </div>
+    </div>
+
+    <!-- Trust + sécurité -->
+    <div class="card" style="margin-top:20px;background:linear-gradient(135deg,white,rgba(59,111,212,0.04));border:1px solid rgba(59,111,212,.15);">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <strong style="font-size:.85rem;color:var(--texte);">100% conforme SEPA</strong>
+          </div>
+          <p style="font-size:.76rem;color:var(--gris);margin:0;line-height:1.55;">Mandat eIDAS. Prélèvement entre particuliers interdit en France — BailScan agit comme intermédiaire technique agréé.</p>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <strong style="font-size:.85rem;color:var(--texte);">Sécurité bancaire</strong>
+          </div>
+          <p style="font-size:.76rem;color:var(--gris);margin:0;line-height:1.55;">Vos coordonnées bancaires et celles du locataire ne sont jamais visibles par BailScan. Tout transite par notre partenaire bancaire agréé.</p>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <strong style="font-size:.85rem;color:var(--texte);">Modifiable à tout moment</strong>
+          </div>
+          <p style="font-size:.76rem;color:var(--gris);margin:0;line-height:1.55;">Suspendre, modifier le montant (révision IRL, régularisation charges), changer la date, ajouter des frais — en un clic.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing du prélèvement -->
+    <h3 style="font-family:'Instrument Serif',serif;font-size:1.2rem;color:var(--texte);margin: 28px 0 14px;">Tarification</h3>
+
+    <div class="grid-3">
+      <div class="card">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gris);margin-bottom:6px;">Plan gratuit</div>
+        <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--texte);">2,90 €</div>
+        <div style="font-size:.78rem;color:var(--gris);margin:4px 0 12px;">par prélèvement</div>
+        <p style="font-size:.78rem;color:var(--gris);line-height:1.5;margin:0;">À la carte, sans engagement. Facturé uniquement lorsqu'un loyer est prélevé.</p>
+      </div>
+
+      <div class="card" style="border:2px solid var(--pro-accent);position:relative;">
+        <div style="position:absolute;top:-10px;left:18px;background:var(--pro-accent);color:white;font-size:.6rem;font-weight:800;padding:3px 10px;border-radius:14px;text-transform:uppercase;letter-spacing:.06em;">Recommandé</div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pro-accent);margin-bottom:6px;">Essentiel 17,90€/mois</div>
+        <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--texte);">0,90 €</div>
+        <div style="font-size:.78rem;color:var(--gris);margin:4px 0 12px;">par prélèvement (−69 %)</div>
+        <p style="font-size:.78rem;color:var(--gris);line-height:1.5;margin:0;">Tarif préférentiel. Pour 1 bien à 900€/mois, vous économisez 24€/an vs plan gratuit.</p>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg,#0f172a,#1e293b);color:white;">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.55);margin-bottom:6px;">Premium 29,90€/mois</div>
+        <div style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;">Inclus</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.5);margin:4px 0 12px;">prélèvements illimités</div>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.5;margin:0;">Aucun frais de prélèvement, peu importe le nombre de biens et de mensualités.</p>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <h3 style="font-family:'Instrument Serif',serif;font-size:1.2rem;color:var(--texte);margin: 28px 0 14px;">Questions fréquentes</h3>
+
+    <div class="card">
+      <div style="padding:12px 0;border-bottom:1px solid var(--border-light);">
+        <strong style="font-size:.88rem;color:var(--texte);display:block;margin-bottom:5px;">Mon locataire est déjà en place, je peux quand même mettre en place le prélèvement ?</strong>
+        <p style="font-size:.8rem;color:var(--gris);margin:0;line-height:1.6;">Oui. BailScan envoie un email à votre locataire avec le mandat SEPA à signer électroniquement. Une fois signé, le prochain loyer est prélevé automatiquement. Aucune modification du bail nécessaire.</p>
+      </div>
+
+      <div style="padding:12px 0;border-bottom:1px solid var(--border-light);">
+        <strong style="font-size:.88rem;color:var(--texte);display:block;margin-bottom:5px;">Et si mon locataire refuse ?</strong>
+        <p style="font-size:.8rem;color:var(--gris);margin:0;line-height:1.6;">97% des locataires acceptent car c'est un mode de paiement quotidien (factures, abonnements). En cas de refus, vous gardez le mode de paiement existant (virement) sans aucune pénalité.</p>
+      </div>
+
+      <div style="padding:12px 0;border-bottom:1px solid var(--border-light);">
+        <strong style="font-size:.88rem;color:var(--texte);display:block;margin-bottom:5px;">Que se passe-t-il en cas d'impayé (compte vide) ?</strong>
+        <p style="font-size:.8rem;color:var(--gris);margin:0;line-height:1.6;">BailScan vous alerte immédiatement par email et SMS. Une relance automatique est envoyée au locataire. Si vous avez la GLI (Garantie Loyers Impayés), nous déclarons automatiquement le sinistre à votre assureur partenaire.</p>
+      </div>
+
+      <div style="padding:12px 0;">
+        <strong style="font-size:.88rem;color:var(--texte);display:block;margin-bottom:5px;">Comment modifier le montant (révision IRL, régularisation charges) ?</strong>
+        <p style="font-size:.8rem;color:var(--gris);margin:0;line-height:1.6;">Depuis votre interface, vous modifiez le montant en un clic. Le prochain prélèvement utilise automatiquement le nouveau montant. Pour la révision annuelle IRL, BailScan vous alerte et propose la nouvelle valeur calculée selon l'indice INSEE.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── TAB 2 : SUIVI DES LOYERS ── -->
+  <div class="tab-panel" id="tab-loyers">
     <div class="loyer-summary">
       <div>
         <div class="loyer-summary-label">Encaissé en mai 2026</div>
@@ -379,8 +583,24 @@
     </div>
   </div>
 
-  <!-- ── TAB 2 : QUITTANCES ── -->
+  <!-- ── TAB 3 : QUITTANCES ── -->
   <div class="tab-panel" id="tab-quittances">
+
+    <!-- Hero éducatif quittances automatiques -->
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#3b6fd4 200%);border-radius:14px;padding:24px 28px;color:white;margin-bottom:22px;">
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:center;">
+        <div>
+          <div style="display:inline-block;background:rgba(110,231,183,.2);border:1px solid rgba(110,231,183,.4);color:#6ee7b7;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:4px 11px;border-radius:18px;margin-bottom:12px;">Automatique · Plan Essentiel</div>
+          <h3 style="font-family:'Instrument Serif',serif;font-size:1.45rem;color:white;line-height:1.2;margin-bottom:8px;">Quittances envoyées toutes seules.</h3>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.55;margin-bottom:0;max-width:480px;">Chaque loyer encaissé (prélèvement automatique ou virement enregistré) déclenche la génération d'une quittance PDF conforme et son envoi par email au locataire. Aucune action de votre part requise.</p>
+        </div>
+        <div style="text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:11px;padding:18px;backdrop-filter:blur(10px);">
+          <div style="font-family:'Instrument Serif',serif;font-size:2.4rem;color:#6ee7b7;line-height:1;">5/5</div>
+          <div style="font-size:.74rem;color:rgba(255,255,255,.6);margin-top:6px;">quittances envoyées<br>automatiquement en 2026</div>
+        </div>
+      </div>
+    </div>
+
     <div class="grid-2">
       <div class="card">
         <div class="card-title">Génération automatique</div>
@@ -456,6 +676,27 @@
 
   <!-- ── TAB 3 : COMPTABILITÉ ── -->
   <div class="tab-panel" id="tab-compta">
+
+    <!-- Hero éducatif comptabilité automatique -->
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#3b6fd4 200%);border-radius:14px;padding:24px 28px;color:white;margin-bottom:22px;">
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:center;">
+        <div>
+          <div style="display:inline-block;background:rgba(59,111,212,.25);border:1px solid rgba(147,180,255,.4);color:#93b4ff;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:4px 11px;border-radius:18px;margin-bottom:12px;">Tenue automatique · Plan Essentiel</div>
+          <h3 style="font-family:'Instrument Serif',serif;font-size:1.45rem;color:white;line-height:1.2;margin-bottom:8px;">Votre comptabilité, sans effort.</h3>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.55;margin-bottom:0;max-width:480px;">Chaque loyer encaissé crée automatiquement une ligne comptable. Ajoutez vos dépenses (travaux, taxe foncière, intérêts d'emprunt) et exportez votre bilan annuel en 1 clic, prêt à transmettre à votre comptable ou au fisc.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 14px;font-size:.82rem;color:white;backdrop-filter:blur(10px);">
+            <strong style="display:block;color:#6ee7b7;margin-bottom:2px;">✓ 5 lignes auto en 2026</strong>
+            <span style="font-size:.74rem;color:rgba(255,255,255,.6);">générées depuis les loyers prélevés</span>
+          </div>
+          <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 14px;font-size:.82rem;color:white;backdrop-filter:blur(10px);">
+            <strong style="display:block;color:#6ee7b7;margin-bottom:2px;">✓ 3 dépenses ajoutées</strong>
+            <span style="font-size:.74rem;color:rgba(255,255,255,.6);">412 € de charges déductibles</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="kpi-grid">
       <div class="kpi-card">
@@ -553,6 +794,55 @@
         </div>
       </div>
     </div>
+
+    <!-- Auto-catégorisation IA (Premium) -->
+    <div class="card" style="margin-top:18px;background:linear-gradient(135deg,white 0%,rgba(59,111,212,0.04) 100%);border:1px solid rgba(59,111,212,.2);">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <div style="width:54px;height:54px;border-radius:13px;background:linear-gradient(135deg,#0f172a,#3b6fd4);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <strong style="font-size:1rem;color:var(--texte);">Auto-catégorisation IA des charges</strong>
+            <span style="background:var(--pro-accent);color:white;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:12px;letter-spacing:.04em;">PREMIUM</span>
+          </div>
+          <p style="font-size:.83rem;color:var(--gris);line-height:1.55;margin:0;">Photographiez vos factures, l'IA détecte automatiquement le type (travaux, taxe foncière, assurance PNO, intérêts d'emprunt…), la catégorie fiscale (charges déductibles, amortissables), et l'affecte au bon bien. Plus de saisie manuelle.</p>
+        </div>
+        <button onclick="if(BailScan && BailScan.plan && BailScan.plan() === 'premium') alert('Ouvrir scanner factures…'); else Paywall.show({feature: 'Auto-catégorisation IA', requires: 'premium', description: 'L\'IA détecte automatiquement le type de charge depuis une simple photo de facture et l\'affecte au bon bien.'});" class="btn-primary" style="font-size:.82rem;white-space:nowrap;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Scanner une facture
+        </button>
+      </div>
+    </div>
+
+    <!-- Service liasse fiscale LMNP / Régime réel -->
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#1a1a1a 100%);border-radius:14px;padding:28px 30px;margin-top:18px;color:white;">
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:center;">
+        <div>
+          <div style="display:inline-block;background:rgba(200,75,47,.2);border:1px solid rgba(200,75,47,.4);color:#f9a98a;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:4px 11px;border-radius:18px;margin-bottom:12px;">Service expert · Add-on annuel</div>
+          <h3 style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:white;line-height:1.15;margin-bottom:10px;">Votre liasse fiscale LMNP / Régime réel <em style="color:#f9a98a;">faite pour vous.</em></h3>
+          <p style="font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.6;margin-bottom:14px;">L'administration impose une liasse fiscale complète : bilan, compte de résultat, tableau des immobilisations et amortissements. Un comptable facture ~600 €. Notre service le fait pour <strong style="color:white;">199 €/an</strong>, vérifié par un expert-comptable partenaire et transmis directement au SIE.</p>
+          <ul style="list-style:none;padding:0;margin:0 0 16px 0;display:flex;flex-direction:column;gap:6px;">
+            <li style="display:flex;align-items:flex-start;gap:8px;font-size:.83rem;color:rgba(255,255,255,.85);"><span style="color:#6ee7b7;font-weight:700;">✓</span>Génération du bilan comptable LMNP</li>
+            <li style="display:flex;align-items:flex-start;gap:8px;font-size:.83rem;color:rgba(255,255,255,.85);"><span style="color:#6ee7b7;font-weight:700;">✓</span>Calcul automatique des amortissements (bâti + mobilier)</li>
+            <li style="display:flex;align-items:flex-start;gap:8px;font-size:.83rem;color:rgba(255,255,255,.85);"><span style="color:#6ee7b7;font-weight:700;">✓</span>Liasse fiscale 2031 / 2033 / 2042-C-PRO complète</li>
+            <li style="display:flex;align-items:flex-start;gap:8px;font-size:.83rem;color:rgba(255,255,255,.85);"><span style="color:#6ee7b7;font-weight:700;">✓</span>Vérification expert-comptable partenaire</li>
+            <li style="display:flex;align-items:flex-start;gap:8px;font-size:.83rem;color:rgba(255,255,255,.85);"><span style="color:#6ee7b7;font-weight:700;">✓</span>Télétransmission directe au Service des Impôts (SIE)</li>
+          </ul>
+        </div>
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:22px;text-align:center;backdrop-filter:blur(10px);">
+          <div style="font-size:.7rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Liasse fiscale 2026</div>
+          <div style="font-family:'Instrument Serif',serif;font-size:2.6rem;color:white;line-height:1;">199 €</div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);margin:4px 0 16px;">paiement unique annuel</div>
+          <div style="background:rgba(110,231,183,.12);border:1px solid rgba(110,231,183,.25);color:#6ee7b7;font-size:.74rem;padding:8px 12px;border-radius:7px;margin-bottom:14px;font-weight:600;">Économie ~400 € vs comptable</div>
+          <button onclick="alert('Souscription au service liasse fiscale…\n\n(À connecter Stripe Checkout product Liasse Fiscale 199€)')" style="width:100%;background:#c84b2f;color:white;border:none;padding:13px;border-radius:10px;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit;">
+            Souscrire la liasse 2026
+          </button>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:10px;">Disponible jusqu'au 2 mai 2027</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ── TAB 4 : FISCALITÉ ── -->
@@ -609,7 +899,7 @@
           </button>
           <a href="abonnement.html" class="btn-primary" style="justify-content:flex-start;margin-top:8px;">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            Accompagnement fiscal Premium (29&nbsp;€/mois)
+            Accompagnement fiscal Premium (29,90&nbsp;€/mois)
           </a>
         </div>
       </div>
@@ -703,5 +993,7 @@ document.querySelectorAll('.fisc-regime-card').forEach(card => {
   });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="bailscan-auth.js"></script>
 </body>
 </html>
