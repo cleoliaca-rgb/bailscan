@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mes baux — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.bail-row {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 16px;
+  align-items: center;
+  transition: all .15s;
+}
+.bail-row:hover { box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+
+.bail-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: var(--pro-light);
+  color: var(--pro-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.bail-icon.signed { background: var(--vert-light); color: var(--vert); }
+.bail-icon.draft { background: var(--warn-light); color: #a16207; }
+.bail-icon.expired { background: var(--bg-main); color: var(--gris); }
+
+.bail-info { min-width: 0; }
+.bail-name { font-weight: 700; font-size: .9rem; color: var(--texte); margin-bottom: 3px; }
+.bail-meta { font-size: .75rem; color: var(--gris); }
+
+.bail-period { text-align: center; flex-shrink: 0; }
+.bail-period-date { font-weight: 600; font-size: .8rem; color: var(--texte); }
+.bail-period-label { font-size: .65rem; color: var(--gris); text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
+
+.bail-actions { display: flex; gap: 6px; }
+
+/* Générateur de bail hero */
+.gen-hero {
+  background: linear-gradient(135deg, #c84b2f 0%, #a83d24 100%);
+  border-radius: var(--card-radius);
+  padding: 32px 36px;
+  color: white;
+  margin-bottom: 22px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+@media (max-width: 800px) { .gen-hero { grid-template-columns: 1fr; } }
+.gen-hero h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.85rem;
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.gen-hero p {
+  font-size: .9rem;
+  color: rgba(255,255,255,.85);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+.gen-hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.gen-hero-feature {
+  font-size: .85rem;
+  color: rgba(255,255,255,.95);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.gen-hero-feature::before {
+  content: '✓';
+  color: white;
+  background: rgba(255,255,255,.15);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: .7rem;
+}
+
+.gen-price-card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px;
+  padding: 22px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+.gen-price-amount {
+  font-family: 'Instrument Serif', serif;
+  font-size: 3.2rem;
+  color: white;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.gen-price-label {
+  font-size: .82rem;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 18px;
+}
+.gen-price-btn {
+  background: white;
+  color: #c84b2f;
+  padding: 12px 20px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: .9rem;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.gen-price-sub {
+  font-size: .72rem;
+  color: rgba(255,255,255,.6);
+  margin-top: 10px;
+}
+
+/* Types baux grid */
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.type-card {
+  border: 1.5px solid var(--border);
+  border-radius: 11px;
+  padding: 18px;
+  background: white;
+  cursor: pointer;
+  transition: all .15s;
+}
+.type-card:hover {
+  border-color: var(--pro-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(15,23,42,.06);
+}
+.type-card-tag {
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--pro-accent);
+  margin-bottom: 8px;
+}
+.type-card-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.05rem;
+  color: var(--texte);
+  margin-bottom: 4px;
+}
+.type-card-sub {
+  font-size: .78rem;
+  color: var(--gris);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+.type-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-light);
+}
+.type-card-duration {
+  font-size: .72rem;
+  color: var(--gris);
+}
+.type-card-cta {
+  font-size: .78rem;
+  color: var(--pro-accent);
+  font-weight: 600;
+}
+
+/* Filtres */
+.bail-filters {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.filter-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--gris);
+  cursor: pointer;
+  transition: all .12s;
+}
+.filter-pill.active {
+  background: var(--pro-light);
+  color: var(--pro-accent);
+  border-color: var(--pro-accent);
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo">
+    <div class="dash-sidebar-logo-left">
+      <span class="dash-sidebar-logo-name">BailScan</span>
+      <span class="dash-sidebar-logo-badge">PROPRIO</span>
+    </div>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Vue d'ensemble
+    </a>
+    <a href="biens.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Mes biens <span class="dash-nav-badge">2</span>
+    </a>
+    <a href="locataires.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Mes locataires
+    </a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Mettre en location
+    </a>
+    <a href="gerer-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Gérer ma location
+    </a>
+    <a href="baux.html" class="dash-nav-item active">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      Mes baux
+    </a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analyses juridiques
+    </a>
+    <a href="analyse-dossier.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Analyse dossier IA
+      <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span>
+    </a>
+    <a href="courriers.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Courriers & lettres
+    </a>
+    <a href="documents.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Documents
+    </a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Mes garanties
+    </a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Mon abonnement
+    </a>
+    <a href="aide.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Aide & contact
+    </a>
+  </nav>
+  <div class="dash-user">
+    <div class="dash-user-row">
+      <div class="dash-user-avatar">CC</div>
+      <div class="dash-user-info">
+        <div class="dash-user-name">Cléolia Clergé-André</div>
+        <div class="dash-user-plan">Plan Gratuit</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <div class="dash-topbar-title">Mes baux</div>
+      <div class="dash-topbar-sub">2 actifs · 1 brouillon · 1 expiré</div>
+    </div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Passer à l'Essentiel
+    </a>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <div class="page-header">
+    <h1 class="page-title">Mes baux</h1>
+    <div class="page-sub">Générez, signez électroniquement et archivez vos contrats de location.</div>
+  </div>
+
+  <!-- Hero générateur -->
+  <div class="gen-hero">
+    <div>
+      <h2>Créez un bail conforme en 5 minutes</h2>
+      <p>Bail certifié ALUR / ELAN, références légales injectées automatiquement, signature électronique légale, archivage chiffré 10 ans.</p>
+      <div class="gen-hero-features">
+        <div class="gen-hero-feature">Loi du 6 juillet 1989 — Conformité totale</div>
+        <div class="gen-hero-feature">Signature électronique légale (eIDAS)</div>
+        <div class="gen-hero-feature">Annexes pré-remplies (notice ALUR, diagnostics, EDL)</div>
+        <div class="gen-hero-feature">PDF + Word téléchargeables à vie</div>
+      </div>
+    </div>
+    <div class="gen-price-card">
+      <div class="gen-price-amount">49&nbsp;€</div>
+      <div class="gen-price-label">Paiement unique · Sans abonnement</div>
+      <button class="gen-price-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Créer un bail
+      </button>
+      <div class="gen-price-sub">Inclus dans l'Essentiel & Premium</div>
+    </div>
+  </div>
+
+  <!-- Types de baux -->
+  <div class="card">
+    <div class="card-title">Choisissez votre type de bail</div>
+    <div class="types-grid">
+      <div class="type-card">
+        <div class="type-card-tag">Le plus courant</div>
+        <div class="type-card-title">Bail meublé</div>
+        <div class="type-card-sub">Logement entièrement équipé. Idéal pour location longue durée meublée.</div>
+        <div class="type-card-meta">
+          <span class="type-card-duration">1 an renouvelable</span>
+          <span class="type-card-cta">Créer →</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-card-tag">Standard</div>
+        <div class="type-card-title">Bail vide</div>
+        <div class="type-card-sub">Logement non meublé. Résidence principale du locataire.</div>
+        <div class="type-card-meta">
+          <span class="type-card-duration">3 ans renouvelables</span>
+          <span class="type-card-cta">Créer →</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-card-tag">Étudiant</div>
+        <div class="type-card-title">Bail étudiant 9 mois</div>
+        <div class="type-card-sub">Réservé aux étudiants. Sans tacite reconduction.</div>
+        <div class="type-card-meta">
+          <span class="type-card-duration">9 mois fixes</span>
+          <span class="type-card-cta">Créer →</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-card-tag">Courte durée</div>
+        <div class="type-card-title">Bail mobilité</div>
+        <div class="type-card-sub">Pour stages, formations, missions pro temporaires.</div>
+        <div class="type-card-meta">
+          <span class="type-card-duration">1 à 10 mois</span>
+          <span class="type-card-cta">Créer →</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-card-tag">Multi-occupants</div>
+        <div class="type-card-title">Colocation — Bail unique</div>
+        <div class="type-card-sub">Un seul contrat pour tous les colocataires. Solidarité incluse.</div>
+        <div class="type-card-meta">
+          <span class="type-card-duration">3 ans (vide) / 1 an (meublé)</span>
+          <span class="type-card-cta">Créer →</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-card-tag">Multi-occupants</div>
+        <div class="type-card-title">Colocation — Baux individuels</div>
+        <div class="type-card-sub">Un bail par colocataire. Pas de solidarité entre eux.</div>
+        <div class="type-card-meta">
+          <span class="type-card-duration">3 ans (vide) / 1 an (meublé)</span>
+          <span class="type-card-cta">Créer →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historique des baux -->
+  <div class="page-header" style="margin-top:32px;">
+    <h2 class="page-title" style="font-size:1.3rem;">Historique des baux</h2>
+    <div class="page-sub">Tous vos contrats archivés et signés électroniquement.</div>
+  </div>
+
+  <div class="bail-filters">
+    <button class="filter-pill active">Tous (4)</button>
+    <button class="filter-pill">Actifs (2)</button>
+    <button class="filter-pill">Brouillons (1)</button>
+    <button class="filter-pill">Expirés (1)</button>
+  </div>
+
+  <!-- Bail actif Gallieni -->
+  <div class="bail-row">
+    <div class="bail-icon signed">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+    </div>
+    <div class="bail-info">
+      <div class="bail-name">Bail meublé · Appartement Gallieni</div>
+      <div class="bail-meta">Carolina M. · 60 m² · 895 €/mois · Signé électroniquement</div>
+    </div>
+    <div class="bail-period">
+      <div class="bail-period-date">18/09/24 → 18/09/26</div>
+      <div class="bail-period-label">En cours · 4 mois restants</div>
+    </div>
+    <span class="badge badge-success">Actif</span>
+    <div class="bail-actions">
+      <button class="btn-sm">📄 PDF</button>
+      <button class="btn-sm">Voir</button>
+    </div>
+  </div>
+
+  <!-- Bail brouillon Bordeaux -->
+  <div class="bail-row">
+    <div class="bail-icon draft">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    </div>
+    <div class="bail-info">
+      <div class="bail-name">Bail étudiant 9 mois · Studio Bordeaux</div>
+      <div class="bail-meta">Locataire à confirmer · 25 m² · 680 €/mois · Brouillon non envoyé</div>
+    </div>
+    <div class="bail-period">
+      <div class="bail-period-date">01/09/26 → 31/05/27</div>
+      <div class="bail-period-label">À démarrer</div>
+    </div>
+    <span class="badge badge-warn">Brouillon</span>
+    <div class="bail-actions">
+      <button class="btn-sm">Reprendre</button>
+      <button class="btn-sm">Supprimer</button>
+    </div>
+  </div>
+
+  <!-- Avenant -->
+  <div class="bail-row">
+    <div class="bail-icon" style="background:var(--pro-light);color:var(--pro-accent);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    </div>
+    <div class="bail-info">
+      <div class="bail-name">Avenant n°1 · Appartement Gallieni</div>
+      <div class="bail-meta">Révision de loyer IRL T1 2024 · 860 € → 895 €</div>
+    </div>
+    <div class="bail-period">
+      <div class="bail-period-date">01/10/2025</div>
+      <div class="bail-period-label">Signature électronique</div>
+    </div>
+    <span class="badge badge-info">Avenant</span>
+    <div class="bail-actions">
+      <button class="btn-sm">📄 PDF</button>
+      <button class="btn-sm">Voir</button>
+    </div>
+  </div>
+
+  <!-- Bail expiré -->
+  <div class="bail-row">
+    <div class="bail-icon expired">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    </div>
+    <div class="bail-info">
+      <div class="bail-name">Bail meublé · Studio Bordeaux Chartrons</div>
+      <div class="bail-meta">François Boutin · 25 m² · 680 €/mois · Archivé 10 ans</div>
+    </div>
+    <div class="bail-period">
+      <div class="bail-period-date">09/2023 → 04/2026</div>
+      <div class="bail-period-label">Terminé · 2 ans 7 mois</div>
+    </div>
+    <span class="badge badge-neutral">Expiré</span>
+    <div class="bail-actions">
+      <button class="btn-sm">📄 PDF</button>
+      <button class="btn-sm">Voir</button>
+    </div>
+  </div>
+
+  <!-- Renouvellement -->
+  <div class="alert alert-info" style="margin-top:18px;">
+    <div style="flex:1;">
+      <strong style="display:block;margin-bottom:3px;">Renouvellement de bail à anticiper</strong>
+      Le bail de Carolina M. (Gallieni) arrive à terme le 18/09/2026. À 4 mois de la fin, vous pouvez préparer un renouvellement ou notifier un non-renouvellement (motifs limitatifs).
+      <div style="margin-top:8px;">
+        <a href="courriers.html" style="font-size:.82rem;color:var(--pro-accent);font-weight:600;text-decoration:none;">Générer le courrier de renouvellement →</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') &&
+      !sb.contains(e.target) && !e.target.closest('.mobile-only')) {
+    sb.classList.remove('open');
+  }
+});
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

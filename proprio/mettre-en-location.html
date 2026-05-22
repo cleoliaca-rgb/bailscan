@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mettre en location — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* Selecteur de bien */
+.bien-selector {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  min-width: 280px;
+}
+.bien-selector-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 7px;
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gris);
+  flex-shrink: 0;
+}
+.bien-selector-info { flex: 1; }
+.bien-selector-name { font-weight: 600; font-size: .85rem; color: var(--texte); }
+.bien-selector-meta { font-size: .72rem; color: var(--gris); margin-top: 2px; }
+
+/* Sous-onglets */
+.subtabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.subtabs::-webkit-scrollbar { display: none; }
+.subtab {
+  padding: 12px 18px;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--gris);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  transition: all .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.subtab:hover { color: var(--texte); }
+.subtab.active {
+  color: var(--pro-accent);
+  border-bottom-color: var(--pro-accent);
+}
+.subtab-status {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--vert);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .6rem;
+}
+.subtab-status.pending {
+  background: var(--bg-main);
+  color: var(--gris-light);
+  border: 1.5px solid var(--border);
+}
+
+/* Tab panels */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Hero panel */
+.panel-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: var(--card-radius);
+  padding: 28px 32px;
+  color: white;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.panel-hero h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.5rem;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.panel-hero p { font-size: .87rem; color: rgba(255,255,255,.65); max-width: 520px; line-height: 1.55; }
+.panel-hero-features { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; }
+.panel-hero-feature { font-size: .8rem; color: rgba(255,255,255,.8); display: flex; align-items: center; gap: 6px; }
+.panel-hero-feature::before { content: '✓'; color: #7fa8e8; font-weight: 700; }
+
+/* Candidat row détaillé */
+.candidat-detail {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all .15s;
+}
+.candidat-detail:hover { box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+.candidat-avatar-lg {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-size: .9rem;
+  flex-shrink: 0;
+}
+.candidat-info { flex: 1; min-width: 0; }
+.candidat-name { font-weight: 700; font-size: .92rem; color: var(--texte); }
+.candidat-meta { font-size: .76rem; color: var(--gris); margin-top: 2px; }
+.candidat-score { text-align: center; flex-shrink: 0; min-width: 80px; }
+.candidat-score-num { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--vert); line-height: 1; }
+.candidat-score-num.warn { color: var(--warn); }
+.candidat-score-num.danger { color: var(--danger); }
+.candidat-score-label { font-size: .65rem; color: var(--gris); text-transform: uppercase; letter-spacing: .04em; margin-top: 3px; }
+
+/* Bail type cards */
+.bail-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.bail-type-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all .15s;
+  background: white;
+}
+.bail-type-card:hover, .bail-type-card.active {
+  border-color: var(--pro-accent);
+  background: var(--pro-light);
+}
+.bail-type-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  color: var(--pro-accent);
+}
+.bail-type-title { font-weight: 700; font-size: .9rem; color: var(--texte); margin-bottom: 4px; }
+.bail-type-sub { font-size: .76rem; color: var(--gris); line-height: 1.5; }
+
+/* Checklist */
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.checklist-item:last-child { border-bottom: none; }
+.checklist-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--vert);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.checklist-check.pending {
+  background: var(--bg-main);
+  color: var(--gris-light);
+  border: 1.5px solid var(--border);
+}
+.checklist-content { flex: 1; }
+.checklist-title { font-weight: 600; font-size: .87rem; color: var(--texte); }
+.checklist-sub { font-size: .77rem; color: var(--gris); margin-top: 3px; line-height: 1.5; }
+
+/* État des lieux upload */
+.edl-upload {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 32px;
+  text-align: center;
+  background: var(--bg-main);
+  cursor: pointer;
+  transition: all .15s;
+}
+.edl-upload:hover {
+  border-color: var(--pro-accent);
+  background: var(--pro-light);
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo">
+    <div class="dash-sidebar-logo-left">
+      <span class="dash-sidebar-logo-name">BailScan</span>
+      <span class="dash-sidebar-logo-badge">PROPRIO</span>
+    </div>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Vue d'ensemble
+    </a>
+    <a href="biens.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Mes biens <span class="dash-nav-badge">2</span>
+    </a>
+    <a href="locataires.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Mes locataires
+    </a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item active">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Mettre en location
+    </a>
+    <a href="gerer-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Gérer ma location
+    </a>
+    <a href="baux.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      Mes baux
+    </a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analyses juridiques
+    </a>
+    <a href="analyse-dossier.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Analyse dossier IA
+      <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span>
+    </a>
+    <a href="courriers.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Courriers & lettres
+    </a>
+    <a href="documents.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Documents
+    </a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Mes garanties
+    </a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Mon abonnement
+    </a>
+    <a href="aide.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Aide & contact
+    </a>
+  </nav>
+  <div class="dash-user">
+    <div class="dash-user-row">
+      <div class="dash-user-avatar">CC</div>
+      <div class="dash-user-info">
+        <div class="dash-user-name">Cléolia Clergé-André</div>
+        <div class="dash-user-plan">Plan Gratuit</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <div class="dash-topbar-title">Mettre en location</div>
+      <div class="dash-topbar-sub">Studio Bordeaux Chartrons — Étape 3 sur 5</div>
+    </div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Passer à l'Essentiel
+    </a>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <div class="page-header">
+    <div class="page-header-row">
+      <div>
+        <h1 class="page-title">Mettre en location</h1>
+        <div class="page-sub">Pilotez la mise en location de A à Z : visites, dossiers, bail, contrôle, état des lieux.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sélecteur de bien -->
+  <div class="bien-selector">
+    <div class="bien-selector-thumb">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <div class="bien-selector-info">
+      <div class="bien-selector-name">Studio Bordeaux Chartrons</div>
+      <div class="bien-selector-meta">25 m² · 14 Cours Portal · 680 €/mois</div>
+    </div>
+    <button class="btn-sm">Changer</button>
+  </div>
+
+  <!-- Sous-onglets façon Mr Hugo -->
+  <div class="subtabs" role="tablist">
+    <button class="subtab active" data-tab="visites">
+      <span class="subtab-status">✓</span>
+      Visites
+    </button>
+    <button class="subtab" data-tab="dossiers">
+      <span class="subtab-status">✓</span>
+      Dossiers candidats
+    </button>
+    <button class="subtab" data-tab="bail">
+      <span class="subtab-status pending">3</span>
+      Bail
+    </button>
+    <button class="subtab" data-tab="controle">
+      <span class="subtab-status pending">4</span>
+      Contrôle des dossiers
+    </button>
+    <button class="subtab" data-tab="edl">
+      <span class="subtab-status pending">5</span>
+      État des lieux d'entrée
+    </button>
+  </div>
+
+  <!-- ── TAB 1 : VISITES ── -->
+  <div class="tab-panel active" id="tab-visites">
+    <div class="panel-hero">
+      <div>
+        <h2>Organisez vos visites en quelques clics</h2>
+        <p>Définissez vos créneaux disponibles, partagez l'agenda aux candidats et finissez les échanges interminables par email.</p>
+        <div class="panel-hero-features">
+          <span class="panel-hero-feature">Agenda partagé</span>
+          <span class="panel-hero-feature">Confirmation auto candidats</span>
+          <span class="panel-hero-feature">Rappels SMS J-2</span>
+        </div>
+      </div>
+      <button class="btn-primary" style="background:white;color:#0f172a;padding:11px 20px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Définir mes disponibilités
+      </button>
+    </div>
+
+    <div class="grid-2">
+      <!-- Créneaux -->
+      <div class="card">
+        <div class="card-title">Mes créneaux disponibles</div>
+        <div class="form-group">
+          <label class="form-label">Période</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <input class="form-input" type="date" value="2026-05-25">
+            <input class="form-input" type="date" value="2026-06-15">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Plage horaire</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <select class="form-input"><option>09h00</option></select>
+            <select class="form-input"><option>18h00</option></select>
+            <select class="form-input"><option>15 min/visite</option></select>
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%;">Ajouter ces créneaux</button>
+
+        <div style="margin-top:18px;font-size:.78rem;color:var(--gris);line-height:1.55;">
+          <strong style="color:var(--texte);">💡 Pas le temps de faire les visites ?</strong><br>
+          Déléguez à un agent (couverture France entière, hors zones isolées).<br>
+          <a href="#" style="color:var(--pro-accent);font-weight:600;">Obtenir un devis →</a>
+        </div>
+      </div>
+
+      <!-- Demandes de visite -->
+      <div class="card">
+        <div class="card-title">
+          <span>Demandes de visite reçues</span>
+          <span class="badge badge-info">5 nouvelles</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-light);">
+          <div class="candidat-avatar-lg" style="width:34px;height:34px;font-size:.74rem;background:linear-gradient(135deg,#16a34a,#22c55e);">LD</div>
+          <div style="flex:1;">
+            <div style="font-weight:600;font-size:.85rem;">Lucas Durand</div>
+            <div style="font-size:.73rem;color:var(--gris);">Mer. 28 mai · 14h30</div>
+          </div>
+          <button class="btn-sm">Confirmer</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-light);">
+          <div class="candidat-avatar-lg" style="width:34px;height:34px;font-size:.74rem;background:linear-gradient(135deg,#9333ea,#c084fc);">AM</div>
+          <div style="flex:1;">
+            <div style="font-weight:600;font-size:.85rem;">Amélie Martin</div>
+            <div style="font-size:.73rem;color:var(--gris);">Jeu. 29 mai · 17h00</div>
+          </div>
+          <button class="btn-sm">Confirmer</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-light);">
+          <div class="candidat-avatar-lg" style="width:34px;height:34px;font-size:.74rem;background:linear-gradient(135deg,#3b6fd4,#5a8fed);">TB</div>
+          <div style="flex:1;">
+            <div style="font-weight:600;font-size:.85rem;">Thomas Bernard</div>
+            <div style="font-size:.73rem;color:var(--gris);">Ven. 30 mai · 10h00</div>
+          </div>
+          <span class="badge badge-success">Confirmée</span>
+        </div>
+
+        <div style="text-align:center;margin-top:14px;">
+          <a href="#" style="font-size:.82rem;color:var(--pro-accent);font-weight:600;text-decoration:none;">Voir toutes (5) →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 2 : DOSSIERS ── -->
+  <div class="tab-panel" id="tab-dossiers">
+    <div class="panel-hero">
+      <div>
+        <h2>3 dossiers reçus, prêts à être étudiés</h2>
+        <p>Chaque candidat a uploadé ses pièces justificatives. BailScan calcule un score de solvabilité basé sur les revenus, le statut et la cohérence du dossier.</p>
+      </div>
+    </div>
+
+    <div class="candidat-detail">
+      <div class="candidat-avatar-lg" style="background:linear-gradient(135deg,#16a34a,#22c55e);">LD</div>
+      <div class="candidat-info">
+        <div class="candidat-name">Lucas Durand <span style="font-weight:500;color:var(--gris);font-size:.8rem;">· 22 ans</span></div>
+        <div class="candidat-meta">Étudiant ESC Bordeaux · 5 pièces fournies · Garants : 2 parents (CDI, revenus 7 800 €/mois cumulés)</div>
+      </div>
+      <div class="candidat-score">
+        <div class="candidat-score-num">92</div>
+        <div class="candidat-score-label">Excellent</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <button class="btn-primary" style="padding:6px 14px;font-size:.78rem;">Choisir</button>
+        <button class="btn-sm">Voir dossier</button>
+      </div>
+    </div>
+
+    <div class="candidat-detail">
+      <div class="candidat-avatar-lg" style="background:linear-gradient(135deg,#3b6fd4,#5a8fed);">TB</div>
+      <div class="candidat-info">
+        <div class="candidat-name">Thomas Bernard <span style="font-weight:500;color:var(--gris);font-size:.8rem;">· 28 ans</span></div>
+        <div class="candidat-meta">CDI ingénieur · 2 800 €/mois · 6 pièces fournies · Garantie Visale activée</div>
+      </div>
+      <div class="candidat-score">
+        <div class="candidat-score-num">85</div>
+        <div class="candidat-score-label">Très bon</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <button class="btn-primary" style="padding:6px 14px;font-size:.78rem;">Choisir</button>
+        <button class="btn-sm">Voir dossier</button>
+      </div>
+    </div>
+
+    <div class="candidat-detail">
+      <div class="candidat-avatar-lg" style="background:linear-gradient(135deg,#9333ea,#c084fc);">AM</div>
+      <div class="candidat-info">
+        <div class="candidat-name">Amélie Martin <span style="font-weight:500;color:var(--gris);font-size:.8rem;">· 25 ans</span></div>
+        <div class="candidat-meta">CDI assistante · 2 200 €/mois · 4 pièces fournies · Pas de garant · ⚠ Ratio loyer/revenu : 31%</div>
+      </div>
+      <div class="candidat-score">
+        <div class="candidat-score-num warn">68</div>
+        <div class="candidat-score-label">Moyen</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <button class="btn-secondary" style="padding:6px 14px;font-size:.78rem;">Réserver</button>
+        <button class="btn-sm">Voir dossier</button>
+      </div>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:18px;">
+      <div style="flex:1;">
+        <strong style="display:block;margin-bottom:3px;">Astuce BailScan</strong>
+        Le score est calculé sur 100 points : revenus (40%), stabilité pro (25%), garants (20%), cohérence dossier (15%). Un score ≥ 75 indique un dossier sécurisé.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 3 : BAIL ── -->
+  <div class="tab-panel" id="tab-bail">
+    <div class="panel-hero" style="background:linear-gradient(135deg,#c84b2f 0%,#a83d24 100%);">
+      <div>
+        <h2>Créez un bail conforme en 5 minutes</h2>
+        <p>Bail certifié ALUR/ELAN, signature électronique, références légales injectées automatiquement. Pas de modèle Word à bricoler.</p>
+        <div class="panel-hero-features">
+          <span class="panel-hero-feature">Conforme loi du 6 juillet 1989</span>
+          <span class="panel-hero-feature">Signature électronique légale</span>
+          <span class="panel-hero-feature">Annexes pré-remplies</span>
+        </div>
+      </div>
+      <button class="btn-primary" style="background:white;color:#c84b2f;padding:11px 20px;font-weight:700;">
+        Créer un bail · 49&nbsp;€
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Quel type de bail ?</div>
+      <div class="bail-types">
+        <div class="bail-type-card active">
+          <div class="bail-type-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          </div>
+          <div class="bail-type-title">Bail meublé</div>
+          <div class="bail-type-sub">Durée 1 an renouvelable. Étudiants 9 mois.</div>
+        </div>
+        <div class="bail-type-card">
+          <div class="bail-type-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          </div>
+          <div class="bail-type-title">Bail vide</div>
+          <div class="bail-type-sub">Durée 3 ans, résidence principale.</div>
+        </div>
+        <div class="bail-type-card">
+          <div class="bail-type-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          </div>
+          <div class="bail-type-title">Bail étudiant 9 mois</div>
+          <div class="bail-type-sub">Meublé · Non renouvelable · Étudiants.</div>
+        </div>
+        <div class="bail-type-card">
+          <div class="bail-type-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          </div>
+          <div class="bail-type-title">Bail mobilité</div>
+          <div class="bail-type-sub">1 à 10 mois · Mobilité pro/études.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:18px;">
+        <button class="btn-primary" style="flex:1;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Créer mon bail meublé · 49&nbsp;€
+        </button>
+        <a href="baux.html" class="btn-secondary" style="flex:1;justify-content:center;">Voir mes baux existants</a>
+      </div>
+    </div>
+
+    <div class="alert alert-success" style="margin-top:14px;">
+      <div style="flex:1;">
+        <strong style="display:block;margin-bottom:3px;">Inclus dans tous les baux BailScan</strong>
+        Annexes pré-remplies (notice d'information ALUR, dossier de diagnostics, état des lieux d'entrée), signature électronique légale, archivage chiffré 10 ans.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 4 : CONTRÔLE DES DOSSIERS ── -->
+  <div class="tab-panel" id="tab-controle">
+    <div class="panel-hero">
+      <div>
+        <h2>Faites contrôler vos dossiers candidats</h2>
+        <p>67 % des dossiers de location sont falsifiés (source BFM). BailScan analyse l'authenticité des pièces et la solvabilité du candidat.</p>
+        <div class="panel-hero-features">
+          <span class="panel-hero-feature">Détection faux bulletins de salaire</span>
+          <span class="panel-hero-feature">Vérification cohérence dossier</span>
+          <span class="panel-hero-feature">Rapport sous 4h</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Contrôles en cours</div>
+        <div class="checklist-item">
+          <div class="checklist-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="checklist-content">
+            <div class="checklist-title">Lucas Durand — Dossier authentifié</div>
+            <div class="checklist-sub">Pièces validées : carte d'identité, attestation école, garants. Rapport disponible.</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="checklist-check pending">2</div>
+          <div class="checklist-content">
+            <div class="checklist-title">Thomas Bernard — En cours d'analyse</div>
+            <div class="checklist-sub">Vérification bulletins de salaire et contrat de travail. Résultat sous 2h environ.</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="checklist-check" style="background:var(--warn);">⚠</div>
+          <div class="checklist-content">
+            <div class="checklist-title">Amélie Martin — Anomalie détectée</div>
+            <div class="checklist-sub">Incohérence entre les bulletins de salaire et l'avis d'imposition. Risque modéré.</div>
+            <button class="btn-sm" style="margin-top:8px;">Voir détails</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Pourquoi contrôler ?</div>
+        <div style="display:flex;flex-direction:column;gap:14px;font-size:.85rem;line-height:1.6;color:var(--texte);">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--rouge-light);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;">!</div>
+            <div>
+              <strong>Risque d'impayés divisé par 4</strong><br>
+              <span style="color:var(--gris);font-size:.8rem;">Un dossier vérifié = 8x moins de chances de procédure judiciaire.</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;">€</div>
+            <div>
+              <strong>Inclus avec l'abonnement Essentiel</strong><br>
+              <span style="color:var(--gris);font-size:.8rem;">2 contrôles/mois inclus. À la carte : 19&nbsp;€/dossier.</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--vert-light);color:var(--vert);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;">✓</div>
+            <div>
+              <strong>Algorithmes + revue humaine</strong><br>
+              <span style="color:var(--gris);font-size:.8rem;">Détection IA + validation par un juriste pour les cas ambigus.</span>
+            </div>
+          </div>
+        </div>
+        <a href="abonnement.html" class="btn-primary" style="width:100%;justify-content:center;margin-top:18px;">Passer à l'Essentiel · 14&nbsp;€/mois</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 5 : ETAT DES LIEUX ── -->
+  <div class="tab-panel" id="tab-edl">
+    <div class="panel-hero">
+      <div>
+        <h2>État des lieux d'entrée digital</h2>
+        <p>Faites votre EDL depuis l'app mobile : photos auto-classées, IA pré-remplit les éléments par pièce, PDF verrouillé et archivé.</p>
+        <div class="panel-hero-features">
+          <span class="panel-hero-feature">4× plus rapide qu'un EDL papier</span>
+          <span class="panel-hero-feature">Photos en preuve indiscutable</span>
+          <span class="panel-hero-feature">Signature électronique locataire</span>
+        </div>
+      </div>
+      <button class="btn-primary" style="background:white;color:#0f172a;padding:11px 20px;">
+        Lancer mon EDL
+      </button>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Démarrer un EDL d'entrée</div>
+        <div class="edl-upload">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--gris-light)" stroke-width="1.5" style="margin-bottom:12px;">
+            <path d="M21 19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l2-3h6l2 3h3a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          <div style="font-weight:700;font-size:.92rem;color:var(--texte);margin-bottom:5px;">Téléchargez l'app mobile</div>
+          <div style="font-size:.8rem;color:var(--gris);max-width:280px;margin:0 auto 14px;line-height:1.55;">L'application BailScan EDL est disponible sur iOS et Android. Vous recevrez un lien par email après création du bail.</div>
+          <div style="display:flex;gap:8px;justify-content:center;">
+            <button class="btn-secondary" style="font-size:.78rem;">📱 iOS</button>
+            <button class="btn-secondary" style="font-size:.78rem;">🤖 Android</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Comment ça marche</div>
+        <div class="checklist-item">
+          <div class="checklist-check" style="background:var(--pro-accent);">1</div>
+          <div class="checklist-content">
+            <div class="checklist-title">Préparer depuis le dashboard</div>
+            <div class="checklist-sub">Sélectionnez le bien et le locataire, l'app charge automatiquement les infos.</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="checklist-check" style="background:var(--pro-accent);">2</div>
+          <div class="checklist-content">
+            <div class="checklist-title">Réaliser l'EDL dans le logement</div>
+            <div class="checklist-sub">Photos pièce par pièce, dictée vocale, l'IA suggère les éléments à vérifier.</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="checklist-check" style="background:var(--pro-accent);">3</div>
+          <div class="checklist-content">
+            <div class="checklist-title">Signature électronique sur place</div>
+            <div class="checklist-sub">Vous et le locataire signez directement sur l'app. PDF verrouillé envoyé par email.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Historique des états des lieux</div>
+      <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <div class="empty-state-title">Aucun EDL réalisé pour ce bien</div>
+        <div class="empty-state-sub">L'historique apparaîtra ici après votre premier état des lieux d'entrée.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// Sidebar mobile
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') &&
+      !sb.contains(e.target) && !e.target.closest('.mobile-only')) {
+    sb.classList.remove('open');
+  }
+});
+
+// Sous-onglets
+document.querySelectorAll('.subtab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Bail type cards
+document.querySelectorAll('.bail-type-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.bail-type-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

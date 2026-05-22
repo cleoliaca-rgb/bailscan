@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Gérer ma location — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.bien-selector {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  min-width: 280px;
+}
+.bien-selector-thumb {
+  width: 36px; height: 36px; border-radius: 7px;
+  background: var(--bg-main);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gris); flex-shrink: 0;
+}
+.bien-selector-info { flex: 1; }
+.bien-selector-name { font-weight: 600; font-size: .85rem; color: var(--texte); }
+.bien-selector-meta { font-size: .72rem; color: var(--gris); margin-top: 2px; }
+
+.subtabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.subtabs::-webkit-scrollbar { display: none; }
+.subtab {
+  padding: 12px 18px;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--gris);
+  cursor: pointer;
+  border: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  background: none;
+  transition: all .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.subtab:hover { color: var(--texte); }
+.subtab.active { color: var(--pro-accent); border-bottom-color: var(--pro-accent); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Loyer card */
+.loyer-summary {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  border-radius: var(--card-radius);
+  padding: 24px 28px;
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 800px) { .loyer-summary { grid-template-columns: 1fr; } }
+.loyer-summary-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+.loyer-summary-amount { font-family: 'Instrument Serif', serif; font-size: 2.2rem; color: white; line-height: 1; }
+.loyer-summary-sub { font-size: .8rem; color: rgba(255,255,255,.6); margin-top: 6px; }
+
+/* Quittance row */
+.quittance-row {
+  display: grid;
+  grid-template-columns: 50px 1fr auto auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  margin-bottom: 8px;
+}
+.quittance-month {
+  text-align: center;
+  background: var(--bg-main);
+  border-radius: 7px;
+  padding: 6px 0;
+}
+.quittance-month-mm { font-family: 'Instrument Serif', serif; font-size: 1.05rem; color: var(--texte); line-height: 1; }
+.quittance-month-yy { font-size: .62rem; color: var(--gris); margin-top: 2px; }
+
+/* Comptabilité graph */
+.compta-chart {
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  padding: 18px 0;
+}
+.chart-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.chart-bar-wrap {
+  width: 100%;
+  background: var(--bg-main);
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+.chart-bar-fill {
+  background: linear-gradient(180deg, var(--pro-accent) 0%, #5a8fed 100%);
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: height .4s;
+}
+.chart-bar-label { font-size: .7rem; color: var(--gris); }
+.chart-bar-value { font-size: .7rem; font-weight: 700; color: var(--texte); }
+
+/* Fiscalité card */
+.fisc-regime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.fisc-regime-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all .15s;
+  background: white;
+}
+.fisc-regime-card:hover, .fisc-regime-card.active {
+  border-color: var(--pro-accent);
+  background: var(--pro-light);
+}
+.fisc-regime-name { font-weight: 700; font-size: .9rem; color: var(--texte); margin-bottom: 4px; }
+.fisc-regime-sub { font-size: .76rem; color: var(--gris); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo">
+    <div class="dash-sidebar-logo-left">
+      <span class="dash-sidebar-logo-name">BailScan</span>
+      <span class="dash-sidebar-logo-badge">PROPRIO</span>
+    </div>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Vue d'ensemble
+    </a>
+    <a href="biens.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Mes biens <span class="dash-nav-badge">2</span>
+    </a>
+    <a href="locataires.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Mes locataires
+    </a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Mettre en location
+    </a>
+    <a href="gerer-location.html" class="dash-nav-item active">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Gérer ma location
+    </a>
+    <a href="baux.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      Mes baux
+    </a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analyses juridiques
+    </a>
+    <a href="analyse-dossier.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Analyse dossier IA
+      <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span>
+    </a>
+    <a href="courriers.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Courriers & lettres
+    </a>
+    <a href="documents.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Documents
+    </a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Mes garanties
+    </a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Mon abonnement
+    </a>
+    <a href="aide.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Aide & contact
+    </a>
+  </nav>
+  <div class="dash-user">
+    <div class="dash-user-row">
+      <div class="dash-user-avatar">CC</div>
+      <div class="dash-user-info">
+        <div class="dash-user-name">Cléolia Clergé-André</div>
+        <div class="dash-user-plan">Plan Gratuit</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <div class="dash-topbar-title">Gérer ma location</div>
+      <div class="dash-topbar-sub">Appartement Gallieni — Carolina M.</div>
+    </div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Passer à l'Essentiel
+    </a>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <div class="page-header">
+    <h1 class="page-title">Gérer ma location</h1>
+    <div class="page-sub">Suivez les loyers, quittances, comptabilité et fiscalité de votre bien loué.</div>
+  </div>
+
+  <div class="bien-selector">
+    <div class="bien-selector-thumb">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <div class="bien-selector-info">
+      <div class="bien-selector-name">Appartement Gallieni</div>
+      <div class="bien-selector-meta">Carolina M. · Loyer 895 € · Bail jusqu'au 18/09/2026</div>
+    </div>
+    <button class="btn-sm">Changer</button>
+  </div>
+
+  <div class="subtabs">
+    <button class="subtab active" data-tab="loyers">Recevoir les loyers</button>
+    <button class="subtab" data-tab="quittances">Quittances</button>
+    <button class="subtab" data-tab="compta">Comptabilité</button>
+    <button class="subtab" data-tab="fisc">Fiscalité</button>
+    <button class="subtab" data-tab="edl-sortie">EDL de sortie</button>
+  </div>
+
+  <!-- ── TAB 1 : LOYERS ── -->
+  <div class="tab-panel active" id="tab-loyers">
+    <div class="loyer-summary">
+      <div>
+        <div class="loyer-summary-label">Encaissé en mai 2026</div>
+        <div class="loyer-summary-amount">895 €</div>
+        <div class="loyer-summary-sub">Loyer 860 € + 35 € de provisions sur charges · Reçu le 05/05/2026</div>
+      </div>
+      <div>
+        <div class="loyer-summary-label">Prochain encaissement</div>
+        <div class="loyer-summary-amount" style="font-size:1.5rem;">05/06/2026</div>
+        <div class="loyer-summary-sub">Dans 14 jours</div>
+      </div>
+      <div>
+        <div class="loyer-summary-label">Total cumulé 2026</div>
+        <div class="loyer-summary-amount" style="font-size:1.5rem;">4 475 €</div>
+        <div class="loyer-summary-sub">5 mois sur 12</div>
+      </div>
+    </div>
+
+    <div class="upgrade-banner">
+      <div>
+        <div class="upgrade-banner-title">Automatisez vos encaissements</div>
+        <div class="upgrade-banner-sub">Avec l'Essentiel, le loyer est prélevé automatiquement chaque mois. Plus de relances, plus de retards.</div>
+      </div>
+      <a href="abonnement.html" class="upgrade-banner-btn">Activer le prélèvement auto</a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>Historique des paiements</span>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-sm">2026</button>
+          <button class="btn-sm">2025</button>
+        </div>
+      </div>
+      <table class="table-full">
+        <thead>
+          <tr>
+            <th>Période</th>
+            <th>Date de paiement</th>
+            <th>Loyer</th>
+            <th>Charges</th>
+            <th>Total</th>
+            <th>Quittance</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mai 2026</strong></td>
+            <td>05/05/2026</td>
+            <td>860 €</td>
+            <td>35 €</td>
+            <td><strong>895 €</strong></td>
+            <td><button class="btn-sm">📄 PDF</button></td>
+            <td><span class="badge badge-success">Payé</span></td>
+          </tr>
+          <tr>
+            <td><strong>Avril 2026</strong></td>
+            <td>03/04/2026</td>
+            <td>860 €</td>
+            <td>35 €</td>
+            <td><strong>895 €</strong></td>
+            <td><button class="btn-sm">📄 PDF</button></td>
+            <td><span class="badge badge-success">Payé</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mars 2026</strong></td>
+            <td>05/03/2026</td>
+            <td>860 €</td>
+            <td>35 €</td>
+            <td><strong>895 €</strong></td>
+            <td><button class="btn-sm">📄 PDF</button></td>
+            <td><span class="badge badge-success">Payé</span></td>
+          </tr>
+          <tr>
+            <td><strong>Février 2026</strong></td>
+            <td>06/02/2026</td>
+            <td>860 €</td>
+            <td>35 €</td>
+            <td><strong>895 €</strong></td>
+            <td><button class="btn-sm">📄 PDF</button></td>
+            <td><span class="badge badge-success">Payé</span></td>
+          </tr>
+          <tr>
+            <td><strong>Janvier 2026</strong></td>
+            <td>05/01/2026</td>
+            <td>860 €</td>
+            <td>35 €</td>
+            <td><strong>895 €</strong></td>
+            <td><button class="btn-sm">📄 PDF</button></td>
+            <td><span class="badge badge-success">Payé</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TAB 2 : QUITTANCES ── -->
+  <div class="tab-panel" id="tab-quittances">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Génération automatique</div>
+        <p style="font-size:.85rem;color:var(--gris);line-height:1.55;margin-bottom:14px;">
+          Avec l'Essentiel, chaque encaissement génère automatiquement la quittance et l'envoie au locataire par email.
+        </p>
+        <div style="background:var(--vert-light);border-radius:9px;padding:14px;font-size:.83rem;color:#166534;margin-bottom:14px;">
+          <strong>5 quittances envoyées en 2026</strong><br>
+          <span style="color:#15803d;font-size:.78rem;">Dernière : 05/05/2026 à carolina.m@gmail.com</span>
+        </div>
+        <button class="btn-primary" style="width:100%;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Générer une quittance manuelle
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Personnalisation</div>
+        <div class="form-group">
+          <label class="form-label">Date d'envoi</label>
+          <select class="form-input">
+            <option>5 jours après l'encaissement</option>
+            <option>À J+0</option>
+            <option>À J+10</option>
+            <option>Manuel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Modèle de quittance</label>
+          <select class="form-input">
+            <option>BailScan classique (PDF)</option>
+            <option>Personnalisé avec logo</option>
+          </select>
+        </div>
+        <button class="btn-secondary" style="width:100%;justify-content:center;">Enregistrer les préférences</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="card-title">Historique des quittances envoyées</div>
+      <div class="quittance-row">
+        <div class="quittance-month"><div class="quittance-month-mm">Mai</div><div class="quittance-month-yy">2026</div></div>
+        <div>
+          <div style="font-weight:600;font-size:.85rem;">Quittance · 895 €</div>
+          <div style="font-size:.74rem;color:var(--gris);margin-top:2px;">Envoyée à carolina.m@gmail.com · 10/05/2026</div>
+        </div>
+        <span class="badge badge-success">Reçue</span>
+        <button class="btn-sm">Télécharger</button>
+        <button class="btn-sm">Renvoyer</button>
+      </div>
+      <div class="quittance-row">
+        <div class="quittance-month"><div class="quittance-month-mm">Avr</div><div class="quittance-month-yy">2026</div></div>
+        <div>
+          <div style="font-weight:600;font-size:.85rem;">Quittance · 895 €</div>
+          <div style="font-size:.74rem;color:var(--gris);margin-top:2px;">Envoyée à carolina.m@gmail.com · 08/04/2026</div>
+        </div>
+        <span class="badge badge-success">Reçue</span>
+        <button class="btn-sm">Télécharger</button>
+        <button class="btn-sm">Renvoyer</button>
+      </div>
+      <div class="quittance-row">
+        <div class="quittance-month"><div class="quittance-month-mm">Mar</div><div class="quittance-month-yy">2026</div></div>
+        <div>
+          <div style="font-weight:600;font-size:.85rem;">Quittance · 895 €</div>
+          <div style="font-size:.74rem;color:var(--gris);margin-top:2px;">Envoyée à carolina.m@gmail.com · 10/03/2026</div>
+        </div>
+        <span class="badge badge-success">Reçue</span>
+        <button class="btn-sm">Télécharger</button>
+        <button class="btn-sm">Renvoyer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 3 : COMPTABILITÉ ── -->
+  <div class="tab-panel" id="tab-compta">
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Recettes 2026</div>
+        <div class="kpi-value">4 475 €</div>
+        <div class="kpi-trend up">Janvier → Mai</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Charges déductibles</div>
+        <div class="kpi-value">412 €</div>
+        <div class="kpi-trend flat">3 dépenses</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Bénéfice imposable</div>
+        <div class="kpi-value">4 063 €</div>
+        <div class="kpi-trend up">Estimation</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">À déclarer en 2027</div>
+        <div class="kpi-value">10 740 €</div>
+        <div class="kpi-trend warn">Estimation annuelle</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Évolution des recettes locatives — 2026</div>
+      <div class="compta-chart">
+        <div class="chart-bar">
+          <div class="chart-bar-value">895 €</div>
+          <div class="chart-bar-wrap" style="height:60%;"><div class="chart-bar-fill" style="height:100%;"></div></div>
+          <div class="chart-bar-label">Jan</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-bar-value">895 €</div>
+          <div class="chart-bar-wrap" style="height:60%;"><div class="chart-bar-fill" style="height:100%;"></div></div>
+          <div class="chart-bar-label">Fév</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-bar-value">895 €</div>
+          <div class="chart-bar-wrap" style="height:60%;"><div class="chart-bar-fill" style="height:100%;"></div></div>
+          <div class="chart-bar-label">Mar</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-bar-value">895 €</div>
+          <div class="chart-bar-wrap" style="height:60%;"><div class="chart-bar-fill" style="height:100%;"></div></div>
+          <div class="chart-bar-label">Avr</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-bar-value">895 €</div>
+          <div class="chart-bar-wrap" style="height:60%;"><div class="chart-bar-fill" style="height:100%;"></div></div>
+          <div class="chart-bar-label">Mai</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-bar-value" style="opacity:.4;">—</div>
+          <div class="chart-bar-wrap" style="height:60%;"><div class="chart-bar-fill" style="height:0%;background:var(--border);"></div></div>
+          <div class="chart-bar-label">Juin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">
+          <span>Charges & dépenses 2026</span>
+          <button class="btn-ghost">+ Ajouter</button>
+        </div>
+        <table class="table-full">
+          <thead><tr><th>Date</th><th>Description</th><th>Montant</th></tr></thead>
+          <tbody>
+            <tr><td>15/02/2026</td><td>Taxe foncière — Acompte</td><td>284 €</td></tr>
+            <tr><td>22/03/2026</td><td>Plomberie (réparation fuite)</td><td>96 €</td></tr>
+            <tr><td>08/04/2026</td><td>Diagnostics (DPE renouvelé)</td><td>32 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Export comptabilité</div>
+        <p style="font-size:.83rem;color:var(--gris);line-height:1.55;margin-bottom:14px;">
+          Exportez votre comptabilité au format compatible avec votre déclaration d'impôts (formulaire 2044 ou 2031).
+        </p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn-secondary" style="justify-content:flex-start;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export PDF — Bilan annuel
+          </button>
+          <button class="btn-secondary" style="justify-content:flex-start;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV — Détail mensuel
+          </button>
+          <button class="btn-secondary" style="justify-content:flex-start;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Excel — Comptabilité complète
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 4 : FISCALITÉ ── -->
+  <div class="tab-panel" id="tab-fisc">
+
+    <div class="card">
+      <div class="card-title">Mon régime fiscal</div>
+      <p style="font-size:.85rem;color:var(--gris);line-height:1.55;margin-bottom:14px;">
+        Le régime applicable dépend du type de location (nue ou meublée) et du montant annuel des recettes.
+      </p>
+
+      <div class="fisc-regime-grid">
+        <div class="fisc-regime-card active">
+          <div class="fisc-regime-name">Micro-foncier</div>
+          <div class="fisc-regime-sub">Location nue · Recettes &lt; 15 000 €/an · Abattement forfaitaire 30%</div>
+        </div>
+        <div class="fisc-regime-card">
+          <div class="fisc-regime-name">Régime réel</div>
+          <div class="fisc-regime-sub">Location nue · Déduction des charges réelles. Optimise si charges &gt; 30%.</div>
+        </div>
+        <div class="fisc-regime-card">
+          <div class="fisc-regime-name">Micro-BIC</div>
+          <div class="fisc-regime-sub">Location meublée · Recettes &lt; 77 700 € · Abattement 50% (71% si tourisme).</div>
+        </div>
+        <div class="fisc-regime-card">
+          <div class="fisc-regime-name">LMNP réel</div>
+          <div class="fisc-regime-sub">Location meublée · Déduction charges + amortissements. Très avantageux.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Simulation 2026</div>
+        <table style="width:100%;font-size:.85rem;">
+          <tr><td style="padding:8px 0;color:var(--gris);">Recettes brutes annuelles</td><td style="text-align:right;font-weight:600;">10 740 €</td></tr>
+          <tr><td style="padding:8px 0;color:var(--gris);">Abattement (30 %)</td><td style="text-align:right;font-weight:600;">- 3 222 €</td></tr>
+          <tr style="border-top:1px solid var(--border);"><td style="padding:8px 0;color:var(--texte);font-weight:600;">Revenu foncier imposable</td><td style="text-align:right;font-weight:700;color:var(--texte);">7 518 €</td></tr>
+          <tr><td style="padding:8px 0;color:var(--gris);">Impôt estimé (TMI 11 %)</td><td style="text-align:right;font-weight:600;color:var(--accent);">~ 827 €</td></tr>
+          <tr><td style="padding:8px 0;color:var(--gris);">Prélèvements sociaux (17,2 %)</td><td style="text-align:right;font-weight:600;color:var(--accent);">~ 1 293 €</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Documents pour votre déclaration</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn-secondary" style="justify-content:flex-start;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            Formulaire 2042 pré-rempli
+          </button>
+          <button class="btn-secondary" style="justify-content:flex-start;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            Récapitulatif recettes/charges
+          </button>
+          <a href="abonnement.html" class="btn-primary" style="justify-content:flex-start;margin-top:8px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Accompagnement fiscal Premium (29&nbsp;€/mois)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:14px;">
+      <div style="flex:1;">
+        <strong style="display:block;margin-bottom:3px;">Besoin d'aide pour optimiser ?</strong>
+        L'accompagnement fiscal Premium inclut : suivi par un expert-comptable agréé, optimisation du régime, déclaration 2042 + 2044, alertes échéances. Économie moyenne constatée : 380 €/an.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 5 : EDL SORTIE ── -->
+  <div class="tab-panel" id="tab-edl-sortie">
+    <div class="card">
+      <div class="card-title">État des lieux de sortie</div>
+      <p style="font-size:.85rem;color:var(--gris);line-height:1.55;margin-bottom:14px;">
+        À réaliser le jour du départ du locataire. La comparaison avec l'EDL d'entrée permet de justifier les éventuelles retenues sur le dépôt de garantie.
+      </p>
+
+      <div class="alert alert-info">
+        <div style="flex:1;">
+          <strong style="display:block;margin-bottom:3px;">Bail en cours jusqu'au 18/09/2026</strong>
+          Le locataire actuel n'a pas donné congé. L'EDL de sortie sera activable à partir du préavis (3 mois avant la fin du bail).
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:18px;">
+        <div>
+          <h3 style="font-family:'Instrument Serif',serif;font-size:1.15rem;color:var(--texte);margin-bottom:10px;">Avant la sortie</h3>
+          <div class="checklist-item">
+            <div class="checklist-check pending" style="width:22px;height:22px;border-radius:50%;background:var(--bg-main);color:var(--gris-light);display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);">1</div>
+            <div class="checklist-content">
+              <div class="checklist-title">Réception du préavis du locataire</div>
+              <div class="checklist-sub">1 ou 3 mois selon zone tendue.</div>
+            </div>
+          </div>
+          <div class="checklist-item">
+            <div class="checklist-check pending" style="width:22px;height:22px;border-radius:50%;background:var(--bg-main);color:var(--gris-light);display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);">2</div>
+            <div class="checklist-content">
+              <div class="checklist-title">Convoquer pour l'EDL</div>
+              <div class="checklist-sub">Lettre recommandée 7 jours avant.</div>
+            </div>
+          </div>
+          <div class="checklist-item">
+            <div class="checklist-check pending" style="width:22px;height:22px;border-radius:50%;background:var(--bg-main);color:var(--gris-light);display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);">3</div>
+            <div class="checklist-content">
+              <div class="checklist-title">Récupérer les clés et compteurs</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-family:'Instrument Serif',serif;font-size:1.15rem;color:var(--texte);margin-bottom:10px;">Restitution du dépôt</h3>
+          <div style="font-size:.85rem;color:var(--texte);line-height:1.65;background:var(--bg-main);padding:14px;border-radius:9px;">
+            <strong>1 mois</strong> si l'EDL de sortie est conforme à celui d'entrée.<br>
+            <strong>2 mois</strong> si retenues à effectuer.<br><br>
+            Au-delà : majoration de 10 % du loyer mensuel par mois de retard (Loi du 6 juillet 1989, art. 22).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') &&
+      !sb.contains(e.target) && !e.target.closest('.mobile-only')) {
+    sb.classList.remove('open');
+  }
+});
+
+document.querySelectorAll('.subtab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+document.querySelectorAll('.fisc-regime-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.fisc-regime-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

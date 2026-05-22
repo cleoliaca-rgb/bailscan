@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Analyse dossier locataire — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.adn-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #3b6fd4 150%);
+  border-radius: var(--card-radius);
+  padding: 36px 40px;
+  color: white;
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.adn-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59,111,212,0.25) 0%, transparent 60%);
+}
+.adn-hero-content { position: relative; z-index: 1; max-width: 720px; }
+.adn-hero-tag {
+  display: inline-block;
+  background: rgba(59,111,212,.2);
+  border: 1px solid rgba(59,111,212,.4);
+  color: #93b4ff;
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: 5px 13px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.adn-hero h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.1rem;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.adn-hero h2 em { color: #93b4ff; font-style: italic; }
+.adn-hero p {
+  font-size: .95rem;
+  color: rgba(255,255,255,.75);
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+/* Layout 2 colonnes */
+.dossier-grid {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 1000px) { .dossier-grid { grid-template-columns: 1fr; } }
+
+/* Form sections */
+.form-section {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.form-section-title {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--gris);
+  margin-bottom: 12px;
+}
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.form-mini-label {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--gris);
+  margin-bottom: 4px;
+  display: block;
+}
+.form-input-mini {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: .82rem;
+  font-family: inherit;
+  background: white;
+}
+.form-input-mini:focus {
+  outline: none;
+  border-color: var(--pro-accent);
+  box-shadow: 0 0 0 3px rgba(59,111,212,.08);
+}
+
+/* Upload pièces */
+.pieces-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.piece-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-light);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .12s;
+}
+.piece-upload:hover {
+  border-color: var(--pro-accent);
+  background: var(--pro-light);
+}
+.piece-upload.uploaded {
+  background: var(--vert-light);
+  border-color: rgba(22,163,74,.3);
+}
+.piece-upload-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--gris);
+  border: 1px dashed var(--border);
+}
+.piece-upload.uploaded .piece-upload-icon {
+  background: var(--vert);
+  color: white;
+  border-color: var(--vert);
+}
+.piece-upload-info { flex: 1; }
+.piece-upload-label { font-weight: 600; font-size: .8rem; color: var(--texte); }
+.piece-upload-status { font-size: .68rem; color: var(--gris); margin-top: 1px; }
+
+/* Taux d'effort */
+.effort-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.effort-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.effort-stat {
+  text-align: center;
+  padding: 14px 10px;
+  background: var(--bg-main);
+  border-radius: 9px;
+  border: 1px solid var(--border-light);
+}
+.effort-stat-label {
+  font-size: .62rem;
+  font-weight: 700;
+  color: var(--gris);
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.effort-stat-value {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.5rem;
+  color: var(--texte);
+  line-height: 1;
+}
+.effort-bar {
+  height: 8px;
+  border-radius: 5px;
+  background: var(--border);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.effort-bar-fill {
+  height: 100%;
+  background: var(--vert);
+  border-radius: 5px;
+  transition: width .4s, background .4s;
+}
+.effort-msg {
+  font-size: .8rem;
+  color: var(--gris);
+  line-height: 1.55;
+}
+
+.regle-3x {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--bg-main);
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  font-size: .82rem;
+}
+.regle-3x-title {
+  font-weight: 700;
+  color: var(--texte);
+  margin-bottom: 5px;
+}
+.regle-3x-row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.regle-3x-row span { font-size: .8rem; color: var(--gris); }
+.regle-3x-row strong { color: var(--texte); }
+
+/* Verdict IA */
+.verdict-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 22px;
+  margin-bottom: 14px;
+}
+.verdict-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.verdict-title {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--gris);
+}
+.verdict-badge {
+  font-size: .85rem;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background: var(--vert-light);
+  color: var(--vert);
+}
+.verdict-badge.warn { background: var(--warn-light); color: #a16207; }
+.verdict-badge.danger { background: var(--danger-light); color: var(--danger); }
+
+.verdict-body {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.verdict-jauge {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+}
+.verdict-jauge svg { transform: rotate(-90deg); }
+.verdict-jauge-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.verdict-jauge-num-value {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.8rem;
+  color: var(--texte);
+  line-height: 1;
+}
+.verdict-jauge-num-sub {
+  font-size: .65rem;
+  color: var(--gris);
+  margin-top: 2px;
+}
+.verdict-text {
+  flex: 1;
+  font-size: .85rem;
+  color: var(--texte);
+  line-height: 1.6;
+}
+.verdict-text strong { font-weight: 700; }
+
+/* Détail scores */
+.score-detail {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.score-row {
+  display: grid;
+  grid-template-columns: 1fr auto 200px;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.score-row:last-child { border: none; }
+.score-row-label { font-weight: 600; font-size: .87rem; color: var(--texte); }
+.score-row-label-sub { font-size: .73rem; color: var(--gris); margin-top: 2px; }
+.score-row-num { font-weight: 700; font-size: .9rem; color: var(--texte); text-align: right; }
+.score-row-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.score-row-fill {
+  height: 100%;
+  background: var(--vert);
+  border-radius: 5px;
+  transition: width .8s;
+}
+.score-row-fill.warn { background: var(--warn); }
+.score-row-fill.danger { background: var(--danger); }
+
+/* Alertes IA */
+.ia-alerts {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.ia-alert {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border-left: 3px solid;
+}
+.ia-alert:last-child { margin-bottom: 0; }
+.ia-alert-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.ia-alert.danger { background: var(--danger-light); border-color: var(--danger); }
+.ia-alert.danger .ia-alert-icon { background: var(--danger); color: white; }
+.ia-alert.warn { background: var(--warn-light); border-color: var(--warn); }
+.ia-alert.warn .ia-alert-icon { background: var(--warn); color: white; }
+.ia-alert.success { background: var(--vert-light); border-color: var(--vert); }
+.ia-alert.success .ia-alert-icon { background: var(--vert); color: white; }
+.ia-alert-content { flex: 1; }
+.ia-alert-title { font-weight: 700; font-size: .87rem; color: var(--texte); margin-bottom: 3px; }
+.ia-alert-desc { font-size: .8rem; color: var(--gris); line-height: 1.55; }
+
+/* Historique */
+.histo-dossier-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  margin-bottom: 8px;
+}
+.histo-dossier-score {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: .85rem;
+  flex-shrink: 0;
+  color: white;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo">
+    <div class="dash-sidebar-logo-left">
+      <span class="dash-sidebar-logo-name">BailScan</span>
+      <span class="dash-sidebar-logo-badge">PROPRIO</span>
+    </div>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Vue d'ensemble
+    </a>
+    <a href="biens.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Mes biens <span class="dash-nav-badge">2</span>
+    </a>
+    <a href="locataires.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Mes locataires
+    </a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Mettre en location
+    </a>
+    <a href="gerer-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Gérer ma location
+    </a>
+    <a href="baux.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      Mes baux
+    </a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analyses juridiques
+    </a>
+    <a href="analyse-dossier.html" class="dash-nav-item active">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Analyse dossier IA
+      <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span>
+    </a>
+    <a href="courriers.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Courriers & lettres
+    </a>
+    <a href="documents.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Documents
+    </a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Mes garanties
+    </a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Mon abonnement
+    </a>
+    <a href="aide.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Aide & contact
+    </a>
+  </nav>
+  <div class="dash-user">
+    <div class="dash-user-row">
+      <div class="dash-user-avatar">CC</div>
+      <div class="dash-user-info">
+        <div class="dash-user-name">Cléolia Clergé-André</div>
+        <div class="dash-user-plan">Plan Gratuit</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <div class="dash-topbar-title">Analyse dossier locataire</div>
+      <div class="dash-topbar-sub">Scoring IA · Taux d'effort · Détection pièces falsifiées</div>
+    </div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Passer à l'Essentiel
+    </a>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <!-- Hero -->
+  <div class="adn-hero">
+    <div class="adn-hero-content">
+      <span class="adn-hero-tag">Outil IA · Inclus Essentiel</span>
+      <h2>Le bon locataire <em>en 30 secondes</em>.<br>Pas le mauvais en 6 mois.</h2>
+      <p>67 % des dossiers de location sont falsifiés (source BFM). BailScan analyse les pièces justificatives, détecte les incohérences, calcule la solvabilité réelle et vous donne un verdict Go / No-Go avec justification.</p>
+    </div>
+  </div>
+
+  <!-- Grille 2 colonnes -->
+  <div class="dossier-grid">
+
+    <!-- ── COLONNE GAUCHE : Formulaire ── -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+
+      <!-- Rattachement bien -->
+      <div class="form-section">
+        <div class="form-section-title">Rattachement au bien</div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label class="form-mini-label">Bien concerné</label>
+          <select class="form-input-mini">
+            <option>Studio Bordeaux Chartrons — 680 €</option>
+            <option>Appartement Gallieni — 895 €</option>
+            <option>— Nouveau bien —</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-mini-label">Candidat</label>
+          <select class="form-input-mini">
+            <option>— Nouveau dossier —</option>
+            <option>Lucas Durand</option>
+            <option>Thomas Bernard</option>
+            <option>Amélie Martin</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Conditions locatives -->
+      <div class="form-section">
+        <div class="form-section-title">Conditions locatives</div>
+        <div class="form-row-2" style="margin-bottom:10px;">
+          <div>
+            <label class="form-mini-label">Loyer HC (€)</label>
+            <input class="form-input-mini" type="number" value="680" id="dosLoyer">
+          </div>
+          <div>
+            <label class="form-mini-label">Charges (€)</label>
+            <input class="form-input-mini" type="number" value="40" id="dosCharges">
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div>
+            <label class="form-mini-label">Type bail</label>
+            <select class="form-input-mini">
+              <option>Meublé</option>
+              <option>Vide</option>
+              <option>Étudiant 9 mois</option>
+              <option>Mobilité</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-mini-label">Dépôt garantie</label>
+            <input class="form-input-mini" type="number" value="1360">
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidat -->
+      <div class="form-section">
+        <div class="form-section-title">Candidat</div>
+        <div class="form-row-2" style="margin-bottom:10px;">
+          <div>
+            <label class="form-mini-label">Prénom</label>
+            <input class="form-input-mini" type="text" value="Lucas">
+          </div>
+          <div>
+            <label class="form-mini-label">Nom</label>
+            <input class="form-input-mini" type="text" value="Durand">
+          </div>
+        </div>
+        <div class="form-row-2" style="margin-bottom:10px;">
+          <div>
+            <label class="form-mini-label">Âge</label>
+            <input class="form-input-mini" type="number" value="22">
+          </div>
+          <div>
+            <label class="form-mini-label">Situation</label>
+            <select class="form-input-mini">
+              <option>Étudiant</option>
+              <option>CDI</option>
+              <option>CDD</option>
+              <option>Indépendant</option>
+              <option>Retraité</option>
+              <option>Demandeur d'emploi</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div>
+            <label class="form-mini-label">Revenu net mensuel (€)</label>
+            <input class="form-input-mini" type="number" value="0" id="dosRevenus">
+          </div>
+          <div>
+            <label class="form-mini-label">Durée de contrat</label>
+            <select class="form-input-mini">
+              <option>Indéterminée</option>
+              <option>+ 12 mois</option>
+              <option>6 à 12 mois</option>
+              <option>&lt; 6 mois</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Garant -->
+      <div class="form-section">
+        <div class="form-section-title">
+          Garant
+          <button class="btn-ghost" style="float:right;padding:0;font-size:.7rem;">+ Ajouter</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="form-row-2">
+            <div>
+              <label class="form-mini-label">Type de garant</label>
+              <select class="form-input-mini">
+                <option>Caution personne physique</option>
+                <option>Visale (Action Logement)</option>
+                <option>GLI (assurance loyers impayés)</option>
+                <option>Aucun</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-mini-label">Revenu mensuel garant (€)</label>
+              <input class="form-input-mini" type="number" value="7800" id="dosGarantRevenus">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pièces justificatives -->
+      <div class="form-section">
+        <div class="form-section-title">Pièces justificatives</div>
+        <div class="pieces-grid">
+
+          <div class="piece-upload uploaded">
+            <div class="piece-upload-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="piece-upload-info">
+              <div class="piece-upload-label">Pièce d'identité</div>
+              <div class="piece-upload-status">CNI_Durand.pdf · OCR validé</div>
+            </div>
+          </div>
+
+          <div class="piece-upload uploaded">
+            <div class="piece-upload-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="piece-upload-info">
+              <div class="piece-upload-label">Attestation scolarité</div>
+              <div class="piece-upload-status">ESC_Bordeaux_2026.pdf · Vérifiée</div>
+            </div>
+          </div>
+
+          <div class="piece-upload uploaded">
+            <div class="piece-upload-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="piece-upload-info">
+              <div class="piece-upload-label">3 derniers bulletins (garant)</div>
+              <div class="piece-upload-status">3 fichiers · Cohérents</div>
+            </div>
+          </div>
+
+          <div class="piece-upload uploaded">
+            <div class="piece-upload-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="piece-upload-info">
+              <div class="piece-upload-label">Avis d'imposition garant</div>
+              <div class="piece-upload-status">AvisImpo_2025.pdf · Vérifié DGFiP</div>
+            </div>
+          </div>
+
+          <div class="piece-upload">
+            <div class="piece-upload-icon">+</div>
+            <div class="piece-upload-info">
+              <div class="piece-upload-label">RIB du candidat</div>
+              <div class="piece-upload-status">Aucun fichier</div>
+            </div>
+          </div>
+
+          <div class="piece-upload">
+            <div class="piece-upload-icon">+</div>
+            <div class="piece-upload-info">
+              <div class="piece-upload-label">3 dernières quittances de loyer</div>
+              <div class="piece-upload-status">Si applicable</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:.9rem;" onclick="lancerAnalyseIA()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Analyser le dossier avec l'IA →
+      </button>
+    </div>
+
+    <!-- ── COLONNE DROITE : Résultats ── -->
+    <div>
+
+      <!-- Taux d'effort temps réel -->
+      <div class="effort-card">
+        <div class="form-section-title" style="margin-bottom:14px;">Taux d'effort en temps réel</div>
+        <div class="effort-stats">
+          <div class="effort-stat">
+            <div class="effort-stat-label">Loyer HC</div>
+            <div class="effort-stat-value">680&nbsp;€</div>
+          </div>
+          <div class="effort-stat">
+            <div class="effort-stat-label">Revenus garant</div>
+            <div class="effort-stat-value">7&nbsp;800&nbsp;€</div>
+          </div>
+          <div class="effort-stat">
+            <div class="effort-stat-label">Taux d'effort</div>
+            <div class="effort-stat-value" style="color:var(--vert);">8,7&nbsp;%</div>
+          </div>
+        </div>
+        <div class="effort-bar">
+          <div class="effort-bar-fill" style="width:8.7%;background:var(--vert);"></div>
+        </div>
+        <div class="effort-msg">
+          <strong style="color:var(--vert);">Excellent ratio.</strong> Le taux d'effort est très inférieur au seuil de 33 % généralement appliqué.
+        </div>
+
+        <div class="regle-3x">
+          <div class="regle-3x-title">Règle des 3× le loyer</div>
+          <div class="regle-3x-row">
+            <span>Minimum requis : <strong>2 160 €</strong></span>
+            <span>Revenus garant : <strong>7 800 €</strong></span>
+            <span class="badge badge-success">✓ 3,6× le loyer</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verdict IA -->
+      <div class="verdict-card">
+        <div class="verdict-header">
+          <div class="verdict-title">Verdict IA</div>
+          <div class="verdict-badge">✓ Go — Dossier solide</div>
+        </div>
+        <div class="verdict-body">
+          <div class="verdict-jauge">
+            <svg width="100" height="100">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="var(--border)" stroke-width="8"/>
+              <circle cx="50" cy="50" r="42" fill="none" stroke="var(--vert)" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="21" stroke-linecap="round"/>
+            </svg>
+            <div class="verdict-jauge-num">
+              <div class="verdict-jauge-num-value" style="color:var(--vert);">92</div>
+              <div class="verdict-jauge-num-sub">/100</div>
+            </div>
+          </div>
+          <div class="verdict-text">
+            Dossier <strong>très solide</strong>. Étudiant ESC Bordeaux avec deux parents garants en CDI cumulant 7 800 €/mois (3,6× le loyer). Toutes les pièces sont cohérentes et vérifiables. Risque d'impayés <strong>très faible</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Détail des scores -->
+      <div class="score-detail">
+        <div class="form-section-title" style="margin-bottom:14px;">Détail du score · 4 axes</div>
+
+        <div class="score-row">
+          <div>
+            <div class="score-row-label">Solvabilité financière</div>
+            <div class="score-row-label-sub">Revenus garant × ratio loyer + stabilité</div>
+          </div>
+          <div class="score-row-num">38/40</div>
+          <div class="score-row-bar"><div class="score-row-fill" style="width:95%;"></div></div>
+        </div>
+
+        <div class="score-row">
+          <div>
+            <div class="score-row-label">Stabilité professionnelle</div>
+            <div class="score-row-label-sub">CDI · ancienneté · cohérence parcours</div>
+          </div>
+          <div class="score-row-num">22/25</div>
+          <div class="score-row-bar"><div class="score-row-fill" style="width:88%;"></div></div>
+        </div>
+
+        <div class="score-row">
+          <div>
+            <div class="score-row-label">Solidité des garants</div>
+            <div class="score-row-label-sub">Type, revenus, nombre de garants</div>
+          </div>
+          <div class="score-row-num">20/20</div>
+          <div class="score-row-bar"><div class="score-row-fill" style="width:100%;"></div></div>
+        </div>
+
+        <div class="score-row">
+          <div>
+            <div class="score-row-label">Cohérence du dossier</div>
+            <div class="score-row-label-sub">Authenticité des pièces, OCR, cross-check</div>
+          </div>
+          <div class="score-row-num">12/15</div>
+          <div class="score-row-bar"><div class="score-row-fill warn" style="width:80%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Alertes IA -->
+      <div class="ia-alerts">
+        <div class="form-section-title" style="margin-bottom:14px;">Alertes & points d'attention</div>
+
+        <div class="ia-alert success">
+          <div class="ia-alert-icon">✓</div>
+          <div class="ia-alert-content">
+            <div class="ia-alert-title">Pièce d'identité authentique</div>
+            <div class="ia-alert-desc">L'OCR confirme une carte d'identité française valide jusqu'en 2031. Pas de signes de falsification détectés.</div>
+          </div>
+        </div>
+
+        <div class="ia-alert success">
+          <div class="ia-alert-icon">✓</div>
+          <div class="ia-alert-content">
+            <div class="ia-alert-title">Bulletins de salaire des garants cohérents</div>
+            <div class="ia-alert-desc">Les 3 bulletins fournis présentent une progression normale (variations &lt; 5%) et concordent avec l'avis d'imposition 2025 du foyer.</div>
+          </div>
+        </div>
+
+        <div class="ia-alert success">
+          <div class="ia-alert-icon">✓</div>
+          <div class="ia-alert-content">
+            <div class="ia-alert-title">Avis d'imposition vérifié</div>
+            <div class="ia-alert-desc">Code de validation à 13 caractères valide. Document authentifié auprès de l'API DGFiP.</div>
+          </div>
+        </div>
+
+        <div class="ia-alert warn">
+          <div class="ia-alert-icon">!</div>
+          <div class="ia-alert-content">
+            <div class="ia-alert-title">RIB du candidat manquant</div>
+            <div class="ia-alert-desc">Demandez le RIB pour mise en place du prélèvement automatique du loyer. Non bloquant.</div>
+          </div>
+        </div>
+
+        <div class="ia-alert warn">
+          <div class="ia-alert-icon">!</div>
+          <div class="ia-alert-content">
+            <div class="ia-alert-title">Pas d'historique locatif</div>
+            <div class="ia-alert-desc">Premier logement du candidat (étudiant). Absence de quittances de précédents loyers. Atténué par la solidité des garants.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+        <button class="btn-primary" style="flex:1;min-width:200px;justify-content:center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Accepter & créer le bail
+        </button>
+        <button class="btn-secondary" style="flex:1;min-width:160px;justify-content:center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          Télécharger le rapport
+        </button>
+        <button class="btn-secondary" style="flex:1;min-width:160px;justify-content:center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg>
+          Demander pièces manquantes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HISTORIQUE DES ANALYSES ── -->
+  <div class="page-header" style="margin-top:32px;">
+    <h2 class="page-title" style="font-size:1.3rem;">Historique des analyses</h2>
+    <div class="page-sub">Tous vos dossiers analysés, archivés et exportables.</div>
+  </div>
+
+  <div class="histo-dossier-row">
+    <div class="histo-dossier-score" style="background:var(--vert);">92</div>
+    <div>
+      <div style="font-weight:700;font-size:.88rem;">Lucas Durand · Studio Bordeaux</div>
+      <div style="font-size:.74rem;color:var(--gris);">Étudiant ESC · 2 garants parents · Analyse du 12/05/2026</div>
+    </div>
+    <span class="badge badge-success">Go</span>
+    <button class="btn-sm">📄 PDF</button>
+    <button class="btn-sm">Voir</button>
+  </div>
+
+  <div class="histo-dossier-row">
+    <div class="histo-dossier-score" style="background:var(--vert);">85</div>
+    <div>
+      <div style="font-weight:700;font-size:.88rem;">Thomas Bernard · Studio Bordeaux</div>
+      <div style="font-size:.74rem;color:var(--gris);">CDI ingénieur 2 800€ · Garantie Visale · Analyse du 08/05/2026</div>
+    </div>
+    <span class="badge badge-success">Go</span>
+    <button class="btn-sm">📄 PDF</button>
+    <button class="btn-sm">Voir</button>
+  </div>
+
+  <div class="histo-dossier-row">
+    <div class="histo-dossier-score" style="background:var(--warn);">68</div>
+    <div>
+      <div style="font-weight:700;font-size:.88rem;">Amélie Martin · Studio Bordeaux</div>
+      <div style="font-size:.74rem;color:var(--gris);">CDI 2 200€ · Pas de garant · Taux effort 31% · Analyse du 10/05/2026</div>
+    </div>
+    <span class="badge badge-warn">À étudier</span>
+    <button class="btn-sm">📄 PDF</button>
+    <button class="btn-sm">Voir</button>
+  </div>
+
+  <div class="histo-dossier-row">
+    <div class="histo-dossier-score" style="background:var(--danger);">42</div>
+    <div>
+      <div style="font-weight:700;font-size:.88rem;">Dossier anonyme · Appartement Gallieni</div>
+      <div style="font-size:.74rem;color:var(--gris);">⚠ Faux bulletins détectés par OCR · Analyse du 22/04/2026</div>
+    </div>
+    <span class="badge badge-danger">No Go</span>
+    <button class="btn-sm">📄 PDF</button>
+    <button class="btn-sm">Voir</button>
+  </div>
+
+  <!-- CTA upgrade -->
+  <div class="upgrade-banner" style="margin-top:24px;">
+    <div>
+      <div class="upgrade-banner-title">Analyses de dossier illimitées avec l'Essentiel</div>
+      <div class="upgrade-banner-sub">2 analyses gratuites incluses dans le plan gratuit. Passez à l'Essentiel pour analyses illimitées + détection avancée de fraude.</div>
+    </div>
+    <a href="abonnement.html" class="upgrade-banner-btn">Découvrir l'Essentiel · 14&nbsp;€/mois</a>
+  </div>
+
+</main>
+
+<script>
+// Sidebar mobile
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') &&
+      !sb.contains(e.target) && !e.target.closest('.mobile-only')) {
+    sb.classList.remove('open');
+  }
+});
+
+// Calcul taux d'effort en temps réel (interactif)
+function updateEffort() {
+  var loyer = parseFloat(document.getElementById('dosLoyer').value) || 0;
+  var charges = parseFloat(document.getElementById('dosCharges').value) || 0;
+  var revenusGarant = parseFloat(document.getElementById('dosGarantRevenus').value) || 0;
+  var revenusCandidat = parseFloat(document.getElementById('dosRevenus').value) || 0;
+
+  var totalLoyer = loyer + charges;
+  var totalRevenus = revenusGarant + revenusCandidat;
+
+  if (totalRevenus > 0) {
+    var taux = (totalLoyer / totalRevenus) * 100;
+    // Mise à jour visuelle ici si besoin
+  }
+}
+
+['dosLoyer', 'dosCharges', 'dosRevenus', 'dosGarantRevenus'].forEach(id => {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateEffort);
+});
+
+function lancerAnalyseIA() {
+  alert('Analyse IA en cours…\n\n(Connecter à l\'API Anthropic Claude pour analyse réelle des pièces uploadées)');
+}
+</script>
+</body>
+</html>

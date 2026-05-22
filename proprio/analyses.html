@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Analyses juridiques — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.adn-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #c84b2f 150%);
+  border-radius: var(--card-radius);
+  padding: 36px 40px;
+  color: white;
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.adn-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(200,75,47,0.25) 0%, transparent 60%);
+}
+.adn-hero-content { position: relative; z-index: 1; max-width: 720px; }
+.adn-hero-tag {
+  display: inline-block;
+  background: rgba(200,75,47,.2);
+  border: 1px solid rgba(200,75,47,.35);
+  color: #ffaa92;
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: 5px 13px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.adn-hero h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.1rem;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.adn-hero h2 em { color: #ffaa92; font-style: italic; }
+.adn-hero p {
+  font-size: .95rem;
+  color: rgba(255,255,255,.75);
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  padding: 48px 24px;
+  text-align: center;
+  background: white;
+  cursor: pointer;
+  transition: all .2s;
+}
+.upload-zone:hover {
+  border-color: var(--pro-accent);
+  background: var(--pro-light);
+}
+.upload-zone-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--pro-light);
+  color: var(--pro-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+.upload-zone-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.3rem;
+  color: var(--texte);
+  margin-bottom: 6px;
+}
+.upload-zone-sub {
+  font-size: .87rem;
+  color: var(--gris);
+  margin-bottom: 18px;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.55;
+}
+.upload-zone-formats {
+  font-size: .74rem;
+  color: var(--gris-light);
+  margin-top: 12px;
+}
+
+/* Analysis result */
+.analysis-result {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 24px;
+  margin-bottom: 14px;
+}
+.analysis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+.analysis-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--texte);
+}
+.analysis-meta { font-size: .77rem; color: var(--gris); margin-top: 4px; }
+.analysis-score {
+  text-align: center;
+  background: var(--vert-light);
+  border-radius: 10px;
+  padding: 12px 18px;
+}
+.analysis-score-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.8rem;
+  color: var(--vert);
+  line-height: 1;
+}
+.analysis-score-num.warn { color: var(--warn); }
+.analysis-score-num.danger { color: var(--danger); }
+.analysis-score-label {
+  font-size: .65rem;
+  color: var(--vert);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-top: 4px;
+}
+
+/* Issue row */
+.issue-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.issue-row:last-child { border: none; }
+.issue-severity {
+  width: 8px;
+  flex-shrink: 0;
+  align-self: stretch;
+  border-radius: 2px;
+  margin-top: 2px;
+}
+.issue-severity.high { background: var(--danger); }
+.issue-severity.medium { background: var(--warn); }
+.issue-severity.low { background: var(--pro-accent); }
+.issue-severity.ok { background: var(--vert); }
+.issue-content { flex: 1; }
+.issue-title {
+  font-weight: 700;
+  font-size: .9rem;
+  color: var(--texte);
+  margin-bottom: 4px;
+}
+.issue-desc {
+  font-size: .82rem;
+  color: var(--gris);
+  line-height: 1.55;
+}
+.issue-ref {
+  display: inline-block;
+  font-size: .7rem;
+  color: var(--pro-accent);
+  background: var(--pro-light);
+  padding: 2px 8px;
+  border-radius: 5px;
+  margin-top: 8px;
+  font-weight: 600;
+}
+.issue-action {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+/* Stats analyses */
+.analyses-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+@media (max-width: 700px) { .analyses-stats { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo">
+    <div class="dash-sidebar-logo-left">
+      <span class="dash-sidebar-logo-name">BailScan</span>
+      <span class="dash-sidebar-logo-badge">PROPRIO</span>
+    </div>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Vue d'ensemble
+    </a>
+    <a href="biens.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Mes biens <span class="dash-nav-badge">2</span>
+    </a>
+    <a href="locataires.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Mes locataires
+    </a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Mettre en location
+    </a>
+    <a href="gerer-location.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Gérer ma location
+    </a>
+    <a href="baux.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      Mes baux
+    </a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item active">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analyses juridiques
+    </a>
+    <a href="analyse-dossier.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Analyse dossier IA
+      <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span>
+    </a>
+    <a href="courriers.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Courriers & lettres
+    </a>
+    <a href="documents.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Documents
+    </a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Mes garanties
+    </a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Mon abonnement
+    </a>
+    <a href="aide.html" class="dash-nav-item">
+      <svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Aide & contact
+    </a>
+  </nav>
+  <div class="dash-user">
+    <div class="dash-user-row">
+      <div class="dash-user-avatar">CC</div>
+      <div class="dash-user-info">
+        <div class="dash-user-name">Cléolia Clergé-André</div>
+        <div class="dash-user-plan">Plan Gratuit</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <div class="dash-topbar-title">Analyses juridiques</div>
+      <div class="dash-topbar-sub">L'outil signature BailScan</div>
+    </div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Passer à l'Essentiel
+    </a>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <!-- Hero ADN BailScan -->
+  <div class="adn-hero">
+    <div class="adn-hero-content">
+      <span class="adn-hero-tag">L'outil signature BailScan</span>
+      <h2>Analyse juridique <em>complète</em>.<br>Détectez les failles avant qu'elles ne coûtent.</h2>
+      <p>BailScan scanne n'importe quel bail (le vôtre, celui d'un confrère, ou un bail repris) pour identifier clauses illégales, manquements ALUR, oublis d'annexes, mentions obligatoires manquantes. Avec les références légales exactes.</p>
+    </div>
+  </div>
+
+  <div class="analyses-stats">
+    <div class="kpi-card">
+      <div class="kpi-label">Baux analysés</div>
+      <div class="kpi-value">3</div>
+      <div class="kpi-trend up">+1 ce mois</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Clauses détectées</div>
+      <div class="kpi-value">47</div>
+      <div class="kpi-trend flat">Sur tous vos baux</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Non-conformités</div>
+      <div class="kpi-value">2</div>
+      <div class="kpi-trend warn">À corriger</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Score moyen</div>
+      <div class="kpi-value">87 / 100</div>
+      <div class="kpi-trend up">Très bon</div>
+    </div>
+  </div>
+
+  <!-- Upload nouvelle analyse -->
+  <div class="card">
+    <div class="card-title">Analyser un nouveau bail</div>
+    <div class="upload-zone">
+      <div class="upload-zone-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="upload-zone-title">Glissez votre bail ici</div>
+      <div class="upload-zone-sub">Ou cliquez pour parcourir. Analyse en moins de 60 secondes, conforme RGPD, bail effacé après traitement.</div>
+      <button class="btn-primary">Choisir un fichier</button>
+      <div class="upload-zone-formats">PDF, Word (.docx), Pages · Max 20 Mo</div>
+    </div>
+  </div>
+
+  <!-- Analyses existantes -->
+  <div class="page-header" style="margin-top:32px;">
+    <h2 class="page-title" style="font-size:1.3rem;">Vos analyses</h2>
+    <div class="page-sub">Historique des baux analysés avec rapport complet et plans d'action.</div>
+  </div>
+
+  <!-- Analyse 1 : Excellent -->
+  <div class="analysis-result">
+    <div class="analysis-header">
+      <div>
+        <div class="analysis-title">Bail meublé · Appartement Gallieni</div>
+        <div class="analysis-meta">Analysé le 18/09/2024 · Carolina M. · 14 clauses examinées · Bail BailScan</div>
+      </div>
+      <div class="analysis-score">
+        <div class="analysis-score-num">96</div>
+        <div class="analysis-score-label">Conforme</div>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity ok"></div>
+      <div class="issue-content">
+        <div class="issue-title">✓ Conforme à la loi du 6 juillet 1989</div>
+        <div class="issue-desc">Toutes les mentions obligatoires sont présentes : identité des parties, surface habitable Loi Boutin, montant du loyer et des charges, dépôt de garantie, durée et conditions de résiliation.</div>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity ok"></div>
+      <div class="issue-content">
+        <div class="issue-title">✓ Annexes ALUR complètes</div>
+        <div class="issue-desc">Notice d'information ALUR, état des lieux, DPE, ERP, attestation d'assurance, règlement de copropriété intégrés.</div>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity low"></div>
+      <div class="issue-content">
+        <div class="issue-title">Recommandation mineure : Mention de l'IRL de référence</div>
+        <div class="issue-desc">L'indice de référence des loyers (IRL T3 2024 = 144,51) pourrait être précisé directement dans le bail pour faciliter les futures révisions.</div>
+        <span class="issue-ref">Décret n° 2014-1334 du 5 novembre 2014</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analyse 2 : Critique -->
+  <div class="analysis-result">
+    <div class="analysis-header">
+      <div>
+        <div class="analysis-title">Bail repris · Studio Bordeaux (ancien locataire)</div>
+        <div class="analysis-meta">Analysé le 12/03/2025 · François Boutin · 18 clauses examinées · Bail tiers (modèle Word)</div>
+      </div>
+      <div class="analysis-score">
+        <div class="analysis-score-num warn" style="color:var(--warn);">72</div>
+        <div class="analysis-score-label" style="color:#a16207;">Améliorable</div>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity high"></div>
+      <div class="issue-content">
+        <div class="issue-title">⚠ Clause d'interdiction des animaux de compagnie</div>
+        <div class="issue-desc">Cette clause est réputée non écrite. Le locataire a le droit de détenir des animaux de compagnie (chat, chien…), sauf race classée dangereuse, dans une habitation principale.</div>
+        <span class="issue-ref">Loi du 9 juillet 1970, art. 10</span>
+        <div class="issue-action">
+          <a href="courriers.html" class="btn-sm" style="background:var(--pro-accent);color:white;border-color:var(--pro-accent);">Générer un avenant</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity high"></div>
+      <div class="issue-content">
+        <div class="issue-title">⚠ Dépôt de garantie supérieur au plafond légal</div>
+        <div class="issue-desc">Le dépôt fixé à 1 360 € (2 mois de loyer) dépasse le plafond pour un bail meublé (2 mois maximum hors charges). Conforme dans ce cas, mais à vérifier que le calcul exclut bien les charges.</div>
+        <span class="issue-ref">Loi du 6 juillet 1989, art. 22</span>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity medium"></div>
+      <div class="issue-content">
+        <div class="issue-title">Notice d'information ALUR absente</div>
+        <div class="issue-desc">Le bail ne fait pas mention de la remise au locataire de la notice d'information sur les droits et obligations des parties (obligatoire depuis la loi ALUR 2014).</div>
+        <span class="issue-ref">Loi ALUR du 24 mars 2014, art. 5</span>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity low"></div>
+      <div class="issue-content">
+        <div class="issue-title">Modèle non conforme aux décrets 2015</div>
+        <div class="issue-desc">Le bail utilise un modèle ancien. Les décrets de 2015 imposent un format type pour les baux d'habitation. Pas d'invalidité automatique, mais à régulariser au prochain renouvellement.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analyse 3 : Bail tiers (test) -->
+  <div class="analysis-result">
+    <div class="analysis-header">
+      <div>
+        <div class="analysis-title">Bail confrère · Test de comparaison</div>
+        <div class="analysis-meta">Analysé le 02/05/2026 · Bail tiers fourni par un propriétaire ami</div>
+      </div>
+      <div class="analysis-score">
+        <div class="analysis-score-num danger" style="color:var(--danger);">54</div>
+        <div class="analysis-score-label" style="color:#991b1b;">Non conforme</div>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity high"></div>
+      <div class="issue-content">
+        <div class="issue-title">5 clauses abusives détectées</div>
+        <div class="issue-desc">Clause de visite sans préavis, frais de relance abusifs (35 €), interdiction de sous-location même partielle, obligation de souscrire une assurance auprès d'un assureur désigné, pénalités cumulatives en cas de retard de paiement.</div>
+        <span class="issue-ref">Code de la consommation, art. R. 212-1 à R. 212-5</span>
+      </div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-severity medium"></div>
+      <div class="issue-content">
+        <div class="issue-title">3 annexes manquantes</div>
+        <div class="issue-desc">DPE, ERP (état des risques) et notice ALUR ne sont pas mentionnés. Le bail pourrait être contesté pour absence d'information.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-light);">
+      <button class="btn-secondary">📥 Télécharger le rapport</button>
+      <button class="btn-secondary">📋 Voir les 47 points analysés</button>
+    </div>
+  </div>
+
+  <!-- CTA upgrade -->
+  <div class="upgrade-banner" style="margin-top:24px;">
+    <div>
+      <div class="upgrade-banner-title">Analyses illimitées avec l'Essentiel</div>
+      <div class="upgrade-banner-sub">3 analyses gratuites incluses. Au-delà, passez à l'Essentiel (14&nbsp;€/mois) pour analyses illimitées + bibliothèque juridique complète.</div>
+    </div>
+    <a href="abonnement.html" class="upgrade-banner-btn">Découvrir l'Essentiel</a>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') &&
+      !sb.contains(e.target) && !e.target.closest('.mobile-only')) {
+    sb.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
