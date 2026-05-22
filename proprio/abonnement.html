@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mon abonnement — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.current-plan {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 22px 26px;
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.current-plan-label { font-size: .7rem; color: var(--gris); text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+.current-plan-name { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--texte); margin: 4px 0; }
+.current-plan-sub { font-size: .85rem; color: var(--gris); }
+.current-plan-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+.current-plan-stat { text-align: center; }
+.current-plan-stat-num { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--texte); line-height: 1; }
+.current-plan-stat-label { font-size: .68rem; color: var(--gris); margin-top: 4px; }
+
+/* Toggle billing */
+.pricing-toggle-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  margin-bottom: 26px;
+}
+.pricing-toggle {
+  display: flex;
+  background: var(--bg-main);
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+}
+.ptoggle {
+  padding: 8px 22px;
+  border: none;
+  border-radius: 7px;
+  font-weight: 600;
+  font-size: .85rem;
+  cursor: pointer;
+  background: transparent;
+  color: var(--gris);
+  transition: all .2s;
+}
+.ptoggle.active {
+  background: white;
+  color: var(--texte);
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+.ptoggle-save {
+  background: var(--vert);
+  color: white;
+  font-size: .62rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+@media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+.pricing-card {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.pricing-card.featured {
+  background: #0f172a;
+  border-color: var(--pro-accent);
+  color: white;
+  transform: scale(1.03);
+  box-shadow: 0 12px 30px rgba(15,23,42,0.15);
+}
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: white;
+  font-size: .6rem;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.pricing-plan {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--gris);
+  margin-bottom: 8px;
+}
+.pricing-card.featured .pricing-plan { color: rgba(255,255,255,.5); }
+
+.pricing-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.4rem;
+  color: var(--texte);
+  margin-bottom: 6px;
+}
+.pricing-card.featured .pricing-name { color: white; }
+
+.pricing-tagline {
+  font-size: .82rem;
+  color: var(--gris);
+  margin-bottom: 18px;
+  line-height: 1.5;
+  min-height: 38px;
+}
+.pricing-card.featured .pricing-tagline { color: rgba(255,255,255,.65); }
+
+.pricing-price {
+  font-family: 'Instrument Serif', serif;
+  font-size: 3rem;
+  color: var(--texte);
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.pricing-card.featured .pricing-price { color: white; }
+.pricing-price sup {
+  font-size: 1.1rem;
+  vertical-align: super;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+}
+.pricing-period {
+  font-size: .8rem;
+  color: var(--gris);
+  margin: 4px 0 6px;
+}
+.pricing-card.featured .pricing-period { color: rgba(255,255,255,.45); }
+
+.pricing-deduction {
+  font-size: .76rem;
+  color: var(--vert);
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+.pricing-card.featured .pricing-deduction { color: #6ee7b7; }
+
+.pricing-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex: 1;
+}
+.pricing-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: .85rem;
+  color: var(--texte);
+  line-height: 1.5;
+}
+.pricing-feature::before {
+  content: '✓';
+  color: var(--pro-accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.pricing-card.featured .pricing-feature { color: rgba(255,255,255,.85); }
+.pricing-card.featured .pricing-feature::before { color: #93b4ff; }
+
+.btn-pricing {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: .9rem;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.btn-pricing-outline {
+  background: white;
+  color: var(--texte);
+  border: 1.5px solid var(--border) !important;
+}
+.btn-pricing-outline:hover { border-color: var(--pro-accent) !important; color: var(--pro-accent); }
+.btn-pricing-pro {
+  background: var(--pro-accent);
+  color: white;
+}
+.btn-pricing-pro:hover { background: #2a5bbf; }
+.btn-pricing-premium {
+  background: transparent;
+  color: rgba(255,255,255,.85);
+  border: 1.5px solid rgba(255,255,255,.2) !important;
+}
+.btn-pricing-premium:hover { border-color: rgba(255,255,255,.5) !important; color: white; background: rgba(255,255,255,.05); }
+
+/* Comparaison features */
+.compare-table { background: white; border: 1px solid var(--border); border-radius: var(--card-radius); overflow: hidden; margin-bottom: 24px; }
+.compare-table table { width: 100%; border-collapse: collapse; }
+.compare-table th { padding: 14px 18px; text-align: left; font-size: .8rem; font-weight: 700; color: var(--texte); background: var(--bg-main); border-bottom: 1px solid var(--border); }
+.compare-table th:nth-child(n+2) { text-align: center; }
+.compare-table th.featured { background: #0f172a; color: white; }
+.compare-table td { padding: 12px 18px; font-size: .85rem; color: var(--texte); border-bottom: 1px solid var(--border-light); }
+.compare-table td:nth-child(n+2) { text-align: center; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr.section-head td { background: var(--bg-main); font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--gris); padding: 10px 18px; }
+.compare-yes { color: var(--vert); font-weight: 700; }
+.compare-no { color: var(--gris-light); }
+
+/* FAQ */
+.faq-row {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.faq-q { font-weight: 600; font-size: .9rem; color: var(--texte); display: flex; justify-content: space-between; align-items: center; }
+.faq-a { font-size: .82rem; color: var(--gris); line-height: 1.6; margin-top: 10px; display: none; padding-top: 10px; border-top: 1px solid var(--border-light); }
+.faq-row.open .faq-a { display: block; }
+.faq-row.open .faq-icon { transform: rotate(45deg); }
+.faq-icon { transition: transform .2s; }
+</style>
+</head>
+<body>
+
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo"><div class="dash-sidebar-logo-left"><span class="dash-sidebar-logo-name">BailScan</span><span class="dash-sidebar-logo-badge">PROPRIO</span></div></div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Vue d'ensemble</a>
+    <a href="biens.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Mes biens <span class="dash-nav-badge">2</span></a>
+    <a href="locataires.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Mes locataires</a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Mettre en location</a>
+    <a href="gerer-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Gérer ma location</a>
+    <a href="baux.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>Mes baux</a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Analyses juridiques</a>
+    <a href="analyse-dossier.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Analyse dossier IA <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span></a>
+    <a href="courriers.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Courriers & lettres</a>
+    <a href="documents.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Documents</a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Mes garanties</a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item active"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Mon abonnement</a>
+    <a href="aide.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Aide & contact</a>
+  </nav>
+  <div class="dash-user"><div class="dash-user-row"><div class="dash-user-avatar">CC</div><div class="dash-user-info"><div class="dash-user-name">Cléolia Clergé-André</div><div class="dash-user-plan">Plan Gratuit</div></div></div></div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div><div class="dash-topbar-title">Mon abonnement</div><div class="dash-topbar-sub">Plan actuel : Gratuit</div></div>
+  </div>
+  <div class="dash-topbar-right">
+    <button class="icon-btn" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <!-- Plan actuel -->
+  <div class="current-plan">
+    <div>
+      <div class="current-plan-label">Plan actuel</div>
+      <div class="current-plan-name">Gratuit</div>
+      <div class="current-plan-sub">Idéal pour démarrer · Limité à 1 bien et 2 analyses/mois</div>
+    </div>
+    <div class="current-plan-stats">
+      <div class="current-plan-stat">
+        <div class="current-plan-stat-num">2 / 2</div>
+        <div class="current-plan-stat-label">Analyses utilisées</div>
+      </div>
+      <div class="current-plan-stat">
+        <div class="current-plan-stat-num">2 / 1</div>
+        <div class="current-plan-stat-label">Biens (au-delà du plan)</div>
+      </div>
+      <div class="current-plan-stat">
+        <div class="current-plan-stat-num">49 €</div>
+        <div class="current-plan-stat-label">Total payé (bail)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-header" style="text-align:center;">
+    <h1 class="page-title">Choisissez le plan adapté</h1>
+    <div class="page-sub" style="max-width:560px;margin:0 auto;">Bail à 49&nbsp;€ disponible sans abonnement. Pour automatiser votre gestion, passez à l'Essentiel ou au Premium.</div>
+  </div>
+
+  <!-- Toggle mensuel/annuel -->
+  <div class="pricing-toggle-wrap">
+    <div class="pricing-toggle">
+      <button class="ptoggle active">Mensuel</button>
+      <button class="ptoggle">Annuel <span class="ptoggle-save">−2 mois</span></button>
+    </div>
+  </div>
+
+  <!-- 3 plans -->
+  <div class="pricing-grid">
+
+    <!-- Gratuit -->
+    <div class="pricing-card">
+      <div class="pricing-plan">Gratuit</div>
+      <div class="pricing-name">Découverte</div>
+      <div class="pricing-tagline">Pour démarrer ou tester BailScan. 1 bien, fonctionnalités essentielles.</div>
+      <div class="pricing-price">0<sup>€</sup></div>
+      <div class="pricing-period">à vie · Sans CB</div>
+      <div class="pricing-deduction">&nbsp;</div>
+      <div class="pricing-features">
+        <div class="pricing-feature">1 bien immobilier</div>
+        <div class="pricing-feature">Bail à 49€ one-shot (à la demande)</div>
+        <div class="pricing-feature">2 analyses juridiques /mois</div>
+        <div class="pricing-feature">2 dossiers locataires /mois</div>
+        <div class="pricing-feature">3 modèles de courriers</div>
+        <div class="pricing-feature">Coffre-fort 5 Go</div>
+      </div>
+      <button class="btn-pricing btn-pricing-outline" disabled style="opacity:.6;cursor:default;">Plan actuel</button>
+    </div>
+
+    <!-- Essentiel — Featured -->
+    <div class="pricing-card featured">
+      <span class="pricing-badge">Plus populaire</span>
+      <div class="pricing-plan">Essentiel</div>
+      <div class="pricing-name">Pour automatiser</div>
+      <div class="pricing-tagline">Quittances auto, analyses illimitées, alertes IRL et fin de bail.</div>
+      <div class="pricing-price">14<sup>€</sup></div>
+      <div class="pricing-period">/ mois sans engagement</div>
+      <div class="pricing-deduction">≈ 7 € après déduction d'impôts*</div>
+      <div class="pricing-features">
+        <div class="pricing-feature">Biens illimités</div>
+        <div class="pricing-feature">Baux illimités (49€/bail économisé)</div>
+        <div class="pricing-feature">Analyses juridiques illimitées</div>
+        <div class="pricing-feature">Analyses dossiers locataires illimitées</div>
+        <div class="pricing-feature">Quittances automatiques mensuelles</div>
+        <div class="pricing-feature">Suivi loyers + comptabilité simplifiée</div>
+        <div class="pricing-feature">Alertes (IRL, fin de bail, diagnostics)</div>
+        <div class="pricing-feature">Bibliothèque juridique complète</div>
+        <div class="pricing-feature">Générateur IA de courriers illimité</div>
+        <div class="pricing-feature">Coffre-fort 20 Go</div>
+      </div>
+      <button class="btn-pricing btn-pricing-pro">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Passer à l'Essentiel
+      </button>
+    </div>
+
+    <!-- Premium -->
+    <div class="pricing-card">
+      <div class="pricing-plan">Premium</div>
+      <div class="pricing-name">Pour tout déléguer</div>
+      <div class="pricing-tagline">Protection juridique illimitée, fiscalité gérée, EDL digital. Comme avoir un syndic perso.</div>
+      <div class="pricing-price">29<sup>€</sup></div>
+      <div class="pricing-period">/ mois sans engagement</div>
+      <div class="pricing-deduction">≈ 15 € après déduction d'impôts*</div>
+      <div class="pricing-features">
+        <div class="pricing-feature">Tout l'Essentiel</div>
+        <div class="pricing-feature">Assistant juridique IA illimité 24/7</div>
+        <div class="pricing-feature">Veille juridique automatique (loi, jurisprudence)</div>
+        <div class="pricing-feature">Déclaration 2042 + 2044 pré-remplie (LMNP, foncier)</div>
+        <div class="pricing-feature">Simulateur fiscal multi-régimes</div>
+        <div class="pricing-feature">EDL digital app mobile (4× plus rapide)</div>
+        <div class="pricing-feature">Détection avancée de fraude documentaire</div>
+        <div class="pricing-feature">−10 % sur GLI, PNO, dépannage partenaires</div>
+        <div class="pricing-feature">Export comptable Excel + CSV</div>
+        <div class="pricing-feature">Coffre-fort 100 Go</div>
+      </div>
+      <button class="btn-pricing btn-pricing-outline">Passer à Premium</button>
+    </div>
+
+  </div>
+
+  <p style="text-align:center;font-size:.75rem;color:var(--gris);margin-bottom:32px;">*Déduction estimée pour un propriétaire en régime réel imposable à 30 %. Confirmez avec votre comptable.</p>
+
+  <!-- Comparaison détaillée -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin-bottom:14px;">Comparaison détaillée</h2>
+
+  <div class="compare-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Fonctionnalité</th>
+          <th>Gratuit</th>
+          <th class="featured">Essentiel</th>
+          <th>Premium</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-head"><td colspan="4">Gestion locative</td></tr>
+        <tr><td>Nombre de biens</td><td>1</td><td class="compare-yes">Illimité</td><td class="compare-yes">Illimité</td></tr>
+        <tr><td>Génération de bail</td><td>49 €/bail</td><td class="compare-yes">Inclus</td><td class="compare-yes">Inclus</td></tr>
+        <tr><td>Quittances automatiques</td><td class="compare-no">Manuel</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Suivi des loyers</td><td>Manuel</td><td class="compare-yes">Automatisé</td><td class="compare-yes">Automatisé</td></tr>
+        <tr><td>Alertes (IRL, fin de bail, diagnostics)</td><td class="compare-no">—</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td></tr>
+
+        <tr class="section-head"><td colspan="4">Analyses IA</td></tr>
+        <tr><td>Analyses juridiques de bail</td><td>2/mois</td><td class="compare-yes">Illimitées</td><td class="compare-yes">Illimitées</td></tr>
+        <tr><td>Analyses dossiers locataires</td><td>2/mois</td><td class="compare-yes">Illimitées</td><td class="compare-yes">Illimitées + anti-fraude</td></tr>
+        <tr><td>Détection clauses abusives</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td></tr>
+
+        <tr class="section-head"><td colspan="4">Courriers & documents</td></tr>
+        <tr><td>Modèles de courriers</td><td>3</td><td class="compare-yes">24 (illimité)</td><td class="compare-yes">24 (illimité)</td></tr>
+        <tr><td>Générateur IA de courriers</td><td class="compare-no">—</td><td class="compare-yes">Illimité</td><td class="compare-yes">Illimité</td></tr>
+        <tr><td>Coffre-fort numérique</td><td>5 Go</td><td>20 Go</td><td>100 Go</td></tr>
+
+        <tr class="section-head"><td colspan="4">Fiscalité & comptabilité</td></tr>
+        <tr><td>Comptabilité simplifiée</td><td class="compare-no">—</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Déclaration 2042 + 2044 pré-remplie</td><td class="compare-no">—</td><td class="compare-no">—</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Expert fiscaliste dédié</td><td class="compare-no">—</td><td class="compare-no">—</td><td class="compare-yes">✓</td></tr>
+
+        <tr class="section-head"><td colspan="4">Assistant juridique IA</td></tr>
+        <tr><td>Bibliothèque juridique</td><td>Basique</td><td class="compare-yes">Complète</td><td class="compare-yes">Complète</td></tr>
+        <tr><td>Assistant juridique IA conversationnel</td><td class="compare-no">—</td><td>10 questions/mois</td><td class="compare-yes">Illimité 24/7</td></tr>
+        <tr><td>Veille jurisprudentielle automatique</td><td class="compare-no">—</td><td class="compare-no">—</td><td class="compare-yes">✓</td></tr>
+        <tr><td>Aide à la rédaction de procédure</td><td class="compare-no">—</td><td>Modèles</td><td class="compare-yes">IA personnalisée</td></tr>
+
+        <tr class="section-head"><td colspan="4">État des lieux</td></tr>
+        <tr><td>EDL papier classique</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td><td class="compare-yes">✓</td></tr>
+        <tr><td>EDL digital app mobile</td><td class="compare-no">—</td><td class="compare-no">—</td><td class="compare-yes">✓ IA</td></tr>
+
+        <tr class="section-head"><td colspan="4">Remises partenaires</td></tr>
+        <tr><td>GLI / PNO / Dépannage 24/7</td><td>Prix public</td><td>−5 %</td><td class="compare-yes">−10 %</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FAQ -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin-bottom:14px;">Questions fréquentes</h2>
+
+  <div class="faq-row">
+    <div class="faq-q">
+      Puis-je résilier à tout moment ?
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-a">Oui, aucun engagement. Résiliation possible directement depuis votre tableau de bord, avec accès maintenu jusqu'à la fin de la période payée.</div>
+  </div>
+
+  <div class="faq-row">
+    <div class="faq-q">
+      Le bail à 49 € reste-t-il disponible sans abonnement ?
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-a">Oui. Le bail à 49 € est un paiement unique accessible à tous, même en plan gratuit. Avec l'Essentiel et le Premium, c'est inclus sans surcoût.</div>
+  </div>
+
+  <div class="faq-row">
+    <div class="faq-q">
+      Que se passe-t-il si je dépasse les limites du plan gratuit ?
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-a">Vous pouvez continuer à utiliser BailScan mais avec accès limité aux nouvelles fonctionnalités au-delà des quotas. Aucune surfacturation. Vous pouvez à tout moment passer à l'Essentiel ou Premium.</div>
+  </div>
+
+  <div class="faq-row">
+    <div class="faq-q">
+      Les frais d'abonnement sont-ils déductibles fiscalement ?
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-a">Oui. L'abonnement BailScan est déductible des revenus fonciers en régime réel (frais de gestion). Selon votre TMI, l'économie d'impôt est de 30 à 50 %.</div>
+  </div>
+
+  <div class="faq-row">
+    <div class="faq-q">
+      Comment fonctionne la déduction d'impôts ?
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-a">Pour un abonnement Essentiel à 14 € HT/mois (168 €/an), avec une tranche marginale d'imposition à 30 %, vous économisez ~50 € d'impôts/an. Coût net : ~7 €/mois.</div>
+  </div>
+
+  <div class="faq-row">
+    <div class="faq-q">
+      L'Assistant juridique IA remplace-t-il un avocat ?
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-a">Non. L'Assistant juridique IA répond à vos questions, génère des courriers et des procédures, mais ne remplace pas un avocat pour vous représenter en justice. Pour les contentieux complexes, nous vous orientons vers un avocat partenaire ou recommandons une assurance protection juridique (voir Garanties). L'IA est formée sur la loi du 6 juillet 1989, ALUR, ELAN et la jurisprudence de la Cour de cassation à jour.</div>
+  </div>
+
+  <div class="faq-row">
+    <div class="faq-q">
+      Mes données sont-elles sécurisées ?
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-a">Toutes les données sont chiffrées et stockées sur des serveurs en France (RGPD). Vos baux et documents ne sont jamais utilisés à des fins commerciales ou partagés avec des tiers.</div>
+  </div>
+
+  <!-- Facturation -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin: 28px 0 14px;">Historique de facturation</h2>
+
+  <div class="card">
+    <table class="table-full">
+      <thead>
+        <tr><th>Date</th><th>Description</th><th>Montant</th><th>Statut</th><th>Facture</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>18/09/2024</td>
+          <td>Bail meublé · Appartement Gallieni</td>
+          <td>49 €</td>
+          <td><span class="badge badge-success">Payé</span></td>
+          <td><button class="btn-sm">📄 PDF</button></td>
+        </tr>
+        <tr>
+          <td colspan="5" style="text-align:center;color:var(--gris);padding:20px;font-style:italic;">Aucun autre paiement</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') && !sb.contains(e.target) && !e.target.closest('.mobile-only')) sb.classList.remove('open');
+});
+document.querySelectorAll('.ptoggle').forEach(p => p.addEventListener('click', () => {
+  document.querySelectorAll('.ptoggle').forEach(c => c.classList.remove('active'));
+  p.classList.add('active');
+}));
+document.querySelectorAll('.faq-row').forEach(r => r.addEventListener('click', () => r.classList.toggle('open')));
+</script>
+</body>
+</html>

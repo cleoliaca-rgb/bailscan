@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Assistant juridique IA — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* Layout chat */
+.chat-wrap {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 18px;
+  height: calc(100vh - 130px);
+  min-height: 600px;
+}
+@media (max-width: 900px) { .chat-wrap { grid-template-columns: 1fr; height: auto; } }
+
+/* Sidebar conversations */
+.chat-sidebar {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 900px) { .chat-sidebar { display: none; } }
+
+.btn-new-chat {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--pro-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-bottom: 14px;
+  transition: background .15s;
+}
+.btn-new-chat:hover { background: #2a5bbf; }
+
+.chat-history-label {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--gris);
+  padding: 8px 4px 4px;
+}
+
+.chat-history-item {
+  padding: 9px 11px;
+  border-radius: 7px;
+  font-size: .82rem;
+  color: var(--texte);
+  cursor: pointer;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background .12s;
+}
+.chat-history-item:hover { background: var(--bg-main); }
+.chat-history-item.active { background: var(--pro-light); color: var(--pro-accent); font-weight: 600; }
+
+.chat-quota-info {
+  margin-top: auto;
+  padding: 14px;
+  background: var(--bg-main);
+  border-radius: 9px;
+  font-size: .76rem;
+  color: var(--gris);
+  line-height: 1.5;
+}
+.chat-quota-bar {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 8px 0 6px;
+}
+.chat-quota-fill {
+  height: 100%;
+  background: var(--pro-accent);
+  border-radius: 3px;
+  width: 40%;
+}
+
+/* Zone chat principale */
+.chat-main {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.chat-header {
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, white 0%, var(--bg-main) 100%);
+}
+.chat-header-info {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.chat-ai-avatar {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #0f172a 0%, #3b6fd4 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: .8rem;
+  flex-shrink: 0;
+}
+.chat-ai-name { font-weight: 700; font-size: .92rem; color: var(--texte); }
+.chat-ai-status { font-size: .73rem; color: var(--vert); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
+.chat-ai-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--vert);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.chat-disclaimer {
+  font-size: .68rem;
+  color: var(--gris);
+  text-align: right;
+  max-width: 220px;
+}
+
+/* Messages */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 26px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.msg {
+  display: flex;
+  gap: 12px;
+  max-width: 100%;
+}
+.msg-avatar {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: .72rem;
+  flex-shrink: 0;
+}
+.msg-avatar.user {
+  background: var(--accent);
+  color: white;
+}
+.msg-avatar.ai {
+  background: linear-gradient(135deg, #0f172a 0%, #3b6fd4 100%);
+  color: white;
+  font-size: .65rem;
+}
+.msg-bubble {
+  flex: 1;
+  min-width: 0;
+}
+.msg-author {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--gris);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.msg-content {
+  font-size: .92rem;
+  color: var(--texte);
+  line-height: 1.65;
+}
+.msg-content p { margin: 0 0 10px; }
+.msg-content p:last-child { margin-bottom: 0; }
+.msg-content strong { font-weight: 700; color: var(--texte); }
+.msg-content ul, .msg-content ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+.msg-content li {
+  margin-bottom: 4px;
+  line-height: 1.6;
+}
+
+/* Référence légale (citation) */
+.law-ref {
+  background: var(--pro-light);
+  border-left: 3px solid var(--pro-accent);
+  padding: 9px 14px;
+  border-radius: 0 7px 7px 0;
+  margin: 8px 0;
+  font-size: .82rem;
+}
+.law-ref-tag {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--pro-accent);
+  margin-bottom: 3px;
+}
+.law-ref-text { color: var(--texte); font-style: italic; line-height: 1.5; }
+
+/* Actions sous la réponse */
+.msg-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.msg-action-btn {
+  font-size: .73rem;
+  padding: 5px 11px;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--gris);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .12s;
+}
+.msg-action-btn:hover {
+  background: var(--pro-light);
+  color: var(--pro-accent);
+  border-color: var(--pro-accent);
+}
+
+/* Suggestions */
+.suggested-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.suggested-action {
+  font-size: .8rem;
+  padding: 8px 14px;
+  background: white;
+  border: 1px solid var(--pro-accent);
+  border-radius: 18px;
+  color: var(--pro-accent);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all .12s;
+}
+.suggested-action:hover {
+  background: var(--pro-accent);
+  color: white;
+}
+
+/* Zone input */
+.chat-input-wrap {
+  padding: 14px 22px 18px;
+  border-top: 1px solid var(--border);
+  background: white;
+}
+.chat-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 10px 12px 10px 18px;
+  transition: all .15s;
+}
+.chat-input-row:focus-within {
+  border-color: var(--pro-accent);
+  box-shadow: 0 0 0 3px rgba(59,111,212,.08);
+  background: white;
+}
+.chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  resize: none;
+  font-family: inherit;
+  font-size: .92rem;
+  color: var(--texte);
+  outline: none;
+  line-height: 1.5;
+  max-height: 150px;
+  min-height: 22px;
+  padding: 4px 0;
+}
+.chat-input::placeholder { color: var(--gris-light); }
+
+.chat-send-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--pro-accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.chat-send-btn:hover { background: #2a5bbf; }
+.chat-send-btn:disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}
+
+.chat-input-attach {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  color: var(--gris);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  flex-shrink: 0;
+}
+.chat-input-attach:hover { background: var(--border); color: var(--texte); }
+
+.chat-input-footer {
+  font-size: .68rem;
+  color: var(--gris);
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Welcome state */
+.chat-welcome {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 30px;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.chat-welcome-icon {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #0f172a 0%, #3b6fd4 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.chat-welcome h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.6rem;
+  color: var(--texte);
+  margin-bottom: 8px;
+}
+.chat-welcome p {
+  color: var(--gris);
+  font-size: .92rem;
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 26px;
+}
+
+.example-questions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+}
+@media (max-width: 600px) { .example-questions { grid-template-columns: 1fr; } }
+
+.example-q {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: all .15s;
+}
+.example-q:hover {
+  border-color: var(--pro-accent);
+  background: var(--pro-light);
+  transform: translateY(-1px);
+}
+.example-q-tag {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--pro-accent);
+  margin-bottom: 4px;
+}
+.example-q-text {
+  font-size: .85rem;
+  color: var(--texte);
+  line-height: 1.4;
+}
+</style>
+</head>
+<body>
+
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo"><div class="dash-sidebar-logo-left"><span class="dash-sidebar-logo-name">BailScan</span><span class="dash-sidebar-logo-badge">PROPRIO</span></div></div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Vue d'ensemble</a>
+    <a href="biens.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Mes biens <span class="dash-nav-badge">2</span></a>
+    <a href="locataires.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Mes locataires</a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Mettre en location</a>
+    <a href="gerer-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Gérer ma location</a>
+    <a href="baux.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>Mes baux</a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Analyses juridiques</a>
+    <a href="analyse-dossier.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Analyse dossier IA <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span></a>
+    <a href="assistant-juridique.html" class="dash-nav-item active"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Assistant juridique <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span></a>
+    <a href="courriers.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Courriers & lettres</a>
+    <a href="documents.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Documents</a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Mes garanties</a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Mon abonnement</a>
+    <a href="aide.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Aide & contact</a>
+  </nav>
+  <div class="dash-user"><div class="dash-user-row"><div class="dash-user-avatar">CC</div><div class="dash-user-info"><div class="dash-user-name">Cléolia Clergé-André</div><div class="dash-user-plan">Plan Gratuit</div></div></div></div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div><div class="dash-topbar-title">Assistant juridique IA</div><div class="dash-topbar-sub">Loi du 6 juillet 1989 · ALUR · ELAN · Jurisprudence Cour de cassation</div></div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Premium · Illimité</a>
+    <button class="icon-btn" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+  </div>
+</header>
+
+<main class="dash-main" style="padding-top:14px;">
+
+  <div class="chat-wrap">
+
+    <!-- Sidebar conversations -->
+    <aside class="chat-sidebar">
+      <button class="btn-new-chat">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nouvelle conversation
+      </button>
+
+      <div class="chat-history-label">Aujourd'hui</div>
+      <div class="chat-history-item active">Mon locataire ne paie plus depuis 2 mois</div>
+
+      <div class="chat-history-label">Cette semaine</div>
+      <div class="chat-history-item">Refus de restitution du dépôt</div>
+      <div class="chat-history-item">Régularisation des charges 2025</div>
+      <div class="chat-history-item">Bail meublé vs vide : différences</div>
+
+      <div class="chat-history-label">Ce mois-ci</div>
+      <div class="chat-history-item">Congé pour reprise par mon fils</div>
+      <div class="chat-history-item">Travaux dans logement occupé</div>
+      <div class="chat-history-item">DPE classe E location possible ?</div>
+      <div class="chat-history-item">Locataire qui fait du bruit la nuit</div>
+
+      <div class="chat-quota-info">
+        <div style="font-weight:700;color:var(--texte);margin-bottom:3px;font-size:.78rem;">5 / 10 questions ce mois</div>
+        <div class="chat-quota-bar"><div class="chat-quota-fill" style="width:50%;"></div></div>
+        <div>Plan gratuit · Premium = illimité</div>
+        <a href="abonnement.html" style="display:block;margin-top:8px;color:var(--pro-accent);font-weight:600;text-decoration:none;font-size:.76rem;">Passer à Premium →</a>
+      </div>
+    </aside>
+
+    <!-- Chat principal -->
+    <div class="chat-main">
+
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <div class="chat-ai-avatar">IA</div>
+          <div>
+            <div class="chat-ai-name">Assistant juridique BailScan</div>
+            <div class="chat-ai-status">En ligne · Réponse en moins de 10 secondes</div>
+          </div>
+        </div>
+        <div class="chat-disclaimer">Pour information seulement.<br>Ne remplace pas un avocat.</div>
+      </div>
+
+      <div class="chat-messages">
+
+        <!-- Message utilisateur -->
+        <div class="msg">
+          <div class="msg-avatar user">CC</div>
+          <div class="msg-bubble">
+            <div class="msg-author">Vous · il y a 2 min</div>
+            <div class="msg-content">
+              <p>Mon locataire de l'Appartement Gallieni n'a pas payé son loyer d'avril ni de mai 2026. Elle me dit qu'elle traverse une période difficile. Quelle est la procédure à suivre, et est-ce que je peux l'expulser ? Le bail est en meublé signé en septembre 2024.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Réponse IA -->
+        <div class="msg">
+          <div class="msg-avatar ai">IA</div>
+          <div class="msg-bubble">
+            <div class="msg-author">Assistant juridique · à l'instant</div>
+            <div class="msg-content">
+              <p>Je comprends votre situation. Voici la procédure à suivre, étape par étape, pour un bail meublé soumis à la loi du 6 juillet 1989.</p>
+
+              <p><strong>Étape 1 — Relance amiable (à faire dès maintenant)</strong></p>
+              <p>Contactez votre locataire par téléphone ou email pour comprendre sa situation. Si elle traverse réellement une difficulté temporaire, vous pouvez proposer un <strong>échéancier de paiement</strong> écrit (à conserver). Cela vous évitera potentiellement une procédure longue et coûteuse.</p>
+
+              <p><strong>Étape 2 — Mise en demeure par LRAR</strong></p>
+              <p>Si pas de paiement sous 8 jours, envoyez une mise en demeure de payer par lettre recommandée avec accusé de réception. Elle doit mentionner le montant dû, le délai de régularisation, et la menace de procédure.</p>
+
+              <div class="law-ref">
+                <div class="law-ref-tag">⚖ Référence légale</div>
+                <div class="law-ref-text">Loi du 6 juillet 1989, art. 7-a : « Le locataire est obligé de payer le loyer et les charges récupérables aux termes convenus. »</div>
+              </div>
+
+              <p><strong>Étape 3 — Commandement de payer par huissier</strong></p>
+              <p>Si la mise en demeure reste sans effet, votre bail contient probablement une <strong>clause résolutoire</strong>. Faites signifier un commandement de payer par un commissaire de justice (anciennement huissier). Le locataire a alors <strong>2 mois</strong> pour régulariser sa dette.</p>
+
+              <p><strong>Étape 4 — Saisine du juge des contentieux de la protection</strong></p>
+              <p>Si le locataire n'a pas régularisé après 2 mois, vous pouvez saisir le juge pour faire constater la résiliation du bail et obtenir une décision d'expulsion. Délai moyen de procédure : <strong>6 à 12 mois</strong>.</p>
+
+              <div class="law-ref">
+                <div class="law-ref-tag">⚖ Procédure</div>
+                <div class="law-ref-text">Loi du 6 juillet 1989, art. 24 : commandement de payer + délai de 2 mois + saisine du juge pour résiliation du bail.</div>
+              </div>
+
+              <p><strong>⚠ Trêve hivernale (1er nov → 31 mars)</strong></p>
+              <p>Aucune expulsion ne peut avoir lieu pendant cette période, même avec une décision de justice. Mais la procédure judiciaire peut continuer en parallèle.</p>
+
+              <p><strong>Mon conseil pratique</strong></p>
+              <p>Avant d'engager des frais d'huissier (~150€) et d'avocat (~1 500€), tentez sérieusement l'échéancier amiable. Si vous avez une <strong>GLI</strong> ou <strong>Visale</strong>, déclarez le sinistre dès la mise en demeure (étape 2). Sans assurance, le risque financier est important.</p>
+            </div>
+
+            <div class="msg-actions">
+              <button class="msg-action-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Réponse utile
+              </button>
+              <button class="msg-action-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+              </button>
+              <button class="msg-action-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
+              </button>
+              <button class="msg-action-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copier
+              </button>
+              <button class="msg-action-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg>
+                Sauvegarder
+              </button>
+            </div>
+
+            <div class="suggested-actions">
+              <button class="suggested-action" onclick="window.location.href='courriers.html'">📝 Générer la mise en demeure</button>
+              <button class="suggested-action" onclick="window.location.href='garanties.html'">🛡 Souscrire une GLI</button>
+              <button class="suggested-action">⚖ Combien coûte un huissier ?</button>
+              <button class="suggested-action">📅 Calculer la trêve hivernale</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input -->
+      <div class="chat-input-wrap">
+        <div class="chat-input-row">
+          <button class="chat-input-attach" title="Joindre un document">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </button>
+          <textarea class="chat-input" placeholder="Posez votre question juridique…" rows="1"></textarea>
+          <button class="chat-send-btn" id="btnSend">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div class="chat-input-footer">
+          L'Assistant juridique IA est formé sur la loi du 6 juillet 1989, ALUR, ELAN et la jurisprudence à jour. Pour information uniquement — ne remplace pas un avocat.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') && !sb.contains(e.target) && !e.target.closest('.mobile-only')) sb.classList.remove('open');
+});
+
+// Auto-grow textarea
+var textarea = document.querySelector('.chat-input');
+if (textarea) {
+  textarea.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+  });
+}
+
+// Scroll to bottom au chargement
+var msgs = document.querySelector('.chat-messages');
+if (msgs) msgs.scrollTop = msgs.scrollHeight;
+</script>
+</body>
+</html>

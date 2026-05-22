@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Documents — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.doc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+@media (max-width: 700px) { .doc-stats { grid-template-columns: 1fr 1fr; } }
+
+.doc-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.doc-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.filter-pill { padding: 6px 14px; border-radius: 20px; font-size: .78rem; font-weight: 500; border: 1px solid var(--border); background: white; color: var(--gris); cursor: pointer; transition: all .12s; }
+.filter-pill.active { background: var(--pro-light); color: var(--pro-accent); border-color: var(--pro-accent); }
+.search-box { position: relative; min-width: 240px; }
+.search-box input { width: 100%; padding: 8px 12px 8px 34px; border: 1px solid var(--border); border-radius: 7px; font-size: .82rem; background: white; font-family: inherit; }
+.search-box svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--gris); }
+
+/* Folders */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.folder-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.folder-card:hover {
+  border-color: var(--pro-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(15,23,42,.06);
+}
+.folder-icon {
+  width: 42px; height: 42px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.folder-name { font-weight: 700; font-size: .9rem; color: var(--texte); }
+.folder-count { font-size: .75rem; color: var(--gris); margin-top: 2px; }
+
+/* Documents list */
+.doc-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  margin-bottom: 8px;
+  transition: all .12s;
+}
+.doc-row:hover { box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+.doc-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.doc-icon.pdf { background: var(--danger-light); color: var(--danger); }
+.doc-icon.word { background: var(--pro-light); color: var(--pro-accent); }
+.doc-icon.image { background: var(--vert-light); color: var(--vert); }
+.doc-icon.archive { background: var(--warn-light); color: #a16207; }
+
+.doc-name { font-weight: 600; font-size: .87rem; color: var(--texte); }
+.doc-meta { font-size: .72rem; color: var(--gris); margin-top: 2px; }
+.doc-size { font-size: .76rem; color: var(--gris); }
+.doc-date { font-size: .76rem; color: var(--gris); }
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: 11px;
+  padding: 32px 20px;
+  text-align: center;
+  background: white;
+  cursor: pointer;
+  transition: all .15s;
+  margin-bottom: 20px;
+}
+.upload-zone:hover { border-color: var(--pro-accent); background: var(--pro-light); }
+</style>
+</head>
+<body>
+
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo"><div class="dash-sidebar-logo-left"><span class="dash-sidebar-logo-name">BailScan</span><span class="dash-sidebar-logo-badge">PROPRIO</span></div></div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Vue d'ensemble</a>
+    <a href="biens.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Mes biens <span class="dash-nav-badge">2</span></a>
+    <a href="locataires.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Mes locataires</a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Mettre en location</a>
+    <a href="gerer-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Gérer ma location</a>
+    <a href="baux.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>Mes baux</a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Analyses juridiques</a>
+    <a href="analyse-dossier.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Analyse dossier IA <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span></a>
+    <a href="courriers.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Courriers & lettres</a>
+    <a href="documents.html" class="dash-nav-item active"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Documents</a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Mes garanties</a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Mon abonnement</a>
+    <a href="aide.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Aide & contact</a>
+  </nav>
+  <div class="dash-user"><div class="dash-user-row"><div class="dash-user-avatar">CC</div><div class="dash-user-info"><div class="dash-user-name">Cléolia Clergé-André</div><div class="dash-user-plan">Plan Gratuit</div></div></div></div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div><div class="dash-topbar-title">Documents</div><div class="dash-topbar-sub">Coffre-fort numérique chiffré · Conservation 10 ans</div></div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Passer à l'Essentiel</a>
+    <button class="icon-btn" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <div class="page-header">
+    <div class="page-header-row">
+      <div>
+        <h1 class="page-title">Documents</h1>
+        <div class="page-sub">Tous vos documents juridiques, fiscaux et techniques au même endroit.</div>
+      </div>
+      <button class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Uploader un document
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="doc-stats">
+    <div class="kpi-card">
+      <div class="kpi-label">Documents</div>
+      <div class="kpi-value">37</div>
+      <div class="kpi-trend up">+4 ce mois</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Espace utilisé</div>
+      <div class="kpi-value">142 Mo</div>
+      <div class="kpi-trend flat">sur 5 Go</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">À renouveler</div>
+      <div class="kpi-value">2</div>
+      <div class="kpi-trend warn">DPE Bordeaux, ERP</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Conservation</div>
+      <div class="kpi-value">10 ans</div>
+      <div class="kpi-trend flat">Obligation légale</div>
+    </div>
+  </div>
+
+  <!-- Dossiers -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin-bottom:14px;">Mes dossiers</h2>
+  <div class="folder-grid">
+    <div class="folder-card">
+      <div class="folder-icon" style="background:var(--pro-light);color:var(--pro-accent);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div>
+        <div class="folder-name">Baux signés</div>
+        <div class="folder-count">4 documents</div>
+      </div>
+    </div>
+    <div class="folder-card">
+      <div class="folder-icon" style="background:var(--vert-light);color:var(--vert);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
+      </div>
+      <div>
+        <div class="folder-name">Quittances</div>
+        <div class="folder-count">17 quittances</div>
+      </div>
+    </div>
+    <div class="folder-card">
+      <div class="folder-icon" style="background:var(--warn-light);color:#a16207;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 17l-5-5 5-5"/><path d="M20 12H4"/></svg>
+      </div>
+      <div>
+        <div class="folder-name">États des lieux</div>
+        <div class="folder-count">3 documents</div>
+      </div>
+    </div>
+    <div class="folder-card">
+      <div class="folder-icon" style="background:var(--danger-light);color:var(--danger);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div>
+        <div class="folder-name">Diagnostics</div>
+        <div class="folder-count">6 documents (DPE, ERP, plomb…)</div>
+      </div>
+    </div>
+    <div class="folder-card">
+      <div class="folder-icon" style="background:var(--bg-main);color:var(--gris);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg>
+      </div>
+      <div>
+        <div class="folder-name">Courriers envoyés</div>
+        <div class="folder-count">5 documents</div>
+      </div>
+    </div>
+    <div class="folder-card">
+      <div class="folder-icon" style="background:var(--pro-light);color:var(--pro-accent);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <div>
+        <div class="folder-name">Factures</div>
+        <div class="folder-count">8 factures (travaux, taxes…)</div>
+      </div>
+    </div>
+    <div class="folder-card">
+      <div class="folder-icon" style="background:var(--vert-light);color:var(--vert);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>
+      </div>
+      <div>
+        <div class="folder-name">Fiscalité</div>
+        <div class="folder-count">2 déclarations</div>
+      </div>
+    </div>
+    <div class="folder-card">
+      <div class="folder-icon" style="background:var(--warn-light);color:#a16207;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7"/></svg>
+      </div>
+      <div>
+        <div class="folder-name">Dossiers candidats</div>
+        <div class="folder-count">7 dossiers analysés</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="doc-toolbar">
+    <div class="doc-filters">
+      <button class="filter-pill active">Tous</button>
+      <button class="filter-pill">PDF</button>
+      <button class="filter-pill">Word</button>
+      <button class="filter-pill">Images</button>
+      <button class="filter-pill">Ce mois-ci</button>
+    </div>
+    <div class="search-box">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Rechercher un document…">
+    </div>
+  </div>
+
+  <!-- Récents -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin-bottom:14px;">Récents</h2>
+
+  <div class="doc-row">
+    <div class="doc-icon pdf">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+    </div>
+    <div>
+      <div class="doc-name">Quittance_Mai2026_Gallieni.pdf</div>
+      <div class="doc-meta">Quittance · Bail Gallieni · Généré par BailScan</div>
+    </div>
+    <div class="doc-size">124 Ko</div>
+    <div class="doc-date">10/05/2026</div>
+    <button class="btn-sm">📥</button>
+    <button class="btn-sm">⋯</button>
+  </div>
+
+  <div class="doc-row">
+    <div class="doc-icon pdf">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+    </div>
+    <div>
+      <div class="doc-name">Bail_Studio_Bordeaux_Brouillon.pdf</div>
+      <div class="doc-meta">Bail · Studio Bordeaux · Brouillon non signé</div>
+    </div>
+    <div class="doc-size">456 Ko</div>
+    <div class="doc-date">08/05/2026</div>
+    <button class="btn-sm">📥</button>
+    <button class="btn-sm">⋯</button>
+  </div>
+
+  <div class="doc-row">
+    <div class="doc-icon image">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    </div>
+    <div>
+      <div class="doc-name">Photos_EDL_Gallieni_2024.zip</div>
+      <div class="doc-meta">État des lieux · 24 photos · Septembre 2024</div>
+    </div>
+    <div class="doc-size">12,4 Mo</div>
+    <div class="doc-date">18/09/2024</div>
+    <button class="btn-sm">📥</button>
+    <button class="btn-sm">⋯</button>
+  </div>
+
+  <div class="doc-row">
+    <div class="doc-icon pdf">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+    </div>
+    <div>
+      <div class="doc-name">DPE_Gallieni_2023.pdf</div>
+      <div class="doc-meta">Diagnostic · Valide jusqu'en 2033 · Classe C</div>
+    </div>
+    <div class="doc-size">2,1 Mo</div>
+    <div class="doc-date">15/06/2023</div>
+    <button class="btn-sm">📥</button>
+    <button class="btn-sm">⋯</button>
+  </div>
+
+  <div class="doc-row">
+    <div class="doc-icon pdf">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+    </div>
+    <div>
+      <div class="doc-name">Bail_Signe_Gallieni_2024.pdf</div>
+      <div class="doc-meta">Bail signé électroniquement · Carolina M. · Annexes incluses</div>
+    </div>
+    <div class="doc-size">1,8 Mo</div>
+    <div class="doc-date">18/09/2024</div>
+    <button class="btn-sm">📥</button>
+    <button class="btn-sm">⋯</button>
+  </div>
+
+  <div class="doc-row">
+    <div class="doc-icon word">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+    </div>
+    <div>
+      <div class="doc-name">Inventaire_Mobilier_Bordeaux.docx</div>
+      <div class="doc-meta">Inventaire · Studio Bordeaux · Liste exhaustive du mobilier</div>
+    </div>
+    <div class="doc-size">68 Ko</div>
+    <div class="doc-date">02/05/2026</div>
+    <button class="btn-sm">📥</button>
+    <button class="btn-sm">⋯</button>
+  </div>
+
+  <div class="doc-row">
+    <div class="doc-icon pdf">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+    </div>
+    <div>
+      <div class="doc-name">Taxe_Fonciere_2025_Acompte.pdf</div>
+      <div class="doc-meta">Fiscalité · Appartement Gallieni · 284 €</div>
+    </div>
+    <div class="doc-size">312 Ko</div>
+    <div class="doc-date">15/02/2026</div>
+    <button class="btn-sm">📥</button>
+    <button class="btn-sm">⋯</button>
+  </div>
+
+  <div class="alert alert-warn" style="margin-top:18px;">
+    <div style="flex:1;">
+      <strong style="display:block;margin-bottom:3px;">⚠ 2 diagnostics à renouveler</strong>
+      Le DPE et l'ERP du Studio Bordeaux expirent prochainement. À renouveler avant tout nouveau bail.
+      <button class="btn-sm" style="margin-top:8px;">Voir les détails</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') && !sb.contains(e.target) && !e.target.closest('.mobile-only')) sb.classList.remove('open');
+});
+document.querySelectorAll('.filter-pill').forEach(p => p.addEventListener('click', () => {
+  document.querySelectorAll('.filter-pill').forEach(c => c.classList.remove('active'));
+  p.classList.add('active');
+}));
+</script>
+</body>
+</html>

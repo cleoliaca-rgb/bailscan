@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Courriers & lettres — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.courrier-categories {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.cat-pill {
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: .8rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--gris);
+  cursor: pointer;
+  transition: all .12s;
+}
+.cat-pill.active { background: var(--pro-light); color: var(--pro-accent); border-color: var(--pro-accent); }
+
+.courrier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.courrier-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all .15s;
+  display: flex;
+  flex-direction: column;
+}
+.courrier-card:hover {
+  border-color: var(--pro-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(15,23,42,.05);
+}
+
+.courrier-card-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.courrier-card-icon.urgent { background: var(--danger-light); color: var(--danger); }
+.courrier-card-icon.warn { background: var(--warn-light); color: #a16207; }
+.courrier-card-icon.info { background: var(--pro-light); color: var(--pro-accent); }
+.courrier-card-icon.success { background: var(--vert-light); color: var(--vert); }
+
+.courrier-card-tag {
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--gris);
+  margin-bottom: 6px;
+}
+.courrier-card-title {
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--texte);
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+.courrier-card-desc {
+  font-size: .78rem;
+  color: var(--gris);
+  line-height: 1.55;
+  margin-bottom: 12px;
+  flex: 1;
+}
+.courrier-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-light);
+  font-size: .73rem;
+}
+.courrier-card-meta { color: var(--gris); }
+.courrier-card-cta { color: var(--pro-accent); font-weight: 600; }
+
+.ia-generator {
+  background: linear-gradient(135deg, #0f172a 0%, #3b6fd4 200%);
+  border-radius: var(--card-radius);
+  padding: 28px 32px;
+  color: white;
+  margin-bottom: 22px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 800px) { .ia-generator { grid-template-columns: 1fr; } }
+.ia-generator h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.ia-generator p { font-size: .88rem; color: rgba(255,255,255,.75); line-height: 1.6; margin-bottom: 14px; }
+.ia-prompt-card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 11px;
+  padding: 18px;
+  backdrop-filter: blur(10px);
+}
+.ia-prompt-input {
+  width: 100%;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 7px;
+  padding: 10px 12px;
+  color: white;
+  font-size: .85rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 70px;
+}
+.ia-prompt-input::placeholder { color: rgba(255,255,255,.4); }
+.ia-prompt-input:focus { outline: none; border-color: rgba(147,180,255,.5); }
+
+/* Historique */
+.histo-courrier {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  margin-bottom: 8px;
+}
+</style>
+</head>
+<body>
+
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo"><div class="dash-sidebar-logo-left"><span class="dash-sidebar-logo-name">BailScan</span><span class="dash-sidebar-logo-badge">PROPRIO</span></div></div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Vue d'ensemble</a>
+    <a href="biens.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Mes biens <span class="dash-nav-badge">2</span></a>
+    <a href="locataires.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Mes locataires</a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Mettre en location</a>
+    <a href="gerer-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Gérer ma location</a>
+    <a href="baux.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>Mes baux</a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Analyses juridiques</a>
+    <a href="analyse-dossier.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Analyse dossier IA <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span></a>
+    <a href="courriers.html" class="dash-nav-item active"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Courriers & lettres</a>
+    <a href="documents.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Documents</a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Mes garanties</a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Mon abonnement</a>
+    <a href="aide.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Aide & contact</a>
+  </nav>
+  <div class="dash-user"><div class="dash-user-row"><div class="dash-user-avatar">CC</div><div class="dash-user-info"><div class="dash-user-name">Cléolia Clergé-André</div><div class="dash-user-plan">Plan Gratuit</div></div></div></div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div><div class="dash-topbar-title">Courriers & lettres</div><div class="dash-topbar-sub">Bibliothèque juridique + Générateur IA</div></div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Passer à l'Essentiel</a>
+    <button class="icon-btn" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <div class="page-header">
+    <h1 class="page-title">Courriers & lettres</h1>
+    <div class="page-sub">Générez tous vos courriers en quelques clics. Modèles juridiquement conformes, mis à jour avec la dernière jurisprudence.</div>
+  </div>
+
+  <!-- Générateur IA -->
+  <div class="ia-generator">
+    <div>
+      <h2>Générateur de courrier IA</h2>
+      <p>Décrivez votre situation en quelques mots. BailScan rédige un courrier juridiquement conforme, avec références légales exactes, prêt à envoyer en LRAR.</p>
+      <div style="display:flex;gap:14px;font-size:.78rem;color:rgba(255,255,255,.7);">
+        <span>✓ Conforme au droit français</span>
+        <span>✓ Références légales incluses</span>
+        <span>✓ Personnalisation auto</span>
+      </div>
+    </div>
+    <div class="ia-prompt-card">
+      <label style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:8px;">Décrivez votre besoin</label>
+      <textarea class="ia-prompt-input" placeholder="Ex : Mon locataire a 2 mois de retard sur le loyer, je veux envoyer une mise en demeure…"></textarea>
+      <button class="btn-primary" style="width:100%;margin-top:10px;background:white;color:#0f172a;font-weight:700;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Générer avec l'IA →
+      </button>
+    </div>
+  </div>
+
+  <!-- Catégories -->
+  <div class="courrier-categories">
+    <button class="cat-pill active">Tous (24)</button>
+    <button class="cat-pill">Loyer & charges (6)</button>
+    <button class="cat-pill">Impayés (5)</button>
+    <button class="cat-pill">Fin de bail (4)</button>
+    <button class="cat-pill">Travaux & réparations (4)</button>
+    <button class="cat-pill">Litiges (3)</button>
+    <button class="cat-pill">Quittances (2)</button>
+  </div>
+
+  <!-- Grille de modèles -->
+  <div class="courrier-grid">
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon urgent">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+      </div>
+      <div class="courrier-card-tag">Impayés</div>
+      <div class="courrier-card-title">Mise en demeure de payer le loyer</div>
+      <div class="courrier-card-desc">Première étape obligatoire en cas d'impayé. Délai 8 jours avant procédure.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">LRAR · 2 pages</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon urgent">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+      </div>
+      <div class="courrier-card-tag">Impayés</div>
+      <div class="courrier-card-title">Commandement de payer (huissier)</div>
+      <div class="courrier-card-desc">Si la mise en demeure reste sans effet. Active la clause résolutoire du bail.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">Acte huissier</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </div>
+      <div class="courrier-card-tag">Loyer & charges</div>
+      <div class="courrier-card-title">Révision annuelle du loyer (IRL)</div>
+      <div class="courrier-card-desc">Notification de révision selon l'indice IRL. Mention obligatoire de l'indice de base.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">Lettre simple · 1 page</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="courrier-card-tag">Loyer & charges</div>
+      <div class="courrier-card-title">Régularisation des charges annuelles</div>
+      <div class="courrier-card-desc">Avec décompte détaillé et justificatifs. À envoyer dans le mois suivant l'arrêté.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">LRAR · 3 pages + annexes</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon warn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="courrier-card-tag">Fin de bail</div>
+      <div class="courrier-card-title">Congé pour vente du logement</div>
+      <div class="courrier-card-desc">Délai 6 mois avant échéance (bail vide). Droit de préemption du locataire.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">LRAR ou huissier</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon warn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </div>
+      <div class="courrier-card-tag">Fin de bail</div>
+      <div class="courrier-card-title">Congé pour reprise (résidence principale)</div>
+      <div class="courrier-card-desc">Reprise par vous ou un proche. Justification du lien et de la résidence.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">LRAR · 2 pages</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon success">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="courrier-card-tag">Quittances</div>
+      <div class="courrier-card-title">Quittance de loyer</div>
+      <div class="courrier-card-desc">Modèle standard avec ventilation loyer / charges. Obligation légale à fournir.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">PDF · 1 page</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div class="courrier-card-tag">Quittances</div>
+      <div class="courrier-card-title">Reçu de dépôt de garantie</div>
+      <div class="courrier-card-desc">Attestation de versement à fournir au locataire à la signature du bail.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">PDF · 1 page</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon warn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <div class="courrier-card-tag">Travaux</div>
+      <div class="courrier-card-title">Demande d'accès pour travaux</div>
+      <div class="courrier-card-desc">Préavis 7 jours obligatoire. Précisez nature, durée, horaires.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">LRAR · 1 page</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon urgent">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <div class="courrier-card-tag">Litiges</div>
+      <div class="courrier-card-title">Refus de restitution du dépôt</div>
+      <div class="courrier-card-desc">Justifie la retenue avec EDL comparé, devis travaux, calculs.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">LRAR · 2 pages + annexes</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </div>
+      <div class="courrier-card-tag">Travaux</div>
+      <div class="courrier-card-title">Réponse à demande de travaux locataire</div>
+      <div class="courrier-card-desc">Acceptation, refus motivé ou contre-proposition selon nature des travaux.</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">Lettre simple</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+    <div class="courrier-card">
+      <div class="courrier-card-icon success">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="courrier-card-tag">Fin de bail</div>
+      <div class="courrier-card-title">Renouvellement de bail avec modification</div>
+      <div class="courrier-card-desc">Proposer un renouvellement avec changement de conditions (loyer, durée).</div>
+      <div class="courrier-card-footer">
+        <span class="courrier-card-meta">LRAR · 2 pages</span>
+        <span class="courrier-card-cta">Utiliser →</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Historique courriers envoyés -->
+  <div class="page-header" style="margin-top:32px;">
+    <h2 class="page-title" style="font-size:1.3rem;">Mes courriers envoyés</h2>
+    <div class="page-sub">Archivage légal · Preuve d'envoi conservée.</div>
+  </div>
+
+  <div class="histo-courrier">
+    <div style="width:32px;height:32px;border-radius:8px;background:var(--pro-light);color:var(--pro-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg>
+    </div>
+    <div>
+      <div style="font-weight:700;font-size:.88rem;">Révision annuelle du loyer · Appartement Gallieni</div>
+      <div style="font-size:.74rem;color:var(--gris);margin-top:2px;">Envoyé à Carolina M. · 28/09/2025 · LRAR n° 1A 234 567 890</div>
+    </div>
+    <span class="badge badge-success">Reçu</span>
+    <button class="btn-sm">📄 PDF</button>
+  </div>
+
+  <div class="histo-courrier">
+    <div style="width:32px;height:32px;border-radius:8px;background:var(--vert-light);color:var(--vert);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div>
+      <div style="font-weight:700;font-size:.88rem;">Quittance loyer mai 2026 · Gallieni</div>
+      <div style="font-size:.74rem;color:var(--gris);margin-top:2px;">Envoyée à carolina.m@gmail.com · 10/05/2026 · Email</div>
+    </div>
+    <span class="badge badge-success">Envoyée</span>
+    <button class="btn-sm">📄 PDF</button>
+  </div>
+
+  <div class="histo-courrier">
+    <div style="width:32px;height:32px;border-radius:8px;background:var(--warn-light);color:#a16207;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+    </div>
+    <div>
+      <div style="font-weight:700;font-size:.88rem;">Refus de restitution du DG (50% retenu) · Bordeaux</div>
+      <div style="font-size:.74rem;color:var(--gris);margin-top:2px;">Envoyé à F. Boutin · 02/05/2026 · LRAR n° 1A 234 521 988</div>
+    </div>
+    <span class="badge badge-success">Reçu</span>
+    <button class="btn-sm">📄 PDF</button>
+  </div>
+
+  <!-- CTA upgrade -->
+  <div class="upgrade-banner" style="margin-top:24px;">
+    <div>
+      <div class="upgrade-banner-title">Bibliothèque juridique complète + Générateur IA illimité</div>
+      <div class="upgrade-banner-sub">Plan gratuit : 3 modèles + 2 courriers IA/mois. Essentiel : 24 modèles + générateur IA illimité.</div>
+    </div>
+    <a href="abonnement.html" class="upgrade-banner-btn">Passer à l'Essentiel</a>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') && !sb.contains(e.target) && !e.target.closest('.mobile-only')) sb.classList.remove('open');
+});
+document.querySelectorAll('.cat-pill').forEach(p => p.addEventListener('click', () => {
+  document.querySelectorAll('.cat-pill').forEach(c => c.classList.remove('active'));
+  p.classList.add('active');
+}));
+</script>
+</body>
+</html>

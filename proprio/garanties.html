@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mes garanties — BailScan Propriétaire</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.garantie-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: var(--card-radius);
+  padding: 28px 32px;
+  color: white;
+  margin-bottom: 22px;
+}
+.garantie-hero h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.6rem;
+  color: white;
+  margin-bottom: 8px;
+}
+.garantie-hero p { font-size: .88rem; color: rgba(255,255,255,.7); line-height: 1.6; max-width: 620px; }
+
+.garantie-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 800px) { .garantie-grid { grid-template-columns: 1fr; } }
+
+.garantie-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 24px;
+  position: relative;
+}
+.garantie-card.active { border: 2px solid var(--vert); }
+.garantie-card.recommended {
+  border: 2px solid var(--pro-accent);
+  background: linear-gradient(135deg, white 0%, rgba(59,111,212,0.03) 100%);
+}
+
+.garantie-card-tag {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  font-size: .65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--vert);
+  color: white;
+}
+.garantie-card-tag.recommended { background: var(--pro-accent); }
+
+.garantie-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.garantie-card-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.garantie-card-icon.gli { background: var(--danger-light); color: var(--danger); }
+.garantie-card-icon.pno { background: var(--pro-light); color: var(--pro-accent); }
+.garantie-card-icon.depannage { background: var(--warn-light); color: #a16207; }
+.garantie-card-icon.juridique { background: var(--vert-light); color: var(--vert); }
+
+.garantie-card-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.3rem;
+  color: var(--texte);
+  margin-bottom: 4px;
+}
+.garantie-card-sub {
+  font-size: .82rem;
+  color: var(--gris);
+  margin-bottom: 16px;
+  line-height: 1.55;
+}
+
+.garantie-card-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px 0;
+  font-size: .85rem;
+  color: var(--texte);
+}
+.garantie-card-features li {
+  padding: 6px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.garantie-card-features li::before {
+  content: '✓';
+  color: var(--vert);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.garantie-card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-light);
+  margin-bottom: 14px;
+}
+.garantie-card-price-amount {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.8rem;
+  color: var(--texte);
+  line-height: 1;
+}
+.garantie-card-price-unit { font-size: .82rem; color: var(--gris); }
+.garantie-card-price-discount {
+  font-size: .72rem;
+  color: var(--vert);
+  font-weight: 700;
+  margin-left: auto;
+}
+
+.garantie-active-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .78rem;
+  color: var(--vert);
+  font-weight: 600;
+  padding: 5px 11px;
+  background: var(--vert-light);
+  border-radius: 20px;
+}
+
+/* Comparison table */
+.compare-table {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.compare-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.compare-table th {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--texte);
+  background: var(--bg-main);
+  border-bottom: 1px solid var(--border);
+}
+.compare-table th:nth-child(2), .compare-table th:nth-child(3) { text-align: center; }
+.compare-table td {
+  padding: 13px 18px;
+  font-size: .85rem;
+  color: var(--texte);
+  border-bottom: 1px solid var(--border-light);
+}
+.compare-table td:nth-child(2), .compare-table td:nth-child(3) { text-align: center; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-yes { color: var(--vert); font-weight: 700; }
+.compare-no { color: var(--gris-light); }
+</style>
+</head>
+<body>
+
+<aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-sidebar-logo"><div class="dash-sidebar-logo-left"><span class="dash-sidebar-logo-name">BailScan</span><span class="dash-sidebar-logo-badge">PROPRIO</span></div></div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tableau de bord</div>
+    <a href="dashboard.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Vue d'ensemble</a>
+    <a href="biens.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Mes biens <span class="dash-nav-badge">2</span></a>
+    <a href="locataires.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Mes locataires</a>
+    <div class="dash-nav-section">Cycle locatif</div>
+    <a href="mettre-en-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Mettre en location</a>
+    <a href="gerer-location.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Gérer ma location</a>
+    <a href="baux.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>Mes baux</a>
+    <div class="dash-nav-section">Outils BailScan</div>
+    <a href="analyses.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Analyses juridiques</a>
+    <a href="analyse-dossier.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Analyse dossier IA <span class="dash-nav-badge" style="background:var(--pro-accent);">IA</span></a>
+    <a href="courriers.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Courriers & lettres</a>
+    <a href="documents.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Documents</a>
+    <div class="dash-nav-section">Protection</div>
+    <a href="garanties.html" class="dash-nav-item active"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Mes garanties</a>
+    <div class="dash-nav-section">Compte</div>
+    <a href="abonnement.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Mon abonnement</a>
+    <a href="aide.html" class="dash-nav-item"><svg class="dash-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Aide & contact</a>
+  </nav>
+  <div class="dash-user"><div class="dash-user-row"><div class="dash-user-avatar">CC</div><div class="dash-user-info"><div class="dash-user-name">Cléolia Clergé-André</div><div class="dash-user-plan">Plan Gratuit</div></div></div></div>
+</aside>
+
+<header class="dash-topbar">
+  <div class="dash-topbar-left">
+    <button class="icon-btn mobile-only" onclick="document.getElementById('dashSidebar').classList.toggle('open')" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div><div class="dash-topbar-title">Mes garanties</div><div class="dash-topbar-sub">Protégez votre investissement locatif</div></div>
+  </div>
+  <div class="dash-topbar-right">
+    <a href="abonnement.html" class="btn-upgrade"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Passer à l'Essentiel</a>
+    <button class="icon-btn" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <div class="garantie-hero">
+    <h2>Sécurisez vos revenus locatifs</h2>
+    <p>Loyers impayés, dégradations, sinistres, litiges juridiques : choisissez les garanties qui correspondent à votre situation. Tarifs négociés avec nos partenaires assureurs (remise -10 % réservée aux abonnés Premium).</p>
+  </div>
+
+  <!-- Mes garanties actives -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin-bottom:14px;">Mes garanties actives</h2>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:16px;padding:8px;">
+      <div class="garantie-card-icon juridique" style="margin-bottom:0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:.95rem;color:var(--texte);">Assistant juridique IA</div>
+        <div style="font-size:.78rem;color:var(--gris);margin-top:2px;">Inclus dans le plan gratuit · Bibliothèque de modèles + 5 questions/mois</div>
+      </div>
+      <span class="garantie-active-badge">✓ Active</span>
+    </div>
+  </div>
+
+  <div class="alert alert-info" style="margin-top:14px;">
+    <div style="flex:1;">
+      <strong style="display:block;margin-bottom:3px;">Aucune assurance souscrite</strong>
+      Votre Appartement Gallieni n'a pas de garantie loyers impayés. En cas d'impayé, la procédure de recouvrement peut prendre 18 mois et coûter jusqu'à 5 000 € en frais d'huissier et d'avocat.
+    </div>
+  </div>
+
+  <!-- 4 garanties disponibles -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin: 28px 0 14px;">Garanties disponibles</h2>
+
+  <div class="garantie-grid">
+
+    <!-- GLI -->
+    <div class="garantie-card recommended">
+      <span class="garantie-card-tag recommended">Recommandé</span>
+      <div class="garantie-card-icon gli">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <div class="garantie-card-title">Garantie Loyers Impayés (GLI)</div>
+      <div class="garantie-card-sub">Couvre les impayés jusqu'à 70 000 € sans franchise. Procédure d'expulsion gérée par un juriste.</div>
+      <ul class="garantie-card-features">
+        <li>Indemnisation dès le 1er jour d'impayé</li>
+        <li>Jusqu'à 70 000 € par bail, durée illimitée</li>
+        <li>Frais de justice pris en charge (huissier, avocat)</li>
+        <li>Procédure d'expulsion gérée à votre place</li>
+        <li>Détériorations couvertes en option (+0,42 %)</li>
+      </ul>
+      <div class="garantie-card-price">
+        <div>
+          <div class="garantie-card-price-amount">2,20&nbsp;%</div>
+          <div class="garantie-card-price-unit">du loyer charges comprises</div>
+        </div>
+        <span class="garantie-card-price-discount">−10 % Premium</span>
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center;">Obtenir un devis</button>
+    </div>
+
+    <!-- PNO -->
+    <div class="garantie-card">
+      <div class="garantie-card-icon pno">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </div>
+      <div class="garantie-card-title">Assurance PNO</div>
+      <div class="garantie-card-sub">Propriétaire Non Occupant. Obligatoire en copropriété (loi ALUR). Couvre dommages structure et responsabilité civile.</div>
+      <ul class="garantie-card-features">
+        <li>Responsabilité civile jusqu'à 12,8 M€</li>
+        <li>Mobilier garanti jusqu'à 5 000 €</li>
+        <li>Perte de loyer 12 mois si sinistre</li>
+        <li>Recours juridique 8 000 €</li>
+        <li>Couvre les périodes de vacance locative</li>
+      </ul>
+      <div class="garantie-card-price">
+        <div>
+          <div class="garantie-card-price-amount">80&nbsp;€</div>
+          <div class="garantie-card-price-unit">/ an pour appartement</div>
+        </div>
+        <span class="garantie-card-price-discount">−5 % Premium</span>
+      </div>
+      <button class="btn-secondary" style="width:100%;justify-content:center;">Obtenir un devis</button>
+    </div>
+
+    <!-- Dépannage 24/7 -->
+    <div class="garantie-card">
+      <div class="garantie-card-icon depannage">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <div class="garantie-card-title">Dépannage d'urgence 24/7</div>
+      <div class="garantie-card-sub">Plomberie, électricité, gaz, serrurerie. Artisan sous 4h, jusqu'à 500 € par intervention pris en charge.</div>
+      <ul class="garantie-card-features">
+        <li>Artisan sur place en moins de 4h</li>
+        <li>500 € pris en charge par intervention</li>
+        <li>10 interventions/an (Sécurité)</li>
+        <li>Illimité (Protection)</li>
+        <li>Eau, électricité, gaz, serrurerie, volets</li>
+      </ul>
+      <div class="garantie-card-price">
+        <div>
+          <div class="garantie-card-price-amount">9,90&nbsp;€</div>
+          <div class="garantie-card-price-unit">/ mois (Sécurité)</div>
+        </div>
+      </div>
+      <button class="btn-secondary" style="width:100%;justify-content:center;">Souscrire</button>
+    </div>
+
+    <!-- Assistant juridique IA -->
+    <div class="garantie-card">
+      <div class="garantie-card-icon juridique">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </div>
+      <div class="garantie-card-title">Assistant juridique IA Premium</div>
+      <div class="garantie-card-sub">Posez n'importe quelle question sur votre location, obtenez une réponse en moins de 30 secondes avec références légales exactes.</div>
+      <ul class="garantie-card-features">
+        <li>Questions juridiques illimitées 24/7</li>
+        <li>Formé sur loi du 6 juillet 1989, ALUR, ELAN</li>
+        <li>Veille jurisprudentielle Cour de cassation</li>
+        <li>Génération de procédures personnalisées</li>
+        <li>Inclus dans Premium · ne remplace pas un avocat</li>
+      </ul>
+      <div class="garantie-card-price">
+        <div>
+          <div class="garantie-card-price-amount">Inclus</div>
+          <div class="garantie-card-price-unit">dans Premium 29 €/mois</div>
+        </div>
+      </div>
+      <a href="abonnement.html" class="btn-primary" style="width:100%;justify-content:center;">Découvrir Premium</a>
+    </div>
+
+  </div>
+
+  <!-- Tableau comparatif -->
+  <h2 style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--texte);margin: 28px 0 14px;">Comparatif des assurances loyers impayés</h2>
+
+  <div class="compare-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Caractéristique</th>
+          <th>Visale (gratuit)</th>
+          <th>GLI BailScan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Plafond d'indemnisation</td>
+          <td>36 000 €</td>
+          <td class="compare-yes">70 000 €</td>
+        </tr>
+        <tr>
+          <td>Coût pour le propriétaire</td>
+          <td class="compare-yes">Gratuit</td>
+          <td>2,20 % du loyer</td>
+        </tr>
+        <tr>
+          <td>Critères d'éligibilité locataire</td>
+          <td>Étudiants, &lt;30 ans, mobilité pro</td>
+          <td class="compare-yes">Tous locataires solvables</td>
+        </tr>
+        <tr>
+          <td>Délai d'indemnisation</td>
+          <td>2 mois après défaut</td>
+          <td class="compare-yes">Dès le 1er jour</td>
+        </tr>
+        <tr>
+          <td>Frais de justice inclus</td>
+          <td class="compare-no">Non</td>
+          <td class="compare-yes">Oui (10 000 €/litige)</td>
+        </tr>
+        <tr>
+          <td>Détériorations immobilières</td>
+          <td class="compare-no">Non</td>
+          <td class="compare-yes">En option (+0,42 %)</td>
+        </tr>
+        <tr>
+          <td>Gestion de la procédure</td>
+          <td>Vous</td>
+          <td class="compare-yes">Juriste BailScan</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('click', function(e) {
+  var sb = document.getElementById('dashSidebar');
+  if (window.innerWidth <= 900 && sb.classList.contains('open') && !sb.contains(e.target) && !e.target.closest('.mobile-only')) sb.classList.remove('open');
+});
+</script>
+</body>
+</html>
