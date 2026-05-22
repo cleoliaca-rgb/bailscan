@@ -1,95 +1,61 @@
 {
   "functions": {
-    "api/analyze.js": {
-      "maxDuration": 120
-    },
-    "api/checkout.js": {
-      "maxDuration": 10
-    },
-    "api/checkout-proprio.js": {
-      "maxDuration": 10
-    },
-    "api/checkout-pro.js": {
-      "maxDuration": 10
-    },
-    "api/webhook.js": {
-      "maxDuration": 10
-    },
-    "api/webhook-pro.js": {
-      "maxDuration": 10
-    },
-    "api/send-mail.js": {
-      "maxDuration": 30
-    },
-    "api/trial-reminder.js": {
-      "maxDuration": 60
-    },
-    "api/quittances-auto.js": {
-      "maxDuration": 60
-    },
-    "api/send-welcome.js": {
-      "maxDuration": 30
-    },
-    "api/cron-trial-reminders.js": {
-      "maxDuration": 60
-    },
-    "api/stripe-webhook.js": {
-      "maxDuration": 30
-    },
-    "api/cancel-subscription.js": {
-      "maxDuration": 10
-    }
+    "api/analyze.js": { "maxDuration": 120 },
+    "api/checkout.js": { "maxDuration": 10 },
+    "api/checkout-proprio.js": { "maxDuration": 10 },
+    "api/checkout-pro.js": { "maxDuration": 10 },
+    "api/webhook.js": { "maxDuration": 10 },
+    "api/webhook-pro.js": { "maxDuration": 10 },
+    "api/send-mail.js": { "maxDuration": 30 },
+    "api/trial-reminder.js": { "maxDuration": 60 },
+    "api/quittances-auto.js": { "maxDuration": 60 },
+    "api/send-welcome.js": { "maxDuration": 30 },
+    "api/cron-trial-reminders.js": { "maxDuration": 60 },
+    "api/stripe-webhook.js": { "maxDuration": 30 },
+    "api/cancel-subscription.js": { "maxDuration": 10 }
   },
   "crons": [
-    {
-      "path": "/api/trial-reminder",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/quittances-auto",
-      "schedule": "0 8 1 * *"
-    },
-    {
-      "path": "/api/cron-trial-reminders",
-      "schedule": "0 9 * * *"
-    }
+    { "path": "/api/trial-reminder", "schedule": "0 9 * * *" },
+    { "path": "/api/quittances-auto", "schedule": "0 8 1 * *" },
+    { "path": "/api/cron-trial-reminders", "schedule": "0 9 * * *" }
   ],
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "www.bailscan.app"
-        }
-      ],
-      "destination": "https://bailscan.app/$1",
-      "permanent": true
-    },
-    {
-      "source": "/:path*.html",
-      "destination": "/:path*",
-      "permanent": true
-    }
+    { "source": "/(.*)", "has": [{ "type": "host", "value": "www.bailscan.app" }], "destination": "https://bailscan.app/$1", "permanent": true },
+    { "source": "/:path*.html", "destination": "/:path*", "permanent": true },
+    { "source": "/analyse-bail-locatif-gratuit", "destination": "/analyser", "permanent": true },
+    { "source": "/bail-locatif-droits-locataire", "destination": "/blog/guide-bail-location-2026-tout-savoir", "permanent": true },
+    { "source": "/charges-locatives", "destination": "/blog/charges-locatives-abusives", "permanent": true },
+    { "source": "/clauses-abusives-bail", "destination": "/blog/clauses-abusives-comment-recuperer", "permanent": true },
+    { "source": "/clauses-abusives-bail-location", "destination": "/blog/clauses-abusives-comment-recuperer", "permanent": true },
+    { "source": "/comment-recuperer-depot-garantie", "destination": "/blog/recuperer-depot-garantie-combien-temps", "permanent": true },
+    { "source": "/conge-proprietaire", "destination": "/blog/locataire-protege-conge", "permanent": true },
+    { "source": "/depot-garantie", "destination": "/blog/guide-complet-caution-depot-garantie-2026", "permanent": true },
+    { "source": "/depot-garantie-2-mois-illegal", "destination": "/blog/guide-complet-caution-depot-garantie-2026", "permanent": true },
+    { "source": "/depot-garantie-non-rendu-recours", "destination": "/blog/depot-garantie-delai-restitution", "permanent": true },
+    { "source": "/encadrement-loyers", "destination": "/blog/guide-encadrement-loyers-2026", "permanent": true },
+    { "source": "/etat-des-lieux", "destination": "/blog/calculer-frais-etat-des-lieux-locataire", "permanent": true },
+    { "source": "/garant-caution-bail", "destination": "/blog/caution-pour-un-locataire-tout-savoir-2026", "permanent": true },
+    { "source": "/interdiction-animaux-bail", "destination": "/blog/clauses-abusives-comment-recuperer", "permanent": true },
+    { "source": "/lettre-contestation-clause-abusive-bail", "destination": "/blog/modele-lettre-contestation-edl-sortie", "permanent": true },
+    { "source": "/lettre-mise-en-demeure-proprietaire", "destination": "/blog/mise-en-demeure-proprio-modele-gratuit", "permanent": true },
+    { "source": "/logement-indecent", "destination": "/blog/quitter-logement-non-decent", "permanent": true },
+    { "source": "/loyer-impaye-procedure", "destination": "/blog/loyer-impaye-expulsion-chronologie", "permanent": true },
+    { "source": "/preavis-locataire", "destination": "/blog/guide-resiliation-bail-locataire-2026", "permanent": true },
+    { "source": "/renouvellement-bail", "destination": "/blog/renouvellement-bail-habitation-proprio-2026", "permanent": true },
+    { "source": "/revision-loyer-irl", "destination": "/blog/guide-augmentation-loyer-bailleur-2026", "permanent": true },
+    { "source": "/sous-location-bail", "destination": "/blog/sous-location-airbnb-illegale", "permanent": true },
+    { "source": "/travaux-logement", "destination": "/blog/proprio-refuse-faire-travaux-urgents", "permanent": true },
+    { "source": "/zone-tendue-liste-communes", "destination": "/blog/zone-tendue-liste-communes", "permanent": true }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=31536000; includeSubDomains; preload"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" }
       ]
     }
   ]
