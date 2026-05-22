@@ -102,6 +102,59 @@ details[open] .faq-q::after{transform:rotate(45deg)}.faq-a{padding:0 20px 16px;f
 @media(max-width:900px){header{padding:16px 20px}nav a:not(.btn-nav):not(.nav-agences){display:none}.page-wrap{grid-template-columns:1fr}.sidebar{display:none}.related-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr 1fr;gap:28px}.footer-inner{padding:40px 20px 24px}}
 @media(max-width:560px){.article-h1{font-size:1.75rem}.article-meta{gap:10px}.badge-update{margin-left:0}.cta-inline{flex-direction:column}.footer-top{grid-template-columns:1fr}.breadcrumb{padding-top:90px}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* === MIGRATION UX ===  intro visible + CTA noir/orange + lisibilité === */
+.article-intro {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.22rem;
+  color: var(--texte);
+  line-height: 1.7;
+  margin: 0 0 36px;
+  font-style: normal;
+  font-weight: 400;
+  padding: 22px 28px;
+  background: #fbf7ec;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+}
+.article-intro strong { color: var(--noir); font-weight: 600; }
+
+/* Premier CTA (post-h1-cta) toujours NOIR */
+.post-h1-cta {
+  background: var(--noir) !important;
+  background-image: none !important;
+  color: white !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12) !important;
+}
+.post-h1-cta a, .post-h1-cta .post-h1-cta-btn {
+  background: var(--accent) !important;
+  color: white !important;
+}
+.post-h1-cta a:hover { background: #a83a20 !important; }
+
+/* Alternance CTA noir / orange (appliquée par JS) */
+.cta-orange { background: var(--accent) !important; }
+.cta-orange .cta-inline-btn { background: white !important; color: var(--accent) !important; }
+.cta-noir { background: var(--noir) !important; }
+.cta-noir .cta-inline-btn { background: var(--accent) !important; color: white !important; }
+
+/* Sticky-CTA (dans contenu) : alterne aussi */
+.cta-noir.sticky-cta { background: var(--noir) !important; border-left: 4px solid var(--accent) !important; }
+.cta-orange.sticky-cta { background: var(--accent) !important; border-left: 4px solid var(--noir) !important; }
+.cta-orange.sticky-cta a { background: white !important; color: var(--accent) !important; }
+
+/* Lisibilité corps article */
+.article-body p { font-size: 1rem; line-height: 1.78; margin-bottom: 18px; color: #1c1c1c; }
+.article-body h2 { font-size: 1.7rem; margin-top: 64px; }
+.article-body h3 { font-size: 1.08rem; margin-top: 32px; }
+.article-body ul li, .article-body ol li { font-size: 1rem; line-height: 1.7; margin-bottom: 8px; }
+.article-body strong { color: var(--noir); }
+
+/* Paragraphes-callouts inline avec lien analyser : aussi alternés */
+.article-body p[data-cta-style="orange"] { background: var(--accent) !important; color: white !important; border-left-color: var(--noir) !important; }
+.article-body p[data-cta-style="orange"] a { color: white !important; }
+.article-body p[data-cta-style="noir"] { background: var(--noir) !important; color: white !important; border-left-color: var(--accent) !important; }
+.article-body p[data-cta-style="noir"] a { color: var(--accent) !important; }
 </style>
 </head>
 <body>
@@ -118,6 +171,14 @@ details[open] .faq-q::after{transform:rotate(45deg)}.faq-a{padding:0 20px 16px;f
   <main class="article-body" id="main-content">
     <div class="article-category">Loyer</div>
     <h1 class="article-h1">Comment contester son loyer&nbsp;: les 4 leviers possibles en 2026</h1>
+    <div class="post-h1-cta" style="margin:8px 0 28px;padding:16px 20px;background:linear-gradient(135deg,#c84b2f,#a73b22);color:white;border-radius:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(200,75,47,0.15);">
+      <div style="flex:1;min-width:220px;font-size:0.92rem;line-height:1.5;">
+        <strong style="font-size:1rem;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;display:inline-block;flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Votre bail est-il conforme ?</strong><br>
+        <span style="opacity:0.92;">Analyse gratuite de toutes les clauses en 2 minutes.</span>
+      </div>
+      <a href="/analyser" style="display:inline-flex;align-items:center;background:white;color:#c84b2f;padding:10px 20px;border-radius:7px;font-size:0.85rem;font-weight:700;text-decoration:none;white-space:nowrap;">Vérifier →</a>
+    </div>
+
     <p class="article-intro">Vous pensez payer un loyer trop élevé&nbsp;? Plusieurs leviers existent selon votre situation&nbsp;: encadrement, <a href="/blog/revision-loyer-irl.html">IRL</a>, complément, charges. Voici le guide complet pour identifier celui qui s'applique et engager la procédure en autonomie.</p>
     <div class="article-meta">
       <div class="meta-avatar">BS</div>
@@ -217,5 +278,21 @@ details[open] .faq-q::after{transform:rotate(45deg)}.faq-a{padding:0 20px 16px;f
 <script>
 (function(){var h=document.querySelectorAll('h2[id]'),l=document.querySelectorAll('.toc-list a');if(!h.length||!l.length)return;function u(){var s=window.scrollY+100,c='';h.forEach(function(x){if(x.offsetTop<=s)c=x.id;});l.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+c);});}window.addEventListener('scroll',u,{passive:true});u();})();
 </script>
-</body>
+
+<script>
+(function(){
+  // Alterner les CTA (cta-inline + sticky-cta) noir/orange
+  // Position 1 = .post-h1-cta (toujours noir, fait en CSS)
+  // Position 2+ : 1er CTA = orange, 2e = noir, 3e = orange, etc.
+  var ctas = document.querySelectorAll('.cta-inline, .sticky-cta');
+  ctas.forEach(function(cta, i){
+    cta.classList.add(i % 2 === 0 ? 'cta-orange' : 'cta-noir');
+  });
+  // Alterner aussi les paragraphes-callouts inline rouges
+  var inlineCallouts = document.querySelectorAll('.article-body p[style*="rouge-light"], .article-body p[style*="--rouge-light"]');
+  inlineCallouts.forEach(function(p, i){
+    p.setAttribute('data-cta-style', i % 2 === 0 ? 'noir' : 'orange');
+  });
+})();
+</script></body>
 </html>
