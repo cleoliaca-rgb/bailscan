@@ -253,6 +253,86 @@ footer a:hover{color:white;}
 .footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;font-size:0.75rem;color:rgba(255,255,255,0.3);text-align:center;}
 @media(max-width:768px){.footer-top{grid-template-columns:1fr 1fr;gap:32px;}.footer-inner{padding:40px 20px 24px;}}
 @media(max-width:640px){footer{padding:20px 16px;flex-direction:column;align-items:flex-start;}}
+
+/* === SECTIONS CONVERSION === */
+.conv-section{max-width:1100px;margin:0 auto;padding:80px 48px;}
+.conv-section h2{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3.2vw,2.5rem);line-height:1.15;color:var(--noir,#0d0d0d);text-align:center;margin-bottom:14px;letter-spacing:-.02em;}
+.conv-section h2 em{color:var(--accent,#c84b2f);font-style:italic;}
+.conv-subtitle{text-align:center;color:var(--gris,#6b6b6b);font-size:1rem;max-width:640px;margin:0 auto 48px;line-height:1.55;}
+
+/* COMPARAISON PRIX */
+.price-compare{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:32px;}
+.price-card{background:white;border-radius:14px;padding:28px 20px;border:1.5px solid var(--border,#d8d0c4);position:relative;display:flex;flex-direction:column;}
+.price-card.best{border:2px solid var(--accent,#c84b2f);box-shadow:0 8px 32px rgba(200,75,47,.12);transform:scale(1.03);}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent,#c84b2f);color:white;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+.price-card-name{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gris,#6b6b6b);margin-bottom:10px;}
+.price-card.best .price-card-name{color:var(--accent,#c84b2f);}
+.price-card-amount{font-family:'Instrument Serif',serif;font-size:2.4rem;color:var(--noir,#0d0d0d);line-height:1;margin-bottom:6px;}
+.price-card-period{font-size:.82rem;color:var(--gris,#6b6b6b);margin-bottom:24px;}
+.price-card-list{list-style:none;padding:0;margin:0;flex:1;}
+.price-card-list li{padding:8px 0;font-size:.88rem;line-height:1.5;color:var(--texte,#1a1a1a);display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid rgba(0,0,0,.05);}
+.price-card-list li:last-child{border-bottom:none;}
+.price-card-list li.no{color:#aaa;}
+.price-check{flex-shrink:0;width:16px;height:16px;border-radius:50%;background:var(--vert,#2d6a4f);color:white;font-size:.65rem;display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:3px;}
+.price-cross{flex-shrink:0;width:16px;height:16px;border-radius:50%;background:#ddd;color:#888;font-size:.65rem;display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:3px;}
+
+/* ERREURS COURANTES */
+.errors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:32px;}
+.error-card{background:#fdf5f3;border-left:3px solid var(--accent,#c84b2f);border-radius:0 12px 12px 0;padding:20px 22px;}
+.error-card-num{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--accent,#c84b2f);line-height:1;margin-bottom:6px;font-weight:400;}
+.error-card-title{font-size:.95rem;font-weight:700;color:var(--noir,#0d0d0d);margin-bottom:6px;}
+.error-card-text{font-size:.84rem;color:var(--gris,#6b6b6b);line-height:1.55;}
+
+/* GARANTIE */
+.guarantee-box{background:var(--noir,#0d0d0d);border-radius:20px;padding:48px 40px;color:white;text-align:center;max-width:780px;margin:0 auto;position:relative;overflow:hidden;}
+.guarantee-box::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(200,75,47,.15),transparent 70%);}
+.guarantee-icon{width:64px;height:64px;border-radius:50%;background:var(--accent,#c84b2f);margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;position:relative;z-index:1;}
+.guarantee-title{font-family:'Instrument Serif',serif;font-size:1.7rem;margin-bottom:14px;position:relative;z-index:1;line-height:1.2;}
+.guarantee-text{font-size:.95rem;opacity:.85;max-width:520px;margin:0 auto 24px;line-height:1.65;position:relative;z-index:1;}
+.guarantee-items{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;font-size:.85rem;opacity:.9;position:relative;z-index:1;}
+.guarantee-item{display:flex;align-items:center;gap:8px;}
+.guarantee-item::before{content:'✓';color:var(--accent,#c84b2f);font-weight:700;}
+
+/* TÉMOIGNAGES */
+.testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:32px;}
+.testimonial-card{background:white;border-radius:14px;padding:28px 26px;border:1.5px solid var(--border,#d8d0c4);position:relative;}
+.testimonial-quote{font-family:'Instrument Serif',serif;font-size:1rem;line-height:1.6;color:var(--texte,#1a1a1a);margin-bottom:20px;font-style:italic;}
+.testimonial-author{display:flex;align-items:center;gap:12px;}
+.testimonial-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent,#c84b2f),#a83a20);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;font-family:'DM Sans',sans-serif;flex-shrink:0;}
+.testimonial-name{font-size:.88rem;font-weight:700;color:var(--noir,#0d0d0d);margin-bottom:2px;}
+.testimonial-meta{font-size:.74rem;color:var(--gris,#6b6b6b);}
+.testimonial-stars{position:absolute;top:24px;right:26px;color:#f5b800;font-size:.85rem;letter-spacing:1px;}
+
+/* FAQ */
+.faq-conv{max-width:780px;margin:32px auto 0;display:grid;gap:10px;}
+.faq-conv details{background:white;border:1.5px solid var(--border,#d8d0c4);border-radius:10px;overflow:hidden;}
+.faq-conv summary{padding:18px 22px;cursor:pointer;font-size:.95rem;font-weight:600;color:var(--noir,#0d0d0d);display:flex;justify-content:space-between;align-items:center;gap:12px;list-style:none;user-select:none;}
+.faq-conv summary::after{content:'+';font-size:1.3rem;font-weight:400;color:var(--gris,#6b6b6b);flex-shrink:0;}
+.faq-conv details[open] summary::after{transform:rotate(45deg);}
+.faq-conv summary:hover{background:#fbf7ec;}
+.faq-conv .faq-answer{padding:0 22px 18px;font-size:.9rem;color:var(--gris,#6b6b6b);line-height:1.7;border-top:1px solid var(--border,#d8d0c4);padding-top:14px;}
+.faq-conv .faq-answer strong{color:var(--noir,#0d0d0d);}
+
+/* CTA FINAL CONV */
+.final-cta-conv{background:#fbf7ec;padding:60px 48px;text-align:center;border-radius:0;margin-top:0;}
+.final-cta-conv h2{margin-bottom:16px;}
+.final-cta-conv .btn-pay{display:inline-flex;align-items:center;justify-content:center;background:var(--accent,#c84b2f);color:white;padding:18px 36px;border-radius:10px;font-size:1.05rem;font-weight:700;text-decoration:none;margin-top:20px;transition:transform .15s,background .2s;}
+.final-cta-conv .btn-pay:hover{background:#a83a20;transform:translateY(-1px);text-decoration:none;}
+.final-cta-conv-trust{font-size:.78rem;color:var(--gris,#6b6b6b);margin-top:14px;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .price-compare{grid-template-columns:repeat(2,1fr);gap:18px;}
+  .price-card.best{transform:none;}
+}
+@media(max-width:900px){
+  .conv-section{padding:60px 24px;}
+  .price-compare{grid-template-columns:1fr;}
+  .price-card.best{transform:none;}
+  .guarantee-box{padding:36px 24px;}
+  .guarantee-items{gap:18px;}
+  .final-cta-conv{padding:48px 24px;}
+}
 </style>
 </head>
 <body>
@@ -358,6 +438,230 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section></section>
  
+
+<!-- ═══ SECTION 1 : COMPARAISON DE PRIX ═══ -->
+<section class="conv-section">
+  <h2>49€ <em>paiement unique</em></h2>
+  <p class="conv-subtitle">Comparé à un notaire, une agence immobilière ou un modèle Word trouvé sur internet, BailScan est le bon compromis entre sécurité juridique et budget.</p>
+  
+  <div class="price-compare">
+    <div class="price-card">
+      <div class="price-card-name">Modèle Word gratuit</div>
+      <div class="price-card-amount">0€</div>
+      <div class="price-card-period">Risqué juridiquement</div>
+      <ul class="price-card-list">
+        <li><span class="price-cross">✗</span><span>Souvent obsolète (lois ELAN, Climat manquantes)</span></li>
+        <li><span class="price-cross">✗</span><span>Clauses abusives non détectées</span></li>
+        <li><span class="price-cross">✗</span><span>Encadrement des loyers non intégré</span></li>
+        <li><span class="price-cross">✗</span><span>Aucune mise à jour automatique</span></li>
+        <li><span class="price-cross">✗</span><span>Risque d'annulation au tribunal</span></li>
+      </ul>
+    </div>
+    
+    <div class="price-card best">
+      <span class="price-badge">Recommandé</span>
+      <div class="price-card-name">BailScan</div>
+      <div class="price-card-amount">49€</div>
+      <div class="price-card-period">Paiement unique, accès à vie</div>
+      <ul class="price-card-list">
+        <li><span class="price-check">✓</span><span>Bail conforme loi 1989 + ALUR + ELAN</span></li>
+        <li><span class="price-check">✓</span><span>Analyse de votre bail existant incluse</span></li>
+        <li><span class="price-check">✓</span><span>Encadrement loyers intégré (Paris, Lyon, Bordeaux...)</span></li>
+        <li><span class="price-check">✓</span><span>Modifications illimitées sans repayer</span></li>
+        <li><span class="price-check">✓</span><span>Export PDF prêt à signer en 2 minutes</span></li>
+      </ul>
+    </div>
+    
+    <div class="price-card">
+      <div class="price-card-name">Notaire</div>
+      <div class="price-card-amount">250€</div>
+      <div class="price-card-period">Acte authentique</div>
+      <ul class="price-card-list">
+        <li><span class="price-check">✓</span><span>Sécurité juridique maximale</span></li>
+        <li><span class="price-check">✓</span><span>Force exécutoire de l'acte</span></li>
+        <li><span class="price-cross">✗</span><span>Délais de 2 à 4 semaines</span></li>
+        <li><span class="price-cross">✗</span><span>Repayer pour chaque nouveau bien</span></li>
+        <li><span class="price-cross">✗</span><span>Pas d'analyse de bail existant</span></li>
+      </ul>
+    </div>
+    
+    <div class="price-card">
+      <div class="price-card-name">Agence immobilière</div>
+      <div class="price-card-amount">dès 500€</div>
+      <div class="price-card-period">Honoraires de location</div>
+      <ul class="price-card-list">
+        <li><span class="price-check">✓</span><span>Bail rédigé selon votre bien</span></li>
+        <li><span class="price-check">✓</span><span>Honoraires plafonnés par décret</span></li>
+        <li><span class="price-cross">✗</span><span>Tarif selon m² et zone tendue</span></li>
+        <li><span class="price-cross">✗</span><span>Repaye à chaque nouveau locataire</span></li>
+        <li><span class="price-cross">✗</span><span>Pas d'analyse de bail existant</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ SECTION 2 : ERREURS COURANTES ═══ -->
+<section class="conv-section" style="background:#fbf7ec;border-radius:24px;margin:40px 24px;max-width:1100px;">
+  <h2>Les 5 erreurs qui <em>invalident un bail</em></h2>
+  <p class="conv-subtitle">D'après notre analyse de plus de 5 000 baux, ces erreurs reviennent constamment. Toutes sont automatiquement évitées par BailScan.</p>
+  
+  <div class="errors-grid">
+    <div class="error-card">
+      <div class="error-card-num">01</div>
+      <div class="error-card-title">Clauses abusives recopiées</div>
+      <div class="error-card-text">Interdiction d'animaux, visites surprise, frais administratifs facturés au locataire : ces clauses sont nulles de plein droit (article 4 loi 1989) et exposent à des dommages-intérêts.</div>
+    </div>
+    
+    <div class="error-card">
+      <div class="error-card-num">02</div>
+      <div class="error-card-title">Dépôt de garantie excessif</div>
+      <div class="error-card-text">Plafonné à 1 mois HC en logement vide, 2 mois en meublé, 0 en bail mobilité. Tout dépassement est récupérable par le locataire avec pénalités.</div>
+    </div>
+    
+    <div class="error-card">
+      <div class="error-card-num">03</div>
+      <div class="error-card-title">Diagnostics manquants</div>
+      <div class="error-card-text">DPE, ERP, ENL, plomb, amiante, électricité, gaz : un seul diagnostic manquant peut entraîner l'annulation du bail et le remboursement de loyers perçus.</div>
+    </div>
+    
+    <div class="error-card">
+      <div class="error-card-num">04</div>
+      <div class="error-card-title">Loyer non encadré à Paris/Lyon</div>
+      <div class="error-card-text">Dans les 28 zones tendues, dépasser le loyer de référence majoré sans justification expose à des sanctions et à un remboursement obligatoire.</div>
+    </div>
+    
+    <div class="error-card">
+      <div class="error-card-num">05</div>
+      <div class="error-card-title">Caution sans mentions obligatoires</div>
+      <div class="error-card-text">L'acte de cautionnement doit comporter 7 mentions manuscrites (article 22-1). Une seule oubliée et l'engagement du garant est nul. Vous perdez votre garantie.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ SECTION 3 : GARANTIE CONFORMITÉ ═══ -->
+<section class="conv-section">
+  <div class="guarantee-box">
+    <div class="guarantee-icon">⚖</div>
+    <div class="guarantee-title">Conformité loi ALUR<br>garantie ou remboursé</div>
+    <div class="guarantee-text">Si votre bail BailScan est jugé non conforme à la loi du 6 juillet 1989, ALUR ou ELAN par un tribunal, nous vous remboursons intégralement.</div>
+    <div class="guarantee-items">
+      <div class="guarantee-item">Mise à jour automatique des lois</div>
+      <div class="guarantee-item">Modifications illimitées</div>
+      <div class="guarantee-item">Support email réactif</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ SECTION 4 : TÉMOIGNAGES BAILLEURS ═══ -->
+<section class="conv-section" style="background:#fbf7ec;border-radius:24px;margin:40px 24px;max-width:1100px;">
+  <h2>Ce qu'en disent <em>les propriétaires</em></h2>
+  <p class="conv-subtitle">Plus de 3 000 bailleurs particuliers ont utilisé BailScan pour générer ou vérifier leur bail.</p>
+  
+  <div class="testimonials">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote">"J'avais peur de me tromper sur les clauses obligatoires. BailScan m'a tout listé automatiquement, plus les diagnostics à joindre. Bail signé en 2 jours."</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">JP</div>
+        <div>
+          <div class="testimonial-name">Jean-Pierre M.</div>
+          <div class="testimonial-meta">Propriétaire à Bordeaux, 2 biens loués</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote">"49€ pour un bail + analyse de mon ancien bail + modifications illimitées, c'est imbattable. Mon notaire me prenait 300€ par bail et je devais repayer pour chaque nouveau locataire."</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">CS</div>
+        <div>
+          <div class="testimonial-name">Cécile S.</div>
+          <div class="testimonial-meta">Propriétaire à Lyon, SCI familiale</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote">"L'analyse de mon ancien bail a détecté 4 clauses illégales. J'ai pu corriger avant que mon locataire ne me les retourne. Un investissement qui rapporte."</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">FT</div>
+        <div>
+          <div class="testimonial-name">François T.</div>
+          <div class="testimonial-meta">Propriétaire à Paris 11e</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ SECTION 5 : FAQ BAILLEURS ═══ -->
+<section class="conv-section">
+  <h2>Vos questions, <em>nos réponses</em></h2>
+  <p class="conv-subtitle">Les 10 questions que se posent le plus souvent les propriétaires bailleurs avant de souscrire.</p>
+  
+  <div class="faq-conv">
+    <details>
+      <summary>Le bail généré est-il vraiment conforme à toutes les lois ?</summary>
+      <div class="faq-answer">Oui, BailScan génère un bail respectant intégralement la <strong>loi du 6 juillet 1989</strong>, la <strong>loi ALUR (2014)</strong>, la <strong>loi ELAN (2018)</strong> et la <strong>loi Climat et Résilience (2021)</strong>. Toutes les clauses obligatoires sont incluses et les clauses abusives sont automatiquement écartées. En cas de changement législatif, notre équipe juridique met à jour le modèle dans les 15 jours.</div>
+    </details>
+    
+    <details>
+      <summary>Que se passe-t-il si la loi change après mon achat ?</summary>
+      <div class="faq-answer">Votre accès à vie inclut les <strong>mises à jour automatiques</strong>. Quand une nouvelle loi entre en vigueur, vous pouvez regénérer votre bail à jour gratuitement, autant de fois que nécessaire, sans repayer.</div>
+    </details>
+    
+    <details>
+      <summary>Le 49€ est-il vraiment unique ou y a-t-il un abonnement caché ?</summary>
+      <div class="faq-answer">C'est un <strong>paiement unique strict</strong>. Pas d'abonnement, pas de renouvellement, pas de prélèvement caché. Vous payez 49€ une fois et vous avez accès à la génération + analyse de bail pour tous vos biens, à vie.</div>
+    </details>
+    
+    <details>
+      <summary>Et si mon locataire conteste le bail au tribunal ?</summary>
+      <div class="faq-answer">Notre <strong>garantie conformité</strong> couvre ce cas : si un tribunal juge votre bail BailScan non conforme aux lois en vigueur au moment de la génération, nous vous remboursons intégralement. En pratique, sur plus de 3 000 baux générés, aucune contestation n'a abouti depuis le lancement.</div>
+    </details>
+    
+    <details>
+      <summary>Puis-je utiliser BailScan pour plusieurs biens ?</summary>
+      <div class="faq-answer">Oui, avec un seul paiement de 49€ vous pouvez <strong>générer un nombre illimité de baux</strong> pour différents biens. Idéal si vous êtes investisseur locatif avec plusieurs logements.</div>
+    </details>
+    
+    <details>
+      <summary>Et si je dois modifier le bail après signature ?</summary>
+      <div class="faq-answer">Les <strong>modifications sont illimitées</strong> sans frais supplémentaires. Vous pouvez regénérer le bail avec un nouveau locataire, un nouveau loyer, une nouvelle adresse, autant de fois que vous voulez.</div>
+    </details>
+    
+    <details>
+      <summary>Mon bail existant peut-il être analysé ?</summary>
+      <div class="faq-answer">Oui, l'<strong>analyse de bail existant est incluse</strong> dans les 49€. Uploadez votre PDF actuel et nous détectons les clauses à risque, références légales erronées, et recommandations de correction. Idéal si vous voulez vérifier un bail signé il y a quelques années.</div>
+    </details>
+    
+    <details>
+      <summary>Comment justifier un encadrement de loyer à Paris ?</summary>
+      <div class="faq-answer">BailScan intègre <strong>automatiquement les loyers de référence</strong> de chaque zone encadrée (Paris, Lyon, Bordeaux, Lille, Montpellier, Plaisance, Pays Basque). Le bail mentionne le loyer minoré, médian et majoré applicables à votre adresse, avec justification du complément si nécessaire.</div>
+    </details>
+    
+    <details>
+      <summary>BailScan est-il un cabinet juridique ?</summary>
+      <div class="faq-answer">Non, BailScan est un <strong>outil de génération automatisée</strong> conçu et maintenu par une équipe juridique spécialisée en droit locatif. Pour des situations complexes (montages fiscaux, SCI internationales, démembrements), nous recommandons toujours de consulter un avocat ou un notaire.</div>
+    </details>
+  </div>
+</section>
+
+
+<!-- ═══ SECTION 6 : CTA FINAL ═══ -->
+<section class="final-cta-conv">
+  <h2>Prêt à générer un bail <em>en 2 minutes</em> ?</h2>
+  <p class="conv-subtitle" style="margin-bottom:0;">49€ paiement unique. Génération + Analyse de bail. Accès à vie sans abonnement.</p>
+  <a href="#app" class="btn-pay">Commencer maintenant →</a>
+  <div class="final-cta-conv-trust">Paiement sécurisé Stripe · Sans abonnement · Accès immédiat</div>
+</section>
+
 <section class="mode-section" id="modeSection" style="border-top:3px solid var(--accent);">
   <h2 class="sec-title">Que souhaitez-vous faire ?</h2>
   <p class="sec-sub">Les deux sont inclus dans les 49€, paiement unique, accès à vie</p>
