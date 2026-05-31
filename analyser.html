@@ -986,6 +986,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .lp-hero-eyebrow::before { content:''; width:7px; height:7px; background:var(--accent); border-radius:50%; animation:pulse 2s infinite; }
   .lp-hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.1; color: var(--noir); margin: 0 0 20px; letter-spacing: -0.03em; }
   .lp-hero h1 em { font-style: italic; color: var(--accent); }
+  .lp-h1-mobile { display: none; }
+  .lp-h1-desktop { display: inline; }
   .lp-hero p { font-size: 1rem; color: var(--gris); line-height: 1.7; margin: 0 0 28px; max-width: 480px; }
   .lp-hero-reassure { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
   .lp-hero-reassure-item { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--noir); font-weight: 600; }
@@ -1035,30 +1037,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .lp-mockup-list-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.8rem; color: rgba(245,241,232,0.85); line-height: 1.4; }
   .lp-mockup-list-item::before { content: '✗'; color: var(--accent); font-weight: 800; flex-shrink: 0; }
 
-  /* Mobile : 1 colonne, masquer le mockup */
+  /* Mobile : 1 colonne, masquer le mockup, ALIGNÉ À GAUCHE */
   @media (max-width: 900px) {
     .lp-hero-inner { grid-template-columns: 1fr; gap: 0; }
-    .lp-hero-text { text-align: center; }
-    .lp-hero p { margin-left: auto; margin-right: auto; }
-    .lp-hero-reassure { justify-content: center; }
-    .lp-hero-cta { width: 100%; max-width: 380px; justify-content: center; }
+    .lp-hero-text { text-align: left; }
+    .lp-hero-reassure { justify-content: flex-start; }
+    .lp-hero-cta { width: 100%; max-width: none; justify-content: center; }
     .lp-hero-mockup { display: none; }
+    .lp-h1-desktop { display: none; }
+    .lp-h1-mobile { display: inline; }
   }
   @media (max-width: 600px) {
     .lp-hero { padding: 90px 20px 28px; }
     .lp-hero-eyebrow { margin-bottom: 16px; font-size: 0.74rem; padding: 5px 12px; }
     .lp-hero h1 { margin: 0 0 14px; }
-    .lp-hero p { margin-bottom: 20px; }
+    .lp-hero p { margin-bottom: 20px; max-width: 100%; }
     .lp-hero-reassure { gap: 10px; margin-bottom: 20px; }
     .lp-hero-reassure-item { font-size: 0.8rem; }
-    .lp-hero-stat { margin-top: 14px; }
+    .lp-hero-stat { margin-top: 14px; text-align: left; }
   }
 </style>
 <section class="lp-hero">
   <div class="lp-hero-inner">
     <div class="lp-hero-text">
       <div class="lp-hero-eyebrow">87% des baux ont au moins 1 clause illégale</div>
-      <h1>Découvre combien<br><em>ton propriétaire te doit.</em></h1>
+      <h1>Découvre combien<br><em class="lp-h1-desktop">ton propriétaire te doit.</em><em class="lp-h1-mobile">tu peux récupérer</em></h1>
       <p>Trop-perçu de loyer, dépôt de garantie excessif, clauses abusives… La loi te permet de récupérer tout ça jusqu'à <strong>5 ans en arrière</strong>. BailScan calcule combien en 30 secondes.</p>
       <div class="lp-hero-reassure">
         <span class="lp-hero-reassure-item">Résultat en 30 secondes</span>
@@ -1112,10 +1115,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .lp-proof-item .num { color: var(--accent); font-family: 'Instrument Serif', serif; font-size: 1.5rem; font-style: italic; letter-spacing: -0.02em; }
   .lp-proof-stars { letter-spacing: 1px; color: #fbbf24; font-size: 0.9rem; }
   @media (max-width: 600px) {
-    .lp-proof-strip { padding: 16px 16px; }
-    .lp-proof-inner { gap: 14px; }
-    .lp-proof-item { font-size: 0.78rem; }
-    .lp-proof-item .num { font-size: 1.2rem; }
+    .lp-proof-strip { padding: 18px 20px; text-align: left; }
+    .lp-proof-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .lp-proof-item { font-size: 0.85rem; }
+    .lp-proof-item .num { font-size: 1.25rem; }
   }
 </style>
 <div class="lp-proof-strip">
