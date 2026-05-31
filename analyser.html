@@ -2664,6 +2664,13 @@ function displayResults(data) {
   else { vb.className = 'verdict-badge verdict-danger'; vb.textContent = 'Clauses abusives'; }
  
   document.getElementById('scoreVerdict').textContent = data.verdict_titre || verdict;
+
+  // ────────────────────────────────────────────────────────────
+  // APPLIQUER LE FALLBACK FRONTEND AVANT D'AFFICHER LE RESUME
+  // pour qu'il soit coherent avec le verdict d'encadrement detecte.
+  // ────────────────────────────────────────────────────────────
+  applyFallbackPlafondToData(data);
+
   // SANITIZE : retirer les chiffres €/m² charges comprises du résumé global
   var resumeTxt = data.resume || '';
   if (resumeTxt) {
@@ -2961,6 +2968,97 @@ function resolveGrilleValeurs(data, villeUser) {
     };
   }
   return null;
+}
+
+/**
+ * Applique le fallback frontend a data.loyer SI le backend n'a pas force le plafond.
+ * Modifie data EN PLACE.
+ * Corrige aussi data.resume s'il dit "respecte l'encadrement" alors que le fallback
+ * detecte un depassement (assure la coherence entre score, resume et bloc encadrement).
+ */
+function applyFallbackPlafondToData(data) {
+  if (!data) return;
+  var loy = data.loyer || {};
+  var villeUser = appState.ville || document.getElementById('ville').value || '';
+  var surfaceUser = parseFloat(appState.surface || document.getElementById('surface').value) || 0;
+  var loyerBaseUser = appState.loyerBase || parseFloat(document.getElementById('loyer_base').value) || 0;
+  if (surfaceUser <= 0 || loyerBaseUser <= 0) return;
+
+  // Si le backend a deja force le plafond, on ne touche a rien
+  if (loy.plafond_m2_num && !isNaN(parseFloat(loy.plafond_m2_num))) return;
+
+  var fb = getFallbackPlafondFront(villeUser);
+  if (!fb) return;
+
+  if (!data.loyer || typeof data.loyer !== 'object') data.loyer = {};
+  loy = data.loyer;
+  loy.plafond_m2_num = fb.plafond;
+  loy.ref_m2_num = fb.ref;
+  loy.minore_m2_num = fb.minore;
+  loy.encadrement_strict = fb.strict === true;
+  loy.plafond_m2 = fb.plafond.toFixed(2).replace('.', ',') + ' €/m²';
+  var plafondMensuel = Math.round(fb.plafond * surfaceUser * 100) / 100;
+  loy.plafond = plafondMensuel.toFixed(2).replace('.', ',') + ' €';
+
+  var userM2 = loyerBaseUser / surfaceUser;
+  var depasse = userM2 > fb.plafond + 0.01;
+
+  if (depasse) {
+    loy.statut = fb.strict ? 'danger' : 'warning';
+    loy.exedent_mensuel = Math.round((userM2 - fb.plafond) * surfaceUser * 100) / 100;
+  } else if (loy.statut === 'danger' || loy.statut === 'warning') {
+    loy.statut = 'ok';
+    loy.exedent_mensuel = null;
+  }
+
+  var userM2Txt = userM2.toFixed(2).replace('.', ',');
+  var plafM2Txt = fb.plafond.toFixed(2).replace('.', ',');
+  if (depasse) {
+    loy.analyse = "Votre loyer s'\u00e9l\u00e8ve \u00e0 " + userM2Txt + " \u20ac/m\u00b2 hors charges, ce qui d\u00e9passe le plafond l\u00e9gal estim\u00e9 (" + plafM2Txt + " \u20ac/m\u00b2). V\u00e9rifiez la valeur \u00e0 jour sur le simulateur officiel ci-dessous.";
+  } else {
+    loy.analyse = "Votre loyer s'\u00e9l\u00e8ve \u00e0 " + userM2Txt + " \u20ac/m\u00b2 hors charges, ce qui respecte le plafond l\u00e9gal estim\u00e9 (" + plafM2Txt + " \u20ac/m\u00b2). V\u00e9rifiez la valeur \u00e0 jour sur le simulateur officiel ci-dessous.";
+  }
+
+  // ────────────────────────────────────────────────────────────
+  // CORRECTION DU RESUME GLOBAL pour qu'il soit coherent
+  // Si on a detecte un depassement, on retire les mentions
+  // "respecte l'encadrement" / "loyer conforme" / "dans les normes"
+  // que l'IA aurait pu ecrire en ne connaissant pas la grille.
+  // ────────────────────────────────────────────────────────────
+  if (depasse && data.resume) {
+    var r = data.resume;
+    // Patterns contradictoires
+    r = r.replace(/[Ll]e loyer respecte l['\u2019]encadrement[^,.]*[,.]?\s*/g, '');
+    r = r.replace(/[Ll]e loyer (est )?conforme (\u00e0 |a )l['\u2019]encadrement[^,.]*[,.]?\s*/g, '');
+    r = r.replace(/[Ll]oyer (est )?dans les normes[^,.]*[,.]?\s*/g, '');
+    r = r.replace(/[Ll]oyer (est )?conforme[^,.]*[,.]?\s*/g, '');
+    r = r.replace(/respect(e|ant) l['\u2019]encadrement[^,.]*[,.]?\s*/g, '');
+    // Nettoyage
+    r = r.replace(/\s+,/g, ',').replace(/,\s*,/g, ',').replace(/\s+/g, ' ').replace(/^\s*[,.]?\s*/, '').trim();
+    // Si le resume devient vide ou ne mentionne plus le loyer, on ajoute une phrase claire
+    if (r.length < 30 || !/loyer/i.test(r)) {
+      var excedTxt = (loy.exedent_mensuel || 0).toFixed(0);
+      r = "Loyer au-dessus du plafond l\u00e9gal estim\u00e9 (" + excedTxt + " \u20ac/mois d'exc\u00e9dent). " + r;
+    }
+    data.resume = r.trim();
+  }
+
+  // Ajuster aussi le verdict_titre si necessaire
+  if (depasse && data.verdict_titre) {
+    var vt = data.verdict_titre.toLowerCase();
+    if (/conforme|respecte/.test(vt) && !/d\u00e9passe|exc\u00e9d/.test(vt)) {
+      // Le titre dit "conforme" mais on a un depassement → on adapte
+      var nbProblemes = (data.clauses_abusives || []).filter(function(c){ return c.type === 'danger'; }).length + 1;
+      data.verdict_titre = nbProblemes > 1 ? nbProblemes + ' irr\u00e9gularit\u00e9s d\u00e9tect\u00e9es' : '1 irr\u00e9gularit\u00e9 d\u00e9tect\u00e9e';
+    }
+  }
+
+  // Ajuster aussi le verdict global et le score si necessaire
+  if (depasse && fb.strict && data.verdict === 'Equitable') {
+    data.verdict = 'Risque';
+    // Baisser le score si > 70 (depassement d'encadrement strict = grave)
+    if (data.score && data.score > 70) data.score = Math.max(50, data.score - 25);
+  }
 }
 
 function renderMarcheLocal(data) {
