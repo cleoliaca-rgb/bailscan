@@ -2968,6 +2968,35 @@ function displayResults(data) {
     resumeTxt = resumeTxt.replace(/\s+/g, ' ').replace(/\s+,/g, ',').trim();
   }
   document.getElementById('scoreResume').textContent = resumeTxt;
+
+  // ────────────────────────────────────────────────────────────
+  // BLOC DEBUG visible si l'analyse a echoue (_partial = true).
+  // Affiche les details techniques DIRECTEMENT sur la page pour
+  // diagnostiquer sans avoir a aller dans les logs Vercel.
+  // ────────────────────────────────────────────────────────────
+  if (data._partial && data._debug) {
+    var dbg = data._debug;
+    var dbgHtml = '<div style="margin:18px 0;padding:18px 20px;background:#fff8f3;border:2px solid var(--accent);border-radius:14px;font-size:0.82rem;line-height:1.6;color:var(--noir);">';
+    dbgHtml += '<div style="font-weight:800;color:var(--accent);margin-bottom:10px;text-transform:uppercase;font-size:0.72rem;letter-spacing:0.1em;">🛠 Détails techniques (à transmettre)</div>';
+    dbgHtml += '<div><strong>Erreur parse :</strong> ' + (dbg.erreur_parse || '—') + '</div>';
+    dbgHtml += '<div><strong>Claude stop_reason :</strong> ' + (dbg.stop_reason_claude || '—') + '</div>';
+    dbgHtml += '<div><strong>Tokens utilisés :</strong> ' + (dbg.tokens_utilises || '—') + '</div>';
+    dbgHtml += '<div><strong>Longueur réponse :</strong> ' + (dbg.longueur_reponse_claude || 0) + ' chars</div>';
+    dbgHtml += '<div><strong>Ville utilisée :</strong> ' + (dbg.ville_utilisee || '(vide)') + '</div>';
+    dbgHtml += '<div><strong>Loyer utilisé :</strong> ' + (dbg.loyer_utilise || 0) + '€</div>';
+    dbgHtml += '<div><strong>Extraction réussie :</strong> ' + (dbg.context_extrait_reussi ? '✓ oui' : '✗ non') + '</div>';
+    dbgHtml += '<div style="margin-top:10px;"><strong>Extrait réponse Claude :</strong></div>';
+    dbgHtml += '<div style="background:#1a1a1a;color:#fbbf24;padding:10px 12px;border-radius:8px;font-family:monospace;font-size:0.72rem;margin-top:4px;max-height:200px;overflow:auto;white-space:pre-wrap;word-break:break-all;">' + (dbg.extrait_reponse_claude || '(vide)').replace(/</g, '&lt;') + '</div>';
+    dbgHtml += '<div style="margin-top:12px;font-size:0.72rem;color:var(--gris);">👉 Sélectionne ce bloc et copie-colle-le dans le chat Claude pour qu\'il diagnostique.</div>';
+    dbgHtml += '</div>';
+    var dbgSlot = document.createElement('div');
+    dbgSlot.innerHTML = dbgHtml;
+    // Insère juste après le score
+    var scoreResumeEl = document.getElementById('scoreResume');
+    if (scoreResumeEl && scoreResumeEl.parentNode && scoreResumeEl.parentNode.parentNode) {
+      scoreResumeEl.parentNode.parentNode.parentNode.insertBefore(dbgSlot, scoreResumeEl.parentNode.parentNode.nextSibling);
+    }
+  }
  
   // Bloc comparaison marche local (juste sous le score, toujours affiche)
   renderMarcheLocal(data);

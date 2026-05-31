@@ -1173,21 +1173,36 @@ module.exports = async function handler(req, res) {
           throw e;
         }
       } catch (e2) {
-        // Message d'erreur contextuel selon le mode
-        var skipForm = context && context._skip_form;
+        // Message d'erreur contextuel
+        var skipForm = context && (context._skip_form || context._skip_form_processed);
+        // Detail technique de l'erreur pour diagnostic
+        var rawPreview = (rawText || '').slice(0, 600).replace(/\n+/g, ' ');
+        var errorDetails = {
+          erreur_parse: e2 && e2.message ? e2.message : 'inconnu',
+          stop_reason_claude: (data && data.stop_reason) || 'inconnu',
+          tokens_utilises: (data && data.usage) ? JSON.stringify(data.usage) : 'inconnu',
+          longueur_reponse_claude: (rawText || '').length,
+          extrait_reponse_claude: rawPreview || '(vide — Claude n\'a rien renvoye)',
+          context_extrait_reussi: !!extractedContext,
+          ville_utilisee: context && context.ville,
+          loyer_utilise: context && context.loyer_base
+        };
+        console.error('[parse-fail] Details:', JSON.stringify(errorDetails, null, 2));
+
         var errMsg = skipForm
-          ? "L'extraction automatique du bail n'a pas abouti. Essayez de revenir au formulaire et de saisir manuellement les informations (ville, loyer, surface)."
-          : "L'analyse a rencontre un probleme de formatage. Essayez de coller le texte de votre bail manuellement.";
+          ? "L'analyse automatique a echoue. Voir details techniques ci-dessous, puis essayer de remplir le formulaire manuellement."
+          : "L'analyse a rencontre un probleme. Voir details techniques ci-dessous.";
         return res.status(200).json({
           score: 50, verdict: 'Risque',
           verdict_titre: 'Analyse partielle',
           resume: errMsg,
           loyer: null, clauses_abusives: [],
           plan_action: skipForm
-            ? ['Revenir en arriere et cliquer sur "Continuer → Logement"', 'Saisir les informations manuellement', 'Relancer l\'analyse']
+            ? ['Revenir en arriere', 'Cliquer "Continuer → Logement"', 'Saisir les infos manuellement', 'Relancer l\'analyse']
             : ['Reessayer en collant le texte du bail dans le champ texte'],
           _partial: true,
-          _skip_form_failed: skipForm || false
+          _skip_form_failed: skipForm || false,
+          _debug: errorDetails
         });
       }
     }
