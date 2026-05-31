@@ -3119,24 +3119,33 @@ function buildPaywallAmountBanner(data) {
  
   // ── 3. TOTAL ────────────────────────────────────────────────
   var tropPercuMensuel = exedentLoyer + complementIllegal;
-  var tropPercuTotal = Math.round(tropPercuMensuel * nbMois * 100) / 100;
- 
+  var tropPercuCumule = Math.round(tropPercuMensuel * nbMois * 100) / 100;
+
+  // ── 3 bis. DEPOT ILLEGAL — recuperable immediatement, pas etale dans le temps
+  var depotVerse = appState.depot || parseFloat((document.getElementById('depot') || {}).value) || 0;
+  var bienTypeCalc = appState.bienType || 'vide';
+  var depotMaxLegal = bienTypeCalc === 'meuble' ? loyerBase * 2 : loyerBase * 1;
+  var depotIllegal = (loyerBase > 0 && depotVerse > depotMaxLegal) ? Math.round((depotVerse - depotMaxLegal) * 100) / 100 : 0;
+
+  // ── 3 ter. TOTAL GLOBAL : trop-percu cumule + depot illegal recuperable
+  var tropPercuTotal = Math.round((tropPercuCumule + depotIllegal) * 100) / 100;
+
   // Détail pour affichage
   var lignesDetail = [];
-  if (exedentLoyer > 0) lignesDetail.push('Loyer : +' + exedentLoyer.toFixed(2) + ' €/mois');
-  if (complementIllegal > 0) lignesDetail.push('Complément illégal : +' + complementIllegal.toFixed(2) + ' €/mois');
- 
+  if (exedentLoyer > 0) lignesDetail.push('Loyer : +' + exedentLoyer.toFixed(2) + ' €/mois × ' + nbMois + ' mois = ' + Math.round(exedentLoyer * nbMois) + '€');
+  if (complementIllegal > 0) lignesDetail.push('Complément illégal : +' + complementIllegal.toFixed(2) + ' €/mois × ' + nbMois + ' mois = ' + Math.round(complementIllegal * nbMois) + '€');
+  if (depotIllegal > 0) lignesDetail.push('Dépôt excessif récupérable : ' + Math.round(depotIllegal) + '€');
+
   var html = '';
- 
-  if (tropPercuTotal > 0 && nbMois > 0) {
+
+  if (tropPercuTotal > 0) {
     // CAS 1 : montant calculable — banner noir premium avec le gros chiffre
     html += '<div class="paywall-amount-banner">';
     html += '<div class="paywall-amount-banner-eyebrow"> Remboursement total estimé</div>';
     html += '<div class="paywall-amount-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' <span>€</span></div>';
     html += '<div class="paywall-amount-banner-sub">';
-    html += '<strong style="color:rgba(255,255,255,0.9)">' + tropPercuMensuel.toFixed(2) + ' €/mois</strong> × ' + nbMois + ' mois';
-    if (lignesDetail.length > 0) html += '<br><span style="opacity:0.7; font-size:0.77rem">' + lignesDetail.join(' · ') + '</span>';
-    if (nbDanger > 0) html += '<br><span style="opacity:0.65; font-size:0.77rem">+ ' + nbDanger + ' clause(s) illégale(s) détectée(s)</span>';
+    if (lignesDetail.length > 0) html += '<span style="opacity:0.85;font-size:0.82rem;display:block;margin-bottom:6px;">' + lignesDetail.join('<br>') + '</span>';
+    if (nbDanger > 0) html += '<span style="opacity:0.65;font-size:0.77rem;">+ ' + nbDanger + ' clause(s) illégale(s) détectée(s) à corriger</span>';
     html += '<br><br>Réclamez ce montant grâce aux lettres officielles incluses.</div>';
     html += '<button class="paywall-amount-banner-unlock" onclick="trackBeginCheckout(\'banner_amount\');openModal()" id="bannerCta1">Récupérer mes ' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + '€ pour seulement 29€ →</button>';
     html += '<div class="paywall-amount-banner-roi">29€ investis · <strong>×' + Math.round(tropPercuTotal / 29) + ' de retour potentiel</strong></div>';
@@ -3541,23 +3550,31 @@ function renderLoyerCheck(data) {
     complementIllegal = complementLoyer;
   }
  
-  // 3. Total
+  // 3. Total trop-perçu cumulé sur la durée du bail
   var tropPercuMensuel = exedentLoyer + complementIllegal;
-  var tropPercuTotal = Math.round(tropPercuMensuel * nbMois * 100) / 100;
- 
+  var tropPercuCumule = Math.round(tropPercuMensuel * nbMois * 100) / 100;
+
+  // 3 bis. Dépôt illégal recuperable immédiatement
+  var depotVerseTP = appState.depot || parseFloat((document.getElementById('depot') || {}).value) || 0;
+  var bienTypeTP = appState.bienType || 'vide';
+  var depotMaxTP = bienTypeTP === 'meuble' ? loyerBase * 2 : loyerBase * 1;
+  var depotIllegalTP = (loyerBase > 0 && depotVerseTP > depotMaxTP) ? Math.round((depotVerseTP - depotMaxTP) * 100) / 100 : 0;
+
+  // 3 ter. Total global = cumulé + dépôt illégal
+  var tropPercuTotal = Math.round((tropPercuCumule + depotIllegalTP) * 100) / 100;
+
   // ── BANNER TROP-PERÇU ────────────────────────────────────────
-  if (isLoyerProbleme && nbMois > 0 && tropPercuTotal > 0) {
+  if ((isLoyerProbleme || depotIllegalTP > 0) && tropPercuTotal > 0) {
     var detailParts = [];
-    if (exedentLoyer > 0) detailParts.push(exedentLoyer.toFixed(2) + ' €/mois (loyer)');
-    if (complementIllegal > 0) detailParts.push(complementIllegal.toFixed(2) + ' €/mois (complément)');
+    if (exedentLoyer > 0 && nbMois > 0) detailParts.push(Math.round(exedentLoyer * nbMois) + '€ (loyer ' + exedentLoyer.toFixed(0) + '€/mois × ' + nbMois + ' mois)');
+    if (complementIllegal > 0 && nbMois > 0) detailParts.push(Math.round(complementIllegal * nbMois) + '€ (complément ' + complementIllegal.toFixed(0) + '€/mois × ' + nbMois + ' mois)');
+    if (depotIllegalTP > 0) detailParts.push(Math.round(depotIllegalTP) + '€ (dépôt excessif récupérable immédiatement)');
     html += '<div class="trop-percu-banner">';
-    html += '';
     html += '<div class="trop-percu-banner-body">';
     html += '<div class="trop-percu-banner-label">Remboursement total estimé</div>';
     html += '<div class="trop-percu-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' €</div>';
     html += '<div class="trop-percu-banner-detail">';
-    html += '<strong>' + tropPercuMensuel.toFixed(2) + ' €/mois</strong> × ' + nbMois + ' mois';
-    if (detailParts.length > 0) html += '<br>' + detailParts.join(' + ');
+    if (detailParts.length > 0) html += detailParts.join('<br>');
     html += '</div></div>';
     html += '<button class="trop-percu-banner-cta" onclick="document.getElementById(\'paidSection\') && document.getElementById(\'paidSection\').scrollIntoView({behavior:\'smooth\'})">Générer la lettre →</button>';
     html += '</div>';
