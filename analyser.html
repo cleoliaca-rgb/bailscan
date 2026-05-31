@@ -941,7 +941,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="wizard-progress" id="wizardProgress">
       <div class="wizard-step-indicator">
         <div class="step-dot active" id="dot1">1</div>
-        <div class="step-label active" id="lbl1">Contexte</div>
+        <div class="step-label active" id="lbl1">Document</div>
       </div>
       <div class="step-line" id="line1"></div>
       <div class="wizard-step-indicator">
@@ -951,17 +951,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="step-line" id="line2"></div>
       <div class="wizard-step-indicator">
         <div class="step-dot" id="dot3">3</div>
-        <div class="step-label" id="lbl3">Document</div>
-      </div>
-      <div class="step-line" id="line3"></div>
-      <div class="wizard-step-indicator">
-        <div class="step-dot" id="dot4">4</div>
-        <div class="step-label" id="lbl4">Analyser</div>
+        <div class="step-label" id="lbl3">Analyser</div>
       </div>
     </div>
  
-    <!-- STEP 1 : CONTEXTE -->
-    <div class="wizard-panel active" id="step1">
+    <!-- STEP 1 : CONTEXTE (sera affiché en step "2" Logement après Document) -->
+    <div class="wizard-panel" id="step1">
       <div class="panel-title">Contexte du logement</div>
       <div class="panel-sub">Ces informations permettent une analyse plus précise et personnalisée</div>
       <div style="background:rgba(200,75,47,0.06);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:0.92rem;color:var(--accent);font-weight:700;text-align:center;">
@@ -995,10 +990,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <label for="surface">Surface (m²) <span style="font-weight:400;color:var(--gris);font-size:0.8rem">(recommandé)</span></label>
           <input type="number" id="surface" class="form-input" placeholder="Ex : 35" min="1" oninput="updateLoyerCheck()">
         </div>
-      </div>
-      <div class="wizard-nav">
-        <div></div>
-        <button class="btn-wizard-next" onclick="goStep(2)">Continuer → Loyer</button>
       </div>
     </div>
  
@@ -1129,15 +1120,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div id="loyerAlertBox" style="display:none;margin-top:16px;padding:14px 18px;border-radius:12px;font-size:0.85rem;font-weight:600;"></div>
 
       <div class="wizard-nav">
-        <button class="btn-wizard-back" onclick="goStep(1)">← Retour</button>
-        <button class="btn-wizard-next" onclick="goStep(3)" id="btnStep2Next">Continuer → Document</button>
+        <button class="btn-wizard-back" onclick="goStep(1)">← Retour au document</button>
+        <button class="btn-wizard-next" onclick="goStep(3)" id="btnStep2Next" style="background:var(--accent);color:white;border-color:var(--accent);">Lancer l'analyse →</button>
       </div>
     </div>
  
-    <!-- STEP 3 : DOCUMENT -->
-    <div class="wizard-panel" id="step3">
+    <!-- STEP 3 (DOCUMENT) — affiché en 1er désormais -->
+    <div class="wizard-panel active" id="step3">
       <div class="panel-title" id="step3title">Votre bail</div>
-      <div class="panel-sub" id="step3sub">Comment souhaitez-vous procéder ?</div>
+      <div class="panel-sub" id="step3sub">Avez-vous votre bail sous la main ?</div>
 
       <!-- CHOIX PRINCIPAL : 2 cartes égales -->
       <div id="step3ChoiceCards" style="display:flex;flex-direction:column;gap:12px;margin-bottom:8px;">
@@ -1218,7 +1209,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div class="wizard-nav">
           <button class="btn-wizard-back" onclick="showChoiceCards()">← Retour</button>
-          <button class="btn-wizard-next" onclick="goStep(4)" id="btnStep3Next">Continuer → Analyser</button>
+          <button class="btn-wizard-next" onclick="goStep(2)" id="btnStep3Next">Continuer → Logement</button>
         </div>
       </div>
 
@@ -1240,8 +1231,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     </div>
  
-    <!-- STEP 4 : RÉCAP + LANCER -->
-    <div class="wizard-panel" id="step4">
+    <!-- STEP 4 : RÉCAP (LEGACY — caché, le récap a été retiré pour réduire le tunnel) -->
+    <div class="wizard-panel" id="step4" style="display:none !important;">
       <div class="panel-title">Prêt à analyser</div>
       <div class="panel-sub">Vérifiez les informations puis lancez l'analyse</div>
       <div id="recapBlock" style="background:var(--creme);border-radius:14px;padding:20px 24px;margin-bottom:24px;border:1px solid var(--border);">
@@ -1343,13 +1334,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div id="paywallAmountBanner"></div>
 
         <div class="paywall-title" style="margin-top:20px;">Rapport complet disponible</div>
-        <div class="paywall-desc">Toutes les clauses, le plan d'action et les 5 lettres officielles prêtes à être envoyées MAINTENANT</div>
+        <div class="paywall-desc">Tout ce qu'il vous faut pour récupérer votre argent ET sécuriser votre bail à long terme — clauses détaillées, lettres officielles, certificat de conformité.</div>
         <div class="paywall-features">
           <div class="paywall-feature">Toutes les clauses analysées avec références légales</div>
-          <div class="paywall-feature">Vérification encadrement des loyers</div>
-          <div class="paywall-feature">Calcul des sommes récupérables</div>
-          <div class="paywall-feature">Plan d'action priorisé</div>
-          <div class="paywall-feature">5 lettres officielles personnalisées</div>
+          <div class="paywall-feature">Calcul des sommes récupérables + 5 lettres officielles prêtes à envoyer</div>
+          <div class="paywall-feature">Vérification précise loyer vs grille d'encadrement officielle de votre ville</div>
+          <div class="paywall-feature">Modèles de lettres pour toutes vos situations futures (préavis, mise en demeure, contestation IRL, sortie)</div>
+          <div class="paywall-feature">Certificat de conformité daté + protection juridique 12 mois</div>
+          <div class="paywall-feature">Comparaison avec le marché local de votre zone</div>
+          <div class="paywall-feature">Kit de défense préventive (checklist EDL sortie, calcul préavis, restitution dépôt)</div>
         </div>
 
         <!-- TEMOIGNAGE — avant le CTA -->
@@ -1546,6 +1539,91 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <button class="btn-letter" onclick="generateLetter('conciliation', this)">Générer →</button>
           </div>
           <div id="letter-conciliation-content" class="letter-content"></div>
+        </div>
+
+        <!-- ─────────────────────────────────────────────────── -->
+        <!-- BIBLIOTHEQUE DE LETTRES SUPPLEMENTAIRES (toute situation de la vie du bail) -->
+        <!-- ─────────────────────────────────────────────────── -->
+        <div style="margin-top:36px;padding-top:28px;border-top:1px solid var(--border);">
+          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px;">
+            <div class="letters-title" style="margin:0;">Bibliothèque de lettres juridiques</div>
+            <div style="font-size:0.72rem;color:var(--gris);background:var(--vert-light);border:1px solid rgba(45,106,79,0.25);padding:2px 8px;border-radius:10px;color:var(--vert);font-weight:600;">Inclus</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--gris);margin-bottom:20px;line-height:1.6;">
+            Modèles juridiques prêts à l'emploi pour toutes les situations courantes de la vie d'un bail (au-delà des litiges actuellement détectés). Générez quand vous en avez besoin, conservez-les pour vos archives.
+          </div>
+
+          <div id="lettersListExtra">
+            <!-- Préavis de départ -->
+            <div class="letter-card">
+              <div class="letter-card-info">
+                <div class="letter-card-title">Préavis de départ</div>
+                <div class="letter-card-desc">Notification au bailleur de fin de bail (1 ou 3 mois selon zone et type)</div>
+              </div>
+              <button class="btn-letter" onclick="generateLetter('preavis_depart', this)">Générer →</button>
+            </div>
+            <div id="letter-preavis_depart-content" class="letter-content"></div>
+
+            <!-- Restitution dépôt -->
+            <div class="letter-card">
+              <div class="letter-card-info">
+                <div class="letter-card-title">Demande de restitution du dépôt de garantie</div>
+                <div class="letter-card-desc">Quand le bailleur dépasse le délai légal (1 ou 2 mois après remise des clés)</div>
+              </div>
+              <button class="btn-letter" onclick="generateLetter('restitution_depot', this)">Générer →</button>
+            </div>
+            <div id="letter-restitution_depot-content" class="letter-content"></div>
+
+            <!-- Contestation IRL -->
+            <div class="letter-card">
+              <div class="letter-card-info">
+                <div class="letter-card-title">Contestation de l'augmentation IRL</div>
+                <div class="letter-card-desc">Si la révision annuelle est erronée, hors délai, ou avec un mauvais indice</div>
+              </div>
+              <button class="btn-letter" onclick="generateLetter('contestation_irl', this)">Générer →</button>
+            </div>
+            <div id="letter-contestation_irl-content" class="letter-content"></div>
+
+            <!-- Réparations urgentes -->
+            <div class="letter-card">
+              <div class="letter-card-info">
+                <div class="letter-card-title">Mise en demeure pour réparations</div>
+                <div class="letter-card-desc">Quand le bailleur ne fait pas les travaux à sa charge (toiture, chauffage, étanchéité…)</div>
+              </div>
+              <button class="btn-letter" onclick="generateLetter('reparations_urgentes', this)">Générer →</button>
+            </div>
+            <div id="letter-reparations_urgentes-content" class="letter-content"></div>
+
+            <!-- Contestation EDL sortie -->
+            <div class="letter-card">
+              <div class="letter-card-info">
+                <div class="letter-card-title">Contestation de l'état des lieux de sortie</div>
+                <div class="letter-card-desc">Pour contester des retenues abusives sur le dépôt (usure normale vs dégradations)</div>
+              </div>
+              <button class="btn-letter" onclick="generateLetter('contestation_edl', this)">Générer →</button>
+            </div>
+            <div id="letter-contestation_edl-content" class="letter-content"></div>
+
+            <!-- Attestation de loyer -->
+            <div class="letter-card">
+              <div class="letter-card-info">
+                <div class="letter-card-title">Demande d'attestation de loyer</div>
+                <div class="letter-card-desc">Pour vos dossiers CAF, employeur, banque, administration</div>
+              </div>
+              <button class="btn-letter" onclick="generateLetter('attestation_loyer', this)">Générer →</button>
+            </div>
+            <div id="letter-attestation_loyer-content" class="letter-content"></div>
+
+            <!-- Changement adresse -->
+            <div class="letter-card">
+              <div class="letter-card-info">
+                <div class="letter-card-title">Notification de changement d'adresse</div>
+                <div class="letter-card-desc">Après votre déménagement, pour mettre à jour vos coordonnées chez le bailleur</div>
+              </div>
+              <button class="btn-letter" onclick="generateLetter('changement_adresse', this)">Générer →</button>
+            </div>
+            <div id="letter-changement_adresse-content" class="letter-content"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1960,6 +2038,8 @@ function showBailUpload() {
   document.getElementById('bailUploadPanel').style.display = 'block';
   document.getElementById('sansBailPanel').style.display = 'none';
   appState.noPdf = false;
+  // Sécurité : forcer le mode upload par défaut quand on entre dans le panneau
+  if (appState.uploadMode !== 'text') appState.uploadMode = 'upload';
 }
 
 function showSansBail() {
@@ -1994,7 +2074,7 @@ function proceedWithoutBail() {
   appState.uploadMode = 'text';
   // Texte minimal pour déclencher l'analyse loyer uniquement
   document.getElementById('bailText').value = 'Analyse basée sur les informations de loyer uniquement. Pas de document fourni.';
-  goStep(4);
+  goStep(2);
 }
 
 // ═══════════════════════════════════════
@@ -2287,13 +2367,15 @@ function startPaywallTimer() {
 }
  
 // ═══════════════════════════════════════
-// WIZARD NAVIGATION
+// WIZARD NAVIGATION — 3 étapes désormais
+//   n=1 → Document (panel HTML #step3)
+//   n=2 → Logement & Loyer (panels HTML #step1 + #step2 affichés ensemble)
+//   n=3 → Lancer directement l'analyse (pas de récap)
 // ═══════════════════════════════════════
 function goStep(n) {
-  // Pas de validation bloquante - tout est facultatif sauf le document
- 
-  // Validation step 3
-  if (n === 4) {
+  // n=3 : lancement direct, pas d'affichage de panel récap
+  if (n === 3 || n === 4) {
+    // Validation : document requis si pas en mode "noPdf"
     if (!appState.noPdf) {
       var hasContent = appState.uploadMode === 'upload' ? appState.pdfBase64 : document.getElementById('bailText').value.trim().length > 100;
       if (!hasContent) {
@@ -2301,27 +2383,40 @@ function goStep(n) {
         return;
       }
     }
+    appState.currentStep = 3;
+    updateProgress(3);
+    launchAnalysis();
+    return;
   }
- 
+
   appState.currentStep = n;
-  document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('step' + n).classList.add('active');
+  // Cacher tous les panels par défaut
+  document.querySelectorAll('.wizard-panel').forEach(function(p) { p.classList.remove('active'); });
+
+  if (n === 1) {
+    // ÉTAPE 1 : Document
+    document.getElementById('step3').classList.add('active');
+  } else if (n === 2) {
+    // ÉTAPE 2 : Logement + Loyer fusionnés (deux panels affichés ensemble)
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('step2').classList.add('active');
+  }
+
   updateProgress(n);
- 
-  if (n === 4) buildRecap();
   document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
 }
- 
+
 function updateProgress(n) {
-  for (var i = 1; i <= 4; i++) {
+  for (var i = 1; i <= 3; i++) {
     var dot = document.getElementById('dot' + i);
     var lbl = document.getElementById('lbl' + i);
+    if (!dot) continue;
     dot.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
     dot.textContent = i < n ? '✓' : i;
     if (lbl) {
       lbl.className = 'step-label' + (i === n ? ' active' : '');
     }
-    if (i < 4) {
+    if (i < 3) {
       var line = document.getElementById('line' + i);
       if (line) line.className = 'step-line' + (i < n ? ' done' : '');
     }
@@ -2721,19 +2816,28 @@ function buildPaywallAmountBanner(data) {
     html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
     html += '</div>';
   } else {
-    // CAS 3 : pas de trop-perçu loyer calculable → montrer estimation basée sur dépôt
+    // CAS 3 : pas de trop-perçu loyer calculable (bail à priori conforme)
+    // → on positionne sur Certificat conformité + Économie potentielle de négociation + Kit défense préventive
     var depotVerse = appState.depot || 0;
     var loyerB = appState.loyerBase || 0;
     var bienType = appState.bienType || 'vide';
     // Dépôt illégal si > 1 mois pour location vide
     var depotIllegal = (bienType === 'vide' && depotVerse > loyerB && loyerB > 0) ? (depotVerse - loyerB) : 0;
-    var minEstimate = depotIllegal > 0 ? depotIllegal : (loyerB > 0 ? Math.round(loyerB * 0.15) : 200);
-    html += '<div class="paywall-amount-banner">';
-    html += '<div class="paywall-amount-banner-eyebrow">Potentiel récupérable estimé</div>';
-    html += '<div class="paywall-amount-banner-amount">' + minEstimate.toLocaleString("fr-FR") + ' <span>€ minimum</span></div>';
-    html += '<div class="paywall-amount-banner-sub">Estimation conservatrice basée sur votre situation. Le rapport complet calcule le montant exact et génère les lettres pour le réclamer.</div>';
-    html += '<button class="paywall-amount-banner-unlock" onclick="trackBeginCheckout(\'banner_min\');openModal()" style="background:var(--vert)">Récupérer mes ' + minEstimate.toLocaleString('fr-FR') + '€ pour seulement 29€ →</button>';
-    html += '<div class="paywall-amount-banner-roi">Paiement unique · <strong>Satisfait ou remboursé</strong></div>';
+    // Économie potentielle 3 ans : si loyer > 0, on estime 5% négociable
+    var economie3ans = loyerB > 0 ? Math.round(loyerB * 0.05 * 36) : 0;
+    var totalProtege = Math.max(depotIllegal, economie3ans, loyerB > 0 ? Math.round(loyerB * 1.5) : 500);
+
+    html += '<div class="paywall-amount-banner no-amount" style="background:linear-gradient(135deg,#1c2a23 0%,#2d6a4f 100%);">';
+    html += '<div class="paywall-amount-banner-eyebrow" style="color:rgba(255,255,255,0.7);">✓ Votre bail semble conforme</div>';
+    if (economie3ans > 0) {
+      html += '<div class="paywall-amount-banner-amount" style="color:white;">' + totalProtege.toLocaleString("fr-FR") + ' <span style="color:#fbbf24;">€ à sécuriser</span></div>';
+      html += '<div class="paywall-amount-banner-sub" style="color:rgba(255,255,255,0.85);">Économie négociable estimée sur 3 ans <strong>+</strong> protection du dépôt de garantie <strong>+</strong> couverture juridique 12 mois.<br><span style="opacity:0.75;font-size:0.77rem;">Le rapport complet vous donne le kit pour récupérer cet argent ou éviter de le perdre plus tard.</span></div>';
+    } else {
+      html += '<div class="paywall-amount-banner-amount" style="color:white;font-size:2.2rem;">Sécurisez votre bail</div>';
+      html += '<div class="paywall-amount-banner-sub" style="color:rgba(255,255,255,0.85);">Certificat de conformité daté <strong>+</strong> 12 mois de protection juridique <strong>+</strong> kit défense préventive pour anticiper toute mauvaise surprise (EDL sortie, restitution dépôt, augmentation IRL).</div>';
+    }
+    html += '<button class="paywall-amount-banner-unlock" onclick="trackBeginCheckout(\'banner_conforme\');openModal()" style="background:var(--accent);">Obtenir mon rapport complet — 29€ →</button>';
+    html += '<div class="paywall-amount-banner-roi" style="color:rgba(255,255,255,0.5);">Paiement unique · <strong style="color:rgba(255,255,255,0.85);">Valable 12 mois · Satisfait ou remboursé</strong></div>';
     html += '</div>';
   }
  
@@ -2879,6 +2983,14 @@ function renderLoyerCheck(data) {
       html += '<a href="' + l.url + '" target="_blank" rel="noopener" class="encadrement-link' + extraClass + '">' + l.label + '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.6;flex-shrink:0;"><path d="M19 5v9h-2V8.41l-9.29 9.3-1.42-1.42L15.59 7H10V5z"/></svg></a>';
     });
     html += '</div></div>';
+  }
+  // ── DISCLAIMER GRILLES ENCADREMENT ───────────────────────────
+  if (loy.plafond || loyerMajore > 0 || (loy.analyse && /encadr|plafond|r\u00e9f\u00e9rence/i.test(loy.analyse))) {
+    html += '<div style="margin-top:14px;padding:10px 14px;background:rgba(0,0,0,0.025);border-left:3px solid var(--gris);border-radius:6px;font-size:0.74rem;color:var(--gris);line-height:1.5;">';
+    html += '<strong style="color:var(--noir);font-weight:600;">Indications fournies à titre indicatif.</strong> ';
+    html += 'Les grilles d\'encadrement des loyers (arrêtés préfectoraux) évoluent au moins une fois par an. ';
+    html += 'Avant toute démarche, vérifiez les valeurs actualisées auprès de votre préfecture ou de l\'observatoire des loyers de votre zone.';
+    html += '</div>';
   }
   html += '</div>';
   el.innerHTML = html;
