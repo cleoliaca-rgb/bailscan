@@ -419,16 +419,18 @@ module.exports = async function handler(req, res) {
     // ─── Persistance Supabase (non-bloquant, RGPD-safe) ──────────────
     // On enregistre uniquement les metadonnees + le resultat structure.
     // On NE STOCKE PAS le texte brut du bail (PII).
-    // Fire-and-forget : ne doit jamais bloquer la reponse utilisateur.
+    // On attend la reponse pour recuperer l'id et le renvoyer au frontend
+    // (necessaire pour relier le futur paiement Stripe a cette analyse).
+    var analysisId = null;
     try {
-      if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        fetch(process.env.SUPABASE_URL + '/rest/v1/b2c_analyses', {
+      if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+        var sbResp = await fetch(process.env.SUPABASE_URL + '/rest/v1/b2c_analyses', {
           method: 'POST',
           headers: {
-            'apikey': process.env.SUPABASE_SERVICE_ROLE_KEY,
-            'Authorization': 'Bearer ' + process.env.SUPABASE_SERVICE_ROLE_KEY,
+            'apikey': process.env.SUPABASE_SERVICE_KEY,
+            'Authorization': 'Bearer ' + process.env.SUPABASE_SERVICE_KEY,
             'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
+            'Prefer': 'return=representation'
           },
           body: JSON.stringify({
             type_analyse: context.type_analyse || 'bail',
@@ -446,13 +448,22 @@ module.exports = async function handler(req, res) {
             input_mode: body.pdf ? 'pdf' : 'text',
             result_json: parsed
           })
-        }).catch(function(err) {
-          console.error('Supabase persist error (non-blocking):', err && err.message);
         });
+        if (sbResp.ok) {
+          var inserted = await sbResp.json();
+          if (Array.isArray(inserted) && inserted[0] && inserted[0].id) {
+            analysisId = inserted[0].id;
+          }
+        } else {
+          console.error('Supabase insert failed:', sbResp.status, await sbResp.text());
+        }
       }
     } catch (persistErr) {
       console.error('Supabase persist error (non-blocking):', persistErr && persistErr.message);
     }
+ 
+    // On expose l'analysisId au frontend pour qu'il puisse le passer a Stripe Checkout
+    if (analysisId) parsed._analysis_id = analysisId;
  
     return res.status(200).json(parsed);
  
