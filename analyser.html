@@ -174,6 +174,7 @@ h1 em { font-style:italic; color:var(--accent); }
 .wizard-panel { display:none; animation:fadeIn .3s ease; }
 .wizard-panel.active { display:block; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)} }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)} }
  
 .panel-title { font-family:'Instrument Serif',serif; font-size:1.6rem; color:var(--noir); margin-bottom:6px; }
 .panel-sub { font-size:0.88rem; color:var(--gris); margin-bottom:28px; }
@@ -1173,6 +1174,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div><div class="upload-success-name" id="uploadFileName"></div><div class="upload-success-size" id="uploadFileSize"></div></div>
             <button style="margin-left:auto;background:none;border:none;color:var(--gris);cursor:pointer;font-size:1.2rem" onclick="clearFile()">×</button>
           </div>
+
+          <!-- ANALYSE DIRECTE — visible UNIQUEMENT si un PDF est uploade. -->
+          <!-- Place JUSTE APRES uploadSuccess pour etre visible immediatement, sans scroll. -->
+          <div id="directAnalyzeBlock" style="display:none;margin-top:14px;padding:16px 18px;background:linear-gradient(135deg,#1c2a23 0%,#2d6a4f 100%);border-radius:14px;color:white;animation:fadeInUp .35s ease-out;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.18);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:0.85rem;">✓</div>
+              <div style="flex:1;">
+                <div style="font-size:0.95rem;font-weight:700;color:white;line-height:1.3;">Bail détecté — analyse en 1 clic</div>
+                <div style="font-size:0.78rem;color:rgba(255,255,255,0.85);margin-top:2px;line-height:1.5;">Pas besoin de remplir le formulaire : on extrait tout du bail.</div>
+              </div>
+            </div>
+            <button onclick="launchAnalysisFromUpload()" style="background:white;color:#1c2a23;border:none;padding:14px 18px;border-radius:10px;font-size:0.95rem;font-weight:800;cursor:pointer;width:100%;font-family:inherit;transition:transform .15s;letter-spacing:0.01em;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">⚡ Analyser directement →</button>
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.65);text-align:center;margin-top:8px;">ou continuez vers le formulaire pour préciser ↓</div>
+          </div>
         </div>
         <div id="text-panel" style="display:none">
           <textarea class="textarea-bail" id="bailText" placeholder="Collez ici le texte de votre bail (toutes les clauses, conditions générales…)" oninput="updateCharCount()"></textarea>
@@ -1210,19 +1225,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="wizard-nav">
           <button class="btn-wizard-back" onclick="showChoiceCards()">← Retour</button>
           <button class="btn-wizard-next" onclick="goStep(2)" id="btnStep3Next">Continuer → Logement</button>
-        </div>
-
-        <!-- ANALYSE DIRECTE — visible UNIQUEMENT si un PDF est uploade. -->
-        <!-- Permet de sauter le formulaire step 2 : Claude extrait les infos du bail. -->
-        <div id="directAnalyzeBlock" style="display:none;margin-top:18px;padding:14px 16px;background:rgba(45,106,79,0.06);border:1.5px solid rgba(45,106,79,0.22);border-radius:12px;">
-          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
-            <div style="width:24px;height:24px;border-radius:50%;background:var(--vert);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:0.78rem;margin-top:2px;">✓</div>
-            <div style="flex:1;">
-              <div style="font-size:0.85rem;font-weight:700;color:var(--noir);line-height:1.3;">Bail uploadé — vous pouvez sauter l'étape suivante</div>
-              <div style="font-size:0.75rem;color:var(--gris);margin-top:3px;line-height:1.5;">Nous extrairons automatiquement la ville, le loyer, la surface et les autres infos du bail. C'est plus rapide mais légèrement moins précis pour le bloc encadrement (vous pourrez corriger après).</div>
-            </div>
-          </div>
-          <button onclick="launchAnalysisFromUpload()" style="background:var(--noir);color:white;border:none;padding:12px 18px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;width:100%;font-family:inherit;">Analyser directement le bail →</button>
         </div>
       </div>
 
@@ -2750,6 +2752,7 @@ function selectMode(m) {
  */
 function launchAnalysisFromUpload() {
   if (!appState.pdfBase64) { alert('Aucun bail uploadé.'); return; }
+  console.log('[BailScan] Lancement analyse directe depuis upload — PDF size:', appState.pdfBase64.length, 'caracteres base64');
   appState.skipForm = true;
   launchAnalysis();
 }
@@ -2808,6 +2811,10 @@ function launchAnalysis() {
   } else {
     payload = JSON.stringify({ text: textContent, extra_docs: appState.extraDocs.map(function(d){ return {name:d.label, base64:d.base64}; }), context: contextInfo });
   }
+  console.log('[BailScan] Envoi /api/analyze — mode:', appState.uploadMode,
+    '| skip_form:', !!contextInfo._skip_form,
+    '| pdf present:', appState.uploadMode === 'upload' && !!appState.pdfBase64,
+    '| payload size:', Math.round(payload.length / 1024) + ' Ko');
  
   fetch('/api/analyze', {
     method: 'POST',
@@ -2817,6 +2824,14 @@ function launchAnalysis() {
   .then(function(r) { return r.json(); })
   .then(function(data) {
     hideLoading();
+    console.log('[BailScan] Reponse recue — verdict:', data.verdict_titre,
+      '| score:', data.score,
+      '| clauses:', (data.clauses_abusives || []).length,
+      '| context_extrait:', !!data.context_extrait,
+      '| _partial:', !!data._partial);
+    if (data.context_extrait) {
+      console.log('[BailScan] context_extrait :', data.context_extrait);
+    }
     if (data.error) { alert('Erreur: ' + data.error); return; }
     analysisResult = data;
     if (data._analysis_id) {

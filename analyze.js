@@ -375,22 +375,29 @@ function buildBailPrompt(context, extraDocs) {
   // Claude doit tout extraire du PDF du bail.
   // ─────────────────────────────────────────────────────────────
   if (skipForm) {
-    extra += "\n=== MODE EXTRACTION AUTOMATIQUE ===\n"
-      + "Le locataire n'a PAS rempli le formulaire. Tu dois EXTRAIRE toutes les informations du bail attache.\n"
-      + "Inclus OBLIGATOIREMENT dans ton JSON un champ 'context_extrait' avec :\n"
-      + "  - ville : nom de la commune du logement (string)\n"
-      + "  - surface : surface habitable en m2 (number)\n"
-      + "  - loyer_base : loyer mensuel HORS CHARGES en euros (number)\n"
-      + "  - charges : montant des charges en euros (number, 0 si non specifie)\n"
-      + "  - depot : depot de garantie en euros (number, 0 si non specifie)\n"
-      + "  - type_bien : 'vide' ou 'meuble' (string)\n"
-      + "  - type_location : 'principale' ou 'meublee_principale' ou 'autre' (string)\n"
-      + "  - complement_loyer : montant du complement de loyer s'il existe, sinon 0 (number)\n"
-      + "  - complement_justif : justification du complement si presente dans le bail (string, vide sinon)\n"
-      + "  - date_debut_bail : date de prise d'effet du bail au format YYYY-MM-DD (string, vide si non trouvee)\n"
-      + "  - nb_mois_bail : nombre de mois ecoules depuis le debut du bail (number, 0 si date inconnue)\n"
-      + "Si une information n'est pas trouvable dans le bail, mets une valeur par defaut raisonnable et signale-le dans le resume.\n"
-      + "Apres l'extraction, utilise ces valeurs pour ton analyse comme si elles avaient ete saisies par le locataire.\n"
+    extra += "\n=== ⚠️ MODE EXTRACTION AUTOMATIQUE — INSTRUCTIONS CRITIQUES ⚠️ ===\n"
+      + "Le formulaire du locataire est VIDE. Tu dois LIRE le bail PDF attache et EN EXTRAIRE toutes les informations.\n"
+      + "ORDRE OBLIGATOIRE des operations :\n"
+      + "  1. LIS le bail PDF integralement\n"
+      + "  2. EXTRAIS ces 11 informations et stocke-les mentalement :\n"
+      + "     • ville (commune du logement, ex: Bordeaux)\n"
+      + "     • surface (m2 habitable Carrez, ex: 42)\n"
+      + "     • loyer_base (loyer HORS CHARGES en euros, ex: 980)\n"
+      + "     • charges (provision charges en euros, ex: 95)\n"
+      + "     • depot (depot de garantie verse en euros, ex: 1960)\n"
+      + "     • type_bien ('vide' ou 'meuble', ex: vide)\n"
+      + "     • type_location ('principale' / 'meublee_principale' / 'autre', ex: principale)\n"
+      + "     • complement_loyer (montant en euros, 0 si absent)\n"
+      + "     • complement_justif (texte de la justification si presente, vide sinon)\n"
+      + "     • date_debut_bail (YYYY-MM-DD, ex: 2025-09-01)\n"
+      + "     • nb_mois_bail (entier, ex: 8 si bail debut sept 2025 et on est en mai 2026)\n"
+      + "  3. UTILISE ces valeurs extraites pour ton analyse complete (encadrement, depot, clauses, etc.)\n"
+      + "  4. INCLUS OBLIGATOIREMENT ces 11 valeurs dans le champ 'context_extrait' du JSON final\n"
+      + "\n"
+      + "REGLES STRICTES :\n"
+      + "  - Si une info n'est pas trouvable dans le bail : valeur par defaut raisonnable + signale-le dans 'resume'\n"
+      + "  - 'context_extrait' est OBLIGATOIRE dans ton JSON, jamais omis\n"
+      + "  - Ne dis JAMAIS 'je ne peux pas lire le PDF' : le bail EST attache, lis-le clause par clause\n"
       + "=== FIN MODE EXTRACTION ===\n";
   }
 
@@ -998,12 +1005,13 @@ module.exports = async function handler(req, res) {
     // Tokens adaptatifs :
     // - mode normal : 1800
     // - extra_docs : 2800
-    // - skip_form (extraction auto) : 2500 (besoin de place pour context_extrait)
-    // - extra_docs + skip_form : 3200
+    // - skip_form (extraction auto) : 4000 (extraction + analyse + 10+ clauses possibles)
+    // - extra_docs + skip_form : 4500
     var maxTokensAnalysis = 1800;
     if (extraDocs.length > 0) maxTokensAnalysis = 2800;
-    if (context && context._skip_form) maxTokensAnalysis = Math.max(maxTokensAnalysis, 2500);
-    if (extraDocs.length > 0 && context && context._skip_form) maxTokensAnalysis = 3200;
+    if (context && context._skip_form) maxTokensAnalysis = Math.max(maxTokensAnalysis, 4000);
+    if (extraDocs.length > 0 && context && context._skip_form) maxTokensAnalysis = 4500;
+    console.log('[analyze] max_tokens:', maxTokensAnalysis, 'skip_form:', !!(context && context._skip_form), 'extra_docs:', extraDocs.length);
  
     var userContent;
     if (body.pdf) {
@@ -1041,13 +1049,25 @@ module.exports = async function handler(req, res) {
     } else {
       return res.status(400).json({ error: 'Aucun document fourni.' });
     }
- 
+
+    console.log('[analyze] Envoi a Claude — mode:', body.pdf ? 'PDF' : 'TEXT',
+      '| skip_form:', !!(context && context._skip_form),
+      '| pdf size:', body.pdf ? Math.round(body.pdf.length * 0.75 / 1024) + ' Ko' : 'n/a',
+      '| ville context:', (context && context.ville) || '(vide)',
+      '| loyer context:', (context && context.loyer_base) || 0);
+
     var data = await callAnthropic(
       [{ role: "user", content: userContent }],
       systemPrompt, maxTokensAnalysis
     );
  
     var rawText = (data.content && data.content[0] && data.content[0].text) || '';
+    console.log('[analyze] Reponse Claude recue. stop_reason:', data.stop_reason,
+      '| usage:', JSON.stringify(data.usage || {}),
+      '| rawText length:', rawText.length);
+    if (data.stop_reason === 'max_tokens') {
+      console.warn('[analyze] ⚠️ JSON probablement tronque (max_tokens atteint). Considere augmenter max_tokens.');
+    }
     var parsed;
  
     try {
@@ -1058,6 +1078,8 @@ module.exports = async function handler(req, res) {
         clean = clean.slice(firstBrace, lastBrace + 1);
       }
       parsed = JSON.parse(clean.trim());
+      console.log('[parse] JSON OK — clauses:', (parsed.clauses_abusives || []).length,
+        '| context_extrait:', !!parsed.context_extrait);
     } catch (e) {
       console.error('[parse] JSON parse error. RawText preview:', rawText.slice(0, 800));
       console.error('[parse] Erreur:', e && e.message);
