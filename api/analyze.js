@@ -355,6 +355,7 @@ function buildBailPrompt(context, extraDocs) {
   var ville = (context && context.ville) || '';
   var surface = (context && context.surface) || null;
   var loyerBase = (context && context.loyer_base) || null;
+  var skipForm = context && context._skip_form === true;
   var encadre = isVilleEncadree(ville);
   var loyerM2 = computeLoyerM2(context);
 
@@ -368,6 +369,22 @@ function buildBailPrompt(context, extraDocs) {
   });
  
   var extra = '';
+
+  // ─────────────────────────────────────────────────────────────
+  // MODE EXTRACTION AUTO : le user n'a pas rempli le formulaire,
+  // Claude doit tout extraire du PDF du bail ET faire l'analyse
+  // dans LE MEME appel (pour economiser les input tokens — rate limit).
+  // ─────────────────────────────────────────────────────────────
+  if (skipForm) {
+    extra += "\n=== MODE EXTRACTION + ANALYSE (1 SEUL APPEL) ===\n"
+      + "Le formulaire est VIDE. Lis le bail PDF attache et EN UN SEUL JSON :\n"
+      + "1. Inclus un champ 'context_extrait' avec ville, surface, loyer_base, charges, depot, type_bien, type_location, complement_loyer, complement_justif, date_debut_bail, nb_mois_bail\n"
+      + "2. Fais l'analyse complete (score, verdict, clauses_abusives, etc.) en utilisant ces valeurs extraites\n"
+      + "Date du jour pour calcul nb_mois_bail : " + new Date().toISOString().slice(0, 10) + "\n"
+      + "Le champ 'context_extrait' est OBLIGATOIRE dans ton JSON. Format des valeurs : ville/strings sans accents speciaux ni guillemets, nombres en number.\n"
+      + "=== FIN MODE EXTRACTION ===\n";
+  }
+
   if (encadre && loyerBase && surface) {
     extra += "\nATTENTION : " + ville + " est en zone d'encadrement des loyers.\n"
       + "Loyer declare HORS CHARGES : " + loyerBase + " euros/mois pour " + surface + " m2.\n"
@@ -412,6 +429,11 @@ function buildBailPrompt(context, extraDocs) {
   var formatExample = extraDocs && extraDocs.length > 0
     ? "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"3 problemes detectes\",\"resume\":\"Resume incluant les docs complementaires.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre clause bail\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"},{\"type\":\"danger\",\"titre\":\"[Conge du bailleur] Vice de forme\",\"description\":\"Le conge ne respecte pas...\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. 15 loi 1989\"],\"action\":\"Contester le conge.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}"
     : "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"2 clauses a corriger\",\"resume\":\"Resume.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}";
+
+  // En mode skip_form, ajouter le champ context_extrait au format
+  if (skipForm) {
+    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"Bordeaux\",\"surface\":42,\"loyer_base\":980,\"charges\":95,\"depot\":1960,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"2025-09-01\",\"nb_mois_bail\":8}}');
+  }
 
   // Determiner si un bail est fourni (PDF ou texte > 200 chars)
   var hasBail = (context && context.bail_pdf_base64) || (context && context.bail_text && String(context.bail_text).length > 200);
@@ -1015,41 +1037,18 @@ module.exports = async function handler(req, res) {
     var extraDocs = body.extra_docs || [];
 
     // ────────────────────────────────────────────────────────────
-    // ETAPE 1 — EXTRACTION PRELIMINAIRE (mode skip_form)
-    // Si le user a saute le formulaire, on appelle Claude d'abord
-    // pour extraire ville/loyer/surface/depot du PDF, puis on hydrate
-    // le context comme si le user avait rempli le formulaire.
+    // MODE SKIP_FORM : ne PAS faire d'appel preliminaire (rate limit Anthropic).
+    // On garde l'appel UNIQUE avec un prompt qui demande extraction + analyse.
     // ────────────────────────────────────────────────────────────
     var extractedContext = null;
-    if (type === 'bail' && context._skip_form && body.pdf) {
-      console.log('[handler] Mode skip_form actif — extraction preliminaire du contexte...');
-      extractedContext = await extractContextFromPDF(body.pdf);
-      if (extractedContext) {
-        // Hydrater le context avec les valeurs extraites
-        if (extractedContext.ville) context.ville = extractedContext.ville;
-        if (extractedContext.surface) context.surface = extractedContext.surface;
-        if (extractedContext.loyer_base) context.loyer_base = extractedContext.loyer_base;
-        if (extractedContext.charges !== undefined) context.charges = extractedContext.charges;
-        if (extractedContext.depot !== undefined) context.depot = extractedContext.depot;
-        if (extractedContext.type_bien) context.type_bien = extractedContext.type_bien;
-        if (extractedContext.type_location) context.type_location = extractedContext.type_location;
-        if (extractedContext.complement_loyer !== undefined) context.complement_loyer = extractedContext.complement_loyer;
-        if (extractedContext.complement_justif) context.complement_justif = extractedContext.complement_justif;
-        // On retire le flag skip_form maintenant que le contexte est hydrate :
-        // l'analyse principale doit tourner en mode NORMAL avec ces valeurs.
-        context._skip_form_processed = true;
-        delete context._skip_form;
-        console.log('[handler] Context hydrate apres extraction:', JSON.stringify({
-          ville: context.ville, surface: context.surface,
-          loyer_base: context.loyer_base, depot: context.depot, type_bien: context.type_bien
-        }));
-      } else {
-        console.warn('[handler] Extraction echouee — analyse tournera avec contexte vide');
-      }
+    if (context._skip_form) {
+      console.log('[handler] Mode skip_form actif — extraction integree dans l\'appel principal');
     }
 
     // ────────────────────────────────────────────────────────────
-    // ETAPE 2 — RESOLUTION DU PLAFOND avec le contexte (hydrate ou non)
+    // RESOLUTION DU PLAFOND avec le contexte (peut etre vide en skip_form,
+    // dans ce cas le plafond ne sera pas pre-resolu et sera traite par
+    // le frontend fallback)
     // ────────────────────────────────────────────────────────────
     if (type === 'bail' && context.ville && context.loyer_base && context.surface) {
       try {
@@ -1074,9 +1073,14 @@ module.exports = async function handler(req, res) {
       ? buildEtatDesLieuxPrompt(context)
       : buildBailPrompt(context, extraDocs);
  
-    // Tokens adaptatifs (le mode skip_form a deja ete neutralise apres extraction)
+    // Tokens output adaptatifs :
+    // - mode normal : 1800
+    // - extra_docs : 2800
+    // - skip_form (extraction + analyse dans le meme appel) : 3500
     var maxTokensAnalysis = 1800;
     if (extraDocs.length > 0) maxTokensAnalysis = 2800;
+    if (context._skip_form) maxTokensAnalysis = Math.max(maxTokensAnalysis, 3500);
+    console.log('[analyze] max_tokens output:', maxTokensAnalysis, 'skip_form:', !!context._skip_form);
  
     var userContent;
     if (body.pdf) {
@@ -1268,6 +1272,20 @@ module.exports = async function handler(req, res) {
  
   } catch (error) {
     console.error('BailScan error:', error);
-    return res.status(500).json({ error: 'Erreur serveur: ' + error.message });
+    // Detection erreur rate limit Anthropic (429)
+    var errMsg = error && error.message ? error.message : 'erreur inconnue';
+    if (errMsg.indexOf('429') >= 0 || errMsg.indexOf('rate_limit') >= 0) {
+      return res.status(200).json({
+        score: 50, verdict: 'Risque',
+        verdict_titre: 'Service momentanément saturé',
+        resume: "Trop de requêtes en cours. Attendez 60 secondes et relancez l'analyse.",
+        loyer: null, clauses_abusives: [],
+        plan_action: ['Attendre 1 minute', 'Relancer l\'analyse en cliquant sur "Analyser mon bail" en haut'],
+        _partial: true,
+        _rate_limit: true,
+        _debug: { erreur_type: 'rate_limit_anthropic', detail: errMsg.slice(0, 300) }
+      });
+    }
+    return res.status(500).json({ error: 'Erreur serveur: ' + errMsg });
   }
 };
