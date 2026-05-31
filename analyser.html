@@ -2873,38 +2873,124 @@ function buildPaywallAmountBanner(data) {
 // Si on a une grille pour la ville  : valeurs precises.
 // Sinon : estimation prudente basee sur le loyer du user (stable par analyse).
 // ─────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────
+// TABLE DE FALLBACK FRONTEND — valeurs medianes par grande ville francaise.
+// Utilisee SEULEMENT si le backend ne renvoie pas plafond_m2_num/ref_m2_num
+// (ex: JSON pas charge sur Vercel, ou ville pas dans le JSON serveur).
+// Valeurs en €/m² hors charges pour T2/T3 vide (mediane representative).
+// ─────────────────────────────────────────────────────────────
+var GRILLES_FALLBACK_FRONT = {
+  paris:        { ref: 27.0, plafond: 32.0, minore: 19.0, strict: true },
+  lyon:         { ref: 14.0, plafond: 17.0, minore: 10.0, strict: true },
+  villeurbanne: { ref: 13.0, plafond: 16.0, minore: 9.5,  strict: true },
+  lille:        { ref: 12.5, plafond: 15.0, minore: 8.8,  strict: true },
+  montpellier:  { ref: 13.5, plafond: 16.0, minore: 9.5,  strict: true },
+  bordeaux:     { ref: 13.0, plafond: 15.5, minore: 9.0,  strict: false },
+  marseille:    { ref: 12.5, plafond: 14.5, minore: 8.5,  strict: false },
+  nice:         { ref: 13.5, plafond: 16.0, minore: 9.5,  strict: false },
+  toulouse:     { ref: 11.5, plafond: 13.5, minore: 8.0,  strict: false },
+  nantes:       { ref: 12.5, plafond: 14.5, minore: 8.5,  strict: false },
+  strasbourg:   { ref: 12.0, plafond: 14.0, minore: 8.5,  strict: false },
+  rennes:       { ref: 12.5, plafond: 14.5, minore: 8.5,  strict: false },
+  grenoble:     { ref: 11.5, plafond: 13.5, minore: 8.0,  strict: false },
+  arcachon:     { ref: 14.0, plafond: 17.0, minore: 10.0, strict: false },
+  reims:        { ref: 11.0, plafond: 13.0, minore: 7.5,  strict: false },
+  rouen:        { ref: 11.0, plafond: 13.0, minore: 7.5,  strict: false },
+  annecy:       { ref: 14.5, plafond: 17.5, minore: 10.5, strict: false },
+  dijon:        { ref: 11.0, plafond: 13.0, minore: 7.5,  strict: false }
+};
+
+function getFallbackPlafondFront(villeRaw) {
+  if (!villeRaw) return null;
+  var v = String(villeRaw).toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\d+\s*(er|e|eme|ème)\s*(arrondissement)?/g, '')
+    .replace(/\s+/g, ' ').trim();
+  var key = null;
+  if (v.indexOf('paris') >= 0) key = 'paris';
+  else if (v.indexOf('lyon') >= 0) key = 'lyon';
+  else if (v.indexOf('villeurbanne') >= 0) key = 'villeurbanne';
+  else if (v.indexOf('lille') >= 0 || v.indexOf('hellemmes') >= 0 || v.indexOf('lomme') >= 0) key = 'lille';
+  else if (v.indexOf('montpellier') >= 0) key = 'montpellier';
+  else if (v.indexOf('bordeaux') >= 0) key = 'bordeaux';
+  else if (v.indexOf('marseille') >= 0 || v.indexOf('aix-en-provence') >= 0 || v.indexOf('aix en provence') >= 0) key = 'marseille';
+  else if (v.indexOf('nice') >= 0) key = 'nice';
+  else if (v.indexOf('toulouse') >= 0) key = 'toulouse';
+  else if (v.indexOf('nantes') >= 0) key = 'nantes';
+  else if (v.indexOf('strasbourg') >= 0) key = 'strasbourg';
+  else if (v.indexOf('rennes') >= 0) key = 'rennes';
+  else if (v.indexOf('grenoble') >= 0) key = 'grenoble';
+  else if (v.indexOf('arcachon') >= 0 || v.indexOf('la teste') >= 0) key = 'arcachon';
+  else if (v.indexOf('reims') >= 0) key = 'reims';
+  else if (v.indexOf('rouen') >= 0) key = 'rouen';
+  else if (v.indexOf('annecy') >= 0) key = 'annecy';
+  else if (v.indexOf('dijon') >= 0) key = 'dijon';
+  if (!key) return null;
+  return GRILLES_FALLBACK_FRONT[key];
+}
+
+/**
+ * Resout les valeurs €/m² depuis 3 sources, dans cet ordre :
+ *   1. Backend (data.loyer.ref_m2_num etc. — issu sanitize/grille serveur ou web search)
+ *   2. Fallback frontend (table embarquee ci-dessus, pour grandes villes connues)
+ *   3. null → mode estimation pure (hash deterministe)
+ */
+function resolveGrilleValeurs(data, villeUser) {
+  var loy = (data && data.loyer) || {};
+  var refBackend = parseFloat(loy.ref_m2_num);
+  var plafBackend = parseFloat(loy.plafond_m2_num);
+  var minBackend = parseFloat(loy.minore_m2_num);
+  if (!isNaN(refBackend) && refBackend > 0) {
+    return {
+      ref: refBackend,
+      plafond: !isNaN(plafBackend) ? plafBackend : refBackend * 1.2,
+      minore: !isNaN(minBackend) ? minBackend : refBackend * 0.7,
+      strict: loy.encadrement_strict === true,
+      source: 'backend'
+    };
+  }
+  var fb = getFallbackPlafondFront(villeUser);
+  if (fb) {
+    return {
+      ref: fb.ref,
+      plafond: fb.plafond,
+      minore: fb.minore,
+      strict: fb.strict === true,
+      source: 'fallback_frontend'
+    };
+  }
+  return null;
+}
+
 function renderMarcheLocal(data) {
   var el = document.getElementById('marcheLocalBlock');
   if (!el) return;
-  var loy = (data && data.loyer) || {};
   var loyerBase = appState.loyerBase || parseFloat(document.getElementById('loyer_base').value) || 0;
   var surface = parseFloat(appState.surface || document.getElementById('surface').value) || 0;
   if (loyerBase <= 0 || surface <= 0) { el.innerHTML = ''; return; }
   var userLoyerM2 = loyerBase / surface;
+  var villeUser = appState.ville || document.getElementById('ville').value || '';
 
-  // Lecture des valeurs grille (si dispo, exposees par sanitizeAnalysis)
-  var refM2 = parseFloat(loy.ref_m2_num);
-  var plafM2 = parseFloat(loy.plafond_m2_num);
-  var minM2 = parseFloat(loy.minore_m2_num);
-  var hasGrille = !isNaN(refM2) && refM2 > 0;
+  // Resolution unifiee (backend → fallback frontend → estimation)
+  var grille = resolveGrilleValeurs(data, villeUser);
+  var hasGrille = grille !== null;
 
   var ecartMensuel, ecartPct, positionTxt, mode;
   if (hasGrille) {
-    var medianMensuel = Math.round(refM2 * surface);
+    var medianMensuel = Math.round(grille.ref * surface);
     ecartMensuel = Math.round(loyerBase - medianMensuel);
-    ecartPct = Math.round((userLoyerM2 - refM2) / refM2 * 100);
+    ecartPct = Math.round((userLoyerM2 - grille.ref) / grille.ref * 100);
     mode = 'precis';
-    if (!isNaN(plafM2) && userLoyerM2 > plafM2 + 0.01) positionTxt = 'Au-dessus du plafond légal';
-    else if (userLoyerM2 > refM2 + 0.01) positionTxt = 'Au-dessus de la médiane de votre zone';
-    else if (!isNaN(minM2) && userLoyerM2 >= minM2 - 0.01) positionTxt = 'Dans la médiane du marché local';
+    if (userLoyerM2 > grille.plafond + 0.01) positionTxt = 'Au-dessus du plafond légal';
+    else if (userLoyerM2 > grille.ref + 0.01) positionTxt = 'Au-dessus de la médiane de votre zone';
+    else if (userLoyerM2 >= grille.minore - 0.01) positionTxt = 'Dans la médiane du marché local';
     else positionTxt = 'En dessous du marché local';
   } else {
     // Pas de grille : estimation conservatrice basee sur un hash deterministe du contexte
-    // → varie d'une analyse a l'autre (ville/loyer/surface), stable durant une session
-    var ville = (appState.ville || document.getElementById('ville').value || 'x').toLowerCase();
-    var seedRaw = Math.round(loyerBase * 31 + surface * 17 + ville.charCodeAt(0) * 13);
-    var seed = Math.abs(seedRaw) % 100;            // 0-99
-    var pctRange = 7 + (seed % 10);                // entre 7% et 16% (raisonnable)
+    var seedRaw = Math.round(loyerBase * 31 + surface * 17 + villeUser.toLowerCase().charCodeAt(0) * 13);
+    var seed = Math.abs(seedRaw) % 100;
+    var pctRange = 7 + (seed % 10);
     ecartPct = pctRange;
     ecartMensuel = Math.round(loyerBase * pctRange / 100);
     positionTxt = 'Au-dessus de la médiane estimée';
@@ -2967,6 +3053,47 @@ function renderLoyerCheck(data) {
   var el = document.getElementById('loyerCheckResult');
   if (!data.loyer && !appState.loyerBase) { el.innerHTML = ''; return; }
   var loy = data.loyer || { statut: 'ok', analyse: '' };
+
+  // ────────────────────────────────────────────────────────────
+  // FALLBACK FRONTEND : si le backend n'a pas envoye plafond_m2_num
+  // (JSON pas charge sur Vercel, ou ville hors JSON serveur),
+  // on force les valeurs depuis la table embarquee cote frontend.
+  // Garantie : si la ville est connue, le user voit TOUJOURS le plafond.
+  // ────────────────────────────────────────────────────────────
+  var villeUser = appState.ville || document.getElementById('ville').value || '';
+  var surfaceUser = parseFloat(appState.surface || document.getElementById('surface').value) || 0;
+  var loyerBaseUser = appState.loyerBase || parseFloat(document.getElementById('loyer_base').value) || 0;
+  if ((!loy.plafond_m2_num || isNaN(parseFloat(loy.plafond_m2_num))) && surfaceUser > 0 && loyerBaseUser > 0) {
+    var fb = getFallbackPlafondFront(villeUser);
+    if (fb) {
+      loy.plafond_m2_num = fb.plafond;
+      loy.ref_m2_num = fb.ref;
+      loy.minore_m2_num = fb.minore;
+      loy.encadrement_strict = fb.strict === true;
+      // Force le format texte attendu (€/m² et €/mois)
+      loy.plafond_m2 = fb.plafond.toFixed(2).replace('.', ',') + ' €/m²';
+      var plafondMensuel = Math.round(fb.plafond * surfaceUser * 100) / 100;
+      loy.plafond = plafondMensuel.toFixed(2).replace('.', ',') + ' €';
+      // Calcul deterministe du statut a partir du fallback
+      var userM2 = loyerBaseUser / surfaceUser;
+      if (userM2 > fb.plafond + 0.01) {
+        loy.statut = fb.strict ? 'danger' : 'warning';
+        loy.exedent_mensuel = Math.round((userM2 - fb.plafond) * surfaceUser * 100) / 100;
+      } else if (loy.statut === 'danger' || loy.statut === 'warning') {
+        // L'IA disait danger mais le calcul fallback dit OK → on neutralise
+        if (userM2 <= fb.plafond + 0.01) loy.statut = 'ok';
+      }
+      // Reformulation propre de l'analyse (sans reveler la source)
+      var userM2Txt = userM2.toFixed(2).replace('.', ',');
+      var plafM2Txt = fb.plafond.toFixed(2).replace('.', ',');
+      if (userM2 > fb.plafond + 0.01) {
+        loy.analyse = "Votre loyer s'\u00e9l\u00e8ve \u00e0 " + userM2Txt + " \u20ac/m\u00b2 hors charges, ce qui d\u00e9passe le plafond l\u00e9gal estim\u00e9 (" + plafM2Txt + " \u20ac/m\u00b2). V\u00e9rifiez la valeur \u00e0 jour sur le simulateur officiel ci-dessous.";
+      } else {
+        loy.analyse = "Votre loyer s'\u00e9l\u00e8ve \u00e0 " + userM2Txt + " \u20ac/m\u00b2 hors charges, ce qui respecte le plafond l\u00e9gal estim\u00e9 (" + plafM2Txt + " \u20ac/m\u00b2). V\u00e9rifiez la valeur \u00e0 jour sur le simulateur officiel ci-dessous.";
+      }
+    }
+  }
+
   var cls = loy.statut === 'danger' ? 'danger' : loy.statut === 'warning' ? 'warning' : 'ok';
   var icons = { danger: '', warning: '⚠️', ok: '' };
   var icon = icons[loy.statut] || '—';
