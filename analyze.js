@@ -355,6 +355,7 @@ function buildBailPrompt(context, extraDocs) {
   var ville = (context && context.ville) || '';
   var surface = (context && context.surface) || null;
   var loyerBase = (context && context.loyer_base) || null;
+  var skipForm = context && context._skip_form === true;
   var encadre = isVilleEncadree(ville);
   var loyerM2 = computeLoyerM2(context);
 
@@ -368,6 +369,31 @@ function buildBailPrompt(context, extraDocs) {
   });
  
   var extra = '';
+
+  // ─────────────────────────────────────────────────────────────
+  // MODE EXTRACTION AUTO : le user n'a pas rempli le formulaire,
+  // Claude doit tout extraire du PDF du bail.
+  // ─────────────────────────────────────────────────────────────
+  if (skipForm) {
+    extra += "\n=== MODE EXTRACTION AUTOMATIQUE ===\n"
+      + "Le locataire n'a PAS rempli le formulaire. Tu dois EXTRAIRE toutes les informations du bail attache.\n"
+      + "Inclus OBLIGATOIREMENT dans ton JSON un champ 'context_extrait' avec :\n"
+      + "  - ville : nom de la commune du logement (string)\n"
+      + "  - surface : surface habitable en m2 (number)\n"
+      + "  - loyer_base : loyer mensuel HORS CHARGES en euros (number)\n"
+      + "  - charges : montant des charges en euros (number, 0 si non specifie)\n"
+      + "  - depot : depot de garantie en euros (number, 0 si non specifie)\n"
+      + "  - type_bien : 'vide' ou 'meuble' (string)\n"
+      + "  - type_location : 'principale' ou 'meublee_principale' ou 'autre' (string)\n"
+      + "  - complement_loyer : montant du complement de loyer s'il existe, sinon 0 (number)\n"
+      + "  - complement_justif : justification du complement si presente dans le bail (string, vide sinon)\n"
+      + "  - date_debut_bail : date de prise d'effet du bail au format YYYY-MM-DD (string, vide si non trouvee)\n"
+      + "  - nb_mois_bail : nombre de mois ecoules depuis le debut du bail (number, 0 si date inconnue)\n"
+      + "Si une information n'est pas trouvable dans le bail, mets une valeur par defaut raisonnable et signale-le dans le resume.\n"
+      + "Apres l'extraction, utilise ces valeurs pour ton analyse comme si elles avaient ete saisies par le locataire.\n"
+      + "=== FIN MODE EXTRACTION ===\n";
+  }
+
   if (encadre && loyerBase && surface) {
     extra += "\nATTENTION : " + ville + " est en zone d'encadrement des loyers.\n"
       + "Loyer declare HORS CHARGES : " + loyerBase + " euros/mois pour " + surface + " m2.\n"
@@ -413,6 +439,11 @@ function buildBailPrompt(context, extraDocs) {
     ? "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"3 problemes detectes\",\"resume\":\"Resume incluant les docs complementaires.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre clause bail\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"},{\"type\":\"danger\",\"titre\":\"[Conge du bailleur] Vice de forme\",\"description\":\"Le conge ne respecte pas...\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. 15 loi 1989\"],\"action\":\"Contester le conge.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}"
     : "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"2 clauses a corriger\",\"resume\":\"Resume.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}";
 
+  // Si mode extraction auto, ajouter le champ context_extrait au format attendu
+  if (skipForm) {
+    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"Bordeaux\",\"surface\":73,\"loyer_base\":1287,\"charges\":50,\"depot\":1287,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"2024-09-01\",\"nb_mois_bail\":21}}');
+  }
+
   // Determiner si un bail est fourni (PDF ou texte > 200 chars)
   var hasBail = (context && context.bail_pdf_base64) || (context && context.bail_text && String(context.bail_text).length > 200);
   var lectureRappel = hasBail
@@ -451,6 +482,46 @@ function buildEtatDesLieuxPrompt(context) {
 // ─────────────────────────────────────────────────────────────
 function sanitizeAnalysis(parsed, context) {
   if (!parsed || typeof parsed !== 'object') return parsed;
+
+  // ────────────────────────────────────────────────────────────
+  // MODE EXTRACTION AUTO : si le user a saute le formulaire, Claude a extrait
+  // les infos dans parsed.context_extrait. On hydrate le context avec ces
+  // valeurs pour que la suite du sanitize (forcage plafond, calculs) tourne
+  // comme si le user avait rempli le formulaire.
+  // ────────────────────────────────────────────────────────────
+  if (context && context._skip_form && parsed.context_extrait) {
+    var ext = parsed.context_extrait;
+    if (ext.ville && !context.ville) context.ville = ext.ville;
+    if (ext.surface && !context.surface) context.surface = ext.surface;
+    if (ext.loyer_base && !context.loyer_base) context.loyer_base = ext.loyer_base;
+    if (ext.charges !== undefined && !context.charges) context.charges = ext.charges;
+    if (ext.depot !== undefined && !context.depot) context.depot = ext.depot;
+    if (ext.type_bien && !context.type_bien) context.type_bien = ext.type_bien;
+    if (ext.type_location && !context.type_location) context.type_location = ext.type_location;
+    if (ext.complement_loyer !== undefined && !context.complement_loyer) context.complement_loyer = ext.complement_loyer;
+    if (ext.complement_justif && !context.complement_justif) context.complement_justif = ext.complement_justif;
+    console.log('[skip_form] Context hydrate depuis extraction:', JSON.stringify({
+      ville: context.ville, surface: context.surface, loyer_base: context.loyer_base,
+      depot: context.depot, type_bien: context.type_bien
+    }));
+
+    // Re-resoudre le plafond avec les valeurs extraites
+    try {
+      var newPlafond = getLoyerPlafond({
+        ville: context.ville,
+        nbPieces: estimateNbPieces(context.surface),
+        epoque: 'apres1990',
+        typeBien: context.type_bien || 'vide',
+        quartier: context.ville
+      });
+      if (newPlafond) {
+        context._plafondInfo = newPlafond;
+        console.log('[skip_form] Plafond re-resolu apres extraction:', newPlafond.plafond_m2, '€/m²');
+      }
+    } catch (e) {
+      console.warn('[skip_form] Erreur re-resolution plafond:', e && e.message);
+    }
+  }
 
   var loyerM2 = computeLoyerM2(context);
   var loyerBase = parseFloat(context && context.loyer_base) || 0;

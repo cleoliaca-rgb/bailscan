@@ -1211,6 +1211,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <button class="btn-wizard-back" onclick="showChoiceCards()">← Retour</button>
           <button class="btn-wizard-next" onclick="goStep(2)" id="btnStep3Next">Continuer → Logement</button>
         </div>
+
+        <!-- ANALYSE DIRECTE — visible UNIQUEMENT si un PDF est uploade. -->
+        <!-- Permet de sauter le formulaire step 2 : Claude extrait les infos du bail. -->
+        <div id="directAnalyzeBlock" style="display:none;margin-top:18px;padding:14px 16px;background:rgba(45,106,79,0.06);border:1.5px solid rgba(45,106,79,0.22);border-radius:12px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--vert);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:0.78rem;margin-top:2px;">✓</div>
+            <div style="flex:1;">
+              <div style="font-size:0.85rem;font-weight:700;color:var(--noir);line-height:1.3;">Bail uploadé — vous pouvez sauter l'étape suivante</div>
+              <div style="font-size:0.75rem;color:var(--gris);margin-top:3px;line-height:1.5;">Nous extrairons automatiquement la ville, le loyer, la surface et les autres infos du bail. C'est plus rapide mais légèrement moins précis pour le bloc encadrement (vous pourrez corriger après).</div>
+            </div>
+          </div>
+          <button onclick="launchAnalysisFromUpload()" style="background:var(--noir);color:white;border:none;padding:12px 18px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;width:100%;font-family:inherit;">Analyser directement le bail →</button>
+        </div>
       </div>
 
       <!-- PANEL SANS BAIL -->
@@ -2664,6 +2677,9 @@ function handleFile(file) {
     document.getElementById('uploadSuccess').style.display = 'flex';
     document.getElementById('uploadFileName').textContent = file.name;
     document.getElementById('uploadFileSize').textContent = (file.size / 1024).toFixed(0) + ' Ko';
+    // Reveler le bloc "Analyser directement" maintenant que le PDF est charge
+    var dab = document.getElementById('directAnalyzeBlock');
+    if (dab) dab.style.display = 'block';
   };
   reader.readAsDataURL(file);
 }
@@ -2673,6 +2689,9 @@ function clearFile() {
   document.getElementById('uploadZone').style.display = 'block';
   document.getElementById('uploadSuccess').style.display = 'none';
   document.getElementById('fileInput').value = '';
+  // Cacher le bloc analyse directe
+  var dab = document.getElementById('directAnalyzeBlock');
+  if (dab) dab.style.display = 'none';
 }
  
 document.addEventListener('DOMContentLoaded', function() {
@@ -2723,31 +2742,65 @@ function selectMode(m) {
 // ═══════════════════════════════════════
 // ANALYSE
 // ═══════════════════════════════════════
+
+/**
+ * Lance l'analyse directement depuis le PDF uploadé, SANS remplir le formulaire.
+ * Claude extrait automatiquement ville/loyer/surface/depot/type/date du bail.
+ * Les infos extraites sont retournees dans data.context_extrait et hydratent appState.
+ */
+function launchAnalysisFromUpload() {
+  if (!appState.pdfBase64) { alert('Aucun bail uploadé.'); return; }
+  appState.skipForm = true;
+  launchAnalysis();
+}
+
 function launchAnalysis() {
   var textContent = appState.uploadMode === 'text' ? document.getElementById('bailText').value.trim() : '';
-  if (!appState.noPdf) {
+  // Le skipForm bypass la validation des champs formulaire (Claude extraira tout du bail)
+  if (!appState.noPdf && !appState.skipForm) {
     if (appState.uploadMode === 'upload' && !appState.pdfBase64) { alert('Veuillez fournir votre document.'); return; }
     if (appState.uploadMode === 'text' && textContent.length < 100) { alert('Le texte est trop court pour être analysé.'); return; }
   }
  
   showLoading();
  
-  var contextInfo = {
-    type_analyse: appState.analysisType,
-    type_location: appState.locationtype,
-    type_bien: appState.bienType,
-    ville: document.getElementById('ville').value,
-    surface: document.getElementById('surface').value,
-    loyer_base: appState.loyerBase,
-    loyer_majore: appState.loyerMajore,
-    complement_loyer: appState.complementLoyer,
-    complement_justif: appState.complementJustif || '',
-    charges: appState.charges,
-    depot: parseFloat(document.getElementById('depot').value) || 0,
-    extra_docs_labels: appState.extraDocs.length > 0
-      ? appState.extraDocs.map(function(d){ return d.label; }).join(', ')
-      : '',
-  };
+  // En mode skipForm, on envoie un contexte vide pour que Claude extraie tout depuis le PDF.
+  // Sinon, on envoie les valeurs du formulaire telles que saisies.
+  var contextInfo;
+  if (appState.skipForm) {
+    contextInfo = {
+      type_analyse: appState.analysisType || 'bail',
+      type_location: appState.locationtype || '',
+      type_bien: appState.bienType || '',
+      ville: '',
+      surface: '',
+      loyer_base: 0,
+      loyer_majore: 0,
+      complement_loyer: 0,
+      complement_justif: '',
+      charges: 0,
+      depot: 0,
+      extra_docs_labels: appState.extraDocs.length > 0 ? appState.extraDocs.map(function(d){ return d.label; }).join(', ') : '',
+      _skip_form: true  // signal pour le backend : extraire le contexte depuis le PDF
+    };
+  } else {
+    contextInfo = {
+      type_analyse: appState.analysisType,
+      type_location: appState.locationtype,
+      type_bien: appState.bienType,
+      ville: document.getElementById('ville').value,
+      surface: document.getElementById('surface').value,
+      loyer_base: appState.loyerBase,
+      loyer_majore: appState.loyerMajore,
+      complement_loyer: appState.complementLoyer,
+      complement_justif: appState.complementJustif || '',
+      charges: appState.charges,
+      depot: parseFloat(document.getElementById('depot').value) || 0,
+      extra_docs_labels: appState.extraDocs.length > 0
+        ? appState.extraDocs.map(function(d){ return d.label; }).join(', ')
+        : '',
+    };
+  }
  
   var payload;
   if (appState.uploadMode === 'upload') {
@@ -2768,6 +2821,30 @@ function launchAnalysis() {
     analysisResult = data;
     if (data._analysis_id) {
       try { localStorage.setItem('bailscan_analysis_id', data._analysis_id); } catch(e) {}
+    }
+    // En mode skipForm : hydrater appState avec ce que Claude a extrait du bail
+    // Necessaire pour que les calculs frontend (fallback plafond, comparaison marche,
+    // CTA personnalise) aient les bonnes valeurs.
+    if (appState.skipForm && data.context_extrait) {
+      var ext = data.context_extrait;
+      if (ext.ville) {
+        appState.ville = ext.ville;
+        var vEl = document.getElementById('ville'); if (vEl) vEl.value = ext.ville;
+      }
+      if (ext.surface) {
+        appState.surface = ext.surface;
+        var sEl = document.getElementById('surface'); if (sEl) sEl.value = ext.surface;
+      }
+      if (ext.loyer_base) appState.loyerBase = parseFloat(ext.loyer_base) || 0;
+      if (ext.charges) appState.charges = parseFloat(ext.charges) || 0;
+      if (ext.depot) {
+        var dEl = document.getElementById('depot'); if (dEl) dEl.value = ext.depot;
+      }
+      if (ext.complement_loyer) appState.complementLoyer = parseFloat(ext.complement_loyer) || 0;
+      if (ext.type_bien) appState.bienType = ext.type_bien;
+      if (ext.type_location) appState.locationtype = ext.type_location;
+      if (ext.date_debut_bail) appState.dateDebutBail = ext.date_debut_bail;
+      if (ext.nb_mois_bail) appState.nbMoisBail = parseInt(ext.nb_mois_bail, 10) || 0;
     }
     displayResults(data);
   })
