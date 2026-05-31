@@ -972,23 +972,77 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ─────────────────────────────────────────────────────────────
      HERO PUB META — match avec la promesse "+3000€ récupérés"
-     Doit etre AU-DESSUS DE LA FOLD sur mobile.
+     Desktop : 2 colonnes (texte gauche + mockup rapport droite)
+     Mobile : 1 colonne centrée
      ──────────────────────────────────────────────────────────── -->
 <style>
-  .lp-hero { padding: 110px 24px 40px; background: linear-gradient(180deg, #F5F2ED 0%, #fbf8f1 100%); border-bottom: 1px solid var(--border); }
-  .lp-hero-inner { max-width: 720px; margin: 0 auto; text-align: center; }
-  .lp-hero-eyebrow { display:inline-flex; align-items:center; gap:8px; background: rgba(200,75,47,0.12); color: var(--accent); font-size: 0.78rem; font-weight: 700; padding: 8px 16px; border-radius: 999px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .lp-hero { padding: 110px 48px 60px; background: linear-gradient(180deg, #F5F2ED 0%, #fbf8f1 100%); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .lp-hero::before { content:''; position:absolute; top:-150px; right:-100px; width:600px; height:600px; background:radial-gradient(circle, rgba(200,75,47,0.08) 0%, transparent 65%); pointer-events:none; }
+  .lp-hero::after { content:''; position:absolute; bottom:-100px; left:-80px; width:400px; height:400px; background:radial-gradient(circle, rgba(45,106,79,0.06) 0%, transparent 65%); pointer-events:none; }
+  .lp-hero-inner { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
+  .lp-hero-text { text-align: left; }
+  .lp-hero-eyebrow { display:inline-flex; align-items:center; gap:8px; background: rgba(200,75,47,0.12); color: var(--accent); font-size: 0.78rem; font-weight: 700; padding: 8px 16px; border-radius: 999px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.06em; }
   .lp-hero-eyebrow::before { content:''; width:7px; height:7px; background:var(--accent); border-radius:50%; animation:pulse 2s infinite; }
-  .lp-hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 7vw, 3.6rem); line-height: 1.05; color: var(--noir); margin: 0 0 14px; letter-spacing: -0.02em; }
+  .lp-hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.05; color: var(--noir); margin: 0 0 18px; letter-spacing: -0.02em; }
   .lp-hero h1 em { font-style: italic; color: var(--accent); }
-  .lp-hero p { font-size: clamp(0.95rem, 3vw, 1.15rem); color: var(--gris); line-height: 1.55; margin: 0 auto 22px; max-width: 560px; }
-  .lp-hero-reassure { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
+  .lp-hero p { font-size: clamp(0.95rem, 1.1vw, 1.15rem); color: var(--gris); line-height: 1.6; margin: 0 0 26px; max-width: 540px; }
+  .lp-hero-reassure { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
   .lp-hero-reassure-item { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--noir); font-weight: 600; }
   .lp-hero-reassure-item::before { content: '✓'; color: var(--vert); font-weight: 800; }
-  .lp-hero-cta { display: inline-block; background: var(--accent); color: white; font-weight: 700; font-size: clamp(1rem, 3.5vw, 1.15rem); padding: 18px 36px; border-radius: 12px; text-decoration: none; box-shadow: 0 8px 24px rgba(200,75,47,0.3); transition: all 0.2s; cursor: pointer; border: none; width: 100%; max-width: 380px; }
+  .lp-hero-cta { display: inline-block; background: var(--accent); color: white; font-weight: 700; font-size: 1.05rem; padding: 18px 36px; border-radius: 12px; text-decoration: none; box-shadow: 0 8px 24px rgba(200,75,47,0.3); transition: all 0.2s; cursor: pointer; border: none; }
   .lp-hero-cta:hover { background: #a83a20; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,75,47,0.4); }
-  .lp-hero-stat { font-size: 0.8rem; color: var(--gris); margin-top: 14px; }
+  .lp-hero-stat { font-size: 0.85rem; color: var(--gris); margin-top: 18px; }
   .lp-hero-stat strong { color: var(--accent); font-weight: 700; }
+
+  /* ── Mockup rapport (desktop only) ── */
+  .lp-hero-mockup {
+    background: var(--noir); border-radius: 20px; padding: 32px;
+    color: var(--creme); position: relative; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(13,13,13,0.25), 0 8px 20px rgba(13,13,13,0.15);
+    transform: rotate(1deg);
+    transition: transform 0.3s ease;
+  }
+  .lp-hero-mockup:hover { transform: rotate(0deg) scale(1.02); }
+  .lp-hero-mockup::before {
+    content:''; position:absolute; top:-80px; right:-80px;
+    width:300px; height:300px;
+    background:radial-gradient(circle, rgba(200,75,47,0.25) 0%, transparent 65%);
+  }
+  .lp-mockup-badge {
+    display: inline-block; background: rgba(200,75,47,0.18); color: var(--accent);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 6px; margin-bottom: 20px; position: relative; z-index: 1;
+  }
+  .lp-mockup-top { display: flex; align-items: center; gap: 20px; margin-bottom: 22px; position: relative; z-index: 1; }
+  .lp-mockup-score-ring {
+    width: 78px; height: 78px; border-radius: 50%; border: 3px solid var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    flex-shrink: 0;
+  }
+  .lp-mockup-score-ring .num { font-family: 'Instrument Serif', serif; font-size: 1.9rem; color: var(--accent); font-style: italic; line-height: 1; }
+  .lp-mockup-score-ring .total { font-size: 0.65rem; color: rgba(245,241,232,0.5); }
+  .lp-mockup-score-side .verdict { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 4px; }
+  .lp-mockup-score-side .title { font-family: 'Instrument Serif', serif; font-size: 1.15rem; line-height: 1.2; color: var(--creme); }
+  .lp-mockup-amount-box {
+    background: var(--accent); border-radius: 14px; padding: 18px 22px;
+    margin-bottom: 18px; position: relative; z-index: 1;
+  }
+  .lp-mockup-amount-box .lbl { font-size: 0.7rem; color: rgba(255,255,255,0.85); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 4px; }
+  .lp-mockup-amount-box .val { font-family: 'Instrument Serif', serif; font-size: 2.4rem; color: white; font-style: italic; line-height: 1; }
+  .lp-mockup-amount-box .sub { font-size: 0.72rem; color: rgba(255,255,255,0.8); margin-top: 6px; }
+  .lp-mockup-list { display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
+  .lp-mockup-list-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.82rem; color: rgba(245,241,232,0.85); line-height: 1.35; }
+  .lp-mockup-list-item::before { content: '✗'; color: var(--accent); font-weight: 800; flex-shrink: 0; }
+
+  /* Mobile : 1 colonne, masquer le mockup */
+  @media (max-width: 900px) {
+    .lp-hero-inner { grid-template-columns: 1fr; gap: 0; }
+    .lp-hero-text { text-align: center; }
+    .lp-hero p { margin-left: auto; margin-right: auto; }
+    .lp-hero-reassure { justify-content: center; }
+    .lp-hero-cta { width: 100%; max-width: 380px; }
+    .lp-hero-mockup { display: none; }
+  }
   @media (max-width: 600px) {
     .lp-hero { padding: 90px 20px 28px; }
     .lp-hero-eyebrow { margin-bottom: 16px; font-size: 0.7rem; padding: 6px 12px; }
@@ -1002,19 +1056,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </style>
 <section class="lp-hero">
   <div class="lp-hero-inner">
-    <div class="lp-hero-eyebrow">87% des baux ont au moins 1 clause illégale</div>
-    <h1>Découvre combien<br><em>ton propriétaire te doit.</em></h1>
-    <p>Trop-perçu de loyer, dépôt de garantie excessif, clauses abusives… La loi te permet de récupérer tout ça jusqu'à <strong>5 ans en arrière</strong>. BailScan calcule combien en 30 secondes.</p>
-    <div class="lp-hero-reassure">
-      <span class="lp-hero-reassure-item">Résultat en 30 secondes</span>
-      <span class="lp-hero-reassure-item">Vérification gratuite</span>
-      <span class="lp-hero-reassure-item">Sans inscription</span>
+    <div class="lp-hero-text">
+      <div class="lp-hero-eyebrow">87% des baux ont au moins 1 clause illégale</div>
+      <h1>Découvre combien<br><em>ton propriétaire te doit.</em></h1>
+      <p>Trop-perçu de loyer, dépôt de garantie excessif, clauses abusives… La loi te permet de récupérer tout ça jusqu'à <strong>5 ans en arrière</strong>. BailScan calcule combien en 30 secondes.</p>
+      <div class="lp-hero-reassure">
+        <span class="lp-hero-reassure-item">Résultat en 30 secondes</span>
+        <span class="lp-hero-reassure-item">Vérification gratuite</span>
+        <span class="lp-hero-reassure-item">Sans inscription</span>
+      </div>
+      <button class="lp-hero-cta" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'});">
+        Vérifier mon bail maintenant →
+      </button>
+      <div class="lp-hero-stat">
+        Récupération moyenne : <strong>1 740 €</strong> · Rapport complet + lettres officielles à 29€
+      </div>
     </div>
-    <button class="lp-hero-cta" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'});">
-      Vérifier mon bail maintenant →
-    </button>
-    <div class="lp-hero-stat">
-      Récupération moyenne : <strong>1 740 €</strong> · Rapport complet + lettres officielles à 29€
+
+    <!-- Mockup rapport (desktop only) -->
+    <div class="lp-hero-mockup" aria-hidden="true">
+      <div class="lp-mockup-badge">Exemple de rapport</div>
+      <div class="lp-mockup-top">
+        <div class="lp-mockup-score-ring">
+          <span class="num">25</span>
+          <span class="total">/100</span>
+        </div>
+        <div class="lp-mockup-score-side">
+          <div class="verdict">Risques détectés</div>
+          <div class="title">12 clauses abusives</div>
+        </div>
+      </div>
+      <div class="lp-mockup-amount-box">
+        <div class="lbl">Remboursement total estimé</div>
+        <div class="val">3 612 €</div>
+        <div class="sub">2 632€ loyer + 980€ dépôt excessif</div>
+      </div>
+      <div class="lp-mockup-list">
+        <div class="lp-mockup-list-item">Loyer au-dessus du plafond légal (+329€/mois)</div>
+        <div class="lp-mockup-list-item">Dépôt de garantie illégal (2 mois au lieu d'1)</div>
+        <div class="lp-mockup-list-item">Préavis 3 mois sans réduction possible</div>
+        <div class="lp-mockup-list-item">Frais d'état des lieux à la charge du locataire</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1129,7 +1211,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- APP WIZARD -->
 <section id="app">
   <div class="app-inner">
-    <h2 class="app-title">Commence ton analyse gratuite</h2>
+    <h2 class="app-title">Découvre combien tu peux récupérer</h2>
     <p class="app-sub">Renseigne 3 infos. Tu vois combien tu peux récupérer en 30 secondes. Sans inscription.</p>
  
     <!-- TYPE SELECTOR — masqué par défaut, accessible via lien discret en bas -->
