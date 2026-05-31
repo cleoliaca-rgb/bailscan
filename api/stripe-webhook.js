@@ -1,7 +1,7 @@
 /**
  * BailScan Pro — /api/stripe-webhook.js
  * Gère tous les événements Stripe :
- *   - checkout.session.completed → active le plan
+ *   - checkout.session.completed → active le plan / marque analyse B2C payée + CAPI Meta
  *   - invoice.payment_succeeded  → envoie la facture par email
  *   - invoice.payment_failed     → envoie un email d'alerte
  *   - customer.subscription.deleted → désactive le plan
@@ -13,10 +13,14 @@
  *   SUPABASE_SERVICE_KEY     → service_role key
  *   RESEND_API_KEY           → re_...
  *   RESEND_FROM_EMAIL        → noreply@bailscan.app (domaine vérifié sur Resend)
+ *   META_PIXEL_ID            → 4338666489686062 (pour CAPI server-side B2C)
+ *   META_CAPI_ACCESS_TOKEN   → genere dans Events Manager → Settings
+ *   META_TEST_EVENT_CODE     → optionnel, pour Test Events sans polluer la prod
  */
  
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+import { sendMetaCAPI } from './meta-capi.js';
  
 export const config = { api: { bodyParser: false } };
  
@@ -179,6 +183,49 @@ export default async function handler(req, res) {
           console.error('[webhook] B2C update error:', b2cErr.message);
         } else {
           console.log(`[webhook] Analyse B2C marquee payee: ${analysisId} (session: ${session.id})`);
+        }
+
+        // ── Meta Conversions API : Purchase server-side (deduplique avec pixel client) ──
+        // event_id = session.id pour matcher avec le Purchase fire cote client.
+        // Si pixel ET CAPI envoient le meme event_id, Meta compte 1 seul Purchase mais avec un matching x2 plus precis.
+        try {
+          // Recuperer client_ip depuis les headers Stripe (forwarded)
+          const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim()
+            || req.headers['x-real-ip']
+            || req.connection?.remoteAddress;
+          // Name split (Stripe envoie le nom complet)
+          const fullName = session.customer_details?.name || '';
+          const firstName = fullName.split(' ')[0] || undefined;
+          const lastName = fullName.split(' ').slice(1).join(' ') || undefined;
+          // City/country : disponible seulement si billing_address_collection est active
+          const addr = session.customer_details?.address || {};
+          const capiResult = await sendMetaCAPI({
+            eventName: 'Purchase',
+            eventId: session.id,
+            value: 29.00,
+            currency: 'EUR',
+            email: session.customer_details?.email || session.customer_email,
+            firstName,
+            lastName,
+            city: addr.city,
+            country: addr.country || 'FR',
+            phone: session.customer_details?.phone,
+            transactionId: session.id,
+            externalId: analysisId,
+            sourceUrl: 'https://bailscan.app/analyser',
+            clientIp,
+            userAgent: session.metadata?.user_agent,
+            fbp: session.metadata?.fbp,
+            fbc: session.metadata?.fbc
+          });
+          if (capiResult.ok) {
+            console.log('[webhook] Meta CAPI Purchase OK pour session', session.id);
+          } else {
+            console.warn('[webhook] Meta CAPI Purchase echec:', capiResult.error);
+          }
+        } catch (capiErr) {
+          // Non-bloquant : on ne fail pas le webhook Stripe si Meta echoue
+          console.error('[webhook] Meta CAPI error:', capiErr && capiErr.message);
         }
       }
 
