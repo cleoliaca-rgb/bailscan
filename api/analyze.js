@@ -416,6 +416,44 @@ module.exports = async function handler(req, res) {
     // base sur les charges, et on impose le calcul officiel hors charges.
     parsed = sanitizeAnalysis(parsed, context);
  
+    // ─── Persistance Supabase (non-bloquant, RGPD-safe) ──────────────
+    // On enregistre uniquement les metadonnees + le resultat structure.
+    // On NE STOCKE PAS le texte brut du bail (PII).
+    // Fire-and-forget : ne doit jamais bloquer la reponse utilisateur.
+    try {
+      if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        fetch(process.env.SUPABASE_URL + '/rest/v1/b2c_analyses', {
+          method: 'POST',
+          headers: {
+            'apikey': process.env.SUPABASE_SERVICE_ROLE_KEY,
+            'Authorization': 'Bearer ' + process.env.SUPABASE_SERVICE_ROLE_KEY,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            type_analyse: context.type_analyse || 'bail',
+            ville: context.ville || null,
+            surface: context.surface ? parseFloat(context.surface) : null,
+            loyer_base: context.loyer_base ? parseFloat(context.loyer_base) : null,
+            type_bien: context.type_bien || null,
+            type_location: context.type_location || null,
+            score: typeof parsed.score === 'number' ? parsed.score : null,
+            verdict: parsed.verdict || null,
+            nb_clauses_abusives: (parsed.clauses_abusives && parsed.clauses_abusives.length) || 0,
+            loyer_m2: computeLoyerM2(context),
+            ville_encadree: isVilleEncadree(context.ville),
+            has_extra_docs: extraDocs.length > 0,
+            input_mode: body.pdf ? 'pdf' : 'text',
+            result_json: parsed
+          })
+        }).catch(function(err) {
+          console.error('Supabase persist error (non-blocking):', err && err.message);
+        });
+      }
+    } catch (persistErr) {
+      console.error('Supabase persist error (non-blocking):', persistErr && persistErr.message);
+    }
+ 
     return res.status(200).json(parsed);
  
   } catch (error) {
