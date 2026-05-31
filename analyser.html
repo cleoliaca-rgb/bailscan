@@ -1037,7 +1037,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .lp-mockup-list-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.8rem; color: rgba(245,241,232,0.85); line-height: 1.4; }
   .lp-mockup-list-item::before { content: '✗'; color: var(--accent); font-weight: 800; flex-shrink: 0; }
 
-  /* Mobile : 1 colonne, masquer le mockup, ALIGNÉ À GAUCHE */
+  /* Mobile : 1 colonne, masquer le mockup, ALIGNÉ À GAUCHE, ESPACEMENTS AÉRÉS (= index) */
   @media (max-width: 900px) {
     .lp-hero-inner { grid-template-columns: 1fr; gap: 0; }
     .lp-hero-text { text-align: left; }
@@ -1047,14 +1047,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     .lp-h1-desktop { display: none; }
     .lp-h1-mobile { display: inline; }
   }
-  @media (max-width: 600px) {
-    .lp-hero { padding: 90px 20px 28px; }
-    .lp-hero-eyebrow { margin-bottom: 16px; font-size: 0.74rem; padding: 5px 12px; }
-    .lp-hero h1 { margin: 0 0 14px; }
-    .lp-hero p { margin-bottom: 20px; max-width: 100%; }
-    .lp-hero-reassure { gap: 10px; margin-bottom: 20px; }
-    .lp-hero-reassure-item { font-size: 0.8rem; }
-    .lp-hero-stat { margin-top: 14px; text-align: left; }
+  @media (max-width: 768px) {
+    .lp-hero { padding: 100px 20px 60px; }
+    .lp-hero-eyebrow { margin-bottom: 24px; }
+    .lp-hero h1 { margin: 0 0 20px; }
+    .lp-hero p { margin-bottom: 36px; max-width: 100%; }
+    .lp-hero-reassure { gap: 14px 20px; margin-bottom: 32px; }
+    .lp-hero-stat { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); text-align: left; }
   }
 </style>
 <section class="lp-hero">
@@ -1071,9 +1070,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="lp-hero-cta" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'});">
         Vérifier mon bail maintenant →
       </button>
-      <div class="lp-hero-stat">
-        Récupération moyenne : <strong>1 740 €</strong> · Rapport complet + lettres officielles à 29€
-      </div>
     </div>
 
     <!-- Mockup rapport (desktop only) -->
@@ -1123,7 +1119,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </style>
 <div class="lp-proof-strip">
   <div class="lp-proof-inner">
-    <div class="lp-proof-item"><span class="lp-proof-stars">★★★★★</span> 4,8/5</div>
     <div class="lp-proof-item"><span class="num">267</span> baux analysés cette semaine</div>
     <div class="lp-proof-item"><span class="num">1 740 €</span> récupérés en moyenne</div>
   </div>
@@ -1214,8 +1209,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- APP WIZARD -->
 <section id="app">
   <div class="app-inner">
-    <h2 class="app-title">Découvre combien tu peux récupérer</h2>
-    <p class="app-sub">Renseigne 3 infos. Tu vois combien tu peux récupérer en 30 secondes. Sans inscription.</p>
+    <h2 class="app-title">Voyons ce que ton bail<br>te cache vraiment</h2>
+    <p class="app-sub">3 questions pour savoir combien tu peux récupérer. En 30 secondes. Sans inscription.</p>
  
     <!-- TYPE SELECTOR — masqué par défaut, accessible via lien discret en bas -->
     <div class="type-selector" id="typeSelectorBlock" style="display:none;">
