@@ -52,12 +52,38 @@ function normaliseVille(ville) {
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/\d+\s*(er|e|eme|ème)\s*(arrondissement)?/g, '')
     .replace(/\s+/g, ' ').trim();
+  // Encadrement strict (grilles prefectorales en vigueur)
   if (v.indexOf('lyon') >= 0 || v.indexOf('villeurbanne') >= 0) return 'lyon';
   if (v.indexOf('lille') >= 0 || v.indexOf('hellemmes') >= 0 || v.indexOf('lomme') >= 0) return 'lille';
   if (v.indexOf('paris') >= 0) return 'paris';
   if (v.indexOf('montpellier') >= 0) return 'montpellier';
+  // Zones tendues / indicatif
   if (v.indexOf('bordeaux') >= 0) return 'bordeaux';
   if (v.indexOf('plaisance') >= 0 && v.indexOf('touch') >= 0) return 'plaisance-du-touch';
+  if (v.indexOf('toulouse') >= 0) return 'toulouse';
+  if (v.indexOf('nantes') >= 0) return 'nantes';
+  if (v.indexOf('marseille') >= 0 || v.indexOf('aix-en-provence') >= 0 || v.indexOf('aix en provence') >= 0) return 'marseille';
+  if (v.indexOf('nice') >= 0) return 'nice';
+  if (v.indexOf('strasbourg') >= 0) return 'strasbourg';
+  if (v.indexOf('rennes') >= 0) return 'rennes';
+  if (v.indexOf('grenoble') >= 0) return 'grenoble';
+  if (v.indexOf('rouen') >= 0) return 'rouen';
+  if (v.indexOf('saint-etienne') >= 0 || v.indexOf('saint etienne') >= 0) return 'saint-etienne';
+  if (v.indexOf('le mans') >= 0) return 'le-mans';
+  if (v.indexOf('reims') >= 0) return 'reims';
+  if (v.indexOf('toulon') >= 0) return 'toulon';
+  if (v.indexOf('angers') >= 0) return 'angers';
+  if (v.indexOf('dijon') >= 0) return 'dijon';
+  if (v.indexOf('brest') >= 0) return 'brest';
+  if (v.indexOf('clermont') >= 0) return 'clermont-ferrand';
+  if (v.indexOf('tours') >= 0) return 'tours';
+  if (v.indexOf('limoges') >= 0) return 'limoges';
+  if (v.indexOf('amiens') >= 0) return 'amiens';
+  if (v.indexOf('annecy') >= 0) return 'annecy';
+  if (v.indexOf('arcachon') >= 0 || v.indexOf('la teste') >= 0) return 'arcachon';
+  if (v.indexOf('biarritz') >= 0 || v.indexOf('bayonne') >= 0 || v.indexOf('anglet') >= 0) return 'bayonne';
+  if (v.indexOf('nimes') >= 0) return 'nimes';
+  if (v.indexOf('le havre') >= 0) return 'le-havre';
   return v.replace(/\s+/g, '-');
 }
 
@@ -91,22 +117,79 @@ function devineSecteur(villeKey, quartier) {
 
 /**
  * Lookup precis du loyer de reference + plafond legal pour un logement donne.
- * Retourne null si la ville n'est pas couverte par une grille.
+ * Strategie de fallback ultra-permissive : si la cle exacte n'existe pas,
+ * on essaie des variantes (epoque, nb_pieces, type, secteur) avant d'abandonner.
+ * Retourne null seulement si la ville n'est pas du tout dans la grille.
  */
 function getLoyerPlafond(opts) {
   var grilles = getGrilles();
   var villeKey = normaliseVille(opts && opts.ville);
-  if (!villeKey || !grilles[villeKey]) return null;
+  if (!villeKey) return null;
+
+  // 1) Recherche ville exacte
   var conf = grilles[villeKey];
+  // 2) Fallback : default france si ville inconnue
+  if (!conf && grilles['_default_france']) {
+    conf = grilles['_default_france'];
+    console.log('[grilles] Ville "' + villeKey + '" non trouvee, fallback _default_france');
+  }
+  if (!conf || !conf.loyers) {
+    console.log('[grilles] Aucune config pour ville:', villeKey, '— grilles disponibles:', Object.keys(grilles).filter(function(k){ return k !== '_meta'; }).join(','));
+    return null;
+  }
+
+  // 3) Choix du secteur (avec fallback sur le premier dispo)
   var secteur = devineSecteur(villeKey, opts && opts.quartier);
-  var secteurData = conf.loyers && conf.loyers[secteur];
+  var secteurData = conf.loyers[secteur];
+  if (!secteurData) {
+    var secteursKeys = Object.keys(conf.loyers);
+    if (secteursKeys.length > 0) {
+      secteur = secteursKeys[0];
+      secteurData = conf.loyers[secteur];
+    }
+  }
   if (!secteurData) return null;
-  var np = Math.min(parseInt((opts && opts.nbPieces) || 1, 10), 4);
+
+  // 4) Cles a tester en cascade (du plus precis au plus generique)
+  var np = Math.min(Math.max(parseInt((opts && opts.nbPieces) || 1, 10), 1), 4);
   var epoque = (opts && opts.epoque) || 'apres1990';
   var typeKey = (opts && opts.typeBien && /meubl/i.test(opts.typeBien)) ? 'meuble' : 'vide';
-  var key = np + '_' + epoque + '_' + typeKey;
-  var entry = secteurData[key];
+  var altType = typeKey === 'meuble' ? 'vide' : 'meuble';
+
+  var attempts = [
+    np + '_' + epoque + '_' + typeKey,             // exact
+    np + '_apres1990_' + typeKey,                  // fallback epoque
+    np + '_1971-90_' + typeKey,
+    np + '_1946-70_' + typeKey,
+    np + '_avant1946_' + typeKey,
+    np + '_' + epoque + '_' + altType,             // fallback type
+    np + '_apres1990_' + altType,
+    Math.max(1, np-1) + '_apres1990_' + typeKey,   // fallback nb_pieces-1
+    Math.min(4, np+1) + '_apres1990_' + typeKey,   // fallback nb_pieces+1
+    '1_apres1990_vide'                              // ultime fallback
+  ];
+
+  var entry = null;
+  var matchedKey = null;
+  for (var i = 0; i < attempts.length; i++) {
+    if (secteurData[attempts[i]]) {
+      entry = secteurData[attempts[i]];
+      matchedKey = attempts[i];
+      break;
+    }
+  }
+  // Si toujours rien, prendre la premiere entree disponible du secteur
+  if (!entry) {
+    var firstKey = Object.keys(secteurData)[0];
+    if (firstKey) {
+      entry = secteurData[firstKey];
+      matchedKey = firstKey;
+    }
+  }
   if (!entry) return null;
+
+  console.log('[grilles] Match', villeKey, 'secteur', secteur, 'cle', matchedKey, '→ plafond_m2:', entry.majore);
+
   return {
     plafond_m2: entry.majore,
     ref_m2: entry.ref,
@@ -171,8 +254,8 @@ function buildSystemPrompt(context) {
   var encadre = isVilleEncadree(ville);
   var loyerM2 = computeLoyerM2(context);
 
-  // Lookup precis dans les grilles JSON
-  var plafondInfo = getLoyerPlafond({
+  // Lookup precis dans les grilles JSON (ou recherche web prealable)
+  var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
     ville: ville,
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
     epoque: devineEpoque(context && context.annee_construction),
@@ -275,8 +358,8 @@ function buildBailPrompt(context, extraDocs) {
   var encadre = isVilleEncadree(ville);
   var loyerM2 = computeLoyerM2(context);
 
-  // Plafond precis depuis la grille embarquee (si dispo)
-  var plafondInfo = getLoyerPlafond({
+  // Plafond precis depuis la grille embarquee ou recherche web (resolution faite dans handler)
+  var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
     ville: ville,
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(surface),
     epoque: devineEpoque(context && context.annee_construction),
@@ -374,12 +457,11 @@ function sanitizeAnalysis(parsed, context) {
   var surface = parseFloat(context && context.surface) || 0;
 
   // ────────────────────────────────────────────────────────────
-  // 0. FORCAGE DU PLAFOND DEPUIS LA GRILLE EMBARQUEE
-  //    Si on a une grille pour cette ville et un loyer/m2 calculable,
-  //    on FORCE le remplissage de parsed.loyer.plafond + le verdict,
-  //    independamment de ce que Claude aurait pu dire ou omettre.
+  // 0. FORCAGE DU PLAFOND DEPUIS LA GRILLE (locale ou recherche web)
+  //    Resolution faite dans le handler principal et stockee dans
+  //    context._plafondInfo. On utilise cette valeur en priorite.
   // ────────────────────────────────────────────────────────────
-  var plafondInfo = getLoyerPlafond({
+  var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
     ville: (context && context.ville) || '',
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
     epoque: devineEpoque(context && context.annee_construction),
@@ -669,6 +751,117 @@ async function callAnthropic(messages, systemPrompt, maxTokens) {
   }
   return response.json();
 }
+
+// ─────────────────────────────────────────────────────────────
+// RECHERCHE WEB DE LA GRILLE D'ENCADREMENT (fallback dynamique)
+// Quand la ville n'est pas dans le JSON local, on declenche une
+// recherche internet ciblee via le tool web_search d'Anthropic.
+// Cache memoire par instance Vercel (TTL 24h par ville).
+// ─────────────────────────────────────────────────────────────
+var GRILLES_WEB_CACHE = {};
+var GRILLES_WEB_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+
+async function searchGrilleViaWeb(ville, nbPieces, typeBien) {
+  if (!ville) return null;
+  var cacheKey = String(ville).toLowerCase().trim() + '|' + (nbPieces || 1) + '|' + (typeBien || 'vide');
+  var cached = GRILLES_WEB_CACHE[cacheKey];
+  if (cached && (Date.now() - cached.ts) < GRILLES_WEB_CACHE_TTL_MS) {
+    console.log('[grilles-web] HIT cache pour', cacheKey);
+    return cached.data;
+  }
+
+  try {
+    var promptWeb = "Recherche sur internet les references actuelles d'encadrement des loyers (arrete prefectoral ou observatoire local) pour la commune de \"" + ville + "\" en France, en vigueur en 2025-2026.\n\n"
+      + "Logement de reference : " + (nbPieces || 1) + " piece(s), " + (typeBien || 'vide') + ".\n\n"
+      + "Cherche les valeurs en euros/m2 hors charges :\n"
+      + "- loyer de reference (mediane)\n"
+      + "- loyer de reference majore (plafond legal opposable si encadrement strict, ou repere haut du marche sinon)\n"
+      + "- loyer de reference minore (repere bas)\n\n"
+      + "Si la ville est en zone tendue mais sans encadrement strict applique : donne les valeurs medianes du marche locatif local d'apres l'OLPL ou observatoire equivalent.\n"
+      + "Si la ville est rurale ou tres petite : donne une estimation prudente basee sur le departement.\n\n"
+      + "Reponds STRICTEMENT en JSON, sans markdown, sans texte avant ou apres :\n"
+      + "{\"plafond_m2\": NUM, \"ref_m2\": NUM, \"minore_m2\": NUM, \"encadrement_strict\": BOOL, \"source\": \"url ou nom de source\", \"confiance\": \"haute|moyenne|faible\"}\n\n"
+      + "Si tu ne trouves AUCUNE donnee fiable, reponds : {\"plafond_m2\": null}";
+
+    var response = await fetch(ANTHROPIC_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 800,
+        tools: [{ "type": "web_search_20250305", "name": "web_search", "max_uses": 3 }],
+        messages: [{ role: "user", content: promptWeb }]
+      })
+    });
+
+    if (!response.ok) {
+      console.warn('[grilles-web] API echec', response.status);
+      return null;
+    }
+    var data = await response.json();
+
+    // Extraire le texte (peut contenir des blocs tool_use intercales)
+    var txt = '';
+    for (var i = 0; i < (data.content || []).length; i++) {
+      if (data.content[i].type === 'text') txt += data.content[i].text;
+    }
+    var jsonMatch = txt.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.warn('[grilles-web] Pas de JSON dans la reponse pour', ville);
+      return null;
+    }
+    var parsed;
+    try { parsed = JSON.parse(jsonMatch[0]); }
+    catch (e) {
+      console.warn('[grilles-web] JSON invalide pour', ville, ':', e.message);
+      return null;
+    }
+    if (typeof parsed.plafond_m2 !== 'number' || parsed.plafond_m2 <= 0) {
+      console.log('[grilles-web] Pas de plafond trouve pour', ville);
+      GRILLES_WEB_CACHE[cacheKey] = { ts: Date.now(), data: null };
+      return null;
+    }
+
+    var result = {
+      plafond_m2: parsed.plafond_m2,
+      ref_m2: typeof parsed.ref_m2 === 'number' && parsed.ref_m2 > 0 ? parsed.ref_m2 : parsed.plafond_m2 * 0.83,
+      minore_m2: typeof parsed.minore_m2 === 'number' && parsed.minore_m2 > 0 ? parsed.minore_m2 : parsed.plafond_m2 * 0.67,
+      encadrement_actif: parsed.encadrement_strict === true,
+      indicatif: parsed.encadrement_strict !== true,
+      type: typeBien || 'vide',
+      epoque: 'apres1990',
+      secteur: '1',
+      ville: String(ville).toLowerCase(),
+      source: 'recherche_web: ' + (parsed.source || 'sources publiques'),
+      confiance: parsed.confiance || 'moyenne',
+      _from_web: true
+    };
+    GRILLES_WEB_CACHE[cacheKey] = { ts: Date.now(), data: result };
+    console.log('[grilles-web] OK', ville, '→ plafond_m2:', result.plafond_m2, 'source:', result.source);
+    return result;
+  } catch (e) {
+    console.error('[grilles-web] Erreur:', e && e.message);
+    return null;
+  }
+}
+
+/**
+ * Resout le plafond pour une ville :
+ * 1) Grille locale (JSON embarque) — rapide
+ * 2) Recherche web Anthropic — si grille locale absente
+ * Le resultat est ensuite mis en cache (memoire) pour 24h.
+ */
+async function resolveLoyerPlafond(opts) {
+  var local = getLoyerPlafond(opts);
+  if (local) return local;
+  if (!opts || !opts.ville) return null;
+  console.log('[grilles] Grille locale absente pour', opts.ville, '→ recherche web');
+  return await searchGrilleViaWeb(opts.ville, opts.nbPieces, opts.typeBien);
+}
  
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -702,6 +895,30 @@ module.exports = async function handler(req, res) {
     // ANALYSE
     var type = context.type_analyse || 'bail';
     var extraDocs = body.extra_docs || [];
+
+    // ────────────────────────────────────────────────────────────
+    // RESOLUTION DU PLAFOND (grille locale puis recherche web si besoin)
+    // On effectue cette resolution AVANT de construire les prompts pour que
+    // buildSystemPrompt / buildBailPrompt / sanitizeAnalysis l'utilisent.
+    // ────────────────────────────────────────────────────────────
+    if (type === 'bail' && context.ville && context.loyer_base && context.surface) {
+      try {
+        var plafondResolved = await resolveLoyerPlafond({
+          ville: context.ville,
+          nbPieces: context.nb_pieces || estimateNbPieces(context.surface),
+          epoque: devineEpoque(context.annee_construction),
+          typeBien: context.type_bien || 'vide',
+          quartier: context.quartier || context.ville
+        });
+        if (plafondResolved) {
+          context._plafondInfo = plafondResolved;
+          console.log('[grilles] Plafond resolu pour', context.ville, '→', plafondResolved.plafond_m2, '€/m² (' + (plafondResolved._from_web ? 'web' : 'local') + ')');
+        }
+      } catch (e) {
+        console.warn('[grilles] Echec resolution plafond:', e && e.message);
+      }
+    }
+
     var systemPrompt = buildSystemPrompt(context);
     var analysisPrompt = type === 'etat'
       ? buildEtatDesLieuxPrompt(context)

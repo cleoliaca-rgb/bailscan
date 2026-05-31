@@ -458,5 +458,217 @@
         "3_avant1946_meuble": { "minore": 7.6,  "ref": 10.8, "majore": 13.0 }
       }
     }
+  },
+
+  "toulouse": {
+    "encadrement_actif": false, "annee": 2025, "type": "indicatif",
+    "communes_couvertes": ["toulouse"],
+    "note": "Zone tendue sans encadrement strict. Valeurs medianes indicatives basees sur l'observatoire local des loyers.",
+    "secteurs": { "1": { "label": "Toulouse" } },
+    "loyers": {
+      "1": {
+        "1_apres1990_vide":   { "minore": 9.5,  "ref": 13.6, "majore": 16.3 },
+        "1_1971-90_vide":     { "minore": 8.8,  "ref": 12.5, "majore": 15.0 },
+        "1_1946-70_vide":     { "minore": 8.6,  "ref": 12.2, "majore": 14.6 },
+        "1_avant1946_vide":   { "minore": 9.2,  "ref": 13.1, "majore": 15.7 },
+        "1_apres1990_meuble": { "minore": 11.0, "ref": 15.7, "majore": 18.8 },
+        "1_1971-90_meuble":   { "minore": 10.1, "ref": 14.4, "majore": 17.3 },
+        "1_1946-70_meuble":   { "minore": 9.9,  "ref": 14.0, "majore": 16.8 },
+        "1_avant1946_meuble": { "minore": 10.6, "ref": 15.1, "majore": 18.1 },
+        "2_apres1990_vide":   { "minore": 8.2,  "ref": 11.7, "majore": 14.0 },
+        "2_1971-90_vide":     { "minore": 7.6,  "ref": 10.8, "majore": 13.0 },
+        "2_1946-70_vide":     { "minore": 7.4,  "ref": 10.5, "majore": 12.6 },
+        "2_avant1946_vide":   { "minore": 7.9,  "ref": 11.3, "majore": 13.6 },
+        "2_apres1990_meuble": { "minore": 9.4,  "ref": 13.4, "majore": 16.1 },
+        "2_1971-90_meuble":   { "minore": 8.7,  "ref": 12.4, "majore": 14.9 },
+        "2_1946-70_meuble":   { "minore": 8.5,  "ref": 12.1, "majore": 14.5 },
+        "2_avant1946_meuble": { "minore": 9.1,  "ref": 13.0, "majore": 15.6 },
+        "3_apres1990_vide":   { "minore": 7.2,  "ref": 10.3, "majore": 12.4 },
+        "3_1971-90_vide":     { "minore": 6.6,  "ref": 9.4,  "majore": 11.3 },
+        "3_1946-70_vide":     { "minore": 6.4,  "ref": 9.1,  "majore": 10.9 },
+        "3_avant1946_vide":   { "minore": 6.9,  "ref": 9.8,  "majore": 11.8 },
+        "3_apres1990_meuble": { "minore": 8.3,  "ref": 11.8, "majore": 14.2 },
+        "3_1971-90_meuble":   { "minore": 7.6,  "ref": 10.9, "majore": 13.1 },
+        "3_1946-70_meuble":   { "minore": 7.4,  "ref": 10.6, "majore": 12.7 },
+        "3_avant1946_meuble": { "minore": 7.9,  "ref": 11.3, "majore": 13.6 }
+      }
+    }
+  },
+
+  "nantes": {
+    "encadrement_actif": false, "annee": 2025, "type": "indicatif",
+    "communes_couvertes": ["nantes"],
+    "note": "Zone tendue, valeurs indicatives.",
+    "secteurs": { "1": { "label": "Nantes" } },
+    "loyers": {
+      "1": {
+        "1_apres1990_vide":   { "minore": 10.5, "ref": 15.0, "majore": 18.0 },
+        "1_1971-90_vide":     { "minore": 9.6,  "ref": 13.7, "majore": 16.4 },
+        "1_1946-70_vide":     { "minore": 9.4,  "ref": 13.4, "majore": 16.1 },
+        "1_avant1946_vide":   { "minore": 10.0, "ref": 14.3, "majore": 17.2 },
+        "1_apres1990_meuble": { "minore": 12.1, "ref": 17.3, "majore": 20.8 },
+        "1_1971-90_meuble":   { "minore": 11.1, "ref": 15.8, "majore": 19.0 },
+        "1_1946-70_meuble":   { "minore": 10.8, "ref": 15.4, "majore": 18.5 },
+        "1_avant1946_meuble": { "minore": 11.5, "ref": 16.4, "majore": 19.7 },
+        "2_apres1990_vide":   { "minore": 9.1,  "ref": 13.0, "majore": 15.6 },
+        "2_1971-90_vide":     { "minore": 8.3,  "ref": 11.9, "majore": 14.3 },
+        "2_1946-70_vide":     { "minore": 8.1,  "ref": 11.6, "majore": 13.9 },
+        "2_avant1946_vide":   { "minore": 8.7,  "ref": 12.4, "majore": 14.9 },
+        "2_apres1990_meuble": { "minore": 10.5, "ref": 15.0, "majore": 18.0 },
+        "2_1971-90_meuble":   { "minore": 9.6,  "ref": 13.7, "majore": 16.4 },
+        "2_1946-70_meuble":   { "minore": 9.3,  "ref": 13.3, "majore": 16.0 },
+        "2_avant1946_meuble": { "minore": 10.0, "ref": 14.3, "majore": 17.2 },
+        "3_apres1990_vide":   { "minore": 7.9,  "ref": 11.3, "majore": 13.6 },
+        "3_1971-90_vide":     { "minore": 7.3,  "ref": 10.4, "majore": 12.5 },
+        "3_1946-70_vide":     { "minore": 7.1,  "ref": 10.1, "majore": 12.1 },
+        "3_avant1946_vide":   { "minore": 7.6,  "ref": 10.8, "majore": 13.0 },
+        "3_apres1990_meuble": { "minore": 9.1,  "ref": 13.0, "majore": 15.6 },
+        "3_1971-90_meuble":   { "minore": 8.4,  "ref": 12.0, "majore": 14.4 },
+        "3_1946-70_meuble":   { "minore": 8.2,  "ref": 11.6, "majore": 14.0 },
+        "3_avant1946_meuble": { "minore": 8.7,  "ref": 12.4, "majore": 14.9 }
+      }
+    }
+  },
+
+  "marseille": {
+    "encadrement_actif": false, "annee": 2025, "type": "indicatif",
+    "communes_couvertes": ["marseille", "aix-en-provence"],
+    "note": "Zone tendue (Marseille / Aix-en-Provence), valeurs indicatives.",
+    "secteurs": { "1": { "label": "Marseille / Aix" } },
+    "loyers": {
+      "1": {
+        "1_apres1990_vide":   { "minore": 10.0, "ref": 14.3, "majore": 17.2 },
+        "1_1971-90_vide":     { "minore": 9.2,  "ref": 13.1, "majore": 15.7 },
+        "1_1946-70_vide":     { "minore": 9.0,  "ref": 12.8, "majore": 15.4 },
+        "1_avant1946_vide":   { "minore": 9.6,  "ref": 13.7, "majore": 16.4 },
+        "1_apres1990_meuble": { "minore": 11.6, "ref": 16.5, "majore": 19.8 },
+        "1_1971-90_meuble":   { "minore": 10.6, "ref": 15.1, "majore": 18.1 },
+        "1_1946-70_meuble":   { "minore": 10.3, "ref": 14.7, "majore": 17.6 },
+        "1_avant1946_meuble": { "minore": 11.0, "ref": 15.7, "majore": 18.8 },
+        "2_apres1990_vide":   { "minore": 8.8,  "ref": 12.6, "majore": 15.1 },
+        "2_1971-90_vide":     { "minore": 8.1,  "ref": 11.5, "majore": 13.8 },
+        "2_1946-70_vide":     { "minore": 7.9,  "ref": 11.3, "majore": 13.6 },
+        "2_avant1946_vide":   { "minore": 8.4,  "ref": 12.0, "majore": 14.4 },
+        "2_apres1990_meuble": { "minore": 10.2, "ref": 14.5, "majore": 17.4 },
+        "2_1971-90_meuble":   { "minore": 9.3,  "ref": 13.3, "majore": 16.0 },
+        "2_1946-70_meuble":   { "minore": 9.1,  "ref": 13.0, "majore": 15.6 },
+        "2_avant1946_meuble": { "minore": 9.7,  "ref": 13.8, "majore": 16.6 },
+        "3_apres1990_vide":   { "minore": 7.7,  "ref": 11.0, "majore": 13.2 },
+        "3_1971-90_vide":     { "minore": 7.0,  "ref": 10.0, "majore": 12.0 },
+        "3_1946-70_vide":     { "minore": 6.9,  "ref": 9.8,  "majore": 11.8 },
+        "3_avant1946_vide":   { "minore": 7.4,  "ref": 10.5, "majore": 12.6 },
+        "3_apres1990_meuble": { "minore": 8.9,  "ref": 12.7, "majore": 15.2 },
+        "3_1971-90_meuble":   { "minore": 8.1,  "ref": 11.6, "majore": 13.9 },
+        "3_1946-70_meuble":   { "minore": 7.9,  "ref": 11.3, "majore": 13.6 },
+        "3_avant1946_meuble": { "minore": 8.4,  "ref": 12.0, "majore": 14.4 }
+      }
+    }
+  },
+
+  "nice": {
+    "encadrement_actif": false, "annee": 2025, "type": "indicatif",
+    "communes_couvertes": ["nice"],
+    "secteurs": { "1": { "label": "Nice" } },
+    "loyers": {
+      "1": {
+        "1_apres1990_vide":   { "minore": 11.2, "ref": 16.0, "majore": 19.2 },
+        "1_1971-90_vide":     { "minore": 10.3, "ref": 14.7, "majore": 17.6 },
+        "1_1946-70_vide":     { "minore": 10.1, "ref": 14.4, "majore": 17.3 },
+        "1_avant1946_vide":   { "minore": 10.7, "ref": 15.3, "majore": 18.4 },
+        "1_apres1990_meuble": { "minore": 13.0, "ref": 18.6, "majore": 22.3 },
+        "1_1971-90_meuble":   { "minore": 11.9, "ref": 17.0, "majore": 20.4 },
+        "1_1946-70_meuble":   { "minore": 11.6, "ref": 16.6, "majore": 19.9 },
+        "1_avant1946_meuble": { "minore": 12.4, "ref": 17.7, "majore": 21.2 },
+        "2_apres1990_vide":   { "minore": 9.8,  "ref": 14.0, "majore": 16.8 },
+        "2_1971-90_vide":     { "minore": 9.0,  "ref": 12.8, "majore": 15.4 },
+        "2_1946-70_vide":     { "minore": 8.8,  "ref": 12.5, "majore": 15.0 },
+        "2_avant1946_vide":   { "minore": 9.4,  "ref": 13.4, "majore": 16.1 },
+        "2_apres1990_meuble": { "minore": 11.3, "ref": 16.1, "majore": 19.3 },
+        "2_1971-90_meuble":   { "minore": 10.4, "ref": 14.8, "majore": 17.8 },
+        "2_1946-70_meuble":   { "minore": 10.1, "ref": 14.4, "majore": 17.3 },
+        "2_avant1946_meuble": { "minore": 10.8, "ref": 15.4, "majore": 18.5 },
+        "3_apres1990_vide":   { "minore": 8.5,  "ref": 12.1, "majore": 14.5 },
+        "3_1971-90_vide":     { "minore": 7.8,  "ref": 11.1, "majore": 13.3 },
+        "3_1946-70_vide":     { "minore": 7.6,  "ref": 10.9, "majore": 13.1 },
+        "3_avant1946_vide":   { "minore": 8.2,  "ref": 11.7, "majore": 14.0 },
+        "3_apres1990_meuble": { "minore": 9.8,  "ref": 14.0, "majore": 16.8 },
+        "3_1971-90_meuble":   { "minore": 9.0,  "ref": 12.9, "majore": 15.5 },
+        "3_1946-70_meuble":   { "minore": 8.8,  "ref": 12.6, "majore": 15.1 },
+        "3_avant1946_meuble": { "minore": 9.4,  "ref": 13.4, "majore": 16.1 }
+      }
+    }
+  },
+
+  "strasbourg": {
+    "encadrement_actif": false, "annee": 2025, "type": "indicatif",
+    "communes_couvertes": ["strasbourg"],
+    "secteurs": { "1": { "label": "Strasbourg" } },
+    "loyers": {
+      "1": {
+        "1_apres1990_vide":   { "minore": 9.5,  "ref": 13.6, "majore": 16.3 },
+        "1_apres1990_meuble": { "minore": 11.0, "ref": 15.7, "majore": 18.8 },
+        "2_apres1990_vide":   { "minore": 8.2,  "ref": 11.7, "majore": 14.0 },
+        "2_apres1990_meuble": { "minore": 9.4,  "ref": 13.5, "majore": 16.2 },
+        "3_apres1990_vide":   { "minore": 7.2,  "ref": 10.3, "majore": 12.4 },
+        "3_apres1990_meuble": { "minore": 8.3,  "ref": 11.8, "majore": 14.2 },
+        "4_apres1990_vide":   { "minore": 6.6,  "ref": 9.4,  "majore": 11.3 },
+        "4_apres1990_meuble": { "minore": 7.6,  "ref": 10.8, "majore": 13.0 }
+      }
+    }
+  },
+
+  "rennes": {
+    "encadrement_actif": false, "annee": 2025, "type": "indicatif",
+    "communes_couvertes": ["rennes"],
+    "secteurs": { "1": { "label": "Rennes" } },
+    "loyers": {
+      "1": {
+        "1_apres1990_vide":   { "minore": 9.8,  "ref": 14.0, "majore": 16.8 },
+        "1_apres1990_meuble": { "minore": 11.3, "ref": 16.1, "majore": 19.3 },
+        "2_apres1990_vide":   { "minore": 8.5,  "ref": 12.1, "majore": 14.5 },
+        "2_apres1990_meuble": { "minore": 9.8,  "ref": 14.0, "majore": 16.8 },
+        "3_apres1990_vide":   { "minore": 7.4,  "ref": 10.6, "majore": 12.7 },
+        "3_apres1990_meuble": { "minore": 8.5,  "ref": 12.2, "majore": 14.6 },
+        "4_apres1990_vide":   { "minore": 6.8,  "ref": 9.7,  "majore": 11.6 },
+        "4_apres1990_meuble": { "minore": 7.8,  "ref": 11.1, "majore": 13.3 }
+      }
+    }
+  },
+
+  "arcachon": {
+    "encadrement_actif": false, "annee": 2025, "type": "indicatif",
+    "communes_couvertes": ["arcachon", "la-teste-de-buch", "gujan-mestras", "le-teich"],
+    "note": "Bassin d'Arcachon — zone tendue (saisonniere), valeurs indicatives elevees.",
+    "secteurs": { "1": { "label": "Bassin d'Arcachon" } },
+    "loyers": {
+      "1": {
+        "1_apres1990_vide":   { "minore": 11.0, "ref": 15.7, "majore": 18.8 },
+        "1_apres1990_meuble": { "minore": 12.7, "ref": 18.1, "majore": 21.7 },
+        "2_apres1990_vide":   { "minore": 9.6,  "ref": 13.7, "majore": 16.4 },
+        "2_apres1990_meuble": { "minore": 11.0, "ref": 15.7, "majore": 18.8 },
+        "3_apres1990_vide":   { "minore": 8.3,  "ref": 11.9, "majore": 14.3 },
+        "3_apres1990_meuble": { "minore": 9.6,  "ref": 13.7, "majore": 16.4 },
+        "4_apres1990_vide":   { "minore": 7.6,  "ref": 10.8, "majore": 13.0 },
+        "4_apres1990_meuble": { "minore": 8.7,  "ref": 12.4, "majore": 14.9 }
+      }
+    }
+  },
+
+  "_default_france": {
+    "encadrement_actif": false, "annee": 2025, "type": "indicatif",
+    "note": "Fallback national pour villes non listees individuellement. Mediane indicative basee sur le marche locatif francais. Affichage clairement marque comme estimation indicative.",
+    "secteurs": { "1": { "label": "Estimation marche local" } },
+    "loyers": {
+      "1": {
+        "1_apres1990_vide":   { "minore": 8.5,  "ref": 12.2, "majore": 14.6 },
+        "1_apres1990_meuble": { "minore": 9.8,  "ref": 14.0, "majore": 16.8 },
+        "2_apres1990_vide":   { "minore": 7.4,  "ref": 10.5, "majore": 12.6 },
+        "2_apres1990_meuble": { "minore": 8.5,  "ref": 12.1, "majore": 14.5 },
+        "3_apres1990_vide":   { "minore": 6.4,  "ref": 9.1,  "majore": 10.9 },
+        "3_apres1990_meuble": { "minore": 7.4,  "ref": 10.5, "majore": 12.6 },
+        "4_apres1990_vide":   { "minore": 5.9,  "ref": 8.4,  "majore": 10.1 },
+        "4_apres1990_meuble": { "minore": 6.8,  "ref": 9.7,  "majore": 11.6 }
+      }
+    }
   }
 }
