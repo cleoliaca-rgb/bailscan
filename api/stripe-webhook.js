@@ -156,14 +156,33 @@ export default async function handler(req, res) {
  
   try {
     // ─────────────────────────────────────────────────────────
-    // checkout.session.completed → Activer le plan
+    // checkout.session.completed → Activer le plan / marquer analyse payée
     // ─────────────────────────────────────────────────────────
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
       const agenceId = session.metadata?.agence_id;
       const mode = session.metadata?.mode || 'mensuel';
       const subId = session.subscription;
- 
+      const product = session.metadata?.product;
+      const analysisId = session.metadata?.analysis_id;
+
+      // ── B2C : Paiement ponctuel d'une analyse de bail (29€) ──
+      // Pas d'abonnement (mode: payment), on UPDATE simplement la ligne b2c_analyses
+      if (product === 'bailscan-tenant' && analysisId) {
+        const { error: b2cErr } = await sb.from('b2c_analyses').update({
+          paid: true,
+          paid_at: new Date().toISOString(),
+          stripe_session_id: session.id,
+        }).eq('id', analysisId);
+
+        if (b2cErr) {
+          console.error('[webhook] B2C update error:', b2cErr.message);
+        } else {
+          console.log(`[webhook] Analyse B2C marquee payee: ${analysisId} (session: ${session.id})`);
+        }
+      }
+
+      // ── B2B Pro : Activation de l'abonnement agence ──
       if (agenceId && subId) {
         await sb.from('agences').update({
           plan: 'pro',
