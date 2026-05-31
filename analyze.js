@@ -349,6 +349,57 @@ function sanitizeAnalysis(parsed, context) {
 
   var loyerM2 = computeLoyerM2(context);
   var loyerBase = parseFloat(context && context.loyer_base) || 0;
+  var surface = parseFloat(context && context.surface) || 0;
+
+  // ────────────────────────────────────────────────────────────
+  // 0. FORCAGE DU PLAFOND DEPUIS LA GRILLE EMBARQUEE
+  //    Si on a une grille pour cette ville et un loyer/m2 calculable,
+  //    on FORCE le remplissage de parsed.loyer.plafond + le verdict,
+  //    independamment de ce que Claude aurait pu dire ou omettre.
+  // ────────────────────────────────────────────────────────────
+  var plafondInfo = getLoyerPlafond({
+    ville: (context && context.ville) || '',
+    nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
+    epoque: devineEpoque(context && context.annee_construction),
+    typeBien: (context && context.type_bien) || 'vide',
+    quartier: (context && context.quartier) || (context && context.ville)
+  });
+
+  if (plafondInfo && loyerM2 !== null && surface > 0) {
+    if (!parsed.loyer || typeof parsed.loyer !== 'object') parsed.loyer = {};
+    // Forcer le plafond a la valeur grille (format texte attendu par le frontend)
+    var plafondMensuelGrille = Math.round(plafondInfo.plafond_m2 * surface * 100) / 100;
+    parsed.loyer.plafond = plafondMensuelGrille.toFixed(2).replace('.', ',') + ' €';
+    parsed.loyer.plafond_m2 = plafondInfo.plafond_m2.toFixed(2).replace('.', ',') + ' €/m²';
+    // Calcul statut deterministe a partir de la grille
+    var depasse = loyerM2 > plafondInfo.plafond_m2 + 0.01;
+    if (plafondInfo.encadrement_actif) {
+      parsed.loyer.statut = depasse ? 'danger' : 'ok';
+    } else {
+      // Zone indicative (Bordeaux, Plaisance-du-Touch) : pas de plafond opposable, on indique simplement
+      parsed.loyer.statut = depasse ? 'warning' : 'ok';
+    }
+    // Reformuler l'analyse en termes generaux (sans reveler la source de la grille)
+    var loyM2Txt = loyerM2.toFixed(2).replace('.', ',');
+    var plafM2Txt = plafondInfo.plafond_m2.toFixed(2).replace('.', ',');
+    if (depasse) {
+      var exedentMensuel = Math.round((loyerM2 - plafondInfo.plafond_m2) * surface * 100) / 100;
+      parsed.loyer.exedent_mensuel = exedentMensuel;
+      if (plafondInfo.encadrement_actif) {
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui depasse le plafond legal estime (" + plafM2Txt + " euros/m2). Cette valeur etant indicative, verifiez la valeur a jour sur le simulateur officiel de votre prefecture.";
+      } else {
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est superieur au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement, mais cela peut etre un point de negociation. Verifiez les references locales sur les simulateurs officiels.";
+      }
+    } else {
+      parsed.loyer.exedent_mensuel = null;
+      parsed.loyer.trop_percu = null;
+      if (plafondInfo.encadrement_actif) {
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui respecte le plafond legal estime (" + plafM2Txt + " euros/m2). Valeur indicative — verifiez sur le simulateur officiel de votre prefecture.";
+      } else {
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est conforme au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement.";
+      }
+    }
+  }
 
   // 1. Nettoyage du champ loyer.analyse
   if (parsed.loyer && parsed.loyer.analyse) {
@@ -360,51 +411,64 @@ function sanitizeAnalysis(parsed, context) {
     parsed.loyer.analyse = a;
   }
 
+  // 1b. Filet de securite : retirer toute reference a la grille interne dans l'analyse
+  //     (ex: "selon la grille Lyon 2025 secteur 1...", "d'apres l'arrete prefectoral...")
+  if (parsed.loyer && parsed.loyer.analyse) {
+    parsed.loyer.analyse = parsed.loyer.analyse
+      .replace(/\s*\(?selon\s+(la\s+grille|l[' ]arr[eê]t[eé])[^,.)]*\)?[,.]?\s*/gi, ' ')
+      .replace(/\s*\(?d[' ]apr[eè]s\s+(la\s+grille|l[' ]arr[eê]t[eé])[^,.)]*\)?[,.]?\s*/gi, ' ')
+      .replace(/\s*\(?grille\s+(de|d[' ]encadrement|pref[eé]ctorale)[^,.)]*\)?[,.]?\s*/gi, ' ')
+      .replace(/\s*secteur\s+\d+[,.]?\s*/gi, ' ')
+      .replace(/\s+/g, ' ').replace(/\s+\./g, '.').replace(/\s+,/g, ',').trim();
+  }
+
   // 2. Nettoyage du resume global
   if (parsed.resume) {
     parsed.resume = parsed.resume
       .replace(/\(\s*\d+[,.]?\d*\s*€\/m²\s*(vs|>)\s*\d+[,.]?\d*\s*€\/m²[^)]*\)/gi, '')
+      .replace(/\s*\(?selon\s+(la\s+grille|l[' ]arr[eê]t[eé])[^,.)]*\)?[,.]?\s*/gi, ' ')
+      .replace(/\s*\(?grille\s+(de|d[' ]encadrement|pref[eé]ctorale)[^,.)]*\)?[,.]?\s*/gi, ' ')
+      .replace(/\s*secteur\s+\d+[,.]?\s*/gi, ' ')
       .replace(/\s+/g, ' ').replace(/\s+,/g, ',').trim();
   }
 
-  // 3. Garde-fou metier : si on a loyer/m2 reel ET plafond detecte,
+  // 3. Garde-fou metier : si on a loyer/m2 reel ET plafond detecte (de Claude ou grille),
   //    on force le statut a partir des vrais chiffres hors charges.
   if (loyerM2 !== null && parsed.loyer && parsed.loyer.plafond) {
-    // Extrait le plafond numerique du champ texte (ex: "14€/m²" -> 14)
-    var plafondMatch = String(parsed.loyer.plafond).match(/(\d+[,.]?\d*)/);
-    if (plafondMatch) {
-      var plafondNum = parseFloat(plafondMatch[1].replace(',', '.'));
-      if (plafondNum > 0) {
-        // Tolerance de 0.01 pour les arrondis
-        if (loyerM2 <= plafondNum + 0.01) {
-          // Pas de depassement reel — on neutralise le faux positif
-          if (parsed.loyer.statut === 'danger' || parsed.loyer.statut === 'warning') {
-            parsed.loyer.statut = 'ok';
-            parsed.loyer.trop_percu = null;
-            parsed.loyer.exedent_mensuel = null;
-            // Ajoute une note transparente
-            parsed.loyer.analyse = "Loyer au m2 : " + loyerM2.toFixed(2).replace('.', ',')
-              + " €/m² (hors charges), plafond legal : " + plafondNum.toFixed(2).replace('.', ',')
-              + " €/m². Le loyer respecte l'encadrement legal. "
-              + (parsed.loyer.analyse || '');
-            // Retire toute affirmation contraire dans le resume global
-            if (parsed.resume) {
-              parsed.resume = parsed.resume
-                .replace(/loyer\s+sup[eé]rieur\s+au\s+plafond\s+l[eé]gal\s+d[' ]?encadrement\s*,?\s*/gi, '')
-                .replace(/d[eé]passement\s+(significatif|du\s+plafond)[^,.]*[,.]?\s*/gi, '')
-                .replace(/loyer\s+(non\s+conforme|illegal|excessif)\s+au?\s*plafond[^,.]*[,.]?\s*/gi, '')
-                .replace(/\s+,/g, ',').replace(/,\s*,/g, ',').replace(/\s+/g, ' ')
-                .replace(/:\s*,/g, ':').replace(/\s+\./g, '.').trim();
-              // Si le resume commence par un ":" orphelin apres nettoyage, on retire
-              parsed.resume = parsed.resume.replace(/^[^a-zA-Z0-9À-ÿ]*/, '').trim();
-            }
+    // Extrait le plafond numerique du champ texte (ex: "14€/m²" -> 14, "1246,00 €" -> 1246)
+    // Si on a deja plafond_m2 (calcule depuis grille), on le prend, sinon on extrait
+    var plafondNum;
+    if (parsed.loyer.plafond_m2) {
+      var pm = String(parsed.loyer.plafond_m2).match(/(\d+[,.]?\d*)/);
+      plafondNum = pm ? parseFloat(pm[1].replace(',', '.')) : null;
+    } else {
+      var plafondMatch = String(parsed.loyer.plafond).match(/(\d+[,.]?\d*)/);
+      plafondNum = plafondMatch ? parseFloat(plafondMatch[1].replace(',', '.')) : null;
+    }
+    if (plafondNum !== null && plafondNum > 0) {
+      // Si plafondNum est un loyer mensuel (issu de Claude, format "1246 €"), on le convertit en /m2
+      var seuilM2 = plafondNum;
+      if (seuilM2 > 100 && surface > 0) seuilM2 = plafondNum / surface;
+      // Tolerance de 0.01 pour les arrondis
+      if (loyerM2 <= seuilM2 + 0.01) {
+        if (parsed.loyer.statut === 'danger' || parsed.loyer.statut === 'warning') {
+          parsed.loyer.statut = 'ok';
+          parsed.loyer.trop_percu = null;
+          parsed.loyer.exedent_mensuel = null;
+          if (parsed.resume) {
+            parsed.resume = parsed.resume
+              .replace(/loyer\s+sup[eé]rieur\s+au\s+plafond\s+l[eé]gal\s+d[' ]?encadrement\s*,?\s*/gi, '')
+              .replace(/d[eé]passement\s+(significatif|du\s+plafond)[^,.]*[,.]?\s*/gi, '')
+              .replace(/loyer\s+(non\s+conforme|illegal|excessif)\s+au?\s*plafond[^,.]*[,.]?\s*/gi, '')
+              .replace(/\s+,/g, ',').replace(/,\s*,/g, ',').replace(/\s+/g, ' ')
+              .replace(/:\s*,/g, ':').replace(/\s+\./g, '.').trim();
+            parsed.resume = parsed.resume.replace(/^[^a-zA-Z0-9À-ÿ]*/, '').trim();
           }
-        } else {
-          // Depassement reel : on impose le bon exedent mensuel
-          var exedentReel = Math.round((loyerM2 - plafondNum) * (parseFloat(context.surface) || 0) * 100) / 100;
-          if (exedentReel > 0) {
-            parsed.loyer.exedent_mensuel = exedentReel;
-          }
+        }
+      } else {
+        var exedentReel = Math.round((loyerM2 - seuilM2) * surface * 100) / 100;
+        if (exedentReel > 0) {
+          parsed.loyer.exedent_mensuel = exedentReel;
         }
       }
     }

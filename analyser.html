@@ -480,9 +480,9 @@ select.form-input { cursor:pointer; }
 .paywall-icon { font-size:2.4rem; margin-bottom:16px; }
 .paywall-title { font-family:'Instrument Serif',serif; font-size:1.8rem; color:var(--noir); margin-bottom:10px; }
 .paywall-desc { font-size:0.92rem; color:var(--gris); margin-bottom:28px; line-height:1.6; max-width:460px; margin-left:auto; margin-right:auto; }
-.paywall-features { display:flex; flex-direction:column; gap:10px; max-width:400px; margin:0 auto 28px; text-align:left; align-items:center; }
-.paywall-feature { display:grid; grid-template-columns:20px 1fr; align-items:start; gap:8px; font-size:0.88rem; color:var(--texte); }
-.paywall-feature::before { content:'✓'; color:var(--vert); font-weight:800; font-size:1rem; line-height:1.3; }
+.paywall-features { display:flex; flex-direction:column; gap:10px; max-width:460px; margin:0 auto 28px; text-align:left; align-items:stretch; }
+.paywall-feature { display:grid; grid-template-columns:20px 1fr; align-items:start; gap:10px; font-size:0.88rem; color:var(--texte); line-height:1.5; text-align:left; }
+.paywall-feature::before { content:'✓'; color:var(--vert); font-weight:800; font-size:1rem; line-height:1.4; }
 .paywall-price { font-family:'Instrument Serif',serif; font-size:2.8rem; color:var(--accent); margin-bottom:6px; }
 .paywall-price-sub { font-size:0.8rem; color:var(--gris); margin-bottom:24px; }
 /* Banner montant réclamable dans le paywall */
@@ -1295,21 +1295,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- TEASER clauses cachées -->
       <div id="hiddenClausesTeaser" style="display:none;margin-top:12px;border-radius:14px;overflow:hidden;border:2px solid var(--accent);">
-        <!-- Fausses clauses floutées -->
+        <!-- Fausses clauses floutées (3 cartes pour donner de la matiere) -->
         <div style="position:relative;">
-          <div style="padding:14px 18px;background:white;filter:blur(4px);pointer-events:none;user-select:none;">
-            <div style="height:14px;background:rgba(200,75,47,0.2);border-radius:4px;margin-bottom:8px;width:70%;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:90%;"></div>
+          <div style="padding:16px 18px;background:white;filter:blur(5px);pointer-events:none;user-select:none;">
+            <div style="display:inline-block;height:18px;width:64px;background:rgba(200,75,47,0.25);border-radius:5px;margin-bottom:10px;"></div>
+            <div style="height:14px;background:rgba(200,75,47,0.18);border-radius:4px;margin-bottom:8px;width:70%;"></div>
+            <div style="height:10px;background:var(--border);border-radius:4px;width:92%;margin-bottom:6px;"></div>
+            <div style="height:10px;background:var(--border);border-radius:4px;width:78%;"></div>
           </div>
-          <div style="padding:14px 18px;background:white;border-top:1px solid var(--border);filter:blur(4px);pointer-events:none;user-select:none;">
-            <div style="height:14px;background:rgba(200,75,47,0.15);border-radius:4px;margin-bottom:8px;width:60%;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:85%;"></div>
+          <div style="padding:16px 18px;background:white;border-top:1px solid var(--border);filter:blur(5px);pointer-events:none;user-select:none;">
+            <div style="display:inline-block;height:18px;width:78px;background:rgba(245,158,11,0.25);border-radius:5px;margin-bottom:10px;"></div>
+            <div style="height:14px;background:rgba(245,158,11,0.18);border-radius:4px;margin-bottom:8px;width:60%;"></div>
+            <div style="height:10px;background:var(--border);border-radius:4px;width:88%;margin-bottom:6px;"></div>
+            <div style="height:10px;background:var(--border);border-radius:4px;width:65%;"></div>
+          </div>
+          <div style="padding:16px 18px;background:white;border-top:1px solid var(--border);filter:blur(5px);pointer-events:none;user-select:none;">
+            <div style="display:inline-block;height:18px;width:64px;background:rgba(200,75,47,0.22);border-radius:5px;margin-bottom:10px;"></div>
+            <div style="height:14px;background:rgba(200,75,47,0.15);border-radius:4px;margin-bottom:8px;width:55%;"></div>
+            <div style="height:10px;background:var(--border);border-radius:4px;width:82%;"></div>
           </div>
         </div>
         <!-- CTA par-dessus -->
-        <div style="background:var(--accent);padding:14px 18px;text-align:center;cursor:pointer;" onclick="trackBeginCheckout('hidden_clauses_bar');openModal()">
-          <div style="font-size:0.88rem;font-weight:800;color:white;" id="hiddenClausesCount">+ X clauses illégales masquées</div>
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);margin-top:2px;">Débloquer pour voir lesquelles et comment réclamer →</div>
+        <div style="background:var(--accent);padding:16px 18px;text-align:center;cursor:pointer;" onclick="trackBeginCheckout('hidden_clauses_bar');openModal()">
+          <div style="font-size:0.95rem;font-weight:800;color:white;" id="hiddenClausesCount">+ X clauses analysées</div>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.85);margin-top:4px;">Débloquer le rapport complet : titres, références légales, actions pour réclamer →</div>
         </div>
       </div>
     </div>
@@ -1383,7 +1392,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div style="width:36px;height:36px;border-radius:50%;background:var(--vert);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:1.1rem;">✓</div>
           <div style="text-align:left;">
             <div style="font-weight:700;font-size:clamp(0.78rem,3.1vw,0.88rem);color:var(--noir);line-height:1.3;white-space:nowrap;">Satisfait ou remboursé sous 14 jours</div>
-            <div style="font-size:0.74rem;color:var(--gris);margin-top:2px;line-height:1.4;">Pas de question, remboursement intégral si l'analyse ne vous sert à rien.</div>
+            <div style="font-size:0.74rem;color:var(--gris);margin-top:2px;line-height:1.4;">Remboursement intégral si l'analyse ne vous sert à rien.</div>
           </div>
         </div>
 
@@ -2681,13 +2690,14 @@ function displayResults(data) {
     var order = { danger: 0, warning: 1, ok: 2 };
     return (order[a.type] || 2) - (order[b.type] || 2);
   });
-  var freeClauses = sortedClauses.slice(0, 1);
-  var hiddenCount = Math.max(0, clauses.length - freeClauses.length);
-  document.getElementById('clausesFreeCount').textContent = freeClauses.length + ' sur ' + clauses.length;
-  document.getElementById('freeClausesList').innerHTML = freeClauses.map(renderClause).join('');
+  // Aucune clause detaillee affichee en gratuit. L'utilisateur voit uniquement le compteur + un teaser.
+  // Toutes les clauses sont reservees a la zone payante (apres deblocage 29 EUR).
+  var hiddenCount = clauses.length;
+  document.getElementById('clausesFreeCount').textContent = clauses.length + ' détectée' + (clauses.length > 1 ? 's' : '');
+  document.getElementById('freeClausesList').innerHTML = '';
 
   // Teaser clauses cachées — affiche le TOTAL d'illégales/warnings détectées
-  // Le free preview ne montre qu'une clause en aperçu, le détail légal complet reste masqué
+  // Toutes les clauses sont masquees, l'utilisateur voit uniquement le compteur global.
   var teaser = document.getElementById('hiddenClausesTeaser');
   var teaserCount = document.getElementById('hiddenClausesCount');
   if (teaser && hiddenCount > 0) {
@@ -2696,12 +2706,12 @@ function displayResults(data) {
     var totalWarning = clauses.filter(function(c){ return c.type === 'warning'; }).length;
     var teaserText;
     if (totalDanger > 0) {
-      teaserText = '+ ' + totalDanger + ' clause' + (totalDanger > 1 ? 's' : '') + ' illégale' + (totalDanger > 1 ? 's' : '') + ' masquée' + (totalDanger > 1 ? 's' : '');
+      teaserText = totalDanger + ' clause' + (totalDanger > 1 ? 's' : '') + ' illégale' + (totalDanger > 1 ? 's' : '') + ' détectée' + (totalDanger > 1 ? 's' : '');
       if (totalWarning > 0) teaserText += ' + ' + totalWarning + ' à risque';
     } else if (totalWarning > 0) {
-      teaserText = '+ ' + totalWarning + ' clause' + (totalWarning > 1 ? 's' : '') + ' à risque masquée' + (totalWarning > 1 ? 's' : '');
+      teaserText = totalWarning + ' clause' + (totalWarning > 1 ? 's' : '') + ' à risque détectée' + (totalWarning > 1 ? 's' : '');
     } else {
-      teaserText = '+ ' + hiddenCount + ' clause' + (hiddenCount > 1 ? 's' : '') + ' masquée' + (hiddenCount > 1 ? 's' : '');
+      teaserText = hiddenCount + ' clause' + (hiddenCount > 1 ? 's' : '') + ' analysée' + (hiddenCount > 1 ? 's' : '');
     }
     if (teaserCount) teaserCount.textContent = teaserText;
   } else if (teaser) {
@@ -2935,9 +2945,25 @@ function renderLoyerCheck(data) {
   if (totalLoyer > 0 || loy.plafond) {
     html += '<div class="loyer-check-amounts">';
     if (loyerBase > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer de base</div><div class="amount-pill-val">' + loyerBase + ' €/mois</div></div>';
+    // Votre loyer au m² (calcul cote frontend pour visibilite directe)
+    var surfaceUser = parseFloat(appState.surface || document.getElementById('surface').value) || 0;
+    if (loyerBase > 0 && surfaceUser > 0) {
+      var loyerM2User = (loyerBase / surfaceUser).toFixed(2).replace('.', ',');
+      html += '<div class="amount-pill"><div class="amount-pill-label">Votre loyer €/m²</div><div class="amount-pill-val">' + loyerM2User + ' €/m²</div></div>';
+    }
     if (loyerMajore > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Loyer réf. majoré</div><div class="amount-pill-val">' + loyerMajore + ' €/mois</div></div>';
     if (complementLoyer > 0) html += '<div class="amount-pill"><div class="amount-pill-label">Complément de loyer</div><div class="amount-pill-val">' + complementLoyer + ' €</div></div>';
-    if (loy.plafond) html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal estimé</div><div class="amount-pill-val">' + loy.plafond + ' €/mois</div></div>';
+    if (loy.plafond) {
+      var plafondTxt = String(loy.plafond).trim();
+      // Si la valeur ne contient deja pas l'unite, on ajoute €/mois
+      var hasUnit = /€\/m²|€\/m2|€\/mois|€\s*$/.test(plafondTxt);
+      if (!hasUnit) plafondTxt += ' €/mois';
+      html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal estimé</div><div class="amount-pill-val">' + plafondTxt + '</div></div>';
+    }
+    // Plafond en €/m² (nouveau champ issu de la grille)
+    if (loy.plafond_m2) {
+      html += '<div class="amount-pill"><div class="amount-pill-label">Plafond €/m² estimé</div><div class="amount-pill-val">' + loy.plafond_m2 + '</div></div>';
+    }
     if (exedentLoyer > 0) html += '<div class="amount-pill" style="border-color:var(--accent)"><div class="amount-pill-label">Excédent mensuel</div><div class="amount-pill-val" style="color:var(--accent)">−' + exedentLoyer.toFixed(2) + ' €/mois</div></div>';
     html += '</div>';
   }
