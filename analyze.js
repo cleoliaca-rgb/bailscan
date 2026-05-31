@@ -995,8 +995,15 @@ module.exports = async function handler(req, res) {
       ? buildEtatDesLieuxPrompt(context)
       : buildBailPrompt(context, extraDocs);
  
-    // Plus de tokens si docs complémentaires
-    var maxTokensAnalysis = extraDocs.length > 0 ? 2800 : 1800;
+    // Tokens adaptatifs :
+    // - mode normal : 1800
+    // - extra_docs : 2800
+    // - skip_form (extraction auto) : 2500 (besoin de place pour context_extrait)
+    // - extra_docs + skip_form : 3200
+    var maxTokensAnalysis = 1800;
+    if (extraDocs.length > 0) maxTokensAnalysis = 2800;
+    if (context && context._skip_form) maxTokensAnalysis = Math.max(maxTokensAnalysis, 2500);
+    if (extraDocs.length > 0 && context && context._skip_form) maxTokensAnalysis = 3200;
  
     var userContent;
     if (body.pdf) {
@@ -1052,14 +1059,50 @@ module.exports = async function handler(req, res) {
       }
       parsed = JSON.parse(clean.trim());
     } catch (e) {
-      console.error('JSON parse error:', rawText.slice(0, 500));
-      return res.status(200).json({
-        score: 50, verdict: 'Risque',
-        verdict_titre: 'Analyse partielle',
-        resume: "L'analyse a rencontre un probleme de formatage. Essayez de coller le texte de votre bail manuellement.",
-        loyer: null, clauses_abusives: [],
-        plan_action: ['Reessayer en collant le texte du bail dans le champ texte']
-      });
+      console.error('[parse] JSON parse error. RawText preview:', rawText.slice(0, 800));
+      console.error('[parse] Erreur:', e && e.message);
+      // ────────────────────────────────────────────────────────
+      // PARSING TOLERANT : si le JSON est tronque, on tente de
+      // recuperer ce qu'on peut avant de retomber sur le fallback.
+      // ────────────────────────────────────────────────────────
+      try {
+        var clean2 = rawText.replace(/```json/g, '').replace(/```/g, '');
+        var fb = clean2.indexOf('{');
+        if (fb !== -1) {
+          // Tronque a la derniere virgule ou accolade complete trouvee
+          var attempt = clean2.slice(fb);
+          // Essai 1 : fermer toutes les structures ouvertes
+          var openBraces = (attempt.match(/\{/g) || []).length;
+          var closeBraces = (attempt.match(/\}/g) || []).length;
+          var openBrackets = (attempt.match(/\[/g) || []).length;
+          var closeBrackets = (attempt.match(/\]/g) || []).length;
+          // Retirer trailing commas + ajouter fermetures manquantes
+          attempt = attempt.replace(/,\s*$/, '');
+          for (var i = 0; i < (openBrackets - closeBrackets); i++) attempt += ']';
+          for (var j = 0; j < (openBraces - closeBraces); j++) attempt += '}';
+          parsed = JSON.parse(attempt);
+          console.log('[parse] Recuperation JSON tronque reussie');
+        } else {
+          throw e;
+        }
+      } catch (e2) {
+        // Message d'erreur contextuel selon le mode
+        var skipForm = context && context._skip_form;
+        var errMsg = skipForm
+          ? "L'extraction automatique du bail n'a pas abouti. Essayez de revenir au formulaire et de saisir manuellement les informations (ville, loyer, surface)."
+          : "L'analyse a rencontre un probleme de formatage. Essayez de coller le texte de votre bail manuellement.";
+        return res.status(200).json({
+          score: 50, verdict: 'Risque',
+          verdict_titre: 'Analyse partielle',
+          resume: errMsg,
+          loyer: null, clauses_abusives: [],
+          plan_action: skipForm
+            ? ['Revenir en arriere et cliquer sur "Continuer → Logement"', 'Saisir les informations manuellement', 'Relancer l\'analyse']
+            : ['Reessayer en collant le texte du bail dans le champ texte'],
+          _partial: true,
+          _skip_form_failed: skipForm || false
+        });
+      }
     }
 
     // FILET DE SECURITE : on neutralise tout faux positif d'encadrement
