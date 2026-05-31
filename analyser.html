@@ -58,7 +58,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 }</script>
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
-<!-- Meta Pixel -->
+<!-- Meta Pixel — Setup complet (v2 — 2026-05-31) -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -66,7 +66,59 @@ n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '4338666489686062');
+// PageView de base (toutes pages)
 fbq('track', 'PageView');
+
+// ────────────────────────────────────────────────────────────
+// Helpers Meta Pixel — pour fire les events avec event_id partage
+// avec le serveur (deduplication CAPI obligatoire post-iOS14)
+// ────────────────────────────────────────────────────────────
+window.bsTrack = (function() {
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8); return v.toString(16);
+    });
+  }
+  function getCookie(name) {
+    var m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return m ? m[2] : null;
+  }
+  return function(eventName, params, customEvent) {
+    try {
+      params = params || {};
+      var eventId = params.eventID || uuid();
+      params.eventID = eventId;
+      // Stocker fbp/fbc pour le CAPI server-side
+      var fbp = getCookie('_fbp');
+      var fbc = getCookie('_fbc');
+      // Envoyer Pixel client
+      if (typeof fbq === 'function') {
+        if (customEvent) {
+          fbq('trackCustom', eventName, params, { eventID: eventId });
+        } else {
+          fbq('track', eventName, params, { eventID: eventId });
+        }
+      }
+      // GTM/GA4 dataLayer
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'bs_' + eventName.toLowerCase(),
+        event_id: eventId,
+        ecommerce: params.value ? {
+          currency: params.currency || 'EUR',
+          value: params.value,
+          items: [{ item_id: 'bailscan_tenant_29', item_name: 'BailScan Analyse', price: params.value, quantity: 1 }]
+        } : undefined
+      });
+      // Persist eventId si purchase pour matcher avec le webhook
+      if (eventName === 'InitiateCheckout' || eventName === 'AddToCart') {
+        try { localStorage.setItem('_bs_event_id_' + eventName.toLowerCase(), eventId); } catch(e) {}
+      }
+      return eventId;
+    } catch(e) { return null; }
+  };
+})();
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=4338666489686062&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel -->
@@ -2764,6 +2816,21 @@ function launchAnalysis() {
     if (appState.uploadMode === 'upload' && !appState.pdfBase64) { alert('Veuillez fournir votre document.'); return; }
     if (appState.uploadMode === 'text' && textContent.length < 100) { alert('Le texte est trop court pour être analysé.'); return; }
   }
+
+  // ── META PIXEL : AddToCart (signal mid-funnel critique pour optimisation) ──
+  try {
+    if (typeof bsTrack === 'function') {
+      bsTrack('AddToCart', {
+        value: 29.00,
+        currency: 'EUR',
+        content_ids: ['bailscan_tenant_29'],
+        content_type: 'product',
+        content_name: 'analysis_started',
+        content_category: 'lease_analysis',
+        analysis_mode: appState.skipForm ? 'skip_form' : (appState.uploadMode || 'unknown')
+      });
+    }
+  } catch (e) {}
  
   showLoading();
  
@@ -2905,6 +2972,34 @@ function displayResults(data) {
   document.getElementById('typeSelectorBlock').style.display = 'none';
   var rs = document.getElementById('resultsSection');
   rs.style.display = 'block';
+
+  // ── META PIXEL : ViewContent (rapport BailScan affiche = contenu de valeur)
+  // C'est l'event que Meta utilise pour optimiser sur du "engagement profond".
+  // Tres important pour les campagnes Sales ou Lead.
+  try {
+    if (typeof bsTrack === 'function') {
+      var nbClauses = (data.clauses_abusives || []).length;
+      var scoreVal = data.score || 0;
+      bsTrack('ViewContent', {
+        value: 29.00,
+        currency: 'EUR',
+        content_ids: ['bailscan_report'],
+        content_type: 'product',
+        content_name: 'rapport_analyse',
+        content_category: 'lease_analysis',
+        score: scoreVal,
+        nb_clauses_detected: nbClauses
+      });
+      // Custom event "AnalysisCompleted" pour optimisation Meta avancee
+      bsTrack('AnalysisCompleted', {
+        score: scoreVal,
+        nb_clauses: nbClauses,
+        ville: appState.ville || '',
+        depasse_plafond: !!(data.loyer && (data.loyer.statut === 'danger' || data.loyer.statut === 'warning'))
+      }, true);
+    }
+  } catch (e) {}
+
   // Démarrer le timer dès l'affichage des résultats
   startPaywallTimer();
   // Render social proof (stats agregees hebdomadaires)
@@ -4283,33 +4378,30 @@ function getTotalReclamable() {
 // ═══════════════════════════════════════
 
 // Tracking begin_checkout — fire dès clic CTA paywall (avant ouverture modal)
-// Donne le vrai taux paywall → checkout, séparé du taux modal → Stripe
+// Utilise bsTrack pour event_id deduplicé avec le serveur (CAPI).
 function trackBeginCheckout(source) {
   try {
-    // GTM / GA4
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'begin_checkout',
-      ecommerce: {
-        currency: 'EUR',
-        value: 29.00,
-        items: [{
-          item_id: 'bailscan_tenant_29',
-          item_name: 'BailScan Analyse Complète',
-          price: 29.00,
-          quantity: 1
-        }]
-      },
-      checkout_source: source || 'unknown'
+    // Valeur potentielle pour Meta (montant que le user va recuperer)
+    var potValue = 29.00;
+    try {
+      if (typeof getTotalReclamable === 'function') {
+        var rec = getTotalReclamable();
+        if (rec && rec.total > 50) potValue = Math.round(rec.total);
+      }
+    } catch(e) {}
+    // Event Pixel standard InitiateCheckout
+    bsTrack('InitiateCheckout', {
+      value: 29.00,
+      currency: 'EUR',
+      num_items: 1,
+      content_ids: ['bailscan_tenant_29'],
+      content_type: 'product',
+      content_name: source || 'paywall',
+      content_category: 'lease_analysis',
+      potential_recovery: potValue
     });
-    // Meta Pixel — événement standard InitiateCheckout
-    if (typeof fbq === 'function') {
-      fbq('track', 'InitiateCheckout', { value: 29.00, currency: 'EUR', num_items: 1, content_name: source || 'paywall' });
-    }
-    // Clarity — custom event si Clarity est chargé
-    if (typeof clarity === 'function') {
-      clarity('event', 'begin_checkout_' + (source || 'unknown'));
-    }
+    // Clarity event si dispo
+    if (typeof clarity === 'function') clarity('event', 'begin_checkout_' + (source || 'unknown'));
   } catch (e) { /* fail silent — ne jamais bloquer le funnel */ }
 }
 
@@ -4358,10 +4450,26 @@ function checkPaymentReturn() {
         var _ep = document.getElementById('exitPopupOverlay');
         if (_ep) _ep.classList.remove('active');
         displayResults(analysisResult);
-        // ── META PIXEL — événement Purchase ──
-        if (typeof fbq === 'function') {
-          fbq('track', 'Purchase', { value: 29.00, currency: 'EUR' });
-        }
+        // ── META PIXEL : Purchase avec event_id pour deduplication CAPI ──
+        // On utilise session_id Stripe comme event_id pour matcher avec le webhook server-side.
+        // Si CAPI envoie le meme event_id, Meta dedupliquera et comptera 1 seul Purchase.
+        try {
+          if (typeof bsTrack === 'function') {
+            bsTrack('Purchase', {
+              value: 29.00,
+              currency: 'EUR',
+              num_items: 1,
+              content_ids: ['bailscan_tenant_29'],
+              content_type: 'product',
+              content_name: 'BailScan Analyse Complete',
+              content_category: 'lease_analysis',
+              transaction_id: _bsSid,  // session_id Stripe = identifiant transaction
+              eventID: _bsSid           // identique pour dedupliquer avec CAPI server-side
+            });
+            // Sauvegarder pour debug
+            try { localStorage.setItem('_bs_last_purchase_eventid', _bsSid); } catch(e) {}
+          }
+        } catch (e) { console.warn('Purchase tracking error:', e); }
         // isPaid est déjà true → displayResults gère l'affichage direct
       } catch(e) { console.error(e); }
     } else {
@@ -4680,10 +4788,6 @@ function resetApp() {
   // Reset exit intent flags — displayResults() ré-armera la détection d'engagement
   _paywallSeen = false;
   _exitShown = false;
-  // META PIXEL — InitiateCheckout (retargeting)
-  if (typeof fbq === 'function') {
-    fbq('track', 'InitiateCheckout', { value: 29.00, currency: 'EUR', num_items: 1 });
-  }
   // CTA dynamique avec montant récupérable
   updatePaywallCTA();
   goStep(1);
