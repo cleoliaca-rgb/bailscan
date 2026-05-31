@@ -2462,6 +2462,9 @@ function launchAnalysis() {
     hideLoading();
     if (data.error) { alert('Erreur: ' + data.error); return; }
     analysisResult = data;
+    if (data._analysis_id) {
+      try { localStorage.setItem('bailscan_analysis_id', data._analysis_id); } catch(e) {}
+    }
     displayResults(data);
   })
   .catch(function(err) {
@@ -3459,7 +3462,7 @@ function payWithStripe() {
     analysisType: appState.analysisType,
     locationtype: appState.locationtype
   }));
-  fetch('/api/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({amount:900}) })
+  fetch('/api/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({amount:900, analysis_id: (function(){ try { return localStorage.getItem('bailscan_analysis_id') || ''; } catch(e) { return ''; } })()}) })
   .then(function(r) { return r.json(); })
   .then(function(d) { if (d.url) { window.location.href = d.url; } else { throw new Error(d.error); } })
   .catch(function(e) { btn.textContent = 'Débloquer mon rapport complet →'; btn.disabled = false; alert('Erreur: ' + e.message); });
