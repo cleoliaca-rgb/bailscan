@@ -371,6 +371,12 @@ function sanitizeAnalysis(parsed, context) {
     var plafondMensuelGrille = Math.round(plafondInfo.plafond_m2 * surface * 100) / 100;
     parsed.loyer.plafond = plafondMensuelGrille.toFixed(2).replace('.', ',') + ' €';
     parsed.loyer.plafond_m2 = plafondInfo.plafond_m2.toFixed(2).replace('.', ',') + ' €/m²';
+    // Exposer aussi les loyers de reference et minore pour la comparaison marche (frontend)
+    parsed.loyer.ref_m2 = plafondInfo.ref_m2.toFixed(2).replace('.', ',') + ' €/m²';
+    parsed.loyer.ref_m2_num = plafondInfo.ref_m2;
+    parsed.loyer.minore_m2_num = plafondInfo.minore_m2;
+    parsed.loyer.plafond_m2_num = plafondInfo.plafond_m2;
+    parsed.loyer.encadrement_strict = plafondInfo.encadrement_actif;
     // Calcul statut deterministe a partir de la grille
     var depasse = loyerM2 > plafondInfo.plafond_m2 + 0.01;
     if (plafondInfo.encadrement_actif) {
