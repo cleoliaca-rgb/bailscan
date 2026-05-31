@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
  
   try {
-    const { email, bail_ref, price_id } = req.body || {};
+    const { email, bail_ref, price_id, analysis_id } = req.body || {};
  
     // Prix : variable d'env ou fallback price_id passé par le front
     const priceId = price_id
@@ -46,11 +46,13 @@ module.exports = async (req, res) => {
         metadata: {
           product: 'bailscan-tenant',
           bail_ref: bail_ref || '',
+          analysis_id: analysis_id || '',
         },
       },
       metadata: {
         product: 'bailscan-tenant',
         bail_ref: bail_ref || '',
+        analysis_id: analysis_id || '',
       },
     };
  
