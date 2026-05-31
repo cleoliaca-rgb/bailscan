@@ -14,13 +14,35 @@ const path = require('path');
 let GRILLES_ENCADREMENT = null;
 function getGrilles() {
   if (GRILLES_ENCADREMENT) return GRILLES_ENCADREMENT;
+  // 1) Tentative via require() — methode preferee sur Vercel (file-trace inclut automatiquement le JSON)
   try {
-    var p = path.join(process.cwd(), 'api', 'data', 'grilles-encadrement.json');
-    GRILLES_ENCADREMENT = JSON.parse(fs.readFileSync(p, 'utf8'));
-  } catch (e) {
-    console.error('[grilles] Erreur chargement grilles-encadrement.json:', e && e.message);
-    GRILLES_ENCADREMENT = { _meta: { version: 'fallback' } };
+    GRILLES_ENCADREMENT = require('./data/grilles-encadrement.json');
+    if (GRILLES_ENCADREMENT && typeof GRILLES_ENCADREMENT === 'object') {
+      console.log('[grilles] Charge via require() ./data/grilles-encadrement.json');
+      return GRILLES_ENCADREMENT;
+    }
+  } catch (e1) {
+    console.warn('[grilles] require() echec:', e1 && e1.message);
   }
+  // 2) Fallback : fs.readFileSync avec __dirname (resolution relative au fichier analyze.js)
+  try {
+    var p1 = path.join(__dirname, 'data', 'grilles-encadrement.json');
+    GRILLES_ENCADREMENT = JSON.parse(fs.readFileSync(p1, 'utf8'));
+    console.log('[grilles] Charge via fs.readFileSync depuis __dirname:', p1);
+    return GRILLES_ENCADREMENT;
+  } catch (e2) {
+    console.warn('[grilles] __dirname echec:', e2 && e2.message);
+  }
+  // 3) Fallback : process.cwd() (dev local)
+  try {
+    var p2 = path.join(process.cwd(), 'api', 'data', 'grilles-encadrement.json');
+    GRILLES_ENCADREMENT = JSON.parse(fs.readFileSync(p2, 'utf8'));
+    console.log('[grilles] Charge via fs.readFileSync depuis cwd:', p2);
+    return GRILLES_ENCADREMENT;
+  } catch (e3) {
+    console.error('[grilles] ECHEC TOTAL chargement grilles-encadrement.json:', e3 && e3.message);
+  }
+  GRILLES_ENCADREMENT = { _meta: { version: 'fallback-empty' } };
   return GRILLES_ENCADREMENT;
 }
 
