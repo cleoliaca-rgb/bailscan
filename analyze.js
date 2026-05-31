@@ -355,7 +355,6 @@ function buildBailPrompt(context, extraDocs) {
   var ville = (context && context.ville) || '';
   var surface = (context && context.surface) || null;
   var loyerBase = (context && context.loyer_base) || null;
-  var skipForm = context && context._skip_form === true;
   var encadre = isVilleEncadree(ville);
   var loyerM2 = computeLoyerM2(context);
 
@@ -369,38 +368,6 @@ function buildBailPrompt(context, extraDocs) {
   });
  
   var extra = '';
-
-  // ─────────────────────────────────────────────────────────────
-  // MODE EXTRACTION AUTO : le user n'a pas rempli le formulaire,
-  // Claude doit tout extraire du PDF du bail.
-  // ─────────────────────────────────────────────────────────────
-  if (skipForm) {
-    extra += "\n=== ⚠️ MODE EXTRACTION AUTOMATIQUE — INSTRUCTIONS CRITIQUES ⚠️ ===\n"
-      + "Le formulaire du locataire est VIDE. Tu dois LIRE le bail PDF attache et EN EXTRAIRE toutes les informations.\n"
-      + "ORDRE OBLIGATOIRE des operations :\n"
-      + "  1. LIS le bail PDF integralement\n"
-      + "  2. EXTRAIS ces 11 informations et stocke-les mentalement :\n"
-      + "     • ville (commune du logement, ex: Bordeaux)\n"
-      + "     • surface (m2 habitable Carrez, ex: 42)\n"
-      + "     • loyer_base (loyer HORS CHARGES en euros, ex: 980)\n"
-      + "     • charges (provision charges en euros, ex: 95)\n"
-      + "     • depot (depot de garantie verse en euros, ex: 1960)\n"
-      + "     • type_bien ('vide' ou 'meuble', ex: vide)\n"
-      + "     • type_location ('principale' / 'meublee_principale' / 'autre', ex: principale)\n"
-      + "     • complement_loyer (montant en euros, 0 si absent)\n"
-      + "     • complement_justif (texte de la justification si presente, vide sinon)\n"
-      + "     • date_debut_bail (YYYY-MM-DD, ex: 2025-09-01)\n"
-      + "     • nb_mois_bail (entier, ex: 8 si bail debut sept 2025 et on est en mai 2026)\n"
-      + "  3. UTILISE ces valeurs extraites pour ton analyse complete (encadrement, depot, clauses, etc.)\n"
-      + "  4. INCLUS OBLIGATOIREMENT ces 11 valeurs dans le champ 'context_extrait' du JSON final\n"
-      + "\n"
-      + "REGLES STRICTES :\n"
-      + "  - Si une info n'est pas trouvable dans le bail : valeur par defaut raisonnable + signale-le dans 'resume'\n"
-      + "  - 'context_extrait' est OBLIGATOIRE dans ton JSON, jamais omis\n"
-      + "  - Ne dis JAMAIS 'je ne peux pas lire le PDF' : le bail EST attache, lis-le clause par clause\n"
-      + "=== FIN MODE EXTRACTION ===\n";
-  }
-
   if (encadre && loyerBase && surface) {
     extra += "\nATTENTION : " + ville + " est en zone d'encadrement des loyers.\n"
       + "Loyer declare HORS CHARGES : " + loyerBase + " euros/mois pour " + surface + " m2.\n"
@@ -445,11 +412,6 @@ function buildBailPrompt(context, extraDocs) {
   var formatExample = extraDocs && extraDocs.length > 0
     ? "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"3 problemes detectes\",\"resume\":\"Resume incluant les docs complementaires.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre clause bail\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"},{\"type\":\"danger\",\"titre\":\"[Conge du bailleur] Vice de forme\",\"description\":\"Le conge ne respecte pas...\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. 15 loi 1989\"],\"action\":\"Contester le conge.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}"
     : "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"2 clauses a corriger\",\"resume\":\"Resume.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}";
-
-  // Si mode extraction auto, ajouter le champ context_extrait au format attendu
-  if (skipForm) {
-    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"Bordeaux\",\"surface\":73,\"loyer_base\":1287,\"charges\":50,\"depot\":1287,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"2024-09-01\",\"nb_mois_bail\":21}}');
-  }
 
   // Determiner si un bail est fourni (PDF ou texte > 200 chars)
   var hasBail = (context && context.bail_pdf_base64) || (context && context.bail_text && String(context.bail_text).length > 200);
@@ -928,6 +890,84 @@ async function searchGrilleViaWeb(ville, nbPieces, typeBien) {
 }
 
 /**
+ * EXTRACTION PRELIMINAIRE depuis un PDF de bail.
+ * Appel separe a Claude avec un prompt minimaliste : juste extraire les 11 infos
+ * et renvoyer en JSON pur. Pas d'analyse, pas de clauses.
+ * Beaucoup plus fiable que de tout demander en un seul appel.
+ */
+async function extractContextFromPDF(pdfBase64) {
+  if (!pdfBase64) return null;
+  try {
+    var promptExtract = "Lis le bail PDF attache et extrais ces 11 informations.\n"
+      + "Reponds UNIQUEMENT avec un JSON pur, sans markdown, sans backticks, sans texte avant ou apres.\n"
+      + "Format exact :\n"
+      + '{"ville":"Bordeaux","surface":42,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","date_debut_bail":"2025-09-01","nb_mois_bail":8}\n'
+      + "Regles :\n"
+      + "- ville : commune du logement loue (string)\n"
+      + "- surface : m2 habitable Carrez (number)\n"
+      + "- loyer_base : loyer HORS CHARGES en euros (number)\n"
+      + "- charges : provisions sur charges en euros (number, 0 si absent)\n"
+      + "- depot : depot de garantie verse en euros (number, 0 si absent)\n"
+      + "- type_bien : 'vide' ou 'meuble' (string)\n"
+      + "- type_location : 'principale' / 'meublee_principale' / 'autre' (string)\n"
+      + "- complement_loyer : montant en euros si present, 0 sinon (number)\n"
+      + "- complement_justif : texte de la justification si presente, '' sinon (string)\n"
+      + "- date_debut_bail : YYYY-MM-DD ('' si non trouve)\n"
+      + "- nb_mois_bail : nb de mois entre date_debut_bail et aujourd'hui (number, 0 si inconnu). Date aujourd'hui : " + new Date().toISOString().slice(0, 10) + "\n"
+      + "Si une info n'est pas dans le bail : mets une valeur par defaut (0 pour les numbers, '' pour les strings) mais TOUJOURS un JSON valide complet.";
+
+    var response = await fetch(ANTHROPIC_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+        "anthropic-beta": "pdfs-2024-09-25"
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 500,
+        messages: [{
+          role: "user",
+          content: [
+            { type: "document", source: { type: "base64", media_type: "application/pdf", data: pdfBase64 } },
+            { type: "text", text: promptExtract }
+          ]
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      var errTxt = await response.text();
+      console.warn('[extract-pdf] API echec', response.status, errTxt.slice(0, 200));
+      return null;
+    }
+    var data = await response.json();
+    var txt = '';
+    for (var i = 0; i < (data.content || []).length; i++) {
+      if (data.content[i].type === 'text') txt += data.content[i].text;
+    }
+    console.log('[extract-pdf] Reponse brute:', txt.slice(0, 300));
+
+    // Parser le JSON
+    var clean = txt.replace(/```json/g, '').replace(/```/g, '').trim();
+    var fb = clean.indexOf('{');
+    var lb = clean.lastIndexOf('}');
+    if (fb === -1 || lb === -1) {
+      console.warn('[extract-pdf] Pas de JSON dans la reponse');
+      return null;
+    }
+    clean = clean.slice(fb, lb + 1);
+    var parsed = JSON.parse(clean);
+    console.log('[extract-pdf] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| depot:', parsed.depot);
+    return parsed;
+  } catch (e) {
+    console.error('[extract-pdf] Erreur:', e && e.message);
+    return null;
+  }
+}
+
+/**
  * Resout le plafond pour une ville :
  * 1) Grille locale (JSON embarque) — rapide
  * 2) Recherche web Anthropic — si grille locale absente
@@ -975,9 +1015,41 @@ module.exports = async function handler(req, res) {
     var extraDocs = body.extra_docs || [];
 
     // ────────────────────────────────────────────────────────────
-    // RESOLUTION DU PLAFOND (grille locale puis recherche web si besoin)
-    // On effectue cette resolution AVANT de construire les prompts pour que
-    // buildSystemPrompt / buildBailPrompt / sanitizeAnalysis l'utilisent.
+    // ETAPE 1 — EXTRACTION PRELIMINAIRE (mode skip_form)
+    // Si le user a saute le formulaire, on appelle Claude d'abord
+    // pour extraire ville/loyer/surface/depot du PDF, puis on hydrate
+    // le context comme si le user avait rempli le formulaire.
+    // ────────────────────────────────────────────────────────────
+    var extractedContext = null;
+    if (type === 'bail' && context._skip_form && body.pdf) {
+      console.log('[handler] Mode skip_form actif — extraction preliminaire du contexte...');
+      extractedContext = await extractContextFromPDF(body.pdf);
+      if (extractedContext) {
+        // Hydrater le context avec les valeurs extraites
+        if (extractedContext.ville) context.ville = extractedContext.ville;
+        if (extractedContext.surface) context.surface = extractedContext.surface;
+        if (extractedContext.loyer_base) context.loyer_base = extractedContext.loyer_base;
+        if (extractedContext.charges !== undefined) context.charges = extractedContext.charges;
+        if (extractedContext.depot !== undefined) context.depot = extractedContext.depot;
+        if (extractedContext.type_bien) context.type_bien = extractedContext.type_bien;
+        if (extractedContext.type_location) context.type_location = extractedContext.type_location;
+        if (extractedContext.complement_loyer !== undefined) context.complement_loyer = extractedContext.complement_loyer;
+        if (extractedContext.complement_justif) context.complement_justif = extractedContext.complement_justif;
+        // On retire le flag skip_form maintenant que le contexte est hydrate :
+        // l'analyse principale doit tourner en mode NORMAL avec ces valeurs.
+        context._skip_form_processed = true;
+        delete context._skip_form;
+        console.log('[handler] Context hydrate apres extraction:', JSON.stringify({
+          ville: context.ville, surface: context.surface,
+          loyer_base: context.loyer_base, depot: context.depot, type_bien: context.type_bien
+        }));
+      } else {
+        console.warn('[handler] Extraction echouee — analyse tournera avec contexte vide');
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    // ETAPE 2 — RESOLUTION DU PLAFOND avec le contexte (hydrate ou non)
     // ────────────────────────────────────────────────────────────
     if (type === 'bail' && context.ville && context.loyer_base && context.surface) {
       try {
@@ -1002,16 +1074,9 @@ module.exports = async function handler(req, res) {
       ? buildEtatDesLieuxPrompt(context)
       : buildBailPrompt(context, extraDocs);
  
-    // Tokens adaptatifs :
-    // - mode normal : 1800
-    // - extra_docs : 2800
-    // - skip_form (extraction auto) : 4000 (extraction + analyse + 10+ clauses possibles)
-    // - extra_docs + skip_form : 4500
+    // Tokens adaptatifs (le mode skip_form a deja ete neutralise apres extraction)
     var maxTokensAnalysis = 1800;
     if (extraDocs.length > 0) maxTokensAnalysis = 2800;
-    if (context && context._skip_form) maxTokensAnalysis = Math.max(maxTokensAnalysis, 4000);
-    if (extraDocs.length > 0 && context && context._skip_form) maxTokensAnalysis = 4500;
-    console.log('[analyze] max_tokens:', maxTokensAnalysis, 'skip_form:', !!(context && context._skip_form), 'extra_docs:', extraDocs.length);
  
     var userContent;
     if (body.pdf) {
@@ -1179,6 +1244,10 @@ module.exports = async function handler(req, res) {
  
     // On expose l'analysisId au frontend pour qu'il puisse le passer a Stripe Checkout
     if (analysisId) parsed._analysis_id = analysisId;
+    // On expose aussi le contexte extrait du PDF pour que le frontend hydrate appState
+    // (ville, loyer, surface, depot, etc. necessaires pour le bloc Comparaison marche
+    // et le fallback frontend si jamais le backend n'a pas force le plafond).
+    if (extractedContext) parsed.context_extrait = extractedContext;
  
     return res.status(200).json(parsed);
  
