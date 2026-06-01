@@ -3464,14 +3464,27 @@ function buildPaywallAmountBanner(data) {
   var depotMaxLegal = bienTypeCalc === 'meuble' ? loyerBase * 2 : loyerBase * 1;
   var depotIllegal = (loyerBase > 0 && depotVerse > depotMaxLegal) ? Math.round((depotVerse - depotMaxLegal) * 100) / 100 : 0;
 
-  // ── 3 ter. TOTAL GLOBAL : trop-percu cumule + depot illegal recuperable
-  var tropPercuTotal = Math.round((tropPercuCumule + depotIllegal) * 100) / 100;
+  // ── 3 bis-2. CLAUSES AVEC MONTANT RECUPERABLE (honoraires, frais de visite/dossier, etc.) ──
+  // Source : champ structuré "montant_recuperable" renvoyé par l'analyse (PAS de parsing de texte).
+  // Exclut déjà loyer + dépôt (calculés ci-dessus) → pas de double-comptage.
+  var clausesMontants = 0;
+  clauses.forEach(function(c) {
+    if (c && c.type === 'danger' && c.montant_recuperable) {
+      var v = parseFloat(c.montant_recuperable) || 0;
+      if (v > 0) clausesMontants += v;
+    }
+  });
+  clausesMontants = Math.round(clausesMontants * 100) / 100;
+
+  // ── 3 ter. TOTAL GLOBAL : trop-percu cumule + depot illegal + clauses chiffrees
+  var tropPercuTotal = Math.round((tropPercuCumule + depotIllegal + clausesMontants) * 100) / 100;
 
   // Détail pour affichage
   var lignesDetail = [];
   if (exedentLoyer > 0) lignesDetail.push('Loyer : +' + exedentLoyer.toFixed(2) + ' €/mois × ' + nbMois + ' mois = ' + Math.round(exedentLoyer * nbMois) + '€');
   if (complementIllegal > 0) lignesDetail.push('Complément illégal : +' + complementIllegal.toFixed(2) + ' €/mois × ' + nbMois + ' mois = ' + Math.round(complementIllegal * nbMois) + '€');
   if (depotIllegal > 0) lignesDetail.push('Dépôt excessif récupérable : ' + Math.round(depotIllegal) + '€');
+  if (clausesMontants > 0) lignesDetail.push('Frais / honoraires illégaux récupérables : ' + Math.round(clausesMontants) + '€');
 
   var html = '';
 
@@ -4572,24 +4585,18 @@ function getTotalReclamable() {
   // 3. Complement illegal (si bail < 3 mois, restitution possible)
   // Deja inclus dans tropPercuTotal via getTropPercuMontant si applicable
 
-  // 4. Clauses illegales avec montant explicite (parsing du texte)
+  // 4. Clauses illegales avec montant recuperable structuré (champ montant_recuperable)
+  //    Source fiable renvoyée par l'analyse — exclut déjà loyer + dépôt (pas de double-compte).
   var clausesMontants = 0;
   if (analysisResult && analysisResult.clauses_abusives) {
     analysisResult.clauses_abusives.forEach(function(c) {
-      if (c.type !== 'danger') return;
-      // Cherche un montant dans description ou action (ex: "frais d'agence 250€")
-      var allTxt = (c.description || '') + ' ' + (c.action || '');
-      var m = allTxt.match(/(\d{2,5})\s*€/);
-      if (m) {
-        var v = parseInt(m[1], 10);
-        // Seulement si raisonnable et pas double-compte avec depot/loyer
-        if (v >= 50 && v <= 5000) clausesMontants += v;
+      if (c && c.type === 'danger' && c.montant_recuperable) {
+        var v = parseFloat(c.montant_recuperable) || 0;
+        if (v > 0) clausesMontants += v;
       }
     });
   }
-  // Eviter double-compte : on ne prend les clauses que si > 100€ et pas deja couvertes
-  // Approche prudente : on les ignore par defaut pour eviter d'exagerer
-  clausesMontants = 0;
+  clausesMontants = Math.round(clausesMontants * 100) / 100;
 
   var total = Math.round((tropPercuTotal + depotIllegal + clausesMontants) * 100) / 100;
 
@@ -4603,6 +4610,9 @@ function getTotalReclamable() {
   }
   if (depotIllegal > 0) {
     details.push({ label: 'depot illegal', montant: Math.round(depotIllegal) });
+  }
+  if (clausesMontants > 0) {
+    details.push({ label: 'frais / honoraires illegaux', montant: Math.round(clausesMontants) });
   }
 
   return {
