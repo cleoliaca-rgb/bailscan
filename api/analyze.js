@@ -67,7 +67,7 @@ function getQuartierData(villeKey) {
     else if (villeKey === 'lyon') d = require('./data/lyon-loyers.json');
     // else if (villeKey === 'lille') d = require('./data/lille-loyers.json');
     else if (villeKey === 'bordeaux') d = require('./data/bordeaux-loyers.json');
-    // else if (villeKey === 'montpellier') d = require('./data/montpellier-loyers.json');
+    else if (villeKey === 'montpellier') d = require('./data/montpellier-loyers.json');
     // else if (villeKey === 'grenoble') d = require('./data/grenoble-loyers.json');
     // else if (villeKey === 'bayonne') d = require('./data/bayonne-loyers.json');
     // else if (villeKey === 'plaine-commune') d = require('./data/plaine-commune-loyers.json');

@@ -83,12 +83,65 @@ function meubleToDataset(typeBien) {
   return /meubl/i.test(typeBien || '') ? 'meuble' : 'nonmeuble';
 }
 
+// ── 3bis) DISTANCE point→polygone (pour repli "zone la plus proche") ──
+function distPointSeg(px, py, ax, ay, bx, by) {
+  var dx = bx - ax, dy = by - ay, len2 = dx * dx + dy * dy;
+  var t = len2 > 0 ? ((px - ax) * dx + (py - ay) * dy) / len2 : 0;
+  t = t < 0 ? 0 : (t > 1 ? 1 : t);
+  var cx = ax + t * dx, cy = ay + t * dy, ex = px - cx, ey = py - cy;
+  return ex * ex + ey * ey; // distance au carré
+}
+function distToRing(lon, lat, ring) {
+  var min = Infinity;
+  for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    var d = distPointSeg(lon, lat, ring[j][0], ring[j][1], ring[i][0], ring[i][1]);
+    if (d < min) min = d;
+  }
+  return min;
+}
+function distToGeometry(lon, lat, geometry) {
+  if (!geometry || !geometry.coordinates) return Infinity;
+  var min = Infinity, r;
+  if (geometry.type === 'Polygon') {
+    for (r = 0; r < geometry.coordinates.length; r++) { var d = distToRing(lon, lat, geometry.coordinates[r]); if (d < min) min = d; }
+  } else if (geometry.type === 'MultiPolygon') {
+    for (var p = 0; p < geometry.coordinates.length; p++)
+      for (r = 0; r < geometry.coordinates[p].length; r++) { var d2 = distToRing(lon, lat, geometry.coordinates[p][r]); if (d2 < min) min = d2; }
+  }
+  return min;
+}
+function dataBBox(data) {
+  if (data._bbox) return data._bbox;
+  var minx = Infinity, miny = Infinity, maxx = -Infinity, maxy = -Infinity;
+  function walk(c) {
+    if (typeof c[0] === 'number') { if (c[0] < minx) minx = c[0]; if (c[0] > maxx) maxx = c[0]; if (c[1] < miny) miny = c[1]; if (c[1] > maxy) maxy = c[1]; }
+    else for (var i = 0; i < c.length; i++) walk(c[i]);
+  }
+  for (var q = 0; q < data.quartiers.length; q++) if (data.quartiers[q].geometry) walk(data.quartiers[q].geometry.coordinates);
+  data._bbox = { minx: minx, miny: miny, maxx: maxx, maxy: maxy };
+  return data._bbox;
+}
+
 // ── 4) RÉSOLUTION : coordonnées → quartier → loyer ──
 // data = { annee, quartiers:[{id,nom,zone,geometry}], loyers:{ "<qid>_<piece>_<epoqueDS>_<meubleDS>": {ref,max,min} } }
 function findQuartier(data, lon, lat) {
   if (!data || !data.quartiers) return null;
   for (var i = 0; i < data.quartiers.length; i++) {
     if (pointInGeometry(lon, lat, data.quartiers[i].geometry)) return data.quartiers[i];
+  }
+  // Repli "zone la plus proche" : UNIQUEMENT pour les zonages "partition" (peu de polygones
+  // censés couvrir toute la commune, ex Montpellier) et seulement dans l'emprise de la ville.
+  // N'affecte PAS Paris/Lyon/Bordeaux (zonage IRIS précis, pas de flag → repli ignoré).
+  if (data._meta && data._meta.zone_partition) {
+    var bb = dataBBox(data), m = 0.01; // ~1 km de marge autour de l'emprise
+    if (lon >= bb.minx - m && lon <= bb.maxx + m && lat >= bb.miny - m && lat <= bb.maxy + m) {
+      var best = null, bestd = Infinity;
+      for (var k = 0; k < data.quartiers.length; k++) {
+        var dd = distToGeometry(lon, lat, data.quartiers[k].geometry);
+        if (dd < bestd) { bestd = dd; best = data.quartiers[k]; }
+      }
+      if (best && bestd <= 0.02 * 0.02) return best; // <= ~2 km du bord le plus proche
+    }
   }
   return null;
 }
@@ -117,7 +170,7 @@ function lookupLoyer(data, quartier, piece, epoqueKey, typeBien) {
             annee: data.annee,
             encadrement_actif: true,
             indicatif: false,
-            source: 'Paris ' + data.annee + ' quartier ' + quartier.nom
+            source: ((data._meta && data._meta.ville ? data._meta.ville.charAt(0).toUpperCase() + data._meta.ville.slice(1) : 'Encadrement')) + ' ' + data.annee + ' — ' + quartier.nom
           };
         }
       }
