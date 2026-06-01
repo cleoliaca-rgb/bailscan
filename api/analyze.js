@@ -46,6 +46,24 @@ function getGrilles() {
   return GRILLES_ENCADREMENT;
 }
 
+// ── Données Paris precision quartier (adresse -> polygone) ──
+var PARIS_ENGINE = null, PARIS_LOYERS = null, PARIS_LOYERS_TRIED = false;
+function getParisEngine() {
+  if (PARIS_ENGINE) return PARIS_ENGINE;
+  try { PARIS_ENGINE = require('./paris-loyers-engine.js'); }
+  catch (e) { console.warn('[paris] engine absent:', e && e.message); PARIS_ENGINE = null; }
+  return PARIS_ENGINE;
+}
+function getParisLoyers() {
+  if (PARIS_LOYERS || PARIS_LOYERS_TRIED) return PARIS_LOYERS;
+  PARIS_LOYERS_TRIED = true;
+  try { PARIS_LOYERS = require('./data/paris-loyers.json'); console.log('[paris] data OK, annee', PARIS_LOYERS.annee, '-', (PARIS_LOYERS.quartiers || []).length, 'quartiers'); return PARIS_LOYERS; } catch (e1) {}
+  try { PARIS_LOYERS = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'paris-loyers.json'), 'utf8')); return PARIS_LOYERS; } catch (e2) {}
+  try { PARIS_LOYERS = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'api', 'data', 'paris-loyers.json'), 'utf8')); return PARIS_LOYERS; } catch (e3) {}
+  console.warn('[paris] data/paris-loyers.json introuvable - fallback secteur');
+  return null;
+}
+
 function normaliseVille(ville) {
   if (!ville) return null;
   var v = String(ville).toLowerCase()
@@ -57,6 +75,9 @@ function normaliseVille(ville) {
   if (v.indexOf('lille') >= 0 || v.indexOf('hellemmes') >= 0 || v.indexOf('lomme') >= 0) return 'lille';
   if (v.indexOf('paris') >= 0) return 'paris';
   if (v.indexOf('montpellier') >= 0) return 'montpellier';
+  if (/(saint-denis|aubervilliers|courneuve|epinay-sur-seine|pierrefitte|villetaneuse|ile-saint-denis|stains|saint-ouen)/.test(v)) return 'plaine-commune';
+  if (/(montreuil|pantin|bagnolet|bobigny|bondy|lilas|pre-saint-gervais|noisy-le-sec|romainville)/.test(v)) return 'est-ensemble';
+  if (/(echirolles|saint-martin-d.heres|la tronche|la-tronche|meylan|eybens|gieres|seyssins|seyssinet|pont-de-claix|saint-egreve|sassenage)/.test(v)) return 'grenoble';
   // Zones tendues / indicatif
   if (v.indexOf('bordeaux') >= 0) return 'bordeaux';
   if (v.indexOf('plaisance') >= 0 && v.indexOf('touch') >= 0) return 'plaisance-du-touch';
@@ -959,12 +980,13 @@ async function extractContextFromDoc(input) {
   var bailText = (input && input.text) || null;
   if (!pdfBase64 && !bailText) return null;
   try {
-    var promptExtract = "Lis le bail (PDF ou texte fourni) et extrais ces 14 informations.\n"
+    var promptExtract = "Lis le bail (PDF ou texte fourni) et extrais ces 15 informations.\n"
       + "Reponds UNIQUEMENT avec un JSON pur, sans markdown, sans backticks, sans texte avant ou apres.\n"
       + "Format exact :\n"
-      + '{"ville":"Bordeaux","code_postal":"33000","surface":42,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"2025-09-01","nb_mois_bail":8}\n'
+      + '{"ville":"Bordeaux","adresse":"12 rue Exemple","code_postal":"33000","surface":42,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"2025-09-01","nb_mois_bail":8}\n'
       + "Regles :\n"
       + "- ville : commune du logement loue (string)\n"
+      + "- adresse : adresse postale du logement loue (numero + voie, ex '12 rue de la Roquette'), sans la ville ni le code postal. '' si absent\n"
       + "- code_postal : code postal du logement, 5 chiffres en string (ex '75011'). DETERMINANT pour Paris/Lyon (choix du secteur). '' si absent\n"
       + "- surface : m2 habitable Carrez (number)\n"
       + "- loyer_base : loyer HORS CHARGES en euros (number)\n"
@@ -1094,6 +1116,7 @@ module.exports = async function handler(req, res) {
       if (extractedContext) {
         if (extractedContext.ville && !context.ville) context.ville = extractedContext.ville;
         if (extractedContext.code_postal && !context.code_postal) context.code_postal = extractedContext.code_postal;
+        if (extractedContext.adresse && !context.adresse) context.adresse = extractedContext.adresse;
         if (extractedContext.surface && !context.surface) context.surface = extractedContext.surface;
         if (extractedContext.loyer_base && !context.loyer_base) context.loyer_base = extractedContext.loyer_base;
         if (extractedContext.charges !== undefined && (context.charges === undefined || context.charges === null)) context.charges = extractedContext.charges;
@@ -1117,7 +1140,35 @@ module.exports = async function handler(req, res) {
     // dans ce cas le plafond ne sera pas pre-resolu et sera traite par
     // le frontend fallback)
     // ────────────────────────────────────────────────────────────
-    if (type === 'bail' && context.ville && context.loyer_base && context.surface) {
+    // ────────────────────────────────────────────────────────────
+    // PARIS : resolution PRECISE au quartier (adresse -> geocode BAN -> polygone).
+    // Prioritaire sur la grille secteur. Repli automatique si echec/adresse absente.
+    // ────────────────────────────────────────────────────────────
+    if (type === 'bail' && context.loyer_base && context.surface && normaliseVille(context.ville) === 'paris') {
+      try {
+        var pEngine = getParisEngine();
+        var pData = getParisLoyers();
+        if (pEngine && pData) {
+          var pq = await pEngine.resolveParisQuartier(pData, {
+            adresse: context.adresse,
+            codePostal: context.code_postal,
+            nbPieces: context.nb_pieces || estimateNbPieces(context.surface),
+            epoque: devineEpoque(context.annee_construction),
+            typeBien: context.type_bien || 'vide'
+          });
+          if (pq) {
+            context._plafondInfo = pq;
+            console.log('[paris-quartier] Plafond precis →', pq.quartier, pq.plafond_m2, '€/m²');
+          } else {
+            console.log('[paris-quartier] Pas de quartier (adresse manquante/hors Paris) → fallback secteur');
+          }
+        }
+      } catch (e) {
+        console.warn('[paris-quartier] echec:', e && e.message);
+      }
+    }
+
+    if (!context._plafondInfo && type === 'bail' && context.ville && context.loyer_base && context.surface) {
       try {
         var plafondResolved = await resolveLoyerPlafond({
           ville: context.ville,
