@@ -46,22 +46,36 @@ function getGrilles() {
   return GRILLES_ENCADREMENT;
 }
 
-// ── Données Paris precision quartier (adresse -> polygone) ──
-var PARIS_ENGINE = null, PARIS_LOYERS = null, PARIS_LOYERS_TRIED = false;
-function getParisEngine() {
-  if (PARIS_ENGINE) return PARIS_ENGINE;
-  try { PARIS_ENGINE = require('./paris-loyers-engine.js'); }
-  catch (e) { console.warn('[paris] engine absent:', e && e.message); PARIS_ENGINE = null; }
-  return PARIS_ENGINE;
+// ── Encadrement PRECISION QUARTIER (adresse -> geocodage BAN -> polygone) ──
+// Agnostique a la ville. AJOUTER UNE VILLE = (1) deposer api/data/<ville>-loyers.json
+// (genere par build-loyers.js) ; (2) decommenter sa ligne require ci-dessous.
+// NB : requires STATIQUES obligatoires (traces par le bundler Vercel ; un require
+// dynamique ./data/ + variable ne serait PAS inclus dans le deploiement).
+var QUARTIER_ENGINE = null;
+function getQuartierEngine() {
+  if (QUARTIER_ENGINE) return QUARTIER_ENGINE;
+  try { QUARTIER_ENGINE = require('./paris-loyers-engine.js'); }
+  catch (e) { console.warn('[quartier] moteur absent:', e && e.message); QUARTIER_ENGINE = null; }
+  return QUARTIER_ENGINE;
 }
-function getParisLoyers() {
-  if (PARIS_LOYERS || PARIS_LOYERS_TRIED) return PARIS_LOYERS;
-  PARIS_LOYERS_TRIED = true;
-  try { PARIS_LOYERS = require('./data/paris-loyers.json'); console.log('[paris] data OK, annee', PARIS_LOYERS.annee, '-', (PARIS_LOYERS.quartiers || []).length, 'quartiers'); return PARIS_LOYERS; } catch (e1) {}
-  try { PARIS_LOYERS = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'paris-loyers.json'), 'utf8')); return PARIS_LOYERS; } catch (e2) {}
-  try { PARIS_LOYERS = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'api', 'data', 'paris-loyers.json'), 'utf8')); return PARIS_LOYERS; } catch (e3) {}
-  console.warn('[paris] data/paris-loyers.json introuvable - fallback secteur');
-  return null;
+var QUARTIER_DATA_CACHE = {};
+function getQuartierData(villeKey) {
+  if (Object.prototype.hasOwnProperty.call(QUARTIER_DATA_CACHE, villeKey)) return QUARTIER_DATA_CACHE[villeKey];
+  var d = null;
+  try {
+    if (villeKey === 'paris') d = require('./data/paris-loyers.json');
+    // else if (villeKey === 'lyon') d = require('./data/lyon-loyers.json');
+    // else if (villeKey === 'lille') d = require('./data/lille-loyers.json');
+    // else if (villeKey === 'bordeaux') d = require('./data/bordeaux-loyers.json');
+    // else if (villeKey === 'montpellier') d = require('./data/montpellier-loyers.json');
+    // else if (villeKey === 'grenoble') d = require('./data/grenoble-loyers.json');
+    // else if (villeKey === 'bayonne') d = require('./data/bayonne-loyers.json');
+    // else if (villeKey === 'plaine-commune') d = require('./data/plaine-commune-loyers.json');
+    // else if (villeKey === 'est-ensemble') d = require('./data/est-ensemble-loyers.json');
+  } catch (e) { d = null; }
+  if (d) console.log('[quartier] data', villeKey, 'OK -', (d.quartiers || []).length, 'quartiers, annee', d.annee);
+  QUARTIER_DATA_CACHE[villeKey] = d;
+  return d;
 }
 
 function normaliseVille(ville) {
@@ -1141,15 +1155,17 @@ module.exports = async function handler(req, res) {
     // le frontend fallback)
     // ────────────────────────────────────────────────────────────
     // ────────────────────────────────────────────────────────────
-    // PARIS : resolution PRECISE au quartier (adresse -> geocode BAN -> polygone).
+    // ENCADREMENT PRECISION QUARTIER (adresse -> geocode BAN -> polygone).
+    // Marche pour toute ville ayant un fichier api/data/<ville>-loyers.json.
     // Prioritaire sur la grille secteur. Repli automatique si echec/adresse absente.
     // ────────────────────────────────────────────────────────────
-    if (type === 'bail' && context.loyer_base && context.surface && normaliseVille(context.ville) === 'paris') {
-      try {
-        var pEngine = getParisEngine();
-        var pData = getParisLoyers();
-        if (pEngine && pData) {
-          var pq = await pEngine.resolveParisQuartier(pData, {
+    if (type === 'bail' && context.loyer_base && context.surface) {
+      var vkQ = normaliseVille(context.ville);
+      var qEngine = getQuartierEngine();
+      var qData = vkQ ? getQuartierData(vkQ) : null;
+      if (qEngine && qData) {
+        try {
+          var pq = await qEngine.resolveQuartier(qData, {
             adresse: context.adresse,
             codePostal: context.code_postal,
             nbPieces: context.nb_pieces || estimateNbPieces(context.surface),
@@ -1158,13 +1174,13 @@ module.exports = async function handler(req, res) {
           });
           if (pq) {
             context._plafondInfo = pq;
-            console.log('[paris-quartier] Plafond precis →', pq.quartier, pq.plafond_m2, '€/m²');
+            console.log('[quartier]', vkQ, '→', pq.quartier, pq.plafond_m2, '€/m²');
           } else {
-            console.log('[paris-quartier] Pas de quartier (adresse manquante/hors Paris) → fallback secteur');
+            console.log('[quartier]', vkQ, ': pas de quartier (adresse absente/hors zone) → fallback secteur');
           }
+        } catch (e) {
+          console.warn('[quartier] echec:', e && e.message);
         }
-      } catch (e) {
-        console.warn('[paris-quartier] echec:', e && e.message);
       }
     }
 

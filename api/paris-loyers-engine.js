@@ -124,24 +124,29 @@ function lookupLoyer(data, quartier, piece, epoqueKey, typeBien) {
   return null;
 }
 
-// API principale : adresse (déjà géocodée OU à géocoder) → plafond précis au quartier
-async function resolveParisQuartier(data, opts) {
+// API principale : adresse (déjà géocodée OU à géocoder) → plafond précis au quartier.
+// Agnostique à la ville : le filtre géographique est le point-in-polygon lui-même
+// (si l'adresse géocodée tombe hors de tous les quartiers du dataset → null → repli grille).
+// opts.citycodePrefix (optionnel) ajoute un garde-fou commune (ex: '75' pour Paris).
+async function resolveQuartier(data, opts) {
   if (!data || !data.quartiers || !data.quartiers.length) return null;
   var lon = opts.lon, lat = opts.lat;
   if ((lon == null || lat == null)) {
     var geo = await geocodeBAN(opts.adresse, opts.codePostal);
     if (!geo) return null;
-    // garde-fou : ne garder que Paris intra-muros (citycode 75xxx) et un score correct
-    if (geo.citycode && String(geo.citycode).indexOf('75') !== 0) return null;
+    var prefix = opts.citycodePrefix || (data._meta && data._meta.citycode_prefix);
+    if (prefix && geo.citycode && String(geo.citycode).indexOf(String(prefix)) !== 0) return null;
     lon = geo.lon; lat = geo.lat;
   }
   var q = findQuartier(data, lon, lat);
   if (!q) return null;
   return lookupLoyer(data, q, opts.nbPieces, opts.epoque, opts.typeBien);
 }
+// alias rétro-compat
+var resolveParisQuartier = resolveQuartier;
 
 module.exports = {
   pointInRing, pointInGeometry, geocodeBAN,
-  findQuartier, lookupLoyer, resolveParisQuartier,
+  findQuartier, lookupLoyer, resolveQuartier, resolveParisQuartier,
   epoqueToDataset, meubleToDataset
 };
