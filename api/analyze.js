@@ -106,12 +106,37 @@ function devineEpoque(input) {
 function devineSecteur(villeKey, quartier) {
   if (!quartier) return '1';
   var q = String(quartier).toLowerCase();
+  var cpMatch = q.match(/\b(\d{5})\b/);
+  var cp = cpMatch ? cpMatch[1] : null;
+
   if (villeKey === 'paris') {
-    if (/\b(1er|2e|4e|7e|8e)\b/.test(q)) return '1';
-    if (/\b(11e|12e|13e|14e|20e)\b/.test(q)) return '11';
-    if (/\b(15e|16e)\b/.test(q)) return '5';
-    return '5';
+    // Secteurs avec donnees dans la grille : 1 (prestige), 5 (mid), 11 (nord/est).
+    var arr = null;
+    if (cp && cp.indexOf('75') === 0) arr = parseInt(cp.slice(-2), 10);
+    if (!arr) { var mp = q.match(/\b(\d{1,2})\s*(?:er|e|eme|ème|arr)/); if (mp) arr = parseInt(mp[1], 10); }
+    if (arr) {
+      if ([1,2,3,4,5,6,7,8,9,16].indexOf(arr) !== -1) return '1';
+      if ([10,11,12,15,17].indexOf(arr) !== -1) return '5';
+      if ([13,14,18,19,20].indexOf(arr) !== -1) return '11';
+    }
+    // defaut conservateur : plafond le plus haut (ne jamais fabriquer de depassement)
+    return '1';
   }
+
+  if (villeKey === 'lyon') {
+    // Secteurs grille : 1 (1/2/6e), 2 (3/4/7/9e), 3 (5/8e + Villeurbanne), 4 (Villeurbanne hors centre)
+    if (cp === '69100' || /villeurbanne/.test(q)) return '3';
+    var larr = null;
+    if (cp && cp.indexOf('69') === 0) larr = parseInt(cp.slice(-2), 10);
+    if (!larr) { var ml = q.match(/\b(\d)\s*(?:er|e|eme|ème|arr)/); if (ml) larr = parseInt(ml[1], 10); }
+    if (larr) {
+      if ([1,2,6].indexOf(larr) !== -1) return '1';
+      if ([3,4,7,9].indexOf(larr) !== -1) return '2';
+      if ([5,8].indexOf(larr) !== -1) return '3';
+    }
+    return '1';
+  }
+
   return '1';
 }
 
@@ -260,7 +285,7 @@ function buildSystemPrompt(context) {
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
     epoque: devineEpoque(context && context.annee_construction),
     typeBien: bienType,
-    quartier: (context && context.quartier) || ville
+    quartier: (context && context.code_postal) || (context && context.quartier) || ville
   });
  
   var extraDocsNote = (context && context.extra_docs_labels)
@@ -365,7 +390,7 @@ function buildBailPrompt(context, extraDocs) {
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(surface),
     epoque: devineEpoque(context && context.annee_construction),
     typeBien: bienType,
-    quartier: (context && context.quartier) || ville
+    quartier: (context && context.code_postal) || (context && context.quartier) || ville
   });
  
   var extra = '';
@@ -411,6 +436,15 @@ function buildBailPrompt(context, extraDocs) {
     extra += "\nJustification du complement de loyer mentionnee dans le bail : \"" + justif + "\". Evalue si cette justification est legalement valable (caracteristiques exceptionnelles de localisation ou confort selon Art. 17-2 loi 1989).";
   } else if (context && context.complement_loyer > 0) {
     extra += "\nComplément de loyer de " + context.complement_loyer + " euros present dans le bail SANS justification fournie. Verifie si c'est un probleme.";
+  }
+
+  var honoraires = parseFloat(context && context.honoraires_agence) || 0;
+  if (honoraires > 0) {
+    extra += "\nHonoraires d'agence factures au locataire : " + honoraires + " euros pour " + (surface || '?') + " m2. Plafond legal ALUR de la part locataire : 8 euros/m2 (zone non tendue), 10 euros/m2 (zone tendue), 12 euros/m2 (zone tres tendue), + 3 euros/m2 pour l'etat des lieux. Si le montant facture depasse ce plafond, l'EXCEDENT (montant facture - plafond applicable x surface) est recuperable : cree une clause 'danger' dediee et mets cet excedent dans son champ montant_recuperable.";
+  }
+  var fraisVisite = parseFloat(context && context.frais_visite) || 0;
+  if (fraisVisite > 0) {
+    extra += "\nFrais de visite/dossier separes factures au locataire : " + fraisVisite + " euros. Ils sont en principe inclus dans le plafond d'honoraires ALUR ; factures en plus, leur montant est recuperable : mets-le dans le montant_recuperable de la clause correspondante.";
   }
  
   // Instructions explicites sur les docs complémentaires
@@ -506,7 +540,7 @@ function sanitizeAnalysis(parsed, context) {
         nbPieces: estimateNbPieces(context.surface),
         epoque: 'apres1990',
         typeBien: context.type_bien || 'vide',
-        quartier: context.ville
+        quartier: (context && context.code_postal) || context.ville
       });
       if (newPlafond) {
         context._plafondInfo = newPlafond;
@@ -531,7 +565,7 @@ function sanitizeAnalysis(parsed, context) {
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
     epoque: devineEpoque(context && context.annee_construction),
     typeBien: (context && context.type_bien) || 'vide',
-    quartier: (context && context.quartier) || (context && context.ville)
+    quartier: (context && context.code_postal) || (context && context.quartier) || (context && context.ville)
   });
 
   if (plafondInfo && loyerM2 !== null && surface > 0) {
@@ -920,15 +954,18 @@ async function searchGrilleViaWeb(ville, nbPieces, typeBien) {
  * et renvoyer en JSON pur. Pas d'analyse, pas de clauses.
  * Beaucoup plus fiable que de tout demander en un seul appel.
  */
-async function extractContextFromPDF(pdfBase64) {
-  if (!pdfBase64) return null;
+async function extractContextFromDoc(input) {
+  var pdfBase64 = (input && input.pdf) || null;
+  var bailText = (input && input.text) || null;
+  if (!pdfBase64 && !bailText) return null;
   try {
-    var promptExtract = "Lis le bail PDF attache et extrais ces 11 informations.\n"
+    var promptExtract = "Lis le bail (PDF ou texte fourni) et extrais ces 14 informations.\n"
       + "Reponds UNIQUEMENT avec un JSON pur, sans markdown, sans backticks, sans texte avant ou apres.\n"
       + "Format exact :\n"
-      + '{"ville":"Bordeaux","surface":42,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","date_debut_bail":"2025-09-01","nb_mois_bail":8}\n'
+      + '{"ville":"Bordeaux","code_postal":"33000","surface":42,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"2025-09-01","nb_mois_bail":8}\n'
       + "Regles :\n"
       + "- ville : commune du logement loue (string)\n"
+      + "- code_postal : code postal du logement, 5 chiffres en string (ex '75011'). DETERMINANT pour Paris/Lyon (choix du secteur). '' si absent\n"
       + "- surface : m2 habitable Carrez (number)\n"
       + "- loyer_base : loyer HORS CHARGES en euros (number)\n"
       + "- charges : provisions sur charges en euros (number, 0 si absent)\n"
@@ -937,6 +974,8 @@ async function extractContextFromPDF(pdfBase64) {
       + "- type_location : 'principale' / 'meublee_principale' / 'autre' (string)\n"
       + "- complement_loyer : montant en euros si present, 0 sinon (number)\n"
       + "- complement_justif : texte de la justification si presente, '' sinon (string)\n"
+      + "- honoraires_agence : montant total des honoraires/frais d'agence factures AU LOCATAIRE en euros (number, 0 si absent ou location sans agence)\n"
+      + "- frais_visite : frais de visite ou de constitution de dossier factures separement au locataire en euros (number, 0 si absent)\n"
       + "- date_debut_bail : YYYY-MM-DD ('' si non trouve)\n"
       + "- nb_mois_bail : nb de mois entre date_debut_bail et aujourd'hui (number, 0 si inconnu). Date aujourd'hui : " + new Date().toISOString().slice(0, 10) + "\n"
       + "Si une info n'est pas dans le bail : mets une valeur par defaut (0 pour les numbers, '' pour les strings) mais TOUJOURS un JSON valide complet.";
@@ -954,10 +993,9 @@ async function extractContextFromPDF(pdfBase64) {
         max_tokens: 500,
         messages: [{
           role: "user",
-          content: [
-            { type: "document", source: { type: "base64", media_type: "application/pdf", data: pdfBase64 } },
-            { type: "text", text: promptExtract }
-          ]
+          content: (pdfBase64
+            ? [ { type: "document", source: { type: "base64", media_type: "application/pdf", data: pdfBase64 } }, { type: "text", text: promptExtract } ]
+            : [ { type: "text", text: "BAIL A ANALYSER :\n\n" + bailText + "\n\n" + promptExtract } ])
         }]
       })
     });
@@ -984,7 +1022,7 @@ async function extractContextFromPDF(pdfBase64) {
     }
     clean = clean.slice(fb, lb + 1);
     var parsed = JSON.parse(clean);
-    console.log('[extract-pdf] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| depot:', parsed.depot);
+    console.log('[extract-doc] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| honoraires:', parsed.honoraires_agence);
     return parsed;
   } catch (e) {
     console.error('[extract-pdf] Erreur:', e && e.message);
@@ -1044,7 +1082,33 @@ module.exports = async function handler(req, res) {
     // On garde l'appel UNIQUE avec un prompt qui demande extraction + analyse.
     // ────────────────────────────────────────────────────────────
     var extractedContext = null;
-    if (context._skip_form) {
+    if (context._skip_form && type === 'bail' && (body.pdf || body.text)) {
+      // PASSE D'EXTRACTION DEDIEE (Tier 2 : plus de contrainte 429).
+      // But : remplir context AVANT la resolution du plafond et l'analyse,
+      // pour juger le loyer avec un vrai plafond et chiffrer les honoraires.
+      try {
+        extractedContext = await extractContextFromDoc({ pdf: body.pdf, text: body.text });
+      } catch (e) {
+        console.warn('[handler] Extraction dediee echouee:', e && e.message);
+      }
+      if (extractedContext) {
+        if (extractedContext.ville && !context.ville) context.ville = extractedContext.ville;
+        if (extractedContext.code_postal && !context.code_postal) context.code_postal = extractedContext.code_postal;
+        if (extractedContext.surface && !context.surface) context.surface = extractedContext.surface;
+        if (extractedContext.loyer_base && !context.loyer_base) context.loyer_base = extractedContext.loyer_base;
+        if (extractedContext.charges !== undefined && (context.charges === undefined || context.charges === null)) context.charges = extractedContext.charges;
+        if (extractedContext.depot !== undefined && !context.depot) context.depot = extractedContext.depot;
+        if (extractedContext.type_bien && !context.type_bien) context.type_bien = extractedContext.type_bien;
+        if (extractedContext.type_location && !context.type_location) context.type_location = extractedContext.type_location;
+        if (extractedContext.complement_loyer !== undefined && !context.complement_loyer) context.complement_loyer = extractedContext.complement_loyer;
+        if (extractedContext.complement_justif && !context.complement_justif) context.complement_justif = extractedContext.complement_justif;
+        if (extractedContext.honoraires_agence !== undefined && (context.honoraires_agence === undefined || context.honoraires_agence === null)) context.honoraires_agence = extractedContext.honoraires_agence;
+        if (extractedContext.frais_visite !== undefined && (context.frais_visite === undefined || context.frais_visite === null)) context.frais_visite = extractedContext.frais_visite;
+        console.log('[skip_form] Extraction dediee OK — ville:', context.ville, '| loyer:', context.loyer_base, '| surface:', context.surface, '| honoraires:', context.honoraires_agence);
+      } else {
+        console.warn('[handler] skip_form : extraction dediee sans resultat, fallback extraction integree');
+      }
+    } else if (context._skip_form) {
       console.log('[handler] Mode skip_form actif — extraction integree dans l\'appel principal');
     }
 
@@ -1060,7 +1124,7 @@ module.exports = async function handler(req, res) {
           nbPieces: context.nb_pieces || estimateNbPieces(context.surface),
           epoque: devineEpoque(context.annee_construction),
           typeBien: context.type_bien || 'vide',
-          quartier: context.quartier || context.ville
+          quartier: context.code_postal || context.quartier || context.ville
         });
         if (plafondResolved) {
           context._plafondInfo = plafondResolved;
