@@ -212,9 +212,30 @@ function getLoyerPlafond(opts) {
 
   // 4) Cles a tester en cascade (du plus precis au plus generique)
   var np = Math.min(Math.max(parseInt((opts && opts.nbPieces) || 1, 10), 1), 4);
-  var epoque = (opts && opts.epoque) || 'apres1990';
   var typeKey = (opts && opts.typeBien && /meubl/i.test(opts.typeBien)) ? 'meuble' : 'vide';
   var altType = typeKey === 'meuble' ? 'vide' : 'meuble';
+  // Epoque inconnue (null/'moyenne') -> moyenne des epoques au lieu de deviner apres1990
+  var avgEpoque = !(opts && opts.epoque) || opts.epoque === 'moyenne';
+  if (avgEpoque) {
+    var EPS = ['apres1990', '1971-90', '1946-70', 'avant1946'];
+    var aggT = typeKey, rowsA = [];
+    EPS.forEach(function (e) { var en = secteurData[np + '_' + e + '_' + typeKey]; if (en) rowsA.push(en); });
+    if (!rowsA.length) { aggT = altType; EPS.forEach(function (e) { var en = secteurData[np + '_' + e + '_' + altType]; if (en) rowsA.push(en); }); }
+    if (rowsA.length) {
+      var sM = 0, sR = 0, sm = 0; rowsA.forEach(function (en) { sM += en.majore; sR += en.ref; sm += en.minore; });
+      var nA = rowsA.length;
+      console.log('[grilles] Moyenne epoques', villeKey, 'secteur', secteur, '(' + nA + ')');
+      return {
+        plafond_m2: Math.round(sM / nA * 10) / 10, ref_m2: Math.round(sR / nA * 10) / 10, minore_m2: Math.round(sm / nA * 10) / 10,
+        type: aggT, epoque: 'moyenne', secteur: secteur, ville: villeKey,
+        encadrement_actif: conf.encadrement_actif === true, indicatif: conf.type === 'indicatif',
+        estimation: true, estimation_note: 'epoque de construction non renseignee — moyenne des epoques',
+        source: 'Grille ' + villeKey + ' ' + (conf.annee || '2025') + ' secteur ' + secteur,
+        disclaimer: grilles._meta && grilles._meta.disclaimer
+      };
+    }
+  }
+  var epoque = (opts && opts.epoque) || 'apres1990';
 
   var attempts = [
     np + '_' + epoque + '_' + typeKey,             // exact
@@ -318,7 +339,7 @@ function buildSystemPrompt(context) {
   var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
     ville: ville,
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
-    epoque: devineEpoque(context && context.annee_construction),
+    epoque: (context && context.annee_construction) ? devineEpoque(context.annee_construction) : null,
     typeBien: bienType,
     quartier: (context && context.code_postal) || (context && context.quartier) || ville
   });
@@ -423,7 +444,7 @@ function buildBailPrompt(context, extraDocs) {
   var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
     ville: ville,
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(surface),
-    epoque: devineEpoque(context && context.annee_construction),
+    epoque: (context && context.annee_construction) ? devineEpoque(context.annee_construction) : null,
     typeBien: bienType,
     quartier: (context && context.code_postal) || (context && context.quartier) || ville
   });
@@ -598,7 +619,7 @@ function sanitizeAnalysis(parsed, context) {
   var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
     ville: (context && context.ville) || '',
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
-    epoque: devineEpoque(context && context.annee_construction),
+    epoque: (context && context.annee_construction) ? devineEpoque(context.annee_construction) : null,
     typeBien: (context && context.type_bien) || 'vide',
     quartier: (context && context.code_postal) || (context && context.quartier) || (context && context.ville)
   });
@@ -615,32 +636,41 @@ function sanitizeAnalysis(parsed, context) {
     parsed.loyer.minore_m2_num = plafondInfo.minore_m2;
     parsed.loyer.plafond_m2_num = plafondInfo.plafond_m2;
     parsed.loyer.encadrement_strict = plafondInfo.encadrement_actif;
+    var estim = !!plafondInfo.estimation;
+    parsed.loyer.estimation = estim;
+    parsed.loyer.estimation_note = plafondInfo.estimation_note || null;
     // Calcul statut deterministe a partir de la grille
     var depasse = loyerM2 > plafondInfo.plafond_m2 + 0.01;
     if (plafondInfo.encadrement_actif) {
-      parsed.loyer.statut = depasse ? 'danger' : 'ok';
+      // Plafond exact -> verdict ferme. Plafond MOYENNE (info manquante) -> on n'affirme pas, on alerte.
+      parsed.loyer.statut = depasse ? (estim ? 'warning' : 'danger') : 'ok';
     } else {
-      // Zone indicative (Bordeaux, Plaisance-du-Touch) : pas de plafond opposable, on indique simplement
+      // Zone indicative (pas de plafond opposable) : on indique simplement
       parsed.loyer.statut = depasse ? 'warning' : 'ok';
     }
     // Reformuler l'analyse en termes generaux (sans reveler la source de la grille)
     var loyM2Txt = loyerM2.toFixed(2).replace('.', ',');
     var plafM2Txt = plafondInfo.plafond_m2.toFixed(2).replace('.', ',');
+    var estimSuffix = estim ? " Attention : ce plafond est une estimation (" + (plafondInfo.estimation_note || 'information manquante') + "). Renseignez l'annee de construction et le nombre de pieces pour un calcul exact." : "";
     if (depasse) {
       var exedentMensuel = Math.round((loyerM2 - plafondInfo.plafond_m2) * surface * 100) / 100;
       parsed.loyer.exedent_mensuel = exedentMensuel;
       if (plafondInfo.encadrement_actif) {
-        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui depasse le plafond legal estime (" + plafM2Txt + " euros/m2). Cette valeur etant indicative, verifiez la valeur a jour sur le simulateur officiel de votre prefecture.";
+        if (estim) {
+          parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, au-dessus d'une estimation du plafond (" + plafM2Txt + " euros/m2)." + estimSuffix;
+        } else {
+          parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui depasse le plafond legal (" + plafM2Txt + " euros/m2).";
+        }
       } else {
-        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est superieur au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement, mais cela peut etre un point de negociation. Verifiez les references locales sur les simulateurs officiels.";
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est superieur au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement, mais cela peut etre un point de negociation." + estimSuffix;
       }
     } else {
       parsed.loyer.exedent_mensuel = null;
       parsed.loyer.trop_percu = null;
       if (plafondInfo.encadrement_actif) {
-        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui respecte le plafond legal estime (" + plafM2Txt + " euros/m2). Valeur indicative — verifiez sur le simulateur officiel de votre prefecture.";
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui respecte le plafond legal (" + plafM2Txt + " euros/m2)." + estimSuffix;
       } else {
-        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est conforme au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement.";
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est conforme au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement." + estimSuffix;
       }
     }
   }
@@ -1169,7 +1199,7 @@ module.exports = async function handler(req, res) {
             adresse: context.adresse,
             codePostal: context.code_postal,
             nbPieces: context.nb_pieces || estimateNbPieces(context.surface),
-            epoque: devineEpoque(context.annee_construction),
+            epoque: context.annee_construction ? devineEpoque(context.annee_construction) : null,
             typeBien: context.type_bien || 'vide'
           });
           if (pq) {
@@ -1189,7 +1219,7 @@ module.exports = async function handler(req, res) {
         var plafondResolved = await resolveLoyerPlafond({
           ville: context.ville,
           nbPieces: context.nb_pieces || estimateNbPieces(context.surface),
-          epoque: devineEpoque(context.annee_construction),
+          epoque: context.annee_construction ? devineEpoque(context.annee_construction) : null,
           typeBien: context.type_bien || 'vide',
           quartier: context.code_postal || context.quartier || context.ville
         });

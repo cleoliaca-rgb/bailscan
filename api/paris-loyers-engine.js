@@ -148,31 +148,60 @@ function findQuartier(data, lon, lat) {
 
 function lookupLoyer(data, quartier, piece, epoqueKey, typeBien) {
   if (!quartier) return null;
-  var p = Math.min(Math.max(parseInt(piece || 1, 10) || 1, 1), 4);
-  var ep = epoqueToDataset(epoqueKey);
+  var villeLabel = (data._meta && data._meta.ville) ? data._meta.ville.charAt(0).toUpperCase() + data._meta.ville.slice(1) : 'Encadrement';
   var mb = meubleToDataset(typeBien);
-  // cascade : exact → autres époques (même pièces/type) → pièces voisines → type alternatif
-  var epoques = [ep, 'Apres 1990', '1971-1990', '1946-1970', 'Avant 1946'];
-  var pieces = [p, Math.max(1, p - 1), Math.min(4, p + 1), 1, 2, 3, 4];
+  var TOUTES_EP = ['Avant 1946', '1946-1970', '1971-1990', 'Apres 1990'];
+
+  // Une info manquante (null/'moyenne') => on MOYENNE sur cette dimension au lieu de deviner une valeur unique
+  var avgEpoque = (epoqueKey == null || epoqueKey === 'moyenne');
+  var avgPiece = (piece == null || piece === 'moyenne');
+  var p = avgPiece ? null : Math.min(Math.max(parseInt(piece || 1, 10) || 1, 1), 4);
+
+  var pieces = avgPiece ? [1, 2, 3, 4] : [p];
+  var epoques = avgEpoque ? TOUTES_EP : [epoqueToDataset(epoqueKey)];
   var types = [mb, mb === 'meuble' ? 'nonmeuble' : 'meuble'];
-  for (var ti = 0; ti < types.length; ti++)
+
+  function build(row, estimation, notes) {
+    return {
+      plafond_m2: Math.round(row.max * 10) / 10,
+      ref_m2: Math.round(row.ref * 10) / 10,
+      minore_m2: Math.round(row.min * 10) / 10,
+      quartier: quartier.nom, zone: quartier.zone, annee: data.annee,
+      encadrement_actif: true, indicatif: false,
+      estimation: !!estimation,
+      estimation_note: (notes && notes.length) ? notes.join(' + ') : null,
+      source: villeLabel + ' ' + data.annee + ' — ' + quartier.nom
+    };
+  }
+
+  // 1) Collecte des lignes correspondant aux dimensions connues (et moyenne sur les inconnues)
+  for (var ti = 0; ti < types.length; ti++) {
+    var rows = [];
     for (var pi = 0; pi < pieces.length; pi++)
       for (var ei = 0; ei < epoques.length; ei++) {
-        var key = quartier.id + '_' + pieces[pi] + '_' + epoques[ei] + '_' + types[ti];
-        if (data.loyers[key]) {
-          var row = data.loyers[key];
-          return {
-            plafond_m2: row.max,
-            ref_m2: row.ref,
-            minore_m2: row.min,
-            quartier: quartier.nom,
-            zone: quartier.zone,
-            annee: data.annee,
-            encadrement_actif: true,
-            indicatif: false,
-            source: ((data._meta && data._meta.ville ? data._meta.ville.charAt(0).toUpperCase() + data._meta.ville.slice(1) : 'Encadrement')) + ' ' + data.annee + ' — ' + quartier.nom
-          };
-        }
+        var r = data.loyers[quartier.id + '_' + pieces[pi] + '_' + epoques[ei] + '_' + types[ti]];
+        if (r) rows.push(r);
+      }
+    if (rows.length) {
+      var sx = 0, sr = 0, sn = 0;
+      rows.forEach(function (r) { sx += r.max; sr += r.ref; sn += r.min; });
+      var n = rows.length;
+      var notes = [];
+      if (avgEpoque) notes.push('époque de construction non renseignée — moyenne des époques');
+      if (avgPiece) notes.push('nombre de pièces non renseigné — moyenne des typologies');
+      var estimation = avgEpoque || avgPiece || ti > 0;
+      return build({ max: sx / n, ref: sr / n, min: sn / n }, estimation, notes);
+    }
+  }
+
+  // 2) Filet de complétude : si la clé attendue n'existe pas dans les données, on élargit
+  var epFallback = [epoqueToDataset(epoqueKey), 'Apres 1990', '1971-1990', '1946-1970', 'Avant 1946'];
+  var pcFallback = avgPiece ? [1, 2, 3, 4] : [p, Math.max(1, p - 1), Math.min(4, p + 1), 1, 2, 3, 4];
+  for (var t2 = 0; t2 < types.length; t2++)
+    for (var p2 = 0; p2 < pcFallback.length; p2++)
+      for (var e2 = 0; e2 < epFallback.length; e2++) {
+        var rr = data.loyers[quartier.id + '_' + pcFallback[p2] + '_' + epFallback[e2] + '_' + types[t2]];
+        if (rr) return build(rr, true, ['valeur approchée (donnée exacte indisponible)']);
       }
   return null;
 }
