@@ -427,8 +427,8 @@ function buildBailPrompt(context, extraDocs) {
   }
  
   var formatExample = extraDocs && extraDocs.length > 0
-    ? "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"3 problemes detectes\",\"resume\":\"Resume incluant les docs complementaires.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre clause bail\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"},{\"type\":\"danger\",\"titre\":\"[Conge du bailleur] Vice de forme\",\"description\":\"Le conge ne respecte pas...\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. 15 loi 1989\"],\"action\":\"Contester le conge.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}"
-    : "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"2 clauses a corriger\",\"resume\":\"Resume.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}";
+    ? "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"3 problemes detectes\",\"resume\":\"Resume incluant les docs complementaires.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre clause bail\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\",\"montant_recuperable\":250},{\"type\":\"danger\",\"titre\":\"[Conge du bailleur] Vice de forme\",\"description\":\"Le conge ne respecte pas...\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. 15 loi 1989\"],\"action\":\"Contester le conge.\",\"montant_recuperable\":0}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}"
+    : "{\"score\":75,\"verdict\":\"Risque\",\"verdict_titre\":\"2 clauses a corriger\",\"resume\":\"Resume.\",\"loyer\":{\"statut\":\"ok\",\"analyse\":\"Analyse hors charges uniquement.\",\"plafond\":null,\"trop_percu\":null},\"clauses_abusives\":[{\"type\":\"danger\",\"titre\":\"Titre\",\"description\":\"Description.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Art. X loi 1989\"],\"action\":\"Action.\",\"montant_recuperable\":0}],\"plan_action\":[\"Etape 1\",\"Etape 2\",\"Etape 3\"]}";
 
   // En mode skip_form, ajouter le champ context_extrait au format
   if (skipForm) {
@@ -452,6 +452,9 @@ function buildBailPrompt(context, extraDocs) {
     + "Reponds UNIQUEMENT avec un JSON valide, sans texte avant ni apres, sans backticks, sans markdown.\n"
     + "Format exact attendu :\n"
     + formatExample + "\n\n"
+    + "Pour CHAQUE clause de clauses_abusives, ajoute un champ \"montant_recuperable\" (nombre en euros) : la somme que le locataire peut RECUPERER ou ECONOMISER grace a cette clause precise "
+    + "(honoraires d'agence au-dela du plafond ALUR => l'excedent ; frais de visite ou de dossier illegaux => leur montant integral ; toute somme indûment versee). "
+    + "Mets 0 si la clause n'a aucun montant chiffrable. N'INCLUS PAS ici le trop-percu de loyer ni le depot de garantie (calcules separement) afin d'eviter tout double-comptage.\n"
     + "Analyse TOUTES les irregularites trouvees dans le bail ET dans chaque document complementaire. JSON pur uniquement.";
 }
  
@@ -460,7 +463,7 @@ function buildEtatDesLieuxPrompt(context) {
   return "Analyse cet etat des lieux d'un logement locatif francais.\n"
     + (depot > 0 ? "Depot de garantie verse : " + depot + " euros. Identifie les retenues potentiellement abusives.\n" : '')
     + "\nReponds UNIQUEMENT avec un JSON valide, sans texte avant ni apres, sans backticks.\n"
-    + "Format : {\"score\":75,\"verdict\":\"Equitable\",\"verdict_titre\":\"Etat conforme\",\"resume\":\"Resume.\",\"loyer\":null,\"clauses_abusives\":[{\"type\":\"warning\",\"titre\":\"Element\",\"description\":\"Desc.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Decret 26 aout 1987\"],\"action\":\"Action.\"}],\"plan_action\":[\"Etape 1\",\"Etape 2\"]}\n\n"
+    + "Format : {\"score\":75,\"verdict\":\"Equitable\",\"verdict_titre\":\"Etat conforme\",\"resume\":\"Resume.\",\"loyer\":null,\"clauses_abusives\":[{\"type\":\"warning\",\"titre\":\"Element\",\"description\":\"Desc.\",\"explication_juridique\":\"Explication.\",\"base_legale\":[\"Decret 26 aout 1987\"],\"action\":\"Action.\",\"montant_recuperable\":0}],\"plan_action\":[\"Etape 1\",\"Etape 2\"]}\n\n"
     + "Distingue usure normale et degradations reelles. JSON pur uniquement.";
 }
 
