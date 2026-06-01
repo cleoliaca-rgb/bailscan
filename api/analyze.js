@@ -542,9 +542,11 @@ function buildBailPrompt(context, extraDocs) {
     + "Reponds UNIQUEMENT avec un JSON valide, sans texte avant ni apres, sans backticks, sans markdown.\n"
     + "Format exact attendu :\n"
     + formatExample + "\n\n"
-    + "Pour CHAQUE clause de clauses_abusives, ajoute un champ \"montant_recuperable\" (nombre en euros) : la somme que le locataire peut RECUPERER ou ECONOMISER grace a cette clause precise "
-    + "(honoraires d'agence au-dela du plafond ALUR => l'excedent ; frais de visite ou de dossier illegaux => leur montant integral ; toute somme indûment versee). "
-    + "Mets 0 si la clause n'a aucun montant chiffrable. N'INCLUS PAS ici le trop-percu de loyer ni le depot de garantie (calcules separement) afin d'eviter tout double-comptage.\n"
+    + "REGLE ABSOLUE SUR LES CHIFFRES — tu ne dois JAMAIS inventer, estimer, deduire ni arrondir un montant en euros. N'utilise QUE des montants ecrits noir sur blanc dans les documents fournis.\n"
+    + "Pour CHAQUE clause de clauses_abusives, le champ \"montant_recuperable\" (nombre) vaut 0 PAR DEFAUT. Tu ne le renseignes (>0) que si tu peux le calculer a partir d'un montant explicitement present dans les documents : "
+    + "honoraires d'agence factures au locataire au-dela du plafond ALUR (l'excedent), frais de visite/dossier factures en plus (leur montant), ou une somme chiffree indûment versee. "
+    + "Si aucun montant n'est explicitement ecrit dans les documents, mets 0. N'INCLUS PAS ici le trop-percu de loyer ni le depot de garantie (calcules par le systeme), pour eviter tout double-comptage.\n"
+    + "Le champ \"resume\" ne doit contenir AUCUN chiffre en euros ou en euros/m2 (ni loyer, ni plafond, ni trop-percu, ni total, ni pourcentage chiffre) : ces valeurs sont calculees et affichees separement par le systeme. Decris les problemes qualitativement, sans aucun montant.\n"
     + "Analyse TOUTES les irregularites trouvees dans le bail ET dans chaque document complementaire. JSON pur uniquement.";
 }
  
@@ -673,6 +675,16 @@ function sanitizeAnalysis(parsed, context) {
         parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est conforme au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement." + estimSuffix;
       }
     }
+  } else if (!plafondInfo && parsed.loyer && typeof parsed.loyer === 'object') {
+    // Aucun plafond fiable resolu : on ne laisse PAS passer un plafond/trop-percu invente par l'IA.
+    parsed.loyer.plafond = null;
+    parsed.loyer.plafond_m2 = null;
+    parsed.loyer.plafond_m2_num = null;
+    parsed.loyer.ref_m2_num = null;
+    parsed.loyer.trop_percu = null;
+    parsed.loyer.exedent_mensuel = null;
+    if (parsed.loyer.statut === 'danger' || parsed.loyer.statut === 'warning') parsed.loyer.statut = 'ok';
+    parsed.loyer.analyse = "Le plafond d'encadrement n'a pas pu etre determine automatiquement pour ce logement. Verifiez votre loyer de reference sur le simulateur officiel de votre prefecture.";
   }
 
   // 1. Nettoyage du champ loyer.analyse
@@ -703,7 +715,12 @@ function sanitizeAnalysis(parsed, context) {
       .replace(/\s*\(?selon\s+(la\s+grille|l[' ]arr[eê]t[eé])[^,.)]*\)?[,.]?\s*/gi, ' ')
       .replace(/\s*\(?grille\s+(de|d[' ]encadrement|pref[eé]ctorale)[^,.)]*\)?[,.]?\s*/gi, ' ')
       .replace(/\s*secteur\s+\d+[,.]?\s*/gi, ' ')
-      .replace(/\s+/g, ' ').replace(/\s+,/g, ',').trim();
+      // Filet anti-invention : aucun montant chiffre dans le resume (les vrais chiffres sont affiches a part)
+      .replace(/(?:de |d['’]environ |environ |jusqu['’]a |pres de |soit |\()?\d[\d  .]*[,.]?\d*\s*€\s*\/\s*m[²2]/gi, '')
+      .replace(/(?:de |d['’]environ |environ |jusqu['’]a |pres de |soit |\()?\d[\d  .]*[,.]?\d*\s*(?:€|euros?)\b/gi, '')
+      .replace(/\d+\s*%/g, '')
+      .replace(/\(\s*\)/g, '')
+      .replace(/\s+/g, ' ').replace(/\s+([,.;:])/g, '$1').replace(/,\s*,/g, ',').replace(/\(\s*,/g, '(').trim();
   }
 
   // 3. Garde-fou metier : si on a loyer/m2 reel ET plafond detecte (de Claude ou grille),
