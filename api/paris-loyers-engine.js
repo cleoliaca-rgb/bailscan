@@ -162,6 +162,12 @@ function lookupLoyer(data, quartier, piece, epoqueKey, typeBien) {
   var types = [mb, mb === 'meuble' ? 'nonmeuble' : 'meuble'];
 
   function build(row, estimation, notes) {
+    var globalEstim = data._meta && data._meta.estimation_globale;
+    if (globalEstim) {
+      estimation = true;
+      notes = (notes || []).slice();
+      if (data._meta.estimation_note && notes.indexOf(data._meta.estimation_note) === -1) notes.push(data._meta.estimation_note);
+    }
     return {
       plafond_m2: Math.round(row.max * 10) / 10,
       ref_m2: Math.round(row.ref * 10) / 10,
