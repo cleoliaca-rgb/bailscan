@@ -92,6 +92,7 @@ function normaliseVille(ville) {
   if (/(saint-denis|aubervilliers|courneuve|epinay-sur-seine|pierrefitte|villetaneuse|ile-saint-denis|stains|saint-ouen)/.test(v)) return 'plaine-commune';
   if (/(montreuil|pantin|bagnolet|bobigny|bondy|lilas|pre-saint-gervais|noisy-le-sec|romainville)/.test(v)) return 'est-ensemble';
   if (/(echirolles|saint-martin-d.heres|la tronche|la-tronche|meylan|eybens|gieres|seyssins|seyssinet|pont-de-claix|saint-egreve|sassenage|domene|murianette|venon|poisat|bresson|claix|varces|fontanil|fontaine)/.test(v)) return 'grenoble';
+  if (/(arcangues|biarritz|bidart|guethary|saint-jean-de-luz|ahetze|arbonne|ascain|bassussarry|urrugne|biriatou|boucau|hendaye|jatxou|lahonce|larressore|mouguerre|saint-pierre-d.irube|urcuit|ustaritz|villefranque|anglet|bayonne|ciboure)/.test(v)) return 'pays-basque';
   // Zones tendues / indicatif
   if (v.indexOf('bordeaux') >= 0) return 'bordeaux';
   if (v.indexOf('plaisance') >= 0 && v.indexOf('touch') >= 0) return 'plaisance-du-touch';
@@ -116,7 +117,7 @@ function normaliseVille(ville) {
   if (v.indexOf('amiens') >= 0) return 'amiens';
   if (v.indexOf('annecy') >= 0) return 'annecy';
   if (v.indexOf('arcachon') >= 0 || v.indexOf('la teste') >= 0) return 'arcachon';
-  if (v.indexOf('biarritz') >= 0 || v.indexOf('bayonne') >= 0 || v.indexOf('anglet') >= 0) return 'bayonne';
+  if (v.indexOf('biarritz') >= 0 || v.indexOf('bayonne') >= 0 || v.indexOf('anglet') >= 0) return 'pays-basque';
   if (v.indexOf('nimes') >= 0) return 'nimes';
   if (v.indexOf('le havre') >= 0) return 'le-havre';
   return v.replace(/\s+/g, '-');
@@ -1290,6 +1291,25 @@ module.exports = async function handler(req, res) {
       if (_fullA.some(function (c) { return _gv.indexOf(c) >= 0; })) {
         context.encadrement_zone = 'A';
         console.log('[grenoble] commune integralement encadree → Zone A:', context.ville);
+      }
+    }
+
+    // Pays Basque : 21 communes entierement dans une zone (1/2/3) -> resolues par commune.
+    // Les 3 communes scindees au niveau rue (Anglet, Bayonne, Ciboure) restent en estimation
+    // (moyenne des zones) faute de polygones — a preciser avec le zonage vectoriel geoBasque.
+    if (!context._plafondInfo && normaliseVille(context.ville) === 'pays-basque' && !(context && context.encadrement_zone)) {
+      var _pv = (context.ville || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[-']/g, ' ').replace(/\s+/g, ' ');
+      var _pbZ1 = ['arcangues', 'biarritz', 'bidart', 'guethary', 'jean de luz'];
+      var _pbZ2 = ['ahetze', 'arbonne', 'ascain', 'bassussarry', 'urrugne'];
+      var _pbZ3 = ['biriatou', 'boucau', 'hendaye', 'jatxou', 'lahonce', 'larressore', 'mouguerre', 'irube', 'urcuit', 'ustaritz', 'villefranque'];
+      var _pbZone = _pbZ1.some(function (c) { return _pv.indexOf(c) >= 0; }) ? '1'
+                  : _pbZ2.some(function (c) { return _pv.indexOf(c) >= 0; }) ? '2'
+                  : _pbZ3.some(function (c) { return _pv.indexOf(c) >= 0; }) ? '3' : '';
+      if (_pbZone) {
+        context.encadrement_zone = _pbZone;
+        console.log('[pays-basque] commune entiere → Zone', _pbZone, ':', context.ville);
+      } else {
+        console.log('[pays-basque] commune scindee (Anglet/Bayonne/Ciboure) → estimation moyenne:', context.ville);
       }
     }
 
