@@ -71,7 +71,7 @@ function getQuartierData(villeKey) {
     else if (villeKey === 'grenoble') d = require('./data/grenoble-loyers.json');
     // else if (villeKey === 'bayonne') d = require('./data/bayonne-loyers.json');
     else if (villeKey === 'plaine-commune') d = require('./data/plaine-commune-loyers.json');
-    // else if (villeKey === 'est-ensemble') d = require('./data/est-ensemble-loyers.json');
+    else if (villeKey === 'est-ensemble') d = require('./data/est-ensemble-loyers.json');
   } catch (e) { d = null; }
   if (d) console.log('[quartier] data', villeKey, 'OK -', (d.quartiers || []).length, 'quartiers, annee', d.annee);
   QUARTIER_DATA_CACHE[villeKey] = d;
