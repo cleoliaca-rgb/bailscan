@@ -459,7 +459,7 @@ function buildBailPrompt(context, extraDocs) {
   if (skipForm) {
     extra += "\n=== MODE EXTRACTION + ANALYSE (1 SEUL APPEL) ===\n"
       + "Le formulaire est VIDE. Lis le bail PDF attache et EN UN SEUL JSON :\n"
-      + "1. Inclus un champ 'context_extrait' avec ville, surface, loyer_base, charges, depot, type_bien, type_location, complement_loyer, complement_justif, date_debut_bail, nb_mois_bail\n"
+      + "1. Inclus un champ 'context_extrait' avec ville, surface, nb_pieces, annee_construction, loyer_base, charges, depot, type_bien, type_location, complement_loyer, complement_justif, date_debut_bail, nb_mois_bail\n"
       + "2. Fais l'analyse complete (score, verdict, clauses_abusives, etc.) en utilisant ces valeurs extraites\n"
       + "Date du jour pour calcul nb_mois_bail : " + new Date().toISOString().slice(0, 10) + "\n"
       + "Le champ 'context_extrait' est OBLIGATOIRE dans ton JSON. Format des valeurs : ville/strings sans accents speciaux ni guillemets, nombres en number.\n"
@@ -522,7 +522,7 @@ function buildBailPrompt(context, extraDocs) {
 
   // En mode skip_form, ajouter le champ context_extrait au format
   if (skipForm) {
-    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"Bordeaux\",\"surface\":42,\"loyer_base\":980,\"charges\":95,\"depot\":1960,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"2025-09-01\",\"nb_mois_bail\":8}}');
+    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"Bordeaux\",\"surface\":42,\"nb_pieces\":2,\"annee_construction\":1985,\"loyer_base\":980,\"charges\":95,\"depot\":1960,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"2025-09-01\",\"nb_mois_bail\":8}}');
   }
 
   // Determiner si un bail est fourni (PDF ou texte > 200 chars)
@@ -1024,15 +1024,17 @@ async function extractContextFromDoc(input) {
   var bailText = (input && input.text) || null;
   if (!pdfBase64 && !bailText) return null;
   try {
-    var promptExtract = "Lis le bail (PDF ou texte fourni) et extrais ces 15 informations.\n"
+    var promptExtract = "Lis le bail (PDF ou texte fourni) et extrais ces 17 informations.\n"
       + "Reponds UNIQUEMENT avec un JSON pur, sans markdown, sans backticks, sans texte avant ou apres.\n"
       + "Format exact :\n"
-      + '{"ville":"Bordeaux","adresse":"12 rue Exemple","code_postal":"33000","surface":42,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"2025-09-01","nb_mois_bail":8}\n'
+      + '{"ville":"Bordeaux","adresse":"12 rue Exemple","code_postal":"33000","surface":42,"nb_pieces":2,"annee_construction":1985,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"2025-09-01","nb_mois_bail":8}\n'
       + "Regles :\n"
       + "- ville : commune du logement loue (string)\n"
       + "- adresse : adresse postale du logement loue (numero + voie, ex '12 rue de la Roquette'), sans la ville ni le code postal. '' si absent\n"
       + "- code_postal : code postal du logement, 5 chiffres en string (ex '75011'). DETERMINANT pour Paris/Lyon (choix du secteur). '' si absent\n"
       + "- surface : m2 habitable Carrez (number)\n"
+      + "- nb_pieces : nombre de pieces principales du logement (number). Studio/T1 = 1, T2 = 2, etc. 0 si absent\n"
+      + "- annee_construction : annee de construction de l'immeuble si mentionnee (dans le bail ou un DPE annexe), number a 4 chiffres (ex 1985). 0 si absente\n"
       + "- loyer_base : loyer HORS CHARGES en euros (number)\n"
       + "- charges : provisions sur charges en euros (number, 0 si absent)\n"
       + "- depot : depot de garantie verse en euros (number, 0 si absent)\n"
@@ -1162,6 +1164,8 @@ module.exports = async function handler(req, res) {
         if (extractedContext.code_postal && !context.code_postal) context.code_postal = extractedContext.code_postal;
         if (extractedContext.adresse && !context.adresse) context.adresse = extractedContext.adresse;
         if (extractedContext.surface && !context.surface) context.surface = extractedContext.surface;
+        if (extractedContext.nb_pieces && !context.nb_pieces) context.nb_pieces = extractedContext.nb_pieces;
+        if (extractedContext.annee_construction && !context.annee_construction) context.annee_construction = extractedContext.annee_construction;
         if (extractedContext.loyer_base && !context.loyer_base) context.loyer_base = extractedContext.loyer_base;
         if (extractedContext.charges !== undefined && (context.charges === undefined || context.charges === null)) context.charges = extractedContext.charges;
         if (extractedContext.depot !== undefined && !context.depot) context.depot = extractedContext.depot;
