@@ -222,6 +222,10 @@ async function resolveQuartier(data, opts) {
   }
   var q = findQuartier(data, lon, lat);
   if (!q) return null;
+  // IRIS explicitement hors encadrement (ex : Grenoble zone 3) : on le signale au lieu de retomber sur une moyenne.
+  if (q.encadre === false) {
+    return { hors_encadrement: true, quartier: q.nom, zone: q.zone, ville: (data._meta && data._meta.ville) || null, encadrement_actif: false };
+  }
   return lookupLoyer(data, q, opts.nbPieces, opts.epoque, opts.typeBien);
 }
 // alias rétro-compat

@@ -68,7 +68,7 @@ function getQuartierData(villeKey) {
     else if (villeKey === 'lille') d = require('./data/lille-loyers.json');
     else if (villeKey === 'bordeaux') d = require('./data/bordeaux-loyers.json');
     else if (villeKey === 'montpellier') d = require('./data/montpellier-loyers.json');
-    // else if (villeKey === 'grenoble') d = require('./data/grenoble-loyers.json');
+    else if (villeKey === 'grenoble') d = require('./data/grenoble-loyers.json');
     // else if (villeKey === 'bayonne') d = require('./data/bayonne-loyers.json');
     // else if (villeKey === 'plaine-commune') d = require('./data/plaine-commune-loyers.json');
     // else if (villeKey === 'est-ensemble') d = require('./data/est-ensemble-loyers.json');
@@ -91,7 +91,7 @@ function normaliseVille(ville) {
   if (v.indexOf('montpellier') >= 0) return 'montpellier';
   if (/(saint-denis|aubervilliers|courneuve|epinay-sur-seine|pierrefitte|villetaneuse|ile-saint-denis|stains|saint-ouen)/.test(v)) return 'plaine-commune';
   if (/(montreuil|pantin|bagnolet|bobigny|bondy|lilas|pre-saint-gervais|noisy-le-sec|romainville)/.test(v)) return 'est-ensemble';
-  if (/(echirolles|saint-martin-d.heres|la tronche|la-tronche|meylan|eybens|gieres|seyssins|seyssinet|pont-de-claix|saint-egreve|sassenage)/.test(v)) return 'grenoble';
+  if (/(echirolles|saint-martin-d.heres|la tronche|la-tronche|meylan|eybens|gieres|seyssins|seyssinet|pont-de-claix|saint-egreve|sassenage|domene|murianette|venon|poisat|bresson|claix|varces|fontanil|fontaine)/.test(v)) return 'grenoble';
   // Zones tendues / indicatif
   if (v.indexOf('bordeaux') >= 0) return 'bordeaux';
   if (v.indexOf('plaisance') >= 0 && v.indexOf('touch') >= 0) return 'plaisance-du-touch';
@@ -621,22 +621,25 @@ function sanitizeAnalysis(parsed, context) {
       depot: context.depot, type_bien: context.type_bien
     }));
 
-    // Re-resoudre le plafond avec les valeurs extraites
-    try {
-      var newPlafond = getLoyerPlafond({
-    zone: (context && context.encadrement_zone) || '',
-        ville: context.ville,
-        nbPieces: estimateNbPieces(context.surface),
-        epoque: 'apres1990',
-        typeBien: context.type_bien || 'vide',
-        quartier: (context && context.code_postal) || context.ville
-      });
-      if (newPlafond) {
-        context._plafondInfo = newPlafond;
-        console.log('[skip_form] Plafond re-resolu apres extraction:', newPlafond.plafond_m2, '€/m²');
+    // Re-resoudre le plafond avec les valeurs extraites — SEULEMENT si le moteur
+    // quartier (IRIS) ne l'a pas deja resolu (sinon on ecraserait le precis par la moyenne).
+    if (!context._plafondInfo) {
+      try {
+        var newPlafond = getLoyerPlafond({
+          zone: (context && context.encadrement_zone) || '',
+          ville: context.ville,
+          nbPieces: context.nb_pieces || estimateNbPieces(context.surface),
+          epoque: context.annee_construction ? devineEpoque(context.annee_construction) : null,
+          typeBien: context.type_bien || 'vide',
+          quartier: (context && context.code_postal) || context.ville
+        });
+        if (newPlafond) {
+          context._plafondInfo = newPlafond;
+          console.log('[skip_form] Plafond re-resolu apres extraction:', newPlafond.plafond_m2, '€/m²');
+        }
+      } catch (e) {
+        console.warn('[skip_form] Erreur re-resolution plafond:', e && e.message);
       }
-    } catch (e) {
-      console.warn('[skip_form] Erreur re-resolution plafond:', e && e.message);
     }
   }
 
@@ -658,7 +661,15 @@ function sanitizeAnalysis(parsed, context) {
     quartier: (context && context.code_postal) || (context && context.quartier) || (context && context.ville)
   });
 
-  if (plafondInfo && loyerM2 !== null && surface > 0) {
+  if (plafondInfo && plafondInfo.hors_encadrement) {
+    if (!parsed.loyer || typeof parsed.loyer !== 'object') parsed.loyer = {};
+    parsed.loyer.plafond = null; parsed.loyer.plafond_m2 = null; parsed.loyer.plafond_m2_num = null;
+    parsed.loyer.ref_m2_num = null; parsed.loyer.minore_m2_num = null;
+    parsed.loyer.trop_percu = null; parsed.loyer.exedent_mensuel = null;
+    parsed.loyer.encadrement_strict = false; parsed.loyer.estimation = false; parsed.loyer.estimation_note = null;
+    parsed.loyer.statut = 'ok';
+    parsed.loyer.analyse = "D'apres l'adresse, ce logement se situe hors du perimetre d'encadrement des loyers" + (plafondInfo.quartier ? " (secteur " + plafondInfo.quartier + ")" : "") + ". Aucun plafond de loyer encadre ne s'y applique. En cas de doute, verifiez sur le simulateur officiel de votre agglomeration.";
+  } else if (plafondInfo && loyerM2 !== null && surface > 0) {
     if (!parsed.loyer || typeof parsed.loyer !== 'object') parsed.loyer = {};
     // Forcer le plafond a la valeur grille (format texte attendu par le frontend)
     var plafondMensuelGrille = Math.round(plafondInfo.plafond_m2 * surface * 100) / 100;
@@ -1255,7 +1266,10 @@ module.exports = async function handler(req, res) {
             epoque: context.annee_construction ? devineEpoque(context.annee_construction) : null,
             typeBien: context.type_bien || 'vide'
           });
-          if (pq) {
+          if (pq && pq.hors_encadrement) {
+            context._plafondInfo = pq;
+            console.log('[quartier]', vkQ, '→', pq.quartier, ': HORS perimetre d\'encadrement');
+          } else if (pq) {
             context._plafondInfo = pq;
             console.log('[quartier]', vkQ, '→', pq.quartier, pq.plafond_m2, '€/m²');
           } else {
@@ -1264,6 +1278,18 @@ module.exports = async function handler(req, res) {
         } catch (e) {
           console.warn('[quartier] echec:', e && e.message);
         }
+      }
+    }
+
+    // Grenoble : les 13 communes INTEGRALEMENT encadrees relevent toutes de la Zone A.
+    // (Grenoble ville est traitee par le moteur IRIS ci-dessus ; les 8 communes
+    //  partiellement encadrees restent en estimation faute de polygones IRIS.)
+    if (!context._plafondInfo && normaliseVille(context.ville) === 'grenoble' && !(context && context.encadrement_zone)) {
+      var _gv = (context.ville || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      var _fullA = ['bresson', 'claix', 'domene', 'eybens', 'fontanil', 'gieres', 'meylan', 'murianette', 'poisat', 'tronche', 'seyssins', 'varces', 'venon'];
+      if (_fullA.some(function (c) { return _gv.indexOf(c) >= 0; })) {
+        context.encadrement_zone = 'A';
+        console.log('[grenoble] commune integralement encadree → Zone A:', context.ville);
       }
     }
 
