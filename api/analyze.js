@@ -65,7 +65,7 @@ function getQuartierData(villeKey) {
   try {
     if (villeKey === 'paris') d = require('./data/paris-loyers.json');
     else if (villeKey === 'lyon') d = require('./data/lyon-loyers.json');
-    // else if (villeKey === 'lille') d = require('./data/lille-loyers.json');
+    else if (villeKey === 'lille') d = require('./data/lille-loyers.json');
     else if (villeKey === 'bordeaux') d = require('./data/bordeaux-loyers.json');
     else if (villeKey === 'montpellier') d = require('./data/montpellier-loyers.json');
     // else if (villeKey === 'grenoble') d = require('./data/grenoble-loyers.json');
@@ -198,8 +198,36 @@ function getLoyerPlafond(opts) {
     return null;
   }
 
+  // Ville a selecteur de zone (ex Lille) SANS zone fournie -> moyenne sur toutes les zones (estimation)
+  var _explicitZone = opts && opts.zone != null && String(opts.zone).trim() !== '' && conf.loyers[String(opts.zone).trim()];
+  if (conf.zone_selector && !_explicitZone) {
+    var npz = Math.min(Math.max(parseInt((opts && opts.nbPieces) || 1, 10), 1), 4);
+    var tkz = (opts && opts.typeBien && /meubl/i.test(opts.typeBien)) ? 'meuble' : 'vide';
+    var epsz = (!(opts && opts.epoque) || opts.epoque === 'moyenne') ? ['avant1946', '1946-70', '1971-90', 'apres1990'] : [opts.epoque];
+    var rowsz = [];
+    Object.keys(conf.loyers).forEach(function (sec) {
+      epsz.forEach(function (e) { var en = conf.loyers[sec][npz + '_' + e + '_' + tkz]; if (en) rowsz.push(en); });
+    });
+    if (rowsz.length) {
+      var sMz = 0, sRz = 0, smz = 0; rowsz.forEach(function (en) { sMz += en.majore; sRz += en.ref; smz += en.minore; });
+      var nz = rowsz.length;
+      return {
+        plafond_m2: Math.round(sMz / nz * 10) / 10, ref_m2: Math.round(sRz / nz * 10) / 10, minore_m2: Math.round(smz / nz * 10) / 10,
+        type: tkz, epoque: 'moyenne', secteur: 'toutes', ville: villeKey,
+        encadrement_actif: conf.encadrement_actif === true, indicatif: conf.type === 'indicatif',
+        estimation: true, estimation_note: (epsz.length > 1 ? 'zone et epoque non precisees — moyenne' : 'zone non precisee — moyenne des zones'),
+        source: 'Grille ' + villeKey + ' ' + (conf.annee || '') + ' (moyenne des zones)',
+        disclaimer: grilles._meta && grilles._meta.disclaimer
+      };
+    }
+  }
+
   // 3) Choix du secteur (avec fallback sur le premier dispo)
   var secteur = devineSecteur(villeKey, opts && opts.quartier);
+  // Zone fournie explicitement (sélecteur de zone, ex Lille où le code postal ne distingue pas les zones)
+  if (opts && opts.zone != null && String(opts.zone).trim() !== '' && conf.loyers[String(opts.zone).trim()]) {
+    secteur = String(opts.zone).trim();
+  }
   var secteurData = conf.loyers[secteur];
   if (!secteurData) {
     var secteursKeys = Object.keys(conf.loyers);
@@ -337,6 +365,7 @@ function buildSystemPrompt(context) {
 
   // Lookup precis dans les grilles JSON (ou recherche web prealable)
   var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
+    zone: (context && context.encadrement_zone) || '',
     ville: ville,
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
     epoque: (context && context.annee_construction) ? devineEpoque(context.annee_construction) : null,
@@ -442,6 +471,7 @@ function buildBailPrompt(context, extraDocs) {
 
   // Plafond precis depuis la grille embarquee ou recherche web (resolution faite dans handler)
   var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
+    zone: (context && context.encadrement_zone) || '',
     ville: ville,
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(surface),
     epoque: (context && context.annee_construction) ? devineEpoque(context.annee_construction) : null,
@@ -594,6 +624,7 @@ function sanitizeAnalysis(parsed, context) {
     // Re-resoudre le plafond avec les valeurs extraites
     try {
       var newPlafond = getLoyerPlafond({
+    zone: (context && context.encadrement_zone) || '',
         ville: context.ville,
         nbPieces: estimateNbPieces(context.surface),
         epoque: 'apres1990',
@@ -619,6 +650,7 @@ function sanitizeAnalysis(parsed, context) {
   //    context._plafondInfo. On utilise cette valeur en priorite.
   // ────────────────────────────────────────────────────────────
   var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
+    zone: (context && context.encadrement_zone) || '',
     ville: (context && context.ville) || '',
     nbPieces: (context && context.nb_pieces) || estimateNbPieces(context && context.surface),
     epoque: (context && context.annee_construction) ? devineEpoque(context.annee_construction) : null,
@@ -1238,6 +1270,7 @@ module.exports = async function handler(req, res) {
     if (!context._plafondInfo && type === 'bail' && context.ville && context.loyer_base && context.surface) {
       try {
         var plafondResolved = await resolveLoyerPlafond({
+          zone: (context && context.encadrement_zone) || '',
           ville: context.ville,
           nbPieces: context.nb_pieces || estimateNbPieces(context.surface),
           epoque: context.annee_construction ? devineEpoque(context.annee_construction) : null,
