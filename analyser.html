@@ -1279,6 +1279,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="form-group">
           <label for="surface">Surface (m²) <span style="font-weight:400;color:var(--gris);font-size:0.8rem">(recommandé)</span></label>
           <input type="number" id="surface" class="form-input" placeholder="Ex : 35" min="1" oninput="updateLoyerCheck()">
+          <input type="number" id="nb_pieces" class="form-input" placeholder="Nombre de pièces — ex : 2 (T2)" min="1" max="12" inputmode="numeric" autocomplete="off" oninput="updateLoyerCheck()" style="margin-top:8px;">
+          <select id="annee_construction" class="form-input" style="margin-top:8px;">
+            <option value="">Année de construction (si connue)</option>
+            <option value="1930">Avant 1946</option>
+            <option value="1960">1946 à 1970</option>
+            <option value="1980">1971 à 1990</option>
+            <option value="2000">1991 à 2005</option>
+            <option value="2010">Après 2005</option>
+          </select>
+          <div style="font-size:0.74rem;color:var(--gris);margin-top:6px;line-height:1.4">Pièces + année = plafond exact. Sinon, on calcule sur une moyenne.</div>
         </div>
       </div>
     </div>
@@ -3106,6 +3116,8 @@ function launchAnalysis() {
       code_postal: (document.getElementById('code_postal') && document.getElementById('code_postal').value) || '',
       adresse: (document.getElementById('adresse') && document.getElementById('adresse').value) || '',
       surface: document.getElementById('surface').value,
+      nb_pieces: parseInt((document.getElementById('nb_pieces') || {}).value, 10) || '',
+      annee_construction: (document.getElementById('annee_construction') || {}).value || '',
       loyer_base: appState.loyerBase,
       loyer_majore: appState.loyerMajore,
       complement_loyer: appState.complementLoyer,
@@ -3170,6 +3182,19 @@ function launchAnalysis() {
       if (ext.surface) {
         appState.surface = ext.surface;
         var sEl = document.getElementById('surface'); if (sEl) sEl.value = ext.surface;
+      }
+      if (ext.nb_pieces) {
+        var npEl = document.getElementById('nb_pieces');
+        if (npEl) npEl.value = parseInt(String(ext.nb_pieces).match(/\d+/) || [], 10) || '';
+      }
+      if (ext.annee_construction) {
+        var acEl = document.getElementById('annee_construction');
+        if (acEl) {
+          var yrM = String(ext.annee_construction).match(/\d{4}/);
+          var yr = yrM ? parseInt(yrM[0], 10) : 0;
+          var bucket = yr ? (yr < 1946 ? '1930' : yr <= 1970 ? '1960' : yr <= 1990 ? '1980' : yr <= 2005 ? '2000' : '2010') : '';
+          if (bucket) acEl.value = bucket;
+        }
       }
       if (ext.loyer_base) appState.loyerBase = parseFloat(ext.loyer_base) || 0;
       if (ext.charges) appState.charges = parseFloat(ext.charges) || 0;
@@ -3634,6 +3659,17 @@ function resolveGrilleValeurs(data, villeUser) {
       source: 'backend'
     };
   }
+  // Zone encadree connue par le plafond seul -> on derive le loyer de reference (jamais d'estimation aleatoire)
+  if (!isNaN(plafBackend) && plafBackend > 0) {
+    var refDerive = Math.round(plafBackend / 1.2 * 100) / 100;
+    return {
+      ref: refDerive,
+      plafond: plafBackend,
+      minore: !isNaN(minBackend) ? minBackend : Math.round(refDerive * 0.7 * 100) / 100,
+      strict: loy.encadrement_strict === true,
+      source: 'backend_plafond'
+    };
+  }
   var fb = getFallbackPlafondFront(villeUser);
   if (fb) {
     return {
@@ -3925,7 +3961,7 @@ function renderLoyerCheck(data) {
     html += '<div class="trop-percu-banner-detail">';
     if (detailParts.length > 0) html += detailParts.join('<br>');
     html += '</div></div>';
-    html += '<button class="trop-percu-banner-cta" onclick="document.getElementById(\'paidSection\') && document.getElementById(\'paidSection\').scrollIntoView({behavior:\'smooth\'})">Générer la lettre →</button>';
+    html += '<button class="trop-percu-banner-cta" onclick="var ps=document.getElementById(\'paidSection\'); if(ps){ps.scrollIntoView({behavior:\'smooth\'});}else{trackBeginCheckout(\'trop_percu_lettre\');openModal();}">Générer la lettre →</button>';
     html += '</div>';
   } else if (isLoyerProbleme && nbMois === 0 && (exedentLoyer > 0 || complementIllegal > 0)) {
     // Date non renseignée — inciter à la saisir
@@ -4248,6 +4284,31 @@ function buildReportDoc() {
   // ── DATE ────────────────────────────────────────
   doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor.apply(doc, gris);
   doc.text('Analyse du ' + new Date().toLocaleDateString('fr-FR'), M, y); nl(7);
+
+  // ── CARACTERISTIQUES DU LOGEMENT ────────────────
+  (function () {
+    var ctx = (analysisResult && analysisResult.context_extrait) || {};
+    function dom(id) { var e = document.getElementById(id); return e ? e.value : ''; }
+    var ville = appState.ville || dom('ville') || ctx.ville || '';
+    var surf = appState.surface || dom('surface') || ctx.surface || '';
+    var np = parseInt(String(dom('nb_pieces') || ctx.nb_pieces || '').match(/\d+/) || [], 10) || 0;
+    var acSel = dom('annee_construction');
+    var acYear = acSel ? parseInt(acSel, 10) : (parseInt(String(ctx.annee_construction || '').match(/\d{4}/) || [], 10) || 0);
+    function epoqueLabel(yr) { if (!yr) return ''; if (yr < 1946) return 'avant 1946'; if (yr <= 1970) return '1946-1970'; if (yr <= 1990) return '1971-1990'; if (yr <= 2005) return '1991-2005'; return 'apres 2005'; }
+    var typ = (appState.bienType === 'meuble') ? 'meuble' : (appState.bienType ? 'vide' : '');
+    var parts = [];
+    if (ville) parts.push(String(ville));
+    if (surf) parts.push(surf + ' m2');
+    if (np) parts.push(np + (np > 1 ? ' pieces' : ' piece'));
+    parts.push(acYear ? ('construit ' + epoqueLabel(acYear)) : 'annee non precisee (calcul sur moyenne)');
+    if (typ) parts.push(typ);
+    if (parts.length) {
+      doc.setFontSize(7.5); doc.setFont('helvetica', 'normal'); doc.setTextColor.apply(doc, gris);
+      var caracLines = doc.splitTextToSize('Logement : ' + parts.join('  \u00b7  '), W - M * 2);
+      caracLines.forEach(function (l) { doc.text(l, M, y); y += 4.5; });
+      y += 2;
+    }
+  })();
  
   // ── SCORE CARD ──────────────────────────────────
   var score = analysisResult.score || 0;
