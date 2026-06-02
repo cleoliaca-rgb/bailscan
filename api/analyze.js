@@ -533,6 +533,72 @@ function computeMoneyEngine(parsed, context) {
     depot: depot, depotMax: depotMax, depotExcedent: depotExcedent
   };
 }
+
+// ─────────────────────────────────────────────────────────────
+// IRL (indice de reference des loyers), hexagone, base 100 = T4 1998.
+// Source INSEE. A actualiser chaque trimestre, ou surcharger via
+// api/data/irl.json { "latest": 146.60, "annees": { "2024": 145.17, ... } }.
+// ─────────────────────────────────────────────────────────────
+var IRL_LATEST = 146.60; // T1 2026
+var IRL_PAR_ANNEE = { // valeur indicative annuelle (~T2) pour revaloriser un ancien loyer
+  2017: 126.19, 2018: 127.77, 2019: 129.72, 2020: 130.57, 2021: 131.12,
+  2022: 135.84, 2023: 140.59, 2024: 145.17, 2025: 146.68, 2026: 146.60
+};
+function _irlData() { try { return require('./data/irl.json') || null; } catch (e) { return null; } }
+function getIrlLatest() { var d = _irlData(); return (d && d.latest) ? d.latest : IRL_LATEST; }
+function irlAnnee(an) { var d = _irlData(); if (d && d.annees && d.annees[an]) return d.annees[an]; return IRL_PAR_ANNEE[an] || null; }
+
+// ─────────────────────────────────────────────────────────────
+// MODULE ZONE TENDUE : encadrement de l'EVOLUTION du loyer a la relocation.
+// En zone tendue (hors encadrement strict, qui a son propre plafond opposable),
+// le nouveau loyer ne peut pas depasser le dernier loyer du precedent locataire
+// revalorise par l'IRL. Et le bail DOIT mentionner ce dernier loyer (art. 17 loi 1989).
+// Exceptions au plafond : travaux importants, loyer manifestement sous-evalue, vacance > 18 mois.
+// ─────────────────────────────────────────────────────────────
+function computeRelocationZoneTendue(parsed, context) {
+  var enZoneTendue = (isZoneTendue(context) === true);
+  var encStrict = !!(parsed && parsed.loyer && parsed.loyer.encadrement_strict);
+  if (!enZoneTendue || encStrict) return null; // hors zone tendue, ou encadrement strict (le plafond prime)
+
+  var premiereLoc = !!(context && (context.premiere_location === true || context.premiere_location === 'true'));
+  var newRent = parseFloat(context && context.loyer_base) || 0;
+  var prevRent = parseFloat(context && context.loyer_precedent_locataire) || 0;
+  var nbMois = parseInt(context && context.nb_mois_bail, 10); if (!(nbMois > 0)) nbMois = 0;
+
+  var res = {
+    applicable: true, premiere_location: premiereLoc, mention_presente: prevRent > 0,
+    loyer_precedent: prevRent || null, plafond_relocation: null,
+    excedent_mensuel: 0, recuperable: 0, estimation: false, note: ''
+  };
+
+  if (premiereLoc) {
+    res.note = "Premiere mise en location (ou logement neuf / vacant > 18 mois) : le plafond a la relocation ne s'applique pas.";
+    return res;
+  }
+  if (prevRent <= 0) {
+    res.note = "Mention obligatoire absente : le bail ne precise pas le dernier loyer du precedent locataire.";
+    return res;
+  }
+
+  var anRev = parseInt(context && context.annee_loyer_precedent, 10);
+  var irlThen = (anRev && anRev > 2010 && anRev <= 2026) ? irlAnnee(anRev) : null;
+  var factor = (irlThen && irlThen > 0) ? (getIrlLatest() / irlThen) : 1;
+  if (!irlThen) res.estimation = true;
+  var cap = Math.round(prevRent * factor * 100) / 100;
+  res.plafond_relocation = cap;
+
+  var excess = Math.round((newRent - cap) * 100) / 100;
+  if (newRent > 0 && excess >= 1 && excess > cap * 0.01) {
+    res.excedent_mensuel = excess;
+    res.recuperable = Math.round(excess * nbMois * 100) / 100;
+    res.note = res.estimation
+      ? "Le loyer depasse l'ancien loyer revalorise (estimation IRL : precisez l'annee du dernier loyer pour un calcul exact)."
+      : "Le loyer depasse le plafond a la relocation (ancien loyer revalorise par l'IRL).";
+  } else {
+    res.note = "Le loyer respecte le plafond a la relocation (ancien loyer revalorise par l'IRL).";
+  }
+  return res;
+}
  
 function buildSystemPrompt(context) {
   var type = (context && context.type_analyse) || 'bail';
@@ -675,7 +741,7 @@ function buildBailPrompt(context, extraDocs) {
   if (skipForm) {
     extra += "\n=== MODE EXTRACTION + ANALYSE (1 SEUL APPEL) ===\n"
       + "Le formulaire est VIDE. Lis le bail PDF attache et EN UN SEUL JSON :\n"
-      + "1. Inclus un champ 'context_extrait' avec ville, surface, nb_pieces, annee_construction, loyer_base, charges, depot, type_bien, type_location, complement_loyer, complement_justif, date_debut_bail, nb_mois_bail, loyer_reference_majore\n"
+      + "1. Inclus un champ 'context_extrait' avec ville, surface, nb_pieces, annee_construction, loyer_base, charges, depot, type_bien, type_location, complement_loyer, complement_justif, date_debut_bail, nb_mois_bail, loyer_reference_majore, loyer_precedent_locataire, annee_loyer_precedent, premiere_location\n"
       + "   - loyer_reference_majore : si le bail mentionne un 'loyer de reference majore' en euros/m2 (zone d'encadrement), reporte ce nombre en euros/m2 (ex: 14.90). Sinon 0.\n"
       + "2. Fais l'analyse complete (score, verdict, clauses_abusives, etc.) en utilisant ces valeurs extraites\n"
       + "Date du jour pour calcul nb_mois_bail : " + new Date().toISOString().slice(0, 10) + "\n"
@@ -739,7 +805,7 @@ function buildBailPrompt(context, extraDocs) {
 
   // En mode skip_form, ajouter le champ context_extrait au format
   if (skipForm) {
-    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"\",\"surface\":0,\"nb_pieces\":0,\"annee_construction\":0,\"loyer_base\":0,\"charges\":0,\"depot\":0,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"\",\"nb_mois_bail\":0,\"loyer_reference_majore\":0}}');
+    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"\",\"surface\":0,\"nb_pieces\":0,\"annee_construction\":0,\"loyer_base\":0,\"charges\":0,\"depot\":0,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"\",\"nb_mois_bail\":0,\"loyer_reference_majore\":0,\"loyer_precedent_locataire\":0,\"annee_loyer_precedent\":0,\"premiere_location\":false}}');
   }
 
   // Determiner si un bail est fourni (PDF ou texte > 200 chars)
@@ -805,6 +871,9 @@ function sanitizeAnalysis(parsed, context) {
     if (ext.complement_justif && !context.complement_justif) context.complement_justif = ext.complement_justif;
     if (ext.date_debut_bail && !context.date_debut_bail) context.date_debut_bail = ext.date_debut_bail;
     if (ext.loyer_reference_majore && !context.loyer_reference_majore) context.loyer_reference_majore = ext.loyer_reference_majore;
+    if (ext.loyer_precedent_locataire && !context.loyer_precedent_locataire) context.loyer_precedent_locataire = ext.loyer_precedent_locataire;
+    if (ext.annee_loyer_precedent && !context.annee_loyer_precedent) context.annee_loyer_precedent = ext.annee_loyer_precedent;
+    if (ext.premiere_location === true && context.premiere_location === undefined) context.premiere_location = true;
     console.log('[skip_form] Context hydrate depuis extraction:', JSON.stringify({
       ville: context.ville, surface: context.surface, loyer_base: context.loyer_base,
       depot: context.depot, type_bien: context.type_bien
@@ -1126,6 +1195,32 @@ function sanitizeAnalysis(parsed, context) {
       });
     }
 
+    // 3bis. ZONE TENDUE : mention obligatoire du loyer precedent + plafond a la relocation
+    var RZT = computeRelocationZoneTendue(parsed, context);
+    parsed.zone_tendue = RZT; // null si non applicable
+    if (RZT && RZT.applicable && !RZT.premiere_location) {
+      if (RZT.mention_presente === false) {
+        _upsertClause({
+          type: 'warning', titre: 'Mention obligatoire manquante (zone tendue)',
+          description: "En zone tendue, le bail doit indiquer le montant du dernier loyer du precedent locataire, la date de son versement et celle de sa derniere revision. Cette mention est absente.",
+          explication_juridique: "Article 17 de la loi du 6 juillet 1989 : en zone tendue, lors d'une relocation, ces informations sont obligatoires. Leur absence prive le bailleur de justification et facilite la contestation du loyer.",
+          base_legale: ['Art. 17 loi n.89-462 du 6 juillet 1989'],
+          action: "Demander au bailleur le dernier loyer du precedent locataire ; a defaut, saisir la Commission departementale de conciliation.",
+          montant_recuperable: 0
+        });
+      }
+      if (RZT.recuperable > 0) {
+        _upsertClause({
+          type: 'danger', titre: 'Loyer au-dessus du plafond a la relocation (zone tendue)',
+          description: "Le loyer de base (" + (parseFloat(context.loyer_base) || 0) + " euros) depasse le dernier loyer du precedent locataire revalorise par l'IRL (plafond " + RZT.plafond_relocation + " euros)" + (RZT.estimation ? " (estimation IRL)" : "") + ".",
+          explication_juridique: "En zone tendue, le loyer d'une relocation ne peut exceder l'ancien loyer revalorise selon l'IRL (art. 17 loi du 6 juillet 1989), sauf travaux importants, loyer manifestement sous-evalue ou vacance superieure a 18 mois.",
+          base_legale: ['Art. 17 loi n.89-462 du 6 juillet 1989'],
+          action: "Demander la mise en conformite du loyer et la restitution du trop-percu ; saisir la Commission departementale de conciliation en cas de refus.",
+          montant_recuperable: RZT.recuperable
+        });
+      }
+    }
+
     // 4. Trop-percu de loyer (depassement plafond) -> porte par loyer.trop_percu
     if (parsed.loyer && typeof parsed.loyer === 'object') {
       parsed.loyer.trop_percu = M.tropPercuLoyer > 0 ? M.tropPercuLoyer : null;
@@ -1148,6 +1243,8 @@ function sanitizeAnalysis(parsed, context) {
       complement_mensuel: M.complementInjustifie ? M.complement : 0,
       complement_recuperable: M.complementRecuperable || 0,
       depot_excedent: M.depotExcedent || 0,
+      relocation_recuperable: (RZT && RZT.recuperable) || 0,
+      zone_tendue: !!(RZT && RZT.applicable),
       autres_recuperable: Math.round(_autresClauses * 100) / 100,
       total_recuperable: _total
     };
@@ -1588,10 +1685,12 @@ async function extractContextFromDoc(input) {
       + "Loyer de reference majore (en euros/m2) : ...\n"
       + "Provisions sur charges : ...\n"
       + "Depot de garantie : ...\n"
-      + "Date de prise d'effet : ...\n\n"
+      + "Date de prise d'effet : ...\n"
+      + "Dernier loyer du precedent locataire (si mentionne) : ...\n"
+      + "Annee / date du dernier loyer du precedent locataire : ...\n\n"
       + "ETAPE 2 — JSON. Ensuite seulement, remplis le schema ci-dessous A PARTIR de ta lecture de l'etape 1. Aucune valeur inventee, aucune valeur recopiee du schema (ce sont des placeholders vides). Le JSON doit etre la DERNIERE chose de ta reponse, en JSON pur (sans markdown ni backticks).\n"
       + "SCHEMA A REMPLIR (placeholders, NE PAS RECOPIER) :\n"
-      + '{"ville":"","adresse":"","code_postal":"","surface":0,"nb_pieces":0,"annee_construction":0,"loyer_base":0,"charges":0,"depot":0,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"","nb_mois_bail":0,"loyer_reference_majore":0,"loyer_total_mensuel":0}\n'
+      + '{"ville":"","adresse":"","code_postal":"","surface":0,"nb_pieces":0,"annee_construction":0,"loyer_base":0,"charges":0,"depot":0,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"","nb_mois_bail":0,"loyer_reference_majore":0,"loyer_total_mensuel":0,"loyer_precedent_locataire":0,"annee_loyer_precedent":0,"premiere_location":false}\n'
       + "Regles :\n"
       + "- ville : commune du logement loue (string)\n"
       + "- adresse : numero + voie du logement loue, sans la ville ni le code postal. '' si absent\n"
@@ -1616,6 +1715,9 @@ async function extractContextFromDoc(input) {
       + "- date_debut_bail : date de prise d'effet au format YYYY-MM-DD ('' si non trouve)\n"
       + "- nb_mois_bail : nb de mois entre date_debut_bail et aujourd'hui (number, 0 si inconnu). Date aujourd'hui : " + new Date().toISOString().slice(0, 10) + "\n"
       + "- loyer_total_mensuel : le loyer mensuel TOTAL hors charges (number). C'est souvent la valeur la plus fiable car repetee plusieurs fois (ligne 'Montant du loyer mensuel', 'Total du pour un mois' moins les charges, 'dernier loyer du precedent locataire'). En cas de complement : loyer_total_mensuel = loyer_base + complement_loyer. Reporte le montant corrobore. 0 si introuvable.\n"
+      + "- loyer_precedent_locataire : montant du DERNIER loyer mensuel hors charges du PRECEDENT locataire, si le bail le mentionne (mention obligatoire en zone tendue, souvent intitulee 'Montant du dernier loyer acquitte par le precedent locataire'). Reporte le nombre ECRIT, 0 si absent (number)\n"
+      + "- annee_loyer_precedent : annee (AAAA) du dernier loyer du precedent locataire ou de sa derniere revision, si indiquee. 0 si absente (number)\n"
+      + "- premiere_location : true UNIQUEMENT si le bail indique explicitement une PREMIERE mise en location, un logement neuf, ou un logement vacant depuis plus de 18 mois ; false sinon (boolean)\n"
       + "Si une info n'est pas dans le bail : valeur par defaut (0 pour les numbers, '' pour les strings), mais TOUJOURS un JSON valide complet.";
 
     var _msgContent = (pdfBase64
@@ -1793,6 +1895,9 @@ module.exports = async function handler(req, res) {
         if (extractedContext.honoraires_agence !== undefined && (context.honoraires_agence === undefined || context.honoraires_agence === null)) context.honoraires_agence = extractedContext.honoraires_agence;
         if (extractedContext.frais_visite !== undefined && (context.frais_visite === undefined || context.frais_visite === null)) context.frais_visite = extractedContext.frais_visite;
         if (extractedContext.loyer_total_mensuel) context.loyer_total_mensuel = extractedContext.loyer_total_mensuel;
+        if (extractedContext.loyer_precedent_locataire && !context.loyer_precedent_locataire) context.loyer_precedent_locataire = extractedContext.loyer_precedent_locataire;
+        if (extractedContext.annee_loyer_precedent && !context.annee_loyer_precedent) context.annee_loyer_precedent = extractedContext.annee_loyer_precedent;
+        if (extractedContext.premiere_location === true && context.premiere_location === undefined) context.premiere_location = true;
         if (extractedContext._extraction_low_confidence) {
           context._extraction_low_confidence = true;
           context._extraction_flags = extractedContext._extraction_flags || [];
