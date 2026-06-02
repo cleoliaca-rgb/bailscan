@@ -950,8 +950,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="modal-sub">Débloquez l'intégralité de votre rapport BailScan</div>
     <style>
       .pw-tabs { display:flex; gap:6px; margin-bottom:14px; }
-      .pw-tab { flex:1; border:1.5px solid var(--border); background:#fff; border-radius:10px; padding:9px 6px; font-family:inherit; font-size:0.72rem; font-weight:700; color:var(--gris); cursor:pointer; line-height:1.2; transition:all .15s; }
+      .pw-tab { flex:1 1 0; min-width:0; display:flex; align-items:center; justify-content:center; gap:5px; border:1.5px solid var(--border); background:#fff; border-radius:10px; padding:10px 8px; font-family:inherit; font-size:0.78rem; font-weight:700; color:var(--gris); cursor:pointer; line-height:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition:all .15s; }
+      .pw-tab .pw-ico { font-size:0.95em; opacity:0.55; flex-shrink:0; }
+      .pw-tab:hover { border-color:var(--gris); }
       .pw-tab.active { border-color:var(--accent); background:rgba(200,75,47,0.07); color:var(--accent); }
+      .pw-tab.active .pw-ico { opacity:1; }
       .pw-preview { position:relative; background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px 18px 8px; text-align:left; font-size:0.78rem; color:var(--noir); margin-bottom:14px; box-shadow:0 4px 16px rgba(0,0,0,0.06); overflow:hidden; min-height:240px; }
       .pw-prev-meta { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--accent); font-weight:700; margin-bottom:12px; }
       .pw-prev-head { display:flex; justify-content:space-between; font-size:0.7rem; color:var(--gris); margin-bottom:10px; gap:10px; }
@@ -980,14 +983,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         .modal { padding:24px 18px; }
         .modal-title { font-size:1.45rem; }
         .modal-sub { margin-bottom:18px; }
-        .pw-tab { font-size:0.64rem; padding:8px 3px; }
+        .pw-tab { font-size:0.72rem; padding:9px 4px; gap:4px; }
+        .pw-tab .pw-ico { display:none; }
         .pw-preview { font-size:0.76rem; min-height:232px; }
       }
     </style>
     <div class="pw-tabs" id="pwTabs">
-      <button type="button" class="pw-tab active" data-tab="lettres" onclick="switchPreviewTab('lettres')">📄 Lettres prêtes</button>
-      <button type="button" class="pw-tab" data-tab="plan" onclick="switchPreviewTab('plan')">✅ Plan d'action daté</button>
-      <button type="button" class="pw-tab" data-tab="clauses" onclick="switchPreviewTab('clauses')">⚖️ Clauses décryptées</button>
+      <button type="button" class="pw-tab active" data-tab="lettres" onclick="switchPreviewTab('lettres')"><span class="pw-ico">✉&#xFE0E;</span>Lettres</button>
+      <button type="button" class="pw-tab" data-tab="plan" onclick="switchPreviewTab('plan')"><span class="pw-ico">✓</span>Plan d'action</button>
+      <button type="button" class="pw-tab" data-tab="clauses" onclick="switchPreviewTab('clauses')"><span class="pw-ico">§</span>Clauses</button>
     </div>
     <div id="paywallPreview" class="pw-preview"></div>
     <div class="pw-included">Inclus : chaque clause analysée article par article · encadrement + trop-perçu calculé · 5 lettres officielles · plan d'action avec délais légaux et qui contacter · références juridiques (loi 1989, ALUR, ELAN)</div>
@@ -2805,8 +2809,9 @@ function getUrgenceLegale() {
   // 3) Depot illegal : restitution sous 1 ou 2 mois apres EDL
   var depot = parseFloat(document.getElementById('depot') && document.getElementById('depot').value) || appState.depot || 0;
   var loyerBase = appState.loyerBase || 0;
-  var depotMaxLegal = bienType === 'meuble' ? loyerBase * 2 : loyerBase * 1;
-  if (loyerBase > 0 && depot > depotMaxLegal) {
+  var loyerHCdepot = loyerBase + (appState.complementLoyer || 0);
+  var depotMaxLegal = bienType === 'meuble' ? loyerHCdepot * 2 : loyerHCdepot * 1;
+  if (loyerHCdepot > 0 && depot > depotMaxLegal + 0.01) {
     return {
       type: 'depot',
       level: 'moyenne',
@@ -4045,8 +4050,8 @@ function renderLoyerCheck(data) {
   // 3 bis. Dépôt illégal recuperable immédiatement
   var depotVerseTP = appState.depot || parseFloat((document.getElementById('depot') || {}).value) || 0;
   var bienTypeTP = appState.bienType || 'vide';
-  var depotMaxTP = bienTypeTP === 'meuble' ? loyerBase * 2 : loyerBase * 1;
-  var depotIllegalTP = (loyerBase > 0 && depotVerseTP > depotMaxTP) ? Math.round((depotVerseTP - depotMaxTP) * 100) / 100 : 0;
+  var depotMaxTP = (loyerBase + (complementLoyer || 0)) * (bienTypeTP === 'meuble' ? 2 : 1);
+  var depotIllegalTP = ((loyerBase + (complementLoyer || 0)) > 0 && depotVerseTP > depotMaxTP + 0.01) ? Math.round((depotVerseTP - depotMaxTP) * 100) / 100 : 0;
 
   // 3 ter. Total global = cumulé + dépôt illégal
   var tropPercuTotal = Math.round((tropPercuCumule + depotIllegalTP) * 100) / 100;
@@ -4064,7 +4069,7 @@ function renderLoyerCheck(data) {
     html += '<div class="trop-percu-banner-detail">';
     if (detailParts.length > 0) html += detailParts.join('<br>');
     html += '</div></div>';
-    html += '<button class="trop-percu-banner-cta" onclick="var ps=document.getElementById(\'paidSection\'); if(ps){ps.scrollIntoView({behavior:\'smooth\'});}else{trackBeginCheckout(\'trop_percu_lettre\');openModal();}">Générer la lettre →</button>';
+    html += '<button class="trop-percu-banner-cta" onclick="var ps=document.getElementById(\'paidSection\'); var paid=(typeof isPaid!==\'undefined\'&&isPaid)||(ps&&ps.style.display===\'block\'); if(paid&&ps){ps.scrollIntoView({behavior:\'smooth\'});}else{trackBeginCheckout(\'trop_percu_lettre\');openModal();}">Générer la lettre →</button>';
     html += '</div>';
   } else if (isLoyerProbleme && nbMois === 0 && (exedentLoyer > 0 || complementIllegal > 0)) {
     // Date non renseignée — inciter à la saisir
@@ -4741,9 +4746,10 @@ function getTotalReclamable() {
   // 1. Trop-percu loyer cumule
   var tropPercuTotal = tp.total || 0;
 
-  // 2. Depot illegal : si vide, max 1 mois loyer hors charges
-  var depotMaxLegal = bienType === 'meuble' ? loyerBase * 2 : loyerBase * 1;
-  var depotIllegal = (loyerBase > 0 && depotVerse > depotMaxLegal) ? Math.round((depotVerse - depotMaxLegal) * 100) / 100 : 0;
+  // 2. Depot illegal : max 1 mois (vide) / 2 mois (meuble) de loyer HORS CHARGES = base + complement
+  var loyerHCtotal = loyerBase + (appState.complementLoyer || 0);
+  var depotMaxLegal = bienType === 'meuble' ? loyerHCtotal * 2 : loyerHCtotal * 1;
+  var depotIllegal = (loyerHCtotal > 0 && depotVerse > depotMaxLegal + 0.01) ? Math.round((depotVerse - depotMaxLegal) * 100) / 100 : 0;
 
   // 3. Complement illegal (si bail < 3 mois, restitution possible)
   // Deja inclus dans tropPercuTotal via getTropPercuMontant si applicable
