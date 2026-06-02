@@ -375,8 +375,11 @@ function computeMoneyEngine(parsed, context) {
   // Loyer HORS CHARGES = loyer de base + complement (le complement fait partie du loyer)
   var loyerHC = Math.round((loyerBase + complement) * 100) / 100;
 
-  // A) Trop-percu loyer vs plafond (mensuel deja calcule dans loyer.exedent_mensuel)
-  var exedentMensuel = (parsed.loyer && typeof parsed.loyer.exedent_mensuel === 'number' && parsed.loyer.exedent_mensuel > 0)
+  // A) Trop-percu loyer vs plafond. UNIQUEMENT en zone d'encadrement strict :
+  //    hors encadrement il n'existe aucun plafond legal opposable, donc aucun excedent
+  //    "recuperable" (l'ecart au repere de marche est informatif, pas une violation).
+  var encadrementStrict = !!(parsed.loyer && parsed.loyer.encadrement_strict);
+  var exedentMensuel = (encadrementStrict && parsed.loyer && typeof parsed.loyer.exedent_mensuel === 'number' && parsed.loyer.exedent_mensuel > 0)
     ? parsed.loyer.exedent_mensuel : 0;
   var tropPercuLoyer = Math.round(exedentMensuel * nbMois * 100) / 100;
 
@@ -1075,9 +1078,81 @@ function sanitizeAnalysis(parsed, context) {
     }
   } catch (e) { console.warn('[low-confidence] echec:', e && e.message); }
 
+  // ────────────────────────────────────────────────────────────
+  // RECONCILIATION VERDICT <-> MOTEUR DETERMINISTE
+  // Le calcul fait foi. On interdit au titre / verdict / resume d'affirmer un probleme
+  // financier (depot excessif, trop-percu, loyer illegal) que les montants dementent.
+  // Ne s'applique pas en faible confiance (on garde le "a confirmer").
+  // ────────────────────────────────────────────────────────────
+  try {
+    if (!parsed._low_confidence) {
+      // Ville HORS encadrement : aucun excedent LEGAL possible. Le repere de marche
+      // (loyer > mediane locale) reste affiche ailleurs comme info, mais ce n'est ni un
+      // depassement de plafond ni une somme recuperable. On purge le champ excedent.
+      if (parsed.loyer && parsed.loyer.hors_encadrement === true) {
+        parsed.loyer.exedent_mensuel = null;
+        parsed.loyer.trop_percu = null;
+        if (parsed.recap && typeof parsed.recap === 'object') parsed.recap.exedent_mensuel = 0;
+      }
+
+      var _rc = parsed.recap || {};
+      var _depotExc = parseFloat(_rc.depot_excedent) || 0;
+      var _tropLoyer = (parseFloat(_rc.trop_percu_loyer) || 0) + (parseFloat(_rc.complement_recuperable) || 0);
+      var _totalRec = parseFloat(_rc.total_recuperable) || 0;
+      var _nbClauses = (parsed.clauses_abusives || []).length;
+      var _loyerDepasse = parsed.loyer && parsed.loyer.statut === 'depasse';
+
+      var _depotAlarm = function (s) { return /d[ée]p[oô]t/i.test(s) && /(excessif|ill[ée]gal|abusif|d[ée]passe|sup[ée]rieur|trop[\s-]?[ée]lev|probl[èe]me|non[\s-]?conforme)/i.test(s); };
+      var _loyerAlarm = function (s) { return /(loyer|trop[\s-]?per[çc]u|encadrement)/i.test(s) && /(d[ée]passe|ill[ée]gal|excessif|sup[ée]rieur|trop[\s-]?per[çc]u|non[\s-]?respect|abusif|surpay)/i.test(s); };
+
+      var _pickTitle = function () {
+        if (_totalRec > 0) return 'Sommes potentiellement récupérables';
+        if (_loyerDepasse) return 'Loyer au-dessus du plafond';
+        if (_nbClauses > 0) return (_nbClauses === 1 ? '1 clause à vérifier' : _nbClauses + ' clauses à vérifier');
+        return 'Bail conforme selon les éléments fournis';
+      };
+
+      var _killDepot = (_depotExc <= 0);
+      var _killLoyer = (_tropLoyer <= 0 && !_loyerDepasse);
+
+      // 1) Titre incoherent -> on le recadre
+      var _titre = parsed.verdict_titre || '';
+      if ((_killDepot && _depotAlarm(_titre)) || (_killLoyer && _loyerAlarm(_titre))) {
+        parsed.verdict_titre = _pickTitle();
+      }
+
+      // 2) Resume : on retire les phrases d'alarme contredites par le calcul
+      if (parsed.resume && (_killDepot || _killLoyer)) {
+        var _phrases = parsed.resume.match(/[^.!?]+[.!?]*/g) || [parsed.resume];
+        var _kept = _phrases.filter(function (s) {
+          if (_killDepot && _depotAlarm(s)) return false;
+          if (_killLoyer && _loyerAlarm(s)) return false;
+          return true;
+        });
+        var _newResume = _kept.join(' ').replace(/\s+/g, ' ').trim();
+        if (_newResume.length < 40) {
+          _newResume = (_totalRec === 0 && _nbClauses === 0 && !_loyerDepasse && _depotExc === 0)
+            ? "Selon les éléments fournis, aucune irrégularité chiffrable n'est détectée (loyer, dépôt et complément conformes). Pour un contrôle complet des clauses, ajoutez le bail."
+            : _newResume + " Détail des montants et clauses ci-dessous.";
+        }
+        parsed.resume = _newResume;
+      }
+
+      // 3) Aucun probleme reel -> le verdict ne peut pas rester alarmant
+      var _aucunProbleme = (_totalRec === 0 && _nbClauses === 0 && !_loyerDepasse && _depotExc <= 0);
+      if (_aucunProbleme) {
+        parsed.verdict = 'Conforme';
+        if (typeof parsed.score === 'number' && parsed.score < 80) parsed.score = 80;
+        if (_depotAlarm(parsed.verdict_titre || '') || _loyerAlarm(parsed.verdict_titre || '')) {
+          parsed.verdict_titre = 'Bail conforme selon les éléments fournis';
+        }
+      }
+    }
+  } catch (e) { console.warn('[reconciliation] echec:', e && e.message); }
+
   return parsed;
 }
- 
+
 function buildLetterPrompt(letterType, analysisData, context) {
   var labels = {
     // Lettres "litige" (existantes — directement liees aux clauses illegales detectees)
