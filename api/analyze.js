@@ -2338,9 +2338,9 @@ module.exports = async function handler(req, res) {
     // et le fallback frontend si jamais le backend n'a pas force le plafond).
     if (extractedContext) parsed.context_extrait = extractedContext;
  
-    // DIAGNOSTIC : si "DIAGZT" dans le texte colle, OU en mode upload (_skip_form),
-    // on prefixe le resume avec l'etat reel cote serveur. TEMPORAIRE (a retirer).
-    if ((body.text && /DIAGZT/i.test(body.text)) || context._skip_form || (!body.text && body.pdf)) {
+    // DIAGNOSTIC OPT-IN : si "DIAGZT" dans le texte colle, on prefixe le resume
+    // avec l'etat reel cote serveur (invisible pour les vrais utilisateurs).
+    if (body.text && /DIAGZT/i.test(body.text)) {
       try {
         var _rz = parsed.zone_tendue || null;
         var _ec = extractedContext || {};
