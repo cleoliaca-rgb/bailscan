@@ -1862,18 +1862,20 @@ async function extractContextFromDoc(input) {
       }
     } catch (eRec) { console.warn('[extract-doc] controle confiance echoue:', eRec && eRec.message); }
 
-    // FILET DETERMINISTE (entree texte) : loyer du precedent locataire lu
-    // directement dans le texte. Prime sur le champ du modele (ancre sur
-    // "precedent locataire", jamais confondu avec le loyer actuel).
-    if (bailText) {
-      var _pr = parsePrevRentFromText(bailText);
-      if (_pr && _pr.rent > 0) {
-        if (parseFloat(parsed.loyer_precedent_locataire) !== _pr.rent) {
-          console.log('[extract-doc] loyer precedent regex:', _pr.rent, '(modele avait:', parsed.loyer_precedent_locataire, ')');
-        }
-        parsed.loyer_precedent_locataire = _pr.rent;
-        if (_pr.year > 0 && !(parseInt(parsed.annee_loyer_precedent, 10) > 0)) parsed.annee_loyer_precedent = _pr.year;
+    // FILET DETERMINISTE : loyer du precedent locataire lu directement dans le
+    // texte. Source 1 = texte d'entree (mode "coller"). Source 2 = la
+    // transcription VERBATIM du modele (etape 1 de l'extraction), qui contient
+    // la ligne du precedent locataire MEME en mode image/vision (bailText vide).
+    // Ancre sur "precedent locataire" (espace) : jamais confondu avec le loyer
+    // actuel ni avec la cle JSON "loyer_precedent_locataire" (underscore != espace).
+    var _prevSrc = bailText ? (bailText + '\n' + txt) : txt;
+    var _pr = parsePrevRentFromText(_prevSrc);
+    if (_pr && _pr.rent > 0) {
+      if (parseFloat(parsed.loyer_precedent_locataire) !== _pr.rent) {
+        console.log('[extract-doc] loyer precedent regex:', _pr.rent, '(modele avait:', parsed.loyer_precedent_locataire, ', source:', bailText ? 'texte' : 'verbatim-vision', ')');
       }
+      parsed.loyer_precedent_locataire = _pr.rent;
+      if (_pr.year > 0 && !(parseInt(parsed.annee_loyer_precedent, 10) > 0)) parsed.annee_loyer_precedent = _pr.year;
     }
 
     console.log('[extract-doc] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| complement:', parsed.complement_loyer, '| lowConf:', !!parsed._extraction_low_confidence);
