@@ -949,21 +949,31 @@ function sanitizeAnalysis(parsed, context) {
     parsed.loyer.analyse = "D'apres l'adresse, ce logement se situe hors du perimetre d'encadrement des loyers" + (plafondInfo.quartier ? " (secteur " + plafondInfo.quartier + ")" : "") + ". Aucun plafond de loyer encadre ne s'y applique. En cas de doute, verifiez sur le simulateur officiel de votre agglomeration.";
   } else if (plafondInfo && loyerM2 !== null && surface > 0) {
     if (!parsed.loyer || typeof parsed.loyer !== 'object') parsed.loyer = {};
-    // Forcer le plafond a la valeur grille (format texte attendu par le frontend)
-    var plafondMensuelGrille = Math.round(plafondInfo.plafond_m2 * surface * 100) / 100;
+    // Plafond/m2 le plus DEFENDABLE : si le bail declare lui-meme un loyer de reference
+    // majore coherent (a moins de 40% de la grille), on retient le PLUS BAS des deux.
+    // Le bailleur est tenu par sa propre mention, et le loyer ne peut de toute facon
+    // pas depasser le maximum de la grille. Sinon, on garde la grille.
+    var _lrmBail = parseFloat(context && context.loyer_reference_majore) || 0;
+    var plafondM2Eff = plafondInfo.plafond_m2;
+    if (plafondInfo.encadrement_actif && _lrmBail >= 8 && _lrmBail <= 50
+        && Math.abs(_lrmBail - plafondInfo.plafond_m2) <= 0.4 * plafondInfo.plafond_m2) {
+      plafondM2Eff = Math.min(plafondInfo.plafond_m2, _lrmBail);
+    }
+    // Forcer le plafond (format texte attendu par le frontend)
+    var plafondMensuelGrille = Math.round(plafondM2Eff * surface * 100) / 100;
     parsed.loyer.plafond = plafondMensuelGrille.toFixed(2).replace('.', ',') + ' €';
-    parsed.loyer.plafond_m2 = plafondInfo.plafond_m2.toFixed(2).replace('.', ',') + ' €/m²';
+    parsed.loyer.plafond_m2 = plafondM2Eff.toFixed(2).replace('.', ',') + ' €/m²';
     // Exposer aussi les loyers de reference et minore pour la comparaison marche (frontend)
     parsed.loyer.ref_m2 = plafondInfo.ref_m2.toFixed(2).replace('.', ',') + ' €/m²';
     parsed.loyer.ref_m2_num = plafondInfo.ref_m2;
     parsed.loyer.minore_m2_num = plafondInfo.minore_m2;
-    parsed.loyer.plafond_m2_num = plafondInfo.plafond_m2;
+    parsed.loyer.plafond_m2_num = plafondM2Eff;
     parsed.loyer.encadrement_strict = plafondInfo.encadrement_actif;
     var estim = !!plafondInfo.estimation;
     parsed.loyer.estimation = estim;
     parsed.loyer.estimation_note = plafondInfo.estimation_note || null;
-    // Calcul statut deterministe a partir de la grille
-    var depasse = loyerM2 > plafondInfo.plafond_m2 + 0.01;
+    // Calcul statut deterministe
+    var depasse = loyerM2 > plafondM2Eff + 0.01;
     if (plafondInfo.encadrement_actif) {
       // Plafond exact -> verdict ferme. Plafond MOYENNE (info manquante) -> on n'affirme pas, on alerte.
       parsed.loyer.statut = depasse ? (estim ? 'warning' : 'danger') : 'ok';
@@ -973,7 +983,7 @@ function sanitizeAnalysis(parsed, context) {
     }
     // Reformuler l'analyse en termes generaux (sans reveler la source de la grille)
     var loyM2Txt = loyerM2.toFixed(2).replace('.', ',');
-    var plafM2Txt = plafondInfo.plafond_m2.toFixed(2).replace('.', ',');
+    var plafM2Txt = plafondM2Eff.toFixed(2).replace('.', ',');
     var estimSuffix = estim ? " Attention : ce plafond est une estimation (" + (plafondInfo.estimation_note || 'information manquante') + "). Renseignez l'annee de construction et le nombre de pieces pour un calcul exact." : "";
     if (!plafondInfo.encadrement_actif) {
       // HORS ENCADREMENT : message clair + repere purement indicatif, non alarmiste, sans trop-percu.
@@ -987,7 +997,7 @@ function sanitizeAnalysis(parsed, context) {
         parsed.loyer.analyse = "Votre commune n'applique pas l'encadrement du NIVEAU des loyers : aucun loyer plafond legal n'est opposable a la signature du bail. A titre indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2). Attention : votre commune peut relever de la ZONE TENDUE, un autre dispositif ou le loyer a la relocation ne peut pas depasser celui du locataire precedent (revise selon l'IRL) et le preavis est reduit a 1 mois. Verifiez sur le simulateur officiel encadrementdesloyers.gouv.fr ou service-public.fr avec votre adresse.";
       }
     } else if (depasse) {
-      parsed.loyer.exedent_mensuel = Math.round((loyerM2 - plafondInfo.plafond_m2) * surface * 100) / 100;
+      parsed.loyer.exedent_mensuel = Math.round((loyerM2 - plafondM2Eff) * surface * 100) / 100;
       if (estim) {
         parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, au-dessus d'une estimation du plafond (" + plafM2Txt + " euros/m2)." + estimSuffix;
       } else {
