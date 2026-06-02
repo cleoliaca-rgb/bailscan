@@ -1328,16 +1328,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
       <div class="form-grid">
-        <div class="form-group">
-          <label for="ville">Ville <span style="font-weight:400;color:var(--gris);font-size:0.8rem">(recommandé pour vérifier le loyer)</span></label>
+        <div class="form-group" style="grid-column:1 / -1;">
+          <label for="adresse">Adresse du logement <span style="font-weight:400;color:var(--gris);font-size:0.8rem">(remplit automatiquement la ville et le code postal)</span></label>
           <div style="position:relative;">
-            <input type="text" id="ville" class="form-input" placeholder="Ex : Paris, Lyon, Bordeaux…" oninput="updateLoyerCheck();villeAutocomplete(this.value)" autocomplete="off" onblur="setTimeout(hideVilleSuggestions,300)">
-            <div id="villeSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:50;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
-          </div>
-          <input type="text" id="code_postal" class="form-input" placeholder="Code postal — ex : 75011 (essentiel à Paris / Lyon)" inputmode="numeric" maxlength="5" autocomplete="off" oninput="updateLoyerCheck()" style="margin-top:8px;">
-          <div style="position:relative;margin-top:8px;">
-            <input type="text" id="adresse" class="form-input" placeholder="Adresse (n° + rue) — remplit la ville et le code postal" autocomplete="off" oninput="adresseAutocomplete(this.value)" onblur="setTimeout(hideAdresseSuggestions,300)">
+            <input type="text" id="adresse" class="form-input" style="width:100%;" placeholder="Ex : 12 rue de la République" autocomplete="off" oninput="adresseAutocomplete(this.value)" onblur="setTimeout(hideAdresseSuggestions,300)">
             <div id="adresseSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:50;max-height:240px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
+          </div>
+          <input type="text" id="code_postal" class="form-input" placeholder="Code postal" inputmode="numeric" maxlength="5" autocomplete="off" oninput="updateLoyerCheck()" style="margin-top:8px;width:160px;max-width:100%;">
+          <div style="position:relative;margin-top:8px;width:260px;max-width:100%;">
+            <input type="text" id="ville" class="form-input" style="width:100%;" placeholder="Ville" oninput="updateLoyerCheck();villeAutocomplete(this.value)" autocomplete="off" onblur="setTimeout(hideVilleSuggestions,300)">
+            <div id="villeSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:50;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
           </div>
         </div>
         <div class="form-group">
