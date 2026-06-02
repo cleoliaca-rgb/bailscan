@@ -1708,7 +1708,7 @@ async function extractContextFromDoc(input) {
       + "- type_bien : 'vide' ou 'meuble' (string)\n"
       + "- type_location : 'principale' / 'meublee_principale' / 'autre' (string)\n"
       + "- loyer_reference_majore : le 'loyer de reference majore' en euros/m2 (mention obligatoire en zone d'encadrement), tel qu'IMPRIME/ECRIT sur le bail. Typiquement entre 10 et 30 euros/m2. NE LE CALCULE JAMAIS a partir du loyer et de la surface : lis le nombre ecrit. Si tu ne le vois pas ecrit, mets 0 (ne le devine pas).\n"
-      + "  >>> CONTROLE : en presence d'un complement, loyer_base doit etre proche de loyer_reference_majore x surface. Si l'addition ne tombe pas juste, relis surface et loyer_base sur le bail avant de repondre.\n"
+      + "  >>> NE FORCE PAS l'egalite : le loyer de base PEUT depasser loyer_reference_majore x surface, et c'est justement le cas d'un loyer surfacture a signaler. Lis les valeurs telles qu'ecrites sur le bail, ne les modifie jamais pour les faire coller. Ne 'corrige' une valeur QUE si elle rend l'addition base + complement = total manifestement fausse.\n"
       + "- complement_justif : texte de la justification du complement si presente (ligne 'Caracteristiques du logement justifiant le complement'), '' si la case est vide (string)\n"
       + "- honoraires_agence : montant total des honoraires/frais d'agence factures AU LOCATAIRE en euros (number, 0 si absent)\n"
       + "- frais_visite : frais de visite/constitution de dossier factures separement au locataire en euros (number, 0 si absent)\n"
@@ -1794,10 +1794,12 @@ async function extractContextFromDoc(input) {
       var _lm2 = (_surf > 0 && _base > 0) ? (_base / _surf) : 0;
       if (_lm2 > 45) _flags.push('loyer/m2 invraisemblable (' + _lm2.toFixed(1) + ' euros/m2) — surface probablement mal lue');
 
-      // c) en encadrement, le loyer de base doit coller au loyer de reference majore x surface
+      // c) base TRES EN DESSOUS du loyer de reference majore x surface = probable mauvaise lecture
+      //    (chiffre mal lu sur un scan). ATTENTION : une base AU-DESSUS du reference majore n'est
+      //    PAS une erreur, c'est un loyer surfacture = la violation meme que l'on doit calculer.
+      //    On ne flague donc QUE le cas "base anormalement basse", jamais le depassement.
       if (_lrm > 3 && _surf > 0 && _base > 0) {
-        var _ecart = Math.abs(_base - _lrm * _surf) / (_lrm * _surf);
-        if (_ecart > 0.12) _flags.push('loyer de base incoherent avec loyer de reference majore x surface');
+        if (_base < _lrm * _surf * 0.4) _flags.push('loyer de base anormalement bas par rapport au loyer de reference majore x surface (lecture a verifier)');
       }
 
       if (_flags.length > 0) {
