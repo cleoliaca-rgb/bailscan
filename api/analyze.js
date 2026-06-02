@@ -617,6 +617,7 @@ function sanitizeAnalysis(parsed, context) {
     if (ext.type_location && !context.type_location) context.type_location = ext.type_location;
     if (ext.complement_loyer !== undefined && !context.complement_loyer) context.complement_loyer = ext.complement_loyer;
     if (ext.complement_justif && !context.complement_justif) context.complement_justif = ext.complement_justif;
+    if (ext.date_debut_bail && !context.date_debut_bail) context.date_debut_bail = ext.date_debut_bail;
     console.log('[skip_form] Context hydrate depuis extraction:', JSON.stringify({
       ville: context.ville, surface: context.surface, loyer_base: context.loyer_base,
       depot: context.depot, type_bien: context.type_bien
@@ -730,6 +731,44 @@ function sanitizeAnalysis(parsed, context) {
     if (parsed.loyer.statut === 'danger' || parsed.loyer.statut === 'warning') parsed.loyer.statut = 'ok';
     parsed.loyer.analyse = "Le plafond d'encadrement n'a pas pu etre determine automatiquement pour ce logement. Verifiez votre loyer de reference sur le simulateur officiel de votre prefecture.";
   }
+
+  // ────────────────────────────────────────────────────────────
+  // COHERENCE MILLESIME : le plafond opposable est l'arrete en vigueur A LA DATE
+  // DE SIGNATURE du bail. Nos grilles sont par millesime ; si la date du bail tombe
+  // hors de la periode couverte, on n'affirme pas un verdict ferme -> estimation + note.
+  // ────────────────────────────────────────────────────────────
+  try {
+    if (parsed.loyer && typeof parsed.loyer === 'object' && parsed.loyer.encadrement_strict && parsed.loyer.plafond_m2_num != null) {
+      var _vkM = normaliseVille(context && context.ville);
+      var _dDeb = (context && context.date_debut_bail) || (parsed.context_extrait && parsed.context_extrait.date_debut_bail) || null;
+      if (!(typeof _dDeb === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(_dDeb))) _dDeb = null;
+      var VALIDITES = {
+        'grenoble':       { debut: '2026-01-20', fin: '2026-11-24', label: "la periode du 20/01/2026 au 24/11/2026" },
+        'pays-basque':    { debut: '2025-11-25', fin: '2099-12-31', label: "la periode en vigueur depuis le 25/11/2025" },
+        'plaine-commune': { debut: '2023-06-01', fin: '2024-05-31', label: "le millesime 2023 (01/06/2023 au 31/05/2024)" },
+        'est-ensemble':   { debut: '2023-06-01', fin: '2024-05-31', label: "le millesime 2023 (01/06/2023 au 31/05/2024)" }
+      };
+      var _noteMil = null;
+      if (_dDeb) {
+        var _val = VALIDITES[_vkM];
+        if (_val) {
+          if (_dDeb < _val.debut || _dDeb > _val.fin)
+            _noteMil = "Le plafond opposable est celui de l'arrete en vigueur a la date de signature du bail (" + _dDeb + "). Notre reference couvre " + _val.label + ". Verifiez le loyer de reference pour cette date sur le simulateur officiel.";
+        } else if (plafondInfo && plafondInfo.annee) {
+          var _by = parseInt(_dDeb.slice(0, 4), 10);
+          if (_by && Math.abs(_by - plafondInfo.annee) >= 2)
+            _noteMil = "Notre reference est le millesime " + plafondInfo.annee + " ; le plafond opposable depend de l'arrete en vigueur a la signature du bail (" + _dDeb + "). Verifiez le simulateur officiel pour cette date.";
+        }
+      }
+      if (_noteMil) {
+        parsed.loyer.estimation = true;
+        parsed.loyer.estimation_note = parsed.loyer.estimation_note ? (parsed.loyer.estimation_note + ' + ' + _noteMil) : _noteMil;
+        if (parsed.loyer.statut === 'danger') parsed.loyer.statut = 'warning';
+        if (parsed.loyer.analyse) parsed.loyer.analyse = parsed.loyer.analyse + ' ' + _noteMil;
+        console.log('[millesime] date bail', _dDeb, 'hors periode de la grille', _vkM, '→ verdict adouci');
+      }
+    }
+  } catch (e) { console.warn('[millesime] verif echouee:', e && e.message); }
 
   // 1. Nettoyage du champ loyer.analyse
   if (parsed.loyer && parsed.loyer.analyse) {
@@ -1234,6 +1273,7 @@ module.exports = async function handler(req, res) {
         if (extractedContext.type_location && !context.type_location) context.type_location = extractedContext.type_location;
         if (extractedContext.complement_loyer !== undefined && !context.complement_loyer) context.complement_loyer = extractedContext.complement_loyer;
         if (extractedContext.complement_justif && !context.complement_justif) context.complement_justif = extractedContext.complement_justif;
+        if (extractedContext.date_debut_bail && !context.date_debut_bail) context.date_debut_bail = extractedContext.date_debut_bail;
         if (extractedContext.honoraires_agence !== undefined && (context.honoraires_agence === undefined || context.honoraires_agence === null)) context.honoraires_agence = extractedContext.honoraires_agence;
         if (extractedContext.frais_visite !== undefined && (context.frais_visite === undefined || context.frais_visite === null)) context.frais_visite = extractedContext.frais_visite;
         console.log('[skip_form] Extraction dediee OK — ville:', context.ville, '| loyer:', context.loyer_base, '| surface:', context.surface, '| honoraires:', context.honoraires_agence);
