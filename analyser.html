@@ -3578,7 +3578,8 @@ function displayResults(data) {
   // Aucune clause detaillee affichee en gratuit. L'utilisateur voit uniquement le compteur + un teaser.
   // Toutes les clauses sont reservees a la zone payante (apres deblocage 29 EUR).
   var hiddenCount = clauses.length;
-  document.getElementById('clausesFreeCount').textContent = clauses.length + ' détectée' + (clauses.length > 1 ? 's' : '');
+  var _nbProb = clauses.filter(function(c){ return c && (c.type === 'danger' || c.type === 'warning'); }).length;
+  document.getElementById('clausesFreeCount').textContent = _nbProb + ' détectée' + (_nbProb > 1 ? 's' : '');
   document.getElementById('freeClausesList').innerHTML = '';
 
   // Teaser clauses cachées — affiche le TOTAL d'illégales/warnings détectées
@@ -4277,7 +4278,7 @@ function renderLoyerCheck(data) {
       // Si la valeur ne contient deja pas l'unite, on ajoute €/mois
       var hasUnit = /€\/m²|€\/m2|€\/mois|€\s*$/.test(plafondTxt);
       if (!hasUnit) plafondTxt += ' €/mois';
-      var _plafLabel = (loy.encadrement_strict === true) ? 'Plafond légal estimé' : 'Repère haut de marché';
+      var _plafLabel = (loy.encadrement_strict === true) ? 'Plafond légal estimé' : 'Repère de marché (mensuel)';
       html += '<div class="amount-pill"><div class="amount-pill-label">' + _plafLabel + '</div><div class="amount-pill-val">' + plafondTxt + '</div></div>';
     }
     // Plafond en €/m² (nouveau champ issu de la grille)
