@@ -2115,9 +2115,12 @@ module.exports = async function handler(req, res) {
     // - mode normal : 1800
     // - extra_docs : 2800
     // - skip_form (extraction + analyse dans le meme appel) : 3500
-    var maxTokensAnalysis = 1800;
-    if (extraDocs.length > 0) maxTokensAnalysis = 2800;
-    if (context._skip_form) maxTokensAnalysis = Math.max(maxTokensAnalysis, 3500);
+    // Une analyse complete (plusieurs clauses + explications juridiques + relocation)
+    // depasse facilement 1800 tokens. Une troncature casse tout le JSON, donc on
+    // prend une marge large par defaut, quel que soit le mode (paste inclus).
+    var maxTokensAnalysis = 4096;
+    if (extraDocs.length > 0) maxTokensAnalysis = 6000;
+    if (context._skip_form) maxTokensAnalysis = Math.max(maxTokensAnalysis, 4096);
     console.log('[analyze] max_tokens output:', maxTokensAnalysis, 'skip_form:', !!context._skip_form);
  
     var userContent;
