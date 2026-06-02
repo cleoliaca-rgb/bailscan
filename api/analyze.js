@@ -549,6 +549,42 @@ function getIrlLatest() { var d = _irlData(); return (d && d.latest) ? d.latest 
 function irlAnnee(an) { var d = _irlData(); if (d && d.annees && d.annees[an]) return d.annees[an]; return IRL_PAR_ANNEE[an] || null; }
 
 // ─────────────────────────────────────────────────────────────
+// Lit le loyer du precedent locataire directement dans le texte d'un bail
+// (mention obligatoire en zone tendue, donc tres reconnaissable). Deterministe,
+// independant du modele. Renvoie { rent, year } ou null. La regex est ancree sur
+// "precedent locataire", donc jamais confondue avec le loyer actuel.
+// ─────────────────────────────────────────────────────────────
+function parsePrevRentFromText(text) {
+  if (!text) return null;
+  try {
+    var _txt = String(text).replace(/\s+/g, ' ');
+    var _normNum = function (s) {
+      var t = String(s).replace(/[\u00a0\s]/g, '');
+      if (t.indexOf(',') > -1 && t.indexOf('.') > -1) t = t.replace(/\./g, '').replace(',', '.');
+      else t = t.replace(',', '.');
+      return parseFloat(t.replace(/[^\d.]/g, '')) || 0;
+    };
+    var _re = [
+      /(?:dernier\s+loyer|loyer)[^.]{0,80}?pr[ée]c[ée]dent\s+locataire[^.]{0,50}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
+      /pr[ée]c[ée]dent\s+locataire[^.]{0,60}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
+      /loyer\s+(?:du\s+|de\s+l['’]?\s*)?(?:pr[ée]c[ée]dent|ancien)\s+locataire[^.]{0,40}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i
+    ];
+    var _hit = null;
+    for (var _i = 0; _i < _re.length && !_hit; _i++) _hit = _txt.match(_re[_i]);
+    if (_hit && _hit[1]) {
+      var _pr = _normNum(_hit[1]);
+      if (_pr > 50 && _pr < 20000) {
+        var _year = 0;
+        var _ym = (_hit[0] + _txt.slice((_hit.index || 0) + _hit[0].length, (_hit.index || 0) + _hit[0].length + 200)).match(/\b(20[0-3]\d)\b/);
+        if (_ym) _year = parseInt(_ym[1], 10);
+        return { rent: _pr, year: _year };
+      }
+    }
+  } catch (e) { /* noop */ }
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────
 // MODULE ZONE TENDUE : encadrement de l'EVOLUTION du loyer a la relocation.
 // En zone tendue (hors encadrement strict, qui a son propre plafond opposable),
 // le nouveau loyer ne peut pas depasser le dernier loyer du precedent locataire
@@ -1826,41 +1862,18 @@ async function extractContextFromDoc(input) {
       }
     } catch (eRec) { console.warn('[extract-doc] controle confiance echoue:', eRec && eRec.message); }
 
-    // FILET DETERMINISTE (entree texte) : on cherche le loyer du precedent
-    // locataire directement dans le texte du bail. La mention est obligatoire en
-    // zone tendue, donc tres reconnaissable. La valeur regex (ancree sur
-    // "precedent locataire") prime sur le champ du modele, qui confond parfois
-    // ce montant avec le loyer actuel ou ne remplit pas le champ.
+    // FILET DETERMINISTE (entree texte) : loyer du precedent locataire lu
+    // directement dans le texte. Prime sur le champ du modele (ancre sur
+    // "precedent locataire", jamais confondu avec le loyer actuel).
     if (bailText) {
-      try {
-        // Normaliser les espaces (pdf.js insere espaces/sauts de ligne) pour que
-        // l'ecart entre "precedent locataire" et le montant ne casse pas le match.
-        var _txt = String(bailText).replace(/\s+/g, ' ');
-        var _normNum = function (s) {
-          var t = String(s).replace(/[\u00a0\s]/g, '');
-          if (t.indexOf(',') > -1 && t.indexOf('.') > -1) t = t.replace(/\./g, '').replace(',', '.');
-          else t = t.replace(',', '.');
-          return parseFloat(t.replace(/[^\d.]/g, '')) || 0;
-        };
-        var _re = [
-          /(?:dernier\s+loyer|loyer)[^.]{0,80}?pr[ée]c[ée]dent\s+locataire[^.]{0,50}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
-          /pr[ée]c[ée]dent\s+locataire[^.]{0,60}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
-          /loyer\s+(?:du\s+|de\s+l['’]?\s*)?(?:pr[ée]c[ée]dent|ancien)\s+locataire[^.]{0,40}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i
-        ];
-        var _hit = null;
-        for (var _i = 0; _i < _re.length && !_hit; _i++) _hit = _txt.match(_re[_i]);
-        if (_hit && _hit[1]) {
-          var _pr = _normNum(_hit[1]);
-          if (_pr > 50 && _pr < 20000) {
-            if (parseFloat(parsed.loyer_precedent_locataire) !== _pr) {
-              console.log('[extract-doc] loyer precedent regex:', _pr, '(modele avait:', parsed.loyer_precedent_locataire, ')');
-            }
-            parsed.loyer_precedent_locataire = _pr;
-            var _ym = (_hit[0] + _txt.slice((_hit.index || 0) + _hit[0].length, (_hit.index || 0) + _hit[0].length + 200)).match(/\b(20[0-3]\d)\b/);
-            if (_ym && !(parseInt(parsed.annee_loyer_precedent, 10) > 0)) parsed.annee_loyer_precedent = parseInt(_ym[1], 10);
-          }
+      var _pr = parsePrevRentFromText(bailText);
+      if (_pr && _pr.rent > 0) {
+        if (parseFloat(parsed.loyer_precedent_locataire) !== _pr.rent) {
+          console.log('[extract-doc] loyer precedent regex:', _pr.rent, '(modele avait:', parsed.loyer_precedent_locataire, ')');
         }
-      } catch (eReg) { console.warn('[extract-doc] regex loyer precedent echouee:', eReg && eReg.message); }
+        parsed.loyer_precedent_locataire = _pr.rent;
+        if (_pr.year > 0 && !(parseInt(parsed.annee_loyer_precedent, 10) > 0)) parsed.annee_loyer_precedent = _pr.year;
+      }
     }
 
     console.log('[extract-doc] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| complement:', parsed.complement_loyer, '| lowConf:', !!parsed._extraction_low_confidence);
@@ -1990,6 +2003,20 @@ module.exports = async function handler(req, res) {
         }
       }
     } catch (eSurf) { console.warn('[surface] derivation echouee:', eSurf && eSurf.message); }
+
+    // ────────────────────────────────────────────────────────────
+    // FILET LOYER PRECEDENT (tous modes) : si le texte du bail est dispo et que le
+    // loyer du precedent locataire n'a pas ete lu (paste, mode formulaire, ou
+    // extraction dediee non declenchee), on le lit directement dans le texte.
+    // ────────────────────────────────────────────────────────────
+    if (type === 'bail' && body.text && !(parseFloat(context.loyer_precedent_locataire) > 0)) {
+      var _prH = parsePrevRentFromText(body.text);
+      if (_prH && _prH.rent > 0) {
+        context.loyer_precedent_locataire = _prH.rent;
+        if (_prH.year > 0 && !(parseInt(context.annee_loyer_precedent, 10) > 0)) context.annee_loyer_precedent = _prH.year;
+        console.log('[handler] loyer precedent lu dans le texte:', _prH.rent, '| annee:', context.annee_loyer_precedent);
+      }
+    }
 
     // ────────────────────────────────────────────────────────────
     // RESOLUTION DU PLAFOND avec le contexte (peut etre vide en skip_form,
