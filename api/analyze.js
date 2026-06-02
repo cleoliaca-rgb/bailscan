@@ -3,6 +3,10 @@
 
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-4-20250514";
+// Modele dedie a l'EXTRACTION (lecture du document, souvent scanne/manuscrit).
+// Defaut = MODEL. Mettre BAILSCAN_EXTRACT_MODEL=<modele Opus> sur Vercel pour une
+// bien meilleure lecture des baux manuscrits/scannes, sans toucher au code.
+const EXTRACT_MODEL = process.env.BAILSCAN_EXTRACT_MODEL || MODEL;
 
 // ─────────────────────────────────────────────────────────────
 // GRILLES D'ENCADREMENT EMBARQUEES (lookup precis ville x secteur x pieces x epoque x type)
@@ -1044,6 +1048,28 @@ function sanitizeAnalysis(parsed, context) {
                    : 'Conforme';
   } catch (e) { console.warn('[score/verdict] normalisation echouee:', e && e.message); }
 
+  // ────────────────────────────────────────────────────────────
+  // GARDE-FOU FAIBLE CONFIANCE : si l'extraction est interne-ment incoherente
+  // (typiquement bail manuscrit/scanne mal lu), on N'AFFICHE PAS un montant faux
+  // avec aplomb. On marque l'analyse "a confirmer" et on adoucit le verdict.
+  // ────────────────────────────────────────────────────────────
+  try {
+    if (context && context._extraction_low_confidence) {
+      parsed._low_confidence = true;
+      parsed._low_confidence_reasons = context._extraction_flags || [];
+      if (parsed.loyer && typeof parsed.loyer === 'object') {
+        parsed.loyer.estimation = true;
+        var _noteLC = "Valeurs lues automatiquement sur un document scanne/manuscrit : elles semblent incoherentes (la lecture des chiffres est incertaine). Verifiez et corrigez la surface, le loyer de base et le complement avant d'agir.";
+        parsed.loyer.estimation_note = parsed.loyer.estimation_note ? (parsed.loyer.estimation_note + ' ' + _noteLC) : _noteLC;
+        if (parsed.loyer.statut === 'danger') parsed.loyer.statut = 'warning';
+      }
+      // Pas de verdict "Danger" peremptoire sur des valeurs incertaines
+      if (parsed.verdict === 'Danger') parsed.verdict = 'Risque';
+      if (parsed.recap && typeof parsed.recap === 'object') parsed.recap.low_confidence = true;
+      console.warn('[low-confidence] analyse marquee a confirmer:', (context._extraction_flags || []).join(' | '));
+    }
+  } catch (e) { console.warn('[low-confidence] echec:', e && e.message); }
+
   return parsed;
 }
  
@@ -1324,7 +1350,7 @@ async function extractContextFromDoc(input) {
       + "IMPERATIF : ne devine pas et ne recopie AUCUNE valeur du schema ci-dessous (ce sont des champs vides, pas des donnees). Lis uniquement ce qui est ecrit sur CE bail, chiffre par chiffre, meme en ecriture manuscrite.\n"
       + "Reponds UNIQUEMENT avec un JSON pur, sans markdown, sans backticks, sans texte avant ou apres.\n"
       + "SCHEMA A REMPLIR (valeurs vides = placeholders, NE PAS RECOPIER) :\n"
-      + '{"ville":"","adresse":"","code_postal":"","surface":0,"nb_pieces":0,"annee_construction":0,"loyer_base":0,"charges":0,"depot":0,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"","nb_mois_bail":0,"loyer_reference_majore":0}\n'
+      + '{"ville":"","adresse":"","code_postal":"","surface":0,"nb_pieces":0,"annee_construction":0,"loyer_base":0,"charges":0,"depot":0,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"","nb_mois_bail":0,"loyer_reference_majore":0,"loyer_total_mensuel":0}\n'
       + "Regles :\n"
       + "- ville : commune du logement loue (string)\n"
       + "- adresse : numero + voie du logement loue, sans la ville ni le code postal. '' si absent\n"
@@ -1348,6 +1374,7 @@ async function extractContextFromDoc(input) {
       + "- frais_visite : frais de visite/constitution de dossier factures separement au locataire en euros (number, 0 si absent)\n"
       + "- date_debut_bail : date de prise d'effet au format YYYY-MM-DD ('' si non trouve)\n"
       + "- nb_mois_bail : nb de mois entre date_debut_bail et aujourd'hui (number, 0 si inconnu). Date aujourd'hui : " + new Date().toISOString().slice(0, 10) + "\n"
+      + "- loyer_total_mensuel : le loyer mensuel TOTAL hors charges (number). C'est souvent la valeur la plus fiable car repetee plusieurs fois (ligne 'Montant du loyer mensuel', 'Total du pour un mois' moins les charges, 'dernier loyer du precedent locataire'). En cas de complement : loyer_total_mensuel = loyer_base + complement_loyer. Reporte le montant corrobore. 0 si introuvable.\n"
       + "Si une info n'est pas dans le bail : valeur par defaut (0 pour les numbers, '' pour les strings), mais TOUJOURS un JSON valide complet.";
 
     var response = await fetch(ANTHROPIC_API, {
@@ -1359,7 +1386,7 @@ async function extractContextFromDoc(input) {
         "anthropic-beta": "pdfs-2024-09-25"
       },
       body: JSON.stringify({
-        model: MODEL,
+        model: EXTRACT_MODEL,
         max_tokens: 500,
         messages: [{
           role: "user",
@@ -1392,7 +1419,46 @@ async function extractContextFromDoc(input) {
     }
     clean = clean.slice(fb, lb + 1);
     var parsed = JSON.parse(clean);
-    console.log('[extract-doc] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| honoraires:', parsed.honoraires_agence);
+
+    // ────────────────────────────────────────────────────────────
+    // CONTROLE DE CONFIANCE — sur les valeurs BRUTES lues (avant toute
+    // correction, sinon on masquerait l'erreur). Si les invariants legaux
+    // ne tiennent pas (bail manuscrit/scanne mal lu), on signale une faible
+    // confiance : le front affichera "valeurs a confirmer" au lieu d'un
+    // montant faux affiche avec aplomb.
+    // ────────────────────────────────────────────────────────────
+    try {
+      var _surf = parseFloat(parsed.surface) || 0;
+      var _base = parseFloat(parsed.loyer_base) || 0;
+      var _comp = parseFloat(parsed.complement_loyer) || 0;
+      var _lrm  = parseFloat(parsed.loyer_reference_majore) || 0;
+      var _tot  = parseFloat(parsed.loyer_total_mensuel) || 0;
+      if (!(_tot > 0) && _base > 0) _tot = Math.round((_base + _comp) * 100) / 100;
+      var _tol = function (ref) { return Math.max(25, ref * 0.04); };
+      var _flags = [];
+
+      // a) base + complement doit egaler le loyer total (invariant du bail)
+      if (_tot > 0 && _base > 0 && Math.abs((_base + _comp) - _tot) > _tol(_tot))
+        _flags.push('loyer de base + complement (' + Math.round(_base + _comp) + ') different du loyer total (' + Math.round(_tot) + ')');
+
+      // b) loyer/m2 invraisemblable -> surface tres probablement mal lue
+      var _lm2 = (_surf > 0 && _base > 0) ? (_base / _surf) : 0;
+      if (_lm2 > 45) _flags.push('loyer/m2 invraisemblable (' + _lm2.toFixed(1) + ' euros/m2) — surface probablement mal lue');
+
+      // c) en encadrement, le loyer de base doit coller au loyer de reference majore x surface
+      if (_lrm > 3 && _surf > 0 && _base > 0) {
+        var _ecart = Math.abs(_base - _lrm * _surf) / (_lrm * _surf);
+        if (_ecart > 0.12) _flags.push('loyer de base incoherent avec loyer de reference majore x surface');
+      }
+
+      if (_flags.length > 0) {
+        parsed._extraction_low_confidence = true;
+        parsed._extraction_flags = _flags;
+        console.warn('[extract-doc] FAIBLE CONFIANCE:', _flags.join(' | '));
+      }
+    } catch (eRec) { console.warn('[extract-doc] controle confiance echoue:', eRec && eRec.message); }
+
+    console.log('[extract-doc] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| complement:', parsed.complement_loyer, '| lowConf:', !!parsed._extraction_low_confidence);
     return parsed;
   } catch (e) {
     console.error('[extract-pdf] Erreur:', e && e.message);
@@ -1479,7 +1545,12 @@ module.exports = async function handler(req, res) {
         if (extractedContext.loyer_reference_majore && !context.loyer_reference_majore) context.loyer_reference_majore = extractedContext.loyer_reference_majore;
         if (extractedContext.honoraires_agence !== undefined && (context.honoraires_agence === undefined || context.honoraires_agence === null)) context.honoraires_agence = extractedContext.honoraires_agence;
         if (extractedContext.frais_visite !== undefined && (context.frais_visite === undefined || context.frais_visite === null)) context.frais_visite = extractedContext.frais_visite;
-        console.log('[skip_form] Extraction dediee OK — ville:', context.ville, '| loyer:', context.loyer_base, '| surface:', context.surface, '| honoraires:', context.honoraires_agence);
+        if (extractedContext.loyer_total_mensuel) context.loyer_total_mensuel = extractedContext.loyer_total_mensuel;
+        if (extractedContext._extraction_low_confidence) {
+          context._extraction_low_confidence = true;
+          context._extraction_flags = extractedContext._extraction_flags || [];
+        }
+        console.log('[skip_form] Extraction dediee OK — ville:', context.ville, '| loyer:', context.loyer_base, '| surface:', context.surface, '| lowConf:', !!context._extraction_low_confidence);
       } else {
         console.warn('[handler] skip_form : extraction dediee sans resultat, fallback extraction integree');
       }
