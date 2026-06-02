@@ -1965,10 +1965,14 @@ module.exports = async function handler(req, res) {
       var _lrmB = parseFloat(context.loyer_reference_majore) || 0;
       var _baseB = parseFloat(context.loyer_base) || 0;
       var _surfB = parseFloat(context.surface) || 0;
-      if (_lrmB > 3 && _lrmB < 60 && _baseB > 0) {
+      // On ne re-deduit la surface QUE si le bail n'en imprime aucune. Si une surface
+      // est presente, on la garde : la recalculer depuis loyer_base/LRM supposerait que
+      // le loyer est pile au plafond et effacerait tout trop-percu (le cas meme qu'on
+      // veut detecter, quand loyer_base > LRM x surface).
+      if (_lrmB > 3 && _lrmB < 60 && _baseB > 0 && !_surfB) {
         var _surfDeriv = Math.round((_baseB / _lrmB) * 10) / 10;
-        if (_surfDeriv >= 8 && _surfDeriv <= 400 && (!_surfB || Math.abs(_surfDeriv - _surfB) / _surfDeriv > 0.05)) {
-          console.log('[surface] rededuite depuis loyer_base/LRM imprime:', _surfB, '->', _surfDeriv);
+        if (_surfDeriv >= 8 && _surfDeriv <= 400) {
+          console.log('[surface] estimee depuis loyer_base/LRM (surface absente):', _surfDeriv);
           context.surface = _surfDeriv;
           context._surface_derivee = true;
           context.nb_pieces = context.nb_pieces || estimateNbPieces(_surfDeriv);
