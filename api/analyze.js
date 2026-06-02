@@ -456,6 +456,10 @@ function buildSystemPrompt(context) {
     + grilleNote
     + regleEncadrement
     + regleLecture
+    + "\n\nREGLES DE NOTATION (strictes) :\n"
+    + "- 'verdict' DOIT etre exactement l'un de : \"Conforme\", \"Vigilance\", \"Risque\", \"Danger\". Aucun autre mot.\n"
+    + "- Le score (0-100) reflete UNIQUEMENT les problemes REELLEMENT detectes dans les informations fournies. L'absence de bail uploade ne doit JAMAIS faire baisser le score : si seules les infos du formulaire sont fournies et qu'aucun probleme n'y apparait, le score reste eleve (>= 75) ; tu signales seulement dans 'resume' que l'analyse est partielle et invites a uploader le bail complet.\n"
+    + "- Si la ville n'est PAS en zone d'encadrement, le niveau du loyer n'est JAMAIS un probleme : ne baisse pas le score pour cela, et indique clairement que la ville est 'hors encadrement des loyers'.\n"
     + "\n\nReponds TOUJOURS en JSON valide uniquement. Jamais de markdown. Jamais de backticks. Jamais de prose hors JSON.";
 }
  
@@ -692,33 +696,30 @@ function sanitizeAnalysis(parsed, context) {
       // Plafond exact -> verdict ferme. Plafond MOYENNE (info manquante) -> on n'affirme pas, on alerte.
       parsed.loyer.statut = depasse ? (estim ? 'warning' : 'danger') : 'ok';
     } else {
-      // Zone indicative (pas de plafond opposable) : on indique simplement
-      parsed.loyer.statut = depasse ? 'warning' : 'ok';
+      // Hors encadrement des loyers : aucun plafond legal opposable -> JAMAIS danger/warning.
+      parsed.loyer.statut = 'ok';
     }
     // Reformuler l'analyse en termes generaux (sans reveler la source de la grille)
     var loyM2Txt = loyerM2.toFixed(2).replace('.', ',');
     var plafM2Txt = plafondInfo.plafond_m2.toFixed(2).replace('.', ',');
     var estimSuffix = estim ? " Attention : ce plafond est une estimation (" + (plafondInfo.estimation_note || 'information manquante') + "). Renseignez l'annee de construction et le nombre de pieces pour un calcul exact." : "";
-    if (depasse) {
-      var exedentMensuel = Math.round((loyerM2 - plafondInfo.plafond_m2) * surface * 100) / 100;
-      parsed.loyer.exedent_mensuel = exedentMensuel;
-      if (plafondInfo.encadrement_actif) {
-        if (estim) {
-          parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, au-dessus d'une estimation du plafond (" + plafM2Txt + " euros/m2)." + estimSuffix;
-        } else {
-          parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui depasse le plafond legal (" + plafM2Txt + " euros/m2).";
-        }
+    if (!plafondInfo.encadrement_actif) {
+      // HORS ENCADREMENT : message clair + repere purement indicatif, non alarmiste, sans trop-percu.
+      parsed.loyer.exedent_mensuel = null;
+      parsed.loyer.trop_percu = null;
+      parsed.loyer.hors_encadrement = true;
+      parsed.loyer.analyse = "Cette ville n'est pas concernee par l'encadrement des loyers : aucun loyer plafond legal ne s'y applique. A titre purement indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2).";
+    } else if (depasse) {
+      parsed.loyer.exedent_mensuel = Math.round((loyerM2 - plafondInfo.plafond_m2) * surface * 100) / 100;
+      if (estim) {
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, au-dessus d'une estimation du plafond (" + plafM2Txt + " euros/m2)." + estimSuffix;
       } else {
-        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est superieur au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement, mais cela peut etre un point de negociation." + estimSuffix;
+        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui depasse le plafond legal (" + plafM2Txt + " euros/m2).";
       }
     } else {
       parsed.loyer.exedent_mensuel = null;
       parsed.loyer.trop_percu = null;
-      if (plafondInfo.encadrement_actif) {
-        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui respecte le plafond legal (" + plafM2Txt + " euros/m2)." + estimSuffix;
-      } else {
-        parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui est conforme au repere indicatif local (" + plafM2Txt + " euros/m2). Cette zone n'est pas encadree strictement." + estimSuffix;
-      }
+      parsed.loyer.analyse = "Votre loyer s'eleve a " + loyM2Txt + " euros/m2 hors charges, ce qui respecte le plafond legal (" + plafM2Txt + " euros/m2)." + estimSuffix;
     }
   } else if (!plafondInfo && parsed.loyer && typeof parsed.loyer === 'object') {
     // Aucun plafond fiable resolu : on ne laisse PAS passer un plafond/trop-percu invente par l'IA.
@@ -862,6 +863,29 @@ function sanitizeAnalysis(parsed, context) {
       }
     }
   }
+
+  // ────────────────────────────────────────────────────────────
+  // COHERENCE SCORE + VERDICT : vocabulaire FIXE, et le score ne doit pas etre
+  // catastrophique quand RIEN n'a ete detecte (ex. analyse sans bail uploade).
+  // ────────────────────────────────────────────────────────────
+  try {
+    var _clauses = Array.isArray(parsed.clauses_abusives) ? parsed.clauses_abusives : [];
+    var _nbDanger = _clauses.filter(function (c) { return c && c.type === 'danger'; }).length;
+    var _loyerStatut = (parsed.loyer && typeof parsed.loyer === 'object') ? parsed.loyer.statut : null;
+    var _loyerDanger = _loyerStatut === 'danger';
+    var _loyerWarn = _loyerStatut === 'warning';
+    // Plancher : aucun probleme detecte (0 clause, loyer ok) -> pas de score catastrophique
+    if (_clauses.length === 0 && !_loyerDanger && !_loyerWarn && typeof parsed.score === 'number' && parsed.score < 75) {
+      console.log('[score] aucun probleme detecte mais score', parsed.score, '→ remonte a 75');
+      parsed.score = 75;
+    }
+    // Verdict a vocabulaire FIXE (Conforme / Vigilance / Risque / Danger), derive du score + gravite reelle
+    var _s = (typeof parsed.score === 'number') ? parsed.score : 50;
+    parsed.verdict = (_loyerDanger || _nbDanger >= 3 || _s < 40) ? 'Danger'
+                   : (_nbDanger >= 1 || _loyerWarn || _s < 60) ? 'Risque'
+                   : (_s < 80) ? 'Vigilance'
+                   : 'Conforme';
+  } catch (e) { console.warn('[score/verdict] normalisation echouee:', e && e.message); }
 
   return parsed;
 }
