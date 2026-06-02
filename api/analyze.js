@@ -507,11 +507,12 @@ function computeMoneyEngine(parsed, context) {
     ? parsed.loyer.exedent_mensuel : 0;
   var tropPercuLoyer = Math.round(exedentMensuel * nbMois * 100) / 100;
 
-  // B) Complement de loyer non justifie (Art. 17-2). Un complement non justifie est
-  //    retirable EN ENTIER, en plus d'un eventuel depassement du loyer de base sur le
-  //    plafond. Les deux s'additionnent (ce ne sont pas les memes sommes).
+  // B) Complement de loyer non justifie. ATTENTION : le complement de loyer est un
+  //    mecanisme propre a l'ENCADREMENT DES LOYERS (il se definit par rapport au loyer
+  //    de reference majore). Hors zone d'encadrement strict, il n'existe pas : la part
+  //    "complement" fait simplement partie du loyer (capte par le plafond a la relocation).
   var complementInjustifie = false, complementRecuperable = 0;
-  if (complement > 0 && justif.length < 15) {
+  if (complement > 0 && justif.length < 15 && encadrementStrict) {
     complementInjustifie = true;
     complementRecuperable = Math.round(complement * nbMois * 100) / 100;
   }
