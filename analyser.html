@@ -2186,7 +2186,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a href="/legal.html">Mentions légales</a>
         <a href="/legal.html">CGV</a>
         <a href="/legal.html">Politique de confidentialité</a>
-        <a href="/cdn-cgi/l/email-protection#44272b2a302527300426252d283727252a6a253434">Contact</a>
+        <a href="/contact.html">Contact</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -2195,7 +2195,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
  
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
@@ -3460,14 +3460,14 @@ function displayResults(data) {
   startPaywallTimer();
   // Render social proof (stats agregees hebdomadaires)
   renderSocialProof();
-  // Exit intent : activé seulement APRÈS engagement réel (≥20s ET ≥25% du rapport scrollé)
+  // Exit intent : activé seulement APRÈS engagement réel (≥40s ET ≥25% du rapport scrollé)
   // Évite que le popup fire dès qu'on bouge la souris hors de la page sans avoir lu
   var _engagementTime = false;
   var _engagementScroll = false;
   function _checkEngagement() {
     if (_engagementTime && _engagementScroll) _paywallSeen = true;
   }
-  setTimeout(function() { _engagementTime = true; _checkEngagement(); }, 20000);
+  setTimeout(function() { _engagementTime = true; _checkEngagement(); }, 40000);
   function _trackResultsScrollDepth() {
     var rs = document.getElementById('resultsSection');
     if (!rs) return;
@@ -3983,6 +3983,32 @@ function renderMarcheLocal(data) {
   // Resolution unifiee (backend → fallback frontend → estimation)
   var grille = resolveGrilleValeurs(data, villeUser);
   var hasGrille = grille !== null;
+  var strictEnc = hasGrille && grille.strict === true;
+
+  // ── CAS ZONE TENDUE avec excedent a la relocation calcule (le VRAI levier legal) ──
+  var zt = data && data.zone_tendue;
+  if (zt && zt.applicable && zt.recuperable > 0) {
+    var ztMois = Math.round(zt.excedent_mensuel || 0);
+    var ztRec = Math.round(zt.recuperable);
+    var ztPlaf = zt.plafond_relocation;
+    var ztHtml = '';
+    ztHtml += '<div style="margin:24px 0;background:linear-gradient(135deg,#0d0d0d 0%,#1a1a1a 100%);border-radius:16px;padding:24px 24px 22px;position:relative;overflow:hidden;">';
+    ztHtml += '<div style="position:absolute;top:-30px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,#ff6b4a33 0%,transparent 70%);pointer-events:none;"></div>';
+    ztHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">';
+    ztHtml += '<span style="font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);">Plafond à la relocation · zone tendue</span>';
+    ztHtml += '<span style="background:rgba(200,75,47,0.15);color:#c84b2f;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;">Au-dessus du plafond à la relocation</span>';
+    ztHtml += '</div>';
+    ztHtml += '<div style="font-family:\'Instrument Serif\',serif;font-size:2.8rem;color:white;line-height:1;margin-bottom:8px;">+' + ztMois.toLocaleString('fr-FR') + ' <span style="color:#ff8a6c;">€/mois</span></div>';
+    ztHtml += '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:18px;">';
+    ztHtml += 'En zone tendue, le loyer ne peut pas dépasser celui du locataire précédent revalorisé par l\'IRL' + (ztPlaf ? ' (plafond estimé <strong style="color:rgba(255,255,255,0.95);">' + Math.round(ztPlaf).toLocaleString('fr-FR') + ' €</strong>)' : '') + '.<br>';
+    ztHtml += '<span style="opacity:0.85;font-size:0.82rem;">Trop-perçu estimé récupérable : <strong style="color:#ff8a6c;">' + ztRec.toLocaleString('fr-FR') + ' €</strong>' + (zt.estimation ? ' (estimation IRL)' : '') + '.</span>';
+    ztHtml += '</div>';
+    ztHtml += '<button onclick="trackBeginCheckout(\'zone_tendue\');openModal()" style="background:#ff6b4a;color:#0d0d0d;font-weight:700;font-size:0.88rem;padding:13px 22px;border-radius:10px;border:none;cursor:pointer;width:100%;font-family:inherit;transition:transform .15s;">Voir le détail et la lettre de contestation →</button>';
+    ztHtml += '<div style="margin-top:10px;font-size:0.7rem;color:rgba(255,255,255,0.4);text-align:center;">Inclus dans le rapport complet à 29€ · Lettre prête à envoyer</div>';
+    ztHtml += '</div>';
+    el.innerHTML = ztHtml;
+    return;
+  }
 
   var ecartMensuel, ecartPct, positionTxt, mode;
   if (hasGrille) {
@@ -3990,8 +4016,8 @@ function renderMarcheLocal(data) {
     ecartMensuel = Math.round(loyerBase - medianMensuel);
     ecartPct = Math.round((userLoyerM2 - grille.ref) / grille.ref * 100);
     mode = 'precis';
-    if (userLoyerM2 > grille.plafond + 0.01) positionTxt = 'Au-dessus du plafond légal';
-    else if (userLoyerM2 > grille.ref + 0.01) positionTxt = 'Au-dessus de la médiane de votre zone';
+    if (strictEnc && userLoyerM2 > grille.plafond + 0.01) positionTxt = 'Au-dessus du plafond légal';
+    else if (userLoyerM2 > grille.ref + 0.01) positionTxt = 'Au-dessus du marché local';
     else if (userLoyerM2 >= grille.minore - 0.01) positionTxt = 'Dans la médiane du marché local';
     else positionTxt = 'En dessous du marché local';
   } else {
@@ -4213,11 +4239,13 @@ function renderLoyerCheck(data) {
       // Si la valeur ne contient deja pas l'unite, on ajoute €/mois
       var hasUnit = /€\/m²|€\/m2|€\/mois|€\s*$/.test(plafondTxt);
       if (!hasUnit) plafondTxt += ' €/mois';
-      html += '<div class="amount-pill"><div class="amount-pill-label">Plafond légal estimé</div><div class="amount-pill-val">' + plafondTxt + '</div></div>';
+      var _plafLabel = (loy.encadrement_strict === true) ? 'Plafond légal estimé' : 'Repère haut de marché';
+      html += '<div class="amount-pill"><div class="amount-pill-label">' + _plafLabel + '</div><div class="amount-pill-val">' + plafondTxt + '</div></div>';
     }
     // Plafond en €/m² (nouveau champ issu de la grille)
     if (loy.plafond_m2) {
-      html += '<div class="amount-pill"><div class="amount-pill-label">Plafond €/m² estimé</div><div class="amount-pill-val">' + loy.plafond_m2 + '</div></div>';
+      var _plafM2Label = (loy.encadrement_strict === true) ? 'Plafond €/m² estimé' : 'Repère €/m² (marché)';
+      html += '<div class="amount-pill"><div class="amount-pill-label">' + _plafM2Label + '</div><div class="amount-pill-val">' + loy.plafond_m2 + '</div></div>';
     }
     if (tropPercuMensuel > 0) html += '<div class="amount-pill" style="border-color:var(--accent)"><div class="amount-pill-label">Excédent mensuel</div><div class="amount-pill-val" style="color:var(--accent)">−' + tropPercuMensuel.toFixed(2) + ' €/mois</div></div>';
     html += '</div>';
