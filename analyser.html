@@ -3576,14 +3576,21 @@ function buildPaywallAmountBanner(data) {
   }
  
   // ── 3. TOTAL ────────────────────────────────────────────────
-  var tropPercuMensuel = exedentLoyer + complementIllegal;
+  // Le complement de loyer fait PARTIE du loyer paye : il est deja inclus dans
+  // l'ecart loyer/plafond. On prend donc le MAXIMUM, jamais la somme, pour ne
+  // pas double-compter (ex: loyer 1550 = base 1088 au plafond + complement 462
+  // illegal -> recuperable = 462/mois, pas 462 + 462).
+  var tropPercuMensuel = Math.max(exedentLoyer, complementIllegal);
   var tropPercuCumule = Math.round(tropPercuMensuel * nbMois * 100) / 100;
 
   // ── 3 bis. DEPOT ILLEGAL — recuperable immediatement, pas etale dans le temps
   var depotVerse = appState.depot || parseFloat((document.getElementById('depot') || {}).value) || 0;
   var bienTypeCalc = appState.bienType || 'vide';
-  var depotMaxLegal = bienTypeCalc === 'meuble' ? loyerBase * 2 : loyerBase * 1;
-  var depotIllegal = (loyerBase > 0 && depotVerse > depotMaxLegal) ? Math.round((depotVerse - depotMaxLegal) * 100) / 100 : 0;
+  // Le plafond du depot = 1 mois (vide) / 2 mois (meuble) du loyer HORS CHARGES,
+  // qui inclut l'eventuel complement de loyer (et non la seule base).
+  var loyerHCpourDepot = loyerBase + (complementLoyer || 0);
+  var depotMaxLegal = bienTypeCalc === 'meuble' ? loyerHCpourDepot * 2 : loyerHCpourDepot * 1;
+  var depotIllegal = (loyerHCpourDepot > 0 && depotVerse > depotMaxLegal + 0.01) ? Math.round((depotVerse - depotMaxLegal) * 100) / 100 : 0;
 
   // ── 3 ter. TOTAL GLOBAL : trop-percu cumule + depot illegal recuperable
   var tropPercuTotal = Math.round((tropPercuCumule + depotIllegal) * 100) / 100;
@@ -4700,7 +4707,7 @@ function getTropPercuMontant() {
   var complementIllegal = 0;
   if (loy && loy.complement_illegal) { complementIllegal = parseFloat(loy.complement_illegal) || 0; }
   else if (complementLoyer > 0 && (isLoyerProbleme || !appState.complementJustif)) { complementIllegal = complementLoyer; }
-  var mensuel = exedentLoyer + complementIllegal;
+  var mensuel = Math.max(exedentLoyer, complementIllegal);
   var total = Math.round(mensuel * nbMois * 100) / 100;
   return { exedentLoyer: exedentLoyer, complementIllegal: complementIllegal, mensuel: mensuel, total: total, nbMois: nbMois };
 }
