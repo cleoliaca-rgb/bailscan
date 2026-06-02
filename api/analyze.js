@@ -380,13 +380,18 @@ function computeMoneyEngine(parsed, context) {
     ? parsed.loyer.exedent_mensuel : 0;
   var tropPercuLoyer = Math.round(exedentMensuel * nbMois * 100) / 100;
 
-  // B) Complement de loyer non justifie (Art. 17-2). Recuperable seulement si la base
-  //    respecte deja le plafond (sinon l'excedent est deja capte par A -> pas de double compte).
+  // B) Complement de loyer non justifie (Art. 17-2). Un complement non justifie est
+  //    retirable EN ENTIER, en plus d'un eventuel depassement du loyer de base sur le
+  //    plafond. Les deux s'additionnent (ce ne sont pas les memes sommes).
   var complementInjustifie = false, complementRecuperable = 0;
-  if (complement > 0 && exedentMensuel === 0 && justif.length < 15) {
+  if (complement > 0 && justif.length < 15) {
     complementInjustifie = true;
     complementRecuperable = Math.round(complement * nbMois * 100) / 100;
   }
+
+  // Excedent mensuel TOTAL recuperable cote loyer = depassement du loyer de base + complement non justifie
+  var overpaymentMensuel = Math.round((exedentMensuel + (complementInjustifie ? complement : 0)) * 100) / 100;
+  var recuperableLoyer = Math.round((tropPercuLoyer + complementRecuperable) * 100) / 100;
 
   // C) Depot de garantie excessif (sur loyer HORS CHARGES, base + complement inclus)
   var depotMax = Math.round(depotMoisMax * loyerHC * 100) / 100;
@@ -396,6 +401,7 @@ function computeMoneyEngine(parsed, context) {
   return {
     nbMois: nbMois, loyerHC: loyerHC, depotMoisMax: depotMoisMax,
     exedentMensuel: exedentMensuel, tropPercuLoyer: tropPercuLoyer,
+    overpaymentMensuel: overpaymentMensuel, recuperableLoyer: recuperableLoyer,
     complement: complement, complementInjustifie: complementInjustifie, complementRecuperable: complementRecuperable,
     depot: depot, depotMax: depotMax, depotExcedent: depotExcedent
   };
@@ -1005,7 +1011,7 @@ function sanitizeAnalysis(parsed, context) {
 
     parsed.recap = {
       nb_mois: M.nbMois,
-      exedent_mensuel: M.exedentMensuel || 0,
+      exedent_mensuel: M.overpaymentMensuel || 0,
       trop_percu_loyer: M.tropPercuLoyer || 0,
       complement_mensuel: M.complementInjustifie ? M.complement : 0,
       complement_recuperable: M.complementRecuperable || 0,
@@ -1018,8 +1024,7 @@ function sanitizeAnalysis(parsed, context) {
     if (_total > 0) {
       context.trop_percu_total = _total.toFixed(2).replace('.', ',') + ' euros';
       context.nb_mois_bail = M.nbMois;
-      if (M.exedentMensuel > 0) context.trop_percu_mensuel = M.exedentMensuel.toFixed(2).replace('.', ',') + ' euros/mois';
-      else if (M.complementInjustifie) context.trop_percu_mensuel = M.complement.toFixed(2).replace('.', ',') + ' euros/mois';
+      if (M.overpaymentMensuel > 0) context.trop_percu_mensuel = M.overpaymentMensuel.toFixed(2).replace('.', ',') + ' euros/mois';
     }
 
     console.log('[money] recap', JSON.stringify(parsed.recap));
