@@ -3162,6 +3162,54 @@ function extractPdfText(base64) {
   });
 }
 
+// Compresse un PDF scanne (images) cote client : rend chaque page en JPEG
+// downscale, puis reconstruit un PDF leger via jsPDF. Reutilise pdf.js + jsPDF
+// deja charges. Retourne la base64 du PDF compresse, ou null si echec.
+function compressScannedPdf(base64, maxPages) {
+  return new Promise(function(resolve) {
+    var JsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!window.pdfjsLib || !JsPDF) { resolve(null); return; }
+    try {
+      var raw = atob(base64);
+      var bytes = new Uint8Array(raw.length);
+      for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+      pdfjsLib.getDocument({ data: bytes }).promise.then(function(pdf) {
+        var n = Math.min(pdf.numPages, maxPages || 12);
+        var out = new JsPDF({ unit: 'pt', format: 'a4' });
+        var pw = out.internal.pageSize.getWidth();
+        var ph = out.internal.pageSize.getHeight();
+        var chain = Promise.resolve();
+        for (var p = 1; p <= n; p++) {
+          (function(pageNum) {
+            chain = chain.then(function() {
+              return pdf.getPage(pageNum).then(function(page) {
+                var vp1 = page.getViewport({ scale: 1 });
+                var scale = Math.min(2, 1240 / vp1.width); // ~1240px de large : lisible mais leger
+                var vp = page.getViewport({ scale: scale });
+                var canvas = document.createElement('canvas');
+                canvas.width = Math.round(vp.width);
+                canvas.height = Math.round(vp.height);
+                var ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                return page.render({ canvasContext: ctx, viewport: vp }).promise.then(function() {
+                  var jpg = canvas.toDataURL('image/jpeg', 0.6);
+                  if (pageNum > 1) out.addPage();
+                  out.addImage(jpg, 'JPEG', 0, 0, pw, ph);
+                  canvas.width = 0; canvas.height = 0;
+                });
+              });
+            });
+          })(p);
+        }
+        chain.then(function() {
+          try { resolve((out.output('datauristring').split(',')[1]) || null); }
+          catch (e) { resolve(null); }
+        }).catch(function() { resolve(null); });
+      }).catch(function() { resolve(null); });
+    } catch (e) { resolve(null); }
+  });
+}
+
 function launchAnalysis() {
   var textContent = appState.uploadMode === 'text' ? document.getElementById('bailText').value.trim() : '';
   // Le skipForm bypass la validation des champs formulaire (Claude extraira tout du bail)
@@ -3325,8 +3373,18 @@ function launchAnalysis() {
         console.log('[BailScan] Peu de texte (scan ?) → envoi du PDF (' + Math.round(sizeKB) + ' Ko).');
         _send(JSON.stringify({ pdf: appState.pdfBase64, extra_docs: exDocs, context: contextInfo }));
       } else {
-        hideLoading();
-        alert('Votre PDF semble être un scan trop lourd (' + (sizeKB / 1024).toFixed(1) + ' Mo). Compressez-le sur ilovepdf.com, ou collez le texte du bail via l\'option « Coller le texte ».');
+        // Scan lourd : on tente une compression cote client avant de bloquer.
+        console.log('[BailScan] Scan lourd (' + Math.round(sizeKB) + ' Ko) → compression cote client…');
+        compressScannedPdf(appState.pdfBase64, 12).then(function(comp) {
+          var compKB = comp ? comp.length * 0.75 / 1024 : Infinity;
+          if (comp && compKB <= 4000) {
+            console.log('[BailScan] Compressé à ' + Math.round(compKB) + ' Ko → envoi.');
+            _send(JSON.stringify({ pdf: comp, extra_docs: exDocs, context: contextInfo }));
+          } else {
+            hideLoading();
+            alert('Votre PDF est un scan volumineux que nous n\'avons pas pu compresser suffisamment. Compressez-le sur ilovepdf.com, ou collez le texte du bail via l\'option « Coller le texte ».');
+          }
+        });
       }
     });
   } else {
@@ -5028,10 +5086,16 @@ function checkPaymentReturn() {
         if (_ep) _ep.classList.remove('active');
         displayResults(analysisResult);
         // ── META PIXEL : Purchase avec event_id pour deduplication CAPI ──
-        // On utilise session_id Stripe comme event_id pour matcher avec le webhook server-side.
-        // Si CAPI envoie le meme event_id, Meta dedupliquera et comptera 1 seul Purchase.
+        // Garde-fous anti-fausses ventes :
+        //  1) on ignore les sessions Stripe de TEST (prefixe cs_test_) -> tes essais ne comptent plus
+        //  2) on ne compte jamais deux fois le meme session_id (dedup durable cote navigateur)
+        // L'event_id = session_id Stripe, identique au webhook CAPI, pour que Meta deduplique.
         try {
-          if (typeof bsTrack === 'function') {
+          var _purchasedSids = [];
+          try { _purchasedSids = JSON.parse(localStorage.getItem('_bs_purchased_sids') || '[]'); } catch (e) {}
+          var _isTestSid = (typeof _bsSid === 'string' && _bsSid.indexOf('cs_test_') === 0);
+          var _alreadyCounted = _purchasedSids.indexOf(_bsSid) !== -1;
+          if (typeof bsTrack === 'function' && _bsSid && !_isTestSid && !_alreadyCounted) {
             bsTrack('Purchase', {
               value: 29.00,
               currency: 'EUR',
@@ -5040,11 +5104,14 @@ function checkPaymentReturn() {
               content_type: 'product',
               content_name: 'BailScan Analyse Complete',
               content_category: 'lease_analysis',
-              transaction_id: _bsSid,  // session_id Stripe = identifiant transaction
-              eventID: _bsSid           // identique pour dedupliquer avec CAPI server-side
+              transaction_id: _bsSid,
+              eventID: _bsSid
             });
-            // Sauvegarder pour debug
-            try { localStorage.setItem('_bs_last_purchase_eventid', _bsSid); } catch(e) {}
+            _purchasedSids.push(_bsSid);
+            try { localStorage.setItem('_bs_purchased_sids', JSON.stringify(_purchasedSids.slice(-200))); } catch (e) {}
+            try { localStorage.setItem('_bs_last_purchase_eventid', _bsSid); } catch (e) {}
+          } else {
+            console.log('[purchase] event NON envoye', { test: _isTestSid, deja_compte: _alreadyCounted, sid: _bsSid });
           }
         } catch (e) { console.warn('Purchase tracking error:', e); }
         // ── Aller DIRECTEMENT sur la section debloquee (pas de flash hero) ──

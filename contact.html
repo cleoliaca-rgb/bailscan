@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — BailScan</title>
+<meta name="description" content="Une question sur votre bail ou sur BailScan ? Écrivez-nous, nous répondons vite.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #0d0d0d; --creme: #f5f0e8; --accent: #c84b2f; --accent2: #e8a87c;
+    --vert: #2d6a4f; --vert-light: #e8f5ee; --texte: #1a1a1a; --gris: #6b6b6b; --border: #d8d0c4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--creme); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; max-width: 1100px; margin: 0 auto; }
+  .logo { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--noir); text-decoration: none; letter-spacing: -0.01em; }
+  .logo b { color: var(--accent); font-weight: 400; }
+  .nav-back { font-size: 0.9rem; color: var(--gris); text-decoration: none; transition: color .2s; }
+  .nav-back:hover { color: var(--noir); }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 40px 28px 80px; }
+  .eyebrow { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+  h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 5vw, 3.1rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--noir); margin-bottom: 16px; }
+  .lede { font-size: 1.02rem; color: var(--gris); line-height: 1.6; max-width: 30em; margin-bottom: 36px; }
+
+  .card { background: #fff; border: 1.5px solid var(--border); border-radius: 18px; padding: 30px; box-shadow: 0 18px 40px -28px rgba(13,13,13,0.25); }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: 0.84rem; font-weight: 600; color: var(--noir); margin-bottom: 7px; }
+  .input, .textarea { width: 100%; padding: 12px 15px; border: 1.5px solid var(--border); border-radius: 11px; font-size: 0.95rem; color: var(--texte); background: #fff; font-family: 'DM Sans', sans-serif; transition: border-color .2s, box-shadow .2s; }
+  .input:focus, .textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--rouge-light, #fdf0ed); }
+  .textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
+  .hp { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; }
+
+  .submit { width: 100%; margin-top: 6px; padding: 14px 20px; border: none; border-radius: 12px; background: var(--noir); color: var(--creme); font-family: 'DM Sans', sans-serif; font-size: 0.98rem; font-weight: 600; cursor: pointer; transition: transform .12s, background .2s, opacity .2s; }
+  .submit:hover { background: var(--accent); }
+  .submit:active { transform: translateY(1px); }
+  .submit:disabled { opacity: .55; cursor: default; background: var(--noir); }
+
+  .note { margin-top: 16px; font-size: 0.82rem; color: var(--gris); text-align: center; }
+  .feedback { margin-top: 16px; font-size: 0.9rem; padding: 12px 14px; border-radius: 11px; display: none; }
+  .feedback.err { display: block; background: #fdf0ed; color: var(--accent); border: 1px solid #f0c9bf; }
+
+  .success { display: none; text-align: center; padding: 18px 6px; }
+  .success.show { display: block; }
+  .success-mark { width: 56px; height: 56px; border-radius: 50%; background: var(--vert-light); color: var(--vert); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; margin: 0 auto 18px; }
+  .success h2 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.7rem; color: var(--noir); margin-bottom: 8px; }
+  .success p { color: var(--gris); font-size: 0.95rem; line-height: 1.55; }
+  .success a { color: var(--accent); font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="logo" href="/">Bail<b>Scan</b></a>
+    <a class="nav-back" href="/">← Retour à l'accueil</a>
+  </nav>
+
+  <main class="wrap">
+    <div class="eyebrow">Contact</div>
+    <h1>Une question ? Écrivez-nous.</h1>
+    <p class="lede">Bail à vérifier, retour sur une analyse, demande presse ou partenariat : laissez-nous un message, nous répondons rapidement.</p>
+
+    <div class="card">
+      <form id="contactForm" novalidate>
+        <div class="field">
+          <label for="name">Votre nom</label>
+          <input class="input" type="text" id="name" name="name" autocomplete="name" maxlength="120" required>
+        </div>
+        <div class="field">
+          <label for="email">Votre email</label>
+          <input class="input" type="email" id="email" name="email" autocomplete="email" maxlength="160" placeholder="vous@email.com" required>
+        </div>
+        <div class="field">
+          <label for="message">Votre message</label>
+          <textarea class="textarea" id="message" name="message" maxlength="4000" required></textarea>
+        </div>
+        <input class="hp" type="text" id="company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="submit" id="submitBtn" type="submit">Envoyer le message</button>
+        <div class="feedback" id="feedback"></div>
+        <div class="note">Réponse à l'adresse email indiquée.</div>
+      </form>
+
+      <div class="success" id="success">
+        <div class="success-mark">✓</div>
+        <h2>Message envoyé</h2>
+        <p>Merci, votre message est bien parti. Nous vous répondrons par email.<br><a href="/">Revenir à l'accueil</a></p>
+      </div>
+    </div>
+  </main>
+
+<script>
+(function () {
+  var form = document.getElementById('contactForm');
+  var btn = document.getElementById('submitBtn');
+  var fb = document.getElementById('feedback');
+  var ok = document.getElementById('success');
+
+  function showErr(msg) { fb.textContent = msg; fb.className = 'feedback err'; }
+  function clearErr() { fb.className = 'feedback'; fb.textContent = ''; }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    clearErr();
+    var name = document.getElementById('name').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var message = document.getElementById('message').value.trim();
+    var company = document.getElementById('company').value; // honeypot
+
+    if (!name || !email || !message) { showErr('Merci de remplir tous les champs.'); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showErr('Cette adresse email semble invalide.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, email: email, message: message, company: company })
+    })
+    .then(function (r) { return r.json().then(function (d) { return { status: r.status, data: d }; }); })
+    .then(function (res) {
+      if (res.status >= 200 && res.status < 300 && res.data && res.data.ok) {
+        form.style.display = 'none';
+        ok.classList.add('show');
+      } else {
+        var m = (res.data && res.data.error) ? res.data.error : 'Envoi impossible pour le moment. Réessayez, ou écrivez directement à cleolia.ca@gmail.com.';
+        showErr(m);
+        btn.disabled = false;
+        btn.textContent = 'Envoyer le message';
+      }
+    })
+    .catch(function () {
+      showErr('Connexion impossible. Réessayez, ou écrivez directement à cleolia.ca@gmail.com.');
+      btn.disabled = false;
+      btn.textContent = 'Envoyer le message';
+    });
+  });
+})();
+</script>
+</body>
+</html>
