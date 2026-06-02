@@ -1714,9 +1714,9 @@ async function extractContextFromDoc(input) {
       + "- frais_visite : frais de visite/constitution de dossier factures separement au locataire en euros (number, 0 si absent)\n"
       + "- date_debut_bail : date de prise d'effet au format YYYY-MM-DD ('' si non trouve)\n"
       + "- nb_mois_bail : nb de mois entre date_debut_bail et aujourd'hui (number, 0 si inconnu). Date aujourd'hui : " + new Date().toISOString().slice(0, 10) + "\n"
-      + "- loyer_total_mensuel : le loyer mensuel TOTAL hors charges (number). C'est souvent la valeur la plus fiable car repetee plusieurs fois (ligne 'Montant du loyer mensuel', 'Total du pour un mois' moins les charges, 'dernier loyer du precedent locataire'). En cas de complement : loyer_total_mensuel = loyer_base + complement_loyer. Reporte le montant corrobore. 0 si introuvable.\n"
-      + "- loyer_precedent_locataire : montant du DERNIER loyer mensuel hors charges du PRECEDENT locataire, si le bail le mentionne (mention obligatoire en zone tendue, souvent intitulee 'Montant du dernier loyer acquitte par le precedent locataire'). Reporte le nombre ECRIT, 0 si absent (number)\n"
-      + "- annee_loyer_precedent : annee (AAAA) du dernier loyer du precedent locataire ou de sa derniere revision, si indiquee. 0 si absente (number)\n"
+      + "- loyer_total_mensuel : le loyer mensuel TOTAL hors charges DU LOCATAIRE ACTUEL (number). C'est souvent la valeur la plus fiable car repetee plusieurs fois (ligne 'Montant du loyer mensuel', 'Total du pour un mois' moins les charges). En cas de complement : loyer_total_mensuel = loyer_base + complement_loyer. Reporte le montant corrobore. 0 si introuvable. NE PAS confondre avec le loyer du PRECEDENT locataire (champ separe ci-dessous).\n"
+      + "- loyer_precedent_locataire : montant du DERNIER loyer mensuel hors charges paye par le PRECEDENT locataire (PAS le loyer actuel). Cherche activement une ligne du type 'dernier loyer acquitte par le precedent locataire', 'loyer du precedent locataire', 'ancien locataire', 'loyer anterieur'. Reporte le nombre ECRIT a cote, 0 seulement s'il n'y a vraiment aucune mention de ce genre (number).\n"
+      + "- annee_loyer_precedent : annee (AAAA) du dernier loyer du precedent locataire ou de sa derniere revision, si indiquee (ex: 'juin 2022' -> 2022). 0 si absente (number)\n"
       + "- premiere_location : true UNIQUEMENT si le bail indique explicitement une PREMIERE mise en location, un logement neuf, ou un logement vacant depuis plus de 18 mois ; false sinon (boolean)\n"
       + "Si une info n'est pas dans le bail : valeur par defaut (0 pour les numbers, '' pour les strings), mais TOUJOURS un JSON valide complet.";
 
@@ -1808,6 +1808,39 @@ async function extractContextFromDoc(input) {
         console.warn('[extract-doc] FAIBLE CONFIANCE:', _flags.join(' | '));
       }
     } catch (eRec) { console.warn('[extract-doc] controle confiance echoue:', eRec && eRec.message); }
+
+    // FILET DETERMINISTE (entree texte) : si le modele n'a pas lu le loyer du
+    // precedent locataire, on le cherche directement dans le texte du bail.
+    // Mention obligatoire en zone tendue, donc tres reconnaissable.
+    if (bailText && !(parseFloat(parsed.loyer_precedent_locataire) > 0)) {
+      try {
+        var _normNum = function (s) {
+          var t = String(s).replace(/[\u00a0\s]/g, '');
+          if (t.indexOf(',') > -1 && t.indexOf('.') > -1) t = t.replace(/\./g, '').replace(',', '.');
+          else t = t.replace(',', '.');
+          return parseFloat(t.replace(/[^\d.]/g, '')) || 0;
+        };
+        var _re = [
+          /(?:dernier\s+loyer|loyer)[^\n.]{0,80}?pr[ée]c[ée]dent\s+locataire[^\n.]{0,50}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
+          /pr[ée]c[ée]dent\s+locataire[^\n.]{0,60}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
+          /loyer\s+(?:du\s+|de\s+l['’]?\s*)?(?:pr[ée]c[ée]dent|ancien)\s+locataire[^\n.]{0,40}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i
+        ];
+        var _hit = null;
+        for (var _i = 0; _i < _re.length && !_hit; _i++) _hit = bailText.match(_re[_i]);
+        if (_hit && _hit[1]) {
+          var _pr = _normNum(_hit[1]);
+          if (_pr > 50 && _pr < 20000) {
+            parsed.loyer_precedent_locataire = _pr;
+            console.log('[extract-doc] loyer precedent recupere par regex:', _pr);
+            if (!(parseInt(parsed.annee_loyer_precedent, 10) > 0)) {
+              var _ctx = bailText.slice(Math.max(0, (_hit.index || 0) - 10), (_hit.index || 0) + 220);
+              var _ym = _ctx.match(/\b(20[0-3]\d)\b/);
+              if (_ym) parsed.annee_loyer_precedent = parseInt(_ym[1], 10);
+            }
+          }
+        }
+      } catch (eReg) { console.warn('[extract-doc] regex loyer precedent echouee:', eReg && eReg.message); }
+    }
 
     console.log('[extract-doc] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| complement:', parsed.complement_loyer, '| lowConf:', !!parsed._extraction_low_confidence);
     return parsed;
