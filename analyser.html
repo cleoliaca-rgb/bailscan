@@ -969,6 +969,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       .pw-clause-chip.warning { color:#b7791f; background:rgba(251,191,36,0.15); }
       .pw-clause-ref { font-size:0.67rem; color:var(--gris); margin-top:5px; }
       .pw-included { font-size:0.67rem; color:var(--gris); line-height:1.5; margin-bottom:18px; text-align:center; }
+      .pw-inline-previews { max-width:480px; margin:18px auto 8px; text-align:left; }
+      .pw-inline-previews .pw-preview { margin-bottom:14px; }
+      .pw-inclus-details { max-width:480px; margin:4px auto 8px; text-align:left; }
+      .pw-inclus-details summary { cursor:pointer; font-size:0.82rem; font-weight:700; color:var(--accent); padding:8px 0; list-style:none; }
+      .pw-inclus-details summary::-webkit-details-marker { display:none; }
+      .pw-inclus-details summary::before { content:'+ '; }
+      .pw-inclus-details[open] summary::before { content:'– '; }
       @media (max-width:520px){
         .modal { padding:24px 18px; }
         .modal-title { font-size:1.45rem; }
@@ -1704,17 +1711,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- BANNER DYNAMIQUE MONTANT RÉCLAMABLE (injecté par JS) -->
         <div id="paywallAmountBanner"></div>
 
-        <div class="paywall-title" style="margin-top:20px;">Rapport complet disponible</div>
-        <div class="paywall-desc">Tout ce qu'il vous faut pour récupérer votre argent et sécuriser votre bail à long terme. Clauses détaillées, lettres officielles, certificat de conformité.</div>
-        <div class="paywall-features">
-          <div class="paywall-feature">Toutes les clauses analysées avec références légales</div>
-          <div class="paywall-feature">Calcul des sommes récupérables + 5 lettres officielles prêtes à envoyer</div>
-          <div class="paywall-feature">Vérification précise loyer vs grille d'encadrement officielle de votre ville</div>
-          <div class="paywall-feature">Modèles de lettres pour toutes vos situations futures (préavis, mise en demeure, contestation IRL, sortie)</div>
-          <div class="paywall-feature">Certificat de conformité daté + protection juridique 12 mois</div>
-          <div class="paywall-feature">Comparaison avec le marché local de votre zone</div>
-          <div class="paywall-feature">Kit de défense préventive (checklist EDL sortie, calcul préavis, restitution dépôt)</div>
-        </div>
+        <div class="paywall-title" style="margin-top:20px;">Ce que vous débloquez pour 29€</div>
+        <div class="paywall-desc">Pas juste un diagnostic : les livrables prêts à l'emploi pour récupérer votre argent et sécuriser votre bail.</div>
+        <div id="paywallPreviewInline" class="pw-inline-previews"></div>
+        <details class="pw-inclus-details">
+          <summary>Tout ce qui est inclus</summary>
+          <div class="paywall-features" style="margin-top:14px;">
+            <div class="paywall-feature">Toutes les clauses analysées avec références légales</div>
+            <div class="paywall-feature">Calcul des sommes récupérables + 5 lettres officielles prêtes à envoyer</div>
+            <div class="paywall-feature">Vérification précise loyer vs grille d'encadrement officielle de votre ville</div>
+            <div class="paywall-feature">Modèles de lettres pour toutes vos situations futures (préavis, mise en demeure, contestation IRL, sortie)</div>
+            <div class="paywall-feature">Certificat de conformité daté + protection juridique 12 mois</div>
+            <div class="paywall-feature">Comparaison avec le marché local de votre zone</div>
+            <div class="paywall-feature">Kit de défense préventive (checklist EDL sortie, calcul préavis, restitution dépôt)</div>
+          </div>
+        </details>
 
         <!-- TEMOIGNAGE — avant le CTA -->
         <div style="margin:20px 0;padding:16px 18px;background:#f8f4ef;border-radius:14px;border-left:3px solid #fbbf24;text-align:left;">
@@ -3464,6 +3475,7 @@ function displayResults(data) {
  
   // ── BANNER PAYWALL MONTANT RÉCLAMABLE ──────────────────────
   buildPaywallAmountBanner(data);
+  try { buildPaywallPreview(); } catch(e) {}
   setTimeout(updatePaywallCTA, 50); // update CTA after banner renders
 
   // Si déjà payé → afficher directement le contenu payant
@@ -4886,6 +4898,15 @@ function buildPaywallPreview() {
 
   // onglet par défaut selon ce qui a été trouvé
   switchPreviewTab(hasMoney ? 'lettres' : (clauses.length > 0 ? 'clauses' : 'plan'));
+
+  // Version EMPILEE pour le paywall sur la page (les 3 livrables visibles d'un coup)
+  var inline = document.getElementById('paywallPreviewInline');
+  if (inline) {
+    inline.innerHTML =
+      '<div class="pw-preview">' + _pwPreviews.lettres + '</div>'
+      + '<div class="pw-preview">' + _pwPreviews.plan + '</div>'
+      + '<div class="pw-preview">' + _pwPreviews.clauses + '</div>';
+  }
 }
 
 function switchPreviewTab(tab) {
