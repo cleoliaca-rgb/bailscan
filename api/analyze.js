@@ -2,10 +2,13 @@
 // CommonJS pur — compatible Vercel sans type:module
 
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
-const MODEL = "claude-sonnet-4-20250514";
+// Analyse principale = Opus sur TOUTES les analyses (upload bail, texte, formulaire).
+// Opus = meilleur raisonnement juridique et moins de faux positifs que Sonnet.
+const MODEL = process.env.BAILSCAN_MODEL || "claude-opus-4-8";
+// Modele de repli si Opus est momentanement indisponible (rate limit / incident).
+const FALLBACK_MODEL = "claude-sonnet-4-20250514";
 // Modele dedie a l'EXTRACTION (lecture du document, souvent scanne/manuscrit).
 // Opus lit l'ecriture manuscrite et les scans nettement mieux que Sonnet.
-// Surchargeable via BAILSCAN_EXTRACT_MODEL ; repli auto sur MODEL si l'appel echoue.
 const EXTRACT_MODEL = process.env.BAILSCAN_EXTRACT_MODEL || "claude-opus-4-8";
 
 // ─────────────────────────────────────────────────────────────
@@ -365,6 +368,102 @@ const VILLES_ENCADREMENT = [
 function isVilleEncadree(ville) {
   if (!ville) return false;
   return VILLES_ENCADREMENT.some(function(v) { return ville.toLowerCase().includes(v); });
+}
+
+// ─────────────────────────────────────────────────────────────
+// ZONE TENDUE (pour le PREAVIS reduit a 1 mois + encadrement de
+// l'EVOLUTION du loyer a la relocation). Perimetre = les 28 agglomerations
+// du "1°" de l'art. 232 CGI (decret 2013-392), PAS la liste TLV elargie
+// (3690 communes) de 2023 qui ne concerne que la taxe.
+// Cle = code postal (extrait du formulaire/bail). Liste des principales
+// communes des 28 agglos ; le reste retombe sur "a verifier" (jamais d'affirmation fausse).
+// Surchargeable via ./data/zone-tendue.json (tableau de codes postaux).
+// ─────────────────────────────────────────────────────────────
+var ZONE_TENDUE_CP = new Set([
+  // Paris + petite couronne (unite urbaine de Paris)
+  "75001","75002","75003","75004","75005","75006","75007","75008","75009","75010",
+  "75011","75012","75013","75014","75015","75016","75017","75018","75019","75020",
+  "92100","92110","92120","92130","92140","92150","92160","92170","92190","92200",
+  "92210","92220","92230","92240","92250","92260","92270","92290","92300","92310",
+  "92320","92330","92340","92350","92360","92370","92380","92390","92400","92410",
+  "92420","92500","92600","92700","92800","93100","93110","93120","93130","93140",
+  "93150","93160","93170","93190","93200","93210","93220","93230","93240","93250",
+  "93260","93270","93290","93300","93310","93320","93330","93340","93350","93370",
+  "93380","93390","93400","93410","93420","93430","93440","93450","93460","93470",
+  "93500","93600","93700","93800","94100","94110","94120","94130","94140","94150",
+  "94160","94170","94190","94200","94210","94220","94230","94240","94250","94260",
+  "94270","94290","94300","94310","94320","94340","94350","94360","94370","94380",
+  "94400","94410","94420","94430","94440","94450","94460","94470","94480","94500",
+  "94510","94520","94550","94600","94700","94800",
+  // Lyon / Villeurbanne agglo
+  "69001","69002","69003","69004","69005","69006","69007","69008","69009",
+  "69100","69120","69140","69150","69160","69200","69300","69310","69320","69500","69600","69800",
+  // Aix-Marseille
+  "13001","13002","13003","13004","13005","13006","13007","13008","13009","13010",
+  "13011","13012","13013","13014","13015","13016","13080","13090","13098","13100",
+  "13290","13400","13600","13700","13127","13170","13380","13320","13880",
+  // Lille agglo
+  "59000","59160","59260","59800","59100","59200","59491","59493","59650","59700","59370","59290","59320",
+  // Bordeaux agglo
+  "33000","33100","33200","33300","33800","33700","33600","33400","33130","33150","33310","33270","33170","33140","33530",
+  // Nice / Cote d'Azur
+  "06000","06100","06200","06300","06600","06700","06800","06150","06160","06400","06110","06340",
+  // Toulon agglo
+  "83000","83100","83130","83140","83160","83190","83200","83500",
+  // Strasbourg
+  "67000","67100","67200","67300","67400","67800","67114","67540","67550","67640",
+  // Nantes agglo
+  "44000","44100","44200","44300","44400","44600","44800","44700","44230","44240","44470","44980",
+  // Montpellier agglo
+  "34000","34070","34080","34090","34170","34430","34250","34970","34920",
+  // Bayonne / Pays Basque cote
+  "64100","64200","64600","64500","64210","64480","64990","64700","64122",
+  // La Rochelle
+  "17000","17140","17180","17440",
+  // Annecy
+  "74000","74600","74940","74960","74370","74330",
+  // Bassin d'Arcachon
+  "33120","33260","33470","33510","33380","33980",
+  // Ajaccio
+  "20000","20090","20167","20166",
+  // Bastia
+  "20200","20600","20620",
+  // Arles
+  "13200","13280","13990","13104","13123","13129",
+  // Beauvais
+  "60000",
+  // Draguignan
+  "83300","83550",
+  // Frejus / Saint-Raphael
+  "83600","83370","83700",
+  // Geneve-Annemasse
+  "74100","74240","74380","74160","74240",
+  // Meaux
+  "77100","77124",
+  // Menton
+  "06500",
+  // Saint-Nazaire
+  "44600","44500","44550","44570",
+  // Sete
+  "34200",
+  // Thonon-les-Bains
+  "74200"
+]);
+var ZONE_TENDUE_CACHE = null;
+function getZoneTendueSet() {
+  if (ZONE_TENDUE_CACHE) return ZONE_TENDUE_CACHE;
+  ZONE_TENDUE_CACHE = ZONE_TENDUE_CP;
+  try {
+    var extra = require('./data/zone-tendue.json'); // tableau de codes postaux officiels (optionnel)
+    if (Array.isArray(extra)) { extra.forEach(function (cp) { ZONE_TENDUE_CACHE.add(String(cp).trim()); }); }
+  } catch (e) { /* fichier optionnel absent : on garde la liste embarquee */ }
+  return ZONE_TENDUE_CACHE;
+}
+// Retourne true / false / null(inconnu, hors liste -> a verifier)
+function isZoneTendue(context) {
+  var cp = (context && (context.code_postal || context.codePostal) || '').toString().trim();
+  if (!/^\d{5}$/.test(cp)) return null; // pas de code postal fiable -> inconnu
+  return getZoneTendueSet().has(cp) ? true : null; // hors liste -> inconnu (jamais "non" peremptoire)
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -812,7 +911,12 @@ function sanitizeAnalysis(parsed, context) {
       parsed.loyer.exedent_mensuel = null;
       parsed.loyer.trop_percu = null;
       parsed.loyer.hors_encadrement = true;
-      parsed.loyer.analyse = "Votre commune n'applique pas l'encadrement du NIVEAU des loyers : aucun loyer plafond legal n'est opposable a la signature du bail. A titre indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2). Attention : votre commune peut relever de la ZONE TENDUE, un autre dispositif ou le loyer a la relocation ne peut pas depasser celui du locataire precedent (revise selon l'IRL). Verifiez votre situation exacte sur le simulateur officiel encadrementdesloyers.gouv.fr avec votre adresse.";
+      var _ztLoyer = isZoneTendue(context);
+      if (_ztLoyer === true) {
+        parsed.loyer.analyse = "Votre commune n'applique pas l'encadrement du NIVEAU des loyers (aucun loyer plafond opposable a la signature), mais elle est en ZONE TENDUE. Concretement : a la relocation, le loyer ne peut pas depasser celui paye par le locataire precedent (revise selon l'IRL), et votre preavis de depart est reduit a 1 mois. A titre indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2).";
+      } else {
+        parsed.loyer.analyse = "Votre commune n'applique pas l'encadrement du NIVEAU des loyers : aucun loyer plafond legal n'est opposable a la signature du bail. A titre indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2). Attention : votre commune peut relever de la ZONE TENDUE, un autre dispositif ou le loyer a la relocation ne peut pas depasser celui du locataire precedent (revise selon l'IRL) et le preavis est reduit a 1 mois. Verifiez sur le simulateur officiel encadrementdesloyers.gouv.fr ou service-public.fr avec votre adresse.";
+      }
     } else if (depasse) {
       parsed.loyer.exedent_mensuel = Math.round((loyerM2 - plafondInfo.plafond_m2) * surface * 100) / 100;
       if (estim) {
@@ -1238,10 +1342,21 @@ function buildLetterPrompt(letterType, analysisData, context) {
     var bienType = (context && context.type_bien) || 'vide';
     var ville = (context && context.ville) || '';
     var encadre = isVilleEncadree(ville);
-    var preavisDuree = (bienType === 'meuble' || encadre) ? '1 mois' : '3 mois';
+    var meuble = (bienType === 'meuble');
+    // ATTENTION : encadrement strict ⊂ zone tendue, mais la zone tendue est bien plus large
+    // (~1400+ communes : Toulon, Nice, Marseille, etc.). En zone tendue le preavis locataire
+    // est reduit a 1 mois MEME sans encadrement. Le code ne connait pas la liste zone tendue,
+    // donc hors meuble/encadrement on N'AFFIRME PAS 3 mois : on explicite la regle.
+    var preavisInfo;
+    var ztPreavis = isZoneTendue(context);
+    if (meuble) preavisInfo = "1 mois (logement meuble : preavis toujours d'1 mois)";
+    else if (encadre) preavisInfo = "1 mois (commune en zone d'encadrement, donc zone tendue)";
+    else if (ztPreavis === true) preavisInfo = "1 mois (commune en zone tendue : preavis locataire reduit a 1 mois, art. 15 loi 1989)";
+    else preavisInfo = "1 mois SI le logement est en zone tendue (a verifier sur service-public.fr), sinon 3 mois";
     specifInstructions = "\n=== SPECIFIQUE PREAVIS DE DEPART ===\n"
-      + "- Duree de preavis applicable : " + preavisDuree + " (logement " + bienType + (encadre ? ', zone tendue/encadree' : ', hors zone tendue') + ')'
-      + "\n- Inviter le bailleur a convenir d'un EDL de sortie\n"
+      + "- Duree de preavis applicable : " + preavisInfo + "\n"
+      + ((!meuble && !encadre && ztPreavis !== true) ? "- IMPORTANT : rappeler au locataire que la zone tendue reduit le preavis a 1 mois meme sans encadrement, et l'inviter a verifier sa commune sur service-public.fr avant d'indiquer la date de depart.\n" : "")
+      + "- Inviter le bailleur a convenir d'un EDL de sortie\n"
       + "- Rappeler le delai legal de restitution du depot (1 mois si EDL conforme, 2 mois sinon)\n"
       + "- Date de depart envisagee : indiquer une date approximative (la lettre devra etre completee par le locataire)\n"
       + "- Ton : courtois et professionnel (ce n'est PAS un litige)\n"
@@ -1321,21 +1436,31 @@ function buildLetterPrompt(letterType, analysisData, context) {
  
 async function callAnthropic(messages, systemPrompt, maxTokens) {
   maxTokens = maxTokens || 1500;
-  var response = await fetch(ANTHROPIC_API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
-      "anthropic-beta": "pdfs-2024-09-25"
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: maxTokens,
-      system: systemPrompt,
-      messages: messages
-    })
-  });
+  function _call(modelId) {
+    return fetch(ANTHROPIC_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+        "anthropic-beta": "pdfs-2024-09-25"
+      },
+      body: JSON.stringify({
+        model: modelId,
+        max_tokens: maxTokens,
+        system: systemPrompt,
+        messages: messages
+      })
+    });
+  }
+  var response = await _call(MODEL);
+  // Repli automatique sur Sonnet si Opus est momentanement indisponible (rate limit / incident)
+  if (!response.ok && MODEL !== FALLBACK_MODEL) {
+    var _e1 = '';
+    try { _e1 = await response.text(); } catch (e) {}
+    console.warn('[analyse] modele', MODEL, 'indisponible (' + response.status + ') — repli sur', FALLBACK_MODEL, _e1.slice(0, 120));
+    response = await _call(FALLBACK_MODEL);
+  }
   if (!response.ok) {
     var err = await response.text();
     throw new Error("Anthropic API " + response.status + ": " + err);
@@ -1512,11 +1637,11 @@ async function extractContextFromDoc(input) {
 
     var response = await _callExtract(EXTRACT_MODEL);
     // Repli automatique sur le modele standard si le modele d'extraction est indisponible
-    if (!response.ok && EXTRACT_MODEL !== MODEL) {
+    if (!response.ok && EXTRACT_MODEL !== FALLBACK_MODEL) {
       var _et = '';
       try { _et = await response.text(); } catch (e) {}
-      console.warn('[extract-doc] modele', EXTRACT_MODEL, 'indisponible (' + response.status + ') — repli sur', MODEL, _et.slice(0, 120));
-      response = await _callExtract(MODEL);
+      console.warn('[extract-doc] modele', EXTRACT_MODEL, 'indisponible (' + response.status + ') — repli sur', FALLBACK_MODEL, _et.slice(0, 120));
+      response = await _callExtract(FALLBACK_MODEL);
     }
 
     if (!response.ok) {
