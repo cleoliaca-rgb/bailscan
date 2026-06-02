@@ -1219,10 +1219,10 @@ function sanitizeAnalysis(parsed, context) {
           montant_recuperable: 0
         });
       }
-      if (RZT.recuperable > 0) {
+      if (RZT.excedent_mensuel > 0) {
         _upsertClause({
           type: 'danger', titre: 'Loyer au-dessus du plafond a la relocation (zone tendue)',
-          description: "Le loyer de base (" + (parseFloat(context.loyer_base) || 0) + " euros) depasse le dernier loyer du precedent locataire revalorise par l'IRL (plafond " + RZT.plafond_relocation + " euros)" + (RZT.estimation ? " (estimation IRL)" : "") + ".",
+          description: "Le loyer de base (" + (parseFloat(context.loyer_base) || 0) + " euros) depasse le dernier loyer du precedent locataire revalorise par l'IRL (plafond " + RZT.plafond_relocation + " euros), soit " + RZT.excedent_mensuel + " euros/mois de trop" + (RZT.estimation ? " (estimation IRL)" : "") + ".",
           explication_juridique: "En zone tendue, le loyer d'une relocation ne peut exceder l'ancien loyer revalorise selon l'IRL (art. 17 loi du 6 juillet 1989), sauf travaux importants, loyer manifestement sous-evalue ou vacance superieure a 18 mois.",
           base_legale: ['Art. 17 loi n.89-462 du 6 juillet 1989'],
           action: "Demander la mise en conformite du loyer et la restitution du trop-percu ; saisir la Commission departementale de conciliation en cas de refus.",
@@ -1819,11 +1819,16 @@ async function extractContextFromDoc(input) {
       }
     } catch (eRec) { console.warn('[extract-doc] controle confiance echoue:', eRec && eRec.message); }
 
-    // FILET DETERMINISTE (entree texte) : si le modele n'a pas lu le loyer du
-    // precedent locataire, on le cherche directement dans le texte du bail.
-    // Mention obligatoire en zone tendue, donc tres reconnaissable.
-    if (bailText && !(parseFloat(parsed.loyer_precedent_locataire) > 0)) {
+    // FILET DETERMINISTE (entree texte) : on cherche le loyer du precedent
+    // locataire directement dans le texte du bail. La mention est obligatoire en
+    // zone tendue, donc tres reconnaissable. La valeur regex (ancree sur
+    // "precedent locataire") prime sur le champ du modele, qui confond parfois
+    // ce montant avec le loyer actuel ou ne remplit pas le champ.
+    if (bailText) {
       try {
+        // Normaliser les espaces (pdf.js insere espaces/sauts de ligne) pour que
+        // l'ecart entre "precedent locataire" et le montant ne casse pas le match.
+        var _txt = String(bailText).replace(/\s+/g, ' ');
         var _normNum = function (s) {
           var t = String(s).replace(/[\u00a0\s]/g, '');
           if (t.indexOf(',') > -1 && t.indexOf('.') > -1) t = t.replace(/\./g, '').replace(',', '.');
@@ -1831,22 +1836,21 @@ async function extractContextFromDoc(input) {
           return parseFloat(t.replace(/[^\d.]/g, '')) || 0;
         };
         var _re = [
-          /(?:dernier\s+loyer|loyer)[^\n.]{0,80}?pr[ée]c[ée]dent\s+locataire[^\n.]{0,50}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
-          /pr[ée]c[ée]dent\s+locataire[^\n.]{0,60}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
-          /loyer\s+(?:du\s+|de\s+l['’]?\s*)?(?:pr[ée]c[ée]dent|ancien)\s+locataire[^\n.]{0,40}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i
+          /(?:dernier\s+loyer|loyer)[^.]{0,80}?pr[ée]c[ée]dent\s+locataire[^.]{0,50}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
+          /pr[ée]c[ée]dent\s+locataire[^.]{0,60}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i,
+          /loyer\s+(?:du\s+|de\s+l['’]?\s*)?(?:pr[ée]c[ée]dent|ancien)\s+locataire[^.]{0,40}?(\d[\d\u00a0 .,]*)\s*(?:euros?|€)/i
         ];
         var _hit = null;
-        for (var _i = 0; _i < _re.length && !_hit; _i++) _hit = bailText.match(_re[_i]);
+        for (var _i = 0; _i < _re.length && !_hit; _i++) _hit = _txt.match(_re[_i]);
         if (_hit && _hit[1]) {
           var _pr = _normNum(_hit[1]);
           if (_pr > 50 && _pr < 20000) {
-            parsed.loyer_precedent_locataire = _pr;
-            console.log('[extract-doc] loyer precedent recupere par regex:', _pr);
-            if (!(parseInt(parsed.annee_loyer_precedent, 10) > 0)) {
-              var _ctx = bailText.slice(Math.max(0, (_hit.index || 0) - 10), (_hit.index || 0) + 220);
-              var _ym = _ctx.match(/\b(20[0-3]\d)\b/);
-              if (_ym) parsed.annee_loyer_precedent = parseInt(_ym[1], 10);
+            if (parseFloat(parsed.loyer_precedent_locataire) !== _pr) {
+              console.log('[extract-doc] loyer precedent regex:', _pr, '(modele avait:', parsed.loyer_precedent_locataire, ')');
             }
+            parsed.loyer_precedent_locataire = _pr;
+            var _ym = (_hit[0] + _txt.slice((_hit.index || 0) + _hit[0].length, (_hit.index || 0) + _hit[0].length + 200)).match(/\b(20[0-3]\d)\b/);
+            if (_ym && !(parseInt(parsed.annee_loyer_precedent, 10) > 0)) parsed.annee_loyer_precedent = parseInt(_ym[1], 10);
           }
         }
       } catch (eReg) { console.warn('[extract-doc] regex loyer precedent echouee:', eReg && eReg.message); }
