@@ -920,6 +920,8 @@ select.form-input { cursor:pointer; }
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if (window.pdfjsLib) { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -3009,7 +3011,7 @@ function triggerFileInput(e) {
 function handleFile(file) {
   if (!file) return;
   if (file.type !== 'application/pdf') { alert('Veuillez sélectionner un fichier PDF.'); return; }
-  if (file.size > 10 * 1024 * 1024) { alert('Fichier trop volumineux (max 10 Mo).'); return; }
+  if (file.size > 10 * 1024 * 1024) { alert('Fichier trop volumineux (max 10 Mo). Pour un PDF scanné, compressez-le sur ilovepdf.com.'); return; }
   appState.pdfName = file.name;
   var reader = new FileReader();
   reader.onload = function(e) {
@@ -3096,6 +3098,35 @@ function launchAnalysisFromUpload() {
   launchAnalysis();
 }
 
+// Extrait le texte d'un PDF base64 cote client via pdf.js (evite d'envoyer le
+// base64 lourd au serveur -> plus de 413). Retourne '' si echec ou PDF scanne.
+function extractPdfText(base64) {
+  return new Promise(function(resolve) {
+    if (!window.pdfjsLib) { resolve(''); return; }
+    try {
+      var raw = atob(base64);
+      var bytes = new Uint8Array(raw.length);
+      for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+      pdfjsLib.getDocument({ data: bytes }).promise.then(function(pdf) {
+        var maxPages = Math.min(pdf.numPages, 15);
+        var chain = Promise.resolve('');
+        for (var p = 1; p <= maxPages; p++) {
+          (function(pageNum) {
+            chain = chain.then(function(acc) {
+              return pdf.getPage(pageNum).then(function(page) {
+                return page.getTextContent().then(function(content) {
+                  return acc + content.items.map(function(it) { return it.str; }).join(' ') + '\n';
+                });
+              });
+            });
+          })(p);
+        }
+        chain.then(function(txt) { resolve((txt || '').trim()); }).catch(function() { resolve(''); });
+      }).catch(function(e) { console.warn('[pdf.js] extraction echouee', e); resolve(''); });
+    } catch (e) { console.warn('[pdf.js] erreur', e); resolve(''); }
+  });
+}
+
 function launchAnalysis() {
   var textContent = appState.uploadMode === 'text' ? document.getElementById('bailText').value.trim() : '';
   // Le skipForm bypass la validation des champs formulaire (Claude extraira tout du bail)
@@ -3163,24 +3194,21 @@ function launchAnalysis() {
     };
   }
  
-  var payload;
-  if (appState.uploadMode === 'upload') {
-    payload = JSON.stringify({ pdf: appState.pdfBase64, extra_docs: appState.extraDocs.map(function(d){ return {name:d.label, base64:d.base64}; }), context: contextInfo });
-  } else {
-    payload = JSON.stringify({ text: textContent, extra_docs: appState.extraDocs.map(function(d){ return {name:d.label, base64:d.base64}; }), context: contextInfo });
-  }
-  console.log('[BailScan] Envoi /api/analyze — mode:', appState.uploadMode,
-    '| skip_form:', !!contextInfo._skip_form,
-    '| pdf present:', appState.uploadMode === 'upload' && !!appState.pdfBase64,
-    '| payload size:', Math.round(payload.length / 1024) + ' Ko');
- 
-  fetch('/api/analyze', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: payload
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
+  function _send(payload) {
+    console.log('[BailScan] Envoi /api/analyze — payload size:', Math.round(payload.length / 1024) + ' Ko');
+    fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload
+    })
+    .then(function(r) {
+      if (!r.ok) {
+        if (r.status === 413) throw new Error('Votre document est trop volumineux pour être analysé en l\'état. Compressez le PDF (ilovepdf.com) ou collez le texte du bail.');
+        throw new Error('Le serveur a renvoyé une erreur (' + r.status + '). Réessayez dans un instant.');
+      }
+      return r.json();
+    })
+    .then(function(data) {
     hideLoading();
     console.log('[BailScan] Reponse recue — verdict:', data.verdict_titre,
       '| score:', data.score,
@@ -3246,6 +3274,29 @@ function launchAnalysis() {
     hideLoading();
     alert('Erreur lors de l\'analyse : ' + err.message);
   });
+  } // fin _send
+
+  // Aiguillage : en mode upload on extrait le texte du PDF cote client (evite le 413).
+  // Si peu de texte (PDF scanne) -> on envoie le PDF si < 4 Mo, sinon message clair.
+  var exDocs = appState.extraDocs.map(function(d){ return { name: d.label, base64: d.base64 }; });
+  if (appState.uploadMode === 'upload') {
+    if (!appState.pdfBase64) { hideLoading(); alert('Aucun bail uploadé.'); return; }
+    extractPdfText(appState.pdfBase64).then(function(extracted) {
+      var sizeKB = appState.pdfBase64.length * 0.75 / 1024;
+      if (extracted && extracted.length >= 300) {
+        console.log('[BailScan] Texte extrait du PDF (' + extracted.length + ' car.) → envoi en mode texte (léger).');
+        _send(JSON.stringify({ text: extracted, extra_docs: exDocs, context: contextInfo }));
+      } else if (sizeKB <= 4000) {
+        console.log('[BailScan] Peu de texte (scan ?) → envoi du PDF (' + Math.round(sizeKB) + ' Ko).');
+        _send(JSON.stringify({ pdf: appState.pdfBase64, extra_docs: exDocs, context: contextInfo }));
+      } else {
+        hideLoading();
+        alert('Votre PDF semble être un scan trop lourd (' + (sizeKB / 1024).toFixed(1) + ' Mo). Compressez-le sur ilovepdf.com, ou collez le texte du bail via l\'option « Coller le texte ».');
+      }
+    });
+  } else {
+    _send(JSON.stringify({ text: textContent, extra_docs: exDocs, context: contextInfo }));
+  }
 }
  
 // ═══════════════════════════════════════
