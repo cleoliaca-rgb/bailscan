@@ -602,7 +602,7 @@ function buildBailPrompt(context, extraDocs) {
 
   // En mode skip_form, ajouter le champ context_extrait au format
   if (skipForm) {
-    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"Bordeaux\",\"surface\":42,\"nb_pieces\":2,\"annee_construction\":1985,\"loyer_base\":980,\"charges\":95,\"depot\":1960,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"2025-09-01\",\"nb_mois_bail\":8,\"loyer_reference_majore\":13.50}}');
+    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"\",\"surface\":0,\"nb_pieces\":0,\"annee_construction\":0,\"loyer_base\":0,\"charges\":0,\"depot\":0,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"\",\"nb_mois_bail\":0,\"loyer_reference_majore\":0}}');
   }
 
   // Determiner si un bail est fourni (PDF ou texte > 200 chars)
@@ -1320,30 +1320,35 @@ async function extractContextFromDoc(input) {
   var bailText = (input && input.text) || null;
   if (!pdfBase64 && !bailText) return null;
   try {
-    var promptExtract = "Lis le bail (PDF ou texte fourni) et extrais ces 18 informations.\n"
+    var promptExtract = "Lis ATTENTIVEMENT le bail fourni (souvent un PDF scanne, parfois manuscrit) et extrais ces 18 informations EN LISANT LES VALEURS REELLES DE CE DOCUMENT.\n"
+      + "IMPERATIF : ne devine pas et ne recopie AUCUNE valeur du schema ci-dessous (ce sont des champs vides, pas des donnees). Lis uniquement ce qui est ecrit sur CE bail, chiffre par chiffre, meme en ecriture manuscrite.\n"
       + "Reponds UNIQUEMENT avec un JSON pur, sans markdown, sans backticks, sans texte avant ou apres.\n"
-      + "Format exact :\n"
-      + '{"ville":"Bordeaux","adresse":"12 rue Exemple","code_postal":"33000","surface":42,"nb_pieces":2,"annee_construction":1985,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"2025-09-01","nb_mois_bail":8,"loyer_reference_majore":13.50}\n'
+      + "SCHEMA A REMPLIR (valeurs vides = placeholders, NE PAS RECOPIER) :\n"
+      + '{"ville":"","adresse":"","code_postal":"","surface":0,"nb_pieces":0,"annee_construction":0,"loyer_base":0,"charges":0,"depot":0,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"","nb_mois_bail":0,"loyer_reference_majore":0}\n'
       + "Regles :\n"
       + "- ville : commune du logement loue (string)\n"
-      + "- adresse : adresse postale du logement loue (numero + voie, ex '12 rue de la Roquette'), sans la ville ni le code postal. '' si absent\n"
-      + "- code_postal : code postal du logement, 5 chiffres en string (ex '75011'). DETERMINANT pour Paris/Lyon (choix du secteur). '' si absent\n"
-      + "- surface : m2 habitable Carrez (number)\n"
-      + "- nb_pieces : nombre de pieces principales du logement (number). Studio/T1 = 1, T2 = 2, etc. 0 si absent\n"
-      + "- annee_construction : annee de construction de l'immeuble si mentionnee (dans le bail ou un DPE annexe), number a 4 chiffres (ex 1985). 0 si absente\n"
-      + "- loyer_base : loyer HORS CHARGES en euros (number)\n"
+      + "- adresse : numero + voie du logement loue, sans la ville ni le code postal. '' si absent\n"
+      + "- code_postal : code postal du logement, 5 chiffres en string. DETERMINANT pour Paris/Lyon. '' si absent\n"
+      + "- surface : surface habitable en m2, lue EXACTEMENT sur la ligne 'Surface habitable (en m2)'. Reporte le nombre tel qu'ecrit sur le bail, meme manuscrit (number)\n"
+      + "- nb_pieces : nombre de pieces principales (number). Studio/T1 = 1, T2 = 2, etc. 0 si absent\n"
+      + "- annee_construction : annee de construction si mentionnee (bail ou DPE annexe), 4 chiffres. 0 si absente\n"
+      + "- loyer_base : loyer de BASE hors charges (number).\n"
+      + "  >>> CAS COMPLEMENT DE LOYER (zone encadree) : si le bail distingue un 'Montant du loyer de base (egal au loyer de reference majore)' ET un 'Montant du complement de loyer', alors loyer_base = le MONTANT DU LOYER DE BASE (ex le plus petit des deux), JAMAIS le loyer mensuel total. Le complement va dans complement_loyer.\n"
+      + "  >>> SANS complement : loyer_base = loyer mensuel hors charges, et complement_loyer = 0.\n"
+      + "  >>> COHERENCE OBLIGATOIRE : loyer_base + complement_loyer = loyer mensuel total indique au bail. Verifie cette addition avant de repondre.\n"
+      + "- complement_loyer : 'Montant du complement de loyer' en euros si present, 0 sinon (number)\n"
       + "- charges : provisions sur charges en euros (number, 0 si absent)\n"
       + "- depot : depot de garantie verse en euros (number, 0 si absent)\n"
       + "- type_bien : 'vide' ou 'meuble' (string)\n"
       + "- type_location : 'principale' / 'meublee_principale' / 'autre' (string)\n"
-      + "- complement_loyer : montant en euros si present, 0 sinon (number)\n"
-      + "- loyer_reference_majore : si le bail indique un 'loyer de reference majore' en euros/m2 (mention obligatoire en zone d'encadrement), reporte ce nombre en euros/m2 (ex 14.90). ATTENTION c'est bien le prix au m2, pas un total. 0 si absent\n"
-      + "- complement_justif : texte de la justification si presente, '' sinon (string)\n"
-      + "- honoraires_agence : montant total des honoraires/frais d'agence factures AU LOCATAIRE en euros (number, 0 si absent ou location sans agence)\n"
-      + "- frais_visite : frais de visite ou de constitution de dossier factures separement au locataire en euros (number, 0 si absent)\n"
-      + "- date_debut_bail : YYYY-MM-DD ('' si non trouve)\n"
+      + "- loyer_reference_majore : si le bail indique un 'loyer de reference majore' en euros/m2 (obligatoire en zone d'encadrement), reporte ce nombre en euros/m2. C'est un prix AU M2, pas un total. 0 si absent.\n"
+      + "  >>> CONTROLE : en presence d'un complement, loyer_base doit etre proche de loyer_reference_majore x surface. Si l'addition ne tombe pas juste, relis surface et loyer_base sur le bail avant de repondre.\n"
+      + "- complement_justif : texte de la justification du complement si presente (ligne 'Caracteristiques du logement justifiant le complement'), '' si la case est vide (string)\n"
+      + "- honoraires_agence : montant total des honoraires/frais d'agence factures AU LOCATAIRE en euros (number, 0 si absent)\n"
+      + "- frais_visite : frais de visite/constitution de dossier factures separement au locataire en euros (number, 0 si absent)\n"
+      + "- date_debut_bail : date de prise d'effet au format YYYY-MM-DD ('' si non trouve)\n"
       + "- nb_mois_bail : nb de mois entre date_debut_bail et aujourd'hui (number, 0 si inconnu). Date aujourd'hui : " + new Date().toISOString().slice(0, 10) + "\n"
-      + "Si une info n'est pas dans le bail : mets une valeur par defaut (0 pour les numbers, '' pour les strings) mais TOUJOURS un JSON valide complet.";
+      + "Si une info n'est pas dans le bail : valeur par defaut (0 pour les numbers, '' pour les strings), mais TOUJOURS un JSON valide complet.";
 
     var response = await fetch(ANTHROPIC_API, {
       method: "POST",
