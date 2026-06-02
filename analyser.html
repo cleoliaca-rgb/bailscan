@@ -1274,7 +1274,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div id="villeSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:50;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
           </div>
           <input type="text" id="code_postal" class="form-input" placeholder="Code postal — ex : 75011 (essentiel à Paris / Lyon)" inputmode="numeric" maxlength="5" autocomplete="off" oninput="updateLoyerCheck()" style="margin-top:8px;">
-          <input type="text" id="adresse" class="form-input" placeholder="Adresse (n° + rue) — précision quartier à Paris" autocomplete="off" style="margin-top:8px;">
+          <div style="position:relative;margin-top:8px;">
+            <input type="text" id="adresse" class="form-input" placeholder="Adresse (n° + rue) — remplit la ville et le code postal" autocomplete="off" oninput="adresseAutocomplete(this.value)" onblur="setTimeout(hideAdresseSuggestions,300)">
+            <div id="adresseSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:50;max-height:240px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
+          </div>
         </div>
         <div class="form-group">
           <label for="surface">Surface (m²) <span style="font-weight:400;color:var(--gris);font-size:0.8rem">(recommandé)</span></label>
@@ -4990,6 +4993,54 @@ function selectVille(v) {
  
 function hideVilleSuggestions() {
   var box = document.getElementById('villeSuggestions');
+  if (box) box.style.display = 'none';
+}
+
+// ── Autocomplétion ADRESSE via l'API Base Adresse Nationale (BAN) ──
+// L'utilisateur tape une adresse -> suggestions cliquables -> remplit adresse + ville + code postal.
+var _adrTimer = null;
+function adresseAutocomplete(val) {
+  var box = document.getElementById('adresseSuggestions');
+  if (!box) return;
+  if (!val || val.trim().length < 3) { box.style.display = 'none'; return; }
+  if (_adrTimer) clearTimeout(_adrTimer);
+  _adrTimer = setTimeout(function() {
+    fetch('https://api-adresse.data.gouv.fr/search/?limit=6&q=' + encodeURIComponent(val))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var feats = (data && data.features) || [];
+        if (!feats.length) { box.style.display = 'none'; return; }
+        box.innerHTML = '';
+        feats.forEach(function(f) {
+          var p = f.properties || {};
+          var div = document.createElement('div');
+          div.style.cssText = 'padding:10px 16px;cursor:pointer;font-size:0.88rem;color:var(--texte);border-bottom:1px solid var(--border);';
+          div.innerHTML = '<span>' + (p.label || '') + '</span>';
+          div.addEventListener('mousedown', function(e) { e.preventDefault(); selectAdresse(p); });
+          div.addEventListener('touchstart', function(e) { e.preventDefault(); selectAdresse(p); }, { passive: false });
+          div.addEventListener('mouseover', function() { div.style.background = 'var(--creme)'; });
+          div.addEventListener('mouseout',  function() { div.style.background = 'white'; });
+          box.appendChild(div);
+        });
+        box.style.display = 'block';
+      })
+      .catch(function() { box.style.display = 'none'; });
+  }, 250);
+}
+
+function selectAdresse(p) {
+  var adr = document.getElementById('adresse');
+  var ville = document.getElementById('ville');
+  var cp = document.getElementById('code_postal');
+  if (adr) adr.value = p.name || p.label || '';
+  if (ville && p.city) ville.value = p.city;
+  if (cp && p.postcode) cp.value = p.postcode;
+  hideAdresseSuggestions();
+  if (typeof updateLoyerCheck === 'function') updateLoyerCheck();
+}
+
+function hideAdresseSuggestions() {
+  var box = document.getElementById('adresseSuggestions');
   if (box) box.style.display = 'none';
 }
  
