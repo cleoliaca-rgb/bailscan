@@ -3620,6 +3620,18 @@ function buildPaywallAmountBanner(data) {
 
   var html = '';
 
+  var _lowConf = (data && data._low_confidence) || (typeof analysisResult !== 'undefined' && analysisResult && analysisResult._low_confidence);
+  if (_lowConf) {
+    html += '<div class="paywall-amount-banner no-amount">';
+    html += '<div class="paywall-amount-banner-eyebrow">Valeurs à confirmer</div>';
+    html += '<div class="paywall-amount-banner-sub" style="margin-top:6px;">Les montants ont été lus sur un document scanné ou manuscrit et semblent incohérents. Corrigez la surface, le loyer de base et le complément pour un calcul fiable. Le rapport complet vous aide à vérifier ces valeurs et à générer les bonnes lettres.</div>';
+    html += '<button class="paywall-amount-banner-unlock" onclick="trackBeginCheckout(\'banner_lowconf\');openModal()">Débloquer le rapport complet — 29€ →</button>';
+    html += '</div>';
+    el.innerHTML = html;
+    el.style.display = 'block';
+    return;
+  }
+
   if (tropPercuTotal > 0) {
     // CAS 1 : montant calculable — banner noir premium avec le gros chiffre
     html += '<div class="paywall-amount-banner">';
@@ -4044,7 +4056,10 @@ function renderLoyerCheck(data) {
   }
  
   // 3. Total trop-perçu cumulé sur la durée du bail
-  var tropPercuMensuel = exedentLoyer + complementIllegal;
+  // MAX (jamais la somme) : le complément fait partie du loyer, il est deja capte
+  // par l'ecart loyer/plafond quand celui-ci porte sur le loyer total. Coherent
+  // avec buildPaywallAmountBanner.
+  var tropPercuMensuel = Math.max(exedentLoyer, complementIllegal);
   var tropPercuCumule = Math.round(tropPercuMensuel * nbMois * 100) / 100;
 
   // 3 bis. Dépôt illégal recuperable immédiatement
@@ -4057,7 +4072,14 @@ function renderLoyerCheck(data) {
   var tropPercuTotal = Math.round((tropPercuCumule + depotIllegalTP) * 100) / 100;
 
   // ── BANNER TROP-PERÇU ────────────────────────────────────────
-  if ((isLoyerProbleme || depotIllegalTP > 0) && tropPercuTotal > 0) {
+  var _lowConf = (data && data._low_confidence) || (typeof analysisResult !== 'undefined' && analysisResult && analysisResult._low_confidence);
+  if (_lowConf) {
+    html += '<div style="background:#fff8e1;border:1.5px solid rgba(245,158,11,0.55);border-radius:14px;padding:16px 20px;margin-bottom:16px;">'
+      + '<div style="font-weight:700;font-size:0.9rem;color:#b07d00;margin-bottom:6px;">Valeurs à confirmer</div>'
+      + '<div style="font-size:0.84rem;color:var(--gris);line-height:1.65;">Les montants ont été lus automatiquement sur un document scanné ou manuscrit et semblent incohérents (lecture des chiffres incertaine). Vérifiez la <strong>surface</strong>, le <strong>loyer de base</strong> et le <strong>complément</strong> avant toute démarche. Aucun montant total fiable n\'est affiché tant que ces valeurs ne sont pas corrigées.</div>'
+      + '</div>';
+  }
+  if (!_lowConf && (isLoyerProbleme || depotIllegalTP > 0) && tropPercuTotal > 0) {
     var detailParts = [];
     if (exedentLoyer > 0 && nbMois > 0) detailParts.push(Math.round(exedentLoyer * nbMois) + '€ (loyer ' + exedentLoyer.toFixed(0) + '€/mois × ' + nbMois + ' mois)');
     if (complementIllegal > 0 && nbMois > 0) detailParts.push(Math.round(complementIllegal * nbMois) + '€ (complément ' + complementIllegal.toFixed(0) + '€/mois × ' + nbMois + ' mois)');
