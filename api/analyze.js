@@ -597,7 +597,10 @@ function computeRelocationZoneTendue(parsed, context) {
   if (!enZoneTendue || encStrict) return null; // hors zone tendue, ou encadrement strict (le plafond prime)
 
   var premiereLoc = !!(context && (context.premiere_location === true || context.premiere_location === 'true'));
-  var newRent = parseFloat(context && context.loyer_base) || 0;
+  // Loyer complet hors charges = base + complement. En zone tendue non-stricte, le
+  // complement n'est pas un mecanisme legal distinct : il fait partie du loyer soumis
+  // au plafond a la relocation. On compare donc le loyer COMPLET au loyer precedent.
+  var newRent = (parseFloat(context && context.loyer_base) || 0) + (parseFloat(context && context.complement_loyer) || 0);
   var prevRent = parseFloat(context && context.loyer_precedent_locataire) || 0;
   var nbMois = parseInt(context && context.nb_mois_bail, 10); if (!(nbMois > 0)) nbMois = 0;
 
@@ -1251,6 +1254,9 @@ function sanitizeAnalysis(parsed, context) {
     // 3bis. ZONE TENDUE : mention obligatoire du loyer precedent + plafond a la relocation
     var RZT = computeRelocationZoneTendue(parsed, context);
     parsed.zone_tendue = RZT; // null si non applicable
+    // En zone tendue (relocation), le complement est integre au loyer compare au
+    // plafond a la relocation. On ne le recompte donc PAS separement (anti double-compte).
+    if (RZT && M) { M.complementRecuperable = 0; M.complementInjustifie = false; }
     if (RZT && RZT.applicable && !RZT.premiere_location) {
       if (RZT.mention_presente === false) {
         _upsertClause({
@@ -1265,7 +1271,7 @@ function sanitizeAnalysis(parsed, context) {
       if (RZT.excedent_mensuel > 0) {
         _upsertClause({
           type: 'danger', titre: 'Loyer au-dessus du plafond a la relocation (zone tendue)',
-          description: "Le loyer de base (" + (parseFloat(context.loyer_base) || 0) + " euros) depasse le dernier loyer du precedent locataire revalorise par l'IRL (plafond " + RZT.plafond_relocation + " euros), soit " + RZT.excedent_mensuel + " euros/mois de trop" + (RZT.estimation ? " (estimation IRL)" : "") + ".",
+          description: "Le loyer (" + ((parseFloat(context.loyer_base) || 0) + (parseFloat(context.complement_loyer) || 0)) + " euros, complement inclus) depasse le dernier loyer du precedent locataire revalorise par l'IRL (plafond " + RZT.plafond_relocation + " euros), soit " + RZT.excedent_mensuel + " euros/mois de trop" + (RZT.estimation ? " (estimation IRL)" : "") + ".",
           explication_juridique: "En zone tendue, le loyer d'une relocation ne peut exceder l'ancien loyer revalorise selon l'IRL (art. 17 loi du 6 juillet 1989), sauf travaux importants, loyer manifestement sous-evalue ou vacance superieure a 18 mois.",
           base_legale: ['Art. 17 loi n.89-462 du 6 juillet 1989'],
           action: "Demander la mise en conformite du loyer et la restitution du trop-percu ; saisir la Commission departementale de conciliation en cas de refus.",
@@ -1311,7 +1317,7 @@ function sanitizeAnalysis(parsed, context) {
       var _keepR = [];
       for (var _siR = 0; _siR < _partsR.length; _siR++) {
         var _lR = _partsR[_siR].toLowerCase();
-        var _hedge = /(m[ée]rite|appelle)[^.]{0,40}v[ée]rif/.test(_lR) && /relocation|pr[ée]c[ée]dent|hausse/.test(_lR);
+        var _hedge = /(m[ée]rite|appelle|appelant|justifie|justifiant|n[ée]cessite|impose|requiert)[^.]{0,45}v[ée]rif/.test(_lR) && /relocation|pr[ée]c[ée]dent|hausse|encadrement/.test(_lR);
         if (!_hedge) _keepR.push(_partsR[_siR]);
       }
       parsed.resume = _keepR.join('. ').replace(/\s+/g, ' ').trim();
