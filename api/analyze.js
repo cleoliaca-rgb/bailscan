@@ -1302,6 +1302,34 @@ function sanitizeAnalysis(parsed, context) {
       total_recuperable: _total
     };
 
+    // 5bis. Resume affirmatif quand la relocation est chiffree : on retire la phrase
+    //       hesitante ("merite verification") et on affirme le depassement chiffre.
+    if (RZT && RZT.applicable && RZT.excedent_mensuel > 0 && typeof parsed.resume === 'string' && parsed.resume.length > 0) {
+      var _excR = Math.round(RZT.excedent_mensuel);
+      var _recR = Math.round(RZT.recuperable);
+      var _partsR = parsed.resume.split(/\.\s+/);
+      var _keepR = [];
+      for (var _siR = 0; _siR < _partsR.length; _siR++) {
+        var _lR = _partsR[_siR].toLowerCase();
+        var _hedge = /(m[ée]rite|appelle)[^.]{0,40}v[ée]rif/.test(_lR) && /relocation|pr[ée]c[ée]dent|hausse/.test(_lR);
+        if (!_hedge) _keepR.push(_partsR[_siR]);
+      }
+      parsed.resume = _keepR.join('. ').replace(/\s+/g, ' ').trim();
+      if (parsed.resume && !/[.!?]$/.test(parsed.resume)) parsed.resume += '.';
+      if (!/plafond (a|à) la relocation|d[ée]passe le plafond/i.test(parsed.resume)) {
+        parsed.resume = (parsed.resume + " Le loyer depasse le plafond a la relocation (ancien loyer revalorise par l'IRL) d'environ " + _excR + " euros/mois, soit environ " + _recR + " euros recuperables sur la duree du bail.").trim();
+      }
+    }
+
+    // 5ter. Recompter le titre APRES injection des clauses deterministes (relocation,
+    //       depot...) pour qu'il colle au nombre reel de clauses a corriger.
+    try {
+      var _nbCorr = parsed.clauses_abusives.filter(function (c) { return c && (c.type === 'danger' || c.type === 'warning'); }).length;
+      if (_nbCorr > 0 && /^\s*\d+\s+clause/i.test(parsed.verdict_titre || '')) {
+        parsed.verdict_titre = _nbCorr + (_nbCorr > 1 ? ' clauses à corriger' : ' clause à corriger');
+      }
+    } catch (eVt) { /* noop */ }
+
     // 6. Alimenter le generateur de lettres avec les VRAIS montants
     if (_total > 0) {
       context.trop_percu_total = _total.toFixed(2).replace('.', ',') + ' euros';
