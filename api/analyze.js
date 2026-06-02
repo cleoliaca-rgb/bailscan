@@ -1936,7 +1936,8 @@ module.exports = async function handler(req, res) {
     // On garde l'appel UNIQUE avec un prompt qui demande extraction + analyse.
     // ────────────────────────────────────────────────────────────
     var extractedContext = null;
-    if (context._skip_form && type === 'bail' && (body.pdf || body.text)) {
+    var _formRempli = !!(context.loyer_base || context.ville || context.code_postal);
+    if (type === 'bail' && (body.pdf || body.text) && (context._skip_form || !_formRempli)) {
       // PASSE D'EXTRACTION DEDIEE (Tier 2 : plus de contrainte 429).
       // But : remplir context AVANT la resolution du plafond et l'analyse,
       // pour juger le loyer avec un vrai plafond et chiffrer les honoraires.
@@ -1960,6 +1961,7 @@ module.exports = async function handler(req, res) {
         if (extractedContext.complement_loyer !== undefined && !context.complement_loyer) context.complement_loyer = extractedContext.complement_loyer;
         if (extractedContext.complement_justif && !context.complement_justif) context.complement_justif = extractedContext.complement_justif;
         if (extractedContext.date_debut_bail && !context.date_debut_bail) context.date_debut_bail = extractedContext.date_debut_bail;
+        if (extractedContext.nb_mois_bail && !context.nb_mois_bail) context.nb_mois_bail = extractedContext.nb_mois_bail;
         if (extractedContext.loyer_reference_majore && !context.loyer_reference_majore) context.loyer_reference_majore = extractedContext.loyer_reference_majore;
         if (extractedContext.honoraires_agence !== undefined && (context.honoraires_agence === undefined || context.honoraires_agence === null)) context.honoraires_agence = extractedContext.honoraires_agence;
         if (extractedContext.frais_visite !== undefined && (context.frais_visite === undefined || context.frais_visite === null)) context.frais_visite = extractedContext.frais_visite;
@@ -2016,6 +2018,19 @@ module.exports = async function handler(req, res) {
         if (_prH.year > 0 && !(parseInt(context.annee_loyer_precedent, 10) > 0)) context.annee_loyer_precedent = _prH.year;
         console.log('[handler] loyer precedent lu dans le texte:', _prH.rent, '| annee:', context.annee_loyer_precedent);
       }
+    }
+
+    // nb de mois deterministe depuis la date de prise d'effet (si non fourni),
+    // necessaire pour annualiser trop-percu / complement / relocation.
+    if (type === 'bail' && !(parseInt(context.nb_mois_bail, 10) > 0) && context.date_debut_bail) {
+      try {
+        var _dDeb = new Date(context.date_debut_bail);
+        if (!isNaN(_dDeb.getTime())) {
+          var _now = new Date();
+          var _mois = (_now.getFullYear() - _dDeb.getFullYear()) * 12 + (_now.getMonth() - _dDeb.getMonth());
+          if (_mois > 0 && _mois < 600) { context.nb_mois_bail = _mois; console.log('[handler] nb_mois calcule depuis date_debut:', _mois); }
+        }
+      } catch (eMois) { /* noop */ }
     }
 
     // ────────────────────────────────────────────────────────────
