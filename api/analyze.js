@@ -352,6 +352,50 @@ function computeLoyerM2(context) {
   // Loyer hors charges / surface — règle ALUR
   return Math.round((loyerBase / surface) * 100) / 100;
 }
+
+// ────────────────────────────────────────────────────────────
+// MOTEUR MONETAIRE DETERMINISTE
+// Le modele ne produit AUCUN euro pour le loyer / depot / complement.
+// Tous ces montants sont calcules ici, a partir des valeurs extraites.
+// ────────────────────────────────────────────────────────────
+function computeMoneyEngine(parsed, context) {
+  var loyerBase  = parseFloat(context && context.loyer_base) || 0;
+  var complement = parseFloat(context && context.complement_loyer) || 0;
+  var justif     = ((context && context.complement_justif) || '').trim();
+  var depot      = parseFloat(context && context.depot) || 0;
+  var bienType   = (context && context.type_bien === 'meuble') ? 'meuble' : 'vide';
+  var depotMoisMax = bienType === 'meuble' ? 2 : 1;
+  var nbMois = parseInt(context && context.nb_mois_bail, 10);
+  if (!(nbMois > 0)) nbMois = 0;
+
+  // Loyer HORS CHARGES = loyer de base + complement (le complement fait partie du loyer)
+  var loyerHC = Math.round((loyerBase + complement) * 100) / 100;
+
+  // A) Trop-percu loyer vs plafond (mensuel deja calcule dans loyer.exedent_mensuel)
+  var exedentMensuel = (parsed.loyer && typeof parsed.loyer.exedent_mensuel === 'number' && parsed.loyer.exedent_mensuel > 0)
+    ? parsed.loyer.exedent_mensuel : 0;
+  var tropPercuLoyer = Math.round(exedentMensuel * nbMois * 100) / 100;
+
+  // B) Complement de loyer non justifie (Art. 17-2). Recuperable seulement si la base
+  //    respecte deja le plafond (sinon l'excedent est deja capte par A -> pas de double compte).
+  var complementInjustifie = false, complementRecuperable = 0;
+  if (complement > 0 && exedentMensuel === 0 && justif.length < 15) {
+    complementInjustifie = true;
+    complementRecuperable = Math.round(complement * nbMois * 100) / 100;
+  }
+
+  // C) Depot de garantie excessif (sur loyer HORS CHARGES, base + complement inclus)
+  var depotMax = Math.round(depotMoisMax * loyerHC * 100) / 100;
+  var depotExcedent = (depot > 0 && loyerHC > 0 && depot > depotMax + 0.01)
+    ? Math.round((depot - depotMax) * 100) / 100 : 0;
+
+  return {
+    nbMois: nbMois, loyerHC: loyerHC, depotMoisMax: depotMoisMax,
+    exedentMensuel: exedentMensuel, tropPercuLoyer: tropPercuLoyer,
+    complement: complement, complementInjustifie: complementInjustifie, complementRecuperable: complementRecuperable,
+    depot: depot, depotMax: depotMax, depotExcedent: depotExcedent
+  };
+}
  
 function buildSystemPrompt(context) {
   var type = (context && context.type_analyse) || 'bail';
@@ -885,6 +929,97 @@ function sanitizeAnalysis(parsed, context) {
       }
     }
   }
+
+  // ────────────────────────────────────────────────────────────
+  // MONEY ENGINE : aucun euro invente par le modele. Tous les montants
+  // (loyer / depot / complement / total) sont (re)calcules ici.
+  // ────────────────────────────────────────────────────────────
+  try {
+    var M = computeMoneyEngine(parsed, context);
+    if (!Array.isArray(parsed.clauses_abusives)) parsed.clauses_abusives = [];
+
+    // 1. Annuler tout montant que le modele aurait mis sur loyer/depot/complement
+    //    (anti-invention + anti-double-comptage : ces buckets sont geres ci-dessous).
+    parsed.clauses_abusives.forEach(function (c) {
+      if (!c || typeof c !== 'object') return;
+      var t = ((c.titre || '') + ' ' + (c.description || '')).toLowerCase();
+      if (/d[eé]p[oô]t|garantie|compl[eé]ment|plafond|encadrement/.test(t)) c.montant_recuperable = 0;
+    });
+
+    // 2. Retirer une fausse alerte "depot excessif" si le depot est en realite conforme
+    parsed.clauses_abusives = parsed.clauses_abusives.filter(function (c) {
+      if (!c) return false;
+      var t = ((c.titre || '') + ' ' + (c.description || '')).toLowerCase();
+      var estDepot = /d[eé]p[oô]t|garantie/.test(t);
+      if (estDepot && M.depotExcedent === 0 && c.type === 'danger') return false;
+      return true;
+    });
+
+    // 3. (Re)injecter les clauses chiffrees deterministes
+    function _upsertClause(cl) {
+      var found = false;
+      parsed.clauses_abusives.forEach(function (c) {
+        if (c && c.titre === cl.titre) { c.montant_recuperable = cl.montant_recuperable; found = true; }
+      });
+      if (!found) parsed.clauses_abusives.push(cl);
+    }
+    if (M.depotExcedent > 0) {
+      _upsertClause({
+        type: 'danger', titre: 'Depot de garantie excessif',
+        description: 'Le depot verse (' + M.depot + ' euros) depasse le maximum legal de ' + M.depotMax + ' euros (' + M.depotMoisMax + ' mois de loyer hors charges).',
+        explication_juridique: "L'article 22 de la loi du 6 juillet 1989 limite le depot a " + M.depotMoisMax + " mois de loyer hors charges pour un logement " + (M.depotMoisMax === 2 ? 'meuble' : 'vide') + ".",
+        base_legale: ['Art. 22 loi n.89-462 du 6 juillet 1989'],
+        action: "Demander la restitution immediate de l'excedent.",
+        montant_recuperable: M.depotExcedent
+      });
+    }
+    if (M.complementInjustifie && M.complementRecuperable > 0) {
+      _upsertClause({
+        type: 'danger', titre: 'Complement de loyer non justifie',
+        description: "Un complement de loyer de " + M.complement + " euros/mois est applique sans caracteristiques exceptionnelles de localisation ou de confort justifiees au bail.",
+        explication_juridique: "L'article 17-2 de la loi du 6 juillet 1989 n'autorise un complement de loyer que pour des caracteristiques exceptionnelles dument justifiees. A defaut, il est contestable.",
+        base_legale: ['Art. 17-2 loi n.89-462 du 6 juillet 1989'],
+        action: "Contester le complement aupres du bailleur, puis saisir la Commission departementale de conciliation si necessaire.",
+        montant_recuperable: M.complementRecuperable
+      });
+    }
+
+    // 4. Trop-percu de loyer (depassement plafond) -> porte par loyer.trop_percu
+    if (parsed.loyer && typeof parsed.loyer === 'object') {
+      parsed.loyer.trop_percu = M.tropPercuLoyer > 0 ? M.tropPercuLoyer : null;
+    }
+
+    // 5. Recap chiffre central : SOURCE UNIQUE DE VERITE (front + lettres).
+    //    total = trop-percu loyer + complement + depot + autres clauses chiffrees (honoraires...)
+    var _autresClauses = parsed.clauses_abusives.reduce(function (s, c) {
+      var t = ((c && c.titre) || '').toLowerCase();
+      if (/d[eé]p[oô]t|garantie|compl[eé]ment/.test(t)) return s; // deja comptes
+      var m = (c && typeof c.montant_recuperable === 'number' && c.montant_recuperable > 0) ? c.montant_recuperable : 0;
+      return s + m;
+    }, 0);
+    var _total = Math.round((M.tropPercuLoyer + M.complementRecuperable + M.depotExcedent + _autresClauses) * 100) / 100;
+
+    parsed.recap = {
+      nb_mois: M.nbMois,
+      exedent_mensuel: M.exedentMensuel || 0,
+      trop_percu_loyer: M.tropPercuLoyer || 0,
+      complement_mensuel: M.complementInjustifie ? M.complement : 0,
+      complement_recuperable: M.complementRecuperable || 0,
+      depot_excedent: M.depotExcedent || 0,
+      autres_recuperable: Math.round(_autresClauses * 100) / 100,
+      total_recuperable: _total
+    };
+
+    // 6. Alimenter le generateur de lettres avec les VRAIS montants
+    if (_total > 0) {
+      context.trop_percu_total = _total.toFixed(2).replace('.', ',') + ' euros';
+      context.nb_mois_bail = M.nbMois;
+      if (M.exedentMensuel > 0) context.trop_percu_mensuel = M.exedentMensuel.toFixed(2).replace('.', ',') + ' euros/mois';
+      else if (M.complementInjustifie) context.trop_percu_mensuel = M.complement.toFixed(2).replace('.', ',') + ' euros/mois';
+    }
+
+    console.log('[money] recap', JSON.stringify(parsed.recap));
+  } catch (e) { console.warn('[money] engine echoue:', e && e.message); }
 
   // ────────────────────────────────────────────────────────────
   // COHERENCE SCORE + VERDICT : vocabulaire FIXE, et le score ne doit pas etre
