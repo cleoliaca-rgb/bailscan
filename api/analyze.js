@@ -494,7 +494,8 @@ function buildBailPrompt(context, extraDocs) {
   if (skipForm) {
     extra += "\n=== MODE EXTRACTION + ANALYSE (1 SEUL APPEL) ===\n"
       + "Le formulaire est VIDE. Lis le bail PDF attache et EN UN SEUL JSON :\n"
-      + "1. Inclus un champ 'context_extrait' avec ville, surface, nb_pieces, annee_construction, loyer_base, charges, depot, type_bien, type_location, complement_loyer, complement_justif, date_debut_bail, nb_mois_bail\n"
+      + "1. Inclus un champ 'context_extrait' avec ville, surface, nb_pieces, annee_construction, loyer_base, charges, depot, type_bien, type_location, complement_loyer, complement_justif, date_debut_bail, nb_mois_bail, loyer_reference_majore\n"
+      + "   - loyer_reference_majore : si le bail mentionne un 'loyer de reference majore' en euros/m2 (zone d'encadrement), reporte ce nombre en euros/m2 (ex: 14.90). Sinon 0.\n"
       + "2. Fais l'analyse complete (score, verdict, clauses_abusives, etc.) en utilisant ces valeurs extraites\n"
       + "Date du jour pour calcul nb_mois_bail : " + new Date().toISOString().slice(0, 10) + "\n"
       + "Le champ 'context_extrait' est OBLIGATOIRE dans ton JSON. Format des valeurs : ville/strings sans accents speciaux ni guillemets, nombres en number.\n"
@@ -557,7 +558,7 @@ function buildBailPrompt(context, extraDocs) {
 
   // En mode skip_form, ajouter le champ context_extrait au format
   if (skipForm) {
-    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"Bordeaux\",\"surface\":42,\"nb_pieces\":2,\"annee_construction\":1985,\"loyer_base\":980,\"charges\":95,\"depot\":1960,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"2025-09-01\",\"nb_mois_bail\":8}}');
+    formatExample = formatExample.replace(/\}$/, ',\"context_extrait\":{\"ville\":\"Bordeaux\",\"surface\":42,\"nb_pieces\":2,\"annee_construction\":1985,\"loyer_base\":980,\"charges\":95,\"depot\":1960,\"type_bien\":\"vide\",\"type_location\":\"principale\",\"complement_loyer\":0,\"complement_justif\":\"\",\"date_debut_bail\":\"2025-09-01\",\"nb_mois_bail\":8,\"loyer_reference_majore\":13.50}}');
   }
 
   // Determiner si un bail est fourni (PDF ou texte > 200 chars)
@@ -622,6 +623,7 @@ function sanitizeAnalysis(parsed, context) {
     if (ext.complement_loyer !== undefined && !context.complement_loyer) context.complement_loyer = ext.complement_loyer;
     if (ext.complement_justif && !context.complement_justif) context.complement_justif = ext.complement_justif;
     if (ext.date_debut_bail && !context.date_debut_bail) context.date_debut_bail = ext.date_debut_bail;
+    if (ext.loyer_reference_majore && !context.loyer_reference_majore) context.loyer_reference_majore = ext.loyer_reference_majore;
     console.log('[skip_form] Context hydrate depuis extraction:', JSON.stringify({
       ville: context.ville, surface: context.surface, loyer_base: context.loyer_base,
       depot: context.depot, type_bien: context.type_bien
@@ -658,6 +660,26 @@ function sanitizeAnalysis(parsed, context) {
   //    Resolution faite dans le handler principal et stockee dans
   //    context._plafondInfo. On utilise cette valeur en priorite.
   // ────────────────────────────────────────────────────────────
+  // ── PLAFOND DECLARE AU BAIL (autoritaire) ──
+  // Si le bail mentionne lui-meme le loyer de reference majore (€/m²), c'est la
+  // valeur legalement opposable pour CE contrat. On la prend en priorite quand le
+  // moteur n'a pas de resolution precise (adresse non geolocalisee -> estimation).
+  var _majBail = parseFloat(context && context.loyer_reference_majore) || 0;
+  var _plafExist = context && context._plafondInfo;
+  if (_majBail > 3 && _majBail < 60 && (!_plafExist || _plafExist.estimation)) {
+    var _refBail = Math.round((_majBail / 1.2) * 100) / 100;
+    context._plafondInfo = {
+      plafond_m2: _majBail,
+      ref_m2: _refBail,
+      minore_m2: Math.round((_refBail * 0.7) * 100) / 100,
+      encadrement_actif: true,
+      estimation: false,
+      estimation_note: null,
+      source: 'bail'
+    };
+    console.log('[plafond] Loyer de reference majore lu sur le bail:', _majBail, '€/m² -> plafond autoritaire');
+  }
+
   var plafondInfo = (context && context._plafondInfo) || getLoyerPlafond({
     zone: (context && context.encadrement_zone) || '',
     ville: (context && context.ville) || '',
@@ -1163,10 +1185,10 @@ async function extractContextFromDoc(input) {
   var bailText = (input && input.text) || null;
   if (!pdfBase64 && !bailText) return null;
   try {
-    var promptExtract = "Lis le bail (PDF ou texte fourni) et extrais ces 17 informations.\n"
+    var promptExtract = "Lis le bail (PDF ou texte fourni) et extrais ces 18 informations.\n"
       + "Reponds UNIQUEMENT avec un JSON pur, sans markdown, sans backticks, sans texte avant ou apres.\n"
       + "Format exact :\n"
-      + '{"ville":"Bordeaux","adresse":"12 rue Exemple","code_postal":"33000","surface":42,"nb_pieces":2,"annee_construction":1985,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"2025-09-01","nb_mois_bail":8}\n'
+      + '{"ville":"Bordeaux","adresse":"12 rue Exemple","code_postal":"33000","surface":42,"nb_pieces":2,"annee_construction":1985,"loyer_base":980,"charges":95,"depot":1960,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"2025-09-01","nb_mois_bail":8,"loyer_reference_majore":13.50}\n'
       + "Regles :\n"
       + "- ville : commune du logement loue (string)\n"
       + "- adresse : adresse postale du logement loue (numero + voie, ex '12 rue de la Roquette'), sans la ville ni le code postal. '' si absent\n"
@@ -1180,6 +1202,7 @@ async function extractContextFromDoc(input) {
       + "- type_bien : 'vide' ou 'meuble' (string)\n"
       + "- type_location : 'principale' / 'meublee_principale' / 'autre' (string)\n"
       + "- complement_loyer : montant en euros si present, 0 sinon (number)\n"
+      + "- loyer_reference_majore : si le bail indique un 'loyer de reference majore' en euros/m2 (mention obligatoire en zone d'encadrement), reporte ce nombre en euros/m2 (ex 14.90). ATTENTION c'est bien le prix au m2, pas un total. 0 si absent\n"
       + "- complement_justif : texte de la justification si presente, '' sinon (string)\n"
       + "- honoraires_agence : montant total des honoraires/frais d'agence factures AU LOCATAIRE en euros (number, 0 si absent ou location sans agence)\n"
       + "- frais_visite : frais de visite ou de constitution de dossier factures separement au locataire en euros (number, 0 si absent)\n"
@@ -1313,6 +1336,7 @@ module.exports = async function handler(req, res) {
         if (extractedContext.complement_loyer !== undefined && !context.complement_loyer) context.complement_loyer = extractedContext.complement_loyer;
         if (extractedContext.complement_justif && !context.complement_justif) context.complement_justif = extractedContext.complement_justif;
         if (extractedContext.date_debut_bail && !context.date_debut_bail) context.date_debut_bail = extractedContext.date_debut_bail;
+        if (extractedContext.loyer_reference_majore && !context.loyer_reference_majore) context.loyer_reference_majore = extractedContext.loyer_reference_majore;
         if (extractedContext.honoraires_agence !== undefined && (context.honoraires_agence === undefined || context.honoraires_agence === null)) context.honoraires_agence = extractedContext.honoraires_agence;
         if (extractedContext.frais_visite !== undefined && (context.frais_visite === undefined || context.frais_visite === null)) context.frais_visite = extractedContext.frais_visite;
         console.log('[skip_form] Extraction dediee OK — ville:', context.ville, '| loyer:', context.loyer_base, '| surface:', context.surface, '| honoraires:', context.honoraires_agence);
