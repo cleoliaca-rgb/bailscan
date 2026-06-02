@@ -1376,7 +1376,7 @@ async function extractContextFromDoc(input) {
       + "- depot : depot de garantie verse en euros (number, 0 si absent)\n"
       + "- type_bien : 'vide' ou 'meuble' (string)\n"
       + "- type_location : 'principale' / 'meublee_principale' / 'autre' (string)\n"
-      + "- loyer_reference_majore : si le bail indique un 'loyer de reference majore' en euros/m2 (obligatoire en zone d'encadrement), reporte ce nombre en euros/m2. C'est un prix AU M2, pas un total. 0 si absent.\n"
+      + "- loyer_reference_majore : le 'loyer de reference majore' en euros/m2 (mention obligatoire en zone d'encadrement), tel qu'IMPRIME/ECRIT sur le bail. Typiquement entre 10 et 30 euros/m2. NE LE CALCULE JAMAIS a partir du loyer et de la surface : lis le nombre ecrit. Si tu ne le vois pas ecrit, mets 0 (ne le devine pas).\n"
       + "  >>> CONTROLE : en presence d'un complement, loyer_base doit etre proche de loyer_reference_majore x surface. Si l'addition ne tombe pas juste, relis surface et loyer_base sur le bail avant de repondre.\n"
       + "- complement_justif : texte de la justification du complement si presente (ligne 'Caracteristiques du logement justifiant le complement'), '' si la case est vide (string)\n"
       + "- honoraires_agence : montant total des honoraires/frais d'agence factures AU LOCATAIRE en euros (number, 0 si absent)\n"
@@ -1566,6 +1566,27 @@ module.exports = async function handler(req, res) {
     } else if (context._skip_form) {
       console.log('[handler] Mode skip_form actif — extraction integree dans l\'appel principal');
     }
+
+    // ────────────────────────────────────────────────────────────
+    // SURFACE FIABILISEE PAR LE LOYER DE REFERENCE MAJORE IMPRIME
+    // En zone encadree avec complement, loyer_base = loyer de reference majore (euros/m2) x surface
+    // (mention obligatoire du bail). Le LRM imprime + le loyer de base sont plus fiables que l'OCR
+    // de la surface manuscrite : on en rededuit la surface quand l'ecart est net.
+    // ────────────────────────────────────────────────────────────
+    try {
+      var _lrmB = parseFloat(context.loyer_reference_majore) || 0;
+      var _baseB = parseFloat(context.loyer_base) || 0;
+      var _surfB = parseFloat(context.surface) || 0;
+      if (_lrmB > 3 && _lrmB < 60 && _baseB > 0) {
+        var _surfDeriv = Math.round((_baseB / _lrmB) * 10) / 10;
+        if (_surfDeriv >= 8 && _surfDeriv <= 400 && (!_surfB || Math.abs(_surfDeriv - _surfB) / _surfDeriv > 0.05)) {
+          console.log('[surface] rededuite depuis loyer_base/LRM imprime:', _surfB, '->', _surfDeriv);
+          context.surface = _surfDeriv;
+          context._surface_derivee = true;
+          context.nb_pieces = context.nb_pieces || estimateNbPieces(_surfDeriv);
+        }
+      }
+    } catch (eSurf) { console.warn('[surface] derivation echouee:', eSurf && eSurf.message); }
 
     // ────────────────────────────────────────────────────────────
     // RESOLUTION DU PLAFOND avec le contexte (peut etre vide en skip_form,
