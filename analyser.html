@@ -3616,7 +3616,7 @@ function buildPaywallAmountBanner(data) {
   // l'ecart loyer/plafond. On prend donc le MAXIMUM, jamais la somme, pour ne
   // pas double-compter (ex: loyer 1550 = base 1088 au plafond + complement 462
   // illegal -> recuperable = 462/mois, pas 462 + 462).
-  var tropPercuMensuel = Math.max(exedentLoyer, complementIllegal);
+  var tropPercuMensuel = (exedentLoyer + complementIllegal);
   var tropPercuCumule = Math.round(tropPercuMensuel * nbMois * 100) / 100;
 
   // ── 3 bis. DEPOT ILLEGAL — recuperable immediatement, pas etale dans le temps
@@ -4078,7 +4078,7 @@ function renderLoyerCheck(data) {
   // MAX (jamais la somme) : le complément fait partie du loyer, il est deja capte
   // par l'ecart loyer/plafond quand celui-ci porte sur le loyer total. Coherent
   // avec buildPaywallAmountBanner.
-  var tropPercuMensuel = Math.max(exedentLoyer, complementIllegal);
+  var tropPercuMensuel = (exedentLoyer + complementIllegal);
   var tropPercuCumule = Math.round(tropPercuMensuel * nbMois * 100) / 100;
 
   // 3 bis. Dépôt illégal recuperable immédiatement
@@ -4161,7 +4161,7 @@ function renderLoyerCheck(data) {
     if (loy.plafond_m2) {
       html += '<div class="amount-pill"><div class="amount-pill-label">Plafond €/m² estimé</div><div class="amount-pill-val">' + loy.plafond_m2 + '</div></div>';
     }
-    if (exedentLoyer > 0) html += '<div class="amount-pill" style="border-color:var(--accent)"><div class="amount-pill-label">Excédent mensuel</div><div class="amount-pill-val" style="color:var(--accent)">−' + exedentLoyer.toFixed(2) + ' €/mois</div></div>';
+    if (tropPercuMensuel > 0) html += '<div class="amount-pill" style="border-color:var(--accent)"><div class="amount-pill-label">Excédent mensuel</div><div class="amount-pill-val" style="color:var(--accent)">−' + tropPercuMensuel.toFixed(2) + ' €/mois</div></div>';
     html += '</div>';
   }
  
@@ -4765,7 +4765,7 @@ function getTropPercuMontant() {
   var complementIllegal = 0;
   if (loy && loy.complement_illegal) { complementIllegal = parseFloat(loy.complement_illegal) || 0; }
   else if (complementLoyer > 0 && (isLoyerProbleme || !appState.complementJustif)) { complementIllegal = complementLoyer; }
-  var mensuel = Math.max(exedentLoyer, complementIllegal);
+  var mensuel = (exedentLoyer + complementIllegal);
   var total = Math.round(mensuel * nbMois * 100) / 100;
   return { exedentLoyer: exedentLoyer, complementIllegal: complementIllegal, mensuel: mensuel, total: total, nbMois: nbMois };
 }
