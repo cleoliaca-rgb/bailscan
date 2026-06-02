@@ -1346,10 +1346,19 @@ async function extractContextFromDoc(input) {
   var bailText = (input && input.text) || null;
   if (!pdfBase64 && !bailText) return null;
   try {
-    var promptExtract = "Lis ATTENTIVEMENT le bail fourni (souvent un PDF scanne, parfois manuscrit) et extrais ces 18 informations EN LISANT LES VALEURS REELLES DE CE DOCUMENT.\n"
-      + "IMPERATIF : ne devine pas et ne recopie AUCUNE valeur du schema ci-dessous (ce sont des champs vides, pas des donnees). Lis uniquement ce qui est ecrit sur CE bail, chiffre par chiffre, meme en ecriture manuscrite.\n"
-      + "Reponds UNIQUEMENT avec un JSON pur, sans markdown, sans backticks, sans texte avant ou apres.\n"
-      + "SCHEMA A REMPLIR (valeurs vides = placeholders, NE PAS RECOPIER) :\n"
+    var promptExtract = "Tu lis un BAIL de location francais (souvent un PDF scanne, parfois manuscrit). Procede en DEUX temps.\n\n"
+      + "ETAPE 1 — LECTURE VERBATIM. Recopie d'abord, ligne par ligne, ce que tu LIS REELLEMENT sur le document, chiffre par chiffre (meme manuscrit). Si un repere est illisible ou absent, ecris ?. Ne complete pas, ne devine pas :\n"
+      + "Ville du logement : ...\n"
+      + "Surface habitable (en m2) : ...\n"
+      + "Loyer mensuel total : ...\n"
+      + "Loyer de base (egal au loyer de reference majore) : ...\n"
+      + "Montant du complement de loyer : ...\n"
+      + "Loyer de reference majore (en euros/m2) : ...\n"
+      + "Provisions sur charges : ...\n"
+      + "Depot de garantie : ...\n"
+      + "Date de prise d'effet : ...\n\n"
+      + "ETAPE 2 — JSON. Ensuite seulement, remplis le schema ci-dessous A PARTIR de ta lecture de l'etape 1. Aucune valeur inventee, aucune valeur recopiee du schema (ce sont des placeholders vides). Le JSON doit etre la DERNIERE chose de ta reponse, en JSON pur (sans markdown ni backticks).\n"
+      + "SCHEMA A REMPLIR (placeholders, NE PAS RECOPIER) :\n"
       + '{"ville":"","adresse":"","code_postal":"","surface":0,"nb_pieces":0,"annee_construction":0,"loyer_base":0,"charges":0,"depot":0,"type_bien":"vide","type_location":"principale","complement_loyer":0,"complement_justif":"","honoraires_agence":0,"frais_visite":0,"date_debut_bail":"","nb_mois_bail":0,"loyer_reference_majore":0,"loyer_total_mensuel":0}\n'
       + "Regles :\n"
       + "- ville : commune du logement loue (string)\n"
@@ -1387,7 +1396,7 @@ async function extractContextFromDoc(input) {
       },
       body: JSON.stringify({
         model: EXTRACT_MODEL,
-        max_tokens: 500,
+        max_tokens: 1200,
         messages: [{
           role: "user",
           content: (pdfBase64
