@@ -2783,7 +2783,7 @@ function showExitPopup() {
 function getUrgenceLegale() {
   var loy = analysisResult && analysisResult.loyer ? analysisResult.loyer : null;
   var dateDebut = appState.dateDebutBail || null;
-  var hasComplement = appState.complementLoyer > 0;
+  var hasComplement = appState.complementLoyer > 0 && (loy && loy.encadrement_strict === true);
   var hasExcedent = loy && (loy.statut === 'danger' || loy.statut === 'warning');
   var bienType = appState.bienType || 'vide';
 
@@ -3702,15 +3702,17 @@ function buildPaywallAmountBanner(data) {
   }
  
   // ── 2. COMPLÉMENT DE LOYER ILLÉGAL ──────────────────────────
-  // Inclus si : l'IA signale un problème ET un complément existe,
-  // OU si le complément est sans justification saisie
+  // Mécanisme propre à l'encadrement des loyers (défini vs loyer de référence majoré).
+  // Hors encadrement strict, le complément fait partie du loyer (capté par la relocation).
   var complementIllegal = 0;
-  if (loy && loy.complement_illegal) {
-    complementIllegal = parseFloat(loy.complement_illegal) || 0;
-  } else if (complementLoyer > 0 && isLoyerProbleme) {
-    complementIllegal = complementLoyer;
-  } else if (complementLoyer > 0 && !appState.complementJustif) {
-    complementIllegal = complementLoyer;
+  if (loy && loy.encadrement_strict === true) {
+    if (loy.complement_illegal) {
+      complementIllegal = parseFloat(loy.complement_illegal) || 0;
+    } else if (complementLoyer > 0 && isLoyerProbleme) {
+      complementIllegal = complementLoyer;
+    } else if (complementLoyer > 0 && !appState.complementJustif) {
+      complementIllegal = complementLoyer;
+    }
   }
  
   // ── 3. TOTAL ────────────────────────────────────────────────
@@ -4210,14 +4212,18 @@ function renderLoyerCheck(data) {
     exedentLoyer = Math.round((loyerBase - loyerMajore) * 100) / 100;
   }
  
-  // 2. Complément illégal — inclus si l'IA signale un problème OU si pas de justification
+  // 2. Complément illégal — le complément de loyer n'existe qu'en zone d'ENCADREMENT
+  //    des loyers (défini par rapport au loyer de référence majoré). Hors encadrement,
+  //    il fait partie du loyer (capté par le plafond à la relocation), pas un excédent.
   var complementIllegal = 0;
-  if (loy.complement_illegal) {
-    complementIllegal = parseFloat(loy.complement_illegal) || 0;
-  } else if (complementLoyer > 0 && isLoyerProbleme) {
-    complementIllegal = complementLoyer;
-  } else if (complementLoyer > 0 && !appState.complementJustif) {
-    complementIllegal = complementLoyer;
+  if (loy.encadrement_strict === true) {
+    if (loy.complement_illegal) {
+      complementIllegal = parseFloat(loy.complement_illegal) || 0;
+    } else if (complementLoyer > 0 && isLoyerProbleme) {
+      complementIllegal = complementLoyer;
+    } else if (complementLoyer > 0 && !appState.complementJustif) {
+      complementIllegal = complementLoyer;
+    }
   }
  
   // 3. Total trop-perçu cumulé sur la durée du bail
@@ -4333,7 +4339,9 @@ function renderLoyerCheck(data) {
   }
  
   // ── ALERTES COMPLÉMENT DE LOYER ──────────────────────────────
-  if (complementLoyer > 0) {
+  // Mécanisme propre à l'encadrement des loyers uniquement (action en nullité /
+  // restitution du complément). Hors encadrement strict, pas de complément à contester.
+  if (complementLoyer > 0 && loy.encadrement_strict === true) {
     var dateDebutBail = appState.dateDebutBail ? new Date(appState.dateDebutBail) : null;
     var now = new Date();
     var moisDepuisDebut = dateDebutBail ? Math.floor((now - dateDebutBail) / (1000 * 60 * 60 * 24 * 30.44)) : null;
