@@ -4,9 +4,9 @@
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-4-20250514";
 // Modele dedie a l'EXTRACTION (lecture du document, souvent scanne/manuscrit).
-// Defaut = MODEL. Mettre BAILSCAN_EXTRACT_MODEL=<modele Opus> sur Vercel pour une
-// bien meilleure lecture des baux manuscrits/scannes, sans toucher au code.
-const EXTRACT_MODEL = process.env.BAILSCAN_EXTRACT_MODEL || MODEL;
+// Opus lit l'ecriture manuscrite et les scans nettement mieux que Sonnet.
+// Surchargeable via BAILSCAN_EXTRACT_MODEL ; repli auto sur MODEL si l'appel echoue.
+const EXTRACT_MODEL = process.env.BAILSCAN_EXTRACT_MODEL || "claude-opus-4-8";
 
 // ─────────────────────────────────────────────────────────────
 // GRILLES D'ENCADREMENT EMBARQUEES (lookup precis ville x secteur x pieces x epoque x type)
@@ -1349,6 +1349,8 @@ async function extractContextFromDoc(input) {
     var promptExtract = "Tu lis un BAIL de location francais (souvent un PDF scanne, parfois manuscrit). Procede en DEUX temps.\n\n"
       + "ETAPE 1 — LECTURE VERBATIM. Recopie d'abord, ligne par ligne, ce que tu LIS REELLEMENT sur le document, chiffre par chiffre (meme manuscrit). Si un repere est illisible ou absent, ecris ?. Ne complete pas, ne devine pas :\n"
       + "Ville du logement : ...\n"
+      + "Adresse du logement (numero et voie) : ...\n"
+      + "Code postal du logement : ...\n"
       + "Surface habitable (en m2) : ...\n"
       + "Loyer mensuel total : ...\n"
       + "Loyer de base (egal au loyer de reference majore) : ...\n"
@@ -1386,25 +1388,31 @@ async function extractContextFromDoc(input) {
       + "- loyer_total_mensuel : le loyer mensuel TOTAL hors charges (number). C'est souvent la valeur la plus fiable car repetee plusieurs fois (ligne 'Montant du loyer mensuel', 'Total du pour un mois' moins les charges, 'dernier loyer du precedent locataire'). En cas de complement : loyer_total_mensuel = loyer_base + complement_loyer. Reporte le montant corrobore. 0 si introuvable.\n"
       + "Si une info n'est pas dans le bail : valeur par defaut (0 pour les numbers, '' pour les strings), mais TOUJOURS un JSON valide complet.";
 
-    var response = await fetch(ANTHROPIC_API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-        "anthropic-beta": "pdfs-2024-09-25"
-      },
-      body: JSON.stringify({
-        model: EXTRACT_MODEL,
-        max_tokens: 1200,
-        messages: [{
-          role: "user",
-          content: (pdfBase64
-            ? [ { type: "document", source: { type: "base64", media_type: "application/pdf", data: pdfBase64 } }, { type: "text", text: promptExtract } ]
-            : [ { type: "text", text: "BAIL A ANALYSER :\n\n" + bailText + "\n\n" + promptExtract } ])
-        }]
-      })
-    });
+    var _msgContent = (pdfBase64
+      ? [ { type: "document", source: { type: "base64", media_type: "application/pdf", data: pdfBase64 } }, { type: "text", text: promptExtract } ]
+      : [ { type: "text", text: "BAIL A ANALYSER :\n\n" + bailText + "\n\n" + promptExtract } ]);
+
+    async function _callExtract(modelId) {
+      return await fetch(ANTHROPIC_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.ANTHROPIC_API_KEY,
+          "anthropic-version": "2023-06-01",
+          "anthropic-beta": "pdfs-2024-09-25"
+        },
+        body: JSON.stringify({ model: modelId, max_tokens: 1200, messages: [{ role: "user", content: _msgContent }] })
+      });
+    }
+
+    var response = await _callExtract(EXTRACT_MODEL);
+    // Repli automatique sur le modele standard si le modele d'extraction est indisponible
+    if (!response.ok && EXTRACT_MODEL !== MODEL) {
+      var _et = '';
+      try { _et = await response.text(); } catch (e) {}
+      console.warn('[extract-doc] modele', EXTRACT_MODEL, 'indisponible (' + response.status + ') — repli sur', MODEL, _et.slice(0, 120));
+      response = await _callExtract(MODEL);
+    }
 
     if (!response.ok) {
       var errTxt = await response.text();
