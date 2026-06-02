@@ -3688,12 +3688,31 @@ function buildPaywallAmountBanner(data) {
 
   // ── 3 ter. TOTAL GLOBAL : trop-percu cumule + depot illegal recuperable
   var tropPercuTotal = Math.round((tropPercuCumule + depotIllegal) * 100) / 100;
+  // SOURCE DE VERITE : le recap serveur inclut la relocation zone tendue, les
+  // honoraires et toutes les clauses chiffrees. S'il est plus eleve, il fait foi.
+  var _ztB = (typeof analysisResult !== 'undefined' && analysisResult && analysisResult.zone_tendue) ? analysisResult.zone_tendue : null;
+  var _relocRecB = (_ztB && _ztB.applicable && typeof _ztB.recuperable === 'number') ? _ztB.recuperable : 0;
+  var _recapTotB = (typeof analysisResult !== 'undefined' && analysisResult && analysisResult.recap && typeof analysisResult.recap.total_recuperable === 'number') ? analysisResult.recap.total_recuperable : 0;
+  // local n'inclut PAS la relocation ; recap (si fourni) l'inclut deja.
+  // max(local + relocation, recap) couvre les deux cas sans double-compte.
+  tropPercuTotal = Math.max(Math.round((tropPercuTotal + _relocRecB) * 100) / 100, _recapTotB);
 
-  // Détail pour affichage
+  // Détail pour affichage — depuis le recap serveur si present (coherent avec le total)
   var lignesDetail = [];
-  if (exedentLoyer > 0) lignesDetail.push('Loyer : +' + exedentLoyer.toFixed(2) + ' €/mois × ' + nbMois + ' mois = ' + Math.round(exedentLoyer * nbMois) + '€');
-  if (complementIllegal > 0) lignesDetail.push('Complément illégal : +' + complementIllegal.toFixed(2) + ' €/mois × ' + nbMois + ' mois = ' + Math.round(complementIllegal * nbMois) + '€');
-  if (depotIllegal > 0) lignesDetail.push('Dépôt excessif récupérable : ' + Math.round(depotIllegal) + '€');
+  if (_recapTotB > 0 && analysisResult && analysisResult.recap) {
+    var _RB = analysisResult.recap;
+    var _honB = Math.max(0, Math.round(((_RB.autres_recuperable || 0) - (_RB.relocation_recuperable || 0)) * 100) / 100);
+    if ((_RB.trop_percu_loyer || 0) > 0) lignesDetail.push('Trop-perçu de loyer : ' + Math.round(_RB.trop_percu_loyer) + '€');
+    if ((_RB.complement_recuperable || 0) > 0) lignesDetail.push('Complément de loyer illégal : ' + Math.round(_RB.complement_recuperable) + '€');
+    if ((_RB.relocation_recuperable || 0) > 0) lignesDetail.push('Loyer au-dessus du plafond à la relocation (zone tendue) : ' + Math.round(_RB.relocation_recuperable) + '€');
+    if ((_RB.depot_excedent || 0) > 0) lignesDetail.push('Dépôt excessif récupérable : ' + Math.round(_RB.depot_excedent) + '€');
+    if (_honB > 0) lignesDetail.push('Honoraires / frais excessifs : ' + _honB + '€');
+  } else {
+    if (exedentLoyer > 0) lignesDetail.push('Loyer : +' + exedentLoyer.toFixed(2) + ' €/mois × ' + nbMois + ' mois = ' + Math.round(exedentLoyer * nbMois) + '€');
+    if (complementIllegal > 0) lignesDetail.push('Complément illégal : +' + complementIllegal.toFixed(2) + ' €/mois × ' + nbMois + ' mois = ' + Math.round(complementIllegal * nbMois) + '€');
+    if (_relocRecB > 0) lignesDetail.push('Loyer au-dessus du plafond à la relocation (zone tendue) : ' + Math.round(_relocRecB) + '€');
+    if (depotIllegal > 0) lignesDetail.push('Dépôt excessif récupérable : ' + Math.round(depotIllegal) + '€');
+  }
 
   var html = '';
 
@@ -4173,6 +4192,14 @@ function renderLoyerCheck(data) {
 
   // 3 ter. Total global = cumulé + dépôt illégal
   var tropPercuTotal = Math.round((tropPercuCumule + depotIllegalTP) * 100) / 100;
+  // SOURCE DE VERITE : le recap serveur inclut la relocation zone tendue, les
+  // honoraires et toutes les clauses chiffrees. S'il est plus eleve, il fait foi.
+  var _zt = (typeof analysisResult !== 'undefined' && analysisResult && analysisResult.zone_tendue) ? analysisResult.zone_tendue : null;
+  var _relocRec = (_zt && _zt.applicable && typeof _zt.recuperable === 'number') ? _zt.recuperable : 0;
+  var _recapTot = (typeof analysisResult !== 'undefined' && analysisResult && analysisResult.recap && typeof analysisResult.recap.total_recuperable === 'number') ? analysisResult.recap.total_recuperable : 0;
+  // local n'inclut PAS la relocation ; recap (si fourni) l'inclut deja.
+  // max(local + relocation, recap) couvre les deux cas sans double-compte.
+  tropPercuTotal = Math.max(Math.round((tropPercuTotal + _relocRec) * 100) / 100, _recapTot);
 
   // ── BANNER TROP-PERÇU ────────────────────────────────────────
   var _lowConf = (data && data._low_confidence) || (typeof analysisResult !== 'undefined' && analysisResult && analysisResult._low_confidence);
@@ -4182,11 +4209,22 @@ function renderLoyerCheck(data) {
       + '<div style="font-size:0.84rem;color:var(--gris);line-height:1.65;">Les montants ont été lus automatiquement sur un document scanné ou manuscrit et semblent incohérents (lecture des chiffres incertaine). Vérifiez la <strong>surface</strong>, le <strong>loyer de base</strong> et le <strong>complément</strong> avant toute démarche. Aucun montant total fiable n\'est affiché tant que ces valeurs ne sont pas corrigées.</div>'
       + '</div>';
   }
-  if (!_lowConf && (isLoyerProbleme || depotIllegalTP > 0) && tropPercuTotal > 0) {
+  if (!_lowConf && (isLoyerProbleme || depotIllegalTP > 0 || _relocRec > 0) && tropPercuTotal > 0) {
     var detailParts = [];
-    if (exedentLoyer > 0 && nbMois > 0) detailParts.push(Math.round(exedentLoyer * nbMois) + '€ (loyer ' + exedentLoyer.toFixed(0) + '€/mois × ' + nbMois + ' mois)');
-    if (complementIllegal > 0 && nbMois > 0) detailParts.push(Math.round(complementIllegal * nbMois) + '€ (complément ' + complementIllegal.toFixed(0) + '€/mois × ' + nbMois + ' mois)');
-    if (depotIllegalTP > 0) detailParts.push(Math.round(depotIllegalTP) + '€ (dépôt excessif récupérable immédiatement)');
+    if (_recapTot > 0 && analysisResult && analysisResult.recap) {
+      var _R2 = analysisResult.recap;
+      var _hon2 = Math.max(0, Math.round(((_R2.autres_recuperable || 0) - (_R2.relocation_recuperable || 0)) * 100) / 100);
+      if ((_R2.trop_percu_loyer || 0) > 0) detailParts.push(Math.round(_R2.trop_percu_loyer) + '€ (trop-perçu de loyer)');
+      if ((_R2.complement_recuperable || 0) > 0) detailParts.push(Math.round(_R2.complement_recuperable) + '€ (complément de loyer illégal)');
+      if ((_R2.relocation_recuperable || 0) > 0) detailParts.push(Math.round(_R2.relocation_recuperable) + '€ (loyer au-dessus du plafond à la relocation, zone tendue)');
+      if ((_R2.depot_excedent || 0) > 0) detailParts.push(Math.round(_R2.depot_excedent) + '€ (dépôt excessif récupérable immédiatement)');
+      if (_hon2 > 0) detailParts.push(_hon2 + '€ (honoraires / frais excessifs)');
+    } else {
+      if (exedentLoyer > 0 && nbMois > 0) detailParts.push(Math.round(exedentLoyer * nbMois) + '€ (loyer ' + exedentLoyer.toFixed(0) + '€/mois × ' + nbMois + ' mois)');
+      if (complementIllegal > 0 && nbMois > 0) detailParts.push(Math.round(complementIllegal * nbMois) + '€ (complément ' + complementIllegal.toFixed(0) + '€/mois × ' + nbMois + ' mois)');
+      if (_relocRec > 0) detailParts.push(Math.round(_relocRec) + '€ (loyer au-dessus du plafond à la relocation, zone tendue)');
+      if (depotIllegalTP > 0) detailParts.push(Math.round(depotIllegalTP) + '€ (dépôt excessif récupérable immédiatement)');
+    }
     html += '<div class="trop-percu-banner">';
     html += '<div class="trop-percu-banner-body">';
     html += '<div class="trop-percu-banner-label">Remboursement total estimé</div>';
@@ -4887,7 +4925,8 @@ function getTotalReclamable() {
     if ((R.complement_recuperable || 0) > 0) dets.push({ label: 'complement de loyer illegal', montant: Math.round(R.complement_recuperable) });
     if ((R.relocation_recuperable || 0) > 0) dets.push({ label: 'loyer au-dessus du plafond a la relocation', montant: Math.round(R.relocation_recuperable) });
     if ((R.depot_excedent || 0) > 0) dets.push({ label: 'depot de garantie excessif', montant: Math.round(R.depot_excedent) });
-    if ((R.autres_recuperable || 0) > 0) dets.push({ label: 'honoraires / frais excessifs', montant: Math.round(R.autres_recuperable) });
+    var _honT = Math.max(0, Math.round(((R.autres_recuperable || 0) - (R.relocation_recuperable || 0)) * 100) / 100);
+    if (_honT > 0) dets.push({ label: 'honoraires / frais excessifs', montant: _honT });
     return {
       total: Math.round((R.total_recuperable || 0) * 100) / 100,
       detail: dets,
