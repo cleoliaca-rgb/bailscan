@@ -761,11 +761,26 @@ function sanitizeAnalysis(parsed, context) {
         }
       }
       if (_noteMil) {
-        parsed.loyer.estimation = true;
-        parsed.loyer.estimation_note = parsed.loyer.estimation_note ? (parsed.loyer.estimation_note + ' + ' + _noteMil) : _noteMil;
-        if (parsed.loyer.statut === 'danger') parsed.loyer.statut = 'warning';
-        if (parsed.loyer.analyse) parsed.loyer.analyse = parsed.loyer.analyse + ' ' + _noteMil;
-        console.log('[millesime] date bail', _dDeb, 'hors periode de la grille', _vkM, '→ verdict adouci');
+        // L'ecart inter-annuel des grilles est faible (~1-4%/an). On n'adoucit le
+        // verdict que si le loyer est PROCHE du plafond (a 8% pres), cas ou l'annee
+        // peut faire basculer ok <-> depassement. Sinon le constat reste ferme.
+        var _loyM2c = (typeof loyerM2 === 'number' && loyerM2 > 0) ? loyerM2 : computeLoyerM2(context);
+        var _plafc = parsed.loyer.plafond_m2_num;
+        var _ecartRel = (typeof _loyM2c === 'number' && _loyM2c > 0 && _plafc > 0) ? Math.abs(_loyM2c - _plafc) / _plafc : 1;
+        if (_ecartRel <= 0.08) {
+          // cas limite -> prudence : estimation + verdict adouci + mention complete
+          parsed.loyer.estimation = true;
+          parsed.loyer.estimation_note = parsed.loyer.estimation_note ? (parsed.loyer.estimation_note + ' + ' + _noteMil) : _noteMil;
+          if (parsed.loyer.statut === 'danger') parsed.loyer.statut = 'warning';
+          if (parsed.loyer.analyse) parsed.loyer.analyse = parsed.loyer.analyse + ' ' + _noteMil;
+          console.log('[millesime] bail', _dDeb, 'hors periode', _vkM, '+ loyer proche du plafond (' + Math.round(_ecartRel * 100) + '%) → verdict adouci');
+        } else {
+          // cas tranche -> verdict ferme conserve, simple mention informative
+          var _noteLeg = "A noter : ce bail a ete signe sous un arrete anterieur. Les loyers de reference varient peu d'une annee a l'autre, ce qui ne change pas ce constat. En cas de doute, verifiez le simulateur officiel a la date de signature.";
+          parsed.loyer.estimation_note = parsed.loyer.estimation_note ? (parsed.loyer.estimation_note + ' + ' + _noteLeg) : _noteLeg;
+          if (parsed.loyer.analyse) parsed.loyer.analyse = parsed.loyer.analyse + ' ' + _noteLeg;
+          console.log('[millesime] bail', _dDeb, 'hors periode', _vkM, '+ loyer loin du plafond (' + Math.round(_ecartRel * 100) + '%) → verdict ferme + mention');
+        }
       }
     }
   } catch (e) { console.warn('[millesime] verif echouee:', e && e.message); }
