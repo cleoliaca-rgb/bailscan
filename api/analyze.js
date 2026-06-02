@@ -1878,6 +1878,18 @@ async function extractContextFromDoc(input) {
       if (_pr.year > 0 && !(parseInt(parsed.annee_loyer_precedent, 10) > 0)) parsed.annee_loyer_precedent = _pr.year;
     }
 
+    // DIAG TEMP : extrait de la transcription verbatim autour de "precedent",
+    // pour comprendre ce que le modele lit reellement en mode image. A retirer.
+    try {
+      var _vlow = String(txt).toLowerCase();
+      var _ip = _vlow.indexOf('prec'); if (_ip < 0) _ip = _vlow.indexOf('préc'); if (_ip < 0) _ip = _vlow.indexOf('ancien');
+      parsed._diag_verbatim = (_ip >= 0)
+        ? ('...' + txt.slice(Math.max(0, _ip - 30), _ip + 90).replace(/\s+/g, ' ') + '...')
+        : ('[pas de "precedent" dans le verbatim] head=' + txt.slice(0, 120).replace(/\s+/g, ' '));
+      parsed._diag_regex = _pr ? (_pr.rent + '/' + _pr.year) : 'aucun match';
+      parsed._diag_input = bailText ? ('texte ' + bailText.length) : 'image/vision';
+    } catch (eDV) { /* noop */ }
+
     console.log('[extract-doc] OK — ville:', parsed.ville, '| loyer:', parsed.loyer_base, '| surface:', parsed.surface, '| complement:', parsed.complement_loyer, '| lowConf:', !!parsed._extraction_low_confidence);
     return parsed;
   } catch (e) {
@@ -2326,12 +2338,13 @@ module.exports = async function handler(req, res) {
     // et le fallback frontend si jamais le backend n'a pas force le plafond).
     if (extractedContext) parsed.context_extrait = extractedContext;
  
-    // DIAGNOSTIC OPT-IN : si le texte colle contient "DIAGZT", on prefixe le resume
-    // avec l'etat reel cote serveur (invisible pour les vrais utilisateurs).
-    if (body.text && /DIAGZT/i.test(body.text)) {
+    // DIAGNOSTIC : si "DIAGZT" dans le texte colle, OU en mode upload (_skip_form),
+    // on prefixe le resume avec l'etat reel cote serveur. TEMPORAIRE (a retirer).
+    if ((body.text && /DIAGZT/i.test(body.text)) || context._skip_form || (!body.text && body.pdf)) {
       try {
         var _rz = parsed.zone_tendue || null;
-        var _diag = '[DIAGZT] text=' + body.text.length
+        var _ec = extractedContext || {};
+        var _diag = '[DIAG] in=' + (body.text ? ('texte ' + body.text.length) : 'image')
           + ' | cp=' + (context.code_postal || '?')
           + ' | ville=' + (context.ville || '?')
           + ' | zt=' + isZoneTendue(context)
@@ -2339,6 +2352,8 @@ module.exports = async function handler(req, res) {
           + ' | prev=' + (context.loyer_precedent_locataire || 0)
           + ' | annee=' + (context.annee_loyer_precedent || 0)
           + ' | nbMois=' + (context.nb_mois_bail || 0)
+          + ' | regex=' + (_ec._diag_regex || '?')
+          + ' | verbatim=' + (_ec._diag_verbatim || '(aucun)')
           + ' | reloc=' + (_rz ? JSON.stringify({ app: _rz.applicable, prem: _rz.premiere_location, prev: _rz.loyer_precedent, plaf: _rz.plafond_relocation, exc: _rz.excedent_mensuel, rec: _rz.recuperable }) : 'null');
         if (typeof parsed.resume === 'string') parsed.resume = _diag + ' || ' + parsed.resume;
         console.log(_diag);
