@@ -2306,6 +2306,25 @@ module.exports = async function handler(req, res) {
     // et le fallback frontend si jamais le backend n'a pas force le plafond).
     if (extractedContext) parsed.context_extrait = extractedContext;
  
+    // DIAGNOSTIC OPT-IN : si le texte colle contient "DIAGZT", on prefixe le resume
+    // avec l'etat reel cote serveur (invisible pour les vrais utilisateurs).
+    if (body.text && /DIAGZT/i.test(body.text)) {
+      try {
+        var _rz = parsed.zone_tendue || null;
+        var _diag = '[DIAGZT] text=' + body.text.length
+          + ' | cp=' + (context.code_postal || '?')
+          + ' | ville=' + (context.ville || '?')
+          + ' | zt=' + isZoneTendue(context)
+          + ' | encStrict=' + !!(parsed.loyer && parsed.loyer.encadrement_strict)
+          + ' | prev=' + (context.loyer_precedent_locataire || 0)
+          + ' | annee=' + (context.annee_loyer_precedent || 0)
+          + ' | nbMois=' + (context.nb_mois_bail || 0)
+          + ' | reloc=' + (_rz ? JSON.stringify({ app: _rz.applicable, prem: _rz.premiere_location, prev: _rz.loyer_precedent, plaf: _rz.plafond_relocation, exc: _rz.excedent_mensuel, rec: _rz.recuperable }) : 'null');
+        if (typeof parsed.resume === 'string') parsed.resume = _diag + ' || ' + parsed.resume;
+        console.log(_diag);
+      } catch (eDiag) { /* noop */ }
+    }
+
     return res.status(200).json(parsed);
  
   } catch (error) {
