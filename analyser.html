@@ -577,7 +577,7 @@ select.form-input { cursor:pointer; }
 /* MODAL */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:300; align-items:center; justify-content:center; padding:20px; }
 .modal-overlay.active { display:flex; }
-.modal { background:white; border-radius:20px; padding:40px; max-width:480px; width:100%; }
+.modal { background:white; border-radius:20px; padding:40px; max-width:480px; width:100%; max-height:90vh; overflow-y:auto; }
 .modal-title { font-family:'Instrument Serif',serif; font-size:1.8rem; color:var(--noir); margin-bottom:8px; }
 .modal-sub { font-size:0.88rem; color:var(--gris); margin-bottom:28px; }
 .modal-features { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
@@ -946,13 +946,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <button class="modal-close" onclick="closeModal()">×</button>
     <div class="modal-title">Analyse complète</div>
     <div class="modal-sub">Débloquez l'intégralité de votre rapport BailScan</div>
-    <div class="modal-features">
-      <div class="modal-feature">Toutes les clauses analysées avec explications juridiques</div>
-      <div class="modal-feature">Vérification encadrement des loyers + calcul trop-perçu</div>
-      <div class="modal-feature">Plan d'action priorisé étape par étape</div>
-      <div class="modal-feature">5 lettres officielles générées selon votre situation</div>
-      <div class="modal-feature">Références légales complètes (loi 1989, ALUR, ELAN)</div>
+    <style>
+      .pw-tabs { display:flex; gap:6px; margin-bottom:14px; }
+      .pw-tab { flex:1; border:1.5px solid var(--border); background:#fff; border-radius:10px; padding:9px 6px; font-family:inherit; font-size:0.72rem; font-weight:700; color:var(--gris); cursor:pointer; line-height:1.2; transition:all .15s; }
+      .pw-tab.active { border-color:var(--accent); background:rgba(200,75,47,0.07); color:var(--accent); }
+      .pw-preview { position:relative; background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px 18px 8px; text-align:left; font-size:0.78rem; color:var(--noir); margin-bottom:14px; box-shadow:0 4px 16px rgba(0,0,0,0.06); overflow:hidden; min-height:240px; }
+      .pw-prev-meta { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--accent); font-weight:700; margin-bottom:12px; }
+      .pw-prev-head { display:flex; justify-content:space-between; font-size:0.7rem; color:var(--gris); margin-bottom:10px; gap:10px; }
+      .pw-prev-objet { font-weight:700; margin-bottom:10px; }
+      .pw-prev-clear { line-height:1.6; margin-bottom:12px; }
+      .pw-blur { display:flex; flex-direction:column; gap:8px; filter:blur(4.5px); user-select:none; pointer-events:none; opacity:0.6; padding-bottom:30px; }
+      .pw-blur span { display:block; height:8px; width:100%; background:linear-gradient(90deg,#d8d2c7,#ece7dd); border-radius:3px; }
+      .pw-lock { position:absolute; left:0; right:0; bottom:0; background:linear-gradient(180deg, rgba(255,255,255,0) 0%, #fff 52%); padding:26px 14px 12px; text-align:center; font-size:0.72rem; font-weight:700; color:var(--noir); }
+      .pw-step { display:flex; gap:10px; margin-bottom:13px; align-items:flex-start; }
+      .pw-step-num { flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; font-size:0.72rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+      .pw-step-delai { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; color:var(--accent); margin-bottom:1px; }
+      .pw-step-txt { font-size:0.77rem; line-height:1.4; }
+      .pw-clause-chip { display:inline-block; font-size:0.56rem; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; padding:2px 7px; border-radius:4px; margin-bottom:6px; }
+      .pw-clause-chip.danger { color:var(--accent); background:rgba(200,75,47,0.1); }
+      .pw-clause-chip.warning { color:#b7791f; background:rgba(251,191,36,0.15); }
+      .pw-clause-ref { font-size:0.67rem; color:var(--gris); margin-top:5px; }
+      .pw-included { font-size:0.67rem; color:var(--gris); line-height:1.5; margin-bottom:18px; text-align:center; }
+      @media (max-width:520px){
+        .modal { padding:24px 18px; }
+        .modal-title { font-size:1.45rem; }
+        .modal-sub { margin-bottom:18px; }
+        .pw-tab { font-size:0.64rem; padding:8px 3px; }
+        .pw-preview { font-size:0.76rem; min-height:232px; }
+      }
+    </style>
+    <div class="pw-tabs" id="pwTabs">
+      <button type="button" class="pw-tab active" data-tab="lettres" onclick="switchPreviewTab('lettres')">📄 Lettres prêtes</button>
+      <button type="button" class="pw-tab" data-tab="plan" onclick="switchPreviewTab('plan')">✅ Plan d'action daté</button>
+      <button type="button" class="pw-tab" data-tab="clauses" onclick="switchPreviewTab('clauses')">⚖️ Clauses décryptées</button>
     </div>
+    <div id="paywallPreview" class="pw-preview"></div>
+    <div class="pw-included">Inclus : chaque clause analysée article par article · encadrement + trop-perçu calculé · 5 lettres officielles · plan d'action avec délais légaux et qui contacter · références juridiques (loi 1989, ALUR, ELAN)</div>
     <div class="modal-price"><div class="modal-price-n">29€</div><div class="modal-price-sub">paiement unique</div></div>
     <div class="modal-price-once">Paiement unique</div>
     <button class="btn-pay" id="btnPayConfirm" onclick="payWithStripe()">Récupérer mon argent pour seulement 29€ →</button>
@@ -4724,8 +4753,92 @@ function trackBeginCheckout(source) {
   } catch (e) { /* fail silent — ne jamais bloquer le funnel */ }
 }
 
-function openModal() { document.getElementById('modalOverlay').classList.add('active'); }
+function openModal() { try { buildPaywallPreview(); } catch(e){} document.getElementById('modalOverlay').classList.add('active'); }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+
+// Aperçu paywall en 3 onglets-bénéfices (lettres / plan d'action daté / clauses décryptées).
+// Chaque onglet montre un teaser concret personnalisé + le reste flouté avec cadenas.
+var _pwPreviews = {};
+function buildPaywallPreview() {
+  var ctx = (analysisResult && analysisResult.context_extrait) || {};
+  var ville = ctx.ville || appState.ville || 'votre commune';
+  var clauses = (analysisResult && analysisResult.clauses_abusives) || [];
+  var m = (typeof getTropPercuMontant === 'function') ? getTropPercuMontant() : { total: 0 };
+  var hasMoney = m && m.total > 0;
+  var dateStr = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+
+  // 1) LETTRES
+  var objet, intro;
+  if (hasMoney) {
+    objet = "Demande de remboursement de sommes indûment perçues";
+    intro = "Je suis locataire du logement situé à " + ville + ". Après vérification, le loyer qui m'est appliqué dépasse le plafond légal. Je vous demande le remboursement des sommes trop-perçues, soit " + Math.round(m.total) + " €…";
+  } else if (clauses.length > 0) {
+    objet = "Demande de mise en conformité du contrat de location";
+    intro = "Je suis locataire du logement situé à " + ville + ". L'analyse de mon bail a révélé " + clauses.length + " clause" + (clauses.length > 1 ? "s" : "") + " non conforme" + (clauses.length > 1 ? "s" : "") + " à la loi du 6 juillet 1989…";
+  } else {
+    objet = "Demande relative à mon contrat de location";
+    intro = "Je suis locataire du logement situé à " + ville + ". Je souhaite porter à votre connaissance les éléments suivants concernant mon bail…";
+  }
+  _pwPreviews.lettres =
+    '<div class="pw-prev-meta">✉️ Lettre recommandée avec AR — 1 sur 5</div>'
+    + '<div class="pw-prev-head"><span>[Vos coordonnées]</span><span>' + esc(ville) + ', le ' + dateStr + '</span></div>'
+    + '<div class="pw-prev-objet">Objet : ' + esc(objet) + '</div>'
+    + '<div class="pw-prev-clear">Madame, Monsieur,<br>' + esc(intro) + '</div>'
+    + '<div class="pw-blur"><span></span><span></span><span style="width:88%"></span><span></span><span style="width:55%"></span></div>'
+    + '<div class="pw-lock">🔒 Vos 5 lettres prêtes à imprimer et envoyer (mise en demeure, relance, saisine CDC, dépôt…) — débloquées après paiement</div>';
+
+  // 2) PLAN D'ACTION
+  _pwPreviews.plan =
+    '<div class="pw-prev-meta">✅ Votre feuille de route, dans l\'ordre</div>'
+    + '<div class="pw-step"><div class="pw-step-num">1</div><div><div class="pw-step-delai">Dès maintenant</div><div class="pw-step-txt">Envoyer la mise en demeure au propriétaire en recommandé (lettre fournie).</div></div></div>'
+    + '<div class="pw-step"><div class="pw-step-num">2</div><div><div class="pw-step-delai">Sans réponse sous 1 mois</div><div class="pw-step-txt">Saisir la Commission Départementale de Conciliation — gratuit.</div></div></div>'
+    + '<div class="pw-blur"><span></span><span style="width:80%"></span><span></span><span style="width:60%"></span></div>'
+    + '<div class="pw-lock">🔒 Toutes les étapes, les délais légaux à respecter et qui contacter dans l\'ordre — débloqués après paiement</div>';
+
+  // 3) CLAUSES
+  var first = clauses[0];
+  var clauseHtml;
+  if (first) {
+    var t = (first.type === 'danger') ? 'danger' : 'warning';
+    var lbl = (t === 'danger') ? 'Illégale' : 'À surveiller';
+    var ref = Array.isArray(first.base_legale) ? first.base_legale.join(', ') : (first.base_legale || 'Loi du 6 juillet 1989');
+    var expl = String(first.explication_juridique || first.description || '');
+    if (expl.length > 150) expl = expl.slice(0, 150) + '…';
+    clauseHtml =
+      '<div class="pw-clause-chip ' + t + '">' + lbl + '</div>'
+      + '<div style="font-weight:700;margin-bottom:4px;">' + esc(first.titre || 'Clause analysée') + '</div>'
+      + '<div style="line-height:1.5;">' + esc(expl) + '</div>'
+      + '<div class="pw-clause-ref">Base légale : ' + esc(ref) + '</div>';
+  } else {
+    clauseHtml =
+      '<div class="pw-clause-chip warning">Analyse</div>'
+      + '<div style="font-weight:700;margin-bottom:4px;">Chaque clause passée au crible</div>'
+      + '<div style="line-height:1.5;">Statut, explication juridique et base légale pour chaque article de votre bail.</div>';
+  }
+  var nAutres = Math.max(0, clauses.length - 1);
+  var lockClauses = nAutres > 0
+    ? ('+ ' + nAutres + ' autre' + (nAutres > 1 ? 's' : '') + ' clause' + (nAutres > 1 ? 's' : '') + ' décryptée' + (nAutres > 1 ? 's' : ''))
+    : 'Décryptage juridique complet';
+  _pwPreviews.clauses =
+    '<div class="pw-prev-meta">⚖️ Clauses analysées article par article</div>'
+    + clauseHtml
+    + '<div class="pw-blur" style="margin-top:12px;"><span></span><span style="width:75%"></span><span></span></div>'
+    + '<div class="pw-lock">🔒 ' + lockClauses + ' avec base légale et montant récupérable — débloqué après paiement</div>';
+
+  // onglet par défaut selon ce qui a été trouvé
+  switchPreviewTab(hasMoney ? 'lettres' : (clauses.length > 0 ? 'clauses' : 'plan'));
+}
+
+function switchPreviewTab(tab) {
+  var box = document.getElementById('paywallPreview');
+  if (!box) return;
+  box.innerHTML = _pwPreviews[tab] || '';
+  var tabs = document.querySelectorAll('#pwTabs .pw-tab');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.toggle('active', tabs[i].getAttribute('data-tab') === tab);
+  }
+}
  
 function payWithStripe() {
   var btn = document.getElementById('btnPayConfirm');
