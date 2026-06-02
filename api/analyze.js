@@ -329,12 +329,37 @@ function estimateNbPieces(surface) {
   return 4;
 }
 
+// Communes en encadrement des loyers STRICT (plafond opposable), ~69 communes
+// sur 9-10 territoires. A reverifier sur encadrementdesloyers.gouv.fr (la liste s'etend).
+// NB : Lyon/Villeurbanne ont connu des episodes de suspension judiciaire — le simulateur
+// officiel reste la source de verite ; on prefere ici inclure et renvoyer vers l'officiel.
 const VILLES_ENCADREMENT = [
-  "paris", "lyon", "villeurbanne", "bordeaux", "montpellier",
-  "grenoble", "lille", "roubaix", "tourcoing", "hellemmes",
-  "lomme", "saint-denis", "montreuil", "vincennes", "boulogne-billancourt",
-  "nanterre", "creteil", "ivry-sur-seine", "bagnolet", "aubervilliers",
-  "pantin", "bobigny", "stains", "saint-ouen"
+  // Paris
+  "paris",
+  // Lille (uniquement Lille + communes associees, PAS Roubaix/Tourcoing)
+  "lille", "hellemmes", "lomme",
+  // Plaine Commune (9)
+  "saint-denis", "aubervilliers", "epinay-sur-seine", "ile-saint-denis",
+  "la courneuve", "courneuve", "pierrefitte", "saint-ouen", "stains", "villetaneuse",
+  // Lyon Metropole
+  "lyon", "villeurbanne",
+  // Est Ensemble (9)
+  "bagnolet", "bobigny", "bondy", "pre-saint-gervais", "les lilas",
+  "montreuil", "noisy-le-sec", "pantin", "romainville",
+  // Montpellier
+  "montpellier",
+  // Bordeaux
+  "bordeaux",
+  // Pays Basque (principales communes encadrees)
+  "bayonne", "anglet", "biarritz", "bidart", "guethary", "saint-jean-de-luz",
+  "ciboure", "urrugne", "hendaye", "boucau", "bassussarry", "arcangues", "arbonne",
+  "ahetze", "saint-pierre-d'irube", "mouguerre", "villefranque", "ustaritz",
+  "cambo-les-bains", "espelette", "larressore", "jatxou", "halsou",
+  // Grenoble-Alpes Metropole (communes integralement ou partiellement encadrees)
+  "grenoble", "echirolles", "saint-martin-d'heres", "fontaine", "sassenage",
+  "saint-egreve", "seyssinet-pariset", "seyssins", "pont-de-claix", "la tronche",
+  "meylan", "domene", "murianette", "venon", "gieres", "eybens", "poisat",
+  "bresson", "claix", "varces", "fontanil"
 ];
  
 function isVilleEncadree(ville) {
@@ -787,7 +812,7 @@ function sanitizeAnalysis(parsed, context) {
       parsed.loyer.exedent_mensuel = null;
       parsed.loyer.trop_percu = null;
       parsed.loyer.hors_encadrement = true;
-      parsed.loyer.analyse = "Cette ville n'est pas concernee par l'encadrement des loyers : aucun loyer plafond legal ne s'y applique. A titre purement indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2).";
+      parsed.loyer.analyse = "Votre commune n'applique pas l'encadrement du NIVEAU des loyers : aucun loyer plafond legal n'est opposable a la signature du bail. A titre indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2). Attention : votre commune peut relever de la ZONE TENDUE, un autre dispositif ou le loyer a la relocation ne peut pas depasser celui du locataire precedent (revise selon l'IRL). Verifiez votre situation exacte sur le simulateur officiel encadrementdesloyers.gouv.fr avec votre adresse.";
     } else if (depasse) {
       parsed.loyer.exedent_mensuel = Math.round((loyerM2 - plafondInfo.plafond_m2) * surface * 100) / 100;
       if (estim) {
