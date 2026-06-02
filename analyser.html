@@ -924,6 +924,25 @@ select.form-input { cursor:pointer; }
 <script>if (window.pdfjsLib) { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }</script>
 </head>
 <body>
+<!-- Retour de paiement Stripe : masquer immediatement le hero pendant le deblocage -->
+<script>
+(function(){
+  try {
+    var p = new URLSearchParams(location.search);
+    if (p.get('paid') === 'true') {
+      var o = document.createElement('div');
+      o.id = '_bsUnlockOverlay';
+      o.setAttribute('style','position:fixed;inset:0;z-index:2147483647;background:#0d0d0d;color:#F5F1E8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;font-family:Lato,system-ui,-apple-system,sans-serif;');
+      o.innerHTML = '<div style="font-size:1.05rem;font-weight:600;letter-spacing:.01em;">Déblocage de votre rapport…</div>'
+        + '<div style="width:34px;height:34px;border:3px solid rgba(245,241,232,0.25);border-top-color:#F5F1E8;border-radius:50%;animation:_bsspin .8s linear infinite;"></div>'
+        + '<style>@keyframes _bsspin{to{transform:rotate(360deg)}}</style>';
+      (document.body || document.documentElement).appendChild(o);
+      // Filet de securite : ne jamais laisser l'overlay bloque
+      setTimeout(function(){ var x=document.getElementById('_bsUnlockOverlay'); if(x&&x.parentNode) x.parentNode.removeChild(x); }, 6000);
+    }
+  } catch(e){}
+})();
+</script>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP4BD2RZ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -5028,12 +5047,23 @@ function checkPaymentReturn() {
             try { localStorage.setItem('_bs_last_purchase_eventid', _bsSid); } catch(e) {}
           }
         } catch (e) { console.warn('Purchase tracking error:', e); }
+        // ── Aller DIRECTEMENT sur la section debloquee (pas de flash hero) ──
+        requestAnimationFrame(function () {
+          var ps = document.getElementById('paidSection');
+          if (ps && ps.style.display !== 'none') {
+            try { ps.scrollIntoView({ behavior: 'auto', block: 'start' }); } catch (e) { ps.scrollIntoView(); }
+          }
+          var ov = document.getElementById('_bsUnlockOverlay');
+          if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+        });
         // isPaid est déjà true → displayResults gère l'affichage direct
-      } catch(e) { console.error(e); }
+      } catch(e) { console.error(e); var ovE = document.getElementById('_bsUnlockOverlay'); if (ovE && ovE.parentNode) ovE.parentNode.removeChild(ovE); }
     } else {
+      var ovN = document.getElementById('_bsUnlockOverlay'); if (ovN && ovN.parentNode) ovN.parentNode.removeChild(ovN);
       alert('Paiement confirmé ! Relancez une analyse pour accéder au rapport complet.');
     }
   } else if (params.get('paid') === 'false') {
+    var ovF = document.getElementById('_bsUnlockOverlay'); if (ovF && ovF.parentNode) ovF.parentNode.removeChild(ovF);
     window.history.replaceState({}, '', '/analyser');
   }
 }
