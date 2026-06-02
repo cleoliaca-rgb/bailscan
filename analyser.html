@@ -4839,6 +4839,18 @@ function getIdentite() {
 }
  
 function getTropPercuMontant() {
+  // SOURCE DE VERITE : si le serveur a renvoye un recap, on s'aligne dessus
+  // (il integre loyer, complement, depot, relocation zone tendue, honoraires).
+  var R = analysisResult && analysisResult.recap;
+  if (R && typeof R.total_recuperable === 'number') {
+    return {
+      exedentLoyer: R.exedent_mensuel || 0,
+      complementIllegal: R.complement_mensuel || 0,
+      mensuel: (R.exedent_mensuel || 0) + (R.complement_mensuel || 0),
+      total: R.total_recuperable || 0,
+      nbMois: R.nb_mois || 0
+    };
+  }
   var loy = analysisResult && analysisResult.loyer ? analysisResult.loyer : null;
   var loyerBase = appState.loyerBase || 0;
   var loyerMajore = appState.loyerMajore || 0;
@@ -4865,6 +4877,26 @@ function getTropPercuMontant() {
  * Retourne le total + un detail texte pour le CTA personnalise.
  */
 function getTotalReclamable() {
+  // SOURCE UNIQUE DE VERITE : le serveur calcule TOUS les montants dans recap
+  // (trop-percu loyer, complement, depot excessif, relocation zone tendue,
+  // honoraires et autres clauses chiffrees). On s'aligne dessus.
+  var R = analysisResult && analysisResult.recap;
+  if (R && typeof R.total_recuperable === 'number') {
+    var dets = [];
+    if ((R.trop_percu_loyer || 0) > 0) dets.push({ label: 'trop-percu de loyer', montant: Math.round(R.trop_percu_loyer) });
+    if ((R.complement_recuperable || 0) > 0) dets.push({ label: 'complement de loyer illegal', montant: Math.round(R.complement_recuperable) });
+    if ((R.relocation_recuperable || 0) > 0) dets.push({ label: 'loyer au-dessus du plafond a la relocation', montant: Math.round(R.relocation_recuperable) });
+    if ((R.depot_excedent || 0) > 0) dets.push({ label: 'depot de garantie excessif', montant: Math.round(R.depot_excedent) });
+    if ((R.autres_recuperable || 0) > 0) dets.push({ label: 'honoraires / frais excessifs', montant: Math.round(R.autres_recuperable) });
+    return {
+      total: Math.round((R.total_recuperable || 0) * 100) / 100,
+      detail: dets,
+      tropPercu: (R.trop_percu_loyer || 0) + (R.complement_recuperable || 0) + (R.relocation_recuperable || 0),
+      depotIllegal: R.depot_excedent || 0,
+      nbMois: R.nb_mois || 0,
+      hasDetails: dets.length > 0
+    };
+  }
   var tp = getTropPercuMontant();
   var loyerBase = appState.loyerBase || 0;
   var bienType = appState.bienType || 'vide';
