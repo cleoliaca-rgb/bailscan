@@ -1684,6 +1684,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- TEASER clauses cachées -->
       <div id="hiddenClausesTeaser" style="display:none;margin-top:12px;border-radius:14px;overflow:hidden;border:2px solid var(--accent);">
+        <!-- Titres réels des clauses les plus graves (révélés), action verrouillée -->
+        <div id="revealedClauseTitles"></div>
         <!-- Fausses clauses floutées (3 cartes pour donner de la matiere) -->
         <div style="position:relative;">
           <div style="padding:16px 18px;background:white;filter:blur(5px);pointer-events:none;user-select:none;">
@@ -3562,6 +3564,7 @@ function displayResults(data) {
 
   // Si déjà payé → afficher directement le contenu payant
   if (isPaid) {
+    try { if (typeof hideStickyBuyBar === 'function') hideStickyBuyBar(); document.body.style.paddingBottom = ''; } catch(e){}
     document.getElementById('paywallSection').style.display = 'none';
     document.getElementById('paidSection').style.display = 'block';
     showPaidContent();
@@ -3600,11 +3603,51 @@ function displayResults(data) {
       teaserText = hiddenCount + ' clause' + (hiddenCount > 1 ? 's' : '') + ' analysée' + (hiddenCount > 1 ? 's' : '');
     }
     if (teaserCount) teaserCount.textContent = teaserText;
+
+    // Titres réels des clauses les plus graves (dangers d'abord, puis warnings),
+    // pour créer le désir. L'explication, la base légale et l'action restent verrouillées.
+    try {
+      var _rev = document.getElementById('revealedClauseTitles');
+      if (_rev) {
+        var _ordered = clauses.filter(function(c){ return c && (c.type === 'danger' || c.type === 'warning'); })
+          .sort(function(a,b){ return (a.type === 'danger' ? 0 : 1) - (b.type === 'danger' ? 0 : 1); });
+        var _top = _ordered.slice(0, 3);
+        if (_top.length > 0) {
+          var _esc = function(s){ return String(s == null ? '' : s).replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); };
+          var _h = '';
+          _top.forEach(function(c){
+            var dgr = c.type === 'danger';
+            var dot = dgr ? '#c84b2f' : '#f59e0b';
+            var tag = dgr ? 'Illégale' : 'À risque';
+            _h += '<div style="display:flex;align-items:flex-start;gap:10px;padding:13px 16px;background:white;border-bottom:1px solid var(--border);">';
+            _h += '<span style="width:8px;height:8px;border-radius:50%;background:' + dot + ';margin-top:6px;flex-shrink:0;"></span>';
+            _h += '<div style="flex:1;min-width:0;">';
+            _h += '<div style="font-weight:700;font-size:0.9rem;color:var(--noir);line-height:1.35;">' + _esc(c.titre || 'Clause litigieuse') + '</div>';
+            _h += '<div style="display:flex;align-items:center;gap:6px;margin-top:5px;font-size:0.72rem;color:var(--gris);">';
+            _h += '<span style="background:' + (dgr ? 'rgba(200,75,47,0.12)' : 'rgba(245,158,11,0.14)') + ';color:' + dot + ';font-weight:700;padding:2px 8px;border-radius:20px;">' + tag + '</span>';
+            _h += '<span>🔒 Pourquoi + base légale + comment réclamer</span>';
+            _h += '</div></div></div>';
+          });
+          var _reste = _nbProb - _top.length;
+          if (_reste > 0) {
+            _h += '<div style="padding:11px 16px;background:white;border-bottom:1px solid var(--border);font-size:0.82rem;color:var(--gris);font-weight:600;">+ ' + _reste + ' autre' + (_reste > 1 ? 's' : '') + ' clause' + (_reste > 1 ? 's' : '') + ' à corriger…</div>';
+          }
+          _rev.innerHTML = _h;
+        }
+      }
+    } catch(eRev) { /* noop */ }
   } else if (teaser) {
     teaser.style.display = 'none';
   }
  
   document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+  // Barre d'achat collante (hors payé)
+  try {
+    if (!(typeof isPaid !== 'undefined' && isPaid === true)) {
+      var _stTot = (typeof getTotalReclamable === 'function') ? (getTotalReclamable().total || 0) : 0;
+      buildStickyBuyBar(_stTot);
+    } else { hideStickyBuyBar(); }
+  } catch(eSt) { /* noop */ }
   // Date rapport
   var dateEl = document.getElementById('reportDate');
   if (dateEl) dateEl.textContent = 'Analyse effectuée le ' + new Date().toLocaleDateString('fr-FR');
@@ -4014,12 +4057,16 @@ function renderMarcheLocal(data) {
     ztHtml += '<span style="background:rgba(200,75,47,0.15);color:#c84b2f;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;">Au-dessus du plafond à la relocation</span>';
     ztHtml += '</div>';
     ztHtml += '<div style="font-family:\'Instrument Serif\',serif;font-size:2.8rem;color:white;line-height:1;margin-bottom:8px;">+' + ztMois.toLocaleString('fr-FR') + ' <span style="color:#ff8a6c;">€/mois</span></div>';
-    ztHtml += '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:18px;">';
-    ztHtml += 'En zone tendue, le loyer ne peut pas dépasser celui du locataire précédent revalorisé par l\'IRL' + (ztPlaf ? ' (plafond estimé <strong style="color:rgba(255,255,255,0.95);">' + Math.round(ztPlaf).toLocaleString('fr-FR') + ' €</strong>)' : '') + '.<br>';
-    ztHtml += '<span style="opacity:0.85;font-size:0.82rem;">Trop-perçu estimé récupérable : <strong style="color:#ff8a6c;">' + ztRec.toLocaleString('fr-FR') + ' €</strong>' + (zt.estimation ? ' (estimation IRL)' : '') + '.</span>';
+    ztHtml += '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:14px;">';
+    ztHtml += 'En zone tendue, votre loyer dépasse le plafond légal applicable à la relocation (ancien loyer revalorisé par l\'IRL).<br>';
+    ztHtml += '<span style="opacity:0.9;font-size:0.82rem;">Trop-perçu estimé récupérable : <strong style="color:#ff8a6c;">' + ztRec.toLocaleString('fr-FR') + ' €</strong>' + (zt.estimation ? ' (estimation IRL)' : '') + '.</span>';
     ztHtml += '</div>';
-    ztHtml += '<button onclick="trackBeginCheckout(\'zone_tendue\');openModal()" style="background:#ff6b4a;color:#0d0d0d;font-weight:700;font-size:0.88rem;padding:13px 22px;border-radius:10px;border:none;cursor:pointer;width:100%;font-family:inherit;transition:transform .15s;">Voir le détail et la lettre de contestation →</button>';
-    ztHtml += '<div style="margin-top:10px;font-size:0.7rem;color:rgba(255,255,255,0.4);text-align:center;">Inclus dans le rapport complet à 29€ · Lettre prête à envoyer</div>';
+    ztHtml += '<div style="display:flex;align-items:center;gap:9px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;margin-bottom:16px;">';
+    ztHtml += '<span style="font-size:0.95rem;">🔒</span>';
+    ztHtml += '<span style="font-size:0.78rem;color:rgba(255,255,255,0.78);line-height:1.45;">Plafond légal exact, base juridique et <strong style="color:rgba(255,255,255,0.95);">lettre de contestation prête à envoyer</strong> : dans votre dossier.</span>';
+    ztHtml += '</div>';
+    ztHtml += '<button onclick="trackBeginCheckout(\'zone_tendue\');openModal()" style="background:#ff6b4a;color:#0d0d0d;font-weight:700;font-size:0.88rem;padding:13px 22px;border-radius:10px;border:none;cursor:pointer;width:100%;font-family:inherit;transition:transform .15s;">Récupérer ces ' + ztRec.toLocaleString('fr-FR') + ' € · 29 € →</button>';
+    ztHtml += '<div style="margin-top:10px;font-size:0.7rem;color:rgba(255,255,255,0.4);text-align:center;">Lettre prête à envoyer · satisfait ou remboursé</div>';
     ztHtml += '</div>';
     el.innerHTML = ztHtml;
     return;
@@ -4224,8 +4271,11 @@ function renderLoyerCheck(data) {
     html += '<div class="trop-percu-banner-amount">' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' €</div>';
     html += '<div class="trop-percu-banner-detail">';
     if (detailParts.length > 0) html += detailParts.join('<br>');
-    html += '</div></div>';
-    html += '<button class="trop-percu-banner-cta" onclick="var ps=document.getElementById(\'paidSection\'); var paid=(typeof isPaid!==\'undefined\'&&isPaid)||(ps&&ps.style.display===\'block\'); if(paid&&ps){ps.scrollIntoView({behavior:\'smooth\'});}else{trackBeginCheckout(\'trop_percu_lettre\');openModal();}">Générer la lettre →</button>';
+    html += '</div>';
+    html += '<div style="margin-top:10px;font-size:0.78rem;color:rgba(255,255,255,0.95);line-height:1.5;font-weight:600;">Votre plan pour les récupérer : 3 étapes + lettres prêtes à signer, sans avocat.</div>';
+    html += '<div style="margin-top:3px;font-size:0.72rem;color:rgba(255,255,255,0.72);line-height:1.45;">Satisfait ou remboursé · aucune irrégularité détectée = analyse offerte.</div>';
+    html += '</div>';
+    html += '<button class="trop-percu-banner-cta" onclick="var ps=document.getElementById(\'paidSection\'); var paid=(typeof isPaid!==\'undefined\'&&isPaid)||(ps&&ps.style.display===\'block\'); if(paid&&ps){ps.scrollIntoView({behavior:\'smooth\'});}else{trackBeginCheckout(\'trop_percu_lettre\');openModal();}">Récupérer mes ' + Math.round(tropPercuTotal).toLocaleString('fr-FR') + ' € · 29 €</button>';
     html += '</div>';
   } else if (isLoyerProbleme && nbMois === 0 && (exedentLoyer > 0 || complementIllegal > 0)) {
     // Date non renseignée — inciter à la saisir
@@ -5020,8 +5070,52 @@ function trackBeginCheckout(source) {
   } catch (e) { /* fail silent — ne jamais bloquer le funnel */ }
 }
 
-function openModal() { try { buildPaywallPreview(); } catch(e){} document.getElementById('modalOverlay').classList.add('active'); }
-function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+// ── BARRE D'ACHAT COLLANTE : toujours visible pendant le scroll (mobile-first) ──
+var _stickyBarVisible = false;
+function buildStickyBuyBar(total) {
+  if (typeof isPaid !== 'undefined' && isPaid === true) { hideStickyBuyBar(); return; }
+  var bar = document.getElementById('stickyBuyBar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'stickyBuyBar';
+    bar.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:250;background:#0d0d0d;border-top:1px solid rgba(255,255,255,0.1);box-shadow:0 -6px 24px rgba(0,0,0,0.28);padding:10px 14px;transform:translateY(130%);transition:transform .28s ease;';
+    document.body.appendChild(bar);
+  }
+  var mt = (total && total > 0) ? Math.round(total).toLocaleString('fr-FR') : null;
+  var left = mt
+    ? '<div style="font-size:0.68rem;color:rgba(255,255,255,0.6);line-height:1.1;">Récupérez jusqu\'à</div><div style="font-family:\'Instrument Serif\',serif;font-size:1.35rem;color:#fff;line-height:1.05;">' + mt + ' €</div>'
+    : '<div style="font-size:0.8rem;color:rgba(255,255,255,0.9);font-weight:600;line-height:1.25;">Débloquez votre dossier complet</div>';
+  bar.innerHTML = '<div style="max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px;">'
+    + '<div style="flex:1;min-width:0;">' + left + '</div>'
+    + '<button onclick="trackBeginCheckout(\'sticky_bar\');openModal()" style="flex-shrink:0;background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:0.92rem;padding:13px 20px;border-radius:12px;cursor:pointer;box-shadow:0 4px 16px rgba(200,75,47,0.4);">Débloquer · 29 € →</button>'
+    + '</div>';
+  bar.dataset.ready = '1';
+  document.body.style.paddingBottom = '84px';
+  _stickyBarVisible = true;
+  _refreshStickyBar();
+}
+function hideStickyBuyBar() {
+  var bar = document.getElementById('stickyBuyBar');
+  if (bar) bar.style.transform = 'translateY(130%)';
+}
+function _refreshStickyBar() {
+  var bar = document.getElementById('stickyBuyBar');
+  if (!bar || bar.dataset.ready !== '1') return;
+  if (typeof isPaid !== 'undefined' && isPaid === true) { bar.style.transform = 'translateY(130%)'; return; }
+  var m = document.getElementById('modalOverlay');
+  var modalOpen = m && m.classList.contains('active');
+  var pwVisible = false;
+  var pw = document.getElementById('paywallSection');
+  if (pw && pw.style.display !== 'none') {
+    var r = pw.getBoundingClientRect();
+    pwVisible = r.top < (window.innerHeight - 90);
+  }
+  bar.style.transform = (modalOpen || pwVisible) ? 'translateY(130%)' : 'translateY(0)';
+}
+window.addEventListener('scroll', function(){ if (_stickyBarVisible) _refreshStickyBar(); }, { passive: true });
+
+function openModal() { hideStickyBuyBar(); try { buildPaywallPreview(); } catch(e){} document.getElementById('modalOverlay').classList.add('active'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); _refreshStickyBar(); }
 
 // Aperçu paywall en 3 onglets-bénéfices (lettres / plan d'action daté / clauses décryptées).
 // Chaque onglet montre un teaser concret personnalisé + le reste flouté avec cadenas.
@@ -5571,6 +5665,7 @@ function resetApp() {
   document.getElementById('bailUploadPanel') && (document.getElementById('bailUploadPanel').style.display='none');
   document.getElementById('sansBailPanel') && (document.getElementById('sansBailPanel').style.display='none');
   analysisResult = null; isPaid = false;
+  try { if (typeof hideStickyBuyBar === 'function') { _stickyBarVisible = false; hideStickyBuyBar(); } document.body.style.paddingBottom = ''; } catch(e){}
   document.getElementById('resultsSection').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('typeSelectorBlock').style.display = 'grid';
