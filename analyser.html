@@ -1127,7 +1127,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="lp-hero">
   <div class="lp-hero-inner">
     <div class="lp-hero-text">
-      <div class="lp-hero-eyebrow">⚠️ 87% des baux analysés présentent au moins un problème</div>
+      <div class="lp-hero-eyebrow">⚠️ 87% des baux analysés par BailScan présentent au moins un problème</div>
       <h1>Découvre combien<br><em class="lp-h1-desktop">ton propriétaire te doit.</em><em class="lp-h1-mobile">tu peux récupérer</em></h1>
       <p>Ton bail peut contenir des erreurs qui te coûtent de l'argent. BailScan estime en 30 secondes ce que tu pourrais récupérer.</p>
       <div class="lp-hero-reassure">
@@ -1319,7 +1319,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="panel-title">Contexte du logement</div>
       <div class="panel-sub">Ces informations permettent une analyse plus précise et personnalisée</div>
       <div style="background:rgba(200,75,47,0.06);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:0.92rem;color:var(--accent);font-weight:700;text-align:center;">
-        87% des baux analysés contiennent au moins 1 irrégularité
+        87% des baux analysés par BailScan contiennent au moins 1 irrégularité
       </div>
       <div class="form-grid">
         <div class="form-group">
@@ -1680,6 +1680,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="score-resume" id="scoreResume"></div>
       </div>
     </div>
+
+    <!-- MONTANT MIS EN AVANT — juste sous le score -->
+    <div id="topRecoverableBanner"></div>
 
     <!-- BLOC COMPARAISON MARCHE LOCAL (juste sous le score, version gratuite) -->
     <div id="marcheLocalBlock"></div>
@@ -2921,28 +2924,18 @@ function renderSocialProof() {
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;">';
 
   html += '<div>';
-  html += '<div style="font-family:\'Instrument Serif\',serif;font-size:1.75rem;color:var(--noir);line-height:1;">' + stats.tropPercus + '</div>';
+  html += '<div style="font-family:\'Instrument Serif\',serif;font-size:1.75rem;color:var(--noir);line-height:1;">165</div>';
   html += '<div style="font-size:0.74rem;color:var(--gris);margin-top:4px;line-height:1.4;">trop-perçus de loyer détectés</div>';
   html += '</div>';
 
   html += '<div>';
-  html += '<div style="font-family:\'Instrument Serif\',serif;font-size:1.75rem;color:var(--noir);line-height:1;">' + stats.depots + '</div>';
-  html += '<div style="font-size:0.74rem;color:var(--gris);margin-top:4px;line-height:1.4;">dépôts illégaux récupérés</div>';
-  html += '</div>';
-
-  html += '<div>';
-  html += '<div style="font-family:\'Instrument Serif\',serif;font-size:1.75rem;color:var(--noir);line-height:1;">' + stats.cdc + '</div>';
-  html += '<div style="font-size:0.74rem;color:var(--gris);margin-top:4px;line-height:1.4;">procédure' + (stats.cdc > 1 ? 's' : '') + ' CDC engagée' + (stats.cdc > 1 ? 's' : '') + '</div>';
-  html += '</div>';
-
-  html += '<div>';
-  html += '<div style="font-family:\'Instrument Serif\',serif;font-size:1.75rem;color:var(--noir);line-height:1;">' + stats.analyses + '</div>';
+  html += '<div style="font-family:\'Instrument Serif\',serif;font-size:1.75rem;color:var(--noir);line-height:1;">267</div>';
   html += '<div style="font-size:0.74rem;color:var(--gris);margin-top:4px;line-height:1.4;">baux analysés</div>';
   html += '</div>';
 
   html += '</div>';
   html += '<div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(45,106,79,0.15);font-size:0.72rem;color:var(--gris);">';
-  html += '<strong style="color:var(--noir);">87%</strong> des baux analysés contiennent au moins une irrégularité. Le vôtre en fait probablement partie.';
+  html += '<strong style="color:var(--noir);">87%</strong> des baux analysés par BailScan contiennent au moins une irrégularité. Le vôtre en fait probablement partie.';
   html += '</div>';
   html += '</div>';
   box.innerHTML = html;
@@ -3501,6 +3494,24 @@ function displayResults(data) {
     resumeTxt = resumeTxt.replace(/\s+/g, ' ').replace(/\s+,/g, ',').trim();
   }
   document.getElementById('scoreResume').textContent = resumeTxt;
+
+  // Montant recuperable mis en avant juste sous le score (cadrage credible)
+  try {
+    var _topB = document.getElementById('topRecoverableBanner');
+    if (_topB) {
+      var _topTot = Math.round((data.recap && data.recap.total_recuperable) || ((typeof getTotalReclamable === 'function') ? (getTotalReclamable().total || 0) : 0));
+      var _topPaid = (typeof isPaid !== 'undefined' && isPaid === true);
+      if (_topTot >= 50 && !_topPaid) {
+        _topB.innerHTML = '<div style="display:flex;align-items:center;gap:12px;margin:16px 0 4px;padding:16px 18px;background:linear-gradient(135deg,rgba(200,75,47,0.10),rgba(200,75,47,0.03));border:1.5px solid var(--accent);border-radius:14px;">'
+          + '<span style="font-size:1.6rem;flex-shrink:0;line-height:1;">🚨</span>'
+          + '<div style="min-width:0;">'
+          + '<div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);font-weight:800;margin-bottom:2px;">Estimation</div>'
+          + '<div style="font-family:\'Instrument Serif\',serif;font-size:clamp(1.5rem,6vw,2rem);color:var(--accent);line-height:1.12;">Jusqu\'à ' + _topTot.toLocaleString('fr-FR') + '\u00A0€</div>'
+          + '<div style="font-size:0.82rem;color:var(--noir);font-weight:600;margin-top:1px;">potentiellement récupérables</div>'
+          + '</div></div>';
+      } else { _topB.innerHTML = ''; }
+    }
+  } catch(eTop) { /* noop */ }
 
   // ────────────────────────────────────────────────────────────
   // BLOC DEBUG visible si l'analyse a echoue (_partial = true).
@@ -4339,7 +4350,7 @@ function renderLoyerCheck(data) {
       // Plus de 3 mois → action en restitution des sommes indûment perçues
       html += '<div class="complement-alerte normal">';
       html += '<div class="complement-alerte-title">⚖️ Délai de 3 mois dépassé. Action en restitution possible</div>';
-      html += '<div class="complement-alerte-text">Le délai pour contester la <strong>validité</strong> du complément de loyer est écoulé. Cependant, si le complément est manifestement abusif ou non justifié, vous pouvez engager une <strong>action en restitution des sommes indûment perçues</strong> devant le Tribunal Judiciaire (art. 1302 Code civil, paiement de l\'indu). La prescription est de <strong>3 ans à compter de chaque versement</strong>.<br><br>→ Consultez l\'ADIL de votre département ou un avocat spécialisé pour évaluer vos chances de succès.</div>';
+      html += '<div class="complement-alerte-text">Le délai pour contester la <strong>validité</strong> du complément de loyer est écoulé. Cependant, si le complément est manifestement abusif ou non justifié, vous pouvez encore <strong>demander le remboursement des sommes versées en trop</strong> devant le Tribunal Judiciaire (art. 1302 Code civil, paiement de l\'indu). La prescription est de <strong>3 ans à compter de chaque versement</strong>.<br><br>→ Consultez l\'ADIL de votre département ou un avocat spécialisé pour évaluer vos chances de succès.</div>';
       html += '</div>';
     } else {
       // Date non renseignée → afficher les deux options
@@ -5688,7 +5699,7 @@ function scrollToApp() {
     <div id="exitPopupTitle" style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--noir);margin-bottom:8px;line-height:1.2;">Attendez !</div>
     <div id="exitPopupSub" style="font-size:0.88rem;color:var(--gris);margin-bottom:20px;line-height:1.6;">Votre analyse est prête. Débloquez votre rapport complet pour récupérer ce qui vous est dû.</div>
     <button onclick="openModalFromExit()" style="background:var(--accent);color:white;border:none;padding:14px 28px;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;width:100%;margin-bottom:10px;" id="exitPopupBtn">Débloquer pour seulement 29€ →</button>
-    <button onclick="closeExitPopup()" style="background:none;border:none;color:var(--gris);font-size:0.78rem;cursor:pointer;text-decoration:underline;">Non merci, je préfère perdre cet argent</button>
+    <button onclick="closeExitPopup()" style="background:none;border:none;color:var(--gris);font-size:0.78rem;cursor:pointer;text-decoration:underline;">Non merci, je consulterai plus tard</button>
   </div>
 </div>
 
