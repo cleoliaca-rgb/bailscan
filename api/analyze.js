@@ -1039,9 +1039,11 @@ function sanitizeAnalysis(parsed, context) {
       parsed.loyer.hors_encadrement = true;
       var _ztLoyer = isZoneTendue(context);
       if (_ztLoyer === true) {
+        parsed.loyer.zone_tendue = true;
         parsed.loyer.analyse = "Votre commune n'applique pas l'encadrement du NIVEAU des loyers (aucun loyer plafond opposable a la signature), mais elle est en ZONE TENDUE. Concretement : a la relocation, le loyer ne peut pas depasser celui paye par le locataire precedent (revise selon l'IRL), et votre preavis de depart est reduit a 1 mois. A titre indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2).";
       } else {
-        parsed.loyer.analyse = "Votre commune n'applique pas l'encadrement du NIVEAU des loyers : aucun loyer plafond legal n'est opposable a la signature du bail. A titre indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2). Attention : votre commune peut relever de la ZONE TENDUE, un autre dispositif ou le loyer a la relocation ne peut pas depasser celui du locataire precedent (revise selon l'IRL) et le preavis est reduit a 1 mois. Verifiez sur le simulateur officiel encadrementdesloyers.gouv.fr ou service-public.fr avec votre adresse.";
+        parsed.loyer.zone_tendue = false;
+        parsed.loyer.analyse = "Votre commune n'applique pas l'encadrement du NIVEAU des loyers : aucun loyer plafond legal n'est opposable a la signature du bail. A titre indicatif, votre loyer de " + loyM2Txt + " euros/m2 hors charges se situe " + (depasse ? "au-dessus du" : "dans le") + " repere de marche local (environ " + plafM2Txt + " euros/m2).";
       }
     } else if (depasse) {
       parsed.loyer.exedent_mensuel = Math.round((loyerM2 - plafondM2Eff) * surface * 100) / 100;
