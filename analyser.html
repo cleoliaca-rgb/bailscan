@@ -2525,16 +2525,12 @@ function updatePaywallCTA() {
   }
 
   if (total >= 50) {
-    if (hasDetails && detailTxt) {
-      // CTA personnalise avec detail des sommes
-      mainBtn.innerHTML = 'Récupérer vos ' + total.toLocaleString('fr-FR') + '€<br>'
-        + '<span style="font-size:0.78em;font-weight:600;opacity:0.92;display:block;margin-top:3px;">(' + detailTxt + ')</span>'
-        + '<span style="font-size:0.82em;font-weight:600;opacity:0.85;display:block;margin-top:2px;">pour seulement 29€ →</span>';
-    } else {
-      mainBtn.innerHTML = 'Récupérer vos ' + total.toLocaleString('fr-FR') + '€<br>pour seulement 29€ →';
-    }
+    var _tt = Math.round(total).toLocaleString('fr-FR');
+    mainBtn.innerHTML = 'Récupérer vos ' + _tt + '€'
+      + '<span style="font-size:0.82em;font-weight:600;opacity:0.85;display:block;margin-top:3px;">pour seulement 29€ →</span>';
   } else {
-    mainBtn.innerHTML = 'Obtenir mon rapport complet<br>pour 29€ →';
+    mainBtn.innerHTML = 'Obtenir mon rapport complet'
+      + '<span style="font-size:0.82em;font-weight:600;opacity:0.85;display:block;margin-top:3px;">pour 29€ →</span>';
   }
 }
 
