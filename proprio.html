@@ -294,14 +294,24 @@ footer a:hover{color:white;}
 .guarantee-item::before{content:'✓';color:var(--accent,#c84b2f);font-weight:700;}
 
 /* TÉMOIGNAGES */
-.testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:32px;}
+.testimonials{margin-top:32px;position:relative;}
+.tcarousel{overflow:hidden;}
+.tcarousel-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);}
+.tcarousel-slide{flex:0 0 100%;min-width:100%;padding:6px 4px;display:flex;justify-content:center;box-sizing:border-box;}
+.tcarousel-slide .testimonial-card{max-width:560px;width:100%;}
+.tcarousel-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:24px;}
+.tcarousel-arrow{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border,#d8d0c4);background:white;color:var(--noir,#0d0d0d);font-size:1.2rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;font-family:'DM Sans',sans-serif;}
+.tcarousel-arrow:hover{border-color:var(--accent,#c84b2f);color:var(--accent,#c84b2f);}
+.tcarousel-dots{display:flex;gap:8px;align-items:center;}
+.tcarousel-dot{width:8px;height:8px;border-radius:50%;background:var(--border,#d8d0c4);border:none;padding:0;cursor:pointer;transition:all .25s;}
+.tcarousel-dot.active{background:var(--accent,#c84b2f);width:22px;border-radius:5px;}
 .testimonial-card{background:white;border-radius:14px;padding:28px 26px;border:1.5px solid var(--border,#d8d0c4);position:relative;}
 .testimonial-quote{font-family:'Instrument Serif',serif;font-size:1rem;line-height:1.6;color:var(--texte,#1a1a1a);margin-bottom:20px;font-style:italic;}
 .testimonial-author{display:flex;align-items:center;gap:12px;}
 .testimonial-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent,#c84b2f),#a83a20);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;font-family:'DM Sans',sans-serif;flex-shrink:0;}
 .testimonial-name{font-size:.88rem;font-weight:700;color:var(--noir,#0d0d0d);margin-bottom:2px;}
 .testimonial-meta{font-size:.74rem;color:var(--gris,#6b6b6b);}
-.testimonial-stars{position:absolute;top:24px;right:26px;color:#f5b800;font-size:.85rem;letter-spacing:1px;}
+.testimonial-stars{color:#f5b800;font-size:.95rem;letter-spacing:2px;margin-bottom:14px;}
 
 /* FAQ */
 .faq-conv{max-width:780px;margin:32px auto 0;display:grid;gap:10px;}
@@ -502,7 +512,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <!-- ═══ SECTION 2 : ERREURS COURANTES ═══ -->
-<section class="conv-section" style="background:#fbf7ec;border-radius:24px;margin:40px 24px;max-width:1100px;">
+<section class="conv-section" style="background:#fbf7ec;border-radius:24px;margin:40px auto;max-width:1100px;">
   <h2>Les 5 erreurs qui <em>invalident un bail</em></h2>
   <p class="conv-subtitle">D'après notre analyse de plus de 5 000 baux, ces erreurs reviennent constamment. Toutes sont automatiquement évitées par BailScan.</p>
   
@@ -556,45 +566,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <!-- ═══ SECTION 4 : TÉMOIGNAGES BAILLEURS ═══ -->
-<section class="conv-section" style="background:#fbf7ec;border-radius:24px;margin:40px 24px;max-width:1100px;">
+<section class="conv-section" style="background:#fbf7ec;border-radius:24px;margin:40px auto;max-width:1100px;">
   <h2>Ce qu'en disent <em>les propriétaires</em></h2>
   <p class="conv-subtitle">Plus de 3 000 bailleurs particuliers ont utilisé BailScan pour générer ou vérifier leur bail.</p>
   
   <div class="testimonials">
-    <div class="testimonial-card">
-      <div class="testimonial-stars">★★★★★</div>
-      <div class="testimonial-quote">"J'avais peur de me tromper sur les clauses obligatoires. BailScan m'a tout listé automatiquement, plus les diagnostics à joindre. Bail signé en 2 jours."</div>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">JP</div>
-        <div>
-          <div class="testimonial-name">Jean-Pierre M.</div>
-          <div class="testimonial-meta">Propriétaire à Bordeaux, 2 biens loués</div>
+    <div class="tcarousel">
+      <div class="tcarousel-track" id="tcarTrack">
+        <div class="tcarousel-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-quote">"J'avais peur de me tromper sur les clauses obligatoires. BailScan m'a tout listé automatiquement, plus les diagnostics à joindre. Bail signé en 2 jours."</div>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">JP</div>
+              <div>
+                <div class="testimonial-name">Jean-Pierre M.</div>
+                <div class="testimonial-meta">Propriétaire à Bordeaux, 2 biens loués</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tcarousel-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-quote">"49€ pour un bail + analyse de mon ancien bail + modifications illimitées, c'est imbattable. Mon notaire me prenait 300€ par bail et je devais repayer pour chaque nouveau locataire."</div>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">CS</div>
+              <div>
+                <div class="testimonial-name">Cécile S.</div>
+                <div class="testimonial-meta">Propriétaire à Lyon, SCI familiale</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tcarousel-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-quote">"L'analyse de mon ancien bail a détecté 4 clauses illégales. J'ai pu corriger avant que mon locataire ne me les retourne. Un investissement qui rapporte."</div>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">FT</div>
+              <div>
+                <div class="testimonial-name">François T.</div>
+                <div class="testimonial-meta">Propriétaire à Paris 11e</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    
-    <div class="testimonial-card">
-      <div class="testimonial-stars">★★★★★</div>
-      <div class="testimonial-quote">"49€ pour un bail + analyse de mon ancien bail + modifications illimitées, c'est imbattable. Mon notaire me prenait 300€ par bail et je devais repayer pour chaque nouveau locataire."</div>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">CS</div>
-        <div>
-          <div class="testimonial-name">Cécile S.</div>
-          <div class="testimonial-meta">Propriétaire à Lyon, SCI familiale</div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="testimonial-card">
-      <div class="testimonial-stars">★★★★★</div>
-      <div class="testimonial-quote">"L'analyse de mon ancien bail a détecté 4 clauses illégales. J'ai pu corriger avant que mon locataire ne me les retourne. Un investissement qui rapporte."</div>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">FT</div>
-        <div>
-          <div class="testimonial-name">François T.</div>
-          <div class="testimonial-meta">Propriétaire à Paris 11e</div>
-        </div>
-      </div>
+    <div class="tcarousel-nav">
+      <button class="tcarousel-arrow" id="tcarPrev" aria-label="Avis précédent">‹</button>
+      <div class="tcarousel-dots" id="tcarDots"></div>
+      <button class="tcarousel-arrow" id="tcarNext" aria-label="Avis suivant">›</button>
     </div>
   </div>
 </section>
@@ -2307,6 +2330,43 @@ function cpSelect(cp, ville, cpId, villeId){
 }
  
 checkPaymentReturn();
+
+/* ── Carrousel témoignages ── */
+(function(){
+  var track=document.getElementById('tcarTrack');
+  if(!track)return;
+  var slides=track.children, n=slides.length, idx=0, timer=null;
+  var dotsWrap=document.getElementById('tcarDots'), dots=[];
+  for(var i=0;i<n;i++){(function(j){
+    var d=document.createElement('button');
+    d.className='tcarousel-dot'+(j===0?' active':'');
+    d.setAttribute('aria-label','Avis '+(j+1));
+    d.onclick=function(){go(j);restart();};
+    dotsWrap.appendChild(d); dots.push(d);
+  })(i);}
+  function go(i){
+    idx=(i+n)%n;
+    track.style.transform='translateX('+(-idx*100)+'%)';
+    for(var k=0;k<n;k++)dots[k].classList.toggle('active',k===idx);
+  }
+  function start(){timer=setInterval(function(){go(idx+1);},6000);}
+  function restart(){clearInterval(timer);start();}
+  var prev=document.getElementById('tcarPrev'), next=document.getElementById('tcarNext');
+  if(prev)prev.onclick=function(){go(idx-1);restart();};
+  if(next)next.onclick=function(){go(idx+1);restart();};
+  var car=track.parentNode;
+  car.addEventListener('mouseenter',function(){clearInterval(timer);});
+  car.addEventListener('mouseleave',restart);
+  var x0=null;
+  car.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+  car.addEventListener('touchend',function(e){
+    if(x0===null)return;
+    var dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>40){go(idx+(dx<0?1:-1));restart();}
+    x0=null;
+  },{passive:true});
+  start();
+})();
 </script>
 </body>
 </html>
