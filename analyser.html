@@ -1599,7 +1599,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div class="wizard-nav">
           <button class="btn-wizard-back" onclick="showChoiceCards()">← Retour</button>
-          <button class="btn-wizard-next" onclick="goStep(2)" id="btnStep3Next">Continuer → Logement</button>
+          <button class="btn-wizard-next" onclick="step1Continue()" id="btnStep3Next" style="background:var(--accent);color:white;border-color:var(--accent);">Analyser mon bail →</button>
+        </div>
+        <div style="text-align:center;margin-top:10px;">
+          <a onclick="goStep(2)" style="font-size:0.8rem;color:var(--gris);text-decoration:underline;cursor:pointer;">Préciser via le formulaire (facultatif)</a>
         </div>
       </div>
 
@@ -3105,6 +3108,24 @@ function selectMode(m) {
  * Claude extrait automatiquement ville/loyer/surface/depot/type/date du bail.
  * Les infos extraites sont retournees dans data.context_extrait et hydratent appState.
  */
+function step1Continue() {
+  // Bail fourni (texte ou PDF) : pas besoin du formulaire, le backend extrait tout du bail.
+  if (appState.uploadMode === 'text') {
+    var _t = (document.getElementById('bailText').value || '').trim();
+    if (_t.length < 100) { alert('Collez le texte complet de votre bail, ou utilisez le formulaire pour préciser les informations.'); return; }
+    appState.skipForm = true;
+    launchAnalysis();
+    return;
+  }
+  if (appState.uploadMode === 'upload') {
+    if (!appState.pdfBase64) { alert('Ajoutez d\'abord votre bail (PDF), ou collez-le en mode texte.'); return; }
+    appState.skipForm = true;
+    launchAnalysis();
+    return;
+  }
+  goStep(2);
+}
+
 function launchAnalysisFromUpload() {
   if (!appState.pdfBase64) { alert('Aucun bail uploadé.'); return; }
   console.log('[BailScan] Lancement analyse directe depuis upload — PDF size:', appState.pdfBase64.length, 'caracteres base64');
