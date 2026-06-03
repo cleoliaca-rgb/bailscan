@@ -2051,7 +2051,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3.2vw,2.5rem);line-height:1.15;color:var(--noir);text-align:center;margin-bottom:14px;letter-spacing:-.02em;">Ils ont récupéré <em style="color:var(--accent);font-style:italic;">avec BailScan</em></h2>
     <p style="text-align:center;color:var(--gris);font-size:1rem;max-width:640px;margin:0 auto 48px;line-height:1.55;">Plus de 327 locataires ont déjà fait analyser leur bail. Note moyenne 4.9/5. Voici quelques montants récupérés sans avocat.</p>
     
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
+    <style>
+      @media(max-width:640px){
+        #testimonialsGrid{ display:flex !important; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; gap:14px !important; padding:2px 0 18px; scrollbar-width:none; }
+        #testimonialsGrid::-webkit-scrollbar{ display:none; }
+        #testimonialsGrid > div{ flex:0 0 84% !important; scroll-snap-align:center; min-width:0; }
+      }
+    </style>
+    <div id="testimonialsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
       
       <!-- Témoignage 1 -->
       <div style="background:white;border-radius:14px;padding:28px 26px;border:1.5px solid var(--border);position:relative;">
