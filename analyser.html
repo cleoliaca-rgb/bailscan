@@ -3485,28 +3485,39 @@ function displayResults(data) {
  
   document.getElementById('scoreVerdict').textContent = data.verdict_titre || verdict;
 
-  // ── Analyse partielle SANS bail + verdict rassurant : ne pas dire "conforme", pousser l'upload ──
+  // ── Analyse partielle SANS bail : ne pas rassurer a tort, pousser l'upload ──
   var _noBail = (typeof appState !== 'undefined' && appState && appState.noPdf === true) || /partielle/i.test(data.verdict_titre || '');
-  var _incompletNoBail = _noBail && (verdict === 'Conforme' || verdict === 'Equitable');
-  if (_incompletNoBail) {
+  var _ztCommune = !!(data.loyer && data.loyer.zone_tendue === true);
+  var _conformeNoBail = _noBail && (verdict === 'Conforme' || verdict === 'Equitable');
+  var _pushUpload = _noBail && (_conformeNoBail || _ztCommune);
+  // Verdict rassurant neutralise UNIQUEMENT si conforme (on garde "Risque" tel quel)
+  if (_conformeNoBail) {
     try {
       if (scoreEl) scoreEl.style.color = '#9a9a9a';
       if (circle) circle.style.borderColor = 'rgba(150,150,150,0.45)';
       var _vbI = document.getElementById('verdictBadge');
       if (_vbI) { _vbI.className = 'verdict-badge verdict-warning'; _vbI.textContent = 'Analyse incomplète'; }
       document.getElementById('scoreVerdict').textContent = 'Analyse incomplète — votre bail n\'a pas été vérifié';
-      var _ib = document.getElementById('incompleteBanner');
-      if (_ib) {
-        _ib.innerHTML = '<div style="margin:16px 0 4px;padding:18px;background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.5);border-radius:14px;">'
-          + '<div style="font-weight:800;color:var(--noir);font-size:1rem;margin-bottom:6px;">⚠️ On n\'a pas encore vu votre bail</div>'
-          + '<div style="font-size:0.9rem;color:var(--gris);line-height:1.5;margin-bottom:14px;">Le loyer et le dépôt déclarés semblent corrects. Mais l\'essentiel n\'a pas été vérifié : vos <strong style="color:var(--noir);">clauses</strong> (révision, charges, résiliation, solidarité, travaux, assurance). C\'est là que se cachent la plupart des abus. Sans le bail, impossible d\'affirmer que tout est conforme.</div>'
-          + '<button onclick="restartWithBail()" style="width:100%;background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:0.95rem;padding:14px 18px;border-radius:12px;cursor:pointer;">Analyser mon bail complet — gratuit →</button>'
-          + '</div>';
-      }
     } catch(eInc) { /* noop */ }
-  } else {
-    var _ibClear = document.getElementById('incompleteBanner');
-    if (_ibClear) _ibClear.innerHTML = '';
+  }
+  // Banniere : invitation a uploader le bail (conforme sans bail OU commune en zone tendue)
+  var _ib = document.getElementById('incompleteBanner');
+  if (_ib) {
+    if (_pushUpload && _ztCommune) {
+      _ib.innerHTML = '<div style="margin:16px 0 4px;padding:18px;background:rgba(200,75,47,0.07);border:1.5px solid var(--accent);border-radius:14px;">'
+        + '<div style="font-weight:800;color:var(--noir);font-size:1rem;margin-bottom:6px;">📍 Votre commune est en zone tendue</div>'
+        + '<div style="font-size:0.9rem;color:var(--gris);line-height:1.5;margin-bottom:14px;">À la relocation, votre loyer ne peut pas dépasser celui du locataire précédent (revalorisé selon l\'IRL), et votre préavis est réduit à 1 mois. Pour savoir si vous payez trop, on a besoin de votre bail : il doit mentionner le loyer du précédent locataire. C\'est souvent là que se trouve le plus gros montant récupérable.</div>'
+        + '<button onclick="restartWithBail()" style="width:100%;background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:0.95rem;padding:14px 18px;border-radius:12px;cursor:pointer;">Analyser mon bail complet — gratuit →</button>'
+        + '</div>';
+    } else if (_pushUpload) {
+      _ib.innerHTML = '<div style="margin:16px 0 4px;padding:18px;background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.5);border-radius:14px;">'
+        + '<div style="font-weight:800;color:var(--noir);font-size:1rem;margin-bottom:6px;">⚠️ On n\'a pas encore vu votre bail</div>'
+        + '<div style="font-size:0.9rem;color:var(--gris);line-height:1.5;margin-bottom:14px;">Le loyer et le dépôt déclarés semblent corrects. Mais l\'essentiel n\'a pas été vérifié : vos <strong style="color:var(--noir);">clauses</strong> (révision, charges, résiliation, solidarité, travaux, assurance). C\'est là que se cachent la plupart des abus. Sans le bail, impossible d\'affirmer que tout est conforme.</div>'
+        + '<button onclick="restartWithBail()" style="width:100%;background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:0.95rem;padding:14px 18px;border-radius:12px;cursor:pointer;">Analyser mon bail complet — gratuit →</button>'
+        + '</div>';
+    } else {
+      _ib.innerHTML = '';
+    }
   }
 
   // ────────────────────────────────────────────────────────────
@@ -3664,7 +3675,7 @@ function displayResults(data) {
   try {
     if (!(typeof isPaid !== 'undefined' && isPaid === true)) {
       var _stTot = (typeof getTotalReclamable === 'function') ? (getTotalReclamable().total || 0) : 0;
-      if (_incompletNoBail) { hideStickyBuyBar(); } else { buildStickyBuyBar(_stTot); }
+      if (_pushUpload && _stTot < 50) { hideStickyBuyBar(); } else { buildStickyBuyBar(_stTot); }
     } else { hideStickyBuyBar(); }
   } catch(eSt) { /* noop */ }
   // Date rapport
