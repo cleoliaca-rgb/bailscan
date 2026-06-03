@@ -220,6 +220,7 @@ h1 em { font-style:italic; color:var(--accent); }
   .step-dot { width:28px; height:28px; font-size:0.72rem; }
   .step-line { margin:0 3px; }
   .wizard-progress { margin-bottom:24px; }
+  .trop-percu-banner-cta { white-space:normal !important; width:100%; text-align:center; }
 }
  
 /* WIZARD PANELS */
@@ -1686,24 +1687,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div id="hiddenClausesTeaser" style="display:none;margin-top:12px;border-radius:14px;overflow:hidden;border:2px solid var(--accent);">
         <!-- Titres réels des clauses les plus graves (révélés), action verrouillée -->
         <div id="revealedClauseTitles"></div>
-        <!-- Fausses clauses floutées (3 cartes pour donner de la matiere) -->
+        <!-- Une seule carte floutée (les vrais titres sont déjà révélés au-dessus) -->
         <div style="position:relative;">
-          <div style="padding:16px 18px;background:white;filter:blur(5px);pointer-events:none;user-select:none;">
-            <div style="display:inline-block;height:18px;width:64px;background:rgba(200,75,47,0.25);border-radius:5px;margin-bottom:10px;"></div>
-            <div style="height:14px;background:rgba(200,75,47,0.18);border-radius:4px;margin-bottom:8px;width:70%;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:92%;margin-bottom:6px;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:78%;"></div>
-          </div>
-          <div style="padding:16px 18px;background:white;border-top:1px solid var(--border);filter:blur(5px);pointer-events:none;user-select:none;">
-            <div style="display:inline-block;height:18px;width:78px;background:rgba(245,158,11,0.25);border-radius:5px;margin-bottom:10px;"></div>
-            <div style="height:14px;background:rgba(245,158,11,0.18);border-radius:4px;margin-bottom:8px;width:60%;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:88%;margin-bottom:6px;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:65%;"></div>
-          </div>
-          <div style="padding:16px 18px;background:white;border-top:1px solid var(--border);filter:blur(5px);pointer-events:none;user-select:none;">
-            <div style="display:inline-block;height:18px;width:64px;background:rgba(200,75,47,0.22);border-radius:5px;margin-bottom:10px;"></div>
-            <div style="height:14px;background:rgba(200,75,47,0.15);border-radius:4px;margin-bottom:8px;width:55%;"></div>
-            <div style="height:10px;background:var(--border);border-radius:4px;width:82%;"></div>
+          <div style="padding:14px 18px;background:white;filter:blur(5px);pointer-events:none;user-select:none;">
+            <div style="display:inline-block;height:16px;width:64px;background:rgba(200,75,47,0.25);border-radius:5px;margin-bottom:9px;"></div>
+            <div style="height:13px;background:rgba(200,75,47,0.18);border-radius:4px;margin-bottom:7px;width:68%;"></div>
+            <div style="height:10px;background:var(--border);border-radius:4px;width:90%;"></div>
           </div>
         </div>
         <!-- CTA par-dessus -->
@@ -5076,7 +5065,7 @@ function buildStickyBuyBar(total) {
   if (!bar) {
     bar = document.createElement('div');
     bar.id = 'stickyBuyBar';
-    bar.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:250;background:#0d0d0d;border-top:1px solid rgba(255,255,255,0.1);box-shadow:0 -6px 24px rgba(0,0,0,0.28);padding:10px 14px;transform:translateY(130%);transition:transform .28s ease;';
+    bar.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:250;box-sizing:border-box;background:#0d0d0d;border-top:1px solid rgba(255,255,255,0.1);box-shadow:0 -6px 24px rgba(0,0,0,0.28);padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));transform:translateY(130%);transition:transform .28s ease;';
     document.body.appendChild(bar);
   }
   var mt = (total && total > 0) ? Math.round(total).toLocaleString('fr-FR') : null;
@@ -5085,10 +5074,10 @@ function buildStickyBuyBar(total) {
     : '<div style="font-size:0.8rem;color:rgba(255,255,255,0.9);font-weight:600;line-height:1.25;">Débloquez votre dossier complet</div>';
   bar.innerHTML = '<div style="max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px;">'
     + '<div style="flex:1;min-width:0;">' + left + '</div>'
-    + '<button onclick="trackBeginCheckout(\'sticky_bar\');openModal()" style="flex-shrink:0;background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:0.92rem;padding:13px 20px;border-radius:12px;cursor:pointer;box-shadow:0 4px 16px rgba(200,75,47,0.4);">Débloquer · 29 € →</button>'
+    + '<button onclick="trackBeginCheckout(\'sticky_bar\');openModal()" style="flex-shrink:0;white-space:nowrap;background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:clamp(0.82rem,3.6vw,0.92rem);padding:13px 18px;border-radius:12px;cursor:pointer;box-shadow:0 4px 16px rgba(200,75,47,0.4);">Débloquer · 29 € →</button>'
     + '</div>';
   bar.dataset.ready = '1';
-  document.body.style.paddingBottom = '84px';
+  document.body.style.paddingBottom = 'calc(86px + env(safe-area-inset-bottom, 0px))';
   _stickyBarVisible = true;
   _refreshStickyBar();
 }
