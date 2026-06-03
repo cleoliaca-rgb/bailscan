@@ -578,7 +578,7 @@ select.form-input { cursor:pointer; }
 /* MODAL */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:300; align-items:center; justify-content:center; padding:20px; }
 .modal-overlay.active { display:flex; }
-.modal { background:white; border-radius:20px; padding:40px; max-width:480px; width:100%; max-height:90vh; overflow-y:auto; }
+.modal { background:white; border-radius:20px; padding:40px 40px 0; max-width:480px; width:100%; max-height:90vh; overflow-y:auto; }
 .modal-title { font-family:'Instrument Serif',serif; font-size:1.8rem; color:var(--noir); margin-bottom:8px; }
 .modal-sub { font-size:0.88rem; color:var(--gris); margin-bottom:28px; }
 .modal-features { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
@@ -593,6 +593,8 @@ select.form-input { cursor:pointer; }
 .btn-pay:disabled { opacity:0.6; cursor:not-allowed; }
 .modal-close { background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--gris); float:right; margin-top:-10px; margin-right:-10px; }
 .modal-secure { font-size:0.75rem; color:var(--gris); text-align:center; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px; }
+.modal-foot { position:sticky; bottom:0; z-index:3; background:#fff; margin:10px -40px 0; padding:14px 40px calc(18px + env(safe-area-inset-bottom,0px)); border-top:1px solid var(--border); box-shadow:0 -12px 20px rgba(255,255,255,0.92); }
+.modal-foot .modal-secure { margin-top:10px; }
  
 /* RESET BTN */
 .btn-reset { background:transparent; border:1.5px solid var(--border); color:var(--gris); padding:10px 20px; border-radius:8px; font-size:0.85rem; font-weight:600; cursor:pointer; transition:all .2s; margin-top:40px; }
@@ -902,9 +904,10 @@ select.form-input { cursor:pointer; }
   /* CTA principal paywall */
   #paywallMainCta {
     font-size:0.85rem !important;
-    padding:14px 16px !important;
+    padding:14px 18px !important;
     white-space:normal !important;
     line-height:1.3 !important;
+    text-align:left !important;
   }
 }
 
@@ -1000,12 +1003,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       .pw-inclus-details summary::before { content:'+ '; }
       .pw-inclus-details[open] summary::before { content:'– '; }
       @media (max-width:520px){
-        .modal { padding:24px 18px; }
+        .modal { padding:24px 18px 0; }
         .modal-title { font-size:1.45rem; }
         .modal-sub { margin-bottom:18px; }
         .pw-tab { font-size:0.72rem; padding:9px 4px; gap:4px; }
         .pw-tab .pw-ico { display:none; }
-        .pw-preview { font-size:0.76rem; min-height:232px; }
+        .pw-preview { font-size:0.76rem; min-height:190px; }
+        .modal-foot { margin:8px -18px 0; padding:12px 18px calc(16px + env(safe-area-inset-bottom,0px)); }
+        .modal-price { margin-bottom:6px; }
+        .modal-price-n { font-size:2.4rem; }
       }
     </style>
     <div class="pw-tabs" id="pwTabs">
@@ -1015,10 +1021,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div id="paywallPreview" class="pw-preview"></div>
     <div class="pw-included">Inclus : chaque clause analysée article par article · encadrement + trop-perçu calculé · 5 lettres officielles · plan d'action avec délais légaux et qui contacter · références juridiques (loi 1989, ALUR, ELAN)</div>
+    <div class="modal-foot">
     <div class="modal-price"><div class="modal-price-n">29€</div><div class="modal-price-sub">paiement unique</div></div>
-    <div class="modal-price-once">Paiement unique</div>
     <button class="btn-pay" id="btnPayConfirm" onclick="payWithStripe()">Récupérer mon argent pour seulement 29€ →</button>
     <div class="modal-secure">· Paiement sécurisé · Satisfait ou remboursé ·</div>
+    </div>
   </div>
 </div>
  
@@ -2642,19 +2649,8 @@ function submitEmailCapture() {
     // Cas 1 — déjà payé : on cache
     if (alreadyPaid) { sticky.style.display = 'none'; return; }
 
-    // Cas 2 — paywall visible (analyse faite, non payée) : push 29€
-    if (resultsVisible) {
-      stickyBtn.textContent = 'Débloquer mon rapport · 29€ →';
-      stickyBtn.setAttribute('href', '#');
-      stickyBtn.onclick = function(e) {
-        e.preventDefault();
-        if (typeof trackBeginCheckout === 'function') trackBeginCheckout('sticky_cta');
-        if (typeof openModal === 'function') openModal();
-      };
-      if (stickySub) stickySub.textContent = 'Récupérer ce qui vous est dû';
-      sticky.style.display = 'flex';
-      return;
-    }
+    // Cas 2 — rapport visible : la barre dediee #stickyBuyBar prend le relais (evite le double sticky sur mobile)
+    if (resultsVisible) { sticky.style.display = 'none'; return; }
 
     // Cas 3 — wizard actif (utilisateur en train de remplir le formulaire) : on cache
     if (appVisible) { sticky.style.display = 'none'; return; }
@@ -3575,9 +3571,9 @@ function displayResults(data) {
     var teaserText;
     if (totalDanger > 0) {
       teaserText = totalDanger + ' clause' + (totalDanger > 1 ? 's' : '') + ' illégale' + (totalDanger > 1 ? 's' : '') + ' détectée' + (totalDanger > 1 ? 's' : '');
-      if (totalWarning > 0) teaserText += ' + ' + totalWarning + ' à risque';
+      if (totalWarning > 0) teaserText += ' +\u00A0' + totalWarning + '\u00A0à\u00A0risque';
     } else if (totalWarning > 0) {
-      teaserText = totalWarning + ' clause' + (totalWarning > 1 ? 's' : '') + ' à risque détectée' + (totalWarning > 1 ? 's' : '');
+      teaserText = totalWarning + ' clause' + (totalWarning > 1 ? 's' : '') + '\u00A0à\u00A0risque détectée' + (totalWarning > 1 ? 's' : '');
     } else {
       teaserText = hiddenCount + ' clause' + (hiddenCount > 1 ? 's' : '') + ' analysée' + (hiddenCount > 1 ? 's' : '');
     }
