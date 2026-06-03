@@ -1390,6 +1390,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="form-group">
         <label for="loyer_base">Loyer de base hors charges (&#8364;/mois) <span style="color:var(--accent);font-size:0.8rem">*</span></label>
         <input type="number" id="loyer_base" class="form-input" placeholder="Ex : 1087" min="0" oninput="calcLoyerTotal();showLoyerAlert()">
+        <div id="loyerRequiredMsg" style="display:none;margin-top:6px;font-size:0.8rem;color:var(--accent);font-weight:600;">Le montant du loyer est nécessaire pour vérifier l'encadrement et détecter un éventuel trop-perçu.</div>
         <small style="font-size:0.73rem;color:var(--gris);margin-top:3px">Montant que vous payez chaque mois, hors charges</small>
       </div>
  
@@ -2365,6 +2366,13 @@ function calcLoyerTotal() {
  
   // Stocker dans appState — chaque valeur séparément, pas additionnées
   appState.loyerBase = b;
+  // Effacer l'erreur "loyer obligatoire" des qu'un montant valide est saisi
+  if (b > 0) {
+    var _lmClear = document.getElementById('loyerRequiredMsg');
+    if (_lmClear) _lmClear.style.display = 'none';
+    var _lbEl = document.getElementById('loyer_base');
+    if (_lbEl) _lbEl.style.borderColor = '';
+  }
   appState.loyerMinore = useMinore ? minore : 0;
   appState.loyerRef = useRef ? ref : 0;
   appState.loyerMajore = useMajore ? m : 0;
@@ -2962,6 +2970,21 @@ function goStep(n) {
       var hasContent = appState.uploadMode === 'upload' ? appState.pdfBase64 : document.getElementById('bailText').value.trim().length > 100;
       if (!hasContent) {
         alert('Veuillez fournir votre document avant de continuer.');
+        return;
+      }
+    }
+    // Analyse sans PDF : le loyer est obligatoire (base de la verification encadrement / trop-percu)
+    if (appState.noPdf) {
+      var _loyerEl = document.getElementById('loyer_base');
+      var _loyerVal = parseFloat(_loyerEl && _loyerEl.value) || 0;
+      if (_loyerVal <= 0) {
+        var _lm = document.getElementById('loyerRequiredMsg');
+        if (_lm) _lm.style.display = 'block';
+        if (_loyerEl) {
+          _loyerEl.style.borderColor = 'var(--accent)';
+          _loyerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          try { _loyerEl.focus(); } catch(e){}
+        }
         return;
       }
     }
